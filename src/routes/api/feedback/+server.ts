@@ -16,7 +16,7 @@ export const POST: RequestHandler = async ({ request, platform, getClientAddress
 	const env = platform?.env;
 	if (!env?.DB) error(503, 'Spätná väzba teraz nefunguje');
 
-	const limit = await env.SUGGEST_LIMITER?.limit({ key: getClientAddress() });
+	const limit = await env.SUGGEST_LIMITER?.limit({ key: `feedback:${getClientAddress()}` });
 	if (limit && !limit.success) error(429, 'Chvíľu počkaj a skús to znova');
 
 	if (!request.headers.get('content-type')?.startsWith('application/json')) {

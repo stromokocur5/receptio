@@ -238,13 +238,14 @@
 	function boughtToPantry() {
 		for (const item of allItems) {
 			if (!checkedItems.current[item.ingredient.id]) continue;
-			if (item.restock) {
-				setOutOfStock(item.ingredient.id, false);
-				continue;
-			}
+			if (item.restock) setOutOfStock(item.ingredient.id, false);
 			const current = pantry.current[item.ingredient.id];
 			if (current === null) continue;
-			setPantryItem(item.ingredient.id, Math.round((current ?? 0) + item.buyGrams));
+			// Whole packs go into the pantry – what the recipes don't use is still at home.
+			const shelf = pay.get(item.ingredient.id)?.shelf;
+			const bought =
+				shelf && Number.isInteger(shelf.packs) ? shelf.packs * shelf.packGrams : item.buyGrams;
+			setPantryItem(item.ingredient.id, Math.round((current ?? 0) + bought));
 		}
 		checkedItems.current = {};
 	}

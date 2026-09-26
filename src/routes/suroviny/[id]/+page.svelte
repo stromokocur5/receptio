@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
-	import { formatEur } from '$lib/amounts';
+	import { formatEur, parseAmount } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
@@ -11,6 +11,7 @@
 	import { ALLERGEN_LABELS, DAILY_REFERENCE } from '$lib/nutrition';
 	import { bestPrice, isUsable, pricePerKg } from '$lib/pricing';
 	import { MONTH_NAMES } from '$lib/season';
+	import type { PriceEntry } from '$lib/types';
 	import { pantry, removePantryItem, setPantryItem, ui } from '$lib/state.svelte';
 
 	let { data } = $props();
@@ -44,6 +45,15 @@
 			.sort((a, b) => pricePerKg(a) - pricePerKg(b))
 	);
 	const dayMonth = new Intl.DateTimeFormat('sk', { day: 'numeric', month: 'numeric' });
+
+	/** Liquids compare per litre as on the shelf label, everything else per kg. */
+	function unitPrice(p: PriceEntry): string {
+		const { amount, unit } = parseAmount(p.pack);
+		if (amount && (unit === 'l' || unit === 'ml')) {
+			return `${formatEur(p.price / (unit === 'l' ? amount : amount / 1000))} / l`;
+		}
+		return `${formatEur(pricePerKg(p))} / kg`;
+	}
 	const atHome = $derived(ui.loaded && ingredient.id in pantry.current);
 
 	function toggleHome() {
@@ -187,7 +197,7 @@
 								</span>
 								<span class="pval">
 									{formatEur(p.price)}
-									<small>{formatEur(pricePerKg(p))} / kg</small>
+									<small>{unitPrice(p)}</small>
 								</span>
 							</li>
 						{/each}
@@ -343,6 +353,13 @@
 	.text ol {
 		margin: 0;
 		padding-left: 1.2em;
+	}
+	.cols > * {
+		min-width: 0;
+	}
+	.homemade .btn {
+		white-space: normal;
+		text-align: left;
 	}
 	.homemade {
 		padding: 16px 18px;

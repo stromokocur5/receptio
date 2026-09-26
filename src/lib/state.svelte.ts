@@ -312,7 +312,7 @@ export async function loadLikes() {
 
 export async function toggleLike(recipeId: string) {
 	const wasLiked = likes.mine.includes(recipeId);
-	const before = { counts: { ...likes.counts }, mine: [...likes.mine] };
+	const countBefore = likes.counts[recipeId] ?? 0;
 	likes.mine = wasLiked ? likes.mine.filter((id) => id !== recipeId) : [...likes.mine, recipeId];
 	likes.counts = {
 		...likes.counts,
@@ -328,7 +328,10 @@ export async function toggleLike(recipeId: string) {
 			? [...new Set([...likes.mine, recipeId])]
 			: likes.mine.filter((id) => id !== recipeId);
 	} catch {
-		likes.counts = before.counts;
-		likes.mine = before.mine;
+		// Undo only this recipe – other likes may have changed meanwhile.
+		likes.counts = { ...likes.counts, [recipeId]: countBefore };
+		likes.mine = wasLiked
+			? [...new Set([...likes.mine, recipeId])]
+			: likes.mine.filter((id) => id !== recipeId);
 	}
 }
