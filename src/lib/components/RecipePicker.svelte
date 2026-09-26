@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { formatEur, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
-	import { MEAL_LABELS, normalizeSearch } from '$lib/labels';
+	import { MEAL_LABELS, matchesSearch, normalizeSearch } from '$lib/labels';
 	import { addToPlan, servingsInPlan, ui } from '$lib/state.svelte';
 	import { MEALS, type Meal } from '$lib/types';
 	import Icon from './Icon.svelte';
@@ -30,10 +30,9 @@
 	);
 
 	const results = $derived.by(() => {
-		const terms = normalizeSearch(query).split(/\s+/).filter(Boolean);
 		return catalog.recipes.filter(
 			(r) =>
-				(!terms.length || terms.every((t) => searchIndex.get(r.id)!.includes(t))) &&
+				matchesSearch(searchIndex.get(r.id)!, query) &&
 				(!meal || r.meals.includes(meal)) &&
 				(!glutenFree || r.gluten !== 'contains' || r.gfSwappable)
 		);

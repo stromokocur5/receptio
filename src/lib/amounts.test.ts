@@ -32,6 +32,7 @@ const ingredient = (overrides: Partial<Ingredient> = {}): Ingredient => ({
 	color: '#000000',
 	howto: [],
 	homemade: false,
+	swapsTo: [],
 	byproduct: false,
 	...overrides
 });

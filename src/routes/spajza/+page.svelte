@@ -4,8 +4,8 @@
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
-	import { CATEGORY_LABELS, normalizeSearch } from '$lib/labels';
-	import { rankByPantry } from '$lib/pantry';
+	import { CATEGORY_LABELS, matchesSearch, normalizeSearch } from '$lib/labels';
+	import { rankByPantry, TAP_WATER_ID } from '$lib/pantry';
 	import { pantry, removePantryItem, setPantryItem, ui } from '$lib/state.svelte';
 	import { INGREDIENT_CATEGORIES, type Ingredient } from '$lib/types';
 
@@ -16,10 +16,9 @@
 
 	const pickable = $derived(
 		catalog.ingredients.filter(
-			(i) => !i.staple && normalizeSearch(i.name).includes(normalizeSearch(search.trim()))
+			(i) => i.id !== TAP_WATER_ID && matchesSearch(normalizeSearch(i.name), search)
 		)
 	);
-	const staples = catalog.ingredients.filter((i) => i.staple && i.id !== 'voda');
 	const pickableByCategory = $derived(
 		INGREDIENT_CATEGORIES.map((c) => [c, pickable.filter((i) => i.category === c)] as const).filter(
 			([, list]) => list.length > 0
@@ -71,8 +70,7 @@
 		<h1>Čo máš doma?</h1>
 		<p class="lede">
 			Naklikaj suroviny a Receptio ti ukáže, čo z nich uvaríš. Množstvo vyplň, iba ak chceš
-			presnejší nákupný zoznam. Soľ, oleje a korenie berieme ako samozrejmosť. Všetko ostáva len v
-			tvojom prehliadači.
+			presnejší nákupný zoznam. Všetko ostáva len v tvojom prehliadači.
 		</p>
 		<a class="leftovers-link card draw-host" href="/zvysky">
 			<Icon name="jar" size={22} />
@@ -93,9 +91,6 @@
 				<label for="pantry-q" class="sr-only">Hľadať surovinu</label>
 				<input id="pantry-q" type="search" bind:value={search} placeholder="Hľadaj surovinu…" />
 			</div>
-			<p class="muted small staples">
-				{staples.map((i) => i.name).join(', ')} a vodu nepridávaš – počítame, že ich máš doma vždy.
-			</p>
 			<div class="cats">
 				{#each pickableByCategory as [category, list] (category)}
 					<div class="cat">
@@ -355,9 +350,6 @@
 		justify-items: center;
 		padding: 24px 0 8px;
 		text-align: center;
-	}
-	.staples {
-		margin: 10px 0 0;
 	}
 	.small {
 		font-size: 0.82rem;

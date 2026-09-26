@@ -81,6 +81,8 @@ export interface Ingredient {
 	gfAlternative?: string;
 	/** Slugs of beginner technique pages (wiki section `zaklady`). */
 	howto: string[];
+	/** Ingredients that can stand in for this one (from its substitutes). */
+	swapsTo: string[];
 	/** Can be made at home instead of bought (details in IngredientInfo). */
 	homemade: boolean;
 	/** Months (1–12) when it's grown locally and cheapest; empty = no season. */

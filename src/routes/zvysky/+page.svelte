@@ -3,7 +3,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
-	import { normalizeSearch } from '$lib/labels';
+	import { matchesSearch, normalizeSearch } from '$lib/labels';
 	import { isAssumedAtHome, rankByLeftovers } from '$lib/pantry';
 
 	const catalog = useCatalog();
@@ -18,7 +18,7 @@
 		if (!term) return [];
 		return catalog.ingredients
 			.filter((i) => !isAssumedAtHome(i) && !chosen.includes(i.id) && i.id !== 'voda')
-			.filter((i) => normalizeSearch(i.name).includes(term))
+			.filter((i) => matchesSearch(normalizeSearch(i.name), term))
 			.slice(0, 8);
 	});
 	const matches = $derived(

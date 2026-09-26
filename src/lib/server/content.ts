@@ -337,6 +337,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		warn: i.warn,
 		gfAlternative: i.gf_alternative,
 		howto: i.howto,
+		swapsTo: i.substitutes.flatMap((sub) => (sub.to ? [sub.to] : [])),
 		homemade: i.homemade !== undefined,
 		season: [...new Set(i.season)].sort((a, b) => a - b)
 	}));
@@ -580,7 +581,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			});
 			variants.push({
 				name: GF_VARIANT_NAME,
-				description: `Zámena: ${[...new Set(culprits)]
+				description: `Namiesto lepkových surovín: ${[...new Set(culprits)]
 					.map((i) => `${i.name} → ${byId.get(i.gfAlternative!)!.name}`)
 					.join(', ')}.`,
 				...compute(mergeLines(gfLines), r.servings)

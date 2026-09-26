@@ -80,7 +80,15 @@
 			<GlutenBadge {recipe} />
 			{#if recipe.ahead}<span class="badge sky" title={recipe.ahead}>Pripraviť vopred</span>{/if}
 			{#if match}
-				{#if match.missing.length === 0 && match.short.length === 0}
+				{#if match.missing.length === 0 && match.short.length === 0 && match.swaps.length}
+					<span
+						class="badge leaf sticker"
+						title={match.swaps.map((s) => `${s.use.name} namiesto: ${s.need.name}`).join(', ')}
+						><Icon name="check" size={14} stroke={2.4} /> Máš všetko so zámenou: {match.swaps
+							.map((s) => s.use.name.split(' (')[0].toLowerCase())
+							.join(', ')}</span
+					>
+				{:else if match.missing.length === 0 && match.short.length === 0}
 					<span class="badge leaf sticker"
 						><Icon name="check" size={14} stroke={2.4} /> Máš všetko</span
 					>

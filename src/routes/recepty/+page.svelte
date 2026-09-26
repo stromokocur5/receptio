@@ -5,7 +5,7 @@
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
-	import { MEAL_LABELS, normalizeSearch, pluralRecipes } from '$lib/labels';
+	import { MEAL_LABELS, matchesSearch, normalizeSearch, pluralRecipes } from '$lib/labels';
 	import { ALLERGEN_LABELS, COMPUTED_TAG_LABELS, computedTags, cookingStyle } from '$lib/nutrition';
 	import { recipeSeason } from '$lib/season';
 	import { rankByPantry, type PantryMatch } from '$lib/pantry';
@@ -50,7 +50,7 @@
 		'bez-varenia': COMPUTED_TAG_LABELS['bez-varenia'],
 		'len-rura': COMPUTED_TAG_LABELS['len-rura'],
 		jemne: 'Nepálivé, pre deti',
-		sezonne: 'Sezónne teraz'
+		sezonne: 'Z toho, čo je v sezóne'
 	};
 	let quick = $state<Quick[]>([]);
 	const month = new Date().getMonth() + 1;
@@ -92,10 +92,9 @@
 	);
 	const hasPantry = $derived(ui.loaded && Object.keys(pantry.current).length > 0);
 
-	const results = $derived.by(() => {
-		const terms = normalizeSearch(q).split(/\s+/).filter(Boolean);
+	const filtered = $derived.by(() => {
 		const list = catalog.recipes.filter((r) => {
-			if (terms.length && !terms.every((t) => searchIndex.get(r.id)!.includes(t))) return false;
+			if (!matchesSearch(searchIndex.get(r.id)!, q)) return false;
 			if (gf === 1 && r.gluten === 'contains') return false;
 			if (gf === 2 && r.gluten === 'contains' && !r.gfSwappable) return false;
 			if (cuisine && r.cuisine !== cuisine) return false;
@@ -116,10 +115,6 @@
 				return false;
 			}
 			if (difficulty && r.difficulty !== difficulty) return false;
-			if (onlyPantry) {
-				const m = matches.get(r.id)!;
-				if (m.missing.length > 0) return false;
-			}
 			return true;
 		});
 		const by: Record<Sort, (a: (typeof list)[number], b: (typeof list)[number]) => number> = {
@@ -133,8 +128,20 @@
 			cena: (a, b) => a.costPerServing - b.costPerServing,
 			spajza: (a, b) => matches.get(b.id)!.score - matches.get(a.id)!.score
 		};
-		return list.sort(by[sort]);
+		if (!onlyPantry) return { list: list.sort(by[sort]), closest: 0 };
+		const missingCount = (r: (typeof list)[number]) => matches.get(r.id)!.missing.length;
+		const cookable = list.filter((r) => missingCount(r) === 0);
+		if (cookable.length || !list.length) return { list: cookable.sort(by[sort]), closest: 0 };
+		// Nothing cookable from the pantry alone → the nearest recipes, fewest missing first.
+		const closest = Math.max(2, Math.min(...list.map(missingCount)));
+		return {
+			list: list
+				.filter((r) => missingCount(r) <= closest)
+				.sort((a, b) => missingCount(a) - missingCount(b) || by[sort](a, b)),
+			closest
+		};
 	});
+	const results = $derived(filtered.list);
 
 	const shown = $derived(results.slice(0, limit));
 	$effect(() => {
@@ -242,7 +249,7 @@
 		<h1>Čo dnes uvaríme?</h1>
 		<p class="shortcuts">
 			<a href="/zvysky"><Icon name="jar" size={16} /> Zo zvyškov</a>
-			<a href="/sezona"><Icon name="leaf" size={16} /> Sezónne</a>
+			<a href="/sezona"><Icon name="leaf" size={16} /> Čo je v sezóne</a>
 			<a href="/plan"><Icon name="sparkle" size={16} /> Navrhni mi plán</a>
 		</p>
 	</header>
@@ -288,7 +295,7 @@
 			<fieldset>
 				<legend>Lepok</legend>
 				<div class="chips">
-					{#each ['Všetko', 'Bezlepkové', 'Aj po zámene'] as label, i (label)}
+					{#each ['Všetko', 'Bezlepkové', 'Aj tie, čo sa dajú bez lepku'] as label, i (label)}
 						<button class="chip" aria-pressed={gf === i} onclick={() => (gf = i)}>{label}</button>
 					{/each}
 				</div>
@@ -441,6 +448,14 @@
 
 		<section class="results" aria-live="polite">
 			<p class="count-line muted">{results.length} {pluralRecipes(results.length)}</p>
+			{#if filtered.closest}
+				<p class="closest card">
+					<Icon name="jar" size={18} />
+					Len z toho, čo máš doma, sa nedá uvariť nič. Najbližšie sú tieto – chýba im najviac
+					{filtered.closest}
+					{filtered.closest < 5 ? 'veci' : 'vecí'}.
+				</p>
+			{/if}
 			{#if results.length}
 				<div class="grid">
 					{#each shown as recipe, i (recipe.id)}
@@ -572,6 +587,15 @@
 		font-size: 0.82rem;
 		color: var(--muted);
 		margin: 0;
+	}
+	.closest {
+		display: flex;
+		align-items: flex-start;
+		gap: 8px;
+		padding: 12px 14px;
+		margin: 0 0 14px;
+		background: var(--turmeric-soft);
+		border-color: transparent;
 	}
 	.count-line {
 		margin: 0 0 12px;

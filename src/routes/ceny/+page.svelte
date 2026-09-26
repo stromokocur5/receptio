@@ -3,7 +3,7 @@
 	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
-	import { CATEGORY_LABELS, normalizeSearch } from '$lib/labels';
+	import { CATEGORY_LABELS, matchesSearch, normalizeSearch } from '$lib/labels';
 	import { proteinEnergyShare } from '$lib/nutrition';
 	import {
 		BULK_PACK_GRAMS,
@@ -26,7 +26,7 @@
 		catalog.ingredients
 			.filter((i) => i.id !== 'voda')
 			.filter((i) => !category || i.category === category)
-			.filter((i) => normalizeSearch(i.name).includes(normalizeSearch(search.trim())))
+			.filter((i) => matchesSearch(normalizeSearch(i.name), search))
 			.map((ingredient) => ({
 				ingredient,
 				best: bestPrice(ingredient, catalog.prices, today),

@@ -3,10 +3,15 @@ import type { Ingredient, RecipeLine, RecipeSummary } from './types';
 /** ingredientId → grams at home, or null for "have enough, didn't weigh it". */
 export type Pantry = Record<string, number | null>;
 
-/** Spices and oils rarely get tracked in a pantry, so like staples they never block a match. */
+/**
+ * Spices, oils and staples are bought rarely: the shopping list asks to check them at home
+ * instead of listing them. The pantry match still requires them – only tap water is a given.
+ */
 export function isAssumedAtHome(ingredient: Ingredient): boolean {
 	return ingredient.staple || ingredient.category === 'koreniny' || ingredient.category === 'oleje';
 }
+
+export const TAP_WATER_ID = 'voda';
 
 export interface PantryMatch {
 	recipe: RecipeSummary;
@@ -15,7 +20,32 @@ export interface PantryMatch {
 	missing: Ingredient[];
 	/** Present but not in the quantity the recipe needs. */
 	short: Ingredient[];
+	/** Not at home, but a listed substitute is – cookable, a little different. */
+	swaps: PantrySwap[];
 	score: number;
+}
+
+export interface PantrySwap {
+	need: Ingredient;
+	use: Ingredient;
+}
+
+const GLUTEN_RANK = { free: 0, risk: 1, contains: 2 } as const;
+
+/** A substitute from the pantry that doesn't add gluten the original didn't have. */
+function swapFromPantry(
+	ingredient: Ingredient,
+	groups: Map<string, number>,
+	byId: Map<string, Ingredient>
+): Ingredient | undefined {
+	return ingredient.swapsTo
+		.map((id) => byId.get(id))
+		.find(
+			(s): s is Ingredient =>
+				s !== undefined &&
+				groups.has(s.group) &&
+				GLUTEN_RANK[s.gluten] <= GLUTEN_RANK[ingredient.gluten]
+		);
 }
 
 /** Grams available per ingredient group (in the group's reference form), Infinity when not weighed. */
@@ -41,7 +71,7 @@ export function matchRecipe(
 	const neededByGroup = new Map<string, { ingredient: Ingredient; grams: number }>();
 	for (const line of recipe.lines) {
 		const ingredient = byId.get(line.ingredientId)!;
-		if (isAssumedAtHome(ingredient)) continue;
+		if (ingredient.id === TAP_WATER_ID) continue;
 		const entry = neededByGroup.get(ingredient.group) ?? { ingredient, grams: 0 };
 		entry.grams += line.grams * ingredient.groupFactor;
 		neededByGroup.set(ingredient.group, entry);
@@ -49,16 +79,20 @@ export function matchRecipe(
 
 	const missing: Ingredient[] = [];
 	const short: Ingredient[] = [];
+	const swaps: PantrySwap[] = [];
 	for (const [group, { ingredient, grams }] of neededByGroup) {
 		const available = groups.get(group);
-		if (available === undefined) missing.push(ingredient);
-		else if (available < grams) short.push(ingredient);
+		if (available === undefined) {
+			const use = swapFromPantry(ingredient, groups, byId);
+			if (use) swaps.push({ need: ingredient, use });
+			else missing.push(ingredient);
+		} else if (available < grams) short.push(ingredient);
 	}
 
 	const needed = neededByGroup.size;
 	const have = needed - missing.length;
-	const score = needed === 0 ? 1 : (have - short.length * 0.5) / needed;
-	return { recipe, have, needed, missing, short, score };
+	const score = needed === 0 ? 1 : (have - short.length * 0.5 - swaps.length * 0.25) / needed;
+	return { recipe, have, needed, missing, short, swaps, score };
 }
 
 export function rankByPantry(

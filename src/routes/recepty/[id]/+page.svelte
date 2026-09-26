@@ -20,7 +20,7 @@
 		computedTags,
 		scaleNutrients
 	} from '$lib/nutrition';
-	import { isAssumedAtHome, matchRecipe, pantryByGroup } from '$lib/pantry';
+	import { matchRecipe, pantryByGroup, TAP_WATER_ID } from '$lib/pantry';
 	import { IN_MONTH, recipeSeason } from '$lib/season';
 	import { SITE_ORIGIN } from '$lib/site';
 	import {
@@ -111,7 +111,7 @@
 
 	function isHome(ingredientId: string) {
 		const ingredient = catalog.ingredientsById.get(ingredientId)!;
-		return isAssumedAtHome(ingredient) || groups.has(ingredient.group);
+		return ingredient.id === TAP_WATER_ID || groups.has(ingredient.group);
 	}
 
 	function toggleStep(i: number) {
@@ -337,11 +337,16 @@
 				<p class="pantry-line" data-noprint>
 					<Icon name="jar" size={18} />
 					{#if match.missing.length === 0 && match.short.length === 0}
-						Máš doma všetko potrebné.
+						{match.swaps.length ? 'Uvaríš to z toho, čo máš doma.' : 'Máš doma všetko potrebné.'}
 					{:else}
 						Máš {match.have - match.short.length}/{match.needed}.
 						{#if match.missing.length}Chýba: {match.missing.map((i) => i.name).join(', ')}.{/if}
 						{#if match.short.length}Málo: {match.short.map((i) => i.name).join(', ')}.{/if}
+					{/if}
+					{#if match.swaps.length}
+						Použi, čo máš: {match.swaps
+							.map((s) => `${s.need.name.split(' (')[0]} → ${s.use.name.split(' (')[0]}`)
+							.join(', ')}.
 					{/if}
 				</p>
 			{/if}

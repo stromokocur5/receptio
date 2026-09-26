@@ -3,7 +3,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { CATEGORY_ICONS } from '$lib/ingredient-icons';
-	import { CATEGORY_LABELS, normalizeSearch } from '$lib/labels';
+	import { CATEGORY_LABELS, matchesSearch, normalizeSearch } from '$lib/labels';
 	import { INGREDIENT_CATEGORIES } from '$lib/types';
 
 	const catalog = useCatalog();
@@ -27,7 +27,7 @@
 		const term = normalizeSearch(q.trim());
 		const visible = catalog.ingredients
 			.filter((i) => i.id !== 'voda')
-			.filter((i) => !term || normalizeSearch(i.name).includes(term))
+			.filter((i) => matchesSearch(normalizeSearch(i.name), term))
 			.filter((i) => !onlySeason || i.season.includes(month))
 			.filter((i) => !onlyHomemade || i.homemade)
 			.sort((a, b) => a.name.localeCompare(b.name, 'sk'));

@@ -175,7 +175,7 @@ export function recipeWarnings(
 
 	for (const i of gluten.culprits) {
 		const alt = i.gfAlternative ? byId.get(i.gfAlternative) : undefined;
-		const swap = alt ? ` Bezlepková zámena: ${alt.name}.` : '';
+		const swap = alt ? ` Bez lepku použi: ${alt.name}.` : '';
 		warnings.push(
 			i.gluten === 'contains'
 				? { level: 'danger', text: `Obsahuje lepok: ${i.name}.${swap}` }

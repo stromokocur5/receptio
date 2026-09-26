@@ -35,6 +35,7 @@ function ing(id: string, group = id, extra: Partial<Ingredient> = {}): Ingredien
 		color: '#000000',
 		howto: [],
 		homemade: false,
+		swapsTo: [],
 		byproduct: false,
 		groupFactor: 1,
 		season: [],
@@ -92,17 +93,56 @@ describe('rankByPantry', () => {
 		['sol', 5]
 	]);
 
-	it('matches interchangeable ingredients by group and ignores staples', () => {
-		const [first, second] = rankByPantry([withRice, onlyChickpeas], { 'cicer-suchy': null }, byId);
+	it('matches interchangeable ingredients by group', () => {
+		const [first, second] = rankByPantry(
+			[withRice, onlyChickpeas],
+			{ 'cicer-suchy': null, sol: null },
+			byId
+		);
 		expect(first.recipe.id).toBe('len-cicer');
 		expect(first.missing).toEqual([]);
 		expect(second.missing.map((i) => i.id)).toEqual(['ryza']);
+	});
+
+	it('does not assume salt, oil or spices are at home', () => {
+		const [match] = rankByPantry([onlyChickpeas], { 'cicer-suchy': null }, byId);
+		expect(match.missing.map((i) => i.id)).toEqual(['sol']);
 	});
 
 	it('flags ingredients that are present but insufficient', () => {
 		const [match] = rankByPantry([onlyChickpeas], { 'cicer-suchy': 100 }, byId);
 		expect(match.short.map((i) => i.id)).toEqual(['cicer-sterilizovany']);
 		expect(match.score).toBeLessThan(1);
+	});
+
+	it('uses a listed substitute from the pantry, but never one that adds gluten', () => {
+		const lentils = [
+			ing('sosovica-hneda', 'sosovica-hneda', { swapsTo: ['sosovica-cervena'] }),
+			ing('sosovica-cervena')
+		];
+		const pasta = [
+			ing('cestoviny-bezlepkove', 'cestoviny-bezlepkove', { swapsTo: ['cestoviny'] }),
+			ing('cestoviny', 'cestoviny', { gluten: 'contains' })
+		];
+		const all = new Map([...byId, ...[...lentils, ...pasta].map((i) => [i.id, i] as const)]);
+
+		const [dal] = rankByPantry(
+			[recipe('dal', [['sosovica-hneda', 200]])],
+			{ 'sosovica-cervena': null },
+			all
+		);
+		expect(dal.missing).toEqual([]);
+		expect(dal.swaps.map((s) => [s.need.id, s.use.id])).toEqual([
+			['sosovica-hneda', 'sosovica-cervena']
+		]);
+		expect(dal.score).toBeLessThan(1);
+
+		const [gf] = rankByPantry(
+			[recipe('gf', [['cestoviny-bezlepkove', 200]])],
+			{ cestoviny: null },
+			all
+		);
+		expect(gf.missing.map((i) => i.id)).toEqual(['cestoviny-bezlepkove']);
 	});
 });
 

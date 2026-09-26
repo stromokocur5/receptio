@@ -1,9 +1,7 @@
 import { formatNumber } from './amounts';
 import { bestPrice } from './pricing';
-import { isAssumedAtHome, type Pantry } from './pantry';
+import { isAssumedAtHome, TAP_WATER_ID, type Pantry } from './pantry';
 import type { Ingredient, IngredientCategory, PriceEntry, RecipeSummary } from './types';
-
-const TAP_WATER_ID = 'voda';
 
 /** The order you walk a typical Slovak supermarket: fresh first, chilled, then dry goods. */
 export const AISLE_ORDER: IngredientCategory[] = [

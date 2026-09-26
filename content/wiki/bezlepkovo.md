@@ -14,7 +14,7 @@ Receptio si bezlepkovosť nevymýšľa, **počíta ju zo surovín**. Každá sur
 - **Riziko**: bežne kontaminované alebo závisí od výrobcu (ovos, bujón, kari pasty, kukuričné tortilly). Kontroluj etiketu.
 - **Obsahuje lepok**: pšenica, jačmeň, raž, špalda, seitan, bežná sójová omáčka.
 
-Ak má každá lepková surovina v recepte bezlepkovú náhradu (sójová omáčka → tamari, múka → ryžová múka), recept je označený ako **bezlepkový po zámene**.
+Ak má každá lepková surovina v recepte bezlepkovú náhradu (sójová omáčka → tamari, múka → ryžová múka), recept je označený **Dá sa bez lepku** a má bezlepkovú verziu.
 
 ## Skryté zdroje lepku
 

@@ -14,8 +14,11 @@
 		<Icon name="wheat-off" size={14} stroke={2} /> Bezlepkové*
 	</span>
 {:else if recipe.gfSwappable}
-	<span class="badge sky" title="Obsahuje lepok, ale každá lepková surovina má bezlepkovú náhradu">
-		<Icon name="wheat" size={14} stroke={2} /> Bezlepkové po zámene
+	<span
+		class="badge sky"
+		title="Obsahuje lepok, ale má bezlepkovú verziu – lepkové suroviny stačí vymeniť"
+	>
+		<Icon name="wheat" size={14} stroke={2} /> Dá sa bez lepku
 	</span>
 {:else}
 	<span class="badge tomato" title="Obsahuje lepok">
