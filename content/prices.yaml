@@ -110,7 +110,7 @@ entries:
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/220035691
   - ingredient: zemiaky
     store: tesco
-    product: 'The Grower''s Harvest Zemiaky konzumné 5 kg'
+    product: "The Grower's Harvest Zemiaky konzumné 5 kg"
     pack: 5 kg
     price: 4.65
     date: 2026-09-26
@@ -170,7 +170,7 @@ entries:
     date: 2026-09-26
   - ingredient: cibula
     store: tesco
-    product: 'The Grower''s Harvest Cibuľa žltá 1 kg'
+    product: "The Grower's Harvest Cibuľa žltá 1 kg"
     pack: 1 kg
     price: 0.79
     date: 2026-09-26

@@ -493,6 +493,7 @@
 			<p class="muted tap-hint" data-noprint>
 				Ťukni na krok, keď ho máš hotový, alebo
 				<button class="linkish" onclick={startCooking}>zapni režim varenia</button> s časovačmi.
+				Neznáme slovo? <a href="/wiki/slovnik">Slovník receptov</a>.
 			</p>
 
 			<div class="my-note" data-noprint={!notes.current[base.id] || undefined}>
@@ -530,6 +531,7 @@
 						</p>
 					{/if}
 					{#if base.leftovers}<p>{base.leftovers}</p>{/if}
+					<a class="guide" href="/wiki/mrazenie" data-noprint>Ako skladovať a mraziť →</a>
 				</div>
 			{/if}
 
@@ -883,6 +885,12 @@
 	}
 	.leftovers p {
 		margin: 4px 0 0;
+	}
+	.leftovers .guide {
+		display: inline-block;
+		margin-top: 8px;
+		font-size: 0.88rem;
+		font-weight: 650;
 	}
 	.fav.on {
 		background: var(--turmeric-soft);

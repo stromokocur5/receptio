@@ -394,7 +394,7 @@
 							Zvýši {schedule.extraServings} porc. navyše.
 						{/if}
 						Rozpis počíta s tým, koľko ktoré jedlo vydrží v chladničke a či sa dá zamraziť. Poradie zmeníš
-						tlačidlom „Skôr“.
+						tlačidlom „Skôr“. <a href="/wiki/meal-prep">Ako variť na viac dní</a>
 					</p>
 				</section>
 

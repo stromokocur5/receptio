@@ -20,7 +20,7 @@ order: 23
 1. **Namoč** v trojnásobku studenej vody cez noc. Zväčšia svoj objem 2–3×.
 2. **Sceď a prepláchni.** Namáčaciu vodu nepoužívaj, znížiš tým nafukovanie.
 3. **Zalej čerstvou vodou** (5 cm nad strukoviny) a var na miernom ohni. Penu z povrchu zober lyžicou.
-4. **Soľ pridaj na konci** alebo v posledných 15 minútach.
+4. **Soľ** môžeš pridať kedykoľvek, aj do vody na namáčanie – strukoviny budú ochutené rovnomerne a nestvrdnú. **Kyselinu** (paradajky, ocot, citrón) pridávaj až keď sú mäkké, tá varenie spomalí.
 5. **Hotové sú**, keď sa dajú ľahko roztlačiť medzi prstami.
 
 ## Dôležité
