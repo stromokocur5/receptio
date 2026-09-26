@@ -15,7 +15,7 @@
 		emptyNutrients,
 		scaleNutrients
 	} from '$lib/nutrition';
-	import { basketByStore } from '$lib/pricing';
+	import { compareStores, type StorePlan } from '$lib/pricing';
 	import { mealSchedule } from '$lib/schedule';
 	import { encodeSharedPlan } from '$lib/share';
 	import { approxPieces, buildShoppingList, type ShoppingItem } from '$lib/shopping';
@@ -76,7 +76,12 @@
 		}
 		const byStore = new Map<string, ShoppingItem[]>();
 		for (const item of allItems) {
-			const key = item.storeId ?? '';
+			// Follow the recommended shops; anything they lack goes where it's cheapest.
+			const key =
+				comparison.recommended?.assignment.get(item.ingredient.id) ??
+				item.shelf?.storeId ??
+				item.storeId ??
+				'';
 			byStore.set(key, [...(byStore.get(key) ?? []), item]);
 		}
 		return [...byStore]
@@ -91,14 +96,16 @@
 		allItems.filter((i) => checkedItems.current[i.ingredient.id]).length
 	);
 
-	const baskets = $derived(
-		basketByStore(
+	const comparison = $derived(
+		compareStores(
 			allItems.map((i) => ({ ingredient: i.ingredient, grams: i.buyGrams })),
 			catalog.stores,
 			catalog.prices,
 			today
 		)
 	);
+	const storeNames = (plan: StorePlan) =>
+		plan.storeIds.map((id) => catalog.storesById.get(id)?.name ?? id).join(' + ');
 
 	const perDay = $derived.by(() => {
 		const total = emptyNutrients();
@@ -558,20 +565,66 @@
 					zvyšok ti ostane.
 				</p>
 
-				{#if baskets.length}
+				{#if comparison.recommended}
+					{@const rec = comparison.recommended}
+					{@const single = comparison.single!}
 					<div class="stores">
 						<h3><Icon name="store" size={18} /> Kde nakúpiť</h3>
+						<p class="rec">
+							{#if rec.storeIds.length > 1}
+								Oplatí sa ísť do dvoch obchodov: <strong>{storeNames(rec)}</strong> za
+								<strong>{formatEur(rec.total)}</strong>, ušetríš {formatEur(
+									single.total - rec.total
+								)}
+								oproti {storeNames(single)}.
+							{:else if comparison.pair}
+								Všetko kúp v <strong>{storeNames(rec)}</strong> za
+								<strong>{formatEur(rec.total)}</strong>. V dvoch obchodoch ({storeNames(
+									comparison.pair
+								)}) by si ušetril len {formatEur(single.total - comparison.pair.total)}.
+							{:else}
+								Všetko kúp v <strong>{storeNames(rec)}</strong> za
+								<strong>{formatEur(rec.total)}</strong>.
+							{/if}
+							{#if rec.missing}
+								{rec.missing === 1 ? '1 vec' : `${rec.missing} veci`} tam nemajú, dokúp inde.
+							{/if}
+						</p>
 						<ul>
-							{#each baskets.slice(0, 4) as b, i (b.store.id)}
-								<li class:best={i === 0}>
-									<span class="sdot" style:background={b.store.color}></span>
-									{b.store.name}
-									<span class="muted small">{b.covered}/{b.items} cien</span>
-									<strong>{formatEur(b.shelfTotal)}</strong>
+							{#each comparison.singles.slice(0, 4) as plan (plan.storeIds[0])}
+								{@const store = catalog.storesById.get(plan.storeIds[0])}
+								<li class:best={rec.storeIds.length === 1 && plan === single}>
+									<span class="sdot" style:background={store?.color}></span>
+									{store?.name}
+									<span class="muted small"
+										>{plan.missing ? `${plan.missing} nemajú` : 'má všetko'}</span
+									>
+									<strong>{formatEur(plan.total)}</strong>
 								</li>
 							{/each}
+							{#if comparison.pair}
+								<li class:best={rec === comparison.pair}>
+									<span class="sdot two" aria-hidden="true"></span>
+									{storeNames(comparison.pair)}
+									<span class="muted small">2 obchody</span>
+									<strong>{formatEur(comparison.pair.total)}</strong>
+								</li>
+							{/if}
+							{#if comparison.anywhere && comparison.anywhere.storeIds.length > 2 && comparison.anywhere.total < (comparison.pair?.total ?? Infinity) - 0.01}
+								<li>
+									<span class="sdot many" aria-hidden="true"></span>
+									Každá vec tam, kde je najlacnejšia
+									<span class="muted small">{comparison.anywhere.storeIds.length} obchody</span>
+									<strong>{formatEur(comparison.anywhere.total)}</strong>
+								</li>
+							{/if}
 						</ul>
-						<p class="muted small">Chýbajúce ceny sú doplnené odhadom.</p>
+						<p class="muted small">
+							Celé balenia, len veci, ktorých cenu poznáme{comparison.unpriced
+								? ` (${comparison.unpriced} ďalších má len odhad)`
+								: ''}. Čo obchod nemá, rátame za najvyššiu známu cenu. Rozpis podľa obchodov je
+							vyššie v „Kde je najlacnejšie“.
+						</p>
 					</div>
 				{:else}
 					<p class="muted small">
@@ -975,6 +1028,22 @@
 	}
 	.stores li.best {
 		background: var(--leaf-soft);
+	}
+	.rec {
+		margin: 4px 0 10px;
+		font-size: 0.92rem;
+	}
+	.sdot.two {
+		background: linear-gradient(135deg, var(--leaf) 50%, var(--sky) 50%);
+	}
+	.sdot.many {
+		background: conic-gradient(
+			var(--leaf),
+			var(--sky),
+			var(--turmeric),
+			var(--tomato),
+			var(--leaf)
+		);
 	}
 	.sdot {
 		width: 12px;

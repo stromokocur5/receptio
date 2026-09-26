@@ -229,6 +229,8 @@ export interface PriceEntry {
 	ingredientId: string;
 	storeId: string;
 	product: string;
+	/** Pack size as sold, e.g. "1 l" or "500 g". */
+	pack: string;
 	packGrams: number;
 	price: number;
 	/** ISO date the price was seen. */

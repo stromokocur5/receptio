@@ -401,6 +401,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			ingredientId: e.ingredient,
 			storeId: e.store,
 			product: e.product,
+			pack: e.pack,
 			packGrams: toGrams(pack.amount, pack.unit, ingredient),
 			price: e.price,
 			date: e.date,

@@ -9,7 +9,7 @@
 	import { CATEGORY_ICONS } from '$lib/ingredient-icons';
 	import { CATEGORY_LABELS, pluralRecipes } from '$lib/labels';
 	import { ALLERGEN_LABELS, DAILY_REFERENCE } from '$lib/nutrition';
-	import { bestPrice } from '$lib/pricing';
+	import { bestPrice, isUsable, pricePerKg } from '$lib/pricing';
 	import { MONTH_NAMES } from '$lib/season';
 	import { pantry, removePantryItem, setPantryItem, ui } from '$lib/state.svelte';
 
@@ -35,7 +35,15 @@
 			.map((slug) => catalog.wiki.find((w) => w.slug === slug))
 			.filter((w) => w !== undefined)
 	);
-	const price = $derived(bestPrice(ingredient, catalog.prices, new Date(catalog.builtAt)));
+	const today = $derived(new Date(catalog.builtAt));
+	const price = $derived(bestPrice(ingredient, catalog.prices, today));
+	/** Every current price, cheapest per kg first. */
+	const storePrices = $derived(
+		catalog.prices
+			.filter((p) => p.ingredientId === ingredient.id && isUsable(p, today))
+			.sort((a, b) => pricePerKg(a) - pricePerKg(b))
+	);
+	const dayMonth = new Intl.DateTimeFormat('sk', { day: 'numeric', month: 'numeric' });
 	const atHome = $derived(ui.loaded && ingredient.id in pantry.current);
 
 	function toggleHome() {
@@ -159,6 +167,35 @@
 							</li>
 						{/each}
 					</ul>
+				</section>
+			{/if}
+
+			{#if storePrices.length}
+				<section class="card box">
+					<h2>Ceny v obchodoch</h2>
+					<ul class="prices">
+						{#each storePrices as p, i (i)}
+							{@const store = catalog.storesById.get(p.storeId)}
+							<li>
+								<span class="sdot" style:background={store?.color}></span>
+								<span class="pname">
+									<strong>{store?.name ?? p.storeId}</strong>
+									{#if p.saleUntil}<span class="badge tomato"
+											>akcia do {dayMonth.format(new Date(p.saleUntil))}</span
+										>{/if}
+									<small>{p.product} · {p.pack}</small>
+								</span>
+								<span class="pval">
+									{formatEur(p.price)}
+									<small>{formatEur(pricePerKg(p))} / kg</small>
+								</span>
+							</li>
+						{/each}
+					</ul>
+					<p class="muted small">
+						Ceny z {dayMonth.format(new Date(storePrices[0].date))}, väčšinou z
+						<a href="/ceny">cenyslovensko.sk</a>. Pri zelenine na váhu je cena za kg.
+					</p>
 				</section>
 			{/if}
 
@@ -352,6 +389,39 @@
 	}
 	.swaps li {
 		margin: 5px 0;
+	}
+	.prices {
+		list-style: none;
+		margin: 0 0 10px;
+		padding: 0;
+	}
+	.prices li {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		gap: 10px;
+		align-items: start;
+		padding: 8px 0;
+		border-bottom: 1px dashed var(--line);
+	}
+	.sdot {
+		width: 10px;
+		height: 10px;
+		margin-top: 6px;
+		border-radius: 50%;
+	}
+	.pname small,
+	.pval small {
+		display: block;
+		color: var(--muted);
+		font-size: 0.8rem;
+	}
+	.pname .badge {
+		margin-left: 4px;
+	}
+	.pval {
+		text-align: right;
+		font-weight: 700;
+		white-space: nowrap;
 	}
 	.months {
 		list-style: none;

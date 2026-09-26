@@ -1,12 +1,13 @@
 /**
  * Pulls today's prices from cenyslovensko.sk (the Ministry of Finance price comparison, fed
  * daily by the chains) for the ingredients mapped in content/cenyslovensko.yaml, and writes
- * content/prices-cenyslovensko.yaml. Run with `pnpm prices:sync`.
+ * content/prices-cenyslovensko.yaml, plus today's rows in content/price-history.csv. Run with
+ * `pnpm prices:sync`.
  *
  * Per chain and ingredient it keeps the cheapest product per kg: the regular price most
  * branches charge, plus the promo price when most branches run the same promo.
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { parse, stringify } from 'yaml';
 
 const API = 'https://api.cenyslovensko.sk/api';
@@ -197,13 +198,37 @@ for (const mapping of mappings) {
 	entries.push(...found);
 }
 
+const PRICES_FILE = 'content/prices-cenyslovensko.yaml';
+const HISTORY_FILE = 'content/price-history.csv';
+
+// A sudden drop in results means the API changed – keep yesterday's prices instead.
+const previous = existsSync(PRICES_FILE)
+	? ((parse(readFileSync(PRICES_FILE, 'utf8')) as { entries?: Entry[] }).entries?.length ?? 0)
+	: 0;
+if (entries.length < previous / 2) {
+	throw new Error(`Len ${entries.length} cien oproti ${previous} minule – nič nezapisujem.`);
+}
+
 const header = [
 	'# GENEROVANÉ – neupravuj ručne. Zdroj: cenyslovensko.sk (Ministerstvo financií SR),',
 	'# ceny posielajú reťazce denne. Obnov cez `pnpm prices:sync`, mapovanie je v cenyslovensko.yaml.',
 	''
 ].join('\n');
-writeFileSync(
-	'content/prices-cenyslovensko.yaml',
-	header + stringify({ entries }, { lineWidth: 0 })
+writeFileSync(PRICES_FILE, header + stringify({ entries }, { lineWidth: 0 }));
+
+const HISTORY_HEADER = 'date,ingredient,store,price,pack,sale_until,product';
+const csvField = (value: string) =>
+	/[",\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
+// Re-running on the same day replaces that day's rows.
+const history = existsSync(HISTORY_FILE)
+	? readFileSync(HISTORY_FILE, 'utf8')
+			.split('\n')
+			.filter((line) => line && line !== HISTORY_HEADER && !line.startsWith(`${today},`))
+	: [];
+const todayRows = entries.map((e) =>
+	[e.date, e.ingredient, e.store, e.price, e.pack, e.sale_until ?? '', e.product]
+		.map((v) => csvField(String(v)))
+		.join(',')
 );
+writeFileSync(HISTORY_FILE, [HISTORY_HEADER, ...history, ...todayRows].join('\n') + '\n');
 console.log(`Zapísaných ${entries.length} cien.`);

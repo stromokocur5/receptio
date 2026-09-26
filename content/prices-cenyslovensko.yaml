@@ -73,7 +73,7 @@ entries:
     price: 2.29
   - ingredient: cibula
     store: terno
-    product: Cibuľa žltá voľná
+    product: Cibuľa žltá sieť 1kg
     pack: 1 kg
     date: 2026-09-26
     price: 0.99
@@ -139,7 +139,7 @@ entries:
     price: 1.39
   - ingredient: mrkva
     store: billa
-    product: CHUTE SLOVENSKA Karotka skorá praná
+    product: Karotka skorá praná
     pack: 1 kg
     date: 2026-09-26
     price: 1.29
@@ -177,14 +177,14 @@ entries:
     price: 1.39
   - ingredient: mrkva
     store: tesco
-    product: Mrkva voľná
+    product: EX Mrkva voľná
     pack: 1 kg
     date: 2026-09-26
-    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002006558378
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121135549
     price: 1.29
   - ingredient: petrzlen-koren
     store: billa
-    product: CHUTE SLOVENSKA Petržlen praný
+    product: Petržlen praný
     pack: 1 kg
     date: 2026-09-26
     price: 2.99
@@ -215,10 +215,10 @@ entries:
     price: 2.99
   - ingredient: petrzlen-koren
     store: tesco
-    product: EX Petrzlen volny
+    product: Petrzlen volny
     pack: 1 kg
     date: 2026-09-26
-    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121135296
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120297387
     price: 2.99
   - ingredient: citron
     store: billa
@@ -713,7 +713,7 @@ entries:
     sale_until: 2026-12-31
   - ingredient: chlieb
     store: kaufland
-    product: Chlieb konzumný 1000 g R1, PODVIHORLATSKÉ PEKÁRNE A CUKRÁRNE a.s.
+    product: Chlieb konzumný 1000 g, DOBROTA Orava, s.r.o.
     pack: 1 kg
     date: 2026-09-26
     price: 1.59
@@ -758,13 +758,13 @@ entries:
     sale_until: 2027-01-03
   - ingredient: chlieb-bezlepkovy
     store: kaufland
-    product: K free Bezgluténový kukurično-ryžový chlieb svetlý krájaný 350 g
+    product: K free Bezgluténový kukurično-ryžový chlieb semienkový krájaný 350 g
     pack: 350 g
     date: 2026-09-26
     price: 2.49
   - ingredient: chlieb-bezlepkovy
     store: lidl
-    product: Tastino Bezgluténový chlieb krájaný, viaczrnný
+    product: Tastino Bezgluténový chlieb krájaný, biely
     pack: 250 g
     date: 2026-09-26
     url: https://www.lidl.sk

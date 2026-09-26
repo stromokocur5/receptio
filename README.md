@@ -109,14 +109,9 @@ odhad z `ingredients.yaml` a appka ho označí.
 Základné potraviny sa sťahujú z [cenyslovensko.sk](https://www.cenyslovensko.sk/) (porovnávač MF SR, reťazce
 tam ceny posielajú denne zo zákona): `pnpm prices:sync` prepíše `content/prices-cenyslovensko.yaml` podľa
 mapovania v `content/cenyslovensko.yaml`. Porovnávač sleduje len ~60 druhov potravín, ostatné ceny sú ručné.
-Obnovuje sa samo každé ráno: Worker `receptio-prices-cron` (`cron/`) o 5:30 UTC zavolá Deploy Hook,
-Workers Builds spustí `pnpm build:ci` a ten pred buildom stiahne dnešné ceny. Keď porovnávač nejde, build
-použije posledné ceny z gitu. Nastavenie:
-
-1. Worker **receptio** → Settings → Builds → Build command: `pnpm build:ci`.
-2. Tamže **Deploy Hooks** → nový hook pre vetvu `main`, skopíruj URL.
-3. `pnpm exec wrangler deploy -c cron/wrangler.jsonc` a
-   `pnpm exec wrangler secret put DEPLOY_HOOK_URL -c cron/wrangler.jsonc` (vlož URL hooku).
+Obnovuje sa samo každé ráno cez GitHub Action `.github/workflows/prices.yml` (5:30 UTC, dá sa spustiť
+aj ručne v záložke Actions): stiahne ceny, spustí testy a build a pri zmene commitne a pushne, čo spustí
+nasadenie. Každý beh pridá riadky do `content/price-history.csv` (história cien na neskoršie grafy).
 
 Ručne: `pnpm prices:sync` a commitni `content/prices-cenyslovensko.yaml`.
 

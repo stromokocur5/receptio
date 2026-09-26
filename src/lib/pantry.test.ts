@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { consumeFromPantry, rankByLeftovers, rankByPantry } from './pantry';
 import { buildShoppingList } from './shopping';
-import { basketByStore, shelfCost } from './pricing';
+import { compareStores, shelfCost } from './pricing';
 import type { Ingredient, PriceEntry, RecipeSummary } from './types';
 
 const zero = {
@@ -192,6 +192,7 @@ describe('buildShoppingList', () => {
 				ingredientId: 'ryza',
 				storeId: 'lidl',
 				product: 'Ryža',
+				pack: '1 kg',
 				packGrams: 1000,
 				price: 1,
 				date: '2026-09-20'
@@ -211,29 +212,18 @@ describe('buildShoppingList', () => {
 	});
 });
 
-describe('basketByStore', () => {
+describe('shelfCost', () => {
 	const today = new Date('2026-09-26');
-	const stores = [
-		{ id: 'a', name: 'A', color: '#000000' },
-		{ id: 'b', name: 'B', color: '#000000' }
-	];
 	const entry = (storeId: string, price: number, date = '2026-09-20'): PriceEntry => ({
 		ingredientId: 'ryza',
 		storeId,
 		product: 'x',
+		pack: '1 kg',
 		packGrams: 1000,
 		price,
 		date
 	});
 
-	it('prefers the cheaper store and ignores stale prices', () => {
-		const items = [{ ingredient: byId.get('ryza')!, grams: 1000 }];
-		const baskets = basketByStore(items, stores, [entry('a', 3), entry('b', 2)], today);
-		expect(baskets.map((b) => b.store.id)).toEqual(['b', 'a']);
-
-		const stale = basketByStore(items, stores, [entry('a', 3), entry('b', 2, '2026-01-01')], today);
-		expect(stale.map((b) => b.store.id)).toEqual(['a']);
-	});
 	it('prices whole packs, picking the pack size that is cheapest for the amount', () => {
 		const ryza = byId.get('ryza')!;
 		const small = { ...entry('a', 1), packGrams: 500 };
@@ -246,10 +236,62 @@ describe('basketByStore', () => {
 		const carrot = { ...ryza, id: 'mrkva', category: 'zelenina' as const };
 		const loose = { ...entry('a', 1.2), ingredientId: 'mrkva' };
 		expect(shelfCost(carrot, 250, [loose], today)?.cost).toBeCloseTo(0.3);
+	});
 
-		const [basket] = basketByStore([{ ingredient: ryza, grams: 200 }], stores, [small], today);
-		expect(basket.total).toBeCloseTo(0.4);
-		expect(basket.shelfTotal).toBe(1);
+	it('ignores stale prices', () => {
+		expect(shelfCost(byId.get('ryza')!, 200, [entry('a', 1, '2026-01-01')], today)).toBeNull();
+	});
+});
+
+describe('compareStores', () => {
+	const today = new Date('2026-09-26');
+	const stores = ['a', 'b', 'c'].map((id) => ({ id, name: id, color: '#000000' }));
+	const ryza = byId.get('ryza')!;
+	const cicer = byId.get('cicer-suchy')!;
+	const price = (ingredientId: string, storeId: string, value: number): PriceEntry => ({
+		ingredientId,
+		storeId,
+		product: 'x',
+		pack: '1 kg',
+		packGrams: 1000,
+		price: value,
+		date: '2026-09-20'
+	});
+	const items = [
+		{ ingredient: ryza, grams: 500 },
+		{ ingredient: cicer, grams: 500 }
+	];
+
+	it('prefers a shop that has everything and stays there when a second saves little', () => {
+		const prices = [price('ryza', 'a', 2), price('cicer-suchy', 'a', 3), price('ryza', 'b', 1.5)];
+		const result = compareStores(items, stores, prices, today);
+		expect(result.single?.storeIds).toEqual(['a']);
+		expect(result.single?.total).toBe(5);
+		expect(result.pair?.total).toBe(4.5);
+		expect(result.recommended?.storeIds).toEqual(['a']);
+	});
+
+	it('splits the shopping when it pays off', () => {
+		const prices = [price('ryza', 'a', 5), price('cicer-suchy', 'a', 3), price('ryza', 'b', 1)];
+		const result = compareStores(
+			[...items, { ingredient: byId.get('sol')!, grams: 5 }],
+			stores,
+			prices,
+			today
+		);
+		expect(result.single?.storeIds).toEqual(['a']);
+		expect(result.recommended?.storeIds).toEqual(['a', 'b']);
+		expect(result.recommended?.total).toBe(4);
+		expect(result.recommended?.assignment.get('ryza')).toBe('b');
+		expect(result.unpriced).toBe(1);
+		expect(result.anywhere?.total).toBe(4);
+	});
+
+	it('only compares the given shops', () => {
+		const prices = [price('ryza', 'a', 2), price('ryza', 'b', 1), price('cicer-suchy', 'a', 3)];
+		const result = compareStores(items, [stores[1], stores[2]], prices, today);
+		expect(result.single).toMatchObject({ storeIds: ['b'], missing: 0, total: 1 });
+		expect(result.unpriced).toBe(1);
 	});
 });
 
