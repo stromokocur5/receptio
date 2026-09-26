@@ -58,6 +58,7 @@
 
 	const bulk = $derived(catalog.prices.filter((p) => p.packGrams >= BULK_PACK_GRAMS));
 	const realCount = $derived(catalog.prices.length);
+	const storesWithPrices = $derived(new Set(catalog.prices.map((p) => p.storeId)).size);
 </script>
 
 <Seo title="Ceny" description="Ceny surovín v slovenských obchodoch prepočítané na kilogram." />
@@ -73,8 +74,14 @@
 		</p>
 		<p class="muted small">
 			{realCount
-				? `${realCount} cien z ${catalog.stores.length} obchodov.`
+				? `${realCount} cien z ${storesWithPrices} obchodov.`
 				: 'Reálne ceny z obchodov sa zatiaľ zbierajú, všetko nižšie je hrubý odhad.'}
+		</p>
+		<p class="muted small">
+			Ceny základných potravín (zelenina, múka, cestoviny, vločky, sójový nápoj…) z Billy, Lidla,
+			Kauflandu, Tesca, Terna a Freshu preberáme z
+			<a href="https://www.cenyslovensko.sk/" rel="noopener">cenyslovensko.sk</a> – porovnávača Ministerstva
+			financií, kam ich reťazce posielajú každý deň. Ostatné ceny zbierame ručne.
 		</p>
 	</header>
 

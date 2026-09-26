@@ -25,6 +25,8 @@ stores:
   - { id: tesco, name: Tesco, color: '#00539f' }
   - { id: billa, name: Billa, color: '#ffd300' }
   - { id: coop-jednota, name: COOP Jednota, color: '#d6001c' }
+  - { id: terno, name: Terno, color: '#ff6600' }
+  - { id: fresh, name: Fresh, color: '#e4002b' }
   - { id: dm, name: dm, color: '#002878' }
   - { id: gymbeam, name: GymBeam, color: '#ff5a00' }
   - { id: aziske-potraviny, name: Ázijské potraviny, color: '#b8321f' }

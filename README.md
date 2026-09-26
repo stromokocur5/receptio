@@ -106,6 +106,11 @@ Nová surovina patrí do `content/ingredients.yaml` (hodnoty na 100 g, ideálne 
 bežná cena po 60 dňoch zastará, akciová platí do `sale_until`. Kým pre surovinu nie je reálna cena, použije sa
 odhad z `ingredients.yaml` a appka ho označí.
 
+Základné potraviny sa sťahujú z [cenyslovensko.sk](https://www.cenyslovensko.sk/) (porovnávač MF SR, reťazce
+tam ceny posielajú denne zo zákona): `pnpm prices:sync` prepíše `content/prices-cenyslovensko.yaml` podľa
+mapovania v `content/cenyslovensko.yaml`. Porovnávač sleduje len ~60 druhov potravín, ostatné ceny sú ručné.
+Obnovuj aspoň raz za mesiac, inak ceny po 60 dňoch zastarajú.
+
 ## Návrhy receptov
 
 Formulár `/navrhni` ukladá do D1 tabuľky `suggestions`. Nič sa nezverejní samo – prečítaj a prepíš do YAML:

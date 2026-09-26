@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { consumeFromPantry, rankByLeftovers, rankByPantry } from './pantry';
 import { buildShoppingList } from './shopping';
-import { basketByStore } from './pricing';
+import { basketByStore, shelfCost } from './pricing';
 import type { Ingredient, PriceEntry, RecipeSummary } from './types';
 
 const zero = {
@@ -233,6 +233,23 @@ describe('basketByStore', () => {
 
 		const stale = basketByStore(items, stores, [entry('a', 3), entry('b', 2, '2026-01-01')], today);
 		expect(stale.map((b) => b.store.id)).toEqual(['a']);
+	});
+	it('prices whole packs, picking the pack size that is cheapest for the amount', () => {
+		const ryza = byId.get('ryza')!;
+		const small = { ...entry('a', 1), packGrams: 500 };
+		const sack = { ...entry('a', 6), packGrams: 5000 };
+		expect(shelfCost(ryza, 200, [small, sack], today)).toMatchObject({ packs: 1, cost: 1 });
+		expect(shelfCost(ryza, 1100, [small, sack], today)).toMatchObject({ packs: 3, cost: 3 });
+		expect(shelfCost(ryza, 520, [small], today)).toMatchObject({ packs: 1 });
+		expect(shelfCost(ryza, 200, [], today)).toBeNull();
+
+		const carrot = { ...ryza, id: 'mrkva', category: 'zelenina' as const };
+		const loose = { ...entry('a', 1.2), ingredientId: 'mrkva' };
+		expect(shelfCost(carrot, 250, [loose], today)?.cost).toBeCloseTo(0.3);
+
+		const [basket] = basketByStore([{ ingredient: ryza, grams: 200 }], stores, [small], today);
+		expect(basket.total).toBeCloseTo(0.4);
+		expect(basket.shelfTotal).toBe(1);
 	});
 });
 

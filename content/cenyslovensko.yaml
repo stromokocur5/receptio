@@ -1,0 +1,52 @@
+# Ktoré produkty z cenyslovensko.sk (štátny porovnávač cien, MF SR) patria ku ktorej surovine.
+# `pnpm prices:sync` podľa toho stiahne dnešné ceny do content/prices-cenyslovensko.yaml.
+#
+# types: typy produktov z porovnávača (id z /api/product-category/product-menu/hierarchy)
+# include / exclude: regulárny výraz na názov produktu (malé písmená, bez diakritiky)
+#
+# Porovnávač sleduje len ~60 druhov základných potravín, zvyšok surovín ostáva na ručných
+# cenách v prices.yaml alebo na odhade.
+
+- { ingredient: zemiaky, types: [ai] }
+- { ingredient: cibula, types: [ax] }
+- { ingredient: cibula-cervena, types: [az] }
+- { ingredient: mrkva, types: [bb, bc] }
+- { ingredient: petrzlen-koren, types: [bf, bg] }
+- { ingredient: citron, types: [bi] }
+- { ingredient: banan, types: [bj] }
+- { ingredient: jablko, types: [ag, ah] }
+- { ingredient: hladka-muka, types: [g] }
+- { ingredient: cukor, types: [aj] }
+- { ingredient: sosovica-hneda, types: [al] }
+- { ingredient: ovsene-vlocky, types: [bv, bw] }
+# Pod bezlepkovými sú zaradené aj lepkové výrobky, preto len s bezlepkovým označením v názve.
+- {
+    ingredient: ovsene-vlocky-bezlepkove,
+    types: [by],
+    include: 'bezlep|bezglut|gluten ?free|bez lepku|free from|tff|k ?free|sam mills'
+  }
+# Len bezvaječné – vaječné cestoviny nie sú vegánske.
+- { ingredient: cestoviny, types: [ap, as, av] }
+- {
+    ingredient: cestoviny-bezlepkove,
+    types: [aq, at, aw],
+    include: 'bezlep|bezglut|gluten ?free|bez lepku|free from|tff|k ?free|sam mills'
+  }
+- { ingredient: olej, types: [bl] }
+- { ingredient: chlieb, types: [a] }
+- {
+    ingredient: chlieb-bezlepkovy,
+    types: [b],
+    include: 'bezlep|bezglut|gluten ?free|bez lepku|free from|tff|k ?free|sam mills'
+  }
+- ingredient: sojove-mlieko
+  types: [cd]
+  include: 'soj'
+  exclude: 'jahod|van|ban|coko|cok|kakao|karamel|barista|kav'
+- ingredient: sojovy-jogurt
+  types: [bo]
+  include: 'soj'
+  exclude: 'jahod|van|ban|cok|broskyn|malin|ovoc'
+- ingredient: rastlinna-smotana
+  types: [br]
+  include: 'na varenie'

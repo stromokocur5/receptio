@@ -14,7 +14,8 @@
 		"format": "prettier --write .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
-		"gen": "wrangler types"
+		"gen": "wrangler types",
+		"prices:sync": "node scripts/sync-prices.ts"
 	},
 	"devDependencies": {
 		"@resvg/resvg-js": "^2.6.2",

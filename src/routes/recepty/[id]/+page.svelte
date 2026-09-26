@@ -20,7 +20,8 @@
 		computedTags,
 		scaleNutrients
 	} from '$lib/nutrition';
-	import { matchRecipe, pantryByGroup, TAP_WATER_ID } from '$lib/pantry';
+	import { isAssumedAtHome, matchRecipe, pantryByGroup, TAP_WATER_ID } from '$lib/pantry';
+	import { bestPrice, shelfCost } from '$lib/pricing';
 	import { IN_MONTH, recipeSeason } from '$lib/season';
 	import { SITE_ORIGIN } from '$lib/site';
 	import {
@@ -68,6 +69,26 @@
 		servings = recipe.servings;
 	});
 	const factor = $derived(servings / recipe.servings);
+
+	/**
+	 * Buying everything for the recipe from scratch, in whole packs. Spices and oils are left out
+	 * like on the shopping list – a jar lasts for many recipes.
+	 */
+	const shelfTotal = $derived.by(() => {
+		const today = new Date(catalog.builtAt);
+		const grams = new Map<string, number>();
+		for (const line of recipe.lines) {
+			grams.set(line.ingredientId, (grams.get(line.ingredientId) ?? 0) + line.grams * factor);
+		}
+		let total = 0;
+		for (const [id, g] of grams) {
+			const ingredient = catalog.ingredientsById.get(id)!;
+			if (ingredient.byproduct || isAssumedAtHome(ingredient)) continue;
+			const used = (bestPrice(ingredient, catalog.prices, today).perKg * g) / 1000;
+			total += shelfCost(ingredient, g, catalog.prices, today)?.cost ?? used;
+		}
+		return total;
+	});
 
 	let doneSteps = $state<number[]>([]);
 	$effect.pre(() => {
@@ -195,6 +216,17 @@
 					<dd>
 						{formatEur(recipe.costPerServing)}
 						{#if recipe.costIsEstimate}<small title="Časť cien je odhad">odhad</small>{/if}
+					</dd>
+				</div>
+				<div>
+					<dt><Icon name="basket" size={18} /> Celý recept ({servings} porc.)</dt>
+					<dd>
+						{formatEur(recipe.costPerServing * servings)}
+						<small
+							class="shelf"
+							title="Keby si kupoval všetko od nuly v celých baleniach, bez korenia a oleja – zvyšok balení ti ostane"
+							>v obchode {formatEur(shelfTotal)}</small
+						>
 					</dd>
 				</div>
 				{#if recipe.showNutrition}
@@ -636,6 +668,9 @@
 {/if}
 
 <style>
+	.shelf {
+		display: block;
+	}
 	.page {
 		padding-top: 18px;
 		overflow-x: clip;

@@ -1,4 +1,4 @@
-import type { Ingredient, PriceEntry, Store } from './types';
+import type { Ingredient, IngredientCategory, PriceEntry, Store } from './types';
 
 export const STALE_AFTER_DAYS = 60;
 export const BULK_PACK_GRAMS = 2000;
@@ -53,9 +53,53 @@ export function bestPrice(
 	return { perKg: pricePerKg(cheapest), storeId: cheapest.storeId, isEstimate: false };
 }
 
+const LOOSE_CATEGORIES: ReadonlySet<IngredientCategory> = new Set(['zelenina', 'ovocie']);
+
+/** What you actually pay at the till: whole packs, the cheapest way to cover `grams`. */
+export interface ShelfCost {
+	storeId: string;
+	product: string;
+	packGrams: number;
+	/** Whole packs; a fraction for loose produce sold by weight. */
+	packs: number;
+	cost: number;
+}
+
+/**
+ * Cheapest whole-pack purchase covering `grams` (a 500 g bag beats a 5 kg sack for 200 g),
+ * or null when no real price is known – estimates have no pack size.
+ */
+export function shelfCost(
+	ingredient: Ingredient,
+	grams: number,
+	prices: PriceEntry[],
+	today: Date,
+	storeId?: string
+): ShelfCost | null {
+	if (grams <= 0) return null;
+	let best: ShelfCost | null = null;
+	for (const p of prices) {
+		if (p.ingredientId !== ingredient.id || !isUsable(p, today)) continue;
+		if (storeId !== undefined && p.storeId !== storeId) continue;
+		// Loose produce is priced per kg and weighed at the till – you pay for what you take.
+		const byWeight = LOOSE_CATEGORIES.has(ingredient.category) && p.packGrams === 1000;
+		// A few grams over a pack (rounded recipe amounts) shouldn't mean buying a second one.
+		const packs = byWeight
+			? grams / p.packGrams
+			: Math.max(1, Math.ceil(grams / p.packGrams - 0.05));
+		const cost = packs * p.price;
+		if (!best || cost < best.cost) {
+			best = { storeId: p.storeId, product: p.product, packGrams: p.packGrams, packs, cost };
+		}
+	}
+	return best;
+}
+
 export interface StoreBasket {
 	store: Store;
 	total: number;
+	/** Paid at the till for whole packs (estimates where the store has no price). */
+	shelfTotal: number;
 	/** How many of the items have a real price in this store (rest uses estimates). */
 	covered: number;
 	items: number;
@@ -71,13 +115,16 @@ export function basketByStore(
 	return stores
 		.map((store) => {
 			let total = 0;
+			let shelfTotal = 0;
 			let covered = 0;
 			for (const { ingredient, grams } of items) {
 				const price = bestPrice(ingredient, prices, today, store.id);
-				total += (price.perKg * grams) / 1000;
+				const used = (price.perKg * grams) / 1000;
+				total += used;
+				shelfTotal += shelfCost(ingredient, grams, prices, today, store.id)?.cost ?? used;
 				if (!price.isEstimate) covered++;
 			}
-			return { store, total, covered, items: items.length };
+			return { store, total, shelfTotal, covered, items: items.length };
 		})
 		.filter((b) => b.covered > 0)
 		.sort((a, b) => b.covered / b.items - a.covered / a.items || a.total - b.total);

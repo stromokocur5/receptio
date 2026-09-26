@@ -1,5 +1,5 @@
 import { formatNumber } from './amounts';
-import { bestPrice } from './pricing';
+import { bestPrice, shelfCost, type ShelfCost } from './pricing';
 import { isAssumedAtHome, TAP_WATER_ID, type Pantry } from './pantry';
 import type { Ingredient, IngredientCategory, PriceEntry, RecipeSummary } from './types';
 
@@ -43,6 +43,8 @@ export interface ShoppingItem {
 	usedIn: string[];
 	/** A usually-at-home basic the user said they're out of. */
 	restock: boolean;
+	/** Whole packs to buy, when a real price with a pack size is known. */
+	shelf: ShelfCost | null;
 }
 
 export interface ShoppingList {
@@ -50,6 +52,8 @@ export interface ShoppingList {
 	/** Spices, oils, basics and leftovers: listed to double-check, not counted in the total. */
 	staples: ShoppingItem[];
 	total: number;
+	/** Paid at the till for whole packs; items with only an estimate count by weight. */
+	shelfTotal: number;
 	hasEstimates: boolean;
 }
 
@@ -107,7 +111,8 @@ export function buildShoppingList(
 			costIsEstimate: price.isEstimate,
 			storeId: price.storeId,
 			usedIn: [...usedIn],
-			restock: outOfStock.has(ingredient.id) && isAssumedAtHome(ingredient)
+			restock: outOfStock.has(ingredient.id) && isAssumedAtHome(ingredient),
+			shelf: shelfCost(ingredient, buyGrams, prices, today)
 		});
 	}
 
@@ -128,6 +133,7 @@ export function buildShoppingList(
 		byCategory: [...categories].sort(([a], [b]) => AISLE_ORDER.indexOf(a) - AISLE_ORDER.indexOf(b)),
 		staples: items.filter((i) => worthChecking(i.ingredient) && i.buyGrams > 0),
 		total: toBuy.reduce((sum, i) => sum + i.cost, 0),
+		shelfTotal: toBuy.reduce((sum, i) => sum + (i.shelf?.cost ?? i.cost), 0),
 		hasEstimates: toBuy.some((i) => i.costIsEstimate)
 	};
 }

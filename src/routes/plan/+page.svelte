@@ -495,6 +495,12 @@
 												{formatGrams(item.buyGrams)}{pieces(item)}
 												{#if item.buyGrams < item.needGrams - 0.5}· zvyšok máš doma{/if}
 												{#if item.restock}· stačí najmenšie balenie{/if}
+												{#if item.shelf && Number.isInteger(item.shelf.packs)}<span
+														title={item.shelf.product}
+														>· v obchode {item.shelf.packs}× balenie za {formatEur(
+															item.shelf.cost
+														)}</span
+													>{/if}
 											</small>
 										</span>
 										<span class="price" class:est={item.costIsEstimate}>{formatEur(item.cost)}</span
@@ -544,9 +550,13 @@
 				{/if}
 
 				<div class="total">
-					<span>Spolu {list.hasEstimates ? '(odhad)' : ''}</span>
-					<strong>{formatEur(list.total)}</strong>
+					<span>Pri pokladni {list.hasEstimates ? '(odhad)' : ''}</span>
+					<strong>{formatEur(list.shelfTotal)}</strong>
 				</div>
+				<p class="muted small used">
+					Kupuješ celé balenia. Na tieto recepty z nich spotrebuješ za {formatEur(list.total)},
+					zvyšok ti ostane.
+				</p>
 
 				{#if baskets.length}
 					<div class="stores">
@@ -557,7 +567,7 @@
 									<span class="sdot" style:background={b.store.color}></span>
 									{b.store.name}
 									<span class="muted small">{b.covered}/{b.items} cien</span>
-									<strong>{formatEur(b.total)}</strong>
+									<strong>{formatEur(b.shelfTotal)}</strong>
 								</li>
 							{/each}
 						</ul>
@@ -937,6 +947,9 @@
 	.total strong {
 		font-family: var(--font-display);
 		font-size: 1.6rem;
+	}
+	.used {
+		margin: 6px 0 0;
 	}
 	.stores {
 		margin-top: 18px;
