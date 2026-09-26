@@ -132,6 +132,14 @@ pnpm exec wrangler d1 execute receptio --remote --command "SELECT recipe_id, kin
 pnpm exec wrangler d1 execute receptio --remote --command "SELECT recipe_id, COUNT(*) FROM feedback WHERE kind = 'worked' GROUP BY recipe_id"
 ```
 
+## Ochrana proti botom
+
+Návrhy aj spätnú väzbu chráni **Cloudflare Turnstile** (widget „Receptio formuláre“, neviditeľný – úlohu
+ukáže len podozrivým). Sitekey je v `src/lib/turnstile.ts`, tajný kľúč je secret Workera `TURNSTILE_SECRET`,
+povolené hostnames v `TURNSTILE_HOSTNAMES` (`wrangler.jsonc`). Server overuje každý token cez Siteverify
+(`src/lib/server/turnstile.ts`) a pri chybe odmietne. Lokálne treba v `.dev.vars` testovací kľúč
+`TURNSTILE_SECRET=1x0000000000000000000000000000000AA`. Lajky chráni len rate limit.
+
 ## Nasadenie (Cloudflare)
 
 1. `pnpm exec wrangler d1 create receptio` a vrátené `database_id` vlož do `wrangler.jsonc`.
