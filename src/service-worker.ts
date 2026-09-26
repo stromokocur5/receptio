@@ -79,7 +79,7 @@ async function networkFirst(request: Request, url: URL): Promise<Response> {
 		if (cached) return cached;
 		if (request.mode === 'navigate') {
 			return new Response(
-				'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Offline · Receptio</title><body style="font-family:system-ui;padding:2rem;background:#f6efe2;color:#1d2e24"><h1>Si offline</h1><p>Táto stránka ešte nie je uložená. Plán, nákupný zoznam, špajza a recepty, ktoré si už otvoril, fungujú aj bez internetu.</p><p><a href="/plan">Otvoriť nákupný zoznam</a></p>',
+				'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Offline · Receptio</title><body style="font-family:system-ui;padding:2rem;background:#f6efe2;color:#1d2e24"><h1>Si offline</h1><p>Táto stránka ešte nie je uložená. Plán, nákupný zoznam, špajza a už otvorené recepty fungujú aj bez internetu.</p><p><a href="/plan">Otvoriť nákupný zoznam</a></p>',
 				{ status: 503, headers: { 'content-type': 'text/html; charset=utf-8' } }
 			);
 		}

@@ -227,7 +227,7 @@
 <section class="wrap block">
 	<div class="basics card">
 		<div class="basics-copy">
-			<p class="eyebrow">Nikdy si nevaril?</p>
+			<p class="eyebrow">Začínaš s varením?</p>
 			<h2>Základy krok po kroku</h2>
 			<p>
 				Ako uvariť ryžu, aby nebola kaša, ako na strukoviny, aby nenafukovali, a prečo tofu nie je

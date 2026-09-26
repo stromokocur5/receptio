@@ -124,8 +124,7 @@
 			</label>
 			<label>
 				<span
-					>Tvoje meno alebo prezývka <small>nepovinné, ak chceš byť pri recepte uvedený</small
-					></span
+					>Tvoje meno alebo prezývka <small>nepovinné, ak ťa máme pri recepte uviesť</small></span
 				>
 				<input bind:value={form.author} maxlength="120" autocomplete="nickname" />
 			</label>

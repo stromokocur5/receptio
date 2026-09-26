@@ -338,7 +338,11 @@
 							>
 								{#each [1, 2, 3, 4, 5, 6, 8] as p (p)}<option value={p}>{p}</option>{/each}
 							</select>
-							{settings.current.people === 1 ? 'osobu' : 'osoby'}
+							{settings.current.people === 1
+								? 'osobu'
+								: settings.current.people < 5
+									? 'osoby'
+									: 'osôb'}
 						</label>
 						<label>
 							Jedál denne

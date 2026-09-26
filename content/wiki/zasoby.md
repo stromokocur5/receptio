@@ -14,7 +14,7 @@ order: 11
 - **Plechovky a tuby**: paradajky, pretlak, kokosové mlieko.
 - **Chuť**: tamari, ocot, výživné droždie, kari pasty, bujón.
 - **Korenie**: kmín, kurkuma, údená a sladká paprika, garam masala, koriander, čili.
-- **Mrazák**: špenát, hrášok, brokolica, bobuľové ovocie. Rovnako výživné ako čerstvé, nekazí sa.
+- **Mraznička**: špenát, hrášok, brokolica, bobuľové ovocie. Rovnako výživné ako čerstvé, nekazí sa.
 
 ## Suché vs. plechovka
 
@@ -26,6 +26,6 @@ Ryža (5 kg), šošovica a cícer (2–5 kg), ovsené vločky, arašidové maslo
 
 ## Skladovanie
 
-- Mletý ľan, chia a orechy v chladničke alebo mrazáku, tuky v nich žluknú.
-- Múky a strukoviny v uzatvárateľných nádobách, aby sa v nich nezačali moli.
-- Otvorené kokosové mlieko preleješ do pohára, vydrží 4 dni, alebo ho zamrazíš do tvorítka na ľad.
+- Mletý ľan, chia a orechy v chladničke alebo mrazničke, tuky v nich rýchlo stuchnú.
+- Múky a strukoviny v uzatvárateľných nádobách, aby sa do nich nedostali mole.
+- Otvorené kokosové mlieko preleješ do pohára, vydrží 4 dni, alebo ho zamrazíš do formičiek na ľad.

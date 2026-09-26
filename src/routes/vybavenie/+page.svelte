@@ -83,7 +83,7 @@
 						</div>
 						{#if FILTERABLE.has(tool.id)}
 							<a class="filter-link" href="/recepty?nemam={tool.id}">
-								Recepty bez tohto <Icon name="arrow-right" size={14} />
+								Recepty, ktoré sa bez toho zaobídu <Icon name="arrow-right" size={14} />
 							</a>
 						{/if}
 					</article>

@@ -12,7 +12,7 @@ order: 21
 2. **Prepláchni** v sitku pod studenou vodou, kým voda nie je skoro číra (30 sekúnd). Odstrániš škrob, ktorý robí ryžu lepkavou.
 3. **Voda.** Na 1 diel ryže 1,5 dielu vody (basmati, jazmínová) a štipka soli.
 4. **Var.** Priveď do varu, stíš na **najmenší plameň**, prikry pokrievkou a var **12 minút**. **Neodkrývaj a nemiešaj.**
-5. **Dôjdenie.** Odstav a nechaj **10 minút** pod pokrievkou. Potom prehrab vidličkou.
+5. **Dotiahnutie.** Odstav a nechaj **10 minút** pod pokrievkou. Potom prehrab vidličkou.
 
 ## Metóda ako cestoviny (najistejšia)
 

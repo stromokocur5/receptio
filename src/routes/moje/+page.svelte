@@ -71,7 +71,8 @@
 		<p class="eyebrow">Moje</p>
 		<h1>Moja kuchyňa</h1>
 		<p class="lede">
-			Obľúbené, čo si uvaril a tvoje poznámky. Všetko je uložené len v tomto prehliadači, bez účtu.
+			Obľúbené recepty, história varenia a tvoje poznámky. Všetko je uložené len v tomto
+			prehliadači, bez účtu.
 		</p>
 	</header>
 

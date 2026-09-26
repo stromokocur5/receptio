@@ -50,6 +50,6 @@ order: 19
 
 ## Množstvá
 
-- **štipka** – čo chytíš medzi palec a ukazovák (asi 0,5 g)
+- **štipka** – čo chytíš medzi palec a dva prsty (asi 0,5 g)
 - **podľa chuti** – začni málom, ochutnaj, pridaj
 - **PL, ČL, hrnček** – [odmerky](/wiki/jednotky)

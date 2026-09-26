@@ -8,7 +8,7 @@ order: 12
 
 ## Recepty
 
-Každý recept je vybraný ručne. Suroviny sa neodkazujú textom, ale na **databázu surovín**, vďaka čomu Receptio samo počíta:
+Recepty pridáva ručne správca. Pri tých, ktoré ešte nikto v Receptiu reálne neuvaril, je napísané „Zatiaľ nevyskúšané v praxi“ – časy a množstvá sú podľa overených postupov, ale ber ich orientačne. Suroviny sa neodkazujú textom, ale na **databázu surovín**, vďaka čomu Receptio samo počíta:
 
 - **nutričné hodnoty** na porciu (makrá a mikroživiny dôležité pre vegánov),
 - **bezlepkovosť a alergény** zo surovín,
@@ -31,4 +31,4 @@ Hodnoty surovín sú orientačné (podľa databázy USDA FoodData Central) a po�
 
 ## Tvoje dáta
 
-Špajza, plán a obľúbené sú uložené **len v tvojom prehliadači**. Žiadne konto ani sledovanie. Lajky sa počítajú anonymne.
+Špajza, plán, história varenia, obľúbené a poznámky sú uložené **len v tvojom prehliadači** – zálohu si stiahneš na stránke [Moje](/moje). Žiadne konto ani sledovanie. Lajky sa počítajú anonymne. Na server ide len to, čo sám pošleš cez formulár [Navrhni recept](/navrhni).

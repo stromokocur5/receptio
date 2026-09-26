@@ -93,7 +93,7 @@
   pitfalls:
     - Tabbouleh je z bulguru, kuskus je pšeničný.
     - Pita a chlieb k mezze sú pšeničné.
-    - Falafel sa niekedy viaže múkou a vyprážajú sa v spoločnom oleji.
+    - Falafel sa niekedy viaže múkou a vypráža sa v spoločnom oleji s inými jedlami.
 
 - id: peruanska
   name: Peruánska a andská
@@ -204,13 +204,13 @@
   staples: [zemiaky, kapusta, šošovica, fazuľa, huby, rasca, majoránka]
   dishes: [Kyslá šošovica, Zemiakový guláš, Kapustnica s hubami, Fazuľová polievka, Lokše]
   pitfalls:
-    - Zápražky (zápražka z múky) zahusťujú polievky aj prívarky, nahraď ryžovou múkou.
+    - Zápražka z pšeničnej múky zahusťuje polievky aj prívarky – pri bezlepkovej strave ju sprav z ryžovej múky.
     - Bryndza, smotana a slanina sú v tradičných receptoch základ.
 
 - id: moderna
   name: Moderná rastlinná
   region: Svet
-  tagline: Bowls, raňajky, proteínové triky a meal prep.
+  tagline: Bowly, raňajky, proteínové triky a varenie na viac dní.
   color: '#7fa843'
   staples: [tofu, strukoviny, ovsené vločky, semienka, rastlinné mlieka]
   dishes: [Tofu praženica, Proteínová kaša, Pečený cícer, Chia puding]

@@ -14,7 +14,7 @@ Pri bežnej strave dodávajú veľkú časť jódu mliečne výrobky a ryby. Veg
 
 ## Zdroje
 
-- **Jódovaná kuchynská soľ.** Na Slovensku je kuchynská soľ bežne jódovaná, ale **morská, himalájska a kala namak väčšinou nie sú.** Soľ v priemyselne vyrobených potravinách tiež väčšinou nie je jódovaná.
+- **Jódovaná kuchynská soľ.** Na Slovensku je kuchynská soľ bežne jódovaná, ale **morská, himalájska a kala namak väčšinou nie sú.** Či je jódovaná aj soľ v kúpených hotových jedlách a pečive, sa z etikety väčšinou nedozvieš – nespoliehaj sa na ňu.
 - Niektoré rastlinné nápoje sú obohatené jódom, pozri etiketu.
 - **Morské riasy nie sú dobrý zdroj.** Obsah je extrémne premenlivý a kombu či kelp môžu jódu obsahovať nebezpečne veľa. Nori v sushi je v poriadku.
 

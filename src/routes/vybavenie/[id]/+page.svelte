@@ -77,7 +77,7 @@
 			</ul>
 			{#if FILTERABLE.has(tool.id)}
 				<a class="filter-link" href="/recepty?nemam={tool.id}">
-					Recepty, ktoré ho nepotrebujú <Icon name="arrow-right" size={14} />
+					Recepty, ktoré sa bez toho zaobídu <Icon name="arrow-right" size={14} />
 				</a>
 			{/if}
 		</aside>
@@ -85,7 +85,7 @@
 
 	{#if recipes.length}
 		<section class="recipes">
-			<h2>Treba ho v {recipes.length === 1 ? '1 recepte' : `${recipes.length} receptoch`}</h2>
+			<h2>Použiješ v {recipes.length === 1 ? '1 recepte' : `${recipes.length} receptoch`}</h2>
 			<div class="grid">
 				{#each showAll ? recipes : recipes.slice(0, RECIPE_PREVIEW) as recipe, i (recipe.id)}
 					<RecipeCard {recipe} index={i} />

@@ -31,5 +31,5 @@ tips:
   - Mrazené fazuľky fungujú rovnako, var ich o 5 minút kratšie.
 variants:
   - name: Bez náhrad
-    description: Bez smotany – zápražku sprav z dvoch lyžíc múky a zahusti viac.
+    description: Vynechaj smotanu – prívarok zahustí zápražka a trochu roztlačených zemiakov.
     remove: [rastlinna-smotana]

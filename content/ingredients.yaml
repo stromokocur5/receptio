@@ -968,7 +968,7 @@
   uses:
     - 'Posyp ázijských jedál – opraž nasucho 2 minúty'
     - 'Domáce tahini'
-  storage: 'V chladničke – tuk v semienkach žltne.'
+  storage: 'V chladničke – tuk v semienkach rýchlo stuchne.'
 
 - id: lanove-semienko
   name: Ľanové semienko mleté
@@ -1074,7 +1074,7 @@
   uses:
     - 'Kari, dal, tom kha, polievky'
     - 'Vychladené cez noc sa dá vyšľahať ako šľahačka'
-  choose: 'Aspoň 70 % kokosu, bez zahusťovadiel. „Light“ je zriedené vodou.'
+  choose: 'Čím viac kokosového extraktu (ideálne 60 % a viac), tým krémovejšie. „Light“ je zriedené vodou.'
   storage: 'Otvorené prelož do nádoby, 4 dni v chladničke.'
 
 # ── Omáčky, pasty, dochucovadlá ────────────────────────────────
@@ -1136,7 +1136,7 @@
   about: 'Thajská pasta z čili, citrónovej trávy, galangalu a bylín. Pozor, mnohé obsahujú rybiu omáčku alebo krevety.'
   uses:
     - 'Zelené kari – najprv ju opraž na oleji'
-  choose: 'Skontroluj zloženie – bez rýb a kreviet (napr. Mae Ploy nie je vegánska).'
+  choose: 'Skontroluj zloženie – nesmie obsahovať rybiu omáčku ani krevetovú pastu. Veľa thajských pást ich má, hľadaj označenie vegánska.'
   storage: 'Otvorená v chladničke mesiac.'
 
 - id: zeleninovy-vyvar
@@ -1217,7 +1217,7 @@
   substitutes:
     - { note: 'zemiakový škrob 1:1' }
     - { to: hladka-muka, note: '2× viac, dlhšie povar' }
-  about: 'Škrob na zahustenie – bez lepku, bez chuti. Solamyl.'
+  about: 'Kukuričný škrob (napr. Maizena) na zahustenie – bez lepku a bez chuti. Rovnako funguje zemiakový škrob (Solamyl).'
   uses:
     - 'Rozmiešaj v studenej vode a vlej do vriacej omáčky'
     - 'Chrumkavé obaľovanie tofu'
@@ -1449,7 +1449,7 @@
   price: 12
   substitutes:
     - { to: kmin, note: 'mletý, uber polovicu' }
-  about: 'Celá rasca – slovenská klasika do kapusty a gulášu. Uľahčuje trávenie.'
+  about: 'Celá rasca – slovenská klasika do kapusty a gulášu. Tradične sa pridáva k strukovinám a kapuste pre ľahšie trávenie.'
   uses:
     - 'Guláš, kapusta, pečené zemiaky, chlieb'
   storage: 'Rok.'
@@ -2384,7 +2384,7 @@
     - 'Kešu syr, cheesecake, krémové omáčky'
     - 'Namoč 15 min v horúcej alebo 4 h v studenej vode'
   choose: 'Nepražené a nesolené na krémy, polovičky sú lacnejšie ako celé.'
-  storage: 'V chladničke alebo mrazničke – tuky žltnú.'
+  storage: 'V chladničke alebo mrazničke – tuky rýchlo stuchnú.'
 
 - id: vlasske-orechy
   name: Vlašské orechy
@@ -2462,7 +2462,7 @@
   price: 15
   substitutes:
     - { to: olej, note: '+ lyžica opraženého sezamu' }
-  about: 'Pražený sezamový olej – intenzívna aróma, dochucuje sa ním, nevyprážá.'
+  about: 'Pražený sezamový olej – intenzívna aróma, dochucuje sa ním, nevypráža sa na ňom.'
   uses:
     - 'Pár kvapiek na konci do wok jedál a dresingov'
   storage: 'V chladničke po otvorení.'

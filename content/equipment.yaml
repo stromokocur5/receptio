@@ -107,7 +107,7 @@
   match:
     # prikryté cesto na kysnutie alebo "prikry utierkou/fóliou" nie je pokrievka
     - (?<!kysn[^.]*)\bprikr(?![^.]*(utierk|foli|kysn))
-    - pokriev
+    - (?<!bez )pokriev
 
 - id: sitko
   name: Sitko alebo cedník

@@ -216,8 +216,8 @@
 						{#if cooked === null}
 							<p class="muted">
 								{hasPantry
-									? 'Zapíšem, že si to uvaril, a odpočítam suroviny zo špajze. Ak bol recept v pláne, ubudne aj odtiaľ.'
-									: 'Zapíšem, že si to uvaril. Ak bol recept v pláne, ubudne aj odtiaľ.'}
+									? 'Zapíšem to do histórie a odpočítam suroviny zo špajze. Ak bol recept v pláne, ubudne aj odtiaľ.'
+									: 'Zapíšem to do histórie. Ak bol recept v pláne, ubudne aj odtiaľ.'}
 							</p>
 							<button class="btn leaf" onclick={finish}>
 								<Icon name="check" size={18} /> Uvarené
@@ -240,7 +240,9 @@
 								{/each}
 							</div>
 							{#if rated === 1}
-								<p class="muted">Čo by si zmenil? Zapíš si to do poznámok pod postupom receptu.</p>
+								<p class="muted">
+									Čo zmeniť nabudúce? Zapíš si to do poznámok pod postupom receptu.
+								</p>
 							{/if}
 							{#if cooked.length}
 								<ul class="used">
