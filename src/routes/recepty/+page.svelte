@@ -295,7 +295,7 @@
 			<fieldset>
 				<legend>Lepok</legend>
 				<div class="chips">
-					{#each ['Všetko', 'Bezlepkové', 'Aj tie, čo sa dajú bez lepku'] as label, i (label)}
+					{#each ['Všetko', 'Bezlepkové', 'Aj s bezlepkovou verziou'] as label, i (label)}
 						<button class="chip" aria-pressed={gf === i} onclick={() => (gf = i)}>{label}</button>
 					{/each}
 				</div>

@@ -18,7 +18,7 @@
 		class="badge sky"
 		title="Obsahuje lepok, ale má bezlepkovú verziu – lepkové suroviny stačí vymeniť"
 	>
-		<Icon name="wheat" size={14} stroke={2} /> Dá sa bez lepku
+		<Icon name="wheat" size={14} stroke={2} /> Má bezlepkovú verziu
 	</span>
 {:else}
 	<span class="badge tomato" title="Obsahuje lepok">
