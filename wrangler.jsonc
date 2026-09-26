@@ -26,6 +26,12 @@
 		},
 		{ "name": "SUGGEST_LIMITER", "namespace_id": "1003", "simple": { "limit": 2, "period": 60 } }
 	],
+	// Admin panel (/admin) sits behind Cloudflare Access; the Worker verifies its token too.
+	"vars": {
+		"ACCESS_TEAM_DOMAIN": "stromokocur5.cloudflareaccess.com",
+		"ACCESS_AUD": "17c695f5c98ced0a393dc455bae2063bb73e44fb64cc9a9e00ac8256e6abf2f6",
+		"ADMIN_EMAILS": "gabrielkohut3@gmail.com,gabrielkohut3@proton.me"
+	},
 	"routes": [{ "pattern": "receptio.kohut.xyz", "custom_domain": true }],
 	"observability": {
 		"enabled": true

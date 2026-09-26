@@ -91,7 +91,14 @@ sw.addEventListener('fetch', (event) => {
 	const { request } = event;
 	if (request.method !== 'GET') return;
 	const url = new URL(request.url);
-	if (url.origin !== sw.location.origin || url.pathname.startsWith('/api/')) return;
+	// Private or live data: never serve it from the offline cache.
+	if (
+		url.origin !== sw.location.origin ||
+		url.pathname.startsWith('/api/') ||
+		url.pathname.startsWith('/admin')
+	) {
+		return;
+	}
 	// Link-preview images are for other sites, not worth caching.
 	if (url.pathname.startsWith('/og/')) return;
 

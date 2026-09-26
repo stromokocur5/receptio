@@ -115,6 +115,13 @@ pnpm exec wrangler d1 execute receptio --remote --command "SELECT * FROM suggest
 pnpm exec wrangler d1 execute receptio --remote --command "UPDATE suggestions SET status = 'added' WHERE id = 1"
 ```
 
+## Admin panel
+
+`https://receptio.kohut.xyz/admin` – spätná väzba, návrhy receptov a lajky, s tlačidlami „vybavené“.
+Chráni ho **Cloudflare Access** (aplikácia „Receptio admin“, prihlásenie kódom z mailu, povolené e-maily
+v `ADMIN_EMAILS` a v pravidle aplikácie). Worker navyše overuje token Access (`src/lib/server/access.ts`),
+takže sa naň nedá dostať ani cez workers.dev. V `pnpm dev` je otvorený bez prihlásenia.
+
 ## Spätná väzba k receptom
 
 Tlačidlá „Funguje, ako je napísané“ a „Niečo nesedí“ pri recepte ukladajú do tabuľky `feedback`. Recept
