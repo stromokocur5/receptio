@@ -1,0 +1,27 @@
+title: Cviklový hummus
+description: Ružový hummus s pečenou cviklou. Zemitý, jemne sladký a najkrajší na stole.
+cuisine: libanonska
+meals: [snack]
+time: 15
+active: 15
+servings: 6
+difficulty: 1
+tags: [party, do-krabicky, bez-varenia]
+keeps: { fridge: 4, freezer: 2 }
+related: [hummus, cviklovy-salat]
+ingredients:
+  - cicer-sterilizovany: 1 ks
+  - cvikla: 1 ks | pečená alebo varená, ošúpaná
+  - tahini: 3 pl
+  - citron: 1 ks | šťava
+  - cesnak: 1 ks
+  - kmin: 1/2 čl
+  - olivovy-olej: 2 pl
+  - sol: 3/4 čl
+  - aquafaba: 3 pl | alebo voda
+steps:
+  - V mixéri vyšľahaj tahini s citrónom asi 1 minútu.
+  - Pridaj cviklu na kúsky, cícer, cesnak, kmín a soľ a mixuj 2 minúty.
+  - Prilievaj aquafabu, kým nie je hummus hladký. Podávaj pokvapkaný olejom.
+tips:
+  - Hotová cvikla vo vákuu skráti prípravu na 5 minút.

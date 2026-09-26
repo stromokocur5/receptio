@@ -1,0 +1,29 @@
+title: Pečené zemiaky s rozmarínom a cesnakovým dipom
+description: Chrumkavé zemiaky z rúry s rozmarínom, s cesnakovým jogurtovým dipom. Jednoduché jedlo, ktoré chutí každému.
+cuisine: slovenska
+meals: [obed, vecera, snack]
+time: 50
+active: 10
+servings: 4
+difficulty: 1
+tags: [party, lacne]
+keeps: { fridge: 3 }
+leftovers: 'Nakrájaj na kocky a opeč na panvici s cibuľou a údeným tofu – zemiakový hash.'
+ingredients:
+  - zemiaky: 8 ks | neošúpané, na mesiačiky
+  - olivovy-olej: 3 pl
+  - rozmarin: 2 ks | vetvičky
+  - cesnak: 4 ks | 2 celé do rúry, 2 do dipu
+  - sladka-paprika: 1 čl
+  - sol: 1,5 čl
+  - sojovy-jogurt: 1 hrnček
+  - kopor: 1 pl | alebo pažítka
+  - citron: 1/2 ks
+steps:
+  - Rúru predhrej na 220 °C.
+  - Zemiaky var v osolenej vode 5 minút a sceď. Nechaj ich 2 minúty odpariť a pretras v hrnci, nech sa okraje rozstrapkajú – budú chrumkavejšie.
+  - Na plechu s papierom ich zmiešaj s olejom, paprikou, soľou, rozmarínom a dvoma rozpučenými strúčikmi cesnaku.
+  - Peč 30 minút, v polovici otoč, kým nie sú zlaté a chrumkavé.
+  - Dip – jogurt zmiešaj s prelisovaným cesnakom, kôprom, citrónom a štipkou soli.
+tips:
+  - Zemiaky nedávaj na plech na seba, radšej použi dva plechy. Na kope sa dusia a nezhnednú.

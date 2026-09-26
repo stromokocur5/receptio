@@ -1,0 +1,28 @@
+title: Cesnaková polievka so zemiakmi
+description: Zimná klasika na prechladnutie. Zemiaky, veľa cesnaku a rasca, s opečenými krutónmi. Stojí pár centov.
+cuisine: slovenska
+meals: [obed, vecera]
+time: 30
+active: 10
+servings: 4
+difficulty: 1
+tags: [polievka, lacne, klasika, one-pot]
+keeps: { fridge: 3 }
+ingredients:
+  - olej: 3 pl
+  - cibula: 1 ks
+  - zemiaky: 4 ks | na kocky
+  - rasca: 1 čl
+  - voda: 6 hrnček
+  - majoranka: 1 čl
+  - cesnak: 6 ks | prelisovaný
+  - vyzivne-drozdie: 2 pl
+  - sol: 1,5 čl
+  - chlieb: 4 ks | krajec, na krutóny
+steps:
+  - Na 1 PL oleja speň cibuľu, pridaj zemiaky, rascu a vodu. Var 15 minút, kým zemiaky nezmäknú.
+  - Medzitým nakrájaj chlieb na kocky a opeč na zvyšnom oleji dozlatista.
+  - Polievku odstav, vmiešaj cesnak, majoránku, droždie a soľ. Cesnak už nevar, stratil by chuť.
+  - Podávaj s krutónmi.
+tips:
+  - Ak chceš krémovú, tretinu zemiakov rozmixuj.

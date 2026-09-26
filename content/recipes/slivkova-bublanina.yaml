@@ -1,0 +1,30 @@
+title: Slivková bublanina
+description: Nadýchaný plechový koláč so slivkami, ako ho piekla babka – len bez vajec a mlieka.
+cuisine: slovenska
+meals: [dezert]
+time: 50
+active: 15
+servings: 12
+difficulty: 1
+tags: [dezert, pecenie, party]
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - hladka-muka: 2,5 hrnček
+  - cukor: 3/4 hrnček
+  - kypriaci-prasok: 1 pl
+  - sol: 1 štipka
+  - sojove-mlieko: 1,5 hrnček
+  - olej: 1/2 hrnček
+  - ocot: 1 pl
+  - citron: 1/2 ks | kôra
+  - slivky: 20 ks | rozpolené, vykôstkované
+  - skorica: 1 čl
+steps:
+  - Rúru predhrej na 180 °C a plech (cca 25 × 35 cm) vystel papierom na pečenie.
+  - V miske zmiešaj múku, cukor, prášok do pečiva a soľ.
+  - Pridaj mlieko, olej, ocot a citrónovú kôru a metličkou len krátko premiešaj, kým sa suroviny nespoja – hrudky nevadia.
+  - Cesto vylej na plech, poukladaj slivky reznou stranou nahor a posyp škoricou s lyžicou cukru.
+  - Peč 35 minút, kým špajdľa nevyjde suchá.
+tips:
+  - Rovnako funguje s marhuľami, čerešňami alebo jablkami.
+  - Ocot s mliekom nahrádza vajíčka – cesto vďaka nim nakysne.

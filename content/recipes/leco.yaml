@@ -1,0 +1,30 @@
+title: Lečo s údeným tofu
+description: Letné lečo z papriky a paradajok s údeným tofu namiesto klobásy. Podávaj s chlebom alebo ryžou.
+cuisine: slovenska
+meals: [obed, vecera]
+time: 35
+active: 20
+servings: 4
+difficulty: 1
+tags: [klasika, one-pot, meal-prep]
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Lečo zamiešaj s tofu praženicou alebo ho daj na cestoviny.'
+ingredients:
+  - olej: 3 pl
+  - cibula: 2 ks | na pásiky
+  - tofu-udene: 200 g | na kocky
+  - paprika-cervena: 5 ks | na pásiky (pokojne aj žlté a zelené)
+  - paradajky: 5 ks | na kocky
+  - sladka-paprika: 1 pl
+  - udena-paprika: 1 čl
+  - cukor: 1 čl
+  - sol: 1 čl
+  - chlieb: 4 ks | krajec, na podávanie
+steps:
+  - Na oleji opeč tofu dozlatista, asi 5 minút, a daj bokom.
+  - Na tom istom oleji speň cibuľu, 5 minút. Pridaj papriku a duste 10 minút, kým nezmäkne.
+  - Odstav, vmiešaj sladkú a údenú papriku, pridaj paradajky, cukor a soľ.
+  - Duste bez pokrievky 10 minút, kým paradajky nepustia šťavu a lečo nezhustne. Vráť tofu a prehrej.
+tips:
+  - Najlepšie je v auguste a septembri, keď je paprika najlacnejšia – uvar dvojitú dávku a zamraz.
+  - Kto má rád pálivé, pridá jednu feferónku.

@@ -1,0 +1,46 @@
+title: Plnené papriky v paradajkovej omáčke
+description: Nedeľná klasika. Papriky plnené ryžou a šošovicou v sladkokyslej paradajkovej omáčke, so zemiakmi.
+cuisine: slovenska
+meals: [obed, vecera]
+time: 70
+active: 30
+servings: 4
+difficulty: 2
+tags: [klasika, meal-prep]
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Zvyšnú omáčku použi na cestoviny, plnku na plnené cukety.'
+ingredients:
+  - ryza-basmati: 100 g
+  - sosovica-hneda: 100 g | prepláchnutá
+  - voda: 3 hrnček
+  - olej: 2 pl
+  - cibula: 1 ks | nadrobno
+  - cesnak: 2 ks | prelisovaný
+  - sladka-paprika: 1 pl
+  - majoranka: 1 čl
+  - sojova-omacka: 1 pl
+  - paprika-cervena: 6 ks | zelené alebo žlté, s odrezaným vrškom
+  - passata: 3 hrnček
+  - paradajkovy-pretlak: 2 pl
+  - hladka-muka: 2 pl
+  - cukor: 2 pl
+  - nove-korenie: 3 ks
+  - bobkovy-list: 1 ks
+  - sol: 1,5 čl
+  - zemiaky: 6 ks | na prílohu
+steps:
+  - Šošovicu var v 2 hrnčekoch vody 15 minút. Pridaj ryžu a var ďalších 5 minút – ostane na skus, dovarí sa v paprike. Sceď.
+  - Na oleji speň cibuľu, pridaj cesnak, sladkú papriku, majoránku a sójovú omáčku. Zmiešaj s ryžou a šošovicou, osoľ.
+  - Papriky zbav jadierok a naplň plnkou, netlač ju príliš.
+  - V širokom hrnci rozmiešaj passatu, pretlak, zvyšnú vodu, cukor, nové korenie, bobkový list a soľ. Vlož papriky, prikry pokrievkou a duste 30 minút na miernom ohni.
+  - Medzitým uvar zemiaky v osolenej vode.
+  - Papriky vyber, múku rozmiešaj v troche vody a vmiešaj do omáčky. Povar 5 minút, dochuť cukrom a soľou. Vráť papriky.
+tips:
+  - Omáčka má byť sladkokyslá – ak je paradajka príliš kyslá, pridaj cukor, ak sladká, kvapku octu.
+  - Zvyšnú plnku daj do omáčky ako „fašírky“.
+variants:
+  - name: Bezlepková verzia
+    description: Omáčku zahusti kukuričným škrobom, sójovku zameň za tamari, podávaj so zemiakmi.
+    replace:
+      - { from: hladka-muka, to: kukuricny-skrob, amount: 1 pl }
+      - { from: sojova-omacka, to: tamari }

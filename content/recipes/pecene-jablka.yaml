@@ -1,0 +1,25 @@
+title: Pečené jablká s ovsenou posýpkou
+description: Jesenný dezert aj raňajky. Jablká plnené orechmi a škoricou, upečené dosucha s chrumkavou ovsenou posýpkou.
+cuisine: slovenska
+meals: [dezert, ranajky]
+time: 40
+active: 10
+servings: 4
+difficulty: 1
+tags: [dezert, deti]
+keeps: { fridge: 3 }
+ingredients:
+  - jablko: 4 ks | kyslé
+  - vlasske-orechy: 1/3 hrnček | nasekané
+  - skorica: 1 čl
+  - javorovy-sirup: 3 pl
+  - ovsene-vlocky: 1/2 hrnček
+  - rastlinne-maslo: 30 g
+  - sojovy-jogurt: 4 pl | na podávanie
+steps:
+  - Rúru predhrej na 190 °C. Jablkám vyrež jadrovník, spodok nechaj, nech plnka nevytečie.
+  - Zmiešaj orechy, polovicu škorice a 2 PL sirupu a naplň jablká.
+  - Vločky pomrv s maslom, zvyšnou škoricou a sirupom a posyp jablká.
+  - Peč v zapekacej mise 30 minút, kým jablká nezmäknú. Podávaj teplé s jogurtom.
+tips:
+  - Najlepšie sú kyslé odrody ako Boskoop alebo Jonagold, ostanú celé.

@@ -1,0 +1,26 @@
+title: Rizi-bizi s opečeným tofu
+description: Ryža s hráškom zo školskej jedálne, ale chutná. Lacné jedlo zo zásob za 25 minút.
+cuisine: slovenska
+meals: [obed, vecera]
+time: 25
+active: 10
+servings: 4
+difficulty: 1
+tags: [lacne, rychle, deti, one-pot]
+keeps: { fridge: 3 }
+leftovers: 'Opeč na panvici so sójovkou – vznikne smažená ryža.'
+ingredients:
+  - olej: 2 pl
+  - cibula: 1 ks | nadrobno
+  - ryza-basmati: 300 g
+  - zeleninovy-vyvar: 2,5 hrnček
+  - hrasok: 2 hrnček | mrazený
+  - tofu-natural: 200 g | na kocky
+  - sojova-omacka: 1 pl
+  - petrzlenova-vnat: 3 pl
+  - sol: 1/2 čl
+steps:
+  - Na oleji speň cibuľu, pridaj ryžu a 1 minútu opekaj, kým nie je sklovitá.
+  - Zalej vývarom, osoľ, prikry a var na miernom ohni 12 minút.
+  - Pridaj hrášok, prikry a nechaj ešte 5 minút bez ohňa dotiahnuť.
+  - Medzitým opeč tofu na panvici dozlatista a na konci ho polej sójovkou. Podávaj ryžu s tofu a vňaťou.

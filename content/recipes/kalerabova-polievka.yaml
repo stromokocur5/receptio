@@ -1,0 +1,37 @@
+title: Kalerábová polievka s kôprom
+description: Jemná letná polievka z kalerábu a zemiakov, zjemnená smotanou a posypaná kôprom. Ako od babky, len bez mlieka.
+cuisine: slovenska
+meals: [obed, vecera]
+time: 35
+active: 15
+servings: 4
+difficulty: 1
+tags: [polievka, klasika, one-pot]
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Zahustenú polievku rozmixuj na krémovú omáčku k zemiakom.'
+ingredients:
+  - olej: 2 pl
+  - cibula: 1 ks | nadrobno
+  - kalerab: 2 ks | ošúpaný, na kocky
+  - zemiaky: 2 ks | na kocky
+  - mrkva: 1 ks | na kolieska
+  - voda: 5 hrnček
+  - bobkovy-list: 1 ks
+  - hladka-muka: 1 pl
+  - rastlinna-smotana: 1/2 hrnček
+  - kopor: 3 pl | nasekaný
+  - citron: 1/2 ks | šťava
+  - sol: 1,5 čl
+  - cierne-korenie: podľa chuti
+steps:
+  - Na oleji speň cibuľu dosklovita, asi 5 minút.
+  - Pridaj kaleráb, zemiaky a mrkvu, zalej vodou, pridaj bobkový list a soľ. Var 15 minút, kým zemiaky nezmäknú.
+  - Múku rozmiešaj v smotane dohladka a za stáleho miešania vlej do polievky. Povar 3 minúty, nech zhustne.
+  - Odstav, vmiešaj kôpor a citrónovú šťavu, dochuť korením.
+tips:
+  - Mladé listy kalerábu nakrájaj nadrobno a pridaj do polievky spolu so zemiakmi – sú plné vitamínov.
+  - Časť polievky môžeš rozmixovať, bude krémovejšia.
+variants:
+  - name: Bez náhrad
+    description: Namiesto smotany zahusti polievku rozmixovaním tretiny zeleniny.
+    remove: [rastlinna-smotana]

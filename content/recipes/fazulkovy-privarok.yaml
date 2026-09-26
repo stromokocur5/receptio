@@ -1,0 +1,35 @@
+title: Fazuľkový prívarok s kôprom
+description: Slovenský prívarok zo zelených fazuliek na kyslo, s kôprom a zemiakmi. Zo záhradky rovno na tanier.
+cuisine: slovenska
+meals: [obed, vecera]
+time: 35
+active: 15
+servings: 4
+difficulty: 1
+tags: [klasika, lacne]
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Rozrieď vývarom – vznikne fazuľková polievka.'
+ingredients:
+  - zelene-fazulky: 600 g | na 3 cm kúsky
+  - zemiaky: 4 ks | na kocky
+  - voda: 3 hrnček
+  - olej: 2 pl
+  - hladka-muka: 2 pl
+  - rastlinna-smotana: 1/2 hrnček
+  - ocot: 1 pl
+  - cukor: 1 čl
+  - kopor: 3 pl | nasekaný
+  - sol: 1,5 čl
+  - tofu-udene: 200 g | na kocky, opečené – ako „fašírka“ navrch
+steps:
+  - Fazuľky a zemiaky var v osolenej vode 15 minút do mäkka.
+  - Zápražka – na oleji krátko opraž múku, 1 minútu, nech nezhnedne. Rozmiešaj s naberačkou vody z fazuliek.
+  - Vlej zápražku k fazuľkám a povar 5 minút za stáleho miešania.
+  - Vmiešaj smotanu, ocot, cukor a kôpor. Dochuť – má byť jemne sladkokyslý.
+  - Medzitým opeč tofu na panvici dozlatista a podávaj navrch.
+tips:
+  - Mrazené fazuľky fungujú rovnako, var ich o 5 minút kratšie.
+variants:
+  - name: Bez náhrad
+    description: Bez smotany – zápražku sprav z dvoch lyžíc múky a zahusti viac.
+    remove: [rastlinna-smotana]

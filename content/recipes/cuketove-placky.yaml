@@ -1,0 +1,29 @@
+title: Cuketové placky s cesnakovým dipom
+description: Keď cukety v záhradke rastú rýchlejšie, ako ich stíhaš jesť. Chrumkavé placky z cukety a cícerovej múky.
+cuisine: slovenska
+meals: [obed, vecera, snack]
+time: 35
+active: 25
+servings: 4
+difficulty: 1
+tags: [lacne, do-krabicky]
+keeps: { fridge: 2, freezer: 2 }
+leftovers: 'Studené placky do chleba s paradajkou alebo prehriate v rúre.'
+ingredients:
+  - cuketa: 2 ks | nastrúhaná nahrubo
+  - sol: 1 čl
+  - cicerova-muka: 1 hrnček
+  - cibula: 1/2 ks | nadrobno
+  - cesnak: 2 ks | prelisovaný
+  - kopor: 2 pl
+  - kmin: 1/2 čl
+  - voda: 4 pl
+  - olej: 5 pl | na opekanie
+  - sojovy-jogurt: 1/2 hrnček | na dip
+steps:
+  - Cuketu osoľ polovicou soli a nechaj 10 minút odstáť. Potom ju poriadne vyžmýkaj v utierke – toto je najdôležitejší krok.
+  - Zmiešaj cuketu, cícerovú múku, cibuľu, polovicu cesnaku, kôpor, kmín a zvyšnú soľ. Pridávaj vodu po lyžiciach, kým nevznikne husté cesto.
+  - Na panvici rozpáľ olej, lyžicou tvaruj tenké placky a opekaj 3–4 minúty z každej strany dozlatista.
+  - Jogurt zmiešaj so zvyšným cesnakom a štipkou soli a podávaj k plackám.
+tips:
+  - Cícerová múka drží placky pokope bez vajíčka. Hladká múka funguje tiež, placky budú mäkšie.

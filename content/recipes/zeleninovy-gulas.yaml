@@ -1,0 +1,36 @@
+title: Letný zeleninový guláš
+description: Hustý guláš zo všetkého, čo dozrieva v auguste – cukety, papriky, paradajky a zemiaky, s rascou a majoránkou.
+cuisine: slovenska
+meals: [obed, vecera]
+time: 50
+active: 20
+servings: 6
+difficulty: 1
+spicy: 1
+tags: [one-pot, meal-prep, lacne]
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Na druhý deň je lepší. Zvyšok zapeč s vegánskym syrom.'
+ingredients:
+  - olej: 3 pl
+  - cibula: 2 ks | nadrobno
+  - sladka-paprika: 2 pl
+  - cili: 1/2 čl
+  - rasca: 1 čl
+  - paradajkovy-pretlak: 2 pl
+  - zemiaky: 4 ks | na kocky
+  - paprika-cervena: 3 ks | na kocky
+  - cuketa: 2 ks | na kocky
+  - paradajky: 4 ks | na kocky
+  - fazula-cervena: 1 ks
+  - voda: 3 hrnček
+  - majoranka: 1 pl
+  - cesnak: 3 ks
+  - sol: 2 čl
+steps:
+  - Na oleji pomaly speň cibuľu dozlatista, 8 minút.
+  - Odstav, vmiešaj sladkú papriku, čili, rascu a pretlak, nech paprika nezhorkne.
+  - Pridaj zemiaky a vodu, var 10 minút.
+  - Pridaj papriku, cuketu, paradajky a fazuľu, var ďalších 15 minút, kým nie je všetko mäkké a guláš nezhustne.
+  - Na konci vmiešaj majoránku, prelisovaný cesnak a soľ.
+tips:
+  - Cuketu pridávaj až neskôr, inak sa rozvarí na kašu.

@@ -1,0 +1,25 @@
+title: Uhorkový šalát na kyslo
+description: Letný sladkokyslý šalát z uhoriek s cibuľkou a kôprom. K zemiakom, placky aj len tak.
+cuisine: slovenska
+meals: [snack, obed]
+time: 15
+active: 10
+servings: 4
+difficulty: 1
+tags: [bez-varenia, rychle, lacne]
+keeps: { fridge: 2 }
+ingredients:
+  - uhorka: 2 ks | na tenké plátky
+  - sol: 1 čl
+  - cibula-cervena: 1/2 ks | na tenké polkolieska
+  - voda: 1/2 hrnček
+  - ocot: 3 pl
+  - cukor: 1 pl
+  - kopor: 2 pl
+  - sladka-paprika: 1 štipka
+steps:
+  - Uhorky osoľ a nechaj 10 minút odstáť, potom ich jemne vytlač.
+  - Vodu, ocot a cukor zmiešaj, kým sa cukor nerozpustí.
+  - Zalej uhorky a cibuľu nálevom, pridaj kôpor a posyp paprikou. Nechaj v chladničke aspoň 15 minút.
+tips:
+  - Kto má rád krémový, pridá 3 PL sójového jogurtu namiesto polovice nálevu.

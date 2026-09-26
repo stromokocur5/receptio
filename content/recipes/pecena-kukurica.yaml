@@ -1,0 +1,31 @@
+title: Pečená kukurica s cesnakovým maslom
+description: Letná klasika z grilu alebo rúry. Sladká kukurica potretá cesnakovo-bylinkovým maslom a posypaná údenou paprikou.
+cuisine: slovenska
+meals: [snack, obed]
+time: 30
+active: 10
+servings: 4
+difficulty: 1
+tags: [party, rychle]
+keeps: { fridge: 2 }
+leftovers: 'Zrná odrež z klasu a pridaj do šalátu alebo quinoa bowl.'
+ingredients:
+  - kukurica-klas: 4 ks
+  - rastlinne-maslo: 50 g | izbovej teploty
+  - cesnak: 2 ks | prelisovaný
+  - petrzlenova-vnat: 2 pl | nasekaná
+  - udena-paprika: 1/2 čl
+  - sol: 1/2 čl
+  - limetka: 1 ks | na podávanie
+steps:
+  - Kukuricu očisti od listov a vlasov. Var ju v osolenej vode 8 minút.
+  - Rúru predhrej na 220 °C alebo rozpáľ gril. Maslo zmiešaj s cesnakom, petržlenovou vňaťou a soľou.
+  - Kukuricu potri polovicou masla a peč na plechu 15 minút, v polovici otoč, kým nie je miestami opečená.
+  - Potri zvyšným maslom, posyp údenou paprikou a podávaj s mesiačikmi limetky.
+tips:
+  - Na grile netreba predvárať – griluj ju 15 minút priamo v listoch namočených vo vode.
+variants:
+  - name: Bez náhrad
+    description: Namiesto masla použi olivový olej s cesnakom.
+    replace:
+      - { from: rastlinne-maslo, to: olivovy-olej, amount: 3 pl }

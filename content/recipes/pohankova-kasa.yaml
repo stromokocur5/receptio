@@ -1,0 +1,26 @@
+title: Pohánková kaša s jablkom a orechmi
+description: Teplé raňajky z pohánky, ktorá je prirodzene bez lepku. So strúhaným jablkom, škoricou a opraženými orechmi.
+cuisine: slovenska
+meals: [ranajky]
+time: 20
+active: 5
+servings: 2
+difficulty: 1
+tags: [ranajky, rychle]
+keeps: { fridge: 3 }
+ingredients:
+  - pohanka: 1/2 hrnček | prepláchnutá
+  - voda: 1 hrnček
+  - sojove-mlieko: 1/2 hrnček
+  - jablko: 1 ks | nastrúhané
+  - skorica: 1/2 čl
+  - javorovy-sirup: 1 pl
+  - vlasske-orechy: 3 pl | opražené, nasekané
+  - sol: 1 štipka
+steps:
+  - Pohánku var vo vode so štipkou soli pod pokrievkou 12 minút, kým nevsiakne vodu.
+  - Pridaj mlieko, jablko a škoricu a povar ešte 3 minúty, kým nie je krémová.
+  - Osladi sirupom a posyp orechmi.
+tips:
+  - Nepražená (zelená) pohánka má jemnejšiu chuť, pražená výraznejšiu – vyskúšaj obe.
+  - Uvar dvojnásobok, ráno ju len prehreješ s mliekom.
