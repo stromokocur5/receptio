@@ -13,6 +13,8 @@ export const suggestionSchema = z
 		steps: text(10, 8000),
 		note: text(0, 2000).optional(),
 		author: text(0, 120).optional(),
+		/** Turnstile token from the form. */
+		turnstile: z.string().max(2048),
 		/** Honeypot: hidden from people, filled in by naive bots. */
 		website: z.string().max(200).optional()
 	})

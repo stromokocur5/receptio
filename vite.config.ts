@@ -28,7 +28,9 @@ export default defineConfig({
 				mode: 'hash',
 				directives: {
 					'default-src': ['self'],
-					'script-src': ['self', ...appHtmlScriptHashes()],
+					// Turnstile (bot check on the suggestion and feedback forms) runs from challenges.cloudflare.com.
+					'script-src': ['self', 'https://challenges.cloudflare.com', ...appHtmlScriptHashes()],
+					'frame-src': ['https://challenges.cloudflare.com'],
 					// Svelte renders style="" attributes (plate colors, animation delays).
 					'style-src': ['self', 'unsafe-inline'],
 					'img-src': ['self', 'data:'],

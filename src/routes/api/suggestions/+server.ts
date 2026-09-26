@@ -6,6 +6,7 @@ import {
 	suggestionSchema,
 	suggestionsToday
 } from '$lib/server/suggestions';
+import { verifyTurnstile } from '$lib/server/turnstile';
 import type { RequestHandler } from './$types';
 
 export const prerender = false;
@@ -34,6 +35,15 @@ export const POST: RequestHandler = async ({ request, platform, getClientAddress
 
 	// Pretend success to bots so they don't retry.
 	if (parsed.data.website) return json({ ok: true });
+
+	const human = await verifyTurnstile({
+		secret: env.TURNSTILE_SECRET,
+		hostnames: env.TURNSTILE_HOSTNAMES,
+		action: 'suggest',
+		token: parsed.data.turnstile,
+		remoteip: getClientAddress()
+	});
+	if (!human) error(403, 'Overenie, že nie si robot, zlyhalo. Skús to znova.');
 
 	let saved = false;
 	try {

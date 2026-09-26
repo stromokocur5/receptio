@@ -2,12 +2,24 @@
 	import { onMount } from 'svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
+	import { createChallenge } from '$lib/turnstile';
 
 	const DRAFT_KEY = 'receptio:suggestion-draft';
 
 	let form = $state({ title: '', ingredients: '', steps: '', note: '', author: '', website: '' });
 	let status = $state<'idle' | 'sending' | 'sent' | 'error'>('idle');
 	let errorText = $state('');
+	let challengeBox: HTMLDivElement;
+	let challenge: Awaited<ReturnType<typeof createChallenge>> | null = null;
+
+	onMount(() => {
+		createChallenge(challengeBox, 'suggest')
+			.then((c) => (challenge = c))
+			.catch(() => {
+				// Shown on submit if it's still missing.
+			});
+		return () => challenge?.remove();
+	});
 
 	onMount(() => {
 		try {
@@ -34,6 +46,15 @@
 	async function submit(event: SubmitEvent) {
 		event.preventDefault();
 		status = 'sending';
+		let turnstile: string;
+		try {
+			if (!challenge) throw new Error('turnstile not loaded');
+			turnstile = await challenge.token();
+		} catch {
+			errorText = 'Nepodarilo sa overiť, že nie si robot. Obnov stránku a skús to znova.';
+			status = 'error';
+			return;
+		}
 		try {
 			const res = await fetch('/api/suggestions', {
 				method: 'POST',
@@ -42,7 +63,8 @@
 					...form,
 					note: form.note || undefined,
 					author: form.author || undefined,
-					website: form.website || undefined
+					website: form.website || undefined,
+					turnstile
 				})
 			});
 			if (!res.ok) {
@@ -145,6 +167,8 @@
 			</div>
 		</form>
 	{/if}
+	<!-- Outside the form so the Turnstile widget survives "Poslať ďalší". -->
+	<div class="challenge" bind:this={challengeBox}></div>
 </div>
 
 <style>
@@ -196,6 +220,9 @@
 		width: 1px;
 		height: 1px;
 		overflow: hidden;
+	}
+	.challenge:empty {
+		display: none;
 	}
 	.submit {
 		display: flex;

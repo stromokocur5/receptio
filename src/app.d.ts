@@ -3,7 +3,8 @@
 declare global {
 	namespace App {
 		interface Platform {
-			env: Env;
+			/** TURNSTILE_SECRET is a Worker secret (.dev.vars locally), so it isn't in the generated Env. */
+			env: Env & { TURNSTILE_SECRET?: string };
 			ctx: ExecutionContext;
 			caches: CacheStorage;
 			cf?: IncomingRequestCfProperties;

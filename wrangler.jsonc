@@ -30,7 +30,9 @@
 	"vars": {
 		"ACCESS_TEAM_DOMAIN": "stromokocur5.cloudflareaccess.com",
 		"ACCESS_AUD": "17c695f5c98ced0a393dc455bae2063bb73e44fb64cc9a9e00ac8256e6abf2f6",
-		"ADMIN_EMAILS": "gabrielkohut3@gmail.com,gabrielkohut3@proton.me"
+		"ADMIN_EMAILS": "gabrielkohut3@gmail.com,gabrielkohut3@proton.me",
+		// Frontend hostnames Turnstile tokens may come from (secret TURNSTILE_SECRET is set on the Worker).
+		"TURNSTILE_HOSTNAMES": "receptio.kohut.xyz,receptio.gabrielkohut3.workers.dev"
 	},
 	"routes": [{ "pattern": "receptio.kohut.xyz", "custom_domain": true }],
 	"observability": {

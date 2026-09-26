@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Icon from '$lib/components/Icon.svelte';
+	import { createChallenge } from '$lib/turnstile';
 
 	let { recipeId }: { recipeId: string } = $props();
 
@@ -10,6 +11,8 @@
 	let sentKind = $state<'worked' | 'problem' | null>(null);
 	let message = $state('');
 	let errorText = $state('');
+	let challengeBox: HTMLDivElement;
+	let challenge: Awaited<ReturnType<typeof createChallenge>> | null = null;
 
 	function readSent(): Record<string, string> {
 		try {
@@ -22,10 +25,25 @@
 	onMount(() => {
 		const kind = readSent()[recipeId];
 		if (kind === 'worked' || kind === 'problem') sentKind = kind;
+		return () => challenge?.remove();
 	});
+
+	/** Turnstile loads only when someone actually sends feedback. */
+	async function humanToken(): Promise<string> {
+		challenge ??= await createChallenge(challengeBox, 'feedback');
+		return challenge.token();
+	}
 
 	async function send(kind: 'worked' | 'problem') {
 		mode = 'sending';
+		let turnstile: string;
+		try {
+			turnstile = await humanToken();
+		} catch {
+			errorText = 'Nepodarilo sa overiť, že nie si robot. Skús to znova.';
+			mode = 'error';
+			return;
+		}
 		try {
 			const res = await fetch('/api/feedback', {
 				method: 'POST',
@@ -33,7 +51,8 @@
 				body: JSON.stringify({
 					recipeId,
 					kind,
-					message: message.trim() || undefined
+					message: message.trim() || undefined,
+					turnstile
 				})
 			});
 			if (!res.ok) {
@@ -98,6 +117,7 @@
 		{/if}
 		{#if mode === 'error'}<p class="err" role="alert">{errorText}</p>{/if}
 	{/if}
+	<div class="challenge" bind:this={challengeBox}></div>
 </div>
 
 <style>
@@ -148,6 +168,9 @@
 		font-weight: 500;
 		text-decoration: underline;
 		cursor: pointer;
+	}
+	.challenge:empty {
+		display: none;
 	}
 	.err {
 		margin: 0;

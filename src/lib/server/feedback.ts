@@ -9,6 +9,8 @@ export const feedbackSchema = z
 		recipeId: z.string().regex(/^[a-z0-9-]{1,80}$/),
 		kind: z.enum(['worked', 'problem']),
 		message: z.string().trim().max(2000).optional(),
+		/** Turnstile token from the widget. */
+		turnstile: z.string().max(2048),
 		/** Honeypot, see suggestions. */
 		website: z.string().max(200).optional()
 	})

@@ -7,6 +7,7 @@ import {
 	feedbackToday,
 	saveFeedback
 } from '$lib/server/feedback';
+import { verifyTurnstile } from '$lib/server/turnstile';
 import type { RequestHandler } from './$types';
 
 export const prerender = false;
@@ -34,6 +35,15 @@ export const POST: RequestHandler = async ({ request, platform, getClientAddress
 	if (!parsed.success) error(400, parsed.error.issues[0]?.message ?? 'Neplatná požiadavka');
 	if (!getContent().recipeDetails.has(parsed.data.recipeId)) error(404, 'Recept neexistuje');
 	if (parsed.data.website) return json({ ok: true });
+
+	const human = await verifyTurnstile({
+		secret: env.TURNSTILE_SECRET,
+		hostnames: env.TURNSTILE_HOSTNAMES,
+		action: 'feedback',
+		token: parsed.data.turnstile,
+		remoteip: getClientAddress()
+	});
+	if (!human) error(403, 'Overenie, že nie si robot, zlyhalo. Skús to znova.');
 
 	let saved = false;
 	try {
