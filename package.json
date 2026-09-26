@@ -6,6 +6,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "wrangler types && vite build",
+		"build:ci": "(pnpm prices:sync || echo 'Ceny sa nepodarilo stiahnuť, použijú sa posledné z gitu.') && pnpm build",
 		"preview": "wrangler dev .svelte-kit/cloudflare/_worker.js --port 4173",
 		"prepare": "(svelte-kit sync && wrangler types) || echo ''",
 		"check": "wrangler types && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
