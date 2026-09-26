@@ -1,0 +1,31 @@
+title: Tacos s čiernou fazuľou a pečeným batátom
+description: Kukuričné tacos s údeným batátom, fazuľou a rýchlym guacamole.
+cuisine: mexicka
+meals: [obed, vecera]
+time: 35
+active: 15
+servings: 4
+difficulty: 1
+tags: [party]
+ingredients:
+  - batat: 2 ks | na kocky 1,5 cm
+  - olej: 2 pl
+  - udena-paprika: 2 čl
+  - kmin: 2 čl
+  - cili: 1/2 čl
+  - sol: 1 čl
+  - fazula-cierna: 2 ks
+  - cesnak: 2 ks
+  - avokado: 2 ks
+  - limetka: 2 ks
+  - cibula-cervena: 1 ks | nadrobno
+  - bylinky-koriander: 4 pl
+  - kukuricne-tortilly: 12 ks
+steps:
+  - Rúru predhrej na 220 °C. Batát premiešaj s polovicou oleja, údenou paprikou, polovicou kmínu, čili a štipkou soli a peč 25 minút.
+  - Fazuľu zohrej so zvyškom oleja, cesnakom a kmínom a vidličkou ju čiastočne roztlač.
+  - Avokádo roztlač s limetkou, polovicou cibule a soľou.
+  - Tortilly zohrej na suchej panvici z oboch strán do mäkka.
+  - Plň fazuľou, batátom, guacamole, cibuľou a koriandrom.
+tips:
+  - Zvyšnú červenú cibuľu zalej limetkovou šťavou so soľou a za 10 minút máš rýchlo nakladanú cibuľu.

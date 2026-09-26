@@ -1,0 +1,372 @@
+import { marked } from 'marked';
+import { parse as parseYaml } from 'yaml';
+import { z } from 'zod';
+import { parseAmount, toGrams } from '$lib/amounts';
+import { recipeAllergens, recipeGluten, recipeNutrients, recipeWarnings } from '$lib/nutrition';
+import { bestPrice } from '$lib/pricing';
+import {
+	ALLERGENS,
+	INGREDIENT_CATEGORIES,
+	MEALS,
+	UNITS,
+	WIKI_SECTIONS,
+	type Catalog,
+	type Cuisine,
+	type Ingredient,
+	type IngredientCategory,
+	type PriceEntry,
+	type RecipeDetail,
+	type RecipeLine,
+	type Store,
+	type WikiPage
+} from '$lib/types';
+
+const slug = z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'id musí byť kebab-case bez diakritiky');
+const hexColor = z.string().regex(/^#[0-9a-f]{6}$/i);
+const isoDate = z.union([z.string(), z.date()]).transform((v, ctx) => {
+	const iso = v instanceof Date ? v.toISOString().slice(0, 10) : v;
+	if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) {
+		ctx.addIssue({ code: 'custom', message: `Dátum musí byť YYYY-MM-DD: ${iso}` });
+	}
+	return iso;
+});
+
+const CATEGORY_COLORS: Record<IngredientCategory, string> = {
+	zelenina: '#6fa35a',
+	ovocie: '#e0643c',
+	strukoviny: '#c9a063',
+	bielkoviny: '#efe3c8',
+	obilniny: '#f1e6cf',
+	'orechy-semienka': '#a4724a',
+	'rastlinne-mlieka': '#f7f1e3',
+	'omacky-pasty': '#b8452c',
+	koreniny: '#d99a2b',
+	oleje: '#e8c65a',
+	ine: '#cfc6b4'
+};
+
+const nutrientsSchema = z
+	.object({
+		kcal: z.number().min(0).max(900),
+		p: z.number().min(0).max(100),
+		c: z.number().min(0).max(100),
+		f: z.number().min(0).max(100),
+		fib: z.number().min(0).max(100),
+		salt: z.number().min(0).max(100),
+		fe: z.number().min(0).max(150),
+		ca: z.number().min(0).max(2500),
+		zn: z.number().min(0).max(20),
+		ala: z.number().min(0).max(60).default(0),
+		b12: z.number().min(0).max(100).default(0)
+	})
+	.strict();
+
+const ingredientSchema = z
+	.object({
+		id: slug,
+		name: z.string().min(1),
+		category: z.enum(INGREDIENT_CATEGORIES),
+		group: slug.optional(),
+		gluten: z.enum(['free', 'risk', 'contains']).default('free'),
+		allergens: z.array(z.enum(ALLERGENS)).default([]),
+		staple: z.boolean().default(false),
+		n: nutrientsSchema,
+		units: z.partialRecord(z.enum(UNITS), z.number().positive()).default({}),
+		density: z.number().positive().default(1),
+		price: z.number().positive(),
+		color: hexColor.optional(),
+		note: z.string().optional(),
+		warn: z.string().optional(),
+		gf_alternative: slug.optional(),
+		howto: z.array(slug).default([])
+	})
+	.strict();
+
+const recipeSchema = z
+	.object({
+		title: z.string().min(1),
+		description: z.string().min(1),
+		cuisine: slug,
+		meals: z.array(z.enum(MEALS)).min(1),
+		time: z.number().int().positive(),
+		active: z.number().int().positive(),
+		servings: z.number().int().positive(),
+		difficulty: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+		tags: z.array(z.string()).default([]),
+		ingredients: z
+			.array(z.record(slug, z.string()).refine((r) => Object.keys(r).length === 1))
+			.min(1),
+		steps: z.array(z.string().min(1)).min(1),
+		tips: z.array(z.string()).default([]),
+		howto: z.array(slug).default([])
+	})
+	.strict();
+
+const cuisineSchema = z
+	.object({
+		id: slug,
+		name: z.string(),
+		region: z.string(),
+		tagline: z.string(),
+		color: hexColor,
+		staples: z.array(z.string()),
+		dishes: z.array(z.string()),
+		pitfalls: z.array(z.string())
+	})
+	.strict();
+
+const pricesSchema = z
+	.object({
+		stores: z.array(z.object({ id: slug, name: z.string(), color: hexColor }).strict()),
+		entries: z
+			.array(
+				z
+					.object({
+						ingredient: slug,
+						store: slug,
+						product: z.string(),
+						pack: z.string(),
+						price: z.number().positive(),
+						date: isoDate,
+						sale_until: isoDate.optional(),
+						url: z.url({ protocol: /^https$/ }).optional()
+					})
+					.strict()
+			)
+			.nullable()
+			.transform((v) => v ?? [])
+	})
+	.strict();
+
+const wikiFrontmatterSchema = z
+	.object({
+		title: z.string(),
+		summary: z.string(),
+		section: z.enum(WIKI_SECTIONS),
+		icon: z.string(),
+		order: z.number()
+	})
+	.strict();
+
+function parseWith<T>(schema: z.ZodType<T>, data: unknown, where: string): T {
+	const result = schema.safeParse(data);
+	if (!result.success) throw new Error(`${where}: ${z.prettifyError(result.error)}`);
+	return result.data;
+}
+
+function fileId(path: string): string {
+	return path
+		.split('/')
+		.pop()!
+		.replace(/\.(ya?ml|md)$/, '');
+}
+
+export interface Content extends Catalog {
+	recipeDetails: Map<string, RecipeDetail>;
+	wiki: WikiPage[];
+}
+
+export interface RawContent {
+	ingredients: string;
+	cuisines: string;
+	prices: string;
+	recipes: Record<string, string>;
+	wiki: Record<string, string>;
+}
+
+export function compileContent(raw: RawContent, today: Date): Content {
+	const ingredients: Ingredient[] = parseWith(
+		z.array(ingredientSchema),
+		parseYaml(raw.ingredients),
+		'content/ingredients.yaml'
+	).map((i) => ({
+		id: i.id,
+		name: i.name,
+		category: i.category,
+		group: i.group ?? i.id,
+		gluten: i.gluten,
+		allergens: i.allergens,
+		staple: i.staple,
+		per100g: {
+			kcal: i.n.kcal,
+			protein: i.n.p,
+			carbs: i.n.c,
+			fat: i.n.f,
+			fiber: i.n.fib,
+			salt: i.n.salt,
+			iron: i.n.fe,
+			calcium: i.n.ca,
+			zinc: i.n.zn,
+			ala: i.n.ala,
+			b12: i.n.b12
+		},
+		units: i.units,
+		density: i.density,
+		priceEstimate: i.price,
+		color: i.color ?? CATEGORY_COLORS[i.category],
+		note: i.note,
+		warn: i.warn,
+		gfAlternative: i.gf_alternative,
+		howto: i.howto
+	}));
+
+	const byId = new Map(ingredients.map((i) => [i.id, i]));
+	if (byId.size !== ingredients.length) throw new Error('ingredients.yaml: duplicitné id');
+	for (const i of ingredients) {
+		if (i.gfAlternative && byId.get(i.gfAlternative)?.gluten !== 'free') {
+			throw new Error(
+				`${i.id}: gf_alternative "${i.gfAlternative}" neexistuje alebo nie je bezlepková`
+			);
+		}
+	}
+
+	const cuisines: Cuisine[] = parseWith(
+		z.array(cuisineSchema),
+		parseYaml(raw.cuisines),
+		'content/cuisines.yaml'
+	);
+	const cuisineIds = new Set(cuisines.map((c) => c.id));
+
+	const pricesRaw = parseWith(pricesSchema, parseYaml(raw.prices), 'content/prices.yaml');
+	const stores: Store[] = pricesRaw.stores;
+	const storeIds = new Set(stores.map((s) => s.id));
+	const prices: PriceEntry[] = pricesRaw.entries.map((e, index) => {
+		const where = `content/prices.yaml entries[${index}]`;
+		const ingredient = byId.get(e.ingredient);
+		if (!ingredient) throw new Error(`${where}: neznáma surovina "${e.ingredient}"`);
+		if (!storeIds.has(e.store)) throw new Error(`${where}: neznámy obchod "${e.store}"`);
+		const pack = parseAmount(e.pack);
+		return {
+			ingredientId: e.ingredient,
+			storeId: e.store,
+			product: e.product,
+			packGrams: toGrams(pack.amount, pack.unit, ingredient),
+			price: e.price,
+			date: e.date,
+			saleUntil: e.sale_until,
+			url: e.url
+		};
+	});
+
+	const wiki: WikiPage[] = Object.entries(raw.wiki)
+		.map(([path, text]) => {
+			const where = `content/wiki/${fileId(path)}.md`;
+			const match = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/.exec(text.replace(/\r\n/g, '\n'));
+			if (!match) throw new Error(`${where}: chýba frontmatter`);
+			const meta = parseWith(wikiFrontmatterSchema, parseYaml(match[1]), where);
+			return { slug: fileId(path), ...meta, html: marked.parse(match[2], { async: false }) };
+		})
+		.sort((a, b) => a.order - b.order);
+
+	const wikiBySlug = new Map(wiki.map((w) => [w.slug, w]));
+	const howtoLink = (slugId: string, where: string) => {
+		const page = wikiBySlug.get(slugId);
+		if (!page) throw new Error(`${where}: neznámy návod "${slugId}" (content/wiki/${slugId}.md)`);
+		return { slug: page.slug, title: page.title };
+	};
+	for (const i of ingredients) for (const h of i.howto) howtoLink(h, `ingredients.yaml ${i.id}`);
+
+	const recipeDetails = new Map<string, RecipeDetail>();
+	for (const [path, text] of Object.entries(raw.recipes)) {
+		const id = fileId(path);
+		const where = `content/recipes/${id}.yaml`;
+		parseWith(slug, id, `${where} (názov súboru)`);
+		const r = parseWith(recipeSchema, parseYaml(text), where);
+		if (!cuisineIds.has(r.cuisine)) throw new Error(`${where}: neznáma kuchyňa "${r.cuisine}"`);
+		if (r.active > r.time) throw new Error(`${where}: active nesmie byť viac ako time`);
+
+		const lines: RecipeLine[] = r.ingredients.map((entry) => {
+			const [ingredientId, amountText] = Object.entries(entry)[0];
+			const ingredient = byId.get(ingredientId);
+			if (!ingredient) throw new Error(`${where}: neznáma surovina "${ingredientId}"`);
+			try {
+				const { amount, unit, note } = parseAmount(amountText);
+				return { ingredientId, grams: toGrams(amount, unit, ingredient), amount, unit, note };
+			} catch (error) {
+				throw new Error(`${where}: ${ingredientId}: ${(error as Error).message}`);
+			}
+		});
+
+		const used = [...new Set(lines.map((l) => l.ingredientId))].map((i) => byId.get(i)!);
+		const gluten = recipeGluten(used);
+		const perServing = recipeNutrients(lines, byId, r.servings);
+
+		let cost = 0;
+		let costIsEstimate = false;
+		for (const line of lines) {
+			const price = bestPrice(byId.get(line.ingredientId)!, prices, today);
+			cost += (price.perKg * line.grams) / 1000;
+			if (price.isEstimate && line.grams > 0) costIsEstimate = true;
+		}
+
+		recipeDetails.set(id, {
+			id,
+			title: r.title,
+			description: r.description,
+			cuisine: r.cuisine,
+			meals: r.meals,
+			time: r.time,
+			activeTime: r.active,
+			servings: r.servings,
+			difficulty: r.difficulty,
+			tags: r.tags,
+			gluten: gluten.status,
+			gfSwappable: gluten.swappable,
+			allergens: recipeAllergens(used),
+			perServing,
+			costPerServing: cost / r.servings,
+			costIsEstimate,
+			lines,
+			steps: r.steps,
+			tips: r.tips,
+			warnings: recipeWarnings(used, byId, perServing),
+			howto: [...new Set([...r.howto, ...used.flatMap((i) => i.howto)])].map((h) =>
+				howtoLink(h, where)
+			)
+		});
+	}
+
+	const recipes = [...recipeDetails.values()]
+		.map(
+			({ steps: _steps, tips: _tips, warnings: _warnings, howto: _howto, ...summary }) => summary
+		)
+		.sort((a, b) => a.title.localeCompare(b.title, 'sk'));
+
+	return { ingredients, recipes, cuisines, stores, prices, recipeDetails, wiki };
+}
+
+let cached: Content | undefined;
+
+export function getContent(): Content {
+	cached ??= compileContent(
+		{
+			ingredients: import.meta.glob('/content/ingredients.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/ingredients.yaml'] as string,
+			cuisines: import.meta.glob('/content/cuisines.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/cuisines.yaml'] as string,
+			prices: import.meta.glob('/content/prices.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/prices.yaml'] as string,
+			recipes: import.meta.glob('/content/recipes/*.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			}),
+			wiki: import.meta.glob('/content/wiki/*.md', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})
+		},
+		new Date()
+	);
+	return cached;
+}

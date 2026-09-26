@@ -1,0 +1,30 @@
+title: Zemiakový guláš s údeným tofu
+description: Poriadny hustý guláš s paprikou a majoránkou. Údené tofu nahrádza klobásu.
+cuisine: slovenska
+meals: [obed, vecera]
+time: 50
+active: 15
+servings: 4
+difficulty: 1
+tags: [klasika, one-pot]
+ingredients:
+  - olej: 3 pl
+  - cibula: 2 ks | nadrobno
+  - tofu-udene: 200 g | na kocky
+  - sladka-paprika: 2 pl
+  - rasca: 1 čl
+  - paradajkovy-pretlak: 1 pl
+  - zemiaky: 8 ks | na kocky
+  - paprika-cervena: 1 ks
+  - voda: 5 hrnček
+  - bobkovy-list: 2 ks
+  - cesnak: 3 ks
+  - majoranka: 1 pl
+  - sol: 1,5 čl
+steps:
+  - Na oleji speň cibuľu dozlatista a pridaj tofu na 3 minúty.
+  - Odstav z ohňa, vmiešaj papriku a rascu, na priamom ohni by sa paprika pripálila a zhorkla, a pridaj pretlak.
+  - Pridaj zemiaky, papriku, vodu a bobkový list a var 25 minút.
+  - Časť zemiakov roztlač, pridaj cesnak, majoránku a soľ a var ešte 5 minút.
+tips:
+  - Na druhý deň je lepší. Pri zohrievaní trochu podlej.

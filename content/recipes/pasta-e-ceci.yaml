@@ -1,0 +1,27 @@
+title: Pasta e ceci
+description: Rímska „chudobná“ polievko-cestovina s cícerom a rozmarínom. Hustá, krémová a hotová za pol hodinu.
+cuisine: talianska
+meals: [obed, vecera]
+time: 30
+active: 15
+servings: 4
+difficulty: 1
+tags: [one-pot]
+ingredients:
+  - olivovy-olej: 3 pl
+  - cesnak: 3 ks
+  - rozmarin: 2 ks
+  - cili: 1 štipka
+  - paradajkovy-pretlak: 2 pl
+  - cicer-sterilizovany: 2 ks
+  - zeleninovy-vyvar: 4 hrnček
+  - cestoviny: 250 g | malé tvary, napr. ditalini
+  - sol: podľa chuti
+  - cierne-korenie: podľa chuti
+steps:
+  - Na oleji zľahka opraž cesnak s rozmarínom a čili, potom pridaj pretlak.
+  - Pridaj cícer a vývar, var 10 minút a tretinu rozmixuj ponorným mixérom.
+  - Pridaj cestoviny a var ich priamo v hrnci podľa obalu. Podlievaj, ak treba, má to byť husté.
+  - Dochuť soľou a korením a polej olejom.
+tips:
+  - S bezlepkovými cestovinami je to rovnako dobré, len ich var o minútu kratšie, rýchlo mäknú.

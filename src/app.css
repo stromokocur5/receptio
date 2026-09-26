@@ -1,0 +1,476 @@
+@import '@fontsource-variable/fraunces/full.css';
+@import '@fontsource-variable/figtree/index.css';
+
+:root {
+	--paper: #f6efe2;
+	--paper-2: #efe5d2;
+	--card: #fffaf1;
+	--ink: #1d2e24;
+	--ink-2: #45564b;
+	--muted: #7b857b;
+	--line: #e2d6bf;
+	--leaf: #2f6b43;
+	--leaf-2: #6fa35a;
+	--leaf-soft: #dcebd3;
+	--tomato: #d9582f;
+	--tomato-soft: #f8dccf;
+	--turmeric: #e3a92a;
+	--turmeric-soft: #f7e7bf;
+	--plum: #7b3f61;
+	--sky: #3a78a8;
+	--sky-soft: #d9e7f1;
+	--plate: #fbf7ee;
+	--plate-rim: #e9dfcc;
+	--shadow: 0 1px 0 rgba(29, 46, 36, 0.04), 0 10px 30px -12px rgba(60, 44, 20, 0.22);
+	--shadow-lift: 0 2px 0 rgba(29, 46, 36, 0.05), 0 22px 44px -18px rgba(60, 44, 20, 0.35);
+	--radius: 22px;
+	--radius-sm: 14px;
+	--font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+	--font-body: 'Figtree Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+	--ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+	--grain-opacity: 0.35;
+	color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme='light']) {
+		--paper: #111a14;
+		--paper-2: #16211a;
+		--card: #1a261e;
+		--ink: #f0e9da;
+		--ink-2: #c9c2b1;
+		--muted: #909a90;
+		--line: #2b3a30;
+		--leaf: #86c893;
+		--leaf-2: #86c893;
+		--leaf-soft: #22382a;
+		--tomato: #f1805a;
+		--tomato-soft: #3d2519;
+		--turmeric: #f0c25a;
+		--turmeric-soft: #3a2f16;
+		--plum: #d493b8;
+		--sky: #86b8dd;
+		--sky-soft: #1c2e3b;
+		--plate: #243128;
+		--plate-rim: #2f3f34;
+		--shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 12px 30px -12px rgba(0, 0, 0, 0.6);
+		--shadow-lift: 0 2px 0 rgba(0, 0, 0, 0.3), 0 24px 44px -16px rgba(0, 0, 0, 0.75);
+		--grain-opacity: 0.18;
+		color-scheme: dark;
+	}
+}
+
+:root[data-theme='dark'] {
+	--paper: #111a14;
+	--paper-2: #16211a;
+	--card: #1a261e;
+	--ink: #f0e9da;
+	--ink-2: #c9c2b1;
+	--muted: #909a90;
+	--line: #2b3a30;
+	--leaf: #86c893;
+	--leaf-2: #86c893;
+	--leaf-soft: #22382a;
+	--tomato: #f1805a;
+	--tomato-soft: #3d2519;
+	--turmeric: #f0c25a;
+	--turmeric-soft: #3a2f16;
+	--plum: #d493b8;
+	--sky: #86b8dd;
+	--sky-soft: #1c2e3b;
+	--plate: #243128;
+	--plate-rim: #2f3f34;
+	--shadow: 0 1px 0 rgba(0, 0, 0, 0.3), 0 12px 30px -12px rgba(0, 0, 0, 0.6);
+	--shadow-lift: 0 2px 0 rgba(0, 0, 0, 0.3), 0 24px 44px -16px rgba(0, 0, 0, 0.75);
+	--grain-opacity: 0.18;
+	color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+	scroll-padding-top: 90px;
+}
+
+body {
+	margin: 0;
+	background: var(--paper);
+	color: var(--ink);
+	font-family: var(--font-body);
+	font-size: 17px;
+	line-height: 1.55;
+	-webkit-font-smoothing: antialiased;
+	overflow-x: hidden;
+}
+
+/* Paper grain: an inline SVG noise tile, so the page feels printed rather than flat. */
+body::before {
+	content: '';
+	position: fixed;
+	inset: 0;
+	pointer-events: none;
+	z-index: 0;
+	opacity: var(--grain-opacity);
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .38 0 0 0 0 .25 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: var(--font-display);
+	font-variation-settings:
+		'SOFT' 100,
+		'WONK' 1;
+	font-weight: 620;
+	line-height: 1.08;
+	letter-spacing: -0.015em;
+	margin: 0 0 0.4em;
+	text-wrap: balance;
+}
+
+h1 {
+	font-size: clamp(2.2rem, 6vw, 3.8rem);
+	font-weight: 680;
+}
+h2 {
+	font-size: clamp(1.6rem, 3.6vw, 2.3rem);
+}
+h3 {
+	font-size: 1.25rem;
+}
+
+p {
+	margin: 0 0 1em;
+	text-wrap: pretty;
+}
+
+a {
+	color: var(--leaf);
+	text-decoration-thickness: 1.5px;
+	text-underline-offset: 3px;
+}
+
+button,
+input,
+select,
+textarea {
+	font: inherit;
+	color: inherit;
+}
+
+button {
+	cursor: pointer;
+}
+
+:focus-visible {
+	outline: 3px solid var(--turmeric);
+	outline-offset: 2px;
+	border-radius: 8px;
+}
+
+img,
+svg {
+	display: block;
+}
+
+.wrap {
+	width: 100%;
+	max-width: 1180px;
+	margin: 0 auto;
+	padding: 0 16px;
+	position: relative;
+}
+
+@media (min-width: 720px) {
+	.wrap {
+		padding: 0 28px;
+	}
+}
+
+.eyebrow {
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+
+.muted {
+	color: var(--muted);
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+
+/* ── Buttons ─────────────────────────────────────────── */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.5em;
+	border: 0;
+	border-radius: 999px;
+	padding: 0.7em 1.2em;
+	font-weight: 650;
+	font-size: 0.95rem;
+	text-decoration: none;
+	background: var(--ink);
+	color: var(--paper);
+	transition:
+		transform 0.25s var(--ease-spring),
+		box-shadow 0.25s,
+		background 0.2s;
+	white-space: nowrap;
+}
+.btn:hover {
+	transform: translateY(-2px);
+	box-shadow: var(--shadow);
+}
+.btn:active {
+	transform: translateY(0) scale(0.97);
+}
+.btn.ghost {
+	background: transparent;
+	color: var(--ink);
+	box-shadow: inset 0 0 0 1.5px var(--line);
+}
+.btn.ghost:hover {
+	box-shadow: inset 0 0 0 1.5px var(--ink-2);
+}
+.btn.leaf {
+	background: var(--leaf);
+	color: var(--paper);
+}
+.btn.small {
+	padding: 0.45em 0.9em;
+	font-size: 0.85rem;
+}
+.btn:disabled {
+	opacity: 0.45;
+	pointer-events: none;
+}
+
+.icon-btn {
+	display: inline-grid;
+	place-items: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 50%;
+	border: 0;
+	background: var(--paper-2);
+	color: var(--ink);
+	transition:
+		transform 0.25s var(--ease-spring),
+		background 0.2s;
+}
+.icon-btn:hover {
+	transform: rotate(-8deg) scale(1.08);
+	background: var(--line);
+}
+
+/* ── Chips / badges ──────────────────────────────────── */
+.chip {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.4em;
+	border-radius: 999px;
+	padding: 0.38em 0.85em;
+	font-size: 0.86rem;
+	font-weight: 600;
+	border: 1.5px solid var(--line);
+	background: var(--card);
+	color: var(--ink-2);
+	transition:
+		transform 0.2s var(--ease-spring),
+		background 0.2s,
+		border-color 0.2s,
+		color 0.2s;
+	white-space: nowrap;
+	text-decoration: none;
+}
+button.chip:hover,
+a.chip:hover {
+	transform: translateY(-1px);
+	border-color: var(--ink-2);
+}
+.chip[aria-pressed='true'],
+.chip.on {
+	background: var(--ink);
+	border-color: var(--ink);
+	color: var(--paper);
+}
+
+.badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35em;
+	border-radius: 8px;
+	padding: 0.2em 0.55em;
+	font-size: 0.76rem;
+	font-weight: 700;
+	letter-spacing: 0.01em;
+	background: var(--paper-2);
+	color: var(--ink-2);
+	white-space: nowrap;
+}
+.badge.leaf {
+	background: var(--leaf-soft);
+	color: var(--leaf);
+}
+.badge.tomato {
+	background: var(--tomato-soft);
+	color: var(--tomato);
+}
+.badge.turmeric {
+	background: var(--turmeric-soft);
+	color: color-mix(in srgb, var(--turmeric) 70%, var(--ink));
+}
+.badge.sky {
+	background: var(--sky-soft);
+	color: var(--sky);
+}
+
+/* Slightly rotated "sticker" look for highlight badges. */
+.sticker {
+	transform: rotate(-3deg);
+	box-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.card {
+	background: var(--card);
+	border-radius: var(--radius);
+	box-shadow: var(--shadow);
+	border: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+}
+
+/* ── Form fields ─────────────────────────────────────── */
+.field {
+	display: flex;
+	align-items: center;
+	gap: 0.6em;
+	background: var(--card);
+	border: 1.5px solid var(--line);
+	border-radius: 999px;
+	padding: 0.2em 0.4em 0.2em 1em;
+	transition:
+		border-color 0.2s,
+		box-shadow 0.2s;
+}
+.field:focus-within {
+	border-color: var(--leaf);
+	box-shadow: 0 0 0 4px color-mix(in srgb, var(--leaf) 18%, transparent);
+}
+.field input,
+.field select {
+	flex: 1;
+	min-width: 0;
+	width: 100%;
+	border: 0;
+	background: transparent;
+	padding: 0.55em 0;
+	outline: none;
+}
+
+input[type='number'] {
+	appearance: textfield;
+	-moz-appearance: textfield;
+}
+input[type='number']::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+}
+
+input[type='range'] {
+	accent-color: var(--leaf);
+	width: 100%;
+}
+
+/* ── Prose (wiki) ────────────────────────────────────── */
+.prose {
+	max-width: 68ch;
+}
+.prose h2 {
+	font-size: 1.55rem;
+	margin-top: 1.8em;
+}
+.prose h3 {
+	margin-top: 1.5em;
+}
+.prose ul,
+.prose ol {
+	padding-left: 1.25em;
+}
+.prose li {
+	margin: 0.35em 0;
+}
+.prose li::marker {
+	color: var(--leaf-2);
+}
+.prose strong {
+	font-weight: 700;
+}
+.prose table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 1.2em 0;
+	font-size: 0.95rem;
+	display: block;
+	overflow-x: auto;
+}
+.prose th,
+.prose td {
+	text-align: left;
+	padding: 0.55em 0.8em;
+	border-bottom: 1px solid var(--line);
+}
+.prose th {
+	font-size: 0.8rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: var(--muted);
+}
+.prose ol li::marker {
+	font-family: var(--font-display);
+	font-weight: 700;
+}
+
+/* ── Motion ──────────────────────────────────────────── */
+@keyframes rise {
+	from {
+		opacity: 0;
+		transform: translateY(14px);
+	}
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+.rise {
+	animation: rise 0.6s var(--ease-out) both;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+	animation-duration: 0.28s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}

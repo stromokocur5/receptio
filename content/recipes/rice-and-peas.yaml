@@ -1,0 +1,26 @@
+title: Rice and peas
+description: Jamajská ryža s červenou fazuľou v kokosovom mlieku s tymiánom a novým korením.
+cuisine: karibska
+meals: [obed, vecera]
+time: 35
+active: 10
+servings: 4
+difficulty: 1
+tags: [one-pot]
+ingredients:
+  - ryza-basmati: 300 g | prepláchnutá
+  - fazula-cervena: 1 ks
+  - kokosove-mlieko: 1 ks
+  - voda: 1,5 hrnček
+  - jarna-cibulka: 3 ks | nakrájaná
+  - cesnak: 2 ks | rozdrvený
+  - tymian: 1 čl
+  - nove-korenie: 4 ks
+  - cili: 1 štipka
+  - sol: 1 čl
+steps:
+  - Do hrnca daj kokosové mlieko, vodu, fazuľu, jarnú cibuľku, cesnak, tymián, nové korenie, čili a soľ a priveď do varu.
+  - Pridaj ryžu, premiešaj, prikry a na najmenšom ohni var 20 minút. Nemiešaj.
+  - Odstav, nechaj 5 minút dôjsť pod pokrievkou a prehrab vidličkou.
+tips:
+  - Tradične sa pridáva celá paprička scotch bonnet. Kto chce štipľavé, nech ju na konci nerozpučí.

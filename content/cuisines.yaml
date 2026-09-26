@@ -1,0 +1,219 @@
+# Kuchyne sveta. staples = bezlepkové základy, dishes = prirodzene (alebo ľahko) vegánske a bezlepkové jedlá,
+# pitfalls = na čo si dať pozor pri vegánskej a bezlepkovej strave.
+
+- id: indicka-juh
+  name: Juhoindická
+  region: Ázia
+  tagline: Ryža, šošovica a kokos. Najbezpečnejšia indická cesta.
+  color: '#e8a91c'
+  staples: [ryža, šošovica, cícerová múka, kokosové mlieko, kari listy, horčičné semienko]
+  dishes: [Dosa (kvasená ryžovo-šošovicová palacinka), Idli, Sambar, Kokosový dal, Rasam]
+  pitfalls:
+    - Asafoetida (hing) sa často riedi pšeničnou múkou, hľadaj bezlepkovú.
+    - V reštauráciách sa používa ghee, pýtaj si olej.
+
+- id: indicka-sever
+  name: Severoindická
+  region: Ázia
+  tagline: Kari, masala a strukoviny. Stačí vynechať ghee a smotanu.
+  color: '#c96a1e'
+  staples: [cícer, fazuľa, ryža basmati, paradajky, garam masala]
+  dishes: [Chana masala, Rajma, Aloo gobi, Dal tadka, Baingan bharta]
+  pitfalls:
+    - Omáčky často obsahujú smotanu, jogurt, maslo alebo ghee.
+    - Naan, roti, chapati a paratha sú z pšenice.
+    - Asafoetida (hing) býva riedená pšeničnou múkou.
+
+- id: mexicka
+  name: Mexická
+  region: Latinská Amerika
+  tagline: Kukurica, fazuľa, avokádo a limetka.
+  color: '#e0643c'
+  staples: [kukurica (masa harina), čierna fazuľa, ryža, avokádo, čili]
+  dishes: [Kukuričné tacos, Guacamole, Frijoles negros, Pozole verde (bez mäsa), Elote]
+  pitfalls:
+    - Pšeničné tortilly (flour tortillas) a tortilly „mix“ s pšenicou.
+    - Bravčová masť (manteca) vo fazuliach (refried beans).
+    - Syr (queso) a kyslá smotana (crema) takmer všade.
+
+- id: thajska
+  name: Thajská
+  region: Ázia
+  tagline: Kokosové kari, ryžové rezance a čerstvé bylinky.
+  color: '#5f8d3a'
+  staples: [jazmínová ryža, ryžové rezance, tofu, kokosové mlieko, limetka, citrónová tráva]
+  dishes:
+    [
+      Zelené a červené kari s tofu,
+      Pad thai (vegánsky),
+      Som tam (bez rybej omáčky),
+      Tom kha s hubami
+    ]
+  pitfalls:
+    - Rybia omáčka (nam pla) a krevetová pasta (kapi) sú v kari pastách aj omáčkach.
+    - Ustricová omáčka, existuje hubová vegánska verzia.
+    - Bežná sójová omáčka obsahuje pšenicu, použi tamari.
+
+- id: vietnamska
+  name: Vietnamská
+  region: Ázia
+  tagline: Svieže, bylinkové a ľahké. Ryžový papier a rezance.
+  color: '#67b25a'
+  staples: [ryžový papier, ryžové rezance, tofu, mäta, koriander, limetka]
+  dishes:
+    [
+      Letné závitky (gỏi cuốn),
+      Pho chay (vegánske pho),
+      Bún chay,
+      Đậu hũ sốt cà chua (tofu v paradajkách)
+    ]
+  pitfalls:
+    - Rybia omáčka (nước mắm) je základ dresingov, pýtaj si „chay“ (vegetariánsku) verziu.
+    - Vývar do pho je tradične hovädzí.
+    - Hoisin omáčka často obsahuje pšenicu.
+
+- id: etiopska
+  name: Etiópska
+  region: Afrika
+  tagline: Teff, pikantné wots a pôstne jedlá, ktoré sú vegánske tradične.
+  color: '#a8301c'
+  staples: [teff, červená šošovica, cícer, berbere, kapusta]
+  dishes: [Misir wot, Shiro (cícerová kaša), Atkilt wat, Gomen (kel), Injera]
+  pitfalls:
+    - Injera sa mimo Etiópie často mieša s pšeničnou alebo jačmennou múkou, pýtaj sa na 100 % teff.
+    - Niter kibbeh (korenené prepustené maslo), pôstne (tsom) jedlá sú bez neho.
+
+- id: libanonska
+  name: Libanonská a blízkovýchodná
+  region: Blízky východ
+  tagline: Cícer, tahini, olivový olej a kopa zeleniny.
+  color: '#c9a063'
+  staples: [cícer, šošovica, sezam (tahini), ryža, baklažán, olivový olej]
+  dishes: [Hummus, Baba ganoush, Mujaddara, Falafel, Fattoush (bez pity)]
+  pitfalls:
+    - Tabbouleh je z bulguru, kuskus je pšeničný.
+    - Pita a chlieb k mezze sú pšeničné.
+    - Falafel sa niekedy viaže múkou a vyprážajú sa v spoločnom oleji.
+
+- id: peruanska
+  name: Peruánska a andská
+  region: Latinská Amerika
+  tagline: Quinoa, stovky odrôd zemiakov a kukurica.
+  color: '#d6335a'
+  staples: [quinoa, zemiaky, kukurica (choclo), fazuľa, aji amarillo]
+  dishes: [Quinoa šalát, Papa a la huancaína (vegánska), Solterito, Ceviche z húb alebo manga]
+  pitfalls:
+    - Ceviche je tradične z rýb.
+    - Omáčky sa niekedy zahusťujú pšeničnou múkou alebo sušienkami.
+
+- id: zapadoafricka
+  name: Západoafrická
+  region: Afrika
+  tagline: Arašidy, maniok, plantajny a poriadne korenie.
+  color: '#b77a3f'
+  staples: [maniok, jam, plantajny, ryža, arašidy, paradajky]
+  dishes: [Maafe (arašidový prívarok), Jollof rice, Fufu, Kelewele (pikantné plantajny)]
+  pitfalls:
+    - Maggi a iné bujónové kocky môžu obsahovať pšenicu aj živočíšne zložky.
+    - Omáčky sa varia na mäsovom vývare.
+
+- id: karibska
+  name: Karibská
+  region: Latinská Amerika
+  tagline: Kokos, fazuľa, ryža a nové korenie.
+  color: '#f39a2b'
+  staples: [ryža, červená fazuľa, kokosové mlieko, plantajny, nové korenie]
+  dishes: [Rice and peas, Maduros (pečené plantajny), Ital stew (rastafariánska kuchyňa), Callaloo]
+  pitfalls:
+    - Jerk marinády sa niekedy robia so sójovou omáčkou (lepok).
+    - Kurací vývar v ryži a prívarkoch.
+
+- id: brazilska
+  name: Brazílska
+  region: Latinská Amerika
+  tagline: Čierna fazuľa, maniok a tapioka.
+  color: '#3a2f33'
+  staples: [čierna fazuľa, ryža, maniok (tapioka, farofa), pomaranč]
+  dishes: [Vegánska feijoada, Tapioca (manioková placka), Farofa, Acarajé bez krevetovej náplne]
+  pitfalls:
+    - Tradičná feijoada je plná bravčového mäsa.
+    - Pão de queijo obsahuje syr a vajcia.
+
+- id: grecka
+  name: Grécka
+  region: Európa
+  tagline: Olivový olej, fazuľa a pôstna tradícia (nistisima).
+  color: '#3a78a8'
+  staples: [olivový olej, biela fazuľa, šošovica, paradajky, baklažán, oregano]
+  dishes: [Fasolada, Gigantes plaki, Gemista, Fakes (šošovicová polievka), Briam]
+  pitfalls:
+    - Feta, tzatziki a bešamel (s múkou) sú všade.
+    - Pôstne jedlá (nistisima) bývajú vegánske, hľadaj toto slovo v menu.
+
+- id: talianska
+  name: Talianska
+  region: Európa
+  tagline: Cucina povera. Strukoviny, paradajky a olivový olej.
+  color: '#c73a26'
+  staples: [paradajky, cícer, fazuľa, polenta, rizoto ryža, olivový olej]
+  dishes: [Pasta e ceci, Minestrone, Polenta s ragú, Rizoto s hubami (bez masla a syra)]
+  pitfalls:
+    - Cestoviny, gnocchi a pizza sú pšeničné, bezlepkové alternatívy sú bežné.
+    - Parmezán sa pridáva automaticky, pesto ho obsahuje takmer vždy.
+
+- id: japonska
+  name: Japonská
+  region: Ázia
+  tagline: Umami, ryža a jemnosť.
+  color: '#4a2a1a'
+  staples: [ryža, tofu, miso, morské riasy, sezam]
+  dishes: [Teriyaki tofu, Onigiri, Yasai itame, Miso polievka (s bezlepkovým misom)]
+  pitfalls:
+    - Dashi vývar je väčšinou z rýb (bonito), vegánsky je kombu-shiitake.
+    - Mugi miso je jačmenné a sójová omáčka pšeničná, použi tamari a ryžové miso.
+    - Tempura je z pšeničnej múky.
+
+- id: korejska
+  name: Kórejská
+  region: Ázia
+  tagline: Fermentované, pikantné a plné zeleniny.
+  color: '#b8321f'
+  staples: [ryža, tofu, gochugaru, sezamový olej, kimchi]
+  dishes: [Bibimbap s tofu, Dubu jorim, Japchae (sklenené rezance zo sladkých zemiakov)]
+  pitfalls:
+    - Kimchi obsahuje rybiu omáčku alebo krevety, vegánske treba hľadať.
+    - Gochujang takmer vždy obsahuje pšenicu alebo jačmeň.
+
+- id: cinska
+  name: Čínska
+  region: Ázia
+  tagline: Budhistická kuchyňa má stáročia tofu a zeleniny.
+  color: '#d8402b'
+  staples: [ryža, tofu, ryžové rezance, sečuánske korenie, zázvor]
+  dishes: [Mapo tofu (vegánske), Di san xian, Suché fazuľky, Budhistické jedlá]
+  pitfalls:
+    - Sójová omáčka, hoisin a doubanjiang obsahujú pšenicu.
+    - Ustricová omáčka, existuje hubová verzia.
+    - Seitan (mian jin) je čistý lepok.
+
+- id: slovenska
+  name: Slovenská
+  region: Európa
+  tagline: Babkine klasiky v rastlinnej verzii.
+  color: '#6fa35a'
+  staples: [zemiaky, kapusta, šošovica, fazuľa, huby, rasca, majoránka]
+  dishes: [Kyslá šošovica, Zemiakový guláš, Kapustnica s hubami, Fazuľová polievka, Lokše]
+  pitfalls:
+    - Zápražky (zápražka z múky) zahusťujú polievky aj prívarky, nahraď ryžovou múkou.
+    - Bryndza, smotana a slanina sú v tradičných receptoch základ.
+
+- id: moderna
+  name: Moderná rastlinná
+  region: Svet
+  tagline: Bowls, raňajky, proteínové triky a meal prep.
+  color: '#7fa843'
+  staples: [tofu, strukoviny, ovsené vločky, semienka, rastlinné mlieka]
+  dishes: [Tofu praženica, Proteínová kaša, Pečený cícer, Chia puding]
+  pitfalls:
+    - Náhrady mäsa a syra bývajú zo seitanu (lepok), vždy čítaj zloženie.
+    - Ovos je bezpečný len certifikovaný bezlepkový.

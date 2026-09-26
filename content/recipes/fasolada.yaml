@@ -1,0 +1,30 @@
+title: Fasolada
+description: Grécka fazuľová polievka s olivovým olejom, jedna z národných pôstnych klasík.
+cuisine: grecka
+meals: [obed, vecera]
+time: 45
+active: 15
+servings: 4
+difficulty: 1
+tags: [polievka, one-pot]
+ingredients:
+  - olivovy-olej: 4 pl
+  - cibula: 1 ks
+  - mrkva: 2 ks | na kolieska
+  - zeler-stonkovy: 2 ks | nakrájaný
+  - cesnak: 2 ks
+  - paradajkovy-pretlak: 1 pl
+  - paradajky-sterilizovane: 1 ks
+  - fazula-biela: 3 ks
+  - voda: 4 hrnček
+  - oregano: 1 čl
+  - bobkovy-list: 1 ks
+  - sol: 1 čl
+  - citron: 1/2 ks
+steps:
+  - Na polovici oleja speň cibuľu, mrkvu a zeler 8 minút.
+  - Pridaj cesnak a pretlak, po minúte paradajky, fazuľu, vodu, oregano a bobkový list.
+  - Var 25 minút.
+  - Na tanieri polej zvyškom olivového oleja a citrónom, olej je v gréckej kuchyni ingrediencia, nie tuk na smaženie.
+tips:
+  - Zo suchej fazule je to ešte lepšie. Namoč ju cez noc a var ju 1 hodinu pred pridaním zeleniny.

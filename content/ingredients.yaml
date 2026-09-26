@@ -1,0 +1,815 @@
+# Databáza surovín. Hodnoty na 100 g, orientačne podľa USDA FoodData Central.
+# n: kcal, p = bielkoviny g, c = sacharidy g, f = tuky g, fib = vláknina g, salt = soľ g,
+#    fe = železo mg, ca = vápnik mg, zn = zinok mg, ala = omega-3 ALA g, b12 = µg
+# units: gramy na jednotku (ks, pl, čl, hrnček); ml sa prepočíta cez density
+# price: HRUBÝ ODHAD €/kg (v appke označený ako odhad), reálne ceny patria do prices.yaml
+# gluten: free | risk (kontroluj etiketu / krížová kontaminácia) | contains
+# group: zameniteľné suroviny pre špajzu (suchý vs. sterilizovaný cícer)
+# howto: návody zo sekcie Základy (content/wiki), recept na ne odkáže automaticky
+
+# ── Obilniny a prílohy ──────────────────────────────────────────
+- id: ryza-basmati
+  name: Ryža basmati (suchá)
+  howto: [ryza]
+  category: obilniny
+  group: ryza
+  n: { kcal: 360, p: 7.1, c: 79, f: 0.7, fib: 1.3, salt: 0, fe: 0.8, ca: 9, zn: 1.1 }
+  units: { hrnček: 185 }
+  price: 3.5
+  color: '#f4ecd8'
+
+- id: ryza-jazminova
+  name: Ryža jazmínová (suchá)
+  howto: [ryza]
+  category: obilniny
+  group: ryza
+  n: { kcal: 360, p: 7, c: 79, f: 0.6, fib: 1, salt: 0, fe: 0.8, ca: 10, zn: 1.1 }
+  units: { hrnček: 185 }
+  price: 3.5
+  color: '#f4ecd8'
+
+- id: quinoa
+  name: Quinoa (suchá)
+  howto: [quinoa]
+  category: obilniny
+  n: { kcal: 368, p: 14.1, c: 64.2, f: 6.1, fib: 7, salt: 0, fe: 4.6, ca: 47, zn: 3.1, ala: 0.26 }
+  units: { hrnček: 170 }
+  price: 7
+  color: '#e9d9b0'
+
+- id: ovsene-vlocky
+  name: Ovsené vločky
+  category: obilniny
+  gluten: risk
+  gf_alternative: ovsene-vlocky-bezlepkove
+  note: bežný ovos je kontaminovaný pšenicou, pri celiakii len certifikovaný bezlepkový
+  n: { kcal: 379, p: 13.2, c: 67.7, f: 6.5, fib: 10.1, salt: 0, fe: 4.3, ca: 52, zn: 3.6, ala: 0.1 }
+  units: { hrnček: 90, pl: 8 }
+  price: 1.8
+  color: '#e6d3a8'
+
+- id: ovsene-vlocky-bezlepkove
+  name: Ovsené vločky certifikované bezlepkové
+  category: obilniny
+  group: ovsene-vlocky
+  n: { kcal: 379, p: 13.2, c: 67.7, f: 6.5, fib: 10.1, salt: 0, fe: 4.3, ca: 52, zn: 3.6, ala: 0.1 }
+  units: { hrnček: 90, pl: 8 }
+  price: 6
+  color: '#e6d3a8'
+
+- id: cestoviny
+  name: Cestoviny pšeničné (suché)
+  howto: [cestoviny]
+  category: obilniny
+  gluten: contains
+  gf_alternative: cestoviny-bezlepkove
+  n: { kcal: 371, p: 13, c: 75, f: 1.5, fib: 3.2, salt: 0, fe: 1.3, ca: 21, zn: 1.4 }
+  price: 2
+  color: '#f0d890'
+
+- id: cestoviny-bezlepkove
+  name: Cestoviny bezlepkové (kukurica/ryža)
+  howto: [cestoviny]
+  category: obilniny
+  group: cestoviny
+  n: { kcal: 357, p: 7, c: 79, f: 1.5, fib: 2.5, salt: 0, fe: 0.8, ca: 10, zn: 1 }
+  price: 5
+  color: '#f0d890'
+
+- id: hladka-muka
+  name: Hladká múka pšeničná
+  category: obilniny
+  gluten: contains
+  gf_alternative: ryzova-muka
+  n: { kcal: 364, p: 10.3, c: 76, f: 1, fib: 2.7, salt: 0, fe: 1.2, ca: 15, zn: 0.7 }
+  units: { pl: 10 }
+  price: 0.8
+
+- id: ryzova-muka
+  name: Ryžová múka
+  category: obilniny
+  n: { kcal: 366, p: 6, c: 80, f: 1.4, fib: 2.4, salt: 0, fe: 0.35, ca: 10, zn: 0.8 }
+  units: { pl: 10 }
+  price: 3
+
+- id: kukuricne-tortilly
+  name: Kukuričné tortilly (100 % kukurica)
+  category: obilniny
+  gluten: risk
+  note: veľa „kukuričných“ tortíl v obchodoch obsahuje aj pšeničnú múku, hľadaj 100 % kukuricu
+  n: { kcal: 218, p: 5.7, c: 44.6, f: 2.9, fib: 6.3, salt: 0.1, fe: 1.2, ca: 81, zn: 0.9 }
+  units: { ks: 30 }
+  price: 10
+  color: '#e8c56a'
+
+- id: ryzovy-papier
+  name: Ryžový papier
+  category: obilniny
+  n: { kcal: 340, p: 3, c: 83, f: 0.3, fib: 1, salt: 0.8, fe: 0.8, ca: 20, zn: 0.5 }
+  units: { ks: 9 }
+  price: 12
+  color: '#f7f1e3'
+
+- id: ryzove-rezance
+  name: Ryžové rezance (suché)
+  category: obilniny
+  n: { kcal: 364, p: 6, c: 80, f: 0.6, fib: 1.6, salt: 0.1, fe: 0.7, ca: 18, zn: 0.7 }
+  price: 6
+  color: '#f7f1e3'
+
+- id: zemiaky
+  name: Zemiaky
+  category: zelenina
+  n: { kcal: 77, p: 2, c: 17, f: 0.1, fib: 2.2, salt: 0, fe: 0.8, ca: 12, zn: 0.3 }
+  units: { ks: 150 }
+  price: 1
+  color: '#e3c98f'
+
+- id: batat
+  name: Batát (sladký zemiak)
+  category: zelenina
+  n: { kcal: 86, p: 1.6, c: 20, f: 0.1, fib: 3, salt: 0.1, fe: 0.6, ca: 30, zn: 0.3 }
+  units: { ks: 250 }
+  price: 2.5
+  color: '#e8873a'
+
+# ── Strukoviny ─────────────────────────────────────────────────
+- id: sosovica-cervena
+  name: Šošovica červená (suchá)
+  howto: [strukoviny]
+  category: strukoviny
+  n: { kcal: 358, p: 24, c: 63, f: 2.2, fib: 11, salt: 0, fe: 7.4, ca: 48, zn: 3.6, ala: 0.1 }
+  units: { hrnček: 190 }
+  price: 3
+  color: '#e39a55'
+
+- id: sosovica-hneda
+  name: Šošovica hnedá/zelená (suchá)
+  howto: [strukoviny]
+  category: strukoviny
+  n: { kcal: 352, p: 24.6, c: 63, f: 1.1, fib: 10.7, salt: 0, fe: 6.5, ca: 35, zn: 3.3, ala: 0.1 }
+  units: { hrnček: 190 }
+  price: 3
+  color: '#8a6a3d'
+
+- id: cicer-sterilizovany
+  name: Cícer sterilizovaný (scedený)
+  howto: [strukoviny]
+  category: strukoviny
+  group: cicer
+  n: { kcal: 140, p: 7.4, c: 22, f: 2.6, fib: 6.5, salt: 0.5, fe: 1.5, ca: 45, zn: 1.2, ala: 0.05 }
+  units: { ks: 240 }
+  price: 3
+  color: '#dcb66c'
+  note: 1 ks = plechovka 400 g, po scedení ~240 g
+
+- id: cicer-suchy
+  name: Cícer suchý
+  howto: [strukoviny]
+  category: strukoviny
+  group: cicer
+  n: { kcal: 378, p: 20.5, c: 63, f: 6, fib: 12.2, salt: 0, fe: 4.3, ca: 57, zn: 2.8, ala: 0.1 }
+  price: 3
+  color: '#dcb66c'
+
+- id: fazula-cierna
+  name: Čierna fazuľa sterilizovaná (scedená)
+  howto: [strukoviny]
+  category: strukoviny
+  n: { kcal: 132, p: 8.9, c: 23.7, f: 0.5, fib: 8.7, salt: 0.5, fe: 2.1, ca: 27, zn: 1.1, ala: 0.1 }
+  units: { ks: 240 }
+  price: 3.5
+  color: '#3a2f33'
+
+- id: fazula-cervena
+  name: Červená fazuľa sterilizovaná (scedená)
+  howto: [strukoviny]
+  category: strukoviny
+  n: { kcal: 127, p: 8.7, c: 22.8, f: 0.5, fib: 6.4, salt: 0.5, fe: 2.9, ca: 35, zn: 1, ala: 0.1 }
+  units: { ks: 240 }
+  price: 3
+  color: '#8e2f2a'
+
+- id: fazula-biela
+  name: Biela fazuľa sterilizovaná (scedená)
+  howto: [strukoviny]
+  category: strukoviny
+  n: { kcal: 139, p: 9.7, c: 25, f: 0.4, fib: 6.3, salt: 0.5, fe: 3.7, ca: 90, zn: 1.4, ala: 0.1 }
+  units: { ks: 240 }
+  price: 3
+  color: '#efe6d2'
+
+# ── Bielkoviny ─────────────────────────────────────────────────
+- id: tofu-natural
+  name: Tofu natural
+  howto: [tofu]
+  category: bielkoviny
+  group: tofu
+  allergens: [soy]
+  n: { kcal: 144, p: 15, c: 2, f: 8.5, fib: 1.5, salt: 0, fe: 2.5, ca: 150, zn: 1.6, ala: 0.5 }
+  price: 7
+  color: '#f3ead2'
+  note: tofu zrážané síranom vápenatým má výrazne viac vápnika
+
+- id: tofu-udene
+  name: Tofu údené
+  howto: [tofu]
+  category: bielkoviny
+  group: tofu
+  allergens: [soy]
+  n: { kcal: 160, p: 16, c: 2, f: 9.5, fib: 1, salt: 1.2, fe: 2.5, ca: 150, zn: 1.6, ala: 0.5 }
+  price: 9
+  color: '#c89458'
+
+# ── Zelenina ───────────────────────────────────────────────────
+- id: cibula
+  name: Cibuľa
+  howto: [cibula]
+  category: zelenina
+  n: { kcal: 40, p: 1.1, c: 9.3, f: 0.1, fib: 1.7, salt: 0, fe: 0.2, ca: 23, zn: 0.2 }
+  units: { ks: 110 }
+  price: 1
+  color: '#ecd9b4'
+
+- id: cibula-cervena
+  name: Cibuľa červená
+  howto: [cibula]
+  category: zelenina
+  group: cibula
+  n: { kcal: 40, p: 1.1, c: 9.3, f: 0.1, fib: 1.7, salt: 0, fe: 0.2, ca: 23, zn: 0.2 }
+  units: { ks: 110 }
+  price: 1.5
+  color: '#9b3d6b'
+
+- id: jarna-cibulka
+  name: Jarná cibuľka
+  category: zelenina
+  n: { kcal: 32, p: 1.8, c: 7.3, f: 0.2, fib: 2.6, salt: 0, fe: 1.5, ca: 72, zn: 0.4 }
+  units: { ks: 15 }
+  price: 6
+  color: '#8cc063'
+
+- id: cesnak
+  name: Cesnak (strúčik)
+  howto: [cesnak-zazvor]
+  category: zelenina
+  n: { kcal: 149, p: 6.4, c: 33, f: 0.5, fib: 2.1, salt: 0, fe: 1.7, ca: 181, zn: 1.2 }
+  units: { ks: 5 }
+  price: 6
+  color: '#f5efe1'
+
+- id: zazvor
+  name: Zázvor čerstvý
+  howto: [cesnak-zazvor]
+  category: zelenina
+  n: { kcal: 80, p: 1.8, c: 18, f: 0.8, fib: 2, salt: 0, fe: 0.6, ca: 16, zn: 0.3 }
+  units: { pl: 6, čl: 2 }
+  price: 5
+  color: '#dcb45a'
+
+- id: mrkva
+  name: Mrkva
+  category: zelenina
+  n: { kcal: 41, p: 0.9, c: 9.6, f: 0.2, fib: 2.8, salt: 0.2, fe: 0.3, ca: 33, zn: 0.2 }
+  units: { ks: 80 }
+  price: 1
+  color: '#ef8a2d'
+
+- id: zeler-stonkovy
+  name: Zeler stonkový
+  category: zelenina
+  allergens: [celery]
+  n: { kcal: 16, p: 0.7, c: 3, f: 0.2, fib: 1.6, salt: 0.2, fe: 0.2, ca: 40, zn: 0.1 }
+  units: { ks: 40 }
+  price: 3
+  color: '#a8cf72'
+
+- id: paprika-cervena
+  name: Paprika červená
+  category: zelenina
+  n: { kcal: 31, p: 1, c: 6, f: 0.3, fib: 2.1, salt: 0, fe: 0.4, ca: 7, zn: 0.3 }
+  units: { ks: 160 }
+  price: 3
+  color: '#d8402b'
+
+- id: paradajky
+  name: Paradajky čerstvé
+  category: zelenina
+  n: { kcal: 18, p: 0.9, c: 3.9, f: 0.2, fib: 1.2, salt: 0, fe: 0.3, ca: 10, zn: 0.2 }
+  units: { ks: 120 }
+  price: 2.5
+  color: '#e2452f'
+
+- id: paradajky-sterilizovane
+  name: Paradajky krájané v plechovke
+  category: zelenina
+  n: { kcal: 24, p: 1.2, c: 4, f: 0.2, fib: 1.3, salt: 0.3, fe: 1, ca: 30, zn: 0.2 }
+  units: { ks: 400 }
+  price: 2
+  color: '#c73a26'
+  note: 1 ks = plechovka 400 g
+
+- id: paradajkovy-pretlak
+  name: Paradajkový pretlak
+  category: zelenina
+  n: { kcal: 82, p: 4.3, c: 19, f: 0.5, fib: 4.1, salt: 0.2, fe: 3, ca: 36, zn: 0.6 }
+  units: { pl: 16 }
+  price: 5
+  color: '#b8321f'
+
+- id: uhorka
+  name: Uhorka šalátová
+  category: zelenina
+  n: { kcal: 15, p: 0.7, c: 3.6, f: 0.1, fib: 0.5, salt: 0, fe: 0.3, ca: 16, zn: 0.2 }
+  units: { ks: 300 }
+  price: 2
+  color: '#6fae5b'
+
+- id: brokolica
+  name: Brokolica
+  category: zelenina
+  n: { kcal: 34, p: 2.8, c: 6.6, f: 0.4, fib: 2.6, salt: 0.1, fe: 0.7, ca: 47, zn: 0.4 }
+  units: { ks: 400 }
+  price: 3
+  color: '#4f8f3a'
+
+- id: spenat
+  name: Špenát (čerstvý alebo mrazený)
+  category: zelenina
+  n: { kcal: 23, p: 2.9, c: 3.6, f: 0.4, fib: 2.2, salt: 0.2, fe: 2.7, ca: 99, zn: 0.5, ala: 0.1 }
+  price: 4
+  color: '#3e7d34'
+
+- id: salat
+  name: Listový šalát
+  category: zelenina
+  n: { kcal: 15, p: 1.4, c: 2.9, f: 0.2, fib: 1.3, salt: 0, fe: 0.9, ca: 36, zn: 0.2 }
+  units: { ks: 300 }
+  price: 4
+  color: '#9ccc65'
+
+- id: kukurica
+  name: Kukurica sterilizovaná (scedená)
+  category: zelenina
+  n: { kcal: 80, p: 2.5, c: 15, f: 1.2, fib: 2.5, salt: 0.5, fe: 0.5, ca: 5, zn: 0.6 }
+  units: { ks: 285 }
+  price: 3.5
+  color: '#f2c230'
+
+- id: avokado
+  name: Avokádo
+  category: zelenina
+  n: { kcal: 160, p: 2, c: 8.5, f: 14.7, fib: 6.7, salt: 0, fe: 0.6, ca: 12, zn: 0.6, ala: 0.1 }
+  units: { ks: 150 }
+  price: 7
+  color: '#7fa843'
+  note: 1 ks = dužina jedného avokáda
+
+- id: bylinky-koriander
+  name: Koriander čerstvý (vňať)
+  category: zelenina
+  n: { kcal: 23, p: 2.1, c: 3.7, f: 0.5, fib: 2.8, salt: 0.1, fe: 1.8, ca: 67, zn: 0.5 }
+  units: { pl: 2 }
+  price: 30
+  color: '#5aa047'
+
+- id: bylinky-mata
+  name: Mäta čerstvá
+  category: zelenina
+  n: { kcal: 70, p: 3.8, c: 15, f: 0.9, fib: 8, salt: 0, fe: 5, ca: 243, zn: 1.1 }
+  units: { pl: 2 }
+  price: 30
+  color: '#67b25a'
+
+# ── Ovocie ─────────────────────────────────────────────────────
+- id: limetka
+  name: Limetka (šťava)
+  category: ovocie
+  n: { kcal: 25, p: 0.4, c: 8.4, f: 0.1, fib: 0.4, salt: 0, fe: 0.1, ca: 14, zn: 0.1 }
+  units: { ks: 30, pl: 15 }
+  price: 6
+  color: '#b5d34a'
+  note: 1 ks = šťava z jednej limetky
+
+- id: citron
+  name: Citrón (šťava)
+  category: ovocie
+  n: { kcal: 22, p: 0.4, c: 6.9, f: 0.2, fib: 0.3, salt: 0, fe: 0.1, ca: 6, zn: 0.1 }
+  units: { ks: 45, pl: 15 }
+  price: 3
+  color: '#f4d73c'
+  note: 1 ks = šťava z jedného citróna
+
+- id: banan
+  name: Banán
+  category: ovocie
+  n: { kcal: 89, p: 1.1, c: 22.8, f: 0.3, fib: 2.6, salt: 0, fe: 0.3, ca: 5, zn: 0.2 }
+  units: { ks: 120 }
+  price: 1.5
+  color: '#f5d565'
+
+- id: pomaranc
+  name: Pomaranč
+  category: ovocie
+  n: { kcal: 47, p: 0.9, c: 11.8, f: 0.1, fib: 2.4, salt: 0, fe: 0.1, ca: 40, zn: 0.1 }
+  units: { ks: 150 }
+  price: 1.8
+  color: '#f39a2b'
+
+- id: maliny
+  name: Maliny (aj mrazené)
+  category: ovocie
+  n: { kcal: 52, p: 1.2, c: 12, f: 0.7, fib: 6.5, salt: 0, fe: 0.7, ca: 25, zn: 0.4, ala: 0.1 }
+  units: { hrnček: 125 }
+  price: 7
+  color: '#d6335a'
+
+# ── Orechy a semienka ──────────────────────────────────────────
+- id: arasidove-maslo
+  name: Arašidové maslo (100 % arašidy)
+  category: orechy-semienka
+  allergens: [peanuts]
+  n: { kcal: 588, p: 25, c: 20, f: 50, fib: 6, salt: 0, fe: 1.9, ca: 43, zn: 2.9 }
+  units: { pl: 16, čl: 6 }
+  price: 7
+  color: '#b77a3f'
+
+- id: sezam
+  name: Sezam
+  category: orechy-semienka
+  allergens: [sesame]
+  n:
+    {
+      kcal: 573,
+      p: 17.7,
+      c: 23.5,
+      f: 49.7,
+      fib: 11.8,
+      salt: 0,
+      fe: 14.6,
+      ca: 975,
+      zn: 7.8,
+      ala: 0.4
+    }
+  units: { pl: 9, čl: 3 }
+  price: 8
+  color: '#efe0bd'
+  note: hodnoty pre nelúpaný sezam; lúpaný má vápnika len zlomok
+
+- id: lanove-semienko
+  name: Ľanové semienko mleté
+  category: orechy-semienka
+  n:
+    {
+      kcal: 534,
+      p: 18.3,
+      c: 28.9,
+      f: 42.2,
+      fib: 27.3,
+      salt: 0,
+      fe: 5.7,
+      ca: 255,
+      zn: 4.3,
+      ala: 22.8
+    }
+  units: { pl: 7, čl: 2.5 }
+  price: 5
+  color: '#9a6b3c'
+  note: mleté skladuj v chladničke, omega-3 rýchlo oxidujú
+
+- id: chia
+  name: Chia semienka
+  category: orechy-semienka
+  n:
+    {
+      kcal: 486,
+      p: 16.5,
+      c: 42.1,
+      f: 30.7,
+      fib: 34.4,
+      salt: 0,
+      fe: 7.7,
+      ca: 631,
+      zn: 4.6,
+      ala: 17.8
+    }
+  units: { pl: 12, čl: 4 }
+  price: 10
+  color: '#5b5550'
+
+# ── Rastlinné mlieka ───────────────────────────────────────────
+- id: sojove-mlieko
+  name: Sójový nápoj s vápnikom (nesladený)
+  category: rastlinne-mlieka
+  allergens: [soy]
+  n:
+    {
+      kcal: 33,
+      p: 3.3,
+      c: 0.1,
+      f: 1.8,
+      fib: 0.6,
+      salt: 0.1,
+      fe: 0.4,
+      ca: 120,
+      zn: 0.3,
+      ala: 0.2,
+      b12: 0.38
+    }
+  units: { hrnček: 240 }
+  density: 1.03
+  price: 2
+  color: '#f7f1e3'
+  note: hodnoty vápnika a B12 platia len pre obohatené nápoje
+
+- id: kokosove-mlieko
+  name: Kokosové mlieko (plechovka)
+  category: rastlinne-mlieka
+  n: { kcal: 197, p: 2, c: 2.8, f: 21, fib: 0, salt: 0, fe: 3.3, ca: 18, zn: 0.6 }
+  units: { ks: 400 }
+  price: 5
+  color: '#fbf6ec'
+  note: 1 ks = plechovka 400 ml
+
+# ── Omáčky, pasty, dochucovadlá ────────────────────────────────
+- id: sojova-omacka
+  name: Sójová omáčka
+  category: omacky-pasty
+  gluten: contains
+  gf_alternative: tamari
+  allergens: [soy]
+  n: { kcal: 53, p: 8.1, c: 4.9, f: 0.6, fib: 0.8, salt: 14.5, fe: 1.5, ca: 33, zn: 0.4 }
+  units: { pl: 16, čl: 6 }
+  price: 6
+  color: '#4a2a1a'
+
+- id: tamari
+  name: Tamari (bezlepková sójová omáčka)
+  category: omacky-pasty
+  group: sojova-omacka
+  allergens: [soy]
+  n: { kcal: 60, p: 10.5, c: 5.6, f: 0.1, fib: 0.8, salt: 14, fe: 2.4, ca: 20, zn: 0.4 }
+  units: { pl: 18, čl: 6 }
+  price: 15
+  color: '#3d2214'
+  note: niektoré tamari obsahujú pšenicu, hľadaj označenie bezlepkové
+
+- id: zelena-kari-pasta
+  name: Zelená kari pasta (vegánska)
+  category: omacky-pasty
+  gluten: risk
+  n: { kcal: 110, p: 2, c: 12, f: 5, fib: 4, salt: 8, fe: 2, ca: 50, zn: 0.5 }
+  units: { pl: 16, čl: 5 }
+  price: 15
+  color: '#5f8d3a'
+  warn: Thajské kari pasty často obsahujú krevetovú pastu (kapi) alebo rybiu omáčku, kupuj označené ako vegánske.
+
+- id: zeleninovy-vyvar
+  name: Zeleninový vývar (pripravený)
+  category: omacky-pasty
+  gluten: risk
+  allergens: [celery]
+  note: bujóny a kocky často obsahujú pšenicu alebo jačmenný extrakt
+  n: { kcal: 5, p: 0.2, c: 0.8, f: 0.1, fib: 0, salt: 0.8, fe: 0, ca: 0, zn: 0 }
+  units: { hrnček: 240 }
+  price: 1
+  color: '#d8b56a'
+
+- id: javorovy-sirup
+  name: Javorový sirup
+  category: omacky-pasty
+  n: { kcal: 260, p: 0, c: 67, f: 0.1, fib: 0, salt: 0, fe: 0.1, ca: 102, zn: 1.5 }
+  units: { pl: 20, čl: 7 }
+  price: 25
+  color: '#a8561d'
+
+- id: kakao
+  name: Kakao nesladené
+  category: ine
+  n: { kcal: 228, p: 19.6, c: 57.9, f: 13.7, fib: 37, salt: 0.1, fe: 13.9, ca: 128, zn: 6.8 }
+  units: { pl: 6, čl: 2 }
+  price: 12
+  color: '#5a3322'
+
+- id: vyzivne-drozdie
+  name: Výživné droždie (lupienky)
+  category: ine
+  n: { kcal: 370, p: 45, c: 35, f: 5, fib: 20, salt: 0.1, fe: 4, ca: 30, zn: 7 }
+  units: { pl: 5, čl: 2 }
+  price: 35
+  color: '#f2d45c'
+  note: B12 obsahuje len obohatené, pozri etiketu, v databáze ho nepočítame
+
+- id: kukuricny-skrob
+  name: Kukuričný škrob
+  category: ine
+  n: { kcal: 381, p: 0.3, c: 91, f: 0.1, fib: 0.9, salt: 0, fe: 0.5, ca: 2, zn: 0.1 }
+  units: { pl: 8, čl: 3 }
+  price: 3
+
+- id: ocot
+  name: Ocot kvasný (liehový)
+  category: ine
+  n: { kcal: 18, p: 0, c: 0.1, f: 0, fib: 0, salt: 0, fe: 0, ca: 6, zn: 0 }
+  units: { pl: 15 }
+  price: 1
+  note: sladový ocot obsahuje lepok, liehový nie
+
+# ── Oleje ──────────────────────────────────────────────────────
+- id: olej
+  name: Repkový olej
+  category: oleje
+  staple: true
+  n: { kcal: 884, p: 0, c: 0, f: 100, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0, ala: 9.1 }
+  units: { pl: 13, čl: 4.5 }
+  density: 0.92
+  price: 2.5
+
+- id: olivovy-olej
+  name: Olivový olej
+  category: oleje
+  n: { kcal: 884, p: 0, c: 0, f: 100, fib: 0, salt: 0, fe: 0.6, ca: 1, zn: 0, ala: 0.8 }
+  units: { pl: 13, čl: 4.5 }
+  density: 0.92
+  price: 9
+
+# ── Koreniny a základy ─────────────────────────────────────────
+- id: sol
+  name: Soľ jódovaná
+  category: koreniny
+  staple: true
+  n: { kcal: 0, p: 0, c: 0, f: 0, fib: 0, salt: 100, fe: 0.3, ca: 24, zn: 0.1 }
+  units: { čl: 6, pl: 18 }
+  price: 0.5
+  note: jódovaná soľ je na Slovensku hlavný zdroj jódu, morská a himalájska ho väčšinou nemajú
+
+- id: kala-namak
+  name: Kala namak (čierna soľ)
+  category: koreniny
+  n: { kcal: 0, p: 0, c: 0, f: 0, fib: 0, salt: 95, fe: 0.5, ca: 20, zn: 0 }
+  units: { čl: 5 }
+  price: 15
+  note: sírová vôňa po vajíčkach, nie je jódovaná
+
+- id: voda
+  name: Voda
+  category: ine
+  staple: true
+  n: { kcal: 0, p: 0, c: 0, f: 0, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0 }
+  units: { hrnček: 240 }
+  price: 0.001
+  color: '#dcebf2'
+
+- id: cierne-korenie
+  name: Čierne korenie mleté
+  category: koreniny
+  staple: true
+  n: { kcal: 251, p: 10.4, c: 64, f: 3.3, fib: 25, salt: 0, fe: 9.7, ca: 443, zn: 1.2 }
+  units: { čl: 2.3 }
+  price: 25
+
+- id: kmin
+  name: Rímska rasca (kmín) mletá
+  howto: [korenie]
+  category: koreniny
+  n: { kcal: 375, p: 17.8, c: 44, f: 22, fib: 10.5, salt: 0.4, fe: 66, ca: 931, zn: 4.8 }
+  units: { čl: 2 }
+  price: 25
+  color: '#b88a3a'
+
+- id: kurkuma
+  name: Kurkuma mletá
+  howto: [korenie]
+  category: koreniny
+  n: { kcal: 312, p: 9.7, c: 67, f: 3.3, fib: 22.7, salt: 0.1, fe: 55, ca: 168, zn: 4.5 }
+  units: { čl: 3 }
+  price: 20
+  color: '#e8a91c'
+
+- id: garam-masala
+  name: Garam masala
+  howto: [korenie]
+  category: koreniny
+  n: { kcal: 380, p: 14, c: 50, f: 15, fib: 30, salt: 0.1, fe: 30, ca: 500, zn: 4 }
+  units: { čl: 2 }
+  price: 30
+  color: '#9a5a2c'
+
+- id: koriander-mlety
+  name: Koriander mletý
+  howto: [korenie]
+  category: koreniny
+  n: { kcal: 298, p: 12.4, c: 55, f: 17.8, fib: 42, salt: 0.1, fe: 16.3, ca: 709, zn: 4.7 }
+  units: { čl: 2 }
+  price: 20
+
+- id: cili
+  name: Čili mleté
+  category: koreniny
+  n: { kcal: 318, p: 12, c: 57, f: 17, fib: 27, salt: 0.1, fe: 7.8, ca: 148, zn: 2.5 }
+  units: { čl: 2 }
+  price: 25
+  color: '#c0311c'
+
+- id: udena-paprika
+  name: Údená paprika
+  howto: [korenie]
+  category: koreniny
+  n: { kcal: 282, p: 14, c: 54, f: 13, fib: 35, salt: 0.2, fe: 21, ca: 229, zn: 4.3 }
+  units: { čl: 2.3 }
+  price: 25
+  color: '#b5381f'
+
+- id: sladka-paprika
+  name: Sladká paprika mletá
+  howto: [korenie]
+  category: koreniny
+  n: { kcal: 282, p: 14, c: 54, f: 13, fib: 35, salt: 0.2, fe: 21, ca: 229, zn: 4.3 }
+  units: { čl: 2.3, pl: 7 }
+  price: 15
+  color: '#c9401f'
+
+- id: rasca
+  name: Rasca celá
+  category: koreniny
+  n: { kcal: 333, p: 19.8, c: 50, f: 14.6, fib: 38, salt: 0, fe: 16.2, ca: 689, zn: 5.5 }
+  units: { čl: 2 }
+  price: 12
+
+- id: majoranka
+  name: Majoránka sušená
+  category: koreniny
+  n: { kcal: 271, p: 12.7, c: 60, f: 7, fib: 40, salt: 0.2, fe: 82.7, ca: 1990, zn: 3.6 }
+  units: { čl: 0.6, pl: 1.8 }
+  price: 40
+
+- id: oregano
+  name: Oregano sušené
+  category: koreniny
+  n: { kcal: 265, p: 9, c: 69, f: 4.3, fib: 42.5, salt: 0, fe: 36.8, ca: 1597, zn: 2.7 }
+  units: { čl: 1 }
+  price: 40
+
+- id: tymian
+  name: Tymián sušený
+  category: koreniny
+  n: { kcal: 276, p: 9.1, c: 64, f: 7.4, fib: 37, salt: 0.1, fe: 124, ca: 1890, zn: 6.2 }
+  units: { čl: 1 }
+  price: 40
+
+- id: rozmarin
+  name: Rozmarín čerstvý
+  category: koreniny
+  n: { kcal: 131, p: 3.3, c: 20.7, f: 5.9, fib: 14, salt: 0, fe: 6.7, ca: 317, zn: 0.9 }
+  units: { ks: 2 }
+  price: 30
+  color: '#557a46'
+  note: 1 ks = vetvička
+
+- id: skorica
+  name: Škorica mletá
+  category: koreniny
+  n: { kcal: 247, p: 4, c: 81, f: 1.2, fib: 53, salt: 0, fe: 8.3, ca: 1002, zn: 1.8 }
+  units: { čl: 2.6 }
+  price: 20
+
+- id: bobkovy-list
+  name: Bobkový list
+  category: koreniny
+  n: { kcal: 313, p: 7.6, c: 75, f: 8.4, fib: 26, salt: 0, fe: 43, ca: 834, zn: 3.7 }
+  units: { ks: 0.2 }
+  price: 40
+
+- id: nove-korenie
+  name: Nové korenie
+  category: koreniny
+  n: { kcal: 263, p: 6.1, c: 72, f: 8.7, fib: 21.6, salt: 0.2, fe: 7, ca: 661, zn: 1 }
+  units: { ks: 0.2, čl: 1.9 }
+  price: 30
+
+- id: horcicne-semienko
+  name: Horčičné semienko
+  howto: [korenie]
+  category: koreniny
+  allergens: [mustard]
+  n: { kcal: 508, p: 26, c: 28, f: 36, fib: 12, salt: 0, fe: 9.2, ca: 266, zn: 6.1, ala: 3.8 }
+  units: { čl: 3.3 }
+  price: 15
+
+- id: berbere
+  name: Berbere (etiópska zmes korenia)
+  howto: [korenie]
+  category: koreniny
+  n: { kcal: 300, p: 12, c: 55, f: 12, fib: 30, salt: 0.5, fe: 15, ca: 200, zn: 3 }
+  units: { čl: 2.5, pl: 7.5 }
+  price: 40
+  color: '#a8301c'
+  note: zloženie sa líši, niektoré zmesi obsahujú soľ
+
+- id: kukuricna-krupica
+  name: Kukuričná krupica (polenta)
+  category: obilniny
+  n: { kcal: 370, p: 8.1, c: 79, f: 1.6, fib: 4, salt: 0, fe: 1.1, ca: 3, zn: 0.7 }
+  units: { hrnček: 160 }
+  price: 2
+  color: '#f2c94c'

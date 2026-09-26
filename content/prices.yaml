@@ -1,0 +1,32 @@
+# Reálne ceny z obchodov. Každý záznam = konkrétny produkt v konkrétnom obchode v konkrétny deň.
+# Porovnáva sa cena za kg. Bežná cena sa po 60 dňoch berie ako zastaraná, akciová cena platí do sale_until.
+# Kým pre surovinu nie je žiadna platná cena, appka použije odhad z ingredients.yaml a označí ho.
+#
+# pack: veľkosť balenia v rovnakom formáte ako v receptoch (400 g, 1 l, 5 kg, 1 ks)
+#
+# Príklad:
+#   - ingredient: sosovica-cervena
+#     store: lidl
+#     product: Golden Sun červená šošovica
+#     pack: 500 g
+#     price: 1.49
+#     date: 2026-09-20
+#   - ingredient: tofu-natural
+#     store: kaufland
+#     product: K-Take it veggie Tofu natur
+#     pack: 400 g
+#     price: 1.99
+#     date: 2026-09-22
+#     sale_until: 2026-09-28
+
+stores:
+  - { id: lidl, name: Lidl, color: '#0050aa' }
+  - { id: kaufland, name: Kaufland, color: '#e10915' }
+  - { id: tesco, name: Tesco, color: '#00539f' }
+  - { id: billa, name: Billa, color: '#ffd300' }
+  - { id: coop-jednota, name: COOP Jednota, color: '#d6001c' }
+  - { id: dm, name: dm, color: '#002878' }
+  - { id: gymbeam, name: GymBeam, color: '#ff5a00' }
+  - { id: aziske-potraviny, name: Ázijské potraviny, color: '#b8321f' }
+
+entries:

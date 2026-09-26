@@ -1,0 +1,31 @@
+title: Vegánska feijoada
+description: Brazílsky fazuľový prívarok s údeným tofu, podávaný s ryžou a pomarančom.
+cuisine: brazilska
+meals: [obed, vecera]
+time: 50
+active: 20
+servings: 4
+difficulty: 2
+tags: [meal-prep]
+ingredients:
+  - olivovy-olej: 2 pl
+  - tofu-udene: 200 g | na kocky
+  - cibula: 2 ks
+  - cesnak: 4 ks
+  - mrkva: 2 ks | na kolieska
+  - udena-paprika: 2 čl
+  - kmin: 1 čl
+  - paradajkovy-pretlak: 1 pl
+  - fazula-cierna: 3 ks
+  - zeleninovy-vyvar: 2 hrnček
+  - bobkovy-list: 2 ks
+  - sol: podľa chuti
+  - ryza-basmati: 300 g | na prílohu
+  - pomaranc: 2 ks | na mesiačiky
+steps:
+  - Tofu opeč na oleji dochrumkava a vyber.
+  - Na tom istom oleji speň cibuľu, cesnak a mrkvu, pridaj papriku, kmín a pretlak.
+  - Pridaj fazuľu, vývar a bobkový list a var 25 minút. Časť fazule roztlač, aby omáčka zhustla.
+  - Vráť tofu, dochuť a podávaj s ryžou a pomarančom, ktorý k feijoade tradične patrí.
+tips:
+  - Pomaranč nie je len ozdoba, vitamín C výrazne zlepší vstrebávanie železa z fazule.

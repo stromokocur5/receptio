@@ -1,0 +1,22 @@
+title: Chrumkavý pečený cícer
+description: Slaný snack plný bielkovín, lepší ako chipsy.
+cuisine: moderna
+meals: [snack]
+time: 40
+active: 5
+servings: 4
+difficulty: 1
+tags: [snack]
+ingredients:
+  - cicer-sterilizovany: 2 ks
+  - olivovy-olej: 1 pl
+  - udena-paprika: 1 čl
+  - kmin: 1/2 čl
+  - sol: 1/2 čl
+steps:
+  - Rúru predhrej na 200 °C.
+  - Cícer sceď a dôkladne osuš utierkou. Šupky, ktoré sa uvoľnia, vyhoď.
+  - Rozlož na plech a peč 25 minút bez oleja.
+  - Premiešaj s olejom a korením a peč ešte 10 minút.
+tips:
+  - Najchrumkavejší je v deň pečenia. Cez noc zmäkne, ale dá sa znovu 5 minút prepiecť.
