@@ -406,6 +406,12 @@
 									{#if alt}<span class="swap">→ {alt.name.split(' (')[0]}</span>{/if}
 								</span>
 							{/if}
+							{#if line.note}<span class="note">{line.note}</span>{/if}
+						</span>
+						<span class="side">
+							{#if home}<span class="home-dot" title="Máš doma"
+									><Icon name="check" size={14} stroke={2.6} /></span
+								>{/if}
 							{#if swaps.length}
 								<button
 									data-noprint
@@ -417,11 +423,7 @@
 									Nemám
 								</button>
 							{/if}
-							{#if line.note}<span class="note">{line.note}</span>{/if}
 						</span>
-						{#if home}<span class="home-dot" title="Máš doma"
-								><Icon name="check" size={14} stroke={2.6} /></span
-							>{/if}
 						{#if openSwap === line.ingredientId}
 							<ul class="swaps">
 								{#each swaps as swap, j (j)}
@@ -457,7 +459,7 @@
 									<ul class="alts">
 										{#each tool.alternatives as alt, i (i)}<li>{alt}</li>{/each}
 										<li class="more-link">
-											<a href="/vybavenie/{tool.id}">Viac o tom, čo je {tool.name.toLowerCase()}</a>
+											<a href="/vybavenie/{tool.id}">Viac o tomto nástroji →</a>
 										</li>
 									</ul>
 								</details>
@@ -785,7 +787,7 @@
 	}
 	.tools .alts .more-link {
 		list-style: none;
-		margin-left: -1em;
+		margin-top: 6px;
 		font-weight: 650;
 	}
 	.meta {
@@ -822,8 +824,13 @@
 	.spicy span + span {
 		margin-left: -7px;
 	}
+	.side {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		align-self: center;
+	}
 	.swap-btn {
-		margin-left: 6px;
 		padding: 0 7px;
 		border: 1px solid var(--line);
 		border-radius: 999px;
@@ -1129,10 +1136,11 @@
 		border-color: transparent;
 		color: var(--ink);
 	}
-	.alts {
+	/* Beats `.ingredients ul`, which resets margins and bullets for the ingredient list. */
+	.tools .alts {
 		list-style: disc;
-		margin: 2px 0 8px 34px;
-		padding-left: 1em;
+		margin: 2px 0 10px 34px;
+		padding-left: 1.1em;
 		font-size: 0.88rem;
 		color: var(--ink-2);
 		animation: rise 0.25s var(--ease-out);

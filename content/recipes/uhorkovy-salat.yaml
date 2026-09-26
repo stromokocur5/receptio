@@ -7,6 +7,7 @@ active: 10
 servings: 4
 difficulty: 1
 tags: [bez-varenia, rychle, lacne]
+equipment: [miska]
 keeps: { fridge: 2 }
 ingredients:
   - uhorka: 2 ks | na tenké plátky

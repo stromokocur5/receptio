@@ -122,6 +122,8 @@
 		gap: 6px;
 	}
 	.item {
+		/* Same height across a row, even when a long name wraps. */
+		height: 100%;
 		display: flex;
 		align-items: center;
 		gap: 10px;
@@ -150,6 +152,7 @@
 	.name {
 		flex: 1;
 		min-width: 0;
+		line-height: 1.3;
 	}
 	.season {
 		display: inline-flex;

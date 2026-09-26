@@ -114,10 +114,15 @@
 	}
 	.head {
 		display: grid;
-		grid-template-columns: auto 1fr;
-		gap: 20px;
+		gap: 14px;
 		align-items: start;
 		margin-top: 12px;
+	}
+	@media (min-width: 600px) {
+		.head {
+			grid-template-columns: auto 1fr;
+			gap: 20px;
+		}
 	}
 	.ico {
 		display: grid;
