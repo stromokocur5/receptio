@@ -1,3 +1,7 @@
+# Single-package repo; the explicit `packages` keeps older pnpm (Cloudflare Workers Builds) happy.
+packages:
+  - .
+
 onlyBuiltDependencies:
   - workerd
   - esbuild
