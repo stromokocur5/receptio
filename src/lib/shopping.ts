@@ -52,8 +52,6 @@ export interface ShoppingList {
 	/** Spices, oils, basics and leftovers: listed to double-check, not counted in the total. */
 	staples: ShoppingItem[];
 	total: number;
-	/** Paid at the till for whole packs; items with only an estimate count by weight. */
-	shelfTotal: number;
 	hasEstimates: boolean;
 }
 
@@ -133,7 +131,6 @@ export function buildShoppingList(
 		byCategory: [...categories].sort(([a], [b]) => AISLE_ORDER.indexOf(a) - AISLE_ORDER.indexOf(b)),
 		staples: items.filter((i) => worthChecking(i.ingredient) && i.buyGrams > 0),
 		total: toBuy.reduce((sum, i) => sum + i.cost, 0),
-		shelfTotal: toBuy.reduce((sum, i) => sum + (i.shelf?.cost ?? i.cost), 0),
 		hasEstimates: toBuy.some((i) => i.costIsEstimate)
 	};
 }

@@ -113,12 +113,12 @@ export interface StoreComparison {
 	singles: StorePlan[];
 	single: StorePlan | null;
 	pair: StorePlan | null;
-	/** Every item wherever it's cheapest, however many shops that takes. */
-	anywhere: StorePlan | null;
 	/** The plan worth doing: another shop only when it saves EXTRA_STORE_WORTH_EUR. */
 	recommended: StorePlan | null;
 	/** Items with no real price anywhere – the same in every plan, left out of the totals. */
 	unpriced: number;
+	/** Their estimated cost, to add to any plan's total for the whole shopping. */
+	unpricedCost: number;
 }
 
 /** One shop, two shops, or every item where it's cheapest – which way the shopping is cheapest. */
@@ -136,7 +136,12 @@ export function compareStores(
 				const shelf = shelfCost(item.ingredient, item.grams, prices, today, store.id);
 				if (shelf) costs.set(store.id, shelf.cost);
 			}
-			return { id: item.ingredient.id, costs, dearest: Math.max(0, ...costs.values()) };
+			return {
+				id: item.ingredient.id,
+				costs,
+				dearest: Math.max(0, ...costs.values()),
+				estimate: (item.ingredient.priceEstimate * item.grams) / 1000
+			};
 		});
 	const withPrice = priced.filter((i) => i.costs.size > 0);
 
@@ -176,7 +181,6 @@ export function compareStores(
 	}
 	const pairBest = cheapest(pairs);
 	const pair = pairBest && pairBest.storeIds.length === 2 ? pairBest : null;
-	const anywhere = ids.length ? plan(ids) : null;
 
 	let recommended = single;
 	if (
@@ -190,8 +194,8 @@ export function compareStores(
 		singles,
 		single,
 		pair,
-		anywhere,
 		recommended,
-		unpriced: priced.length - withPrice.length
+		unpriced: priced.length - withPrice.length,
+		unpricedCost: priced.filter((i) => i.costs.size === 0).reduce((sum, i) => sum + i.estimate, 0)
 	};
 }

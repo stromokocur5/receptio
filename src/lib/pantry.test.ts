@@ -284,7 +284,7 @@ describe('compareStores', () => {
 		expect(result.recommended?.total).toBe(4);
 		expect(result.recommended?.assignment.get('ryza')).toBe('b');
 		expect(result.unpriced).toBe(1);
-		expect(result.anywhere?.total).toBe(4);
+		expect(result.unpricedCost).toBeGreaterThan(0);
 	});
 
 	it('only compares the given shops', () => {
