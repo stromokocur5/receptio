@@ -79,6 +79,14 @@ export interface Ingredient {
 	gfAlternative?: string;
 	/** Slugs of beginner technique pages (wiki section `zaklady`). */
 	howto: string[];
+	/** Months (1–12) when it's grown locally and cheapest; empty = no season. */
+	season: number[];
+}
+
+export interface Substitute {
+	/** Another ingredient from the database, when the swap is one. */
+	to?: { id: string; name: string };
+	note?: string;
 }
 
 export interface RecipeLine {
@@ -139,6 +147,14 @@ export interface RecipeSummary extends RecipeComputed {
 	variants: RecipeVariant[];
 	/** Equipment ids, so lists can filter out recipes needing an oven or blender. */
 	equipment: string[];
+	/** 0 mild (fine for kids) … 3 hot. */
+	spicy: 0 | 1 | 2 | 3;
+	/** Days in the fridge (0 = eat fresh) and months in the freezer (0 = don't freeze). */
+	keeps?: { fridge: number; freezer: number };
+	/** ISO date the recipe was actually cooked and checked. */
+	tested?: string;
+	/** Raw weight of everything eaten, per serving – a rough portion size. */
+	servingGrams: number;
 }
 
 export const EQUIPMENT_LEVELS = ['zaklad', 'uzitocne', 'specialne'] as const;
@@ -154,9 +170,30 @@ export interface Equipment {
 	alternatives: string[];
 }
 
+/** The encyclopedia part of an equipment entry, only on its own page. */
+export interface EquipmentFull extends Equipment {
+	uses: string[];
+	kinds: string[];
+	choose?: string;
+	care?: string;
+}
+
+/** Encyclopedia text of an ingredient, only on its own page. */
+export interface IngredientInfo {
+	about?: string;
+	kinds: string[];
+	choose?: string;
+	storage?: string;
+	uses: string[];
+}
+
 export interface RecipeDetail extends RecipeSummary {
 	/** Tools the recipe needs, basic ones first. */
 	equipmentDetail: Equipment[];
+	/** What to use instead of an ingredient, for every ingredient of the recipe and its variants. */
+	swaps: Record<string, Substitute[]>;
+	/** What to make of leftovers. */
+	leftovers?: string;
 	steps: string[];
 	tips: string[];
 	howto: { slug: string; title: string }[];

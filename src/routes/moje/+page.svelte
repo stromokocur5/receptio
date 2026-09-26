@@ -4,7 +4,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
-	import { favorites, history, notes, ui } from '$lib/state.svelte';
+	import { RATING_LABELS, favorites, history, notes, ui } from '$lib/state.svelte';
 
 	const catalog = useCatalog();
 	const dateFormat = new Intl.DateTimeFormat('sk-SK', { day: 'numeric', month: 'long' });
@@ -106,7 +106,10 @@
 					{#each showAllHistory ? cooked : cooked.slice(0, 8) as h, i (i)}
 						<li>
 							<span class="muted">{dateFormat.format(new Date(h.date))}</span>
-							<a href="/recepty/{h.recipeId}">{titleOf(h.recipeId)}</a>
+							<a href="/recepty/{h.recipeId}"
+								>{titleOf(h.recipeId)}{#if h.rating}
+									<small class="rating r{h.rating}">{RATING_LABELS[h.rating]}</small>{/if}</a
+							>
 							<span class="muted">{h.servings} porc.</span>
 						</li>
 					{/each}
@@ -213,6 +216,22 @@
 	a {
 		color: var(--ink);
 		font-weight: 650;
+	}
+	.rating {
+		margin-left: 6px;
+		padding: 0 6px;
+		border-radius: 6px;
+		font-size: 0.72rem;
+		font-weight: 700;
+		background: var(--paper-2);
+		color: var(--ink-2);
+	}
+	.rating.r3 {
+		background: var(--leaf-soft);
+		color: var(--leaf);
+	}
+	.rating.r1 {
+		background: var(--turmeric-soft);
 	}
 	.notes li {
 		padding: 8px 0;

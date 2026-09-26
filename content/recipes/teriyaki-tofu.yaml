@@ -7,6 +7,8 @@ active: 25
 servings: 4
 difficulty: 2
 tags: [meal-prep]
+keeps: { fridge: 3 }
+leftovers: 'Nakrájaj do letných závitkov alebo sendviča.'
 ingredients:
   - ryza-jazminova: 300 g
   - tofu-natural: 400 g | na kocky, osušené

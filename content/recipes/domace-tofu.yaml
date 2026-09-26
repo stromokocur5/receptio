@@ -11,6 +11,7 @@ nutrition: false
 yields: cca 350–400 g tofu
 ahead: Sójové zrná namoč na 12 hodín (cez noc).
 related: [domace-sojove-mlieko, okarove-placky]
+keeps: { fridge: 5, freezer: 3 }
 ingredients:
   - sojove-zrna: 300 g | namočené cez noc
   - voda: 2,5 l

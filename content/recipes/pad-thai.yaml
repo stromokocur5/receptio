@@ -7,6 +7,9 @@ active: 25
 servings: 3
 difficulty: 2
 tags: []
+spicy: 1
+keeps: { fridge: 2 }
+leftovers: 'Ohrej na panvici s lyžicou vody, rezance sa v mikrovlnke zlepia.'
 ingredients:
   - ryzove-rezance: 200 g | ploché
   - tamarind: 2 pl

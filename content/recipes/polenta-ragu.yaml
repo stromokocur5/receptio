@@ -7,6 +7,8 @@ active: 20
 servings: 4
 difficulty: 2
 tags: [meal-prep]
+keeps: { fridge: 3, freezer: 3 }
+leftovers: 'Stuhnutú polentu nakrájaj na hranolky a opeč alebo zapeč.'
 ingredients:
   - olivovy-olej: 2 pl
   - cibula: 1 ks

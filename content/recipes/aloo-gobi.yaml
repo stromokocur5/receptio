@@ -7,6 +7,9 @@ active: 15
 servings: 4
 difficulty: 1
 tags: [one-pot]
+spicy: 1
+keeps: { fridge: 3 }
+leftovers: 'Zvyšok zabaľ do tortilly s hummusom alebo ho rozmixuj s vývarom na krémovú polievku.'
 ingredients:
   - olej: 3 pl
   - kmin: 1 čl

@@ -7,6 +7,8 @@ active: 10
 servings: 4
 difficulty: 1
 tags: [bez-varenia, party, rychle]
+spicy: 1
+keeps: { fridge: 1 }
 ingredients:
   - avokado: 3 ks | zrelé
   - limetka: 1 ks

@@ -6,7 +6,13 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
 	import type { PantryUse } from '$lib/pantry';
-	import { markCooked, pantry } from '$lib/state.svelte';
+	import {
+		RATING_LABELS,
+		markCooked,
+		pantry,
+		rateLastCooked,
+		type Rating
+	} from '$lib/state.svelte';
 	import { startTimer } from '$lib/timers.svelte';
 	import type { RecipeLine } from '$lib/types';
 
@@ -43,6 +49,7 @@
 	let screenLock = $state<'on' | 'off' | 'unsupported'>('off');
 	let cooked = $state<PantryUse[] | null>(null);
 	let started = $state<string[]>([]);
+	let rated = $state<Rating | null>(null);
 	let dialog: HTMLDialogElement;
 
 	const done = $derived(index >= steps.length);
@@ -217,6 +224,24 @@
 							</button>
 						{:else}
 							<p><Icon name="check" size={18} /> Zapísané do histórie.</p>
+							<div class="rate" role="group" aria-label="Ako chutilo?">
+								<span>Ako chutilo?</span>
+								{#each [3, 2, 1] as const as r (r)}
+									<button
+										class="chip"
+										aria-pressed={rated === r}
+										onclick={() => {
+											rated = r;
+											rateLastCooked(recipeId, r);
+										}}
+									>
+										{RATING_LABELS[r]}
+									</button>
+								{/each}
+							</div>
+							{#if rated === 1}
+								<p class="muted">Čo by si zmenil? Zapíš si to do poznámok pod postupom receptu.</p>
+							{/if}
 							{#if cooked.length}
 								<ul class="used">
 									{#each cooked as use (use.ingredient.id)}
@@ -424,6 +449,16 @@
 		align-items: center;
 		gap: 8px;
 		margin: 0;
+	}
+	.rate {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+	}
+	.rate span {
+		font-weight: 650;
+		margin-right: 4px;
 	}
 	.used {
 		margin: 0;

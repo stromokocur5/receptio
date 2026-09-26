@@ -8,6 +8,8 @@ servings: 4
 difficulty: 3
 tags: [party]
 gf_swap: false
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Prehrej na suchej panvici pod pokrievkou, spodok bude chrumkavý.'
 ingredients:
   - hladka-muka: 500 g | ideálne typ 00
   - drozdie: 1 ks

@@ -15,7 +15,9 @@ import {
 	type Catalog,
 	type Cuisine,
 	type Equipment,
+	type EquipmentFull,
 	type Ingredient,
+	type IngredientInfo,
 	type IngredientCategory,
 	type PriceEntry,
 	type RecipeComputed,
@@ -23,6 +25,7 @@ import {
 	type RecipeLine,
 	type RecipeVariant,
 	type Store,
+	type Substitute,
 	type WikiPage
 } from '$lib/types';
 
@@ -86,7 +89,21 @@ const ingredientSchema = z
 		note: z.string().optional(),
 		warn: z.string().optional(),
 		gf_alternative: slug.optional(),
-		howto: z.array(slug).default([])
+		howto: z.array(slug).default([]),
+		season: z.array(z.number().int().min(1).max(12)).default([]),
+		about: z.string().min(1).optional(),
+		kinds: z.array(z.string().min(1)).default([]),
+		choose: z.string().min(1).optional(),
+		storage: z.string().min(1).optional(),
+		uses: z.array(z.string().min(1)).default([]),
+		substitutes: z
+			.array(
+				z
+					.object({ to: slug.optional(), note: z.string().min(1).optional() })
+					.strict()
+					.refine((s) => s.to || s.note, 'náhrada potrebuje `to` alebo `note`')
+			)
+			.default([])
 	})
 	.strict();
 
@@ -131,7 +148,20 @@ const recipeSchema = z
 		variants: z.array(variantSchema).default([]),
 		/** Tools the step text doesn't reveal, and false positives of the detection. */
 		equipment: z.array(slug).default([]),
-		no_equipment: z.array(slug).default([])
+		no_equipment: z.array(slug).default([]),
+		/** 0 mild … 3 hot. */
+		spicy: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]).default(0),
+		/** Days in the fridge (0 = eat fresh), months in the freezer (0 = don't freeze). */
+		keeps: z
+			.object({
+				fridge: z.number().int().min(0).max(30),
+				freezer: z.number().int().min(0).max(12).default(0)
+			})
+			.strict()
+			.optional(),
+		leftovers: z.string().min(1).optional(),
+		/** Date the recipe was cooked for real and the amounts and times checked. */
+		tested: isoDate.optional()
 	})
 	.strict();
 
@@ -152,6 +182,10 @@ const equipmentSchema = z
 		icon: z.string().min(1),
 		about: z.string().min(1),
 		alternatives: z.array(z.string().min(1)).min(1),
+		uses: z.array(z.string().min(1)).default([]),
+		kinds: z.array(z.string().min(1)).default([]),
+		choose: z.string().min(1).optional(),
+		care: z.string().min(1).optional(),
 		match: z.array(pattern),
 		/** Weaker clues, used only when none of `unless` was detected. */
 		weak: z.array(pattern).default([]),
@@ -222,7 +256,10 @@ function fileId(path: string): string {
 
 export interface Content extends Catalog {
 	recipeDetails: Map<string, RecipeDetail>;
-	equipment: Equipment[];
+	equipment: EquipmentFull[];
+	ingredientInfo: Map<string, IngredientInfo>;
+	/** Substitutes of every ingredient, for ingredient pages. */
+	ingredientSwaps: Map<string, Substitute[]>;
 	wiki: WikiPage[];
 }
 
@@ -236,11 +273,12 @@ export interface RawContent {
 }
 
 export function compileContent(raw: RawContent, today: Date): Content {
-	const ingredients: Ingredient[] = parseWith(
+	const rawIngredients = parseWith(
 		z.array(ingredientSchema),
 		parseYaml(raw.ingredients),
 		'content/ingredients.yaml'
-	).map((i) => ({
+	);
+	const ingredients: Ingredient[] = rawIngredients.map((i) => ({
 		id: i.id,
 		name: i.name,
 		category: i.category,
@@ -270,7 +308,8 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		note: i.note,
 		warn: i.warn,
 		gfAlternative: i.gf_alternative,
-		howto: i.howto
+		howto: i.howto,
+		season: [...new Set(i.season)].sort((a, b) => a - b)
 	}));
 
 	const byId = new Map(ingredients.map((i) => [i.id, i]));
@@ -282,6 +321,20 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			);
 		}
 	}
+	// Kept out of Ingredient: only recipe pages need them, and the catalog ships with every page.
+	const substitutesById = new Map<string, Substitute[]>(
+		rawIngredients.map((i) => [
+			i.id,
+			i.substitutes.map(({ to, note }) => {
+				const target = to ? byId.get(to) : undefined;
+				if (to && !target) throw new Error(`${i.id}: neznáma náhrada "${to}"`);
+				return {
+					...(target && { to: { id: target.id, name: target.name } }),
+					...(note && { note })
+				};
+			})
+		])
+	);
 
 	const cuisines: Cuisine[] = parseWith(
 		z.array(cuisineSchema),
@@ -413,10 +466,13 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		parseYaml(raw.equipment),
 		'content/equipment.yaml'
 	);
-	const equipment: Equipment[] = equipmentRules.map(
+	const equipment: EquipmentFull[] = equipmentRules.map(
 		({ match: _match, weak: _weak, unless: _unless, ...e }) => e
 	);
-	const equipmentById = new Map(equipment.map((e) => [e.id, e]));
+	// Recipes carry only the short form; the encyclopedia text lives on the tool's own page.
+	const equipmentById = new Map<string, Equipment>(
+		equipment.map(({ uses: _uses, kinds: _kinds, choose: _choose, care: _care, ...e }) => [e.id, e])
+	);
 	if (equipmentById.size !== equipment.length) throw new Error('equipment.yaml: duplicitné id');
 	const levelOrder = (e: Equipment) => EQUIPMENT_LEVELS.indexOf(e.level);
 
@@ -511,6 +567,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		const allUsed = new Set(
 			[...lines, ...variants.flatMap((v) => v.lines)].map((l) => l.ingredientId)
 		);
+		const eatenGrams = lines.filter((l) => !l.notEaten).reduce((sum, l) => sum + l.grams, 0);
 		recipeDetails.set(id, {
 			id,
 			title: r.title,
@@ -525,6 +582,16 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			ahead: r.ahead,
 			yields: r.yields,
 			showNutrition: r.nutrition,
+			spicy: r.spicy,
+			keeps: r.keeps,
+			tested: r.tested,
+			servingGrams: Math.round(eatenGrams / r.servings),
+			leftovers: r.leftovers,
+			swaps: Object.fromEntries(
+				[...allUsed]
+					.map((id) => [id, substitutesById.get(id) ?? []] as const)
+					.filter(([, subs]) => subs.length)
+			),
 			...base,
 			substitutes: !base.usesSubstitutes
 				? 'none'
@@ -564,12 +631,32 @@ export function compileContent(raw: RawContent, today: Date): Content {
 				howto: _howto,
 				related: _related,
 				equipmentDetail: _equipment,
+				swaps: _swaps,
+				leftovers: _leftovers,
 				...summary
 			}) => summary
 		)
 		.sort((a, b) => a.title.localeCompare(b.title, 'sk'));
 
-	return { ingredients, recipes, cuisines, stores, prices, recipeDetails, wiki, equipment };
+	const ingredientInfo = new Map<string, IngredientInfo>(
+		rawIngredients.map((i) => [
+			i.id,
+			{ about: i.about, kinds: i.kinds, choose: i.choose, storage: i.storage, uses: i.uses }
+		])
+	);
+
+	return {
+		ingredients,
+		recipes,
+		cuisines,
+		stores,
+		prices,
+		recipeDetails,
+		wiki,
+		equipment,
+		ingredientInfo,
+		ingredientSwaps: substitutesById
+	};
 }
 
 let cached: Content | undefined;

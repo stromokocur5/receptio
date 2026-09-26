@@ -7,6 +7,8 @@ active: 5
 servings: 4
 difficulty: 1
 tags: [snack]
+keeps: { fridge: 5 }
+leftovers: 'Posyp ním polievku alebo šalát; zmäknutý prepeč 5 minút v rúre.'
 ingredients:
   - cicer-sterilizovany: 2 ks
   - olivovy-olej: 1 pl

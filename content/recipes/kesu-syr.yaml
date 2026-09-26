@@ -8,6 +8,7 @@ servings: 8
 difficulty: 1
 tags: [urob-si-sam]
 ahead: Kešu namoč na 4 hodiny, alebo na 15 minút do vriacej vody.
+keeps: { fridge: 5 }
 ingredients:
   - kesu: 200 g | namočené, scedené
   - citron: 1 ks

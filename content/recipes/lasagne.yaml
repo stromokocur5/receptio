@@ -7,6 +7,8 @@ active: 45
 servings: 6
 difficulty: 3
 tags: [party, meal-prep]
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Najlepšie sa krájajú na druhý deň. Porcie zamraz v alobale.'
 ingredients:
   - olivovy-olej: 3 pl
   - cibula: 1 ks

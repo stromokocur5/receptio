@@ -8,6 +8,7 @@ servings: 4
 difficulty: 2
 tags: [dezert]
 ahead: Po príprave nechaj stuhnúť v chladničke aspoň 3 hodiny.
+keeps: { fridge: 2 }
 ingredients:
   - horka-cokolada: 150 g
   - aquafaba: 1/2 hrnček | z jednej plechovky cíceru

@@ -7,6 +7,9 @@ active: 25
 servings: 4
 difficulty: 2
 tags: []
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Omáčku zamraz po porciách; tofu dopeč čerstvé.'
 ingredients:
   - tofu-natural: 400 g | vylisované, na kocky
   - kukuricny-skrob: 1 pl

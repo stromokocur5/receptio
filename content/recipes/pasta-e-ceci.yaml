@@ -7,6 +7,8 @@ active: 15
 servings: 4
 difficulty: 1
 tags: [one-pot]
+keeps: { fridge: 3 }
+leftovers: 'Zahustne – pri ohrievaní prilej vodu alebo vývar.'
 ingredients:
   - olivovy-olej: 3 pl
   - cesnak: 3 ks
@@ -25,3 +27,9 @@ steps:
   - Dochuť soľou a korením a polej olejom.
 tips:
   - S bezlepkovými cestovinami je to rovnako dobré, len ich var o minútu kratšie, rýchlo mäknú.
+variants:
+  - name: Bez cesnaku
+    description: 'Namiesto cesnaku opraž s rozmarínom zelenú časť jarnej cibuľky.'
+    remove: [cesnak]
+    add:
+      - jarna-cibulka: 2 ks | len zelená časť

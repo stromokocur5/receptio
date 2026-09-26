@@ -7,6 +7,8 @@ active: 20
 servings: 3
 difficulty: 1
 tags: [deti]
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Prehrej v rúre, nie v mikrovlnke – ostanú chrumkavé.'
 ingredients:
   - zemiaky: 4 ks | na hranolky
   - olej: 3 pl

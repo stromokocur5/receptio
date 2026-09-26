@@ -7,6 +7,8 @@ active: 30
 servings: 4
 difficulty: 2
 tags: [klasika, meal-prep]
+keeps: { fridge: 3, freezer: 3 }
+leftovers: 'Studené fašírky do chleba s horčicou a kyslou uhorkou.'
 ingredients:
   - sosovica-hneda: 200 g
   - voda: 3 hrnček

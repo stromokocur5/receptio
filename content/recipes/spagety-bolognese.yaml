@@ -7,6 +7,8 @@ active: 20
 servings: 4
 difficulty: 1
 tags: [meal-prep]
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Zapeč zvyšok s cestovinami a vegánskym syrom, alebo naplň papriku.'
 ingredients:
   - sojove-granule: 80 g
   - zeleninovy-vyvar: 1 hrnček | horúci

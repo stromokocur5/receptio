@@ -9,6 +9,7 @@ difficulty: 3
 tags: [urob-si-sam, fermentacia]
 yields: cca 500 g tempehu
 ahead: Zrná namoč cez noc. Po príprave tempeh fermentuje 24–36 hodín pri 30–32 °C.
+keeps: { fridge: 5, freezer: 3 }
 ingredients:
   - sojove-zrna: 250 g | namočené cez noc
   - ocot: 2 pl

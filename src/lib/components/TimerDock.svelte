@@ -8,7 +8,7 @@
 </script>
 
 {#if kitchen.timers.length}
-	<ul class="dock" class:floating aria-label="Časovače">
+	<ul class="dock" class:floating aria-label="Časovače" data-noprint>
 		{#each kitchen.timers as timer (timer.id)}
 			{@const ringing = kitchen.ringing.includes(timer.id)}
 			{@const left = remaining(timer)}

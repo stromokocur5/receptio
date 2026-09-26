@@ -8,6 +8,7 @@ ahead: Nechaj stuhnúť v chladničke aspoň 4 hodiny alebo cez noc.
 servings: 2
 difficulty: 1
 tags: [bez-varenia, ranajky]
+keeps: { fridge: 3 }
 ingredients:
   - chia: 4 pl
   - sojove-mlieko: 1 hrnček

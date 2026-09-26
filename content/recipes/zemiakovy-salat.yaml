@@ -8,6 +8,7 @@ servings: 8
 difficulty: 1
 tags: [klasika, party]
 ahead: Najlepší je uležaný cez noc v chladničke.
+keeps: { fridge: 3 }
 ingredients:
   - zemiaky: 8 ks | v šupke
   - mrkva: 3 ks

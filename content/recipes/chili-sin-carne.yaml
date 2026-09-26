@@ -7,6 +7,9 @@ active: 15
 servings: 6
 difficulty: 1
 tags: [meal-prep, one-pot]
+spicy: 2
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Zapeč s nachos a vegánskym syrom alebo naplň ním pečený batát.'
 ingredients:
   - sojove-granule: 100 g
   - zeleninovy-vyvar: 1 hrnček | horúci, na namočenie granúl
@@ -37,6 +40,11 @@ tips:
   - Kakao chili nerobí sladkým, len mu dodá hĺbku.
   - Zamrazené v porciách vydrží 3 mesiace.
 variants:
+  - name: Bez cibule a cesnaku
+    description: 'Pre citlivé trávenie (low FODMAP). Chuť doženie zelená časť jarnej cibuľky a o štipku viac korenia.'
+    remove: [cibula, cesnak]
+    add:
+      - jarna-cibulka: 4 ks | len zelená časť
   - name: Bez náhrad
     description: Hnedá šošovica namiesto sójových granúl a avokádo namiesto jogurtu. Šošovicu pridaj spolu s paradajkami a var 30–35 minút do mäkka, podlievaj vodou.
     replace:

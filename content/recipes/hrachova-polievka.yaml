@@ -8,6 +8,7 @@ servings: 6
 difficulty: 1
 tags: [polievka, klasika, lacne]
 ahead: Hrach namoč aspoň na 4 hodiny, uvarí sa rýchlejšie a lepšie sa rozvarí.
+keeps: { fridge: 4, freezer: 3 }
 ingredients:
   - zlty-hrach: 300 g | namočený
   - voda: 8 hrnček

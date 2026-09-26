@@ -14,7 +14,7 @@
 		scaleNutrients
 	} from '$lib/nutrition';
 	import { basketByStore } from '$lib/pricing';
-	import { FRIDGE_DAYS, mealSchedule } from '$lib/schedule';
+	import { mealSchedule } from '$lib/schedule';
 	import { encodeSharedPlan } from '$lib/share';
 	import { approxPieces, buildShoppingList, type ShoppingItem } from '$lib/shopping';
 	import {
@@ -92,7 +92,8 @@
 			plan.current,
 			settings.current.people,
 			settings.current.mealsPerDay,
-			settings.current.planDays
+			settings.current.planDays,
+			(id) => catalog.recipesById.get(id)?.keeps
 		)
 	);
 	const dayLabel = new Intl.DateTimeFormat('sk-SK', {
@@ -361,11 +362,13 @@
 											<span
 												class="meal"
 												class:cook={meal.kind === 'cook'}
-												class:old={meal.age > FRIDGE_DAYS}
+												class:old={meal.freeze || meal.spoils}
 											>
 												<Icon name={meal.kind === 'cook' ? 'pot' : 'jar'} size={16} />
 												{meal.kind === 'cook' ? 'Uvar' : 'Zvyšky'}: {titleOf(meal.entry.recipeId)}
-												{#if meal.age > FRIDGE_DAYS}<small>– radšej zamraz</small>{/if}
+												{#if meal.freeze}<small>– tieto porcie hneď zamraz</small>
+												{:else if meal.spoils}<small>– nevydrží, uvar menej alebo neskôr</small
+													>{/if}
 											</span>
 										{:else}
 											<span class="meal empty">nič naplánované</span>
@@ -390,7 +393,8 @@
 						{#if schedule.extraServings}
 							Zvýši {schedule.extraServings} porc. navyše.
 						{/if}
-						Varené jedlo vydrží v chladničke asi {FRIDGE_DAYS} dni. Poradie zmeníš tlačidlom „Skôr“.
+						Rozpis počíta s tým, koľko ktoré jedlo vydrží v chladničke a či sa dá zamraziť. Poradie zmeníš
+						tlačidlom „Skôr“.
 					</p>
 				</section>
 

@@ -7,6 +7,8 @@ active: 15
 servings: 10
 difficulty: 2
 tags: [pecenie, zvysky]
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Starší chlebík nakrájaj na plátky a opeč na panvici ako francúzsky toast.'
 ingredients:
   - banan: 3 ks | veľmi zrelé, s hnedými fľakmi
   - olej: 80 ml

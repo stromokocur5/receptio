@@ -10,6 +10,7 @@ tags: [urob-si-sam, fermentacia]
 yields: cca 1 l jogurtu
 ahead: Jogurt kvasí 8–12 hodín v teple (40–43 °C), potom 4 hodiny tuhne v chladničke.
 related: [domace-sojove-mlieko]
+keeps: { fridge: 7 }
 ingredients:
   - sojove-mlieko: 1 l | nesladené, bez zahusťovadiel, alebo domáce
   - sojovy-jogurt: 3 pl | s živými kultúrami, ako štartér

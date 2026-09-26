@@ -35,6 +35,7 @@ function ing(id: string, group = id, extra: Partial<Ingredient> = {}): Ingredien
 		howto: [],
 		byproduct: false,
 		groupFactor: 1,
+		season: [],
 		...extra
 	};
 }
@@ -71,6 +72,8 @@ function recipe(id: string, lines: [string, number][], servings = 2): RecipeSumm
 		showNutrition: true,
 		variants: [],
 		equipment: [],
+		spicy: 0,
+		servingGrams: 300,
 		lines: lines.map(([ingredientId, grams]) => ({ ingredientId, grams, amount: grams, unit: 'g' }))
 	};
 }

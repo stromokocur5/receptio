@@ -7,6 +7,9 @@ active: 25
 servings: 3
 difficulty: 2
 tags: []
+spicy: 3
+keeps: { fridge: 3 }
+leftovers: 'Daj na rezance a pridaj pár kvapiek sezamového oleja.'
 ingredients:
   - ryza-jazminova: 250 g
   - tofu-natural: 400 g | na kocky 2 cm, ideálne mäkké

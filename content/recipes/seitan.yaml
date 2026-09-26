@@ -7,6 +7,8 @@ active: 20
 servings: 6
 difficulty: 3
 tags: [meal-prep, vela-bielkovin]
+keeps: { fridge: 5, freezer: 3 }
+leftovers: 'Nakrájaj na tenké plátky do sendviča alebo opeč na kocky do gulášu.'
 ingredients:
   - lepok-vital: 150 g
   - cicerova-muka: 2 pl

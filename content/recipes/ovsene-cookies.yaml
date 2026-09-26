@@ -7,6 +7,7 @@ active: 10
 servings: 12
 difficulty: 1
 tags: [pecenie]
+keeps: { fridge: 7, freezer: 3 }
 ingredients:
   - banan: 1 ks | zrelý
   - arasidove-maslo: 6 pl

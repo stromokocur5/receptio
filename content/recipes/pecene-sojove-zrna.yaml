@@ -8,6 +8,7 @@ servings: 6
 difficulty: 1
 tags: [urob-si-sam, vela-bielkovin, lacne]
 ahead: Zrná namoč na 12 hodín (cez noc).
+keeps: { fridge: 30 }
 ingredients:
   - sojove-zrna: 200 g | namočené cez noc
   - olej: 1 pl

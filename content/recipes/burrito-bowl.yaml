@@ -7,6 +7,9 @@ active: 20
 servings: 4
 difficulty: 1
 tags: [do-krabicky, meal-prep]
+spicy: 1
+keeps: { fridge: 3, freezer: 3 }
+leftovers: 'Fazuľu s ryžou zabaľ do tortilly a opeč na suchej panvici – burrito.'
 ingredients:
   - ryza-basmati: 250 g
   - limetka: 2 ks

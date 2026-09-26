@@ -7,6 +7,9 @@ active: 15
 servings: 4
 difficulty: 1
 tags: [meal-prep, one-pot]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Na druhý deň je lepšia. Zvyšok daj do tortilly alebo na hrianku.'
 ingredients:
   - olej: 2 pl
   - cibula: 2 ks | nadrobno
@@ -34,3 +37,13 @@ steps:
 tips:
   - Časť cícera roztlač vareškou o stenu hrnca, omáčka bude krémovejšia.
   - V chladničke vydrží 4 dni, dá sa aj zamraziť.
+variants:
+  - name: Bez cibule a cesnaku
+    description: 'Pre citlivé trávenie (low FODMAP). Chuť doženie zelená časť jarnej cibuľky a o štipku viac korenia.'
+    remove: [cibula, cesnak]
+    add:
+      - jarna-cibulka: 3 ks | len zelená časť
+  - name: Viac bielkovín
+    description: 'Pridaj opečené tofu na kocky, porcia bude mať o ~10 g bielkovín viac.'
+    add:
+      - tofu-natural: 200 g | na kocky, opečené

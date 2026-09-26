@@ -23,6 +23,30 @@ describe('mealSchedule', () => {
 		expect(extraServings).toBe(1);
 	});
 
+	it('says when leftovers outlast the fridge', () => {
+		const keeps = (id: string) =>
+			id === 'polievka' ? { fridge: 1, freezer: 3 } : { fridge: 1, freezer: 0 };
+		const { days } = mealSchedule(
+			[
+				{ recipeId: 'polievka', servings: 3 },
+				{ recipeId: 'salat', servings: 3 }
+			],
+			1,
+			1,
+			6,
+			keeps
+		);
+		const flags = days.map((d) => d.meals[0] && [d.meals[0].freeze, d.meals[0].spoils]);
+		expect(flags).toEqual([
+			[false, false],
+			[false, false],
+			[true, false],
+			[false, false],
+			[false, false],
+			[false, true]
+		]);
+	});
+
 	it('reports empty slots and servings beyond the planned days', () => {
 		const short = mealSchedule([{ recipeId: 'cili', servings: 2 }], 1, 2, 2);
 		expect(summary(short.days)).toEqual([

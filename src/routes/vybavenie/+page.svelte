@@ -66,7 +66,7 @@
 								><Icon name={isIconName(tool.icon) ? tool.icon : 'spoon'} size={26} /></span
 							>
 							<div>
-								<h3>{tool.name}</h3>
+								<h3><a href="/vybavenie/{tool.id}">{tool.name}</a></h3>
 								{#if tool.recipeCount}
 									<span class="muted small"
 										>{tool.recipeCount} {pluralRecipes(tool.recipeCount)}</span
@@ -142,6 +142,9 @@
 	.head h3 {
 		margin: 0;
 		font-size: 1.15rem;
+	}
+	.head h3 a {
+		color: inherit;
 	}
 	.ico {
 		flex: none;

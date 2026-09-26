@@ -116,7 +116,7 @@
 					<div class="main">
 						<span class="dot" style:background={ingredient.color}></span>
 						<div>
-							<strong>{ingredient.name}</strong>
+							<strong><a class="ing" href="/suroviny/{ingredient.id}">{ingredient.name}</a></strong>
 							<span class="muted small">{CATEGORY_LABELS[ingredient.category]}</span>
 						</div>
 						<div class="best">
@@ -201,6 +201,13 @@
 </div>
 
 <style>
+	.ing {
+		color: inherit;
+		text-decoration: none;
+	}
+	.ing:hover {
+		text-decoration: underline;
+	}
 	.page {
 		padding-top: 28px;
 	}

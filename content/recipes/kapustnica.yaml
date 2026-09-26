@@ -7,6 +7,8 @@ active: 20
 servings: 6
 difficulty: 2
 tags: [polievka, klasika, meal-prep]
+keeps: { fridge: 5, freezer: 3 }
+leftovers: 'Každý deň je lepšia. Zamraz po porciách.'
 ingredients:
   - susene-huby: 20 g | namočené v 1 hrnčeku horúcej vody
   - olej: 2 pl

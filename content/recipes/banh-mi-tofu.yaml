@@ -7,6 +7,9 @@ active: 30
 servings: 2
 difficulty: 2
 tags: []
+spicy: 1
+keeps: { fridge: 2 }
+leftovers: 'Marinované tofu a nakladanú zeleninu daj na ryžu – hotová bowl.'
 ingredients:
   - mrkva: 1 ks | na tenké prúžky
   - redkovka: 4 ks | na tenké plátky

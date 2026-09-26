@@ -7,6 +7,9 @@ active: 20
 servings: 4
 difficulty: 2
 tags: [meal-prep]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Fazuľu roztlač a opeč na panvici – refried beans do tortilly.'
 ingredients:
   - olivovy-olej: 2 pl
   - tofu-udene: 200 g | na kocky

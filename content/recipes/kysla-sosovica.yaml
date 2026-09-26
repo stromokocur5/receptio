@@ -7,6 +7,7 @@ active: 15
 servings: 4
 difficulty: 1
 tags: [klasika]
+keeps: { fridge: 4, freezer: 3 }
 ingredients:
   - sosovica-hneda: 300 g | prepláchnutá
   - voda: 5 hrnček

@@ -7,6 +7,8 @@ active: 15
 servings: 4
 difficulty: 1
 tags: [polievka, one-pot]
+spicy: 2
+keeps: { fridge: 3 }
 ingredients:
   - kokosove-mlieko: 2 ks
   - zeleninovy-vyvar: 2 hrnček

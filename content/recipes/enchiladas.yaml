@@ -7,6 +7,9 @@ active: 25
 servings: 4
 difficulty: 2
 tags: [party]
+spicy: 1
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Zvyšnú plnku zamiešaj s ryžou do burrito bowl.'
 ingredients:
   - olej: 2 pl
   - cibula: 1 ks

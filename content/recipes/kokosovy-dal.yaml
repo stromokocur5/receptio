@@ -7,6 +7,9 @@ active: 10
 servings: 4
 difficulty: 1
 tags: [meal-prep, one-pot]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Rozrieď vývarom na polievku alebo pridaj ku ryži s pečenou zeleninou.'
 ingredients:
   - olej: 2 pl
   - horcicne-semienko: 1 čl
@@ -31,3 +34,13 @@ steps:
   - Vmiešaj špenát, nechaj ho zvädnúť a dochuť limetkou.
 tips:
   - Červená šošovica sa nemusí namáčať a rozvarí sa sama, preto je ideálna na rýchle večere.
+variants:
+  - name: Bez cibule a cesnaku
+    description: 'Pre citlivé trávenie (low FODMAP). Chuť doženie zelená časť jarnej cibuľky a o štipku viac korenia.'
+    remove: [cibula, cesnak]
+    add:
+      - jarna-cibulka: 2 ks | len zelená časť
+  - name: Viac bielkovín
+    description: 'Na konci vmiešaj opečené tofu.'
+    add:
+      - tofu-natural: 200 g | na kocky, opečené

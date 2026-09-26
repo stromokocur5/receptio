@@ -7,6 +7,7 @@ active: 5
 servings: 1
 difficulty: 1
 tags: [ranajky, rychle, bez-varenia]
+keeps: { fridge: 1 }
 ingredients:
   - banan: 1 ks | ideálne zmrazený
   - spenat: 40 g

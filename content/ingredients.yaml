@@ -18,6 +18,15 @@
   units: { hrnček: 185 }
   price: 3.5
   color: '#f4ecd8'
+  substitutes:
+    - { to: ryza-jazminova, note: 'lepkavejšia, voňavá' }
+    - { to: quinoa, note: 'viac bielkovín, var 15 min' }
+  about: 'Dlhozrnná voňavá ryža, ktorá ostáva sypká. K indickým jedlám a ako príloha.'
+  uses:
+    - 'Príloha ku kari a dalu'
+    - 'Pilaf a jollof rice'
+  choose: 'Staršia (aged) basmati je voňavejšia a menej sa lepí.'
+  storage: 'Suchá rok. Uvarenú schlaď do hodiny a zjedz do 3 dní.'
 
 - id: ryza-jazminova
   name: Ryža jazmínová (suchá)
@@ -28,6 +37,12 @@
   units: { hrnček: 185 }
   price: 3.5
   color: '#f4ecd8'
+  substitutes:
+    - { to: ryza-basmati, note: 'sypkejšia, menej voňavá' }
+  about: 'Thajská voňavá ryža, mierne lepkavá. K ázijským jedlám.'
+  uses:
+    - 'Kari, teriyaki, smažená ryža (deň stará)'
+  storage: 'Suchá rok.'
 
 - id: quinoa
   name: Quinoa (suchá)
@@ -37,6 +52,38 @@
   units: { hrnček: 170 }
   price: 7
   color: '#e9d9b0'
+  substitutes:
+    - { to: ryza-basmati, note: 'menej bielkovín' }
+    - { note: 'bulgur alebo kuskus (obsahujú lepok)' }
+  about: 'Semeno, ktoré sa varí ako obilnina. Bez lepku a s kompletnými bielkovinami.'
+  kinds:
+    - 'Biela – najjemnejšia'
+    - 'Červená a čierna – pevnejšie, do šalátov'
+  uses:
+    - 'Šaláty a bowly'
+    - 'Náhrada ryže a kuskusu'
+  choose: 'Predpláchnutá (pre-washed) netreba dlho preplachovať.'
+  storage: 'Suchá rok.'
+
+- id: pohanka
+  name: Pohánka lúpaná (suchá)
+  category: obilniny
+  n: { kcal: 343, p: 13.3, c: 71.5, f: 3.4, fib: 10, salt: 0, fe: 2.2, ca: 18, zn: 2.4 }
+  units: { hrnček: 170 }
+  price: 3
+  color: '#b58a5a'
+  note: prirodzene bez lepku, ale kupuj s označením bezlepková (krížová kontaminácia)
+  substitutes:
+    - { to: quinoa, note: 'jemnejšia chuť' }
+    - { to: ovsene-vlocky, note: 'do kaše, var kratšie' }
+  about: 'Semeno pohánky – bez lepku, s rutínom a horčíkom. Tradičná slovenská a ruská príloha.'
+  kinds:
+    - 'Pražená – výrazná orieškovej chuti'
+    - 'Nepražená (zelená) – jemná, do kaše'
+  uses:
+    - 'Kaša s ovocím'
+    - 'Príloha namiesto ryže, do fašírok'
+  storage: 'Suchá rok.'
 
 - id: ovsene-vlocky
   name: Ovsené vločky
@@ -48,6 +95,17 @@
   units: { hrnček: 90, pl: 8 }
   price: 1.8
   color: '#e6d3a8'
+  substitutes:
+    - { note: 'pohánkové vločky – bez lepku, výraznejšia chuť' }
+  about: 'Lacné, sýte raňajky s betaglukánom, ktorý znižuje cholesterol.'
+  kinds:
+    - 'Jemné – rýchlo sa uvaria, do kaše'
+    - 'Hrubé (celé) – do granoly a overnight oats'
+    - 'Instantné – najrýchlejšie, menej sýte'
+  uses:
+    - 'Kaša, overnight oats, granola'
+    - 'Rozmixované ako múka a strúhanka'
+  storage: 'Suché v uzavretej nádobe pol roka.'
 
 - id: ovsene-vlocky-bezlepkove
   name: Ovsené vločky certifikované bezlepkové
@@ -57,6 +115,10 @@
   units: { hrnček: 90, pl: 8 }
   price: 6
   color: '#e6d3a8'
+  about: 'Ovos pestovaný a spracovaný oddelene od pšenice, aby nebol kontaminovaný lepkom.'
+  uses:
+    - 'Všade namiesto bežných pri bezlepkovej strave'
+  storage: 'Suché pol roka.'
 
 - id: cestoviny
   name: Cestoviny pšeničné (suché)
@@ -67,6 +129,17 @@
   n: { kcal: 371, p: 13, c: 75, f: 1.5, fib: 3.2, salt: 0, fe: 1.3, ca: 21, zn: 1.4 }
   price: 2
   color: '#f0d890'
+  substitutes:
+    - { to: cestoviny-bezlepkove, note: 'var o minútu kratšie, rýchlo sa rozvaria' }
+  about: 'Suché pšeničné cestoviny – vegánske sú takmer všetky bez vajec (skontroluj „vaječné“).'
+  kinds:
+    - 'Dlhé (špagety, linguine) – k hladkým omáčkam'
+    - 'Krátke (penne, fusilli) – k hustým omáčkam'
+    - 'Malé (ditalini) – do polievok'
+  uses:
+    - 'Var v osolenej vode, pohár vody z cestovín odlož do omáčky'
+  choose: 'Durum pšenica a bronzová matrica – drsný povrch drží omáčku.'
+  storage: 'Suché rok.'
 
 - id: cestoviny-bezlepkove
   name: Cestoviny bezlepkové (kukurica/ryža)
@@ -76,6 +149,10 @@
   n: { kcal: 357, p: 7, c: 79, f: 1.5, fib: 2.5, salt: 0, fe: 0.8, ca: 10, zn: 1 }
   price: 5
   color: '#f0d890'
+  about: 'Cestoviny z kukurice, ryže alebo strukovín. Rýchlo sa rozvaria.'
+  uses:
+    - 'Var o minútu kratšie, hneď sceď'
+  storage: 'Suché rok.'
 
 - id: hladka-muka
   name: Hladká múka pšeničná
@@ -85,6 +162,19 @@
   n: { kcal: 364, p: 10.3, c: 76, f: 1, fib: 2.7, salt: 0, fe: 1.2, ca: 15, zn: 0.7 }
   units: { pl: 10 }
   price: 0.8
+  substitutes:
+    - { note: 'polohrubá múka 1:1' }
+    - { note: 'špaldová múka 1:1, cesto bude hutnejšie' }
+  about: 'Jemne mletá pšeničná múka na zahusťovanie, palacinky a koláče.'
+  kinds:
+    - 'Hladká – omáčky, palacinky, koláče'
+    - 'Polohrubá – cestoviny, knedle'
+    - 'Hrubá – halušky'
+    - 'Chlebová – viac lepku, na kysnuté cestá'
+  uses:
+    - 'Zápražka do polievok a prívarkov'
+    - 'Palacinky, lievance, bublanina'
+  storage: 'Suchá v uzavretej nádobe pol roka.'
 
 - id: ryzova-muka
   name: Ryžová múka
@@ -92,6 +182,12 @@
   n: { kcal: 366, p: 6, c: 80, f: 1.4, fib: 2.4, salt: 0, fe: 0.35, ca: 10, zn: 0.8 }
   units: { pl: 10 }
   price: 3
+  substitutes:
+    - { to: hladka-muka, note: 'len ak nevaríš bezlepkovo' }
+  about: 'Bezlepková múka z ryže – na zahusťovanie a pečenie.'
+  uses:
+    - 'Bezlepková zápražka a obaľovanie'
+  storage: 'Suchá pol roka.'
 
 - id: kukuricne-tortilly
   name: Kukuričné tortilly (100 % kukurica)
@@ -102,6 +198,13 @@
   units: { ks: 30 }
   price: 10
   color: '#e8c56a'
+  substitutes:
+    - { note: 'pšeničné tortilly (obsahujú lepok)' }
+    - { to: salat, note: 'veľké listy ľadového šalátu ako tacos' }
+  about: 'Tortilly zo 100 % kukurice – bez lepku, malé a pevné.'
+  uses:
+    - 'Tacos a enchiladas – prehrej na suchej panvici'
+  storage: 'V chladničke po otvorení týždeň, zamrazené mesiace.'
 
 - id: ryzovy-papier
   name: Ryžový papier
@@ -110,6 +213,12 @@
   units: { ks: 9 }
   price: 12
   color: '#f7f1e3'
+  substitutes:
+    - { to: salat, note: 'zabaľ do listov šalátu' }
+  about: 'Tenké ryžové placky na letné závitky. Namáčajú sa na pár sekúnd.'
+  uses:
+    - 'Letné závitky – namoč 5 sekúnd, zmäknú až na doske'
+  storage: 'Suchý roky.'
 
 - id: ryzove-rezance
   name: Ryžové rezance (suché)
@@ -117,6 +226,13 @@
   n: { kcal: 364, p: 6, c: 80, f: 0.6, fib: 1.6, salt: 0.1, fe: 0.7, ca: 18, zn: 0.7 }
   price: 6
   color: '#f7f1e3'
+  substitutes:
+    - { to: cestoviny, note: 'špagety – iná chuť, ale funguje (s lepkom)' }
+    - { note: 'pohánkové soba rezance' }
+  about: 'Rezance z ryžovej múky – bez lepku, netreba ich variť, stačí namočiť.'
+  uses:
+    - 'Pad thai, pho, závitky'
+  storage: 'Suché rok.'
 
 - id: zemiaky
   name: Zemiaky
@@ -125,6 +241,20 @@
   units: { ks: 150 }
   price: 1
   color: '#e3c98f'
+  substitutes:
+    - { to: batat, note: 'sladšie' }
+  about: 'Základ slovenskej kuchyne a lacný zdroj energie, draslíka a vitamínu C. Varia sa, pečú, pučia aj strúhajú na placky.'
+  kinds:
+    - 'Typ A (šalátové, pevné) – nerozvaria sa, do šalátu a na pečenie v šupke'
+    - 'Typ B (prílohové) – univerzálne, do polievok a gulášu'
+    - 'Typ C (múčnaté) – rozvaria sa, na kašu, placky a pirohy'
+    - 'Mladé zemiaky – tenká šupka, netreba šúpať'
+  uses:
+    - 'Kaša, pečené mesiačiky, placky, halušky'
+    - 'Zahustenie polievok (rozmixovaný zemiak)'
+    - 'Zemiakový šalát zo šupiek uvarených deň vopred'
+  choose: 'Pevné, bez klíčkov a zelených miest. Zelené časti obsahujú solanín – vykroj ich.'
+  storage: 'V tme a chlade (8–10 °C), nie v chladničke – škrob sa mení na cukor. Oddelene od cibule, obe sa kazia rýchlejšie.'
 
 - id: batat
   name: Batát (sladký zemiak)
@@ -133,6 +263,19 @@
   units: { ks: 250 }
   price: 2.5
   color: '#e8873a'
+  substitutes:
+    - { to: tekvica-hokkaido }
+    - { to: zemiaky, note: 'menej sladké' }
+  about: 'Sladký zemiak s oranžovou dužinou. Nie je príbuzný zemiaku, má viac vlákniny a beta-karoténu.'
+  kinds:
+    - 'Oranžový – najsladší, najčastejší'
+    - 'Biely a fialový – sušší, menej sladký'
+  uses:
+    - 'Pečený na kocky do bowlov a tacos'
+    - 'Krémové polievky a kari'
+    - 'Hranolky z rúry'
+  choose: 'Pevný, bez mäkkých miest a plesne na koncoch.'
+  storage: 'Pri izbovej teplote v tme až 2 týždne. V chladničke tvrdne a stráca chuť.'
 
 # ── Strukoviny ─────────────────────────────────────────────────
 - id: sosovica-cervena
@@ -143,6 +286,15 @@
   units: { hrnček: 190 }
   price: 3
   color: '#e39a55'
+  substitutes:
+    - { to: zlty-hrach, note: 'namočiť cez noc, variť dlhšie' }
+    - { to: sosovica-hneda, note: 'nerozvarí sa, var o 10 min dlhšie' }
+  about: 'Lúpaná šošovica, ktorá sa rozvarí za 15 minút na krémovú kašu. Netreba namáčať.'
+  uses:
+    - 'Dal, polievky, misir wot'
+    - 'Zahustenie polievok a omáčok'
+  choose: 'Celistvé zrnká bez prachu a moľov.'
+  storage: 'Suchá v uzavretej nádobe rok.'
 
 - id: sosovica-hneda
   name: Šošovica hnedá/zelená (suchá)
@@ -152,6 +304,18 @@
   units: { hrnček: 190 }
   price: 3
   color: '#8a6a3d'
+  substitutes:
+    - { to: sosovica-cervena, note: 'rozvarí sa na kašu – skráť čas' }
+    - { to: cicer-sterilizovany, note: 'z plechovky, len prehrej' }
+  about: 'Celá šošovica, ktorá drží tvar. Viac vlákniny ako červená.'
+  kinds:
+    - 'Hnedá/zelená – najbežnejšia'
+    - 'Beluga (čierna) – malá, drží tvar, do šalátov'
+    - 'Puy (francúzska) – orieškovej chuti'
+  uses:
+    - 'Kyslá šošovica, bolognese, fašírky'
+    - 'Šaláty – var len do skusu'
+  storage: 'Suchá rok.'
 
 - id: cicer-sterilizovany
   name: Cícer sterilizovaný (scedený)
@@ -163,6 +327,15 @@
   price: 3
   color: '#dcb66c'
   note: 1 ks = plechovka 400 g, po scedení ~240 g
+  substitutes:
+    - { to: cicer-suchy, note: 'namoč cez noc a var 1–1,5 h (100 g suchého ≈ 240 g uvareného)' }
+    - { to: fazula-biela, note: 'jemnejšia a krémovejšia' }
+  about: 'Uvarený cícer v plechovke – pohodlný a rovnako výživný ako varený doma. Nálev (aquafaba) nevylievaj.'
+  uses:
+    - 'Hummus, kari, šaláty, pečený cícer dochrumkava'
+    - 'Na falafel nie – ten sa robí z namočeného suchého cíceru'
+  choose: 'Bez pridaného cukru. Sklenený pohár býva mäkší.'
+  storage: 'Otvorený v chladničke 3 dni.'
 
 - id: cicer-suchy
   name: Cícer suchý
@@ -173,6 +346,13 @@
   n: { kcal: 378, p: 20.5, c: 63, f: 6, fib: 12.2, salt: 0, fe: 4.3, ca: 57, zn: 2.8, ala: 0.1 }
   price: 3
   color: '#dcb66c'
+  substitutes:
+    - { to: cicer-sterilizovany, note: '2,4× viac podľa hmotnosti, bez namáčania' }
+  about: 'Suchý cícer je lacnejší a chutnejší, ale treba ho namočiť cez noc a variť 1–1,5 hodiny.'
+  uses:
+    - 'Falafel – len namočený, nevarený'
+    - 'Hummus z domáceho cíceru je najjemnejší'
+  storage: 'Suchý rok. Uvarený zamraz po porciách.'
 
 - id: fazula-cierna
   name: Čierna fazuľa sterilizovaná (scedená)
@@ -182,6 +362,13 @@
   units: { ks: 240 }
   price: 3.5
   color: '#3a2f33'
+  substitutes:
+    - { to: fazula-cervena }
+    - { to: fazula-biela }
+  about: 'Mexická čierna fazuľa – krémová, mierne sladkastá.'
+  uses:
+    - 'Burrito bowl, tacos, burgre, feijoada'
+  storage: 'Otvorená v chladničke 3 dni.'
 
 - id: fazula-cervena
   name: Červená fazuľa sterilizovaná (scedená)
@@ -191,6 +378,13 @@
   units: { ks: 240 }
   price: 3
   color: '#8e2f2a'
+  substitutes:
+    - { to: fazula-cierna }
+    - { to: fazula-biela }
+  about: 'Najčastejšia fazuľa v plechovke, pevná a sýta.'
+  uses:
+    - 'Chili sin carne, fazuľová polievka, guláš'
+  storage: 'Otvorená v chladničke 3 dni.'
 
 - id: fazula-biela
   name: Biela fazuľa sterilizovaná (scedená)
@@ -200,6 +394,18 @@
   units: { ks: 240 }
   price: 3
   color: '#efe6d2'
+  substitutes:
+    - { to: cicer-sterilizovany, note: 'pevnejší' }
+    - { to: fazula-cervena }
+  about: 'Jemná krémová fazuľa, v Grécku a Taliansku klasika.'
+  kinds:
+    - 'Cannellini – stredné, krémové'
+    - 'Gigantes – obrovské, do rúry'
+    - 'Malá biela – do polievok'
+  uses:
+    - 'Fasolada, minestrone, gigantes'
+    - 'Biela nátierka s cesnakom a rozmarínom'
+  storage: 'Otvorená v chladničke 3 dni.'
 
 # ── Bielkoviny ─────────────────────────────────────────────────
 - id: tofu-natural
@@ -212,6 +418,21 @@
   price: 7
   color: '#f3ead2'
   note: tofu zrážané síranom vápenatým má výrazne viac vápnika
+  substitutes:
+    - { to: tofu-udene, note: 'výraznejšia chuť, uber údenú papriku' }
+    - { to: tempeh, note: 'orieškovejší, pevnejší' }
+    - { to: cicer-sterilizovany, note: 'v kari a omáčkach' }
+  about: 'Zrazené sójové mlieko – neutrálna chuť, ktorá nasaje marinádu. Vápnikové tofu je aj dobrý zdroj vápnika.'
+  kinds:
+    - 'Pevné – na opekanie a pečenie'
+    - 'Extra pevné – najmenej vody, najchrumkavejšie'
+    - 'Hodvábne – na krémy a dezerty'
+  uses:
+    - 'Opečené na kocky do kari a bowlov'
+    - 'Praženica, nátierky'
+    - 'Vyžmýkaj ho – bude chrumkavejšie'
+  choose: 'Hľadaj „zrážané síranom vápenatým“ – má vápnika ako mlieko.'
+  storage: 'Otvorené v nádobe s vodou v chladničke 5 dní, vodu vymieňaj. Zamrazené zmení textúru na hubovitú – lepšie nasaje marinádu.'
 
 - id: tofu-udene
   name: Tofu údené
@@ -222,6 +443,12 @@
   n: { kcal: 160, p: 16, c: 2, f: 9.5, fib: 1, salt: 1.2, fe: 2.5, ca: 150, zn: 1.6, ala: 0.5 }
   price: 9
   color: '#c89458'
+  substitutes:
+    - { to: tofu-natural, note: 'pridaj ½ ČL údenej papriky a trochu sójovky' }
+  about: 'Údené tofu – výrazná chuť, stačí ho nakrájať. Náhrada slaniny a klobásy.'
+  uses:
+    - 'Kapustnica, guláš, strapačky, lečo'
+  storage: 'Otvorené v chladničke týždeň.'
 
 # ── Zelenina ───────────────────────────────────────────────────
 - id: cibula
@@ -232,6 +459,20 @@
   units: { ks: 110 }
   price: 1
   color: '#ecd9b4'
+  substitutes:
+    - { to: cibula-cervena, note: 'sladšia' }
+    - { note: 'šalotka alebo pór' }
+  about: 'Základ takmer každého slaného jedla. Pomalým opekaním zosladne a dá jedlu hĺbku.'
+  kinds:
+    - 'Žltá – univerzálna, najlacnejšia'
+    - 'Biela – jemnejšia, šťavnatá'
+    - 'Šalotka – jemná, do omáčok a zálievok'
+  uses:
+    - 'Opekanie na začiatku omáčok, polievok a gulášov'
+    - 'Karamelizovaná do mujaddary a na burgre'
+    - 'Surová do šalátov (spar ju vriacou vodou, bude jemnejšia)'
+  choose: 'Tvrdá, suchá šupka, bez klíčkov a mäkkých miest.'
+  storage: 'V suchu a tme, vo vzdušnom košíku. Nakrojená v uzavretej nádobe v chladničke 3 dni.'
 
 - id: cibula-cervena
   name: Cibuľa červená
@@ -242,6 +483,14 @@
   units: { ks: 110 }
   price: 1.5
   color: '#9b3d6b'
+  substitutes:
+    - { to: cibula, note: 'ostrejšia – v šaláte ju spari vriacou vodou' }
+  about: 'Sladšia a jemnejšia ako žltá, krásna surová v šalátoch a nakladaná.'
+  uses:
+    - 'Surová do šalátov, tacos a salsy'
+    - 'Rýchlo nakladaná v octe s cukrom (15 minút)'
+  choose: 'Tvrdá, s lesklou fialovou šupkou.'
+  storage: 'Ako žltá cibuľa – v suchu a tme.'
 
 - id: jarna-cibulka
   name: Jarná cibuľka
@@ -250,6 +499,16 @@
   units: { ks: 15 }
   price: 6
   color: '#8cc063'
+  season: [4, 5, 6, 7]
+  substitutes:
+    - { to: pazitka, note: 'na posypanie' }
+    - { to: cibula, note: 'nadrobno, menej' }
+  about: 'Mladá cibuľa aj so zelenou vňaťou. Biela časť sa opeká, zelená sa sype navrch.'
+  uses:
+    - 'Posyp ázijských jedál a polievok'
+    - 'Nízko-FODMAP náhrada cibule (len zelená časť)'
+  choose: 'Svieža, rovná zelená vňať bez zvädnutých koncov.'
+  storage: 'V chladničke zabalená vo vlhkej utierke týždeň, alebo koreňmi v pohári vody.'
 
 - id: cesnak
   name: Cesnak (strúčik)
@@ -259,6 +518,19 @@
   units: { ks: 5 }
   price: 6
   color: '#f5efe1'
+  substitutes:
+    - { note: 'sušený granulovaný cesnak – ¼ ČL za strúčik' }
+  about: 'Aromatická zelenina, ktorá dáva chuť omáčkam, dipom aj polievkam. Surový je ostrý, opekaný sladký.'
+  kinds:
+    - 'Slovenský – menšie, ostrejšie strúčiky'
+    - 'Dovezený (Čína, Španielsko) – veľké, jemnejšie strúčiky'
+    - 'Medvedí cesnak – jarné listy z lesa, na pesto'
+  uses:
+    - 'Opekať 30 sekúnd – pripáli sa rýchlo a zhorkne'
+    - 'Pečený celý v rúre – sladký krém na chlieb'
+    - 'Surový do dipov a tzatziki'
+  choose: 'Tvrdé hlavičky bez zelených klíčkov. Klíčok je horký – vyber ho.'
+  storage: 'V suchu a tme, nie v chladničke. Hlavička vydrží mesiace.'
 
 - id: zazvor
   name: Zázvor čerstvý
@@ -268,6 +540,14 @@
   units: { pl: 6, čl: 2 }
   price: 5
   color: '#dcb45a'
+  substitutes:
+    - { note: 'mletý zázvor – ¼ ČL za 1 cm' }
+  about: 'Pikantný koreň, základ ázijských a indických jedál. Pomáha aj proti nevoľnosti.'
+  uses:
+    - 'Nastrúhaný do kari, wok jedál a marinád'
+    - 'Plátky do čaju s citrónom'
+  choose: 'Pevný s lesklou tenkou šupkou, nie zvráskavený.'
+  storage: 'V chladničke 3 týždne, alebo celý zamrazený – strúha sa rovno mrazený.'
 
 - id: mrkva
   name: Mrkva
@@ -276,6 +556,17 @@
   units: { ks: 80 }
   price: 1
   color: '#ef8a2d'
+  season: [7, 8, 9, 10, 11]
+  substitutes:
+    - { to: petrzlen-koren }
+    - { to: tekvica-hokkaido }
+  about: 'Lacná, sladkastá zelenina plná beta-karoténu. Vydrží dlho a hodí sa takmer všade.'
+  uses:
+    - 'Základ polievok a omáčok spolu s cibuľou a zelerom'
+    - 'Surová nastrúhaná do šalátov'
+    - 'Pečená s rascou a javorovým sirupom'
+  choose: 'Pevná a rovná. Mladá mrkva s vňaťou je sladšia.'
+  storage: 'V chladničke bez vňate, v sáčku 3 týždne. Vňať mrkvu vysušuje.'
 
 - id: zeler-stonkovy
   name: Zeler stonkový
@@ -285,6 +576,16 @@
   units: { ks: 40 }
   price: 3
   color: '#a8cf72'
+  season: [8, 9, 10]
+  substitutes:
+    - { note: 'zelerová buľva, kúsok' }
+    - { to: mrkva }
+  about: 'Chrumkavé stonky s výraznou chuťou. Tretia časť „svätej trojice“ omáčok – cibuľa, mrkva, zeler.'
+  uses:
+    - 'Nadrobno do bolognese a polievok'
+    - 'Surový s arašidovým maslom ako snack'
+  choose: 'Pevné, svetlozelené stonky, ktoré sa lámu s chrupnutím.'
+  storage: 'Zabalený v alobale v chladničke 2 týždne.'
 
 - id: paprika-cervena
   name: Paprika červená
@@ -293,6 +594,22 @@
   units: { ks: 160 }
   price: 3
   color: '#d8402b'
+  season: [7, 8, 9, 10]
+  substitutes:
+    - { note: 'žltá alebo zelená paprika' }
+    - { to: paradajky, note: 'v omáčkach' }
+  about: 'Sladká paprika, najviac vitamínu C z bežnej zeleniny. Červená je zrelá zelená paprika – preto je sladšia.'
+  kinds:
+    - 'Červená, žltá, oranžová – sladké, zrelé'
+    - 'Zelená – nezrelá, horkastá'
+    - 'Kápia – dlhá, tenká šupka, na pečenie'
+    - 'Biela (slovenská) – na lečo a plnenie'
+  uses:
+    - 'Lečo, guláše a plnené papriky'
+    - 'Pečená a ošúpaná do hummusu a omáčok'
+    - 'Surová do šalátov a na nátierky'
+  choose: 'Lesklá a pevná, s čerstvou zelenou stopkou.'
+  storage: 'V chladničke v zásuvke na zeleninu týždeň.'
 
 - id: paradajky
   name: Paradajky čerstvé
@@ -301,6 +618,21 @@
   units: { ks: 120 }
   price: 2.5
   color: '#e2452f'
+  season: [7, 8, 9]
+  substitutes:
+    - { to: paradajky-sterilizovane, note: 'v omáčkach mimo sezóny chutia viac' }
+  about: 'Najchutnejšie v lete zo záhradky. Zrelé paradajky majú viac lykopénu a chuti ako skleníkové.'
+  kinds:
+    - 'Guľaté – univerzálne'
+    - 'Rímske (San Marzano) – mäsité, na omáčky'
+    - 'Cherry – sladké, do šalátov'
+    - 'Býčie srdce – veľké, na plátky'
+  uses:
+    - 'Čerstvé do šalátov a na chlieb'
+    - 'Paradajková polievka a omáčky v sezóne'
+    - 'Mimo sezóny radšej sterilizované'
+  choose: 'Voňavé pri stopke a mierne mäkké na dotyk.'
+  storage: 'Nikdy nie v chladničke – stratia chuť a zmúčnatejú. Pri izbovej teplote stopkou dole.'
 
 - id: paradajky-sterilizovane
   name: Paradajky krájané v plechovke
@@ -310,6 +642,19 @@
   price: 2
   color: '#c73a26'
   note: 1 ks = plechovka 400 g
+  substitutes:
+    - { to: passata }
+    - { to: paradajky, note: 'čerstvé, dlhšie povar' }
+  about: 'Krájané alebo celé paradajky v plechovke. Zbierané zrelé, preto mimo sezóny chutia viac ako čerstvé.'
+  kinds:
+    - 'Krájané – najpohodlnejšie'
+    - 'Celé lúpané – kvalitnejšie, rozmačkaj ich rukou'
+    - 'Cherry v plechovke – sladšie'
+  uses:
+    - 'Omáčky, kari, chili a polievky'
+    - 'Shakshuka a guláše'
+  choose: 'Zloženie – len paradajky, šťava, prípadne kyselina citrónová. Talianske bývajú najlepšie.'
+  storage: 'Neotvorené roky. Otvorené prelož do misky, v chladničke 4 dni.'
 
 - id: paradajkovy-pretlak
   name: Paradajkový pretlak
@@ -318,6 +663,14 @@
   units: { pl: 16 }
   price: 5
   color: '#b8321f'
+  substitutes:
+    - { to: passata, note: '3× viac, dlhšie povar' }
+  about: 'Zahustené paradajky – koncentrovaná chuť a umami. Stačí lyžica.'
+  uses:
+    - 'Opraž ho na oleji 1 minútu – chuť sa prehĺbi'
+    - 'Do gulášu, bolognese a polievok'
+  choose: 'Dvojito alebo trojito koncentrovaný, bez soli a cukru.'
+  storage: 'Otvorený v chladničke týždeň. Zvyšok zamraz po lyžiciach na papieri.'
 
 - id: uhorka
   name: Uhorka šalátová
@@ -326,6 +679,18 @@
   units: { ks: 300 }
   price: 2
   color: '#6fae5b'
+  season: [6, 7, 8, 9]
+  substitutes:
+    - { to: cuketa, note: 'mladá, surová' }
+  about: 'Osviežujúca zelenina z 95 % z vody. Najlepšia chrumkavá zo záhradky.'
+  kinds:
+    - 'Šalátová – dlhá, tenká šupka'
+    - 'Nakladačka – malá, na kyslé uhorky'
+  uses:
+    - 'Šaláty, tzatziki, bowly'
+    - 'Osolená a vytlačená nepustí vodu do šalátu'
+  choose: 'Pevná, tmavozelená, bez mäkkých koncov.'
+  storage: 'V chladničke 5 dní. Nakrojenú zabaľ – vysychá.'
 
 - id: brokolica
   name: Brokolica
@@ -334,6 +699,17 @@
   units: { ks: 400 }
   price: 3
   color: '#4f8f3a'
+  season: [6, 7, 8, 9, 10]
+  substitutes:
+    - { to: karfiol }
+    - { to: zelene-fazulky }
+  about: 'Kapustová zelenina s množstvom vitamínu C, K a vápnika. Jesť sa dá aj stonka.'
+  uses:
+    - 'Krátko povarená alebo pečená dochrumkava'
+    - 'Krémová polievka aj so stonkou'
+    - 'Do kari a wok jedál'
+  choose: 'Tmavozelené, pevné ružičky. Žltnúca brokolica je stará.'
+  storage: 'V chladničke v sáčku 5 dní.'
 
 - id: spenat
   name: Špenát (čerstvý alebo mrazený)
@@ -341,6 +717,21 @@
   n: { kcal: 23, p: 2.9, c: 3.6, f: 0.4, fib: 2.2, salt: 0.2, fe: 2.7, ca: 99, zn: 0.5, ala: 0.1 }
   price: 4
   color: '#3e7d34'
+  season: [4, 5, 9, 10]
+  substitutes:
+    - { note: 'mrazený špenát – vyžmýkaj' }
+    - { to: salat, note: 'len do šalátu' }
+  about: 'Listová zelenina so železom, folátom a vápnikom. Po uvarení sa scvrkne na zlomok.'
+  kinds:
+    - 'Baby špenát – mäkké listy, surový do šalátov'
+    - 'Listový – na varenie'
+    - 'Mrazený – lacný, pohodlný, rovnako výživný'
+  uses:
+    - 'Do dalu, kari a polievok na konci varenia'
+    - 'Smoothie a šaláty'
+    - 'Palak tofu'
+  choose: 'Svieže, sýto zelené listy bez slizu.'
+  storage: 'V chladničke 3–4 dni, najlepšie s papierovou utierkou v sáčku.'
 
 - id: salat
   name: Listový šalát
@@ -349,6 +740,19 @@
   units: { ks: 300 }
   price: 4
   color: '#9ccc65'
+  season: [5, 6, 7, 8, 9]
+  substitutes:
+    - { to: spenat, note: 'baby špenát' }
+  about: 'Listový šalát na čerstvé šaláty, do sendvičov a tacos.'
+  kinds:
+    - 'Ľadový – chrumkavý, vydrží dlho'
+    - 'Hlávkový – jemný'
+    - 'Rímsky – pevný, do caesar šalátu'
+    - 'Rukola – pikantná'
+  uses:
+    - 'Šaláty a bowly'
+    - 'Listy namiesto tortilly'
+  storage: 'Umytý a vysušený v nádobe s utierkou v chladničke 5 dní.'
 
 - id: kukurica
   name: Kukurica sterilizovaná (scedená)
@@ -357,6 +761,14 @@
   units: { ks: 285 }
   price: 3.5
   color: '#f2c230'
+  season: [8, 9]
+  substitutes:
+    - { to: hrasok }
+  about: 'Sterilizovaná kukurica z plechovky – sladká a pohodlná po celý rok.'
+  uses:
+    - 'Chili, burrito bowl, šaláty'
+    - 'Opečená na suchej panvici chutí ako z grilu'
+  storage: 'Otvorenú prelož do nádoby, v chladničke 3 dni.'
 
 - id: avokado
   name: Avokádo
@@ -366,6 +778,17 @@
   price: 7
   color: '#7fa843'
   note: 1 ks = dužina jedného avokáda
+  substitutes:
+    - { note: 'v šaláte vynechaj; v toaste hummus' }
+  about: 'Maslové ovocie s nenasýtenými tukmi. Základ guacamole a toastov.'
+  kinds:
+    - 'Hass – tmavá hrboľatá šupka, najkrémovejšie'
+    - 'Zelené hladké – vodnatejšie'
+  uses:
+    - 'Guacamole a avokádový toast'
+    - 'Do bowlov, šalátov a smoothie'
+  choose: 'Pri stlačení jemne povolí. Tvrdé dozreje pri izbovej teplote za 2–4 dni (rýchlejšie vedľa banánu).'
+  storage: 'Zrelé v chladničke 2–3 dni. Rozkrojené pokvapkaj citrónom a nechaj kôstku.'
 
 - id: bylinky-koriander
   name: Koriander čerstvý (vňať)
@@ -374,6 +797,14 @@
   units: { pl: 2 }
   price: 30
   color: '#5aa047'
+  substitutes:
+    - { to: petrzlenova-vnat, note: 'kto neznáša koriander' }
+    - { to: bylinky-mata, note: 'v ázijských šalátoch' }
+  about: 'Čerstvá vňať koriandra – svieža, citrusová. Niekomu chutí ako mydlo (genetika).'
+  uses:
+    - 'Posyp kari, tacos a ázijských polievok'
+    - 'Salsa a chutney'
+  storage: 'Ako kytica v pohári vody v chladničke, prikrytá sáčkom, týždeň.'
 
 - id: bylinky-mata
   name: Mäta čerstvá
@@ -382,6 +813,15 @@
   units: { pl: 2 }
   price: 30
   color: '#67b25a'
+  season: [6, 7, 8, 9]
+  substitutes:
+    - { to: bazalka }
+    - { to: petrzlenova-vnat }
+  about: 'Osviežujúca bylinka do šalátov, nápojov a ázijských jedál.'
+  uses:
+    - 'Tabbouleh, letné závitky'
+    - 'Čaj a limonáda'
+  storage: 'V pohári vody alebo vo vlhkej utierke v chladničke.'
 
 # ── Ovocie ─────────────────────────────────────────────────────
 - id: limetka
@@ -392,6 +832,14 @@
   price: 6
   color: '#b5d34a'
   note: 1 ks = šťava z jednej limetky
+  substitutes:
+    - { to: citron }
+  about: 'Aromatickejšia a kyslejšia sestra citróna, typická pre mexickú a thajskú kuchyňu.'
+  uses:
+    - 'Guacamole, tacos, pad thai, kari'
+    - 'Kôra do dresingov'
+  choose: 'Ťažká, lesklá a mierne mäkká – má viac šťavy.'
+  storage: 'V chladničke 2 týždne.'
 
 - id: citron
   name: Citrón (šťava)
@@ -401,6 +849,15 @@
   price: 3
   color: '#f4d73c'
   note: 1 ks = šťava z jedného citróna
+  substitutes:
+    - { to: limetka }
+    - { to: ocot, note: 'lyžička, len na kyslosť' }
+  about: 'Kyslosť, ktorá prebudí takmer každé jedlo. Vitamín C pomáha vstrebať železo zo strukovín.'
+  uses:
+    - 'Hummus, tahini omáčka, dresingy'
+    - 'Kvapka na konci varenia do polievok a dalu'
+  choose: 'Ťažký s tenkou šupkou. Na kôru kupuj nevoskované (bio).'
+  storage: 'V chladničke 3 týždne. Šťavu zamraz vo formičkách na ľad.'
 
 - id: banan
   name: Banán
@@ -409,6 +866,14 @@
   units: { ks: 120 }
   price: 1.5
   color: '#f5d565'
+  substitutes:
+    - { to: jablko, note: 'strúhané, v pečení' }
+    - { note: 'jablkové pyré' }
+  about: 'Sladké ovocie a v pečení skvelá náhrada vajíčka. Čím hnedší, tým sladší.'
+  uses:
+    - 'Banánový chlebík, lievance, smoothie'
+    - 'Namiesto vajíčka – ½ roztlačeného banánu'
+  storage: 'Pri izbovej teplote. Prezreté ošúp a zamraz – z mrazených je „zmrzlina“.'
 
 - id: pomaranc
   name: Pomaranč
@@ -417,6 +882,14 @@
   units: { ks: 150 }
   price: 1.8
   color: '#f39a2b'
+  season: [11, 12, 1, 2, 3]
+  substitutes:
+    - { note: 'mandarínky' }
+  about: 'Zimné citrusové ovocie plné vitamínu C.'
+  uses:
+    - 'Šťava a kôra do dresingov a dezertov'
+    - 'K šalátu s cviklou'
+  storage: 'Pri izbovej teplote týždeň, v chladničke 3 týždne.'
 
 - id: maliny
   name: Maliny (aj mrazené)
@@ -425,6 +898,14 @@
   units: { hrnček: 125 }
   price: 7
   color: '#d6335a'
+  season: [7, 8]
+  substitutes:
+    - { note: 'mrazené lesné ovocie' }
+  about: 'Letné bobuľové ovocie s množstvom vlákniny. Mrazené sú lacnejšie a rovnako výživné.'
+  uses:
+    - 'Chia puding, kaša, smoothie'
+    - 'Omáčka na palacinky'
+  storage: 'Čerstvé 2 dni v chladničke, neumývané. Mrazené mesiace.'
 
 # ── Orechy a semienka ──────────────────────────────────────────
 - id: arasidove-maslo
@@ -435,6 +916,15 @@
   units: { pl: 16, čl: 6 }
   price: 7
   color: '#b77a3f'
+  substitutes:
+    - { to: tahini, note: 'menej sladké, pridaj trochu sirupu' }
+    - { note: 'mandľové alebo kešu maslo 1:1' }
+  about: 'Rozmixované pražené arašidy. Lacný zdroj bielkovín a tukov.'
+  uses:
+    - 'Arašidová omáčka k závitkom a gado-gado'
+    - 'Maafe, cookies, kaša, smoothie'
+  choose: 'Len arašidy (a soľ) – bez palmového oleja a cukru. Olej na povrchu je dobré znamenie.'
+  storage: 'Pri izbovej teplote mesiace, olej pred použitím zamiešaj.'
 
 - id: sezam
   name: Sezam
@@ -457,6 +947,17 @@
   price: 8
   color: '#efe0bd'
   note: hodnoty pre nelúpaný sezam; lúpaný má vápnika len zlomok
+  substitutes:
+    - { to: tekvicove-semienka }
+    - { to: lanove-semienko }
+  about: 'Drobné semienka s vápnikom. Opražené voňajú orieškovo.'
+  kinds:
+    - 'Biely lúpaný – jemný'
+    - 'Čierny a nelúpaný – viac vápnika'
+  uses:
+    - 'Posyp ázijských jedál – opraž nasucho 2 minúty'
+    - 'Domáce tahini'
+  storage: 'V chladničke – tuk v semienkach žltne.'
 
 - id: lanove-semienko
   name: Ľanové semienko mleté
@@ -478,6 +979,14 @@
   price: 5
   color: '#9a6b3c'
   note: mleté skladuj v chladničke, omega-3 rýchlo oxidujú
+  substitutes:
+    - { to: chia, note: 'ako vajíčko: 1 PL + 3 PL vody' }
+    - { note: 'na viazanie ½ banánu alebo 3 PL aquafaby' }
+  about: 'Najlacnejší rastlinný zdroj omega-3 (ALA). Celé prejde telom nestrávené – kupuj mleté.'
+  uses:
+    - '„Ľanové vajíčko“ – 1 PL + 3 PL vody, 10 min'
+    - 'Do kaše, smoothie a pečiva'
+  storage: 'Mleté v chladničke v uzavretej nádobe mesiac.'
 
 - id: chia
   name: Chia semienka
@@ -498,6 +1007,13 @@
   units: { pl: 12, čl: 4 }
   price: 10
   color: '#5b5550'
+  substitutes:
+    - { to: lanove-semienko, note: 'mleté, zhustne rovnako' }
+  about: 'Semienka, ktoré vo vode napučia na gél. Omega-3, vláknina a vápnik.'
+  uses:
+    - 'Chia puding – 3 PL na 1 hrnček mlieka, cez noc'
+    - 'Zahustenie džemu a smoothie'
+  storage: 'Suché v uzavretej nádobe rok.'
 
 # ── Rastlinné mlieka ───────────────────────────────────────────
 - id: sojove-mlieko
@@ -523,6 +1039,14 @@
   price: 2
   color: '#f7f1e3'
   note: hodnoty vápnika a B12 platia len pre obohatené nápoje
+  substitutes:
+    - { note: 'ovsený alebo iný rastlinný nápoj s vápnikom (menej bielkovín)' }
+  about: 'Rastlinný nápoj s najviac bielkovinami – podobne ako kravské mlieko. S vápnikom je nutrične najbližšie.'
+  uses:
+    - 'Kaša, palacinky, bešamel, cestíčka'
+    - 'S octom zrazí – náhrada cmaru'
+  choose: 'Nesladené a obohatené vápnikom (a B12). Na kávu „barista“ verzia.'
+  storage: 'Neotvorené mesiace, otvorené v chladničke 5 dní.'
 
 - id: kokosove-mlieko
   name: Kokosové mlieko (plechovka)
@@ -532,6 +1056,15 @@
   price: 5
   color: '#fbf6ec'
   note: 1 ks = plechovka 400 ml
+  substitutes:
+    - { to: rastlinna-smotana, note: 'bez kokosovej chuti' }
+    - { to: kesu, note: '50 g namočených kešu + 200 ml vody, rozmixovať' }
+  about: 'Hustý kokosový krém z plechovky – nie nápoj. Základ thajských kari.'
+  uses:
+    - 'Kari, dal, tom kha, polievky'
+    - 'Vychladené cez noc sa dá vyšľahať ako šľahačka'
+  choose: 'Aspoň 70 % kokosu, bez zahusťovadiel. „Light“ je zriedené vodou.'
+  storage: 'Otvorené prelož do nádoby, 4 dni v chladničke.'
 
 # ── Omáčky, pasty, dochucovadlá ────────────────────────────────
 - id: sojova-omacka
@@ -544,6 +1077,19 @@
   units: { pl: 16, čl: 6 }
   price: 6
   color: '#4a2a1a'
+  substitutes:
+    - { to: tamari, note: 'bez lepku' }
+    - { to: miso, note: '1 ČL miso rozmiešaného vo vode' }
+  about: 'Fermentovaná slaná omáčka zo sóje a pšenice. Soľ a umami v jednom.'
+  kinds:
+    - 'Svetlá – slaná, na dochutenie'
+    - 'Tmavá – sladšia, na farbu'
+    - 'Tamari – bez pšenice'
+  uses:
+    - 'Marinády, wok jedlá, dresingy'
+    - 'Kvapka do bolognese a gulášu pre umami'
+  choose: 'Prirodzene fermentovaná (naturally brewed).'
+  storage: 'Pri izbovej teplote rok.'
 
 - id: tamari
   name: Tamari (bezlepková sójová omáčka)
@@ -555,6 +1101,14 @@
   price: 15
   color: '#3d2214'
   note: niektoré tamari obsahujú pšenicu, hľadaj označenie bezlepkové
+  substitutes:
+    - { to: sojova-omacka, note: 'obsahuje lepok' }
+    - { note: 'kokosové aminos – bez sóje, sladšie' }
+  about: 'Japonská sójová omáčka bez pšenice (alebo s minimom) – bezlepková, hustejšia.'
+  uses:
+    - 'Všade namiesto sójovej omáčky pri bezlepkovej strave'
+  choose: 'S označením bez lepku – nie každé tamari ho má nulové.'
+  storage: 'Pri izbovej teplote rok.'
 
 - id: zelena-kari-pasta
   name: Zelená kari pasta (vegánska)
@@ -565,6 +1119,14 @@
   price: 15
   color: '#5f8d3a'
   warn: Thajské kari pasty často obsahujú krevetovú pastu (kapi) alebo rybiu omáčku, kupuj označené ako vegánske.
+  substitutes:
+    - { note: 'červená kari pasta (býva pálivejšia)' }
+    - { to: kari-korenie, note: '1 PL + cesnak, zázvor, limetka' }
+  about: 'Thajská pasta z čili, citrónovej trávy, galangalu a bylín. Pozor, mnohé obsahujú rybiu omáčku alebo krevety.'
+  uses:
+    - 'Zelené kari – najprv ju opraž na oleji'
+  choose: 'Skontroluj zloženie – bez rýb a kreviet (napr. Mae Ploy nie je vegánska).'
+  storage: 'Otvorená v chladničke mesiac.'
 
 - id: zeleninovy-vyvar
   name: Zeleninový vývar (pripravený)
@@ -576,6 +1138,14 @@
   units: { hrnček: 240 }
   price: 1
   color: '#d8b56a'
+  substitutes:
+    - { note: 'bujónová kocka alebo 1 ČL miso na 250 ml vody' }
+    - { to: voda, note: '+ trochu viac soli a korenia' }
+  about: 'Základ polievok a omáčok. Domáci zo zvyškov zeleniny je zadarmo.'
+  uses:
+    - 'Polievky, rizoto, namáčanie sójových granúl'
+  choose: 'Bujón bez glutamanu a palmového tuku, alebo vývar v tetrapaku.'
+  storage: 'Domáci v chladničke 5 dní, zamrazený 4 mesiace.'
 
 - id: javorovy-sirup
   name: Javorový sirup
@@ -584,6 +1154,14 @@
   units: { pl: 20, čl: 7 }
   price: 25
   color: '#a8561d'
+  substitutes:
+    - { to: cukor, note: 'rozpusti v lyžici vody' }
+    - { note: 'agávový alebo datľový sirup' }
+  about: 'Sirup z miazgy javora. Sladí s karamelovou chuťou.'
+  uses:
+    - 'Lievance, granola, dresingy, marinády'
+  choose: '100 % javorový, nie „sirup s javorovou príchuťou“.'
+  storage: 'Po otvorení v chladničke.'
 
 - id: kakao
   name: Kakao nesladené
@@ -592,6 +1170,14 @@
   units: { pl: 6, čl: 2 }
   price: 12
   color: '#5a3322'
+  substitutes:
+    - { to: horka-cokolada, note: 'roztopená, uber cukor' }
+  about: 'Nesladené kakao – horké, bohaté na železo a horčík.'
+  uses:
+    - 'Chia puding, energetické guľky, pena'
+    - 'Lyžička do chili – prehĺbi chuť'
+  choose: 'Holandské (alkalizované) je jemnejšie a tmavšie.'
+  storage: 'Suché v uzavretej nádobe rok.'
 
 - id: vyzivne-drozdie
   name: Výživné droždie (lupienky)
@@ -601,6 +1187,14 @@
   price: 35
   color: '#f2d45c'
   note: B12 obsahuje len obohatené, pozri etiketu, v databáze ho nepočítame
+  substitutes:
+    - { to: miso, note: 'pre slanosť a umami, iná chuť' }
+  about: 'Neaktívne droždie v lupienkoch – syrová chuť. Často obohatené o B12.'
+  uses:
+    - 'Posyp cestovín namiesto parmezánu'
+    - 'Syrové omáčky, tofu praženica'
+  choose: 'Obohatené vitamínom B12 – skontroluj etiketu.'
+  storage: 'Suché v uzavretej nádobe rok.'
 
 - id: kukuricny-skrob
   name: Kukuričný škrob
@@ -608,6 +1202,14 @@
   n: { kcal: 381, p: 0.3, c: 91, f: 0.1, fib: 0.9, salt: 0, fe: 0.5, ca: 2, zn: 0.1 }
   units: { pl: 8, čl: 3 }
   price: 3
+  substitutes:
+    - { note: 'zemiakový škrob 1:1' }
+    - { to: hladka-muka, note: '2× viac, dlhšie povar' }
+  about: 'Škrob na zahustenie – bez lepku, bez chuti. Solamyl.'
+  uses:
+    - 'Rozmiešaj v studenej vode a vlej do vriacej omáčky'
+    - 'Chrumkavé obaľovanie tofu'
+  storage: 'Suchý roky.'
 
 - id: ocot
   name: Ocot kvasný (liehový)
@@ -616,6 +1218,18 @@
   units: { pl: 15 }
   price: 1
   note: sladový ocot obsahuje lepok, liehový nie
+  substitutes:
+    - { to: citron, note: 'šťava, jemnejšia kyselina' }
+  about: 'Kyselina, ktorá rozjasní chuť polievok a omáčok.'
+  kinds:
+    - 'Kvasný (liehový) – neutrálny'
+    - 'Jablkový – jemný, ovocný'
+    - 'Vínny a balzamikový – do dresingov'
+    - 'Ryžový – do ázijských jedál'
+  uses:
+    - 'Kyslá šošovica, prívarky, nakladanie'
+    - 'So sójovým mliekom ako náhrada cmaru'
+  storage: 'Roky.'
 
 # ── Oleje ──────────────────────────────────────────────────────
 - id: olej
@@ -626,6 +1240,13 @@
   units: { pl: 13, čl: 4.5 }
   density: 0.92
   price: 2.5
+  substitutes:
+    - { note: 'slnečnicový olej 1:1' }
+  about: 'Repkový olej – neutrálny, s omega-3 a znesie vysokú teplotu.'
+  uses:
+    - 'Opekanie, pečenie, vyprážanie'
+  choose: 'Rafinovaný na vyprážanie, lisovaný za studena do šalátov.'
+  storage: 'V tme, mimo sporáka.'
 
 - id: olivovy-olej
   name: Olivový olej
@@ -634,6 +1255,17 @@
   units: { pl: 13, čl: 4.5 }
   density: 0.92
   price: 9
+  substitutes:
+    - { to: olej, note: 'na tepelnú úpravu úplne v poriadku' }
+  about: 'Olivový olej – ovocná chuť, stredomorská kuchyňa.'
+  kinds:
+    - 'Extra panenský – do šalátov a na dochutenie'
+    - 'Pomace a rafinovaný – na smaženie'
+  uses:
+    - 'Dresingy, pesto, hummus'
+    - 'Pečená zelenina'
+  choose: 'V tmavej fľaši s dátumom zberu.'
+  storage: 'V tme a chlade, spotrebuj do pol roka od otvorenia.'
 
 # ── Koreniny a základy ─────────────────────────────────────────
 - id: sol
@@ -644,6 +1276,11 @@
   units: { čl: 6, pl: 18 }
   price: 0.5
   note: jódovaná soľ je na Slovensku hlavný zdroj jódu, morská a himalájska ho väčšinou nemajú
+  about: 'Jódovaná soľ – na Slovensku hlavný zdroj jódu pre vegánov.'
+  uses:
+    - 'Dochutenie – soľ na konci, pri strukovinách až po uvarení'
+  choose: 'Jódovaná – himalájska a morská väčšinou jód nemajú.'
+  storage: 'Roky.'
 
 - id: kala-namak
   name: Kala namak (čierna soľ)
@@ -652,6 +1289,12 @@
   units: { čl: 5 }
   price: 15
   note: sírová vôňa po vajíčkach, nie je jódovaná
+  substitutes:
+    - { to: sol, note: 'bez vajíčkovej chuti' }
+  about: 'Čierna soľ s obsahom síry – chutí ako vajíčko.'
+  uses:
+    - 'Tofu praženica, „vajíčková“ nátierka – pridaj na konci'
+  storage: 'Roky.'
 
 - id: voda
   name: Voda
@@ -661,6 +1304,9 @@
   units: { hrnček: 240 }
   price: 0.001
   color: '#dcebf2'
+  about: 'Z vodovodu. Na slovenskú vodu sa dá spoľahnúť.'
+  uses:
+    - 'Varenie, riedenie omáčok'
 
 - id: cierne-korenie
   name: Čierne korenie mleté
@@ -669,6 +1315,12 @@
   n: { kcal: 251, p: 10.4, c: 64, f: 3.3, fib: 25, salt: 0, fe: 9.7, ca: 443, zn: 1.2 }
   units: { čl: 2.3 }
   price: 25
+  substitutes:
+    - { note: 'biele korenie' }
+  about: 'Mleté čierne korenie. Čerstvo mleté je výrazne voňavejšie.'
+  uses:
+    - 'Takmer všade, s kurkumou zlepší jej vstrebávanie'
+  storage: 'Celé zrnká roky, mleté pol roka.'
 
 - id: kmin
   name: Rímska rasca (kmín) mletá
@@ -678,6 +1330,12 @@
   units: { čl: 2 }
   price: 25
   color: '#b88a3a'
+  substitutes:
+    - { to: rasca, note: 'drvená – iná, ale príbuzná chuť' }
+  about: 'Rímska rasca (kmín) – teplá zemitá chuť indickej, mexickej a arabskej kuchyne.'
+  uses:
+    - 'Hummus, chili, kari, dal'
+  storage: 'V uzavretom pohári rok.'
 
 - id: kurkuma
   name: Kurkuma mletá
@@ -687,6 +1345,12 @@
   units: { čl: 3 }
   price: 20
   color: '#e8a91c'
+  substitutes:
+    - { note: 'vynechaj – hlavne farba' }
+  about: 'Žlté korenie s kurkumínom – farba a jemná horkosť.'
+  uses:
+    - 'Kari, dal, tofu praženica (farba)'
+  storage: 'V tme rok. Farbí – aj dosky.'
 
 - id: garam-masala
   name: Garam masala
@@ -696,6 +1360,12 @@
   units: { čl: 2 }
   price: 30
   color: '#9a5a2c'
+  substitutes:
+    - { to: kari-korenie, note: '+ štipka škorice' }
+  about: 'Indická zmes pražených korenín – pridáva sa na konci varenia.'
+  uses:
+    - 'Chana masala, butter masala, dal'
+  storage: 'V uzavretom pohári pol roka.'
 
 - id: koriander-mlety
   name: Koriander mletý
@@ -704,6 +1374,12 @@
   n: { kcal: 298, p: 12.4, c: 55, f: 17.8, fib: 42, salt: 0.1, fe: 16.3, ca: 709, zn: 4.7 }
   units: { čl: 2 }
   price: 20
+  substitutes:
+    - { to: kmin, note: 'uber polovicu' }
+  about: 'Mleté semienka koriandra – citrusová a sladkastá chuť, nie ako vňať.'
+  uses:
+    - 'Kari, falafel, chili'
+  storage: 'Pol roka.'
 
 - id: cili
   name: Čili mleté
@@ -712,6 +1388,16 @@
   units: { čl: 2 }
   price: 25
   color: '#c0311c'
+  substitutes:
+    - { note: 'čili vločky alebo kajenské korenie – opatrne' }
+  about: 'Mleté čili papričky – pálivosť. Sila sa líši podľa druhu.'
+  kinds:
+    - 'Kajenské korenie – veľmi pálivé'
+    - 'Čili vločky – do olejov a pizze'
+    - 'Ancho a chipotle – dymové, mexické'
+  uses:
+    - 'Pridávaj po štipkách – ubrať sa nedá'
+  storage: 'V tme pol roka.'
 
 - id: udena-paprika
   name: Údená paprika
@@ -721,6 +1407,12 @@
   units: { čl: 2.3 }
   price: 25
   color: '#b5381f'
+  substitutes:
+    - { to: sladka-paprika, note: '+ kvapka tekutého dymu, ak máš' }
+  about: 'Španielska údená paprika (pimentón). Dymová chuť bez mäsa.'
+  uses:
+    - 'Kapustnica, chili, pečený cícer, tofu'
+  storage: 'V tme pol roka.'
 
 - id: sladka-paprika
   name: Sladká paprika mletá
@@ -730,6 +1422,12 @@
   units: { čl: 2.3, pl: 7 }
   price: 15
   color: '#c9401f'
+  substitutes:
+    - { to: udena-paprika, note: 'výraznejšia' }
+  about: 'Mletá sladká paprika – základ gulášov a paprikášov.'
+  uses:
+    - 'Guláš, lečo, paprikáš – odstav z ohňa, inak zhorkne'
+  storage: 'V tme pol roka – starne a hnedne.'
 
 - id: rasca
   name: Rasca celá
@@ -737,6 +1435,12 @@
   n: { kcal: 333, p: 19.8, c: 50, f: 14.6, fib: 38, salt: 0, fe: 16.2, ca: 689, zn: 5.5 }
   units: { čl: 2 }
   price: 12
+  substitutes:
+    - { to: kmin, note: 'mletý, uber polovicu' }
+  about: 'Celá rasca – slovenská klasika do kapusty a gulášu. Uľahčuje trávenie.'
+  uses:
+    - 'Guláš, kapusta, pečené zemiaky, chlieb'
+  storage: 'Rok.'
 
 - id: majoranka
   name: Majoránka sušená
@@ -744,6 +1448,12 @@
   n: { kcal: 271, p: 12.7, c: 60, f: 7, fib: 40, salt: 0.2, fe: 82.7, ca: 1990, zn: 3.6 }
   units: { čl: 0.6, pl: 1.8 }
   price: 40
+  substitutes:
+    - { to: oregano, note: 'iný charakter, ale funguje' }
+  about: 'Sušená majoránka – vôňa slovenských polievok.'
+  uses:
+    - 'Fazuľová a cesnaková polievka, guláš – na konci'
+  storage: 'Pol roka.'
 
 - id: oregano
   name: Oregano sušené
@@ -751,6 +1461,13 @@
   n: { kcal: 265, p: 9, c: 69, f: 4.3, fib: 42.5, salt: 0, fe: 36.8, ca: 1597, zn: 2.7 }
   units: { čl: 1 }
   price: 40
+  substitutes:
+    - { to: majoranka }
+    - { to: tymian }
+  about: 'Sušené oregano – talianska a grécka kuchyňa.'
+  uses:
+    - 'Pizza, bolognese, grécke jedlá'
+  storage: 'Pol roka.'
 
 - id: tymian
   name: Tymián sušený
@@ -758,6 +1475,12 @@
   n: { kcal: 276, p: 9.1, c: 64, f: 7.4, fib: 37, salt: 0.1, fe: 124, ca: 1890, zn: 6.2 }
   units: { čl: 1 }
   price: 40
+  substitutes:
+    - { to: oregano }
+  about: 'Aromatická bylinka k strukovinám a zelenine.'
+  uses:
+    - 'Polievky, pečená zelenina, fazuľa'
+  storage: 'Sušený pol roka.'
 
 - id: rozmarin
   name: Rozmarín čerstvý
@@ -767,6 +1490,12 @@
   price: 30
   color: '#557a46'
   note: 1 ks = vetvička
+  substitutes:
+    - { to: tymian, note: 'sušený, tretinové množstvo' }
+  about: 'Čerstvý rozmarín – výrazný, ihličnatý. Znesie dlhé pečenie.'
+  uses:
+    - 'Pečené zemiaky, pasta e ceci, fokácia'
+  storage: 'V chladničke v utierke 2 týždne, alebo v kvetináči.'
 
 - id: skorica
   name: Škorica mletá
@@ -774,6 +1503,16 @@
   n: { kcal: 247, p: 4, c: 81, f: 1.2, fib: 53, salt: 0, fe: 8.3, ca: 1002, zn: 1.8 }
   units: { čl: 2.6 }
   price: 20
+  substitutes:
+    - { note: 'perník korenie' }
+  about: 'Škorica – sladká korenina do dezertov aj slaných jedál.'
+  kinds:
+    - 'Cejlónska – jemná, bezpečná aj vo väčšom množstve'
+    - 'Cassia – výraznejšia, lacnejšia, s kumarínom'
+  uses:
+    - 'Kaša, pečené jablká, granola'
+    - 'Štipka do chili a tagine'
+  storage: 'Rok.'
 
 - id: bobkovy-list
   name: Bobkový list
@@ -781,6 +1520,12 @@
   n: { kcal: 313, p: 7.6, c: 75, f: 8.4, fib: 26, salt: 0, fe: 43, ca: 834, zn: 3.7 }
   units: { ks: 0.2 }
   price: 40
+  substitutes:
+    - { note: 'vynechaj' }
+  about: 'Sušený vavrínový list – varí sa v polievkach a pred podávaním sa vyberie.'
+  uses:
+    - 'Polievky, guláše, omáčky'
+  storage: 'Rok.'
 
 - id: nove-korenie
   name: Nové korenie
@@ -788,6 +1533,12 @@
   n: { kcal: 263, p: 6.1, c: 72, f: 8.7, fib: 21.6, salt: 0.2, fe: 7, ca: 661, zn: 1 }
   units: { ks: 0.2, čl: 1.9 }
   price: 30
+  substitutes:
+    - { to: cierne-korenie, note: 'pár zrniek + štipka škorice' }
+  about: 'Guľaté zrnká s vôňou škorice, klinčeka a korenia.'
+  uses:
+    - 'Kapustnica, sladkokyslé omáčky'
+  storage: 'Roky.'
 
 - id: horcicne-semienko
   name: Horčičné semienko
@@ -797,6 +1548,12 @@
   n: { kcal: 508, p: 26, c: 28, f: 36, fib: 12, salt: 0, fe: 9.2, ca: 266, zn: 6.1, ala: 3.8 }
   units: { čl: 3.3 }
   price: 15
+  substitutes:
+    - { to: horcica, note: '½ ČL na koniec' }
+  about: 'Horčičné semienka – opražené na oleji praskajú a voňajú (tadka).'
+  uses:
+    - 'Dal, juhoindické jedlá'
+  storage: 'Rok.'
 
 - id: berbere
   name: Berbere (etiópska zmes korenia)
@@ -807,6 +1564,12 @@
   price: 40
   color: '#a8301c'
   note: zloženie sa líši, niektoré zmesi obsahujú soľ
+  substitutes:
+    - { note: '2 ČL sladkej papriky + ½ ČL čili, zázvor, škorica, klinček, kardamón' }
+  about: 'Etiópska zmes korenín – čili, paprika, zázvor, kardamón, pískavica.'
+  uses:
+    - 'Misir wot, shiro'
+  storage: 'Pol roka.'
 
 - id: kukuricna-krupica
   name: Kukuričná krupica (polenta)
@@ -815,6 +1578,16 @@
   units: { hrnček: 160 }
   price: 2
   color: '#f2c94c'
+  substitutes:
+    - { note: 'kuskus alebo pšeničná krupica (s lepkom)' }
+  about: 'Hrubo mletá kukurica – polenta. Bez lepku.'
+  kinds:
+    - 'Instantná – hotová za 5 minút'
+    - 'Tradičná – varí sa 40 minút'
+  uses:
+    - 'Krémová polenta, pečené polentové hranolky'
+    - 'Obaľovanie namiesto strúhanky'
+  storage: 'Suchá pol roka.'
 
 # ── Vegánske náhrady ───────────────────────────────────────────
 # Kategória nahrady = hotové rastlinné náhrady mliečnych/živočíšnych výrobkov.
@@ -831,6 +1604,14 @@
   color: '#fbf5e8'
   note: ovsená funguje rovnako, ale môže obsahovať stopy lepku
   warn: Niektoré „rastlinné“ smotany (aj známe značky ako Rama Cremefine) majú verzie s mliekom – kupuj s označením vegan.
+  substitutes:
+    - { to: kokosove-mlieko, note: 'z plechovky, kokosová chuť' }
+    - { to: kesu, note: 'namočené a rozmixované s vodou' }
+  about: 'Rastlinná smotana na varenie zo sóje, ovsa alebo ryže.'
+  uses:
+    - 'Kapustnica, prívarky, omáčky'
+  choose: 'Sójová je najkrémovejšia a zrazí sa najmenej.'
+  storage: 'Otvorená v chladničke 4 dni.'
 
 - id: rastlinne-maslo
   name: Rastlinné maslo / vegánsky margarín
@@ -841,6 +1622,14 @@
   price: 9
   color: '#f5e2a0'
   warn: Veľa margarínov obsahuje srvátku alebo mlieko – hľadaj označenie vegan (na pečenie bloky s ~80 % tuku).
+  substitutes:
+    - { to: olej, note: 'na varenie' }
+    - { to: kokosovy-olej, note: 'v pečení' }
+  about: 'Vegánsky margarín alebo maslo z rastlinných olejov.'
+  uses:
+    - 'Pečenie, bešamel, pečená kukurica'
+  choose: 'Na pečenie tuhý blok (napr. Flora Plant, Alsan).'
+  storage: 'V chladničke.'
 
 - id: vegansky-syr
   name: Vegánsky syr strúhaný (na zapekanie)
@@ -851,6 +1640,13 @@
   price: 14
   color: '#f4dc8c'
   note: väčšinou kokosový olej a škrob, takmer bez bielkovín – je to chuťovka, nie zdroj bielkovín
+  substitutes:
+    - { to: vyzivne-drozdie, note: 'posyp droždím s trochou strúhanky' }
+    - { note: 'vynechaj – zapekanie funguje aj bez' }
+  about: 'Strúhaný „syr“ z kokosového oleja a škrobu. Topí sa, ale nutrične je chudobný.'
+  uses:
+    - 'Pizza, lasagne, zapekanie'
+  storage: 'V chladničke podľa obalu.'
 
 - id: sojovy-jogurt
   name: Sójový jogurt nesladený
@@ -875,6 +1671,15 @@
   price: 4
   color: '#fbf8f1'
   note: vápnik a B12 len v obohatených; kokosové jogurty majú bielkovín minimum
+  substitutes:
+    - { note: 'kokosový alebo ovsený jogurt' }
+    - { to: tofu-hodvabne, note: 'rozmixované s citrónom' }
+  about: 'Nesladený sójový jogurt – bielkoviny a probiotiká.'
+  uses:
+    - 'Tzatziki, dipy, namiesto kyslej smotany'
+    - 'Raňajky s granolou'
+  choose: 'Nesladený a obohatený o vápnik.'
+  storage: 'Otvorený v chladničke 5 dní.'
 
 - id: veganska-majoneza
   name: Vegánska majonéza
@@ -885,6 +1690,12 @@
   units: { pl: 14, čl: 5 }
   price: 8
   color: '#fbf1cf'
+  substitutes:
+    - { to: sojovy-jogurt, note: 'so štipkou horčice a soli – ľahšie' }
+  about: 'Majonéza bez vajec – zo sójového mlieka alebo aquafaby.'
+  uses:
+    - 'Zemiakový šalát, sendviče'
+  storage: 'V chladničke po otvorení mesiac.'
 
 - id: sojove-granule
   name: Sójové granule / sójové mäso (sušené)
@@ -896,6 +1707,17 @@
   price: 8
   color: '#9b6a42'
   note: pred použitím 10 min namoč vo vriacom vývare – zväčší objem asi 3×
+  substitutes:
+    - { to: sosovica-hneda, note: 'uvarená, v omáčkach a plnkách' }
+    - { to: tofu-natural, note: 'rozdrobené a opečené' }
+  about: 'Sušené sójové mäso – odtučnená sójová múka. Veľa bielkovín, lacné a trvanlivé.'
+  kinds:
+    - 'Jemné – do bolognese a chili'
+    - 'Kocky a plátky – do gulášu a rezňov'
+  uses:
+    - 'Namoč v horúcom vývare 10 minút, vytlač a opeč'
+    - 'Bolognese, chili, plnky'
+  storage: 'Suché rok.'
 
 - id: aquafaba
   name: Aquafaba (voda z plechovky cíceru)
@@ -906,6 +1728,13 @@
   byproduct: true
   color: '#f6eedc'
   note: 1 plechovka cíceru dá ~120 ml; vyšľahá sa ako bielky
+  substitutes:
+    - { to: lanove-semienko, note: 'na viazanie, nie na šľahanie' }
+  about: 'Nálev z plechovky cíceru. Vyšľahá sa ako bielok – na penu, majonézu a sneh.'
+  uses:
+    - 'Čokoládová pena, majonéza'
+    - 'Do hummusu namiesto vody'
+  storage: 'V chladničke 3 dni, zamrazená vo formičkách mesiace.'
 
 # ── Ďalšie bielkoviny ──────────────────────────────────────────
 - id: tofu-hodvabne
@@ -917,6 +1746,14 @@
   price: 8
   color: '#fbf7ec'
   note: jemné ako puding – do krémov, dezertov a omáčok, nie na opekanie
+  substitutes:
+    - { to: sojovy-jogurt, note: 'v dezertoch a omáčkach, kyslejší' }
+    - { to: kesu, note: 'namočené a rozmixované s vodou' }
+  about: 'Hodvábne tofu s textúrou pudingu. Nekrája sa, mixuje sa.'
+  uses:
+    - 'Krémy, dezerty, majonéza'
+    - 'Shakshuka a „vajíčka“'
+  storage: 'Neotvorené mesiace, otvorené 3 dni.'
 
 - id: tempeh
   name: Tempeh
@@ -925,6 +1762,15 @@
   n: { kcal: 192, p: 20.3, c: 7.6, f: 10.8, fib: 4, salt: 0, fe: 2.7, ca: 111, zn: 1.1, ala: 0.1 }
   price: 15
   color: '#c9a36b'
+  substitutes:
+    - { to: tofu-natural, note: 'jemnejšie, dobre ho vyžmýkaj' }
+    - { to: fazula-cierna, note: 'v bowloch a tacos' }
+  about: 'Fermentované celé sójové bôby – orieškovej chuti, viac bielkovín a vlákniny ako tofu.'
+  uses:
+    - 'Na tenké plátky opečený s marinádou'
+    - 'Gado-gado, bowly, sendviče'
+    - 'Pred marinovaním povar 10 minút – zmizne horkosť'
+  storage: 'V chladničke 1–2 týždne, zamrazený 3 mesiace.'
 
 - id: lepok-vital
   name: Pšeničný lepok (vital wheat gluten)
@@ -935,6 +1781,13 @@
   price: 12
   color: '#d9c29a'
   note: základ seitanu – čistý lepok, pri celiakii úplne vylúčené
+  substitutes:
+    - { note: 'nedá sa nahradiť – seitan bez lepku nevznikne' }
+  about: 'Čistý pšeničný lepok – surovina na seitan. Obsahuje až 75 % bielkovín.'
+  uses:
+    - 'Domáci seitan'
+    - 'Pridaný do cesta zlepší pružnosť'
+  storage: 'Suchý v uzavretej nádobe rok.'
 
 - id: zlty-hrach
   name: Hrach lúpaný žltý (suchý)
@@ -944,6 +1797,12 @@
   units: { hrnček: 200 }
   price: 2
   color: '#e7c14e'
+  substitutes:
+    - { to: sosovica-cervena, note: 'rýchlejšia, netreba namáčať' }
+  about: 'Lúpaný suchý hrach na hrachovú polievku a kašu.'
+  uses:
+    - 'Hrachová polievka, hrachová kaša'
+  storage: 'Suchý rok.'
 
 - id: cicerova-muka
   name: Cícerová múka (besan)
@@ -954,6 +1813,13 @@
   units: { pl: 8, hrnček: 92 }
   price: 5
   color: '#e9c77a'
+  substitutes:
+    - { to: hladka-muka, note: 'cestíčko bude menej chrumkavé, pridaj štipku kurkumy' }
+  about: 'Múka z cíceru (besan). Bez lepku, s bielkovinami, viaže ako vajíčko.'
+  uses:
+    - 'Bhaji, placky, omeleta'
+    - 'Cestíčko na obaľovanie'
+  storage: 'Suchá pol roka, dlhšie v chladničke.'
 
 # ── Zelenina, huby, bylinky ────────────────────────────────────
 - id: karfiol
@@ -963,6 +1829,16 @@
   units: { ks: 600 }
   price: 3
   color: '#f3ecd6'
+  season: [6, 7, 8, 9, 10]
+  substitutes:
+    - { to: brokolica }
+  about: 'Jemná kapustová zelenina, ktorá sa hodí na pečenie, kari aj „rezne“.'
+  uses:
+    - 'Pečený s korením dozlatista'
+    - 'Aloo gobi a kari'
+    - 'Karfiolové rezne z rúry'
+  choose: 'Biele pevné ružičky bez hnedých škvŕn, svieže zelené listy.'
+  storage: 'V chladničke v sáčku týždeň.'
 
 - id: cuketa
   name: Cuketa
@@ -971,6 +1847,79 @@
   units: { ks: 250 }
   price: 2.5
   color: '#7fae4f'
+  season: [6, 7, 8, 9]
+  substitutes:
+    - { to: baklazan }
+    - { to: paprika-cervena }
+  about: 'Letná zelenina, ktorá v záhradke rastie rýchlejšie, ako ju stíhaš jesť. Jemná chuť, nasiakne korenie.'
+  uses:
+    - 'Placky, guláš, ratatouille'
+    - 'Pečená na plátky, strúhaná do koláča'
+    - 'Pozdĺžne plátky namiesto lasagní'
+  choose: 'Menšie cukety (do 20 cm) sú chutnejšie a majú menej jadierok.'
+  storage: 'V chladničke týždeň.'
+
+- id: kalerab
+  name: Kaleráb
+  category: zelenina
+  n: { kcal: 27, p: 1.7, c: 6.2, f: 0.1, fib: 3.6, salt: 0, fe: 0.4, ca: 24, zn: 0.1 }
+  units: { ks: 250 }
+  price: 3
+  color: '#b7d98b'
+  season: [5, 6, 7, 8, 9, 10]
+  substitutes:
+    - { note: 'ošúpaná stonka brokolice – chutí skoro rovnako' }
+    - { to: redkovka, note: 'do šalátu, ostrejšia' }
+  about: 'Guľatá stonka z kapustovej rodiny – sladká, šťavnatá a chrumkavá. V záhradkách rastie od mája.'
+  kinds:
+    - 'Svetlozelený – najbežnejší'
+    - 'Fialový – rovnaká chuť, krajšia farba'
+  uses:
+    - 'Kalerábová polievka s kôprom'
+    - 'Surový na tyčinky s dipom a do šalátov'
+    - 'Dusený na masle ako príloha'
+  choose: 'Menší a ťažký, bez prasklín. Veľký býva drevnatý.'
+  storage: 'Bez listov v chladničke 2 týždne. Mladé listy zjedz do 2 dní.'
+
+- id: cvikla
+  name: Cvikla (surová)
+  category: zelenina
+  n: { kcal: 43, p: 1.6, c: 9.6, f: 0.2, fib: 2.8, salt: 0.2, fe: 0.8, ca: 16, zn: 0.4 }
+  units: { ks: 150 }
+  price: 1.5
+  color: '#8e1b3c'
+  season: [7, 8, 9, 10, 11, 12, 1, 2, 3]
+  substitutes:
+    - { note: 'varená cvikla vo vákuu – už je hotová, len nakrájaj' }
+    - { to: mrkva, note: 'sladšia, iná farba' }
+  about: 'Sladká koreňová zelenina s výraznou farbou. Obsahuje dusičnany a folát.'
+  uses:
+    - 'Pečená v alobale do šalátov'
+    - 'Cviklový hummus a polievka'
+    - 'Nastrúhaná surová s jablkom'
+  choose: 'Pevná, s hladkou šupkou. Menšie bulvy sú sladšie.'
+  storage: 'Bez listov v chladničke 3 týždne. Upečená 5 dní.'
+
+- id: kukurica-klas
+  name: Kukurica v klase (čerstvá)
+  category: zelenina
+  n: { kcal: 86, p: 3.3, c: 19, f: 1.4, fib: 2, salt: 0, fe: 0.5, ca: 2, zn: 0.5 }
+  units: { ks: 150 }
+  price: 3.5
+  color: '#f2c94c'
+  note: 1 ks = zrná z jedného klasu (~150 g)
+  season: [8, 9]
+  substitutes:
+    - { to: kukurica, note: 'sterilizovaná, opeč na suchej panvici dozlatista' }
+  about: 'Čerstvá sladká kukurica v klase. V auguste a septembri zo záhradiek najlepšia.'
+  kinds:
+    - 'Cukrová – sladká, na jedenie'
+    - 'Kŕmna – tvrdá, na jedenie sa nehodí'
+  uses:
+    - 'Varená a pečená s maslom'
+    - 'Zrná odrezané do šalátov a salsy'
+  choose: 'Zelené šťavnaté listy a hnedé vlasy. Zrná po stlačení pustia mliečnu šťavu.'
+  storage: 'Čím skôr, tým sladšia – cukor sa mení na škrob. V chladničke v listoch 2 dni.'
 
 - id: baklazan
   name: Baklažán
@@ -979,6 +1928,15 @@
   units: { ks: 300 }
   price: 3
   color: '#4b2c4f'
+  season: [7, 8, 9]
+  substitutes:
+    - { to: cuketa, note: 'kratšie peč' }
+  about: 'Fialová zelenina s hubovitou dužinou, ktorá nasaje olej aj chuť.'
+  uses:
+    - 'Baba ganoush z upečeného baklažánu'
+    - 'Pečený na plátky, do kari a musaky'
+  choose: 'Ťažký, lesklý, pevný so zelenou stopkou.'
+  storage: 'Pri izbovej teplote 2 dni, v chladničke 5 dní.'
 
 - id: tekvica-hokkaido
   name: Tekvica hokkaido
@@ -987,6 +1945,19 @@
   price: 2
   color: '#ea7d24'
   note: šupka sa nemusí lúpať, po upečení/uvarení zmäkne
+  season: [9, 10, 11, 12, 1]
+  substitutes:
+    - { to: batat }
+    - { to: mrkva, note: 'sladšia polievka' }
+  about: 'Oranžová tekvica, ktorá sa nemusí šúpať – šupka zmäkne. Sladká a orieškovej chuti.'
+  kinds:
+    - 'Hokkaido – netreba šúpať'
+    - 'Maslová (butternut) – šúpe sa, krémová'
+  uses:
+    - 'Krémová polievka s kokosom'
+    - 'Pečená na kocky do šalátov a rizota'
+  choose: 'Ťažká, s tvrdou šupkou a suchou stopkou.'
+  storage: 'Celá v chlade a suchu aj 3 mesiace. Nakrojená v chladničke 5 dní.'
 
 - id: sampinony
   name: Šampiňóny
@@ -995,6 +1966,19 @@
   units: { hrnček: 70 }
   price: 5
   color: '#d8c7aa'
+  substitutes:
+    - { to: hliva }
+    - { note: 'akékoľvek huby' }
+  about: 'Najbežnejšie huby, lacné po celý rok. Dávajú jedlu umami.'
+  kinds:
+    - 'Biele – jemné'
+    - 'Hnedé (cremini) – výraznejšie'
+    - 'Portobello – veľké, na grilovanie'
+  uses:
+    - 'Opekať na rozpálenej panvici po dávkach, nech sa nedusia'
+    - 'Rizoto, omáčky, mapo tofu'
+  choose: 'Pevné, zatvorené klobúky bez slizu.'
+  storage: 'V papierovom sáčku v chladničke 5 dní, nie v plaste.'
 
 - id: hliva
   name: Hliva ustricová
@@ -1003,6 +1987,13 @@
   price: 8
   color: '#cdbfa6'
   note: natrhaná na prúžky sa textúrou podobá kuraciemu mäsu
+  substitutes:
+    - { to: sampinony }
+  about: 'Hliva ustricová – mäsitá huba, ktorá sa trhá na vlákna. Výborná náhrada mäsa.'
+  uses:
+    - 'Paprikáš, gyros, „pulled“ mäso'
+    - 'Obalená a upečená ako rezne'
+  storage: 'V papierovom sáčku v chladničke 3 dni.'
 
 - id: susene-huby
   name: Sušené huby (hríby)
@@ -1010,6 +2001,13 @@
   n: { kcal: 300, p: 20, c: 55, f: 3, fib: 20, salt: 0.1, fe: 5, ca: 30, zn: 5 }
   price: 60
   color: '#7a5634'
+  substitutes:
+    - { to: sampinony, note: 'čerstvé, 5× viac, menej aromatické' }
+  about: 'Sušené hríby alebo zmes lesných húb. Intenzívna chuť, stačí hrsť.'
+  uses:
+    - 'Namoč do horúcej vody, vodu použi do polievky'
+    - 'Kapustnica, rizoto, omáčky'
+  storage: 'V uzavretom pohári v suchu rok.'
 
 - id: kysla-kapusta
   name: Kyslá kapusta
@@ -1018,6 +2016,15 @@
   units: { hrnček: 140 }
   price: 2
   color: '#e4dca0'
+  season: [10, 11, 12, 1, 2, 3]
+  substitutes:
+    - { to: biela-kapusta, note: 'čerstvá + lyžica octu' }
+  about: 'Fermentovaná kapusta – kyslá, plná probiotík a vitamínu C. Slovenská zimná klasika.'
+  uses:
+    - 'Kapustnica, strapačky'
+    - 'Surová ako príloha – probiotiká varením zaniknú'
+  choose: 'Z pultu alebo vrecúška, bez octu – pravá je kvasená len so soľou.'
+  storage: 'V chladničke 2 týždne, v nálevu.'
 
 - id: biela-kapusta
   name: Biela hlávková kapusta
@@ -1026,6 +2033,15 @@
   units: { hrnček: 90 }
   price: 1.2
   color: '#d9e8b8'
+  season: [7, 8, 9, 10, 11, 12]
+  substitutes:
+    - { note: 'čínska kapusta' }
+  about: 'Lacná a trvanlivá kapusta na šaláty, dusenie aj kvasenie.'
+  uses:
+    - 'Coleslaw a šaláty'
+    - 'Dusená kapusta, halušky, strapačky'
+  choose: 'Ťažká, pevná hlávka s lesklými listami.'
+  storage: 'Celá v chladničke 3 týždne.'
 
 - id: zelene-fazulky
   name: Zelené fazuľky (aj mrazené)
@@ -1033,6 +2049,16 @@
   n: { kcal: 31, p: 1.8, c: 7, f: 0.2, fib: 2.7, salt: 0, fe: 1, ca: 37, zn: 0.2 }
   price: 5
   color: '#5d9a3e'
+  season: [7, 8, 9]
+  substitutes:
+    - { to: brokolica }
+    - { to: hrasok }
+  about: 'Mladé strukovité fazuľky jedené aj so strukom. V lete zo záhradky, inak mrazené.'
+  uses:
+    - 'Prívarok s kôprom'
+    - 'Minestrone, kari, šaláty'
+  choose: 'Chrumkavé, pri zlomení lupnú.'
+  storage: 'V chladničke 4 dni. Zamraziť po 2 minútach blanšírovania.'
 
 - id: hrasok
   name: Hrášok mrazený
@@ -1041,6 +2067,15 @@
   units: { hrnček: 145 }
   price: 3
   color: '#7dbb4a'
+  season: [6, 7]
+  substitutes:
+    - { to: edamame }
+    - { to: kukurica }
+  about: 'Sladký zelený hrášok, najčastejšie mrazený – mrazí sa hneď po zbere, preto je sladký.'
+  uses:
+    - 'Rizi-bizi, smažená ryža, pesto cestoviny'
+    - 'Hráškový krém s mätou'
+  storage: 'V mrazničke mesiace, netreba rozmrazovať.'
 
 - id: klicky
   name: Fazuľové klíčky (mungo)
@@ -1049,6 +2084,12 @@
   units: { hrnček: 100 }
   price: 8
   color: '#f1edcf'
+  substitutes:
+    - { note: 'nakrájaná čínska kapusta – chrumkavá' }
+  about: 'Fazuľové klíčky (mungo). Chrumkavé, do wok jedál a pad thai.'
+  uses:
+    - 'Pad thai, pho, závitky – pridaj na konci'
+  storage: 'V chladničke 2–3 dni, rýchlo sa kazia.'
 
 - id: redkovka
   name: Reďkovka
@@ -1057,6 +2098,19 @@
   units: { ks: 15 }
   price: 5
   color: '#dc4a6b'
+  season: [4, 5, 6, 9]
+  substitutes:
+    - { to: uhorka }
+  about: 'Pikantná jarná zelenina, prvá zo záhradky. Chrumkavá a osviežujúca.'
+  kinds:
+    - 'Červené guľaté – najčastejšie'
+    - 'Biela reďkev (daikon) – veľká, jemnejšia'
+    - 'Čierna reďkev – ostrá, zimná'
+  uses:
+    - 'Na chlieb s nátierkou, do šalátov'
+    - 'Listy ako rukola do pesta'
+  choose: 'Pevné, s čerstvými listami. Mäkké sú duté.'
+  storage: 'Bez listov v chladničke v nádobe s vodou týždeň.'
 
 - id: petrzlen-koren
   name: Petržlen koreň
@@ -1065,6 +2119,15 @@
   units: { ks: 80 }
   price: 3
   color: '#f0e3c0'
+  season: [9, 10, 11, 12, 1, 2, 3]
+  substitutes:
+    - { to: mrkva }
+    - { note: 'paštrnák' }
+  about: 'Koreňová zelenina so sladkastou chuťou, základ slovenských polievok.'
+  uses:
+    - 'Vývary a polievky'
+    - 'Pečený s mrkvou'
+  storage: 'V chladničke 2–3 týždne.'
 
 - id: kysle-uhorky
   name: Sterilizované uhorky (kyslé)
@@ -1073,6 +2136,13 @@
   units: { ks: 40 }
   price: 3
   color: '#8aa84a'
+  substitutes:
+    - { to: uhorka, note: '+ ocot, soľ, kôpor' }
+  about: 'Nakladané uhorky v sladkokyslom náleve.'
+  uses:
+    - 'Zemiakový šalát, sendviče, burgre'
+    - 'Nálev do šalátov namiesto octu'
+  storage: 'Otvorené v chladničke v náleve mesiac.'
 
 - id: passata
   name: Paradajková passata
@@ -1081,6 +2151,14 @@
   units: { hrnček: 245 }
   price: 2.5
   color: '#c7301f'
+  substitutes:
+    - { to: paradajky-sterilizovane, note: 'rozmixuj' }
+    - { to: paradajkovy-pretlak, note: 'rozrieď vodou 1:3' }
+  about: 'Prepasírované paradajky bez šupiek a jadierok. Hladký základ omáčok.'
+  uses:
+    - 'Pizza omáčka – passata, soľ, oregano, olej'
+    - 'Plnené papriky a rýchle omáčky na cestoviny'
+  storage: 'Otvorená v chladničke 5 dní.'
 
 - id: petrzlenova-vnat
   name: Petržlenová vňať
@@ -1089,6 +2167,18 @@
   units: { pl: 4, hrnček: 60 }
   price: 25
   color: '#4f9a3c'
+  season: [5, 6, 7, 8, 9, 10]
+  substitutes:
+    - { to: bylinky-koriander }
+    - { to: pazitka }
+  about: 'Najbežnejšia bylinka – svieža, trávovitá chuť. Viac vitamínu C ako citrón.'
+  kinds:
+    - 'Hladkolistá – výraznejšia chuť'
+    - 'Kučeravá – na ozdobu'
+  uses:
+    - 'Tabbouleh, polievky, zemiaky'
+    - 'Chimichurri a pesto'
+  storage: 'V pohári vody v chladničke týždeň, alebo nasekaná zamrazená.'
 
 - id: kopor
   name: Kôpor čerstvý
@@ -1097,6 +2187,14 @@
   units: { pl: 2 }
   price: 30
   color: '#6fae5a'
+  season: [6, 7, 8]
+  substitutes:
+    - { note: 'sušený kôpor – tretina' }
+  about: 'Letná bylinka slovenskej kuchyne – do kôprovej omáčky, uhoriek a polievok.'
+  uses:
+    - 'Kalerábová a fazuľková polievka'
+    - 'Uhorkový šalát, tzatziki, zemiaky'
+  storage: 'Nasekaný zamraz v pohári, pridávaj rovno mrazený.'
 
 - id: bazalka
   name: Bazalka čerstvá
@@ -1105,6 +2203,18 @@
   units: { hrnček: 25, pl: 2 }
   price: 30
   color: '#3f8f3a'
+  season: [6, 7, 8, 9]
+  substitutes:
+    - { note: 'sušená bazalka – tretina, pridaj skôr' }
+    - { to: petrzlenova-vnat }
+  about: 'Aromatická bylinka talianskej kuchyne. Teplo ju ničí – pridávaj na konci.'
+  kinds:
+    - 'Janovská – na pesto'
+    - 'Thajská – aníz, do kari'
+  uses:
+    - 'Pesto, paradajky, pizza'
+    - 'Na konci do omáčok'
+  storage: 'Pri izbovej teplote v pohári vody. V chladničke sčernie.'
 
 - id: pazitka
   name: Pažítka
@@ -1113,6 +2223,13 @@
   units: { pl: 3 }
   price: 30
   color: '#5fa84a'
+  season: [4, 5, 6, 7, 8, 9]
+  substitutes:
+    - { to: jarna-cibulka, note: 'zelená časť' }
+  about: 'Jemná cibuľová bylinka. Rastie ľahko aj v kvetináči.'
+  uses:
+    - 'Nátierky, zemiaky, polievky'
+  storage: 'Nasekaná sa dá zamraziť.'
 
 - id: citronova-trava
   name: Citrónová tráva
@@ -1122,6 +2239,12 @@
   price: 20
   color: '#c6d67a'
   note: 1 ks = jedna stonka
+  substitutes:
+    - { to: citron, note: 'kôra z ½ citróna' }
+  about: 'Citrusová bylinka ázijskej kuchyne. Tvrdé stonky sa rozdrvia a varia, nejedia.'
+  uses:
+    - 'Tom kha, kari, vývary – rozdrv plochou stranou noža'
+  storage: 'V chladničke 2 týždne, alebo zamrazená.'
 
 # ── Ovocie a sušené ovocie ─────────────────────────────────────
 - id: jablko
@@ -1131,6 +2254,35 @@
   units: { ks: 180 }
   price: 1.8
   color: '#d9453a'
+  season: [8, 9, 10, 11, 12, 1, 2, 3]
+  substitutes:
+    - { note: 'hruška' }
+  about: 'Najdostupnejšie slovenské ovocie. Kyslé odrody na pečenie, sladké na jedenie.'
+  kinds:
+    - 'Kyslé (Boskoop, Granny Smith) – na pečenie a do šalátov'
+    - 'Sladké (Gala, Golden) – na jedenie a do kaše'
+  uses:
+    - 'Pečené jablká, štrúdľa, kaša'
+    - 'Nastrúhané do cviklového a mrkvového šalátu'
+  storage: 'V chladničke alebo pivnici mesiace. Pustia etylén – skladuj oddelene od zeleniny.'
+
+- id: slivky
+  name: Slivky
+  category: ovocie
+  n: { kcal: 46, p: 0.7, c: 11.4, f: 0.3, fib: 1.4, salt: 0, fe: 0.2, ca: 6, zn: 0.1 }
+  units: { ks: 40 }
+  price: 2.5
+  color: '#5b3a6e'
+  season: [8, 9]
+  substitutes:
+    - { note: 'mrazené slivky alebo marhule' }
+    - { to: jablko, note: 'na tenké plátky' }
+  about: 'Neskoroletné ovocie slovenských záhrad. Na koláče najlepšie „bystrické“ – ľahko sa odkôstkujú.'
+  uses:
+    - 'Bublanina, knedle, lekvár'
+    - 'Pečené so škoricou k ovsenej kaši'
+  choose: 'Mierne mäkké s modrým povlakom.'
+  storage: 'V chladničke 5 dní. Rozpolené a odkôstkované sa dajú zamraziť.'
 
 - id: susene-marhule
   name: Sušené marhule
@@ -1139,6 +2291,13 @@
   units: { ks: 8 }
   price: 12
   color: '#ee9a3c'
+  substitutes:
+    - { to: datle }
+  about: 'Sušené marhule – sladké, s draslíkom a železom.'
+  uses:
+    - 'Tagine a kuskus'
+    - 'Granola a energetické guľky'
+  storage: 'V uzavretej nádobe mesiace.'
 
 - id: datle
   name: Datle (vykôstkované)
@@ -1147,6 +2306,17 @@
   units: { ks: 8 }
   price: 8
   color: '#7b3f22'
+  substitutes:
+    - { to: susene-marhule }
+    - { to: javorovy-sirup, note: 'na sladenie' }
+  about: 'Veľmi sladké sušené ovocie, prírodné sladidlo do dezertov bez cukru.'
+  kinds:
+    - 'Medjool – veľké, mäkké, karamelové'
+    - 'Deglet Nour – menšie, suššie, lacnejšie'
+  uses:
+    - 'Energetické guľky a raw dezerty'
+    - 'Datľový sirup – rozmixované s vodou'
+  storage: 'V uzavretej nádobe mesiace.'
 
 # ── Orechy, semienka, oleje ────────────────────────────────────
 - id: tahini
@@ -1158,6 +2328,18 @@
   price: 10
   color: '#d8b98a'
   note: hodnoty pre svetlé (lúpané) tahini, tmavé z celého sezamu má vápnika oveľa viac
+  substitutes:
+    - { to: arasidove-maslo, note: 'orieškovejšia chuť' }
+    - { to: kesu, note: 'rozmixované s trochou oleja' }
+  about: 'Pasta z mletého sezamu – základ hummusu a tahini omáčky.'
+  kinds:
+    - 'Svetlé z lúpaného sezamu – jemné'
+    - 'Tmavé z celého sezamu – horkastejšie, viac vápnika'
+  uses:
+    - 'Hummus, baba ganoush'
+    - 'Omáčka – tahini, citrón, cesnak, studená voda'
+  choose: 'Tekuté a hladké. Libanonské a izraelské bývajú najjemnejšie.'
+  storage: 'Pri izbovej teplote mesiace, pred použitím zamiešaj.'
 
 - id: kesu
   name: Kešu orechy (nepražené)
@@ -1169,6 +2351,15 @@
   price: 16
   color: '#efdcb2'
   note: namočené a rozmixované s vodou nahradia smotanu aj syrový krém
+  substitutes:
+    - { to: tofu-hodvabne, note: 'na krémové omáčky' }
+    - { note: 'slnečnicové semienka namočené cez noc – bez orechov, lacnejšie' }
+  about: 'Mäkké maslové orechy. Namočené a rozmixované dajú krém ako smotana.'
+  uses:
+    - 'Kešu syr, cheesecake, krémové omáčky'
+    - 'Namoč 15 min v horúcej alebo 4 h v studenej vode'
+  choose: 'Nepražené a nesolené na krémy, polovičky sú lacnejšie ako celé.'
+  storage: 'V chladničke alebo mrazničke – tuky žltnú.'
 
 - id: vlasske-orechy
   name: Vlašské orechy
@@ -1178,6 +2369,15 @@
   units: { hrnček: 100, pl: 7 }
   price: 16
   color: '#a8743f'
+  substitutes:
+    - { to: tekvicove-semienka, note: 'bez orechov' }
+    - { note: 'lieskové orechy alebo mandle' }
+  about: 'Orechy s najviac omega-3 (ALA). Slovenská klasika do koláčov.'
+  uses:
+    - 'Pesto, granola, pečené jablká'
+    - 'Opraž nasucho – odstráni horkosť šupky'
+  choose: 'Svetlé jadrá bez horkej pachuti. Celé v škrupine vydržia dlhšie.'
+  storage: 'Olúpané v chladničke alebo mrazničke.'
 
 - id: arasidy
   name: Arašidy pražené nesolené
@@ -1187,6 +2387,14 @@
   units: { hrnček: 145, pl: 9 }
   price: 6
   color: '#c98f4f'
+  substitutes:
+    - { to: kesu }
+    - { note: 'slnečnicové semienka – bez orechov' }
+  about: 'Botanicky strukovina, nie orech. Lacné bielkoviny.'
+  uses:
+    - 'Pad thai, gado-gado, maafe'
+    - 'Domáce arašidové maslo'
+  storage: 'V uzavretej nádobe 3 mesiace.'
 
 - id: tekvicove-semienka
   name: Tekvicové semienka
@@ -1195,6 +2403,13 @@
   units: { pl: 9 }
   price: 12
   color: '#5d7a3a'
+  substitutes:
+    - { note: 'slnečnicové semienka' }
+  about: 'Zelené semienka so zinkom a železom.'
+  uses:
+    - 'Opražené na polievky a šaláty'
+    - 'Do granoly a pesta'
+  storage: 'V chladničke 3 mesiace.'
 
 - id: kokosovy-olej
   name: Kokosový olej
@@ -1202,6 +2417,16 @@
   n: { kcal: 890, p: 0, c: 0, f: 99, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0 }
   units: { pl: 13, čl: 4.5 }
   price: 10
+  substitutes:
+    - { to: rastlinne-maslo, note: 'v pečení' }
+    - { to: olej, note: 'na varenie' }
+  about: 'Pevný pri izbovej teplote. Nasýtený tuk – s mierou.'
+  kinds:
+    - 'Panenský – kokosová chuť'
+    - 'Rafinovaný – bez chuti'
+  uses:
+    - 'Pečenie, raw dezerty'
+  storage: 'Pri izbovej teplote rok.'
 
 - id: sezamovy-olej
   name: Sezamový olej (pražený)
@@ -1210,6 +2435,12 @@
   n: { kcal: 884, p: 0, c: 0, f: 100, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0, ala: 0.3 }
   units: { pl: 13, čl: 4.5 }
   price: 15
+  substitutes:
+    - { to: olej, note: '+ lyžica opraženého sezamu' }
+  about: 'Pražený sezamový olej – intenzívna aróma, dochucuje sa ním, nevyprážá.'
+  uses:
+    - 'Pár kvapiek na konci do wok jedál a dresingov'
+  storage: 'V chladničke po otvorení.'
 
 # ── Pečivo a múčne ─────────────────────────────────────────────
 - id: chlieb
@@ -1222,6 +2453,13 @@
   price: 4
   color: '#b9844f'
   note: 1 ks = krajec
+  substitutes:
+    - { to: chlieb-bezlepkovy }
+  about: 'Kváskový chlieb je zvyčajne vegánsky – múka, voda, soľ, kvások. Pri bežnom pozor na mlieko.'
+  uses:
+    - 'Toasty, nátierky, krutóny'
+    - 'Starý chlieb na strúhanku'
+  storage: 'V ľanovom vrecúšku 3 dni, nakrájaný zamrazený mesiace.'
 
 - id: chlieb-bezlepkovy
   name: Chlieb bezlepkový
@@ -1231,6 +2469,10 @@
   units: { ks: 35 }
   price: 10
   color: '#c9975c'
+  about: 'Chlieb z bezlepkových múk. Rýchlo vysychá.'
+  uses:
+    - 'Toasty a nátierky'
+  storage: 'Nakrájaný zamrazený, opekaj rovno mrazený.'
 
 - id: bageta
   name: Bageta pšeničná
@@ -1241,6 +2483,10 @@
   units: { ks: 250 }
   price: 3
   color: '#d9a55f'
+  about: 'Biela bageta – väčšinou vegánska (múka, voda, droždie, soľ).'
+  uses:
+    - 'Bánh mì, sendviče'
+  storage: 'Najlepšia v deň kúpy, potom na krutóny.'
 
 - id: hamburgerova-zemla
   name: Hamburgerová žemľa (vegánska)
@@ -1252,6 +2498,10 @@
   price: 5
   color: '#d9a55f'
   note: niektoré bulky obsahujú mlieko alebo vajcia, kontroluj zloženie
+  about: 'Mäkká žemľa na burgre – skontroluj mlieko a maslo v zložení.'
+  uses:
+    - 'Burgre – opeč reznou stranou na panvici'
+  storage: 'Zamrazená mesiace.'
 
 - id: pecivo-bezlepkove
   name: Bezlepkové pečivo (bageta, žemle)
@@ -1260,6 +2510,10 @@
   units: { ks: 70 }
   price: 12
   color: '#d9a55f'
+  about: 'Bezlepkové žemle a bagety.'
+  uses:
+    - 'Namiesto bežného pečiva'
+  storage: 'Zamrazené, rozpečené v rúre.'
 
 - id: struhanka
   name: Strúhanka
@@ -1270,6 +2524,17 @@
   units: { hrnček: 110, pl: 7 }
   price: 2
   color: '#e0b36a'
+  substitutes:
+    - { to: ovsene-vlocky, note: 'rozmixované nadrobno' }
+    - { to: kukuricna-krupica, note: 'chrumkavejšie' }
+  about: 'Nastrúhaný sušený chlieb na obaľovanie a posyp.'
+  kinds:
+    - 'Klasická – jemná'
+    - 'Panko – japonská, hrubá, najchrumkavejšia'
+  uses:
+    - 'Obaľovanie rezňov a nuggetov'
+    - 'Posyp zapekaných jedál s olejom'
+  storage: 'Suchá mesiace.'
 
 - id: struhanka-bezlepkova
   name: Strúhanka bezlepková
@@ -1279,6 +2544,10 @@
   units: { hrnček: 110, pl: 7 }
   price: 8
   color: '#e0b36a'
+  about: 'Strúhanka z bezlepkového pečiva alebo kukurice.'
+  uses:
+    - 'Obaľovanie pri bezlepkovej strave'
+  storage: 'Suchá mesiace.'
 
 - id: lasagne-platne
   name: Lasagne platne (suché)
@@ -1289,6 +2558,12 @@
   units: { ks: 20 }
   price: 3
   color: '#f0d890'
+  substitutes:
+    - { to: cuketa, note: 'pozdĺžne plátky namiesto platní' }
+  about: 'Suché platne na lasagne – väčšinou netreba predvárať.'
+  uses:
+    - 'Lasagne – omáčka má byť redšia, platne nasajú tekutinu'
+  storage: 'Suché rok.'
 
 - id: lasagne-platne-bezlepkove
   name: Lasagne platne bezlepkové
@@ -1298,6 +2573,10 @@
   units: { ks: 20 }
   price: 7
   color: '#f0d890'
+  about: 'Bezlepkové platne z kukurice a ryže.'
+  uses:
+    - 'Lasagne – pridaj viac omáčky'
+  storage: 'Suché rok.'
 
 - id: ryza-arborio
   name: Ryža na rizoto (arborio)
@@ -1306,6 +2585,16 @@
   units: { hrnček: 200 }
   price: 5
   color: '#f4ecd8'
+  substitutes:
+    - { note: 'akákoľvek guľatozrnná ryža; basmati rizoto nebude krémové' }
+  about: 'Guľatozrnná talianska ryža s množstvom škrobu – vďaka nemu je rizoto krémové.'
+  kinds:
+    - 'Arborio – najbežnejšia'
+    - 'Carnaroli – drží tvar, krémovejšie'
+  uses:
+    - 'Rizoto – nepreplachuj, škrob je žiaduci'
+    - 'Ryžový nákyp'
+  storage: 'Suchá rok.'
 
 - id: drozdie
   name: Sušené droždie (instantné)
@@ -1314,6 +2603,12 @@
   units: { čl: 3, ks: 7 }
   price: 25
   note: 1 ks = vrecúško 7 g
+  substitutes:
+    - { note: 'čerstvé droždie – 3× viac podľa hmotnosti' }
+  about: 'Instantné sušené droždie – netreba ho rozpúšťať, sype sa rovno do múky.'
+  uses:
+    - 'Pizza, chlieb, kysnuté cestá'
+  storage: 'Otvorené v chladničke.'
 
 - id: kypriaci-prasok
   name: Prášok do pečiva
@@ -1323,6 +2618,12 @@
   n: { kcal: 50, p: 0, c: 25, f: 0, fib: 0, salt: 25, fe: 0, ca: 0, zn: 0 }
   units: { čl: 4, pl: 12, ks: 12 }
   price: 8
+  substitutes:
+    - { note: '¼ ČL sódy bikarbóny + ½ ČL octu na 1 ČL prášku' }
+  about: 'Prášok do pečiva – kyprí cesto bez kysnutia.'
+  uses:
+    - 'Bublanina, lievance, muffiny'
+  storage: 'V suchu, po roku stráca silu.'
 
 - id: cukor
   name: Cukor
@@ -1330,6 +2631,12 @@
   n: { kcal: 387, p: 0, c: 100, f: 0, fib: 0, salt: 0, fe: 0, ca: 1, zn: 0 }
   units: { pl: 12, čl: 4, hrnček: 200 }
   price: 1
+  substitutes:
+    - { to: javorovy-sirup, note: 'uber trochu tekutiny' }
+  about: 'Biely alebo trstinový cukor. Väčšina slovenského je z repy a vegánska.'
+  uses:
+    - 'Pečenie, sladkokyslé omáčky'
+  storage: 'Roky.'
 
 - id: horka-cokolada
   name: Horká čokoláda 70 % (vegánska)
@@ -1338,6 +2645,12 @@
   price: 20
   color: '#4a2a1c'
   note: väčšina horkých čokolád je vegánska, niektoré ale obsahujú mliečny tuk alebo „môžu obsahovať mlieko“
+  substitutes:
+    - { to: kakao, note: '3 PL kakaa + 1 PL oleja + cukor na 50 g' }
+  about: 'Horká čokoláda 70 % a viac – väčšinou bez mlieka, ale skontroluj stopy.'
+  uses:
+    - 'Pena, cookies, poleva'
+  storage: 'V suchu a chlade mesiace.'
 
 # ── Ázijské a svetové dochucovadlá ─────────────────────────────
 - id: miso
@@ -1350,6 +2663,16 @@
   units: { pl: 17, čl: 6 }
   price: 18
   color: '#c98a3e'
+  substitutes:
+    - { to: sojova-omacka, note: 'menej hĺbky, soľ uber' }
+  about: 'Fermentovaná sójová pasta – slaná, hlboká chuť umami.'
+  kinds:
+    - 'Biele (shiro) – jemné, sladkasté'
+    - 'Červené (aka) – silné, slané'
+  uses:
+    - 'Miso polievka – nevar, len rozmiešaj v horúcej'
+    - 'Do dresingov a marinád'
+  storage: 'V chladničke rok.'
 
 - id: gochujang
   name: Gochujang (kórejská čili pasta)
@@ -1361,6 +2684,12 @@
   units: { pl: 20, čl: 7 }
   price: 18
   color: '#a8261c'
+  substitutes:
+    - { to: sriracha, note: '+ ½ ČL miso a trochu sirupu' }
+  about: 'Kórejská fermentovaná čili pasta – sladká, pálivá a slaná.'
+  uses:
+    - 'Bibimbap, dubu jorim, marinády'
+  storage: 'V chladničke mesiace.'
 
 - id: doubanjiang
   name: Doubanjiang (fermentovaná bôbová čili pasta)
@@ -1372,6 +2701,12 @@
   units: { pl: 18, čl: 6 }
   price: 20
   color: '#8e2a18'
+  substitutes:
+    - { to: miso, note: '+ čili a kvapka sójovky' }
+  about: 'Sečuánska fermentovaná bôbová čili pasta – základ mapo tofu.'
+  uses:
+    - 'Mapo tofu, wok jedlá – opraž na oleji'
+  storage: 'V chladničke mesiace.'
 
 - id: tamarind
   name: Tamarindová pasta
@@ -1380,6 +2715,12 @@
   units: { pl: 20, čl: 7 }
   price: 15
   color: '#5a3322'
+  substitutes:
+    - { to: limetka, note: 'šťava + trochu cukru' }
+  about: 'Kyslasto-sladká pasta z tamarindového ovocia.'
+  uses:
+    - 'Pad thai, chutney, kari'
+  storage: 'V chladničke mesiace.'
 
 - id: sriracha
   name: Sriracha
@@ -1388,6 +2729,12 @@
   units: { pl: 17, čl: 6 }
   price: 15
   color: '#d4301c'
+  substitutes:
+    - { to: cili, note: 'štipka + kvapka octu a cukru' }
+  about: 'Pálivá čili omáčka s cesnakom. Väčšinou vegánska.'
+  uses:
+    - 'Bánh mì, pho, majonéza, bowly'
+  storage: 'V chladničke rok.'
 
 - id: horcica
   name: Horčica plnotučná
@@ -1397,6 +2744,16 @@
   units: { pl: 15, čl: 5 }
   price: 5
   color: '#e0b020'
+  substitutes:
+    - { note: 'dijonská, jemnejšia' }
+  about: 'Horčica – ostrá a kyslá, zlepší dresingy a pomôže emulgovať majonézu.'
+  kinds:
+    - 'Plnotučná – slovenská klasika'
+    - 'Dijonská – jemná, krémová'
+    - 'Celozrnná – so semienkami'
+  uses:
+    - 'Dresingy, majonéza, zemiakový šalát'
+  storage: 'Po otvorení v chladničke.'
 
 - id: wakame
   name: Wakame (sušené riasy)
@@ -1406,6 +2763,12 @@
   price: 60
   color: '#2f5a33'
   note: riasy majú veľa jódu, v bežnom množstve do polievky je to v poriadku
+  substitutes:
+    - { note: 'nori alebo iné sušené riasy, prípadne vynechaj' }
+  about: 'Sušené morské riasy do miso polievky. Obsahujú jód – s mierou.'
+  uses:
+    - 'Miso polievka – namoč 5 minút'
+  storage: 'Suché rok.'
 
 # ── Koreniny (doplnky) ─────────────────────────────────────────
 - id: kari-korenie
@@ -1416,6 +2779,12 @@
   units: { čl: 2, pl: 6 }
   price: 20
   color: '#d99a1b'
+  substitutes:
+    - { to: garam-masala, note: '+ kurkuma' }
+  about: 'Anglická zmes pre „kari“ – kurkuma, koriander, kmín, čili.'
+  uses:
+    - 'Japonské kari, tekvicová polievka'
+  storage: 'Pol roka.'
 
 - id: badian
   name: Badián (celý)
@@ -1423,6 +2792,12 @@
   n: { kcal: 337, p: 18, c: 50, f: 16, fib: 14.6, salt: 0, fe: 37, ca: 646, zn: 5.3 }
   units: { ks: 0.5 }
   price: 40
+  substitutes:
+    - { to: skorica, note: 'štipka + pár zrniek fenyklu' }
+  about: 'Hviezdičkový aníz – sladká aníz aróma.'
+  uses:
+    - 'Pho vývar, kompóty'
+  storage: 'Roky.'
 
 - id: klincek
   name: Klinčeky (celé)
@@ -1430,6 +2805,12 @@
   n: { kcal: 274, p: 6, c: 65.5, f: 13, fib: 34, salt: 0.7, fe: 11.8, ca: 632, zn: 2.3 }
   units: { ks: 0.1 }
   price: 40
+  substitutes:
+    - { to: nove-korenie }
+  about: 'Sušené púčiky – silná vôňa, stačí pár kúskov.'
+  uses:
+    - 'Pho, vianočné pečivo, varené víno'
+  storage: 'Roky.'
 
 - id: muskatovy-orech
   name: Muškátový oriešok mletý
@@ -1437,6 +2818,12 @@
   n: { kcal: 525, p: 5.8, c: 49, f: 36, fib: 21, salt: 0, fe: 3, ca: 184, zn: 2.2 }
   units: { čl: 2.2 }
   price: 50
+  substitutes:
+    - { note: 'vynechaj' }
+  about: 'Muškátový oriešok – štipka do bešamelu a zemiakovej kaše.'
+  uses:
+    - 'Bešamel, kaša, špenát'
+  storage: 'Celý roky, strúhaj čerstvý.'
 
 - id: secuanske-korenie
   name: Sečuánske korenie
@@ -1444,6 +2831,12 @@
   n: { kcal: 250, p: 10, c: 64, f: 3, fib: 25, salt: 0, fe: 9.7, ca: 440, zn: 1.2 }
   units: { čl: 2 }
   price: 60
+  substitutes:
+    - { to: cierne-korenie, note: 'bez brnenia na jazyku' }
+  about: 'Sečuánske korenie – brnie na jazyku, nie pálivé.'
+  uses:
+    - 'Mapo tofu – opraž a pomeľ'
+  storage: 'Rok.'
 
 # ── Domáca výroba ──────────────────────────────────────────────
 - id: sojove-zrna
@@ -1456,6 +2849,13 @@
   price: 3
   color: '#e8d08a'
   note: surové sú nestráviteľné – vždy namočiť a poriadne uvariť
+  substitutes:
+    - { note: 'na tofu a mlieko sa nedajú nahradiť – kúp hotové' }
+  about: 'Suché sójové bôby – surovina na domáce tofu, sójové mlieko a tempeh. Najviac bielkovín zo strukovín.'
+  uses:
+    - 'Domáce sójové mlieko, tofu a tempeh'
+    - 'Pečené sójové zrná (soy nuts)'
+  storage: 'Suché rok.'
 
 - id: edamame
   name: Edamame v strukoch (mrazené)
@@ -1465,6 +2865,13 @@
   price: 8
   color: '#78b04a'
   note: hodnoty prepočítané na hmotnosť aj so strukmi (jedlá časť je asi polovica)
+  substitutes:
+    - { to: hrasok, note: 'mrazený hrášok, iná chuť, menej bielkovín' }
+  about: 'Mladé zelené sójové struky. Sladké, plné bielkovín.'
+  uses:
+    - 'Povarené so soľou ako snack'
+    - 'Vylúpané do šalátov a bowlov'
+  storage: 'Mrazené mesiace.'
 
 - id: okara
   name: Okara (zvyšok zo sójového mlieka)
@@ -1475,6 +2882,13 @@
   byproduct: true
   color: '#f1e8cf'
   note: vznikne pri výrobe sójového mlieka alebo tofu, v chladničke vydrží 3 dni, dá sa zamraziť
+  substitutes:
+    - { to: ovsene-vlocky, note: 'rozmixované, pridaj trochu vody' }
+  about: 'Vláknina, ktorá zostane po výrobe sójového mlieka. Bielkoviny aj vláknina, zadarmo.'
+  uses:
+    - 'Placky, fašírky, pečivo'
+    - 'Do kaše a granoly'
+  storage: 'V chladničke 2 dni, zamrazená 3 mesiace.'
 
 - id: nigari
   name: Nigari (chlorid horečnatý na tofu)
@@ -1483,6 +2897,12 @@
   units: { čl: 4 }
   price: 30
   note: zrážadlo na tofu, kúpiš online alebo v bio obchodoch; alternatíva je síran vápenatý (E516)
+  substitutes:
+    - { note: 'síran vápenatý alebo citrónová šťava – tofu bude drobivejšie' }
+  about: 'Chlorid horečnatý – zrážadlo na domáce tofu.'
+  uses:
+    - 'Domáce tofu'
+  storage: 'Suchý roky.'
 
 - id: tempeh-starter
   name: Tempeh štartér (Rhizopus)
@@ -1491,3 +2911,7 @@
   units: { čl: 3 }
   price: 400
   note: kúpiš online pod názvom „tempeh starter“, jedno vrecúško vystačí na niekoľko várok
+  about: 'Spóry plesne Rhizopus na výrobu tempehu.'
+  uses:
+    - 'Domáci tempeh'
+  storage: 'V chladničke podľa obalu.'

@@ -7,6 +7,9 @@ active: 15
 servings: 4
 difficulty: 2
 tags: [meal-prep, one-pot]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Podávaj s kuskusom alebo quinoou, chutí aj studený.'
 ingredients:
   - olivovy-olej: 2 pl
   - cibula: 2 ks | na polmesiačiky

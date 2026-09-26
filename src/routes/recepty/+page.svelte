@@ -6,7 +6,8 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import { MEAL_LABELS, normalizeSearch, pluralRecipes } from '$lib/labels';
-	import { ALLERGEN_LABELS, computedTags } from '$lib/nutrition';
+	import { ALLERGEN_LABELS, COMPUTED_TAG_LABELS, computedTags, cookingStyle } from '$lib/nutrition';
+	import { recipeSeason } from '$lib/season';
 	import { rankByPantry, type PantryMatch } from '$lib/pantry';
 	import { likes, pantry, ui } from '$lib/state.svelte';
 	import { MEALS, type Allergen, type Meal } from '$lib/types';
@@ -41,6 +42,18 @@
 	let minProtein = $state(0);
 	let excluded = $state<Allergen[]>([]);
 	let missingTools = $state<string[]>([]);
+	/** Quick picks: one pot, no cooking, oven only, mild (kids), in season now. */
+	const QUICK = ['jeden-hrniec', 'bez-varenia', 'len-rura', 'jemne', 'sezonne'] as const;
+	type Quick = (typeof QUICK)[number];
+	const QUICK_LABELS: Record<Quick, string> = {
+		'jeden-hrniec': COMPUTED_TAG_LABELS['jeden-hrniec'],
+		'bez-varenia': COMPUTED_TAG_LABELS['bez-varenia'],
+		'len-rura': COMPUTED_TAG_LABELS['len-rura'],
+		jemne: 'Nepálivé, pre deti',
+		sezonne: 'Sezónne teraz'
+	};
+	let quick = $state<Quick[]>([]);
+	const month = new Date().getMonth() + 1;
 	/** all | bez = works without vegan substitutes | s = uses them (base or a variant) */
 	let subs = $state<'all' | 'bez' | 's'>('all');
 	let difficulty = $state<0 | 1 | 2 | 3>(0);
@@ -91,6 +104,13 @@
 			if (r.perServing.protein < minProtein) return false;
 			if (excluded.some((a) => r.allergens.includes(a))) return false;
 			if (missingTools.some((t) => r.equipment.includes(t))) return false;
+			for (const q of quick) {
+				if (q === 'jemne' && r.spicy > 0) return false;
+				if (q === 'sezonne' && !recipeSeason(r, catalog.ingredientsById, month).inSeason) {
+					return false;
+				}
+				if (q !== 'jemne' && q !== 'sezonne' && cookingStyle(r.equipment) !== q) return false;
+			}
 			if (subs === 'bez' && r.substitutes === 'required') return false;
 			if (subs === 's' && !r.usesSubstitutes && !r.variants.some((v) => v.usesSubstitutes)) {
 				return false;
@@ -132,6 +152,7 @@
 			minProtein,
 			excluded.length,
 			missingTools.length,
+			quick.length,
 			onlyPantry,
 			subs !== 'all',
 			difficulty
@@ -140,6 +161,10 @@
 
 	function toggleAllergen(a: Allergen) {
 		excluded = excluded.includes(a) ? excluded.filter((x) => x !== a) : [...excluded, a];
+	}
+
+	function toggleQuick(q: Quick) {
+		quick = quick.includes(q) ? quick.filter((x) => x !== q) : [...quick, q];
 	}
 
 	function toggleTool(tool: string) {
@@ -157,6 +182,7 @@
 		minProtein = 0;
 		excluded = [];
 		missingTools = [];
+		quick = [];
 		subs = 'all';
 		difficulty = 0;
 		onlyPantry = false;
@@ -180,6 +206,9 @@
 		const d = Number(p.get('narocnost'));
 		if (d === 1 || d === 2 || d === 3) difficulty = d;
 		missingTools = (p.get('nemam') ?? '').split(',').filter((t) => t in MISSING_TOOLS);
+		quick = (p.get('rychlo') ?? '')
+			.split(',')
+			.filter((q): q is Quick => (QUICK as readonly string[]).includes(q));
 		urlReady = true;
 	});
 
@@ -194,6 +223,7 @@
 		if (subs !== 'all') p.set('nahrady', subs);
 		if (difficulty) p.set('narocnost', String(difficulty));
 		if (missingTools.length) p.set('nemam', missingTools.join(','));
+		if (quick.length) p.set('rychlo', quick.join(','));
 		if (!urlReady) return;
 		const search = p.toString();
 		if (search !== location.search.slice(1))
@@ -239,6 +269,17 @@
 
 	<div class="layout">
 		<aside id="filters" class="filters card" class:open={filtersOpen}>
+			<fieldset>
+				<legend>Rýchly výber</legend>
+				<div class="chips">
+					{#each QUICK as q (q)}
+						<button class="chip" aria-pressed={quick.includes(q)} onclick={() => toggleQuick(q)}>
+							{QUICK_LABELS[q]}
+						</button>
+					{/each}
+				</div>
+			</fieldset>
+
 			<fieldset>
 				<legend>Lepok</legend>
 				<div class="chips">
@@ -546,6 +587,11 @@
 			display: flex;
 			position: sticky;
 			top: 84px;
+			/* Taller than the viewport: scroll inside, or the bottom filters are unreachable. */
+			max-height: calc(100vh - 100px);
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			scrollbar-width: thin;
 		}
 	}
 </style>

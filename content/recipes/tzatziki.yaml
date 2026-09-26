@@ -7,6 +7,7 @@ active: 15
 servings: 4
 difficulty: 1
 tags: [bez-varenia]
+keeps: { fridge: 3 }
 ingredients:
   - sojovy-jogurt: 2 hrnček | čo najhustejší
   - uhorka: 1/2 ks | nastrúhaná

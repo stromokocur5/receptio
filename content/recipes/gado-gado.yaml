@@ -7,6 +7,9 @@ active: 25
 servings: 4
 difficulty: 2
 tags: []
+spicy: 1
+keeps: { fridge: 2 }
+leftovers: 'Arašidovú omáčku rozrieď a použi ako dresing na rezance.'
 ingredients:
   - zemiaky: 4 ks | malé, v šupke
   - zelene-fazulky: 200 g

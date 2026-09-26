@@ -7,6 +7,9 @@ active: 15
 servings: 4
 difficulty: 1
 tags: [one-pot, lacne]
+spicy: 2
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Natri na placku alebo chlieb a pridaj paradajky.'
 ingredients:
   - cibula: 2 ks | veľmi nadrobno
   - olej: 3 pl

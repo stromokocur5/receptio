@@ -7,6 +7,8 @@ active: 25
 servings: 3
 difficulty: 1
 tags: [ranajky]
+keeps: { fridge: 2, freezer: 2 }
+leftovers: 'Zamraz ich preložené papierom, rozmrazíš v hriankovači.'
 ingredients:
   - sojove-mlieko: 300 ml
   - ocot: 1 pl

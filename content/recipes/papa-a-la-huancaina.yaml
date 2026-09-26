@@ -7,6 +7,9 @@ active: 15
 servings: 4
 difficulty: 2
 tags: []
+spicy: 1
+keeps: { fridge: 2 }
+leftovers: 'Omáčku použi ako dip k zelenine alebo na cestoviny.'
 ingredients:
   - zemiaky: 8 ks | menšie
   - kesu: 80 g | namočené 15 min vo vriacej vode

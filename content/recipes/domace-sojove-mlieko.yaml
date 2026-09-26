@@ -11,6 +11,7 @@ nutrition: false
 yields: cca 1,5 l mlieka a 300 g okary
 ahead: Sójové zrná namoč na 12 hodín (cez noc) do trojnásobku vody.
 related: [domace-tofu, domaci-sojovy-jogurt, okarove-placky]
+keeps: { fridge: 4 }
 ingredients:
   - sojove-zrna: 150 g | namočené cez noc
   - voda: 1,5 l

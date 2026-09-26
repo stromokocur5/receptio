@@ -7,6 +7,8 @@ active: 15
 servings: 4
 difficulty: 1
 tags: [polievka, one-pot]
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Rozmixuj zvyšok na hustú nátierku na chlieb.'
 ingredients:
   - olivovy-olej: 4 pl
   - cibula: 1 ks

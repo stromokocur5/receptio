@@ -7,6 +7,9 @@ active: 20
 servings: 4
 difficulty: 2
 tags: [party, one-pot]
+spicy: 2
+keeps: { fridge: 3 }
+leftovers: 'Opeč s fazuľou na panvici, alebo ho naplň do papriky a zapeč.'
 ingredients:
   - paprika-cervena: 2 ks
   - paradajky-sterilizovane: 1 ks

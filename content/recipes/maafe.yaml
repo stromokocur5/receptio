@@ -7,6 +7,9 @@ active: 15
 servings: 4
 difficulty: 1
 tags: [meal-prep, one-pot]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Podávaj s kuskusom alebo zabaľ do placky s uhorkou.'
 ingredients:
   - olej: 1 pl
   - cibula: 1 ks

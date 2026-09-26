@@ -7,6 +7,7 @@ active: 15
 servings: 4
 difficulty: 1
 tags: [do-krabicky, meal-prep]
+keeps: { fridge: 3 }
 ingredients:
   - quinoa: 120 g | prepláchnutá
   - voda: 1 hrnček

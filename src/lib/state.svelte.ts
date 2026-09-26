@@ -89,12 +89,21 @@ function validateFlags(raw: unknown): Record<string, boolean> | undefined {
 	) as Record<string, boolean>;
 }
 
+export type Rating = 1 | 2 | 3;
+
+export const RATING_LABELS: Record<Rating, string> = {
+	3: 'Výborné',
+	2: 'Dobré',
+	1: 'Nabudúce inak'
+};
+
 export interface CookedEntry {
 	recipeId: string;
 	variant?: string;
 	servings: number;
 	/** ISO date (YYYY-MM-DD). */
 	date: string;
+	rating?: Rating;
 }
 
 const MAX_HISTORY = 300;
@@ -111,7 +120,8 @@ function validateHistory(raw: unknown): CookedEntry[] | undefined {
 				e.servings > 0 &&
 				typeof e.date === 'string' &&
 				/^\d{4}-\d{2}-\d{2}$/.test(e.date) &&
-				(e.variant === undefined || typeof e.variant === 'string')
+				(e.variant === undefined || typeof e.variant === 'string') &&
+				(e.rating === undefined || e.rating === 1 || e.rating === 2 || e.rating === 3)
 		)
 		.slice(-MAX_HISTORY);
 }
@@ -200,6 +210,13 @@ export function setNote(recipeId: string, text: string) {
 	const { [recipeId]: _previous, ...rest } = notes.current;
 	const trimmed = text.slice(0, MAX_NOTE_LENGTH);
 	notes.current = trimmed.trim() ? { ...rest, [recipeId]: trimmed } : rest;
+}
+
+/** Rates the most recent time this recipe was cooked. */
+export function rateLastCooked(recipeId: string, rating: Rating) {
+	const index = history.current.findLastIndex((h) => h.recipeId === recipeId);
+	if (index === -1) return;
+	history.current = history.current.map((h, i) => (i === index ? { ...h, rating } : h));
 }
 
 /**

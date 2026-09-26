@@ -9,6 +9,8 @@ difficulty: 1
 tags: [urob-si-sam, zvysky]
 nutrition: false
 yields: cca 2 l vývaru
+keeps: { fridge: 5, freezer: 4 }
+leftovers: 'Zamraz ho vo formičkách na ľad – kocka stačí do omáčky.'
 ingredients:
   - cibula: 2 ks | prekrojená, aj so šupkou
   - mrkva: 3 ks

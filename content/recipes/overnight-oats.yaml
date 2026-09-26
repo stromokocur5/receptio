@@ -8,6 +8,7 @@ servings: 2
 difficulty: 1
 tags: [ranajky, bez-varenia, do-krabicky]
 ahead: Priprav večer, cez noc nechaj v chladničke.
+keeps: { fridge: 3 }
 ingredients:
   - ovsene-vlocky: 100 g
   - sojovy-jogurt: 1/2 hrnček

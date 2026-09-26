@@ -8,6 +8,7 @@ servings: 10
 difficulty: 3
 tags: [dezert, party]
 ahead: Kešu namoč na 4 hodiny (alebo 15 minút vo vriacej vode) a hotový koláč nechaj stuhnúť v mrazničke 4 hodiny.
+keeps: { fridge: 5, freezer: 3 }
 ingredients:
   - vlasske-orechy: 1 hrnček
   - datle: 12 ks

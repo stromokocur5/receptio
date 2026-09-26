@@ -7,6 +7,9 @@ active: 15
 servings: 4
 difficulty: 1
 tags: [meal-prep, one-pot]
+spicy: 3
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Rozrieď na polievku, alebo ho natri na hrianku s cibuľou.'
 ingredients:
   - cibula: 3 ks | veľmi nadrobno
   - olej: 3 pl

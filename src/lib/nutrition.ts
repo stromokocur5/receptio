@@ -109,7 +109,29 @@ export const QUICK_MINUTES = 20;
 export const CHEAP_EUR = 1.2;
 
 export type ComputedTag =
-	'bezlepkove' | 'vela-bielkovin' | 'rychle' | 'lacne' | 'vela-vlakniny' | 'zelezo' | 'omega-3';
+	| 'bezlepkove'
+	| 'vela-bielkovin'
+	| 'rychle'
+	| 'lacne'
+	| 'vela-vlakniny'
+	| 'zelezo'
+	| 'omega-3'
+	| 'jeden-hrniec'
+	| 'bez-varenia'
+	| 'len-rura'
+	| 'jemne';
+
+/** Equipment that heats food; which of them a recipe uses decides the cooking-style tags. */
+const HEAT = ['hrniec', 'panvica', 'rura'] as const;
+
+/** One pot, no heat at all, or only the oven – read from the recipe's equipment. */
+export function cookingStyle(equipment: string[]): ComputedTag | null {
+	const used = HEAT.filter((h) => equipment.includes(h));
+	if (used.length === 0) return 'bez-varenia';
+	if (used.length === 1 && used[0] === 'hrniec') return 'jeden-hrniec';
+	if (used.length === 1 && used[0] === 'rura') return 'len-rura';
+	return null;
+}
 
 export const COMPUTED_TAG_LABELS: Record<ComputedTag, string> = {
 	bezlepkove: 'Bezlepkové',
@@ -118,7 +140,11 @@ export const COMPUTED_TAG_LABELS: Record<ComputedTag, string> = {
 	lacne: 'Lacné',
 	'vela-vlakniny': 'Veľa vlákniny',
 	zelezo: 'Zdroj železa',
-	'omega-3': 'Omega-3'
+	'omega-3': 'Omega-3',
+	'jeden-hrniec': 'Jeden hrniec',
+	'bez-varenia': 'Bez varenia',
+	'len-rura': 'Len rúra',
+	jemne: 'Nepálivé, aj pre deti'
 };
 
 export function computedTags(r: RecipeSummary): ComputedTag[] {
@@ -127,6 +153,9 @@ export function computedTags(r: RecipeSummary): ComputedTag[] {
 	if (r.gluten === 'free') tags.push('bezlepkove');
 	if (r.time <= QUICK_MINUTES) tags.push('rychle');
 	if (r.costPerServing <= CHEAP_EUR) tags.push('lacne');
+	const style = cookingStyle(r.equipment);
+	if (style) tags.push(style);
+	if (r.spicy === 0) tags.push('jemne');
 	// Strained DIY staples (soy milk, tofu) don't contain everything their ingredients do.
 	if (!r.showNutrition) return tags;
 	if (n.protein >= HIGH_PROTEIN_G || proteinEnergyShare(n) >= 0.25) tags.push('vela-bielkovin');

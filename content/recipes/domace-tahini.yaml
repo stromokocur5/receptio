@@ -9,6 +9,7 @@ difficulty: 1
 tags: [urob-si-sam]
 yields: cca 250 g
 related: [hummus, baba-ganoush, falafel]
+keeps: { fridge: 30 }
 ingredients:
   - sezam: 250 g | lúpaný (svetlý)
   - olej: 3 pl | neutrálny

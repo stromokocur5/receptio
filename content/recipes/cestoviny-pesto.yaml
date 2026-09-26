@@ -7,6 +7,8 @@ active: 15
 servings: 4
 difficulty: 1
 tags: [rychle]
+keeps: { fridge: 2 }
+leftovers: 'Studené cestoviny s pestom sú dobrý šalát, pridaj paradajky a citrón.'
 ingredients:
   - cestoviny: 400 g
   - hrasok: 1 hrnček
@@ -24,3 +26,11 @@ steps:
   - Cestoviny zmiešaj s pestom a trochou vody z varenia, aby bolo krémové.
 tips:
   - Pesto v pohári zalej tenkou vrstvou oleja, v chladničke vydrží týždeň.
+variants:
+  - name: Viac bielkovín
+    description: 'K hrášku pridaj scedený cícer, prehrej ho s cestovinami.'
+    add:
+      - cicer-sterilizovany: 1 ks
+  - name: Bez cesnaku
+    description: 'Pesto bez cesnaku, pridaj viac citrónovej kôry.'
+    remove: [cesnak]

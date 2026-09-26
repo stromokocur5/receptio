@@ -7,6 +7,9 @@ active: 20
 servings: 4
 difficulty: 2
 tags: []
+spicy: 2
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Kari omáčku zamraz bez ryže, ryžu uvar čerstvú.'
 ingredients:
   - ryza-jazminova: 300 g
   - tofu-natural: 400 g | na kocky, osušené
@@ -29,3 +32,8 @@ steps:
   - Podávaj s ryžou a koriandrom.
 tips:
   - Tofu pred krájaním 15 minút zaťaž niečím ťažkým, vytlačíš vodu a bude chrumkavejšie.
+variants:
+  - name: S cícerom namiesto tofu
+    description: 'Cícer netreba opekať, pridaj ho rovno do omáčky s brokolicou.'
+    replace:
+      - { from: tofu-natural, to: cicer-sterilizovany, amount: 2 ks }

@@ -45,6 +45,15 @@
 			<p class="muted">{section.text}</p>
 			<div class="grid">
 				{#if section.id === 'zaklady'}
+					<a class="item card draw-host rise" href="/suroviny">
+						<span class="ico"><Icon name="bean" size={26} /></span>
+						<span>
+							<strong>Suroviny – čo je čo</strong>
+							<span class="sum"
+								>Druhy, ako vybrať, skladovanie, náhrady a sezóna každej suroviny.</span
+							>
+						</span>
+					</a>
 					<a class="item card draw-host rise" href="/vybavenie">
 						<span class="ico"><Icon name="pan" size={26} /></span>
 						<span>

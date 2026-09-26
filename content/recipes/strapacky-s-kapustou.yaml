@@ -8,6 +8,8 @@ servings: 4
 difficulty: 2
 tags: [klasika]
 gf_swap: false
+keeps: { fridge: 2 }
+leftovers: 'Opeč na panvici na troche oleja, až kým sa neprichytia.'
 ingredients:
   - olej: 3 pl
   - cibula: 1 ks | nadrobno

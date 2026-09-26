@@ -7,6 +7,8 @@ active: 15
 servings: 2
 difficulty: 1
 tags: [ranajky]
+keeps: { fridge: 2 }
+leftovers: 'Zabaľ do tortilly so salsou – raňajkové burrito.'
 ingredients:
   - olej: 1 pl
   - cibula: 1/2 ks | nadrobno

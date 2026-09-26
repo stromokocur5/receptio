@@ -13,6 +13,17 @@
   level: zaklad
   icon: knife
   about: Jeden poriadny kuchársky nôž (20 cm) urobí viac ako sada tupých. Tupý nôž je nebezpečnejší – kĺže.
+  uses:
+    - 'Krájanie zeleniny, bylín, tofu a chleba – 90 % prípravy'
+    - 'Plochá strana noža rozpučí cesnak'
+  kinds:
+    - 'Kuchársky nôž (20 cm) – na všetko'
+    - 'Malý nôž na lúpanie – ovocie, detaily'
+    - 'Nôž s vlnkou – chlieb a paradajky'
+    - 'Drevená doska – šetrí nôž'
+    - 'Plastová doska – do umývačky'
+  choose: 'Nôž, ktorý ti sedí v ruke, s pevnou čepeľou. Lacný nôž z nehrdzavejúcej ocele a brúska (15 €) stačí.'
+  care: 'Umývaj ručne a hneď osuš. Brús raz za mesiac. Pod dosku daj vlhkú utierku – nebude sa šmýkať.'
   alternatives:
     - Na mäkkú zeleninu stačí aj menší nôž, len krájaj pomalšie.
     - Nôž nabrúsiš aj o neglazovaný spodok keramického hrnčeka.
@@ -23,6 +34,17 @@
   level: zaklad
   icon: pan
   about: Ideálne jedna väčšia (28 cm) s nepriľnavým povrchom a jedna liatinová alebo nerezová na opekanie dozlatista.
+  uses:
+    - 'Opekanie cibule, tofu a zeleniny dozlatista'
+    - 'Placky, palacinky, praženica'
+    - 'Rýchle omáčky a wok jedlá'
+  kinds:
+    - 'Nepriľnavá (teflón, keramika) – palacinky, tofu, placky'
+    - 'Liatinová – najlepšie opekanie, ide aj do rúry, vydrží celý život'
+    - 'Nerezová – opekanie a omáčky, nič sa neodlupuje'
+    - 'Wok – vysoké okraje, prehadzovanie'
+  choose: '28 cm s pokrievkou pokryje väčšinu jedál. Ťažké dno drží teplo rovnomerne.'
+  care: 'Nepriľnavú nerozpaľuj prázdnu a nepoužívaj kovové náradie. Liatinu neumývaj v umývačke, po umytí osuš a potri olejom.'
   alternatives:
     - Hrniec so širším dnom – opekaj po menších dávkach, nech sa zelenina neduší.
     - Wok funguje na všetko, čo sa robí na panvici.
@@ -44,6 +66,17 @@
   level: zaklad
   icon: pot
   about: Stredný (3 l) na prílohy a omáčky, veľký (5 l) na polievky, cestoviny a strukoviny.
+  uses:
+    - 'Polievky, strukoviny, ryža, cestoviny'
+    - 'Kari, dal a guláše'
+    - 'Vyprážanie v hlbokom oleji'
+  kinds:
+    - 'Stredný (3 l) – ryža, omáčky, prílohy'
+    - 'Veľký (5–6 l) – polievky, cestoviny, vývar'
+    - 'Hrniec s hrubým dnom – nepripáli sa'
+    - 'Tlakový – strukoviny za tretinu času'
+  choose: 'Nerezový s hrubým dnom a pokrievkou. Rúčky, ktoré sa nezohrievajú.'
+  care: 'Pripálené dno namoč s vodou a sódou bikarbónou a povar 10 minút.'
   alternatives:
     - Hlboká panvica s pokrievkou zvládne omáčky, kari aj ryžu.
     - Rýchlovarná kanvica + miska na zaliatie kuskusu, bulguru či ryžových rezancov.
@@ -60,6 +93,15 @@
   level: zaklad
   icon: lid
   about: Ryža, strukoviny a dusená zelenina potrebujú prikryť, inak sa voda vyparí skôr, ako zmäknú.
+  uses:
+    - 'Varenie ryže a strukovín'
+    - 'Dusenie zeleniny'
+    - 'Rýchlejší var vody (úspora energie)'
+  kinds:
+    - 'Sklenená – vidíš do hrnca'
+    - 'Univerzálna – pasuje na viac veľkostí'
+  choose: 'Sklenená s otvorom na paru.'
+  care: 'Nechaj vychladnúť pred umytím studenou vodou – sklo praskne.'
   alternatives:
     - Väčší plochý tanier, plech alebo kúsok alobalu.
   match:
@@ -72,6 +114,16 @@
   level: zaklad
   icon: sieve
   about: Na scedenie cestovín a strukovín aj na preplachovanie ryže a quinoy.
+  uses:
+    - 'Scedenie cestovín, zemiakov a strukovín'
+    - 'Preplachovanie ryže a quinoy'
+    - 'Pretlačenie polievky alebo omáčky'
+  kinds:
+    - 'Cedník s dierkami – cestoviny a zelenina'
+    - 'Jemné sitko – ryža, quinoa, múka'
+    - 'Sitko s utierkou – rastlinné mlieko a jogurt'
+  choose: 'Nerezové jemné sitko s rúčkou zvládne aj ryžu, aj cestoviny.'
+  care: 'Zaschnutý škrob z cestovín namoč, potom vykartáčuj.'
   alternatives:
     - Cestoviny sceď cez pokrievku nakrivo priloženú na hrniec.
     - Na ryžu a quinou stačí preplachovať v miske a vodu opatrne zliať.
@@ -85,6 +137,15 @@
   level: zaklad
   icon: grater
   about: Štvorhranné strúhadlo stačí; jemná strana na zázvor, cesnak a citrónovú kôru.
+  uses:
+    - 'Mrkva a cuketa na placky a šaláty'
+    - 'Zázvor, cesnak a citrónová kôra'
+    - 'Zemiaky na placky'
+  kinds:
+    - 'Štvorhranné – hrubá, jemná strana a plátky'
+    - 'Microplane – ultra jemné, na kôru a zázvor'
+  choose: 'Štvorhranné so stabilnou základňou.'
+  care: 'Hneď po použití opláchni – zaschnutá zelenina sa ťažko čistí.'
   alternatives:
     - Nakrájaj nožom čo najjemnejšie.
     - Zázvor a cesnak nastrúhaš aj o zúbky vidličky.
@@ -96,6 +157,13 @@
   level: uzitocne
   icon: garlic
   about: Pohodlný, no nie nutný.
+  uses:
+    - 'Cesnak do dipov, marinád a polievok bez krájania'
+  kinds:
+    - 'Klasický – netreba šúpať strúčiky'
+    - 'Rocker – kolíska, ľahšie sa čistí'
+  choose: 'Nerezový a masívny, plastové sa lámu.'
+  care: 'Vyčisti hneď – kefkou alebo špáradlom.'
   alternatives:
     - Cesnak rozpučí plochá strana noža, potom ho nasekaj a posoľ – soľ ho rozotrie na pastu.
     - Jemná strana strúhadla.
@@ -107,6 +175,14 @@
   level: zaklad
   icon: bowl
   about: Aspoň jedna veľká na cesto a šaláty a pár menších na omáčky a marinády.
+  uses:
+    - 'Cestá, šaláty, marinády'
+    - 'Príprava surovín pred varením (mise en place)'
+  kinds:
+    - 'Nerezové – ľahké, nerozbijú sa'
+    - 'Sklenené – do mikrovlnky, vidno obsah'
+  choose: 'Sada troch veľkostí do seba.'
+  care: 'Bez nárokov.'
   alternatives:
     - Hrniec poslúži ako veľká misa, hrnček ako malá.
   match:
@@ -119,6 +195,16 @@
   level: uzitocne
   icon: oven
   about: Pečená zelenina, cícer, tofu a zapekané jedlá. Teploty v receptoch sú pre klasický ohrev hore-dole.
+  uses:
+    - 'Pečená zelenina, cícer a tofu'
+    - 'Zapekané jedlá, lasagne, koláče'
+    - 'Teplé miesto na kysnutie a jogurt (so svetlom)'
+  kinds:
+    - 'Horný a spodný ohrev – najpresnejšie teploty receptov'
+    - 'Teplovzdušná – o 20 °C menej, pečie rovnomernejšie'
+    - 'Teplovzdušná fritéza (airfryer) – malá rúra na chrumkavé veci'
+  choose: 'Ak kupuješ, teplovzdušná s grilom.'
+  care: 'Plech a rošt namoč. Na pripálené dno pasta zo sódy bikarbóny cez noc.'
   alternatives:
     - Teplovzdušná fritéza (airfryer) na menšie dávky, zvyčajne o 20 °C menej a kratšie.
     - Veľa receptov zvládneš na panvici s pokrievkou na strednom ohni, len obracaj častejšie.
@@ -131,6 +217,15 @@
   level: uzitocne
   icon: tray
   about: Plech s papierom = žiadne drhnutie. Opakovane použiteľná silikónová podložka sa oplatí.
+  uses:
+    - 'Pečená zelenina, cícer, tofu, zemiaky'
+    - 'Cookies, granola, bublanina'
+  kinds:
+    - 'Plochý – cookies, pizza'
+    - 'S okrajom – zelenina, bublanina'
+    - 'Silikónová podložka – namiesto papiera, roky'
+  choose: 'Dva plechy – zelenina potrebuje miesto, aby zhnedla.'
+  care: 'Papier na pečenie šetrí drhnutie.'
   alternatives:
     - Zapekacia misa, len zelenina bude menej chrumkavá (dáva sa na seba).
     - Plech bez papiera tenko potri olejom.
@@ -143,6 +238,14 @@
   level: uzitocne
   icon: dish
   about: Sklenená alebo keramická, na lasagne, enchiladas a zapekanú zeleninu.
+  uses:
+    - 'Lasagne, enchiladas, gigantes'
+    - 'Pečené jablká, zapekané zemiaky'
+  kinds:
+    - 'Sklenená – vidíš okraje'
+    - 'Keramická – drží teplo, ide na stôl'
+  choose: 'Obdĺžniková cca 20 × 30 cm pre 4 porcie.'
+  care: 'Nedávaj studenú do horúcej rúry – praskne.'
   alternatives:
     - Hlbší plech alebo liatinová panvica bez plastovej rúčky.
   match:
@@ -153,6 +256,15 @@
   level: specialne
   icon: tray
   about: Na chlebíček a cheesecake – podlhovastá (25 cm) a okrúhla s odnímateľným okrajom (22 cm).
+  uses:
+    - 'Banánový chlebík, bábovka'
+    - 'Cheesecake s odnímateľným okrajom'
+  kinds:
+    - 'Podlhovastá (srnčí chrbát, chlebík) – 25 cm'
+    - 'Tortová s odnímateľným okrajom – 22 cm'
+    - 'Silikónová – ľahko sa vyberá, pečie menej do hneda'
+  choose: 'Plechová s nepriľnavým povrchom.'
+  care: 'Vymasti a vysyp múkou, alebo vystel papierom.'
   alternatives:
     - Zapekacia misa podobnej veľkosti vystlaná papierom; čas pečenia skontroluj špajdľou.
   match:
@@ -163,6 +275,16 @@
   level: uzitocne
   icon: blender
   about: Na smoothie, omáčky, hummus a rastlinné mlieka. Čím silnejší motor, tým hladší výsledok.
+  uses:
+    - 'Hummus, pesto, omáčky, smoothie'
+    - 'Rastlinné mlieka a kešu krém'
+    - 'Polievky – po vychladnutí'
+  kinds:
+    - 'Klasický stolový (500–1000 W) – smoothie a omáčky'
+    - 'Výkonný (1200 W+) – hladký hummus, orechové maslá, mlieka'
+    - 'Smoothie mixér s fľašou – jedna porcia'
+  choose: 'Aspoň 800 W so sklenenou alebo tritanovou nádobou.'
+  care: 'Hneď po použití pol nádoby teplej vody s kvapkou saponátu a 30 sekúnd mixuj.'
   alternatives:
     - Tyčový (ponorný) mixér vo vysokej nádobe – na hummus pridaj trochu viac tekutiny.
     - Hummus a pesto sa dajú roztlačiť vidličkou alebo v mažiari, budú hrubšie, ale chutné.
@@ -175,6 +297,14 @@
   level: uzitocne
   icon: stick-blender
   about: Krémové polievky rozmixuješ rovno v hrnci. Lacný a malý.
+  uses:
+    - 'Krémové polievky priamo v hrnci'
+    - 'Majonéza, omáčky, detské pyré'
+  kinds:
+    - 'Jednoduchý – len mixovacia noha'
+    - 'Set s nádobou a sekáčikom – nahradí malý robot'
+  choose: 'Nerezová noha (plastová sa v horúcej polievke deformuje), aspoň 600 W.'
+  care: 'Nohu opláchni hneď, odpoj zo zásuvky pred čistením nožov.'
   alternatives:
     - Stolový mixér – polievku nechaj trochu vychladnúť a mixuj po dávkach, horúca para vie odraziť veko.
     - Mäkkú zeleninu roztlač štuchadlom na zemiaky.
@@ -187,6 +317,15 @@
   level: specialne
   icon: blender
   about: Na falafel, energetické guľky a cestá, kde mixér robí kašu.
+  uses:
+    - 'Falafel, energetické guľky, pesto'
+    - 'Strúhanka, mleté orechy'
+    - 'Cesto, kde mixér robí kašu'
+  kinds:
+    - 'Malý sekáčik (0,5 l) – bylinky, cesnak, orechy'
+    - 'Kuchynský robot – krája, strúha, mieša cesto'
+  choose: 'Na začiatok stačí sekáčik k tyčovému mixéru.'
+  care: 'Nože sú ostré – umývaj opatrne, nie v dreze plnom vody.'
   alternatives:
     - Stolový mixér po malých dávkach s pulzným režimom.
     - Mlynček na mäso, ak ho máš po babke – na falafel ideálny.
@@ -199,6 +338,15 @@
   level: zaklad
   icon: whisk
   about: Na zálievky, cestá na palacinky a vyšľahanie aquafaby (tam už treba elektrický šľahač).
+  uses:
+    - 'Dresingy, cestá na palacinky, bešamel'
+    - 'Rozmiešanie múky bez hrudiek'
+  kinds:
+    - 'Balónová – šľahanie'
+    - 'Plochá – omáčky na panvici'
+    - 'Elektrický šľahač – aquafaba, sneh, šľahačka z kokosu'
+  choose: 'Nerezová stredná. Na aquafabu treba elektrický šľahač.'
+  care: 'Bez nárokov.'
   alternatives:
     - Vidlička – šľahaj dlhšie.
     - Zálievku pretrep v uzavretom pohári.
@@ -211,6 +359,16 @@
   level: zaklad
   icon: towel
   about: Na vyžmýkanie tofu a scedenie rastlinného mlieka. Bavlnená, bez aviváže.
+  uses:
+    - 'Vyžmýkanie tofu a strúhanej zeleniny'
+    - 'Scedenie rastlinného mlieka a tofu'
+    - 'Prikrytie kysnúceho cesta'
+  kinds:
+    - 'Bavlnená alebo ľanová – na cedenie'
+    - 'Vrecko na rastlinné mlieko – jemné, opakovateľné'
+    - 'Papierové utierky – na vysušenie tofu'
+  choose: 'Hladká bavlnená, nie froté – chĺpky ostávajú v jedle.'
+  care: 'Pri cedení mlieka bez aviváže – jedlo nasaje vôňu.'
   alternatives:
     - Papierové utierky (na tofu), vrecko na orechové mlieko alebo nová silonová pančucha (na mlieko).
   match:
@@ -221,6 +379,15 @@
   level: zaklad
   icon: peeler
   about: Rýchlejšia a bezpečnejšia ako nôž na zemiaky, mrkvu a uhorky.
+  uses:
+    - 'Zemiaky, mrkva, uhorky, stonka brokolice'
+    - 'Tenké pásiky zeleniny do šalátu'
+  kinds:
+    - 'Otočná (rovná) – klasika'
+    - 'Y-škrabka – rýchlejšia, pohodlnejšia'
+    - 'Julienne – tenké rezance zo zeleniny'
+  choose: 'Y-škrabka s ostrou čepeľou.'
+  care: 'Čepeľ tupne – vymeň škrabku, keď začne trhať šupku.'
   alternatives:
     - Malý nôž; zázvor ošúpeš hranou lyžičky.
   match:
@@ -231,6 +398,13 @@
   level: specialne
   icon: rolling-pin
   about: Na pizzu, placky a cesto na pirohy.
+  uses:
+    - 'Pizza, placky, cesto na pirohy a strapačky'
+  kinds:
+    - 'Drevený s rúčkami – klasika'
+    - 'Francúzsky (bez rúčok) – lepšie cítiš cesto'
+  choose: 'Drevený, aspoň 40 cm.'
+  care: 'Neumývaj namáčaním – drevo praskne. Otri a osuš.'
   alternatives:
     - Fľaša od vína posypaná múkou.
     - Pizzu stačí roztiahnuť prstami od stredu k okrajom.
@@ -243,6 +417,14 @@
   level: specialne
   icon: mortar
   about: Pesto, pasty na kari a čerstvo drvené korenie voňajú viac ako z mixéra.
+  uses:
+    - 'Pesto, pasty na kari'
+    - 'Drvenie korenia (kmín, koriander, čierne korenie)'
+  kinds:
+    - 'Kamenný (žula) – ťažký, najlepšie drví'
+    - 'Porcelánový – menší, na korenie'
+  choose: 'Žulový s drsným vnútrom, aspoň 15 cm.'
+  care: 'Umývaj len vodou, saponát nasiakne.'
   alternatives:
     - Mixér alebo sekáčik, len krátko.
     - Korenie rozdrv dnom ťažkého hrnca na doske.
@@ -255,6 +437,16 @@
   level: uzitocne
   icon: jar
   about: Na overnight oats, fermentovanie, zálievky a zvyšky do chladničky.
+  uses:
+    - 'Overnight oats, chia puding'
+    - 'Fermentovanie, nakladanie'
+    - 'Zvyšky a meal prep do chladničky'
+  kinds:
+    - 'Zaváracie s vekom – nakladanie'
+    - 'Weck s gumičkou – fermentovanie'
+    - 'Sklenené dózy – meal prep'
+  choose: 'Sklo s dobre tesniacim vekom.'
+  care: 'Pred fermentovaním vyvar alebo umy vo veľmi horúcej vode.'
   alternatives:
     - Akákoľvek čistá nádoba s vekom; na fermentovanie sklo, nie plast.
   match:
@@ -266,6 +458,15 @@
   level: specialne
   icon: thermometer
   about: Na jogurt, tempeh a olej na vyprážanie, kde rozhodujú stupne.
+  uses:
+    - 'Olej na vyprážanie (170–180 °C)'
+    - 'Sójový jogurt (40–43 °C) a tempeh (30–32 °C)'
+    - 'Sójové mlieko pred zrážaním tofu (80 °C)'
+  kinds:
+    - 'Vpichový digitálny – rýchly, na všetko'
+    - 'Na olej s klipom – drží na hrnci'
+  choose: 'Digitálny vpichový do 300 °C, stojí pár eur.'
+  care: 'Neponáraj elektroniku do vody.'
   alternatives:
     - Olej na vyprážanie je pripravený, keď okolo drevenej paličky vystúpia bublinky.
     - 40 °C je teplota, pri ktorej udržíš prst v tekutine, ale nie je ti príjemne.
@@ -277,6 +478,15 @@
   level: zaklad
   icon: scale
   about: Najpresnejšia cesta k rovnakému výsledku, hlavne pri pečení. Digitálna stojí pár eur.
+  uses:
+    - 'Pečenie – múka, cukor, prášok'
+    - 'Strukoviny a ryža na porcie'
+    - 'Presné porcie pre plán a živiny'
+  kinds:
+    - 'Digitálna – na gram presná'
+    - 'S funkciou tara – odváži rovno v miske'
+  choose: 'Digitálna s tarou do 5 kg.'
+  care: 'Vymeň batériu, keď začne ukazovať nezmysly.'
   alternatives:
     - Odmerky PL, ČL a hrnček – pozri návod Jednotky.
   match: []

@@ -7,6 +7,8 @@ active: 30
 servings: 4
 difficulty: 2
 tags: [klasika]
+keeps: { fridge: 2, freezer: 2 }
+leftovers: 'Naplň ich zvyšnou zeleninou alebo chili a zapeč ako slané palacinky.'
 ingredients:
   - hladka-muka: 250 g
   - sojove-mlieko: 2 hrnček

@@ -60,9 +60,9 @@
 	});
 </script>
 
-<a class="skip" href="#main">Preskočiť na obsah</a>
+<a class="skip" href="#main" data-noprint>Preskočiť na obsah</a>
 
-<header class="top">
+<header class="top" data-noprint>
 	<div class="wrap bar">
 		<a href="/" class="brand" aria-label="Receptio – domov"><Logo /></a>
 		<nav class="desktop" aria-label="Hlavná navigácia">
@@ -99,7 +99,7 @@
 	{@render children()}
 </main>
 
-<footer class="foot">
+<footer class="foot" data-noprint>
 	<div class="wrap">
 		<Logo size={28} />
 		<p>
@@ -112,7 +112,7 @@
 
 {#if !page.state.cooking}<TimerDock floating />{/if}
 
-<nav class="mobile" aria-label="Navigácia">
+<nav class="mobile" aria-label="Navigácia" data-noprint>
 	{#each NAV as item (item.href)}
 		<a
 			href={item.href}

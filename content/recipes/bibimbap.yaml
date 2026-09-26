@@ -7,6 +7,9 @@ active: 40
 servings: 4
 difficulty: 2
 tags: []
+spicy: 2
+keeps: { fridge: 3 }
+leftovers: 'Všetko zamiešaj s ryžou a opeč na panvici dochrumkava.'
 ingredients:
   - ryza-jazminova: 300 g
   - gochujang: 3 pl

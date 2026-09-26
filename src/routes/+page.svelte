@@ -7,6 +7,7 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import Squiggle from '$lib/components/Squiggle.svelte';
 	import { pluralRecipes } from '$lib/labels';
+	import { IN_MONTH, recipeSeason } from '$lib/season';
 	import { likes } from '$lib/state.svelte';
 
 	const catalog = useCatalog();
@@ -22,6 +23,15 @@
 					b.perServing.protein / b.costPerServing - a.perServing.protein / a.costPerServing
 			)
 			.slice(0, 8)
+	);
+	const month = new Date().getMonth() + 1;
+	const seasonal = $derived(
+		catalog.recipes
+			.map((r) => ({ r, season: recipeSeason(r, catalog.ingredientsById, month) }))
+			.filter((x) => x.season.inSeason)
+			.sort((a, b) => b.season.produce.length - a.season.produce.length)
+			.slice(0, 4)
+			.map((x) => x.r)
 	);
 	const basics = $derived(catalog.wiki.filter((w) => w.section === 'zaklady').slice(0, 6));
 	const cuisineCounts = $derived(
@@ -164,6 +174,25 @@
 		</a>
 	{/each}
 </section>
+
+{#if seasonal.length}
+	<section class="wrap block">
+		<div class="head">
+			<h2>Teraz v sezóne</h2>
+			<a class="btn ghost small" href="/recepty?rychlo=sezonne"
+				>Všetky sezónne <Icon name="arrow-right" size={16} /></a
+			>
+		</div>
+		<p class="muted season-note">
+			Zelenina, ktorá sa na Slovensku práve zbiera {IN_MONTH[month - 1]} – najchutnejšia a najlacnejšia.
+		</p>
+		<div class="grid">
+			{#each seasonal as recipe, i (recipe.id)}
+				<RecipeCard {recipe} index={i} />
+			{/each}
+		</div>
+	</section>
+{/if}
 
 <section class="wrap block">
 	<div class="head">
@@ -384,6 +413,9 @@
 
 	.block {
 		margin-top: 56px;
+	}
+	.season-note {
+		margin: -6px 0 14px;
 	}
 	.head {
 		display: flex;

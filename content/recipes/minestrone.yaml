@@ -7,6 +7,8 @@ active: 15
 servings: 6
 difficulty: 1
 tags: [polievka, one-pot, meal-prep]
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Zamraz bez cestovín a pridaj čerstvé pri ohrievaní – nerozmočia sa.'
 ingredients:
   - olivovy-olej: 3 pl
   - cibula: 1 ks
@@ -31,3 +33,13 @@ steps:
   - Na konci vmiešaj špenát a bazalku a dochuť soľou.
 tips:
   - Ak ju chceš zamraziť, cestoviny uvar zvlášť – v polievke by sa rozvarili.
+variants:
+  - name: Bez cibule a cesnaku
+    description: 'Pre citlivé trávenie (low FODMAP). Chuť doženie zelená časť jarnej cibuľky a o štipku viac korenia.'
+    remove: [cibula, cesnak]
+    add:
+      - jarna-cibulka: 3 ks | len zelená časť
+  - name: Viac bielkovín
+    description: 'Dvojnásobok fazule – polievka bude hustejšia a sýtejšia.'
+    add:
+      - fazula-biela: 1 ks

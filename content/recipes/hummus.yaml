@@ -7,6 +7,8 @@ active: 15
 servings: 6
 difficulty: 1
 tags: [bez-varenia, meal-prep, party]
+keeps: { fridge: 5, freezer: 3 }
+leftovers: 'Rozrieď vodou a citrónom na dresing na šalát alebo buddha bowl.'
 ingredients:
   - cicer-sterilizovany: 2 ks | vodu z plechovky odlož
   - tahini: 5 pl

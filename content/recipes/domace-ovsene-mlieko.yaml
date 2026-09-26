@@ -9,6 +9,7 @@ difficulty: 1
 tags: [urob-si-sam, lacne]
 nutrition: false
 yields: cca 1 l mlieka
+keeps: { fridge: 4 }
 ingredients:
   - ovsene-vlocky: 80 g
   - voda: 1 l | ľadová

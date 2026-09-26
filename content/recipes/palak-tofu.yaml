@@ -7,6 +7,9 @@ active: 25
 servings: 4
 difficulty: 2
 tags: []
+spicy: 1
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Rozrieď vývarom na krémovú špenátovú polievku.'
 ingredients:
   - spenat: 500 g
   - tofu-natural: 400 g | na kocky

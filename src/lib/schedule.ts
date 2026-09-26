@@ -1,7 +1,12 @@
 import type { PlanEntry } from './shopping';
 
-/** Cooked food keeps about this long in the fridge; later leftovers should be frozen. */
+/** How long cooked food keeps in the fridge when the recipe doesn't say. */
 export const FRIDGE_DAYS = 3;
+
+export interface Keeps {
+	fridge: number;
+	freezer: number;
+}
 
 export interface ScheduledMeal {
 	entry: PlanEntry;
@@ -9,6 +14,10 @@ export interface ScheduledMeal {
 	kind: 'cook' | 'leftover';
 	/** Days since the batch was cooked (0 on the cooking day). */
 	age: number;
+	/** Older than the fridge allows: freeze it on the cooking day (or cook it later). */
+	freeze: boolean;
+	/** …and it can't be frozen either. */
+	spoils: boolean;
 }
 
 export interface ScheduleDay {
@@ -25,7 +34,8 @@ export function mealSchedule(
 	entries: PlanEntry[],
 	people: number,
 	mealsPerDay: number,
-	days: number
+	days: number,
+	keeps: (recipeId: string) => Keeps | undefined = () => undefined
 ): { days: ScheduleDay[]; unplannedMeals: number; extraServings: number } {
 	const queue = entries.map((entry) => ({ entry, left: entry.servings, cookedOn: -1 }));
 	const result: ScheduleDay[] = [];
@@ -43,7 +53,19 @@ export function mealSchedule(
 			}
 			const kind = batch.cookedOn === -1 ? 'cook' : 'leftover';
 			if (kind === 'cook') batch.cookedOn = day;
-			meals.push({ entry: batch.entry, kind, age: day - batch.cookedOn });
+			const age = day - batch.cookedOn;
+			const { fridge, freezer } = keeps(batch.entry.recipeId) ?? {
+				fridge: FRIDGE_DAYS,
+				freezer: 0
+			};
+			const tooOld = age > fridge;
+			meals.push({
+				entry: batch.entry,
+				kind,
+				age,
+				freeze: tooOld && freezer > 0,
+				spoils: tooOld && freezer === 0
+			});
 			batch.left -= people;
 		}
 		result.push({ meals });

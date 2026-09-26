@@ -3,6 +3,9 @@ import type { Catalog, Cuisine, Ingredient, RecipeSummary, Store, WikiPage } fro
 
 export type WikiIndexEntry = Omit<WikiPage, 'html'>;
 
+/** What /catalog.json serves and the root layout loads. */
+export type CatalogPayload = Catalog & { wiki: WikiIndexEntry[]; builtAt: string };
+
 export interface IndexedCatalog extends Catalog {
 	ingredientsById: Map<string, Ingredient>;
 	recipesById: Map<string, RecipeSummary>;
@@ -15,9 +18,7 @@ export interface IndexedCatalog extends Catalog {
 
 const KEY = Symbol('catalog');
 
-export function indexCatalog(
-	catalog: Catalog & { wiki: WikiIndexEntry[]; builtAt: string }
-): IndexedCatalog {
+export function indexCatalog(catalog: CatalogPayload): IndexedCatalog {
 	return {
 		...catalog,
 		ingredientsById: new Map(catalog.ingredients.map((i) => [i.id, i])),

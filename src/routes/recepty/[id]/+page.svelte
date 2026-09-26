@@ -20,6 +20,7 @@
 		scaleNutrients
 	} from '$lib/nutrition';
 	import { isAssumedAtHome, matchRecipe, pantryByGroup } from '$lib/pantry';
+	import { IN_MONTH, recipeSeason } from '$lib/season';
 	import { SITE_ORIGIN } from '$lib/site';
 	import {
 		addToPlan,
@@ -27,6 +28,7 @@
 		history,
 		notes,
 		pantry,
+		RATING_LABELS,
 		servingsInPlan,
 		setNote,
 		settings,
@@ -130,6 +132,24 @@
 		ui.loaded ? history.current.filter((h) => h.recipeId === base.id) : []
 	);
 	const dateFormat = new Intl.DateTimeFormat('sk-SK', { day: 'numeric', month: 'numeric' });
+	const lastRating = $derived(cookedTimes.findLast((h) => h.rating)?.rating);
+
+	const SPICY_LABELS = ['Nepálivé', 'Jemne pálivé', 'Pálivé', 'Poriadne pálivé'];
+	const month = new Date().getMonth() + 1;
+	const season = $derived(recipeSeason(recipe, catalog.ingredientsById, month));
+
+	let openSwap = $state<string | null>(null);
+	$effect.pre(() => {
+		void base.id;
+		openSwap = null;
+	});
+
+	function monthsLabel(n: number) {
+		return n === 1 ? '1 mesiac' : n < 5 ? `${n} mesiace` : `${n} mesiacov`;
+	}
+	function daysLabel(n: number) {
+		return n === 1 ? '1 deň' : n < 5 ? `${n} dni` : `${n} dní`;
+	}
 </script>
 
 <Seo title={base.title} description={base.description} image="/og/{base.id}.png" type="article" />
@@ -139,7 +159,7 @@
 </svelte:head>
 
 <article class="wrap page">
-	<a class="back" href="/recepty"><Icon name="arrow-left" size={18} /> Recepty</a>
+	<a class="back" href="/recepty" data-noprint><Icon name="arrow-left" size={18} /> Recepty</a>
 
 	<header class="hero" style:--accent={cuisine?.color}>
 		<div class="art plate-host">
@@ -191,16 +211,54 @@
 
 			<div class="badges">
 				<GlutenBadge {recipe} />
-				{#each tags.filter((t) => t !== 'bezlepkove') as t (t)}
+				{#each tags.filter((t) => t !== 'bezlepkove' && t !== 'jemne') as t (t)}
 					<span class="badge leaf">{COMPUTED_TAG_LABELS[t]}</span>
 				{/each}
 				{#each recipe.allergens as a (a)}
 					<span class="badge turmeric">{ALLERGEN_LABELS[a]}</span>
 				{/each}
+				{#if season.inSeason}
+					<span class="badge leaf" title={season.produce.map((i) => i.name).join(', ')}
+						>Sezónne {IN_MONTH[month - 1]}</span
+					>
+				{/if}
 			</div>
 
+			<ul class="meta">
+				<li class="spicy spicy-{recipe.spicy}" title="Pálivosť">
+					{#each [1, 2, 3] as level (level)}<span class:on={recipe.spicy >= level}
+							><Icon name="chili" size={16} /></span
+						>{/each}
+					{SPICY_LABELS[recipe.spicy]}
+				</li>
+				{#if recipe.showNutrition}
+					<li title="Hmotnosť surovín na porciu (pred varením)">
+						<Icon name="scale" size={16} /> porcia ≈ {recipe.servingGrams} g
+					</li>
+				{/if}
+				{#if base.keeps}
+					<li>
+						<Icon name="fridge" size={16} />
+						{base.keeps.fridge ? `chladnička ${daysLabel(base.keeps.fridge)}` : 'zjedz hneď'}
+					</li>
+					{#if base.keeps.freezer}
+						<li><Icon name="snowflake" size={16} /> mraznička {monthsLabel(base.keeps.freezer)}</li>
+					{/if}
+				{/if}
+				<li class:tested={!!base.tested}>
+					{#if base.tested}
+						<Icon name="check" size={16} /> Vyskúšané
+					{:else}
+						<span
+							title="Recept je napísaný podľa overených postupov, ale v Receptiu ho ešte nikto neuvaril. Časy a množstvá ber orientačne."
+							>Zatiaľ nevyskúšané v praxi</span
+						>
+					{/if}
+				</li>
+			</ul>
+
 			{#if base.variants.length}
-				<div class="variants" role="group" aria-label="Verzia receptu">
+				<div class="variants" role="group" aria-label="Verzia receptu" data-noprint>
 					<span class="v-label">Verzia</span>
 					<button
 						class="chip"
@@ -228,7 +286,7 @@
 				<p class="ahead"><Icon name="clock" size={18} /> <strong>Vopred:</strong> {base.ahead}</p>
 			{/if}
 
-			<div class="actions">
+			<div class="actions" data-noprint>
 				<button class="btn leaf" onclick={plan}>
 					{#if justAdded}
 						<Icon name="check" size={18} draw /> Pridané
@@ -251,16 +309,25 @@
 					<Icon name="bookmark" size={19} />
 				</button>
 				<LikeButton recipeId={recipe.id} />
+				<button
+					class="icon-btn print-btn"
+					onclick={() => window.print()}
+					aria-label="Vytlačiť recept"
+					title="Vytlačiť"
+				>
+					<Icon name="printer" size={19} />
+				</button>
 				{#if inPlan}<a class="in-plan" href="/plan">V pláne: {inPlan} porc.</a>{/if}
 			</div>
 			{#if cookedTimes.length}
-				<p class="cooked-line">
+				<p class="cooked-line" data-noprint>
 					<Icon name="history" size={18} /> Uvarené {cookedTimes.length}×, naposledy
-					{dateFormat.format(new Date(cookedTimes[cookedTimes.length - 1].date))}
+					{dateFormat.format(new Date(cookedTimes[cookedTimes.length - 1].date))}{#if lastRating}
+						· {RATING_LABELS[lastRating]}{/if}
 				</p>
 			{/if}
 			{#if hasPantry}
-				<p class="pantry-line">
+				<p class="pantry-line" data-noprint>
 					<Icon name="jar" size={18} />
 					{#if match.missing.length === 0 && match.short.length === 0}
 						Máš doma všetko potrebné.
@@ -313,12 +380,13 @@
 				{#each recipe.lines as line, i (i)}
 					{@const ingredient = catalog.ingredientsById.get(line.ingredientId)!}
 					{@const home = hasPantry && isHome(line.ingredientId)}
+					{@const swaps = base.swaps[line.ingredientId] ?? []}
 					<li class:home>
 						<span class="amount"
 							>{formatAmount(line.amount === null ? null : line.amount * factor, line.unit)}</span
 						>
 						<span class="name" class:not-eaten={line.notEaten}>
-							{ingredient.name}
+							<a class="ing-link" href="/suroviny/{ingredient.id}">{ingredient.name}</a>
 							{#if line.notEaten}<small
 									title="Použije sa pri varení, ale nezje sa – nepočíta sa do živín."
 								>
@@ -338,15 +406,39 @@
 									{#if alt}<span class="swap">→ {alt.name.split(' (')[0]}</span>{/if}
 								</span>
 							{/if}
+							{#if swaps.length}
+								<button
+									data-noprint
+									class="swap-btn"
+									aria-expanded={openSwap === line.ingredientId}
+									onclick={() =>
+										(openSwap = openSwap === line.ingredientId ? null : line.ingredientId)}
+								>
+									Nemám
+								</button>
+							{/if}
 							{#if line.note}<span class="note">{line.note}</span>{/if}
 						</span>
 						{#if home}<span class="home-dot" title="Máš doma"
 								><Icon name="check" size={14} stroke={2.6} /></span
 							>{/if}
+						{#if openSwap === line.ingredientId}
+							<ul class="swaps">
+								{#each swaps as swap, j (j)}
+									<li>
+										{#if swap.to}
+											<strong>{swap.to.name}</strong>
+											{#if hasPantry && isHome(swap.to.id)}<span class="has">máš doma</span>{/if}
+											{#if swap.note}– {swap.note}{/if}
+										{:else}{swap.note}{/if}
+									</li>
+								{/each}
+							</ul>
+						{/if}
 					</li>
 				{/each}
 			</ul>
-			<a class="units-link" href="/wiki/jednotky"
+			<a class="units-link" href="/wiki/jednotky" data-noprint
 				><Icon name="spoon" size={16} /> Čo znamená PL, ČL, hrnček?</a
 			>
 
@@ -360,16 +452,19 @@
 									<summary>
 										<Icon name={isIconName(tool.icon) ? tool.icon : 'spoon'} size={18} />
 										{tool.name}
-										<span class="no-tool">Nemám</span>
+										<span class="no-tool" data-noprint>Nemám</span>
 									</summary>
 									<ul class="alts">
 										{#each tool.alternatives as alt, i (i)}<li>{alt}</li>{/each}
+										<li class="more-link">
+											<a href="/vybavenie/{tool.id}">Viac o tom, čo je {tool.name.toLowerCase()}</a>
+										</li>
 									</ul>
 								</details>
 							</li>
 						{/each}
 					</ul>
-					<a class="units-link" href="/vybavenie"
+					<a class="units-link" href="/vybavenie" data-noprint
 						><Icon name="pan" size={16} /> Vybavenie kuchyne a čím ho nahradiť</a
 					>
 				</div>
@@ -393,12 +488,12 @@
 					</li>
 				{/each}
 			</ol>
-			<p class="muted tap-hint">
+			<p class="muted tap-hint" data-noprint>
 				Ťukni na krok, keď ho máš hotový, alebo
 				<button class="linkish" onclick={startCooking}>zapni režim varenia</button> s časovačmi.
 			</p>
 
-			<div class="my-note">
+			<div class="my-note" data-noprint={!notes.current[base.id] || undefined}>
 				<label for="note-{base.id}"><Icon name="pencil" size={18} /> Moje poznámky</label>
 				<textarea
 					id="note-{base.id}"
@@ -418,8 +513,26 @@
 				</div>
 			{/if}
 
+			{#if base.leftovers || base.keeps}
+				<div class="leftovers">
+					<h3><Icon name="jar" size={20} /> Zvyšky a skladovanie</h3>
+					{#if base.keeps}
+						<p>
+							{#if base.keeps.fridge}
+								V chladničke vydrží {daysLabel(base.keeps.fridge)}{base.keeps.freezer
+									? `, v mrazničke ${monthsLabel(base.keeps.freezer)}`
+									: ', mraziť sa neoplatí'}.
+							{:else}
+								Najlepšie čerstvé, skladovať sa neoplatí.
+							{/if}
+						</p>
+					{/if}
+					{#if base.leftovers}<p>{base.leftovers}</p>{/if}
+				</div>
+			{/if}
+
 			{#if recipe.howto.length}
-				<div class="howto">
+				<div class="howto" data-noprint>
 					<h3>Ako na to</h3>
 					<div class="howto-list">
 						{#each recipe.howto as h (h.slug)}
@@ -435,7 +548,7 @@
 	</div>
 
 	{#if base.related.length}
-		<section class="related-links">
+		<section class="related-links" data-noprint>
 			<h2>Súvisiace</h2>
 			<div class="howto-list">
 				{#each base.related as rel (rel.id)}
@@ -481,7 +594,7 @@
 	{/if}
 
 	{#if similar.length}
-		<section class="similar">
+		<section class="similar" data-noprint>
 			<h2>Podobné recepty</h2>
 			<div class="grid">
 				{#each similar as r, i (r.id)}<RecipeCard recipe={r} index={i} />{/each}
@@ -657,6 +770,112 @@
 	.in-plan {
 		font-size: 0.88rem;
 		font-weight: 600;
+	}
+	.ing-link {
+		color: inherit;
+		text-decoration: none;
+		background-image: linear-gradient(currentColor, currentColor);
+		background-size: 0 1.5px;
+		background-position: 0 100%;
+		background-repeat: no-repeat;
+		transition: background-size 0.25s var(--ease-out);
+	}
+	.ing-link:hover {
+		background-size: 100% 1.5px;
+	}
+	.tools .alts .more-link {
+		list-style: none;
+		margin-left: -1em;
+		font-weight: 650;
+	}
+	.meta {
+		list-style: none;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px 16px;
+		margin: 12px 0 0;
+		padding: 0;
+		font-size: 0.86rem;
+		color: var(--ink-2);
+	}
+	.meta li {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+	}
+	.meta .tested {
+		color: var(--leaf);
+		font-weight: 650;
+	}
+	.meta li span[title] {
+		color: var(--muted);
+		text-decoration: underline dotted;
+		cursor: help;
+	}
+	.spicy span {
+		display: inline-flex;
+		color: var(--line);
+	}
+	.spicy span.on {
+		color: var(--tomato);
+	}
+	.spicy span + span {
+		margin-left: -7px;
+	}
+	.swap-btn {
+		margin-left: 6px;
+		padding: 0 7px;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--muted);
+		font-size: 0.72rem;
+		font-weight: 650;
+		vertical-align: middle;
+	}
+	.swap-btn[aria-expanded='true'] {
+		background: var(--turmeric-soft);
+		border-color: transparent;
+		color: var(--ink);
+	}
+	.ingredients .swaps {
+		grid-column: 1 / -1;
+		margin: 2px 0 4px;
+		padding: 8px 12px 8px 26px;
+		border-radius: 10px;
+		background: var(--turmeric-soft);
+		list-style: disc;
+		font-size: 0.86rem;
+		animation: rise 0.25s var(--ease-out);
+	}
+	.ingredients .swaps li {
+		display: list-item;
+		padding: 2px 0;
+		border: 0;
+	}
+	.has {
+		margin: 0 4px;
+		padding: 0 6px;
+		border-radius: 6px;
+		background: var(--leaf-soft);
+		color: var(--leaf);
+		font-size: 0.75rem;
+		font-weight: 700;
+	}
+	.leftovers {
+		margin-top: 26px;
+		padding: 14px 16px;
+		border-radius: var(--radius-sm);
+		background: var(--sky-soft);
+	}
+	.leftovers h3 {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin: 0 0 6px;
+	}
+	.leftovers p {
+		margin: 4px 0 0;
 	}
 	.fav.on {
 		background: var(--turmeric-soft);
@@ -1059,6 +1278,42 @@
 		}
 		.nut-grid {
 			grid-template-columns: 1fr 1fr;
+		}
+	}
+	@media print {
+		.page {
+			padding-top: 0;
+		}
+		.hero {
+			grid-template-columns: 120px 1fr;
+			gap: 20px;
+		}
+		.art {
+			width: 120px;
+			padding: 0;
+		}
+		.halo {
+			display: none;
+		}
+		.main {
+			grid-template-columns: 0.8fr 1.2fr;
+			gap: 28px;
+			margin-top: 16px;
+		}
+		.ingredients {
+			position: static;
+			padding: 0;
+			border: 0;
+		}
+		.step {
+			padding: 4px 0;
+		}
+		.done .text {
+			opacity: 1;
+			text-decoration: none;
+		}
+		.nutrition {
+			break-inside: avoid;
 		}
 	}
 	@media (min-width: 900px) {

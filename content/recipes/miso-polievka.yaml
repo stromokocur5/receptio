@@ -7,6 +7,8 @@ active: 10
 servings: 4
 difficulty: 1
 tags: [polievka, rychle]
+keeps: { fridge: 2 }
+leftovers: 'Miso neprevarievaj – ohrej len do horúca.'
 ingredients:
   - voda: 4 hrnček
   - susene-huby: 5 g | shiitake pre umami

@@ -7,6 +7,9 @@ active: 10
 servings: 4
 difficulty: 1
 tags: [polievka, one-pot]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Zahusti a použi ako omáčku na cestoviny.'
 ingredients:
   - olej: 1 pl
   - cibula: 1 ks
@@ -24,3 +27,14 @@ steps:
   - Pridaj tekvicu a vývar a var 20 minút do mäkka.
   - Pridaj kokosové mlieko a rozmixuj dohladka. Dochuť soľou a limetkou.
   - Podávaj s opraženými semienkami a kvapkou kokosového mlieka.
+variants:
+  - name: Bez cibule a cesnaku
+    description: 'Pre citlivé trávenie (low FODMAP). Chuť doženie zelená časť jarnej cibuľky a o štipku viac korenia.'
+    remove: [cibula, cesnak]
+    add:
+      - jarna-cibulka: 2 ks | len zelená časť
+  - name: Viac bielkovín
+    description: 'Var s tekvicou aj červenú šošovicu, polievka zhustne a zasýti.'
+    add:
+      - sosovica-cervena: 100 g | prepláchnutá
+      - voda: 1 hrnček

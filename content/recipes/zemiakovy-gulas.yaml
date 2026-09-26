@@ -7,6 +7,8 @@ active: 15
 servings: 4
 difficulty: 1
 tags: [klasika, one-pot]
+keeps: { fridge: 4 }
+leftovers: 'Zemiaky v mrazničke zmäknú, preto ho radšej zjedz do 4 dní.'
 ingredients:
   - olej: 3 pl
   - cibula: 2 ks | nadrobno
@@ -28,3 +30,8 @@ steps:
   - Časť zemiakov roztlač, pridaj cesnak, majoránku a soľ a var ešte 5 minút.
 tips:
   - Na druhý deň je lepší. Pri zohrievaní trochu podlej.
+variants:
+  - name: Viac bielkovín
+    description: 'Dvojnásobok údeného tofu.'
+    add:
+      - tofu-udene: 200 g | na kocky

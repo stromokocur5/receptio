@@ -7,6 +7,9 @@ active: 30
 servings: 4
 difficulty: 2
 tags: [party]
+spicy: 1
+keeps: { fridge: 1 }
+leftovers: 'Prehrej v rúre alebo teplovzdušnej fritéze, v mikrovlnke zmäknú.'
 ingredients:
   - cibula: 3 ks | na tenké polmesiačiky
   - sol: 1 čl

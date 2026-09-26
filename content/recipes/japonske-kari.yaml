@@ -7,6 +7,9 @@ active: 20
 servings: 4
 difficulty: 2
 tags: [meal-prep]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Zohriate kari nalej na smaženú ryžu alebo udon rezance.'
 ingredients:
   - rastlinne-maslo: 3 pl
   - hladka-muka: 3 pl

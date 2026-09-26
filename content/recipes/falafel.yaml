@@ -8,6 +8,9 @@ servings: 4
 difficulty: 2
 tags: [party]
 ahead: Suchý cícer namoč večer predtým (12–24 h). So sterilizovaným cícerom sa falafel rozpadne.
+spicy: 1
+keeps: { fridge: 3, freezer: 3 }
+leftovers: 'Surovú zmes zamraz v guľkách, vyprážaj rovno zmrazenú.'
 ingredients:
   - cicer-suchy: 250 g | namočený cez noc, scedený (nevarený!)
   - cibula: 1 ks

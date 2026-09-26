@@ -7,6 +7,9 @@ active: 20
 servings: 3
 difficulty: 1
 tags: [one-pot]
+spicy: 1
+keeps: { fridge: 2 }
+leftovers: 'Omáčku bez tofu zamraz, tofu pridaj pri ohrievaní.'
 ingredients:
   - olivovy-olej: 2 pl
   - cibula: 1 ks
