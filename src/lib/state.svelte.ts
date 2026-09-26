@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
-import type { Pantry } from './pantry';
+import { consumeFromPantry, type Pantry, type PantryUse } from './pantry';
 import type { PlanEntry } from './shopping';
+import type { Ingredient, RecipeLine } from './types';
 
 const PREFIX = 'receptio:';
 
@@ -32,6 +33,14 @@ class Persisted<T> {
 		} catch {
 			// Storage can be full or blocked (private mode); state still works for this session.
 		}
+	}
+
+	/** Replaces the value from backup data; false when it doesn't validate. */
+	restore(raw: unknown): boolean {
+		const parsed = this.#validate(raw);
+		if (parsed === undefined) return false;
+		this.current = parsed;
+		return true;
 	}
 
 	load() {
@@ -80,20 +89,72 @@ function validateFlags(raw: unknown): Record<string, boolean> | undefined {
 	) as Record<string, boolean>;
 }
 
+export interface CookedEntry {
+	recipeId: string;
+	variant?: string;
+	servings: number;
+	/** ISO date (YYYY-MM-DD). */
+	date: string;
+}
+
+const MAX_HISTORY = 300;
+const MAX_NOTE_LENGTH = 2000;
+
+function validateHistory(raw: unknown): CookedEntry[] | undefined {
+	if (!Array.isArray(raw)) return undefined;
+	return raw
+		.filter(
+			(e): e is CookedEntry =>
+				isRecord(e) &&
+				typeof e.recipeId === 'string' &&
+				typeof e.servings === 'number' &&
+				e.servings > 0 &&
+				typeof e.date === 'string' &&
+				/^\d{4}-\d{2}-\d{2}$/.test(e.date) &&
+				(e.variant === undefined || typeof e.variant === 'string')
+		)
+		.slice(-MAX_HISTORY);
+}
+
+function validateNotes(raw: unknown): Record<string, string> | undefined {
+	if (!isRecord(raw)) return undefined;
+	return Object.fromEntries(
+		Object.entries(raw)
+			.filter((e): e is [string, string] => typeof e[1] === 'string' && e[1].trim() !== '')
+			.map(([id, text]) => [id, text.slice(0, MAX_NOTE_LENGTH)])
+	);
+}
+
 export interface Settings {
 	weightKg: number | null;
 	planDays: number;
+	/** How many people eat each planned meal. */
+	people: number;
+	/** Planned (cooked) meals per day: lunch only, or lunch and dinner. */
+	mealsPerDay: 1 | 2;
 	theme: 'auto' | 'light' | 'dark';
 }
+
+const DEFAULT_SETTINGS: Settings = {
+	weightKg: null,
+	planDays: 7,
+	people: 1,
+	mealsPerDay: 1,
+	theme: 'auto'
+};
+
+const inRange = (v: unknown, min: number, max: number): v is number =>
+	typeof v === 'number' && Number.isInteger(v) && v >= min && v <= max;
 
 function validateSettings(raw: unknown): Settings | undefined {
 	if (!isRecord(raw)) return undefined;
 	const weight = raw.weightKg;
-	const days = raw.planDays;
 	const theme = raw.theme;
 	return {
 		weightKg: typeof weight === 'number' && weight >= 20 && weight <= 250 ? weight : null,
-		planDays: typeof days === 'number' && days >= 1 && days <= 14 ? days : 7,
+		planDays: inRange(raw.planDays, 1, 14) ? raw.planDays : DEFAULT_SETTINGS.planDays,
+		people: inRange(raw.people, 1, 12) ? raw.people : DEFAULT_SETTINGS.people,
+		mealsPerDay: raw.mealsPerDay === 2 ? 2 : 1,
 		theme: theme === 'light' || theme === 'dark' ? theme : 'auto'
 	};
 }
@@ -103,21 +164,71 @@ export const plan = new Persisted<PlanEntry[]>('plan', [], validatePlan);
 export const checkedItems = new Persisted<Record<string, boolean>>('checked', {}, validateFlags);
 /** Basics (spices, oils) the user marked as missing at home. */
 export const outOfStock = new Persisted<Record<string, boolean>>('out-of-stock', {}, validateFlags);
-export const settings = new Persisted<Settings>(
-	'settings',
-	{ weightKg: null, planDays: 7, theme: 'auto' },
-	validateSettings
-);
+export const settings = new Persisted<Settings>('settings', DEFAULT_SETTINGS, validateSettings);
+
+/** Recipes cooked, oldest first. */
+export const history = new Persisted<CookedEntry[]>('history', [], validateHistory);
+export const favorites = new Persisted<Record<string, boolean>>('favorites', {}, validateFlags);
+/** Personal notes per recipe ("next time less salt"). */
+export const notes = new Persisted<Record<string, string>>('notes', {}, validateNotes);
+
+/** Everything kept on this device, for backup/restore. */
+export const ALL_PERSISTED = {
+	pantry,
+	plan,
+	checkedItems,
+	outOfStock,
+	settings,
+	history,
+	favorites,
+	notes
+};
 
 export const ui = $state({ loaded: false });
 
 export function loadPersisted() {
-	pantry.load();
-	plan.load();
-	checkedItems.load();
-	outOfStock.load();
-	settings.load();
+	for (const store of Object.values(ALL_PERSISTED)) store.load();
 	ui.loaded = true;
+}
+
+export function toggleFavorite(recipeId: string) {
+	const { [recipeId]: was, ...rest } = favorites.current;
+	favorites.current = was ? rest : { ...rest, [recipeId]: true };
+}
+
+export function setNote(recipeId: string, text: string) {
+	const { [recipeId]: _previous, ...rest } = notes.current;
+	const trimmed = text.slice(0, MAX_NOTE_LENGTH);
+	notes.current = trimmed.trim() ? { ...rest, [recipeId]: trimmed } : rest;
+}
+
+/**
+ * Records a cooked recipe: subtracts the ingredients from the pantry, adds it to the history
+ * and takes the cooked servings off the plan. Returns what came out of the pantry.
+ */
+export function markCooked(
+	recipeId: string,
+	variant: string | undefined,
+	servings: number,
+	lines: RecipeLine[],
+	recipeServings: number,
+	byId: Map<string, Ingredient>
+): PantryUse[] {
+	const { pantry: next, used } = consumeFromPantry(
+		pantry.current,
+		lines,
+		servings / recipeServings,
+		byId
+	);
+	pantry.current = next;
+	const date = new Date().toISOString().slice(0, 10);
+	history.current = [
+		...history.current,
+		variant ? { recipeId, variant, servings, date } : { recipeId, servings, date }
+	].slice(-MAX_HISTORY);
+	const planned = plan.current.find((e) => sameEntry(e, recipeId, variant));
+	if (planned) setPlanServings(recipeId, variant, planned.servings - servings);
+	return used;
 }
 
 export function setPantryItem(id: string, grams: number | null) {
@@ -144,6 +255,14 @@ export function setPlanServings(recipeId: string, variant: string | undefined, s
 		servings <= 0
 			? plan.current.filter((e) => !sameEntry(e, recipeId, variant))
 			: plan.current.map((e) => (sameEntry(e, recipeId, variant) ? { ...e, servings } : e));
+}
+
+/** Moves a plan entry one place earlier, so it gets cooked sooner. */
+export function movePlanEntryUp(index: number) {
+	if (index <= 0 || index >= plan.current.length) return;
+	const next = [...plan.current];
+	[next[index - 1], next[index]] = [next[index], next[index - 1]];
+	plan.current = next;
 }
 
 export function servingsInPlan(recipeId: string): number {

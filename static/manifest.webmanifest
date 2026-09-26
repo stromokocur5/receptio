@@ -1,0 +1,22 @@
+{
+	"name": "Receptio – rastlinné recepty",
+	"short_name": "Receptio",
+	"description": "Vegánske a bezlepkové recepty so živinami, cenami, špajzou a nákupným zoznamom.",
+	"lang": "sk",
+	"start_url": "/",
+	"scope": "/",
+	"display": "standalone",
+	"background_color": "#f6efe2",
+	"theme_color": "#f6efe2",
+	"icons": [
+		{ "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+		{ "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" },
+		{ "src": "/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" },
+		{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+	],
+	"shortcuts": [
+		{ "name": "Nákupný zoznam", "url": "/plan", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+		{ "name": "Špajza", "url": "/spajza", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] },
+		{ "name": "Recepty", "url": "/recepty", "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }] }
+	]
+}

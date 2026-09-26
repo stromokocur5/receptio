@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '$lib/components/Seo.svelte';
 	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
@@ -57,7 +58,7 @@
 	const realCount = $derived(catalog.prices.length);
 </script>
 
-<svelte:head><title>Ceny · Receptio</title></svelte:head>
+<Seo title="Ceny" description="Ceny surovín v slovenských obchodoch prepočítané na kilogram." />
 
 <div class="wrap page">
 	<header class="rise">

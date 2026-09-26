@@ -4,6 +4,7 @@
 	import Icon, { isIconName, type IconName } from '$lib/components/Icon.svelte';
 	import PlateArt from '$lib/components/PlateArt.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 	import Squiggle from '$lib/components/Squiggle.svelte';
 	import { pluralRecipes } from '$lib/labels';
 	import { likes } from '$lib/state.svelte';
@@ -72,6 +73,8 @@
 		void goto(`/recepty${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ''}`);
 	}
 </script>
+
+<Seo />
 
 <section class="hero">
 	<div class="wrap hero-grid">

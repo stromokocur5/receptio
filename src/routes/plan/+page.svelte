@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '$lib/components/Seo.svelte';
 	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
@@ -13,23 +14,30 @@
 		scaleNutrients
 	} from '$lib/nutrition';
 	import { basketByStore } from '$lib/pricing';
-	import { buildShoppingList, type ShoppingItem } from '$lib/shopping';
+	import { FRIDGE_DAYS, mealSchedule } from '$lib/schedule';
+	import { encodeSharedPlan } from '$lib/share';
+	import { approxPieces, buildShoppingList, type ShoppingItem } from '$lib/shopping';
 	import {
 		checkedItems,
+		markCooked,
+		movePlanEntryUp,
 		outOfStock,
 		pantry,
 		plan,
 		setPantryItem,
 		setPlanServings,
 		settings,
-		ui
+		ui,
+		type Settings
 	} from '$lib/state.svelte';
 
 	const catalog = useCatalog();
 	const today = $derived(new Date());
 
 	let copied = $state(false);
+	let shareState = $state<'idle' | 'copied' | 'failed'>('idle');
 	let confirmClear = $state(false);
+	let cookedMessage = $state('');
 
 	const entries = $derived(
 		plan.current
@@ -76,8 +84,46 @@
 			const n = e.data.perServing;
 			for (const key of Object.keys(total) as (keyof typeof total)[]) total[key] += n[key] * factor;
 		}
-		return scaleNutrients(total, 1 / settings.current.planDays);
+		return scaleNutrients(total, 1 / (settings.current.planDays * settings.current.people));
 	});
+
+	const schedule = $derived(
+		mealSchedule(
+			plan.current,
+			settings.current.people,
+			settings.current.mealsPerDay,
+			settings.current.planDays
+		)
+	);
+	const dayLabel = new Intl.DateTimeFormat('sk-SK', {
+		weekday: 'short',
+		day: 'numeric',
+		month: 'numeric'
+	});
+	function dayName(offset: number) {
+		if (offset === 0) return 'Dnes';
+		if (offset === 1) return 'Zajtra';
+		return dayLabel.format(new Date(today.getTime() + offset * 86_400_000));
+	}
+	const titleOf = (recipeId: string) => catalog.recipesById.get(recipeId)?.title ?? recipeId;
+
+	function updateSettings(patch: Partial<Settings>) {
+		settings.current = { ...settings.current, ...patch };
+	}
+
+	function cooked(e: (typeof entries)[number]) {
+		const used = markCooked(
+			e.recipeId,
+			e.variant,
+			e.servings,
+			e.data.lines,
+			e.recipe.servings,
+			catalog.ingredientsById
+		);
+		cookedMessage = used.length
+			? `${e.recipe.title}: zapísané, zo špajze ubudlo ${used.map((u) => u.ingredient.name).join(', ')}.`
+			: `${e.recipe.title}: zapísané do histórie.`;
+	}
 	const targets = $derived({
 		...DAILY_REFERENCE,
 		protein: settings.current.weightKg
@@ -96,17 +142,12 @@
 		checkedItems.current = { ...checkedItems.current, [id]: !checkedItems.current[id] };
 	}
 
-	function approxPieces(item: ShoppingItem): string {
-		const ks = item.ingredient.units.ks;
-		if (!ks || ks < 20) return '';
-		const pieces = item.buyGrams / ks;
-		return ` · ~${formatNumber(Math.ceil(pieces * 2) / 2)} ks`;
-	}
+	const pieces = (item: ShoppingItem) => approxPieces(item.ingredient, item.buyGrams);
 
 	async function copyList() {
 		const lines = list.byCategory.flatMap(([category, items]) => [
 			`${CATEGORY_LABELS[category]}:`,
-			...items.map((i) => `- ${i.ingredient.name}: ${formatGrams(i.buyGrams)}${approxPieces(i)}`),
+			...items.map((i) => `- ${i.ingredient.name}: ${formatGrams(i.buyGrams)}${pieces(i)}`),
 			''
 		]);
 		try {
@@ -116,6 +157,30 @@
 		} catch {
 			copied = false;
 		}
+	}
+
+	/** Link with the plan and the still-to-buy list in the URL fragment (never sent to the server). */
+	async function shareList() {
+		const fragment = encodeSharedPlan({
+			plan: plan.current,
+			buy: allItems.map((i) => [i.ingredient.id, i.buyGrams]),
+			people: settings.current.people,
+			days: settings.current.planDays
+		});
+		const url = `${location.origin}/zoznam#${fragment}`;
+		try {
+			if (navigator.share) {
+				await navigator.share({ title: 'Nákupný zoznam · Receptio', url });
+				return;
+			}
+			await navigator.clipboard.writeText(url);
+			shareState = 'copied';
+		} catch (err) {
+			// Closing the share sheet is not an error worth showing.
+			if (err instanceof DOMException && err.name === 'AbortError') return;
+			shareState = 'failed';
+		}
+		setTimeout(() => (shareState = 'idle'), 2200);
 	}
 
 	function boughtToPantry() {
@@ -144,7 +209,10 @@
 	}
 </script>
 
-<svelte:head><title>Plán a nákup · Receptio</title></svelte:head>
+<Seo
+	title="Plán a nákup"
+	description="Týždenný plán jedál, živiny na deň a jeden nákupný zoznam."
+/>
 
 <div class="wrap page">
 	<header class="rise">
@@ -178,7 +246,7 @@
 					</p>
 				{:else}
 					<ul class="entries">
-						{#each entries as e (e.key)}
+						{#each entries as e, i (e.key)}
 							<li>
 								<div class="mini plate-host">
 									<PlateArt
@@ -193,6 +261,19 @@
 									<span class="muted">
 										{#if e.variant}{e.variant} ·
 										{/if}{formatEur(e.data.costPerServing * e.servings)}
+										{#if settings.current.people > 1 || settings.current.mealsPerDay > 1}
+											· {Math.floor(e.servings / settings.current.people)}× jedlo
+										{/if}
+									</span>
+									<span class="entry-actions">
+										{#if i > 0}
+											<button onclick={() => movePlanEntryUp(i)} title="Variť skôr">
+												<Icon name="arrow-up" size={14} stroke={2.2} /> Skôr
+											</button>
+										{/if}
+										<button onclick={() => cooked(e)} title="Uvarené – odpočítať zo špajze">
+											<Icon name="check" size={14} stroke={2.2} /> Uvarené
+										</button>
 									</span>
 								</div>
 								<div class="stepper" role="group" aria-label="Porcie pre {e.recipe.title}">
@@ -215,6 +296,13 @@
 							</li>
 						{/each}
 					</ul>
+					{#if cookedMessage}
+						<p class="cooked-msg" role="status">
+							<Icon name="check" size={16} />
+							{cookedMessage}
+							<a href="/spajza">Špajza</a>
+						</p>
+					{/if}
 					<p class="summary">
 						<strong>{totalServings}</strong> porcií · spolu <strong>{formatEur(planCost)}</strong>
 						· <strong>{formatEur(totalServings ? planCost / totalServings : 0)}</strong> / porcia
@@ -229,22 +317,86 @@
 
 			{#if entries.length}
 				<section class="card box">
-					<h2><Icon name="bean" size={24} /> Živiny na deň</h2>
+					<h2><Icon name="clock" size={24} /> Rozpis dní</h2>
 					<div class="settings">
 						<label>
 							Plán na
 							<select
 								value={settings.current.planDays}
-								onchange={(e) =>
-									(settings.current = {
-										...settings.current,
-										planDays: Number(e.currentTarget.value)
-									})}
+								onchange={(e) => updateSettings({ planDays: Number(e.currentTarget.value) })}
 							>
 								{#each [1, 2, 3, 4, 5, 6, 7, 10, 14] as d (d)}<option value={d}>{d}</option>{/each}
 							</select>
 							dní
 						</label>
+						<label>
+							Varím pre
+							<select
+								value={settings.current.people}
+								onchange={(e) => updateSettings({ people: Number(e.currentTarget.value) })}
+							>
+								{#each [1, 2, 3, 4, 5, 6, 8] as p (p)}<option value={p}>{p}</option>{/each}
+							</select>
+							{settings.current.people === 1 ? 'osobu' : 'osoby'}
+						</label>
+						<label>
+							Jedál denne
+							<select
+								value={settings.current.mealsPerDay}
+								onchange={(e) =>
+									updateSettings({ mealsPerDay: e.currentTarget.value === '2' ? 2 : 1 })}
+							>
+								<option value={1}>1 (obed)</option>
+								<option value={2}>2 (obed a večera)</option>
+							</select>
+						</label>
+					</div>
+					<ol class="days">
+						{#each schedule.days as day, d (d)}
+							<li>
+								<span class="day">{dayName(d)}</span>
+								<span class="meals">
+									{#each day.meals as meal, m (m)}
+										{#if meal}
+											<span
+												class="meal"
+												class:cook={meal.kind === 'cook'}
+												class:old={meal.age > FRIDGE_DAYS}
+											>
+												<Icon name={meal.kind === 'cook' ? 'pot' : 'jar'} size={16} />
+												{meal.kind === 'cook' ? 'Uvar' : 'Zvyšky'}: {titleOf(meal.entry.recipeId)}
+												{#if meal.age > FRIDGE_DAYS}<small>– radšej zamraz</small>{/if}
+											</span>
+										{:else}
+											<span class="meal empty">nič naplánované</span>
+										{/if}
+									{/each}
+								</span>
+							</li>
+						{/each}
+					</ol>
+					<p class="muted small">
+						{#if schedule.unplannedMeals}
+							Chýba ešte {schedule.unplannedMeals}
+							{schedule.unplannedMeals === 1
+								? 'jedlo'
+								: schedule.unplannedMeals < 5
+									? 'jedlá'
+									: 'jedál'}
+							– pridaj recept alebo porcie.
+						{:else}
+							Plán pokryje všetky jedlá.
+						{/if}
+						{#if schedule.extraServings}
+							Zvýši {schedule.extraServings} porc. navyše.
+						{/if}
+						Varené jedlo vydrží v chladničke asi {FRIDGE_DAYS} dni. Poradie zmeníš tlačidlom „Skôr“.
+					</p>
+				</section>
+
+				<section class="card box">
+					<h2><Icon name="bean" size={24} /> Živiny na deň</h2>
+					<div class="settings">
 						<label>
 							Moja váha
 							<input
@@ -253,17 +405,15 @@
 								value={settings.current.weightKg ?? ''}
 								onchange={(e) => {
 									const w = Number(e.currentTarget.value);
-									settings.current = {
-										...settings.current,
-										weightKg: w >= 20 && w <= 250 ? w : null
-									};
+									updateSettings({ weightKg: w >= 20 && w <= 250 ? w : null });
 								}}
 							/>
 							kg
 						</label>
 					</div>
 					<p class="muted small">
-						Priemer za deň len z naplánovaných jedál (raňajky a snacky mimo plánu sa nepočítajú).
+						Priemer na osobu a deň len z naplánovaných jedál (raňajky a snacky mimo plánu sa
+						nepočítajú).
 						{settings.current.weightKg
 							? `Cieľ bielkovín: ${formatNumber(targets.protein, 0)} g (1,1 g/kg).`
 							: ''}
@@ -285,10 +435,20 @@
 			<div class="box-head">
 				<h2><Icon name="basket" size={24} /> Nákupný zoznam</h2>
 				{#if allItems.length}
-					<button class="btn ghost small" onclick={copyList}>
-						<Icon name={copied ? 'check' : 'copy'} size={16} />
-						{copied ? 'Skopírované' : 'Kopírovať'}
-					</button>
+					<div class="head-actions">
+						<button class="btn ghost small" onclick={copyList}>
+							<Icon name={copied ? 'check' : 'copy'} size={16} />
+							{copied ? 'Skopírované' : 'Text'}
+						</button>
+						<button class="btn leaf small" onclick={shareList}>
+							<Icon name={shareState === 'copied' ? 'check' : 'share'} size={16} />
+							{shareState === 'copied'
+								? 'Odkaz skopírovaný'
+								: shareState === 'failed'
+									? 'Nepodarilo sa'
+									: 'Zdieľať'}
+						</button>
+					</div>
 				{/if}
 			</div>
 
@@ -318,7 +478,7 @@
 										<span class="nm">
 											{item.ingredient.name}
 											<small>
-												{formatGrams(item.buyGrams)}{approxPieces(item)}
+												{formatGrams(item.buyGrams)}{pieces(item)}
 												{#if item.buyGrams < item.needGrams - 0.5}· zvyšok máš doma{/if}
 												{#if item.restock}· stačí najmenšie balenie{/if}
 											</small>
@@ -499,6 +659,83 @@
 		min-width: 1.4em;
 		text-align: center;
 	}
+	.head-actions {
+		display: flex;
+		gap: 6px;
+	}
+	.entry-actions {
+		display: flex;
+		gap: 6px;
+		margin-top: 4px;
+	}
+	.entry-actions button {
+		display: inline-flex;
+		align-items: center;
+		gap: 3px;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: transparent;
+		color: var(--ink-2);
+		font-size: 0.75rem;
+		font-weight: 650;
+		padding: 2px 8px;
+	}
+	.entry-actions button:hover {
+		border-color: var(--leaf-2);
+		color: var(--leaf);
+	}
+	.cooked-msg {
+		display: flex;
+		align-items: flex-start;
+		gap: 6px;
+		margin: 12px 0 0;
+		padding: 8px 12px;
+		border-radius: 12px;
+		background: var(--leaf-soft);
+		font-size: 0.88rem;
+	}
+	.days {
+		list-style: none;
+		margin: 8px 0 12px;
+		padding: 0;
+	}
+	.days li {
+		display: grid;
+		grid-template-columns: 5.5em 1fr;
+		gap: 10px;
+		padding: 7px 0;
+		border-bottom: 1px dashed var(--line);
+		align-items: baseline;
+	}
+	.day {
+		font-weight: 700;
+		font-size: 0.85rem;
+		text-transform: capitalize;
+	}
+	.meals {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+	.meal {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 0.9rem;
+		color: var(--ink-2);
+	}
+	.meal.cook {
+		color: var(--ink);
+		font-weight: 650;
+	}
+	.meal.old small {
+		color: var(--tomato);
+		font-weight: 650;
+	}
+	.meal.empty {
+		color: var(--muted);
+		font-style: italic;
+	}
 	.picker-wrap {
 		margin-top: 20px;
 		padding-top: 16px;
@@ -530,6 +767,8 @@
 		background: var(--paper);
 		padding: 4px 8px;
 		margin: 0 4px;
+	}
+	.settings input {
 		width: 4.5em;
 	}
 	.small {

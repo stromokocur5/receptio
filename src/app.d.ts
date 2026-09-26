@@ -12,7 +12,10 @@ declare global {
 		// interface Error {}
 		// interface Locals {}
 		// interface PageData {}
-		// interface PageState {}
+		interface PageState {
+			/** Cooking mode is open over the recipe (shallow route, so Back closes it). */
+			cooking?: boolean;
+		}
 	}
 }
 

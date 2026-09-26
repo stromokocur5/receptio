@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '$lib/components/Seo.svelte';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
@@ -10,10 +11,7 @@
 	const recipes = $derived(catalog.recipes.filter((r) => r.cuisine === cuisine.id));
 </script>
 
-<svelte:head>
-	<title>{cuisine.name} kuchyňa · Receptio</title>
-	<meta name="description" content={cuisine.tagline} />
-</svelte:head>
+<Seo title="{cuisine.name} kuchyňa" description={cuisine.tagline} />
 
 <div class="wrap page" style:--c={cuisine.color}>
 	<a class="back" href="/kuchyne"><Icon name="arrow-left" size={18} /> Kuchyne</a>

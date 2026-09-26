@@ -5,6 +5,7 @@
 # price: HRUBÝ ODHAD €/kg (v appke označený ako odhad), reálne ceny patria do prices.yaml
 # gluten: free | risk (kontroluj etiketu / krížová kontaminácia) | contains
 # group: zameniteľné suroviny pre špajzu (suchý vs. sterilizovaný cícer)
+# group_factor: koľko gramov „bežnej“ formy v skupine urobí 1 g tejto (suchý cícer 2.4 = po uvarení 2,4× ťažší)
 # howto: návody zo sekcie Základy (content/wiki), recept na ne odkáže automaticky
 
 # ── Obilniny a prílohy ──────────────────────────────────────────
@@ -168,6 +169,7 @@
   howto: [strukoviny]
   category: strukoviny
   group: cicer
+  group_factor: 2.4
   n: { kcal: 378, p: 20.5, c: 63, f: 6, fib: 12.2, salt: 0, fe: 4.3, ca: 57, zn: 2.8, ala: 0.1 }
   price: 3
   color: '#dcb66c'

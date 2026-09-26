@@ -20,6 +20,8 @@ ingredients:
   - voda: 6 pl
   - olej: 4 pl | toľko vsiakne, na vyprážanie treba ~500 ml
   - citron: 1/2 ks
+equipment: [hrniec, teplomer]
+no_equipment: [panvica]
 steps:
   - Cibuľu premiešaj so soľou a nechaj 10 minút postáť – pustí šťavu, ktorá spojí cesto.
   - Pridaj obe múky, korenie a koriander a po lyžiciach prilievaj vodu, kým cibuľu neobalí husté cesto. Nemá byť riedke.

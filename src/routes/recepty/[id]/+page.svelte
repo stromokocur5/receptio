@@ -1,12 +1,16 @@
 <script lang="ts">
+	import { pushState } from '$app/navigation';
+	import { page } from '$app/state';
 	import { formatAmount, formatEur, formatNumber } from '$lib/amounts';
+	import CookMode from '$lib/components/CookMode.svelte';
 	import { useCatalog } from '$lib/catalog';
 	import GlutenBadge from '$lib/components/GlutenBadge.svelte';
-	import Icon from '$lib/components/Icon.svelte';
+	import Icon, { isIconName } from '$lib/components/Icon.svelte';
 	import LikeButton from '$lib/components/LikeButton.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import PlateArt from '$lib/components/PlateArt.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
+	import Seo from '$lib/components/Seo.svelte';
 	import {
 		ALLERGEN_LABELS,
 		COMPUTED_TAG_LABELS,
@@ -16,7 +20,20 @@
 		scaleNutrients
 	} from '$lib/nutrition';
 	import { isAssumedAtHome, matchRecipe, pantryByGroup } from '$lib/pantry';
-	import { addToPlan, pantry, servingsInPlan, settings, ui } from '$lib/state.svelte';
+	import { SITE_ORIGIN } from '$lib/site';
+	import {
+		addToPlan,
+		favorites,
+		history,
+		notes,
+		pantry,
+		servingsInPlan,
+		setNote,
+		settings,
+		toggleFavorite,
+		ui
+	} from '$lib/state.svelte';
+	import { recipeJsonLd, serializeJsonLd } from '$lib/structured-data';
 
 	let { data } = $props();
 	const catalog = useCatalog();
@@ -38,6 +55,9 @@
 		variantName = null;
 	});
 	const cuisine = $derived(catalog.cuisinesById.get(recipe.cuisine));
+	const jsonLd = $derived(
+		serializeJsonLd(recipeJsonLd(base, catalog.ingredientsById, cuisine?.name, SITE_ORIGIN))
+	);
 
 	let servings = $state(0);
 	$effect.pre(() => {
@@ -100,11 +120,22 @@
 		justAdded = true;
 		setTimeout(() => (justAdded = false), 1600);
 	}
+
+	function startCooking() {
+		pushState('', { cooking: true });
+	}
+
+	const isFavorite = $derived(ui.loaded && !!favorites.current[base.id]);
+	const cookedTimes = $derived(
+		ui.loaded ? history.current.filter((h) => h.recipeId === base.id) : []
+	);
+	const dateFormat = new Intl.DateTimeFormat('sk-SK', { day: 'numeric', month: 'numeric' });
 </script>
 
+<Seo title={base.title} description={base.description} image="/og/{base.id}.png" type="article" />
 <svelte:head>
-	<title>{recipe.title} · Receptio</title>
-	<meta name="description" content={recipe.description} />
+	<!-- eslint-disable-next-line svelte/no-at-html-tags -- JSON escaped by serializeJsonLd -->
+	{@html `<script type="application/ld+json">${jsonLd}</script>`}
 </svelte:head>
 
 <article class="wrap page">
@@ -206,9 +237,28 @@
 						{servings === 1 ? 'porcia' : servings < 5 ? 'porcie' : 'porcií'})
 					{/if}
 				</button>
+				<button class="btn ghost" onclick={startCooking}>
+					<Icon name="pot" size={18} /> Variť
+				</button>
+				<button
+					class="icon-btn fav"
+					class:on={isFavorite}
+					onclick={() => toggleFavorite(base.id)}
+					aria-pressed={isFavorite}
+					aria-label={isFavorite ? 'Odobrať z obľúbených' : 'Uložiť medzi obľúbené'}
+					title={isFavorite ? 'V obľúbených' : 'Uložiť medzi obľúbené'}
+				>
+					<Icon name="bookmark" size={19} />
+				</button>
 				<LikeButton recipeId={recipe.id} />
 				{#if inPlan}<a class="in-plan" href="/plan">V pláne: {inPlan} porc.</a>{/if}
 			</div>
+			{#if cookedTimes.length}
+				<p class="cooked-line">
+					<Icon name="history" size={18} /> Uvarené {cookedTimes.length}×, naposledy
+					{dateFormat.format(new Date(cookedTimes[cookedTimes.length - 1].date))}
+				</p>
+			{/if}
 			{#if hasPantry}
 				<p class="pantry-line">
 					<Icon name="jar" size={18} />
@@ -299,6 +349,31 @@
 			<a class="units-link" href="/wiki/jednotky"
 				><Icon name="spoon" size={16} /> Čo znamená PL, ČL, hrnček?</a
 			>
+
+			{#if base.equipmentDetail.length}
+				<div class="tools">
+					<h3>Budeš potrebovať</h3>
+					<ul>
+						{#each base.equipmentDetail as tool (tool.id)}
+							<li>
+								<details>
+									<summary>
+										<Icon name={isIconName(tool.icon) ? tool.icon : 'spoon'} size={18} />
+										{tool.name}
+										<span class="no-tool">Nemám</span>
+									</summary>
+									<ul class="alts">
+										{#each tool.alternatives as alt, i (i)}<li>{alt}</li>{/each}
+									</ul>
+								</details>
+							</li>
+						{/each}
+					</ul>
+					<a class="units-link" href="/vybavenie"
+						><Icon name="pan" size={16} /> Vybavenie kuchyne a čím ho nahradiť</a
+					>
+				</div>
+			{/if}
 		</section>
 
 		<section class="steps">
@@ -318,7 +393,21 @@
 					</li>
 				{/each}
 			</ol>
-			<p class="muted tap-hint">Ťukni na krok, keď ho máš hotový.</p>
+			<p class="muted tap-hint">
+				Ťukni na krok, keď ho máš hotový, alebo
+				<button class="linkish" onclick={startCooking}>zapni režim varenia</button> s časovačmi.
+			</p>
+
+			<div class="my-note">
+				<label for="note-{base.id}"><Icon name="pencil" size={18} /> Moje poznámky</label>
+				<textarea
+					id="note-{base.id}"
+					rows="3"
+					maxlength="2000"
+					placeholder="Nabudúce menej soli, tempeh namiesto tofu… Uloží sa len v tomto zariadení."
+					value={ui.loaded ? (notes.current[base.id] ?? '') : ''}
+					oninput={(e) => setNote(base.id, e.currentTarget.value)}></textarea>
+			</div>
 
 			{#if recipe.tips.length}
 				<div class="tips">
@@ -400,6 +489,20 @@
 		</section>
 	{/if}
 </article>
+
+{#if page.state.cooking}
+	<CookMode
+		recipeId={base.id}
+		title={base.title}
+		steps={base.steps}
+		lines={recipe.lines}
+		{servings}
+		recipeServings={recipe.servings}
+		variant={variantName ?? undefined}
+		tools={base.equipmentDetail.map((e) => e.name)}
+		onclose={() => window.history.back()}
+	/>
+{/if}
 
 <style>
 	.page {
@@ -555,6 +658,57 @@
 		font-size: 0.88rem;
 		font-weight: 600;
 	}
+	.fav.on {
+		background: var(--turmeric-soft);
+		color: color-mix(in srgb, var(--turmeric) 60%, var(--ink));
+	}
+	.fav.on :global(path) {
+		fill: currentColor;
+	}
+	.cooked-line {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin: 12px 0 0;
+		font-size: 0.9rem;
+		color: var(--ink-2);
+	}
+	.linkish {
+		border: 0;
+		padding: 0;
+		background: none;
+		color: var(--leaf);
+		font: inherit;
+		font-weight: 650;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+	.my-note {
+		margin-top: 26px;
+	}
+	.my-note label {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-family: var(--font-display);
+		font-weight: 650;
+		font-size: 1.15rem;
+		margin-bottom: 8px;
+	}
+	.my-note textarea {
+		width: 100%;
+		resize: vertical;
+		border: 1.5px solid var(--line);
+		border-radius: var(--radius-sm);
+		background: var(--card);
+		color: var(--ink);
+		padding: 10px 12px;
+		font: inherit;
+	}
+	.my-note textarea:focus {
+		outline: none;
+		border-color: var(--leaf-2);
+	}
 	.pantry-line {
 		display: flex;
 		align-items: flex-start;
@@ -700,6 +854,70 @@
 		font-weight: 600;
 	}
 
+	.tools {
+		margin-top: 18px;
+		padding-top: 14px;
+		border-top: 1px dashed var(--line);
+	}
+	.tools h3 {
+		font-size: 1.1rem;
+		margin: 0 0 8px;
+	}
+	.tools > ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 4px;
+	}
+	/* Undo the ingredient-row grid (.ingredients li) for these nested lists. */
+	.tools li {
+		display: block;
+		padding: 0;
+		border: 0;
+	}
+	.tools .alts li {
+		display: list-item;
+		margin: 3px 0;
+	}
+	.tools summary {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 6px 8px;
+		border-radius: 10px;
+		cursor: pointer;
+		list-style: none;
+		font-weight: 600;
+	}
+	.tools summary::-webkit-details-marker {
+		display: none;
+	}
+	.tools summary:hover {
+		background: var(--paper-2);
+	}
+	.no-tool {
+		margin-left: auto;
+		font-size: 0.75rem;
+		font-weight: 650;
+		color: var(--muted);
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		padding: 1px 8px;
+	}
+	details[open] .no-tool {
+		background: var(--turmeric-soft);
+		border-color: transparent;
+		color: var(--ink);
+	}
+	.alts {
+		list-style: disc;
+		margin: 2px 0 8px 34px;
+		padding-left: 1em;
+		font-size: 0.88rem;
+		color: var(--ink-2);
+		animation: rise 0.25s var(--ease-out);
+	}
 	.steps ol {
 		list-style: none;
 		padding: 0;

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '$lib/components/Seo.svelte';
 	import { onMount } from 'svelte';
 	import { replaceState } from '$app/navigation';
 	import { useCatalog } from '$lib/catalog';
@@ -23,6 +24,13 @@
 	type Sort = keyof typeof SORTS;
 	const EXCLUDABLE: Allergen[] = ['soy', 'peanuts', 'nuts', 'sesame', 'celery', 'mustard'];
 	const TIME_STEPS = [15, 20, 30, 45, 60, 0];
+	/** Tools people often don't have; "nemám rúru" hides recipes that need one. */
+	const MISSING_TOOLS: Record<string, string> = {
+		rura: 'rúru',
+		mixer: 'mixér',
+		sekacik: 'sekáčik',
+		teplomer: 'teplomer'
+	};
 
 	let q = $state('');
 	/** 0 = all, 1 = strictly GF (+ label-check risk), 2 = also GF after swaps */
@@ -32,6 +40,7 @@
 	let maxTimeIndex = $state(TIME_STEPS.length - 1);
 	let minProtein = $state(0);
 	let excluded = $state<Allergen[]>([]);
+	let missingTools = $state<string[]>([]);
 	/** all | bez = works without vegan substitutes | s = uses them (base or a variant) */
 	let subs = $state<'all' | 'bez' | 's'>('all');
 	let difficulty = $state<0 | 1 | 2 | 3>(0);
@@ -81,6 +90,7 @@
 			if (maxTime && r.time > maxTime) return false;
 			if (r.perServing.protein < minProtein) return false;
 			if (excluded.some((a) => r.allergens.includes(a))) return false;
+			if (missingTools.some((t) => r.equipment.includes(t))) return false;
 			if (subs === 'bez' && r.substitutes === 'required') return false;
 			if (subs === 's' && !r.usesSubstitutes && !r.variants.some((v) => v.usesSubstitutes)) {
 				return false;
@@ -121,6 +131,7 @@
 			maxTime,
 			minProtein,
 			excluded.length,
+			missingTools.length,
 			onlyPantry,
 			subs !== 'all',
 			difficulty
@@ -131,6 +142,12 @@
 		excluded = excluded.includes(a) ? excluded.filter((x) => x !== a) : [...excluded, a];
 	}
 
+	function toggleTool(tool: string) {
+		missingTools = missingTools.includes(tool)
+			? missingTools.filter((t) => t !== tool)
+			: [...missingTools, tool];
+	}
+
 	function reset() {
 		q = '';
 		gf = 0;
@@ -139,6 +156,7 @@
 		maxTimeIndex = TIME_STEPS.length - 1;
 		minProtein = 0;
 		excluded = [];
+		missingTools = [];
 		subs = 'all';
 		difficulty = 0;
 		onlyPantry = false;
@@ -161,6 +179,7 @@
 		if (n === 'bez' || n === 's') subs = n;
 		const d = Number(p.get('narocnost'));
 		if (d === 1 || d === 2 || d === 3) difficulty = d;
+		missingTools = (p.get('nemam') ?? '').split(',').filter((t) => t in MISSING_TOOLS);
 		urlReady = true;
 	});
 
@@ -174,6 +193,7 @@
 		if (onlyPantry) p.set('spajza', '1');
 		if (subs !== 'all') p.set('nahrady', subs);
 		if (difficulty) p.set('narocnost', String(difficulty));
+		if (missingTools.length) p.set('nemam', missingTools.join(','));
 		if (!urlReady) return;
 		const search = p.toString();
 		if (search !== location.search.slice(1))
@@ -181,7 +201,10 @@
 	});
 </script>
 
-<svelte:head><title>Recepty · Receptio</title></svelte:head>
+<Seo
+	title="Recepty"
+	description="Vegánske a bezlepkové recepty z celého sveta so živinami a cenou porcie."
+/>
 
 <div class="wrap page">
 	<header class="page-head rise">
@@ -330,6 +353,21 @@
 							onclick={() => toggleAllergen(a)}
 						>
 							bez: {ALLERGEN_LABELS[a]}
+						</button>
+					{/each}
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<legend>Nemám doma</legend>
+				<div class="chips">
+					{#each Object.entries(MISSING_TOOLS) as [tool, label] (tool)}
+						<button
+							class="chip"
+							aria-pressed={missingTools.includes(tool)}
+							onclick={() => toggleTool(tool)}
+						>
+							{label}
 						</button>
 					{/each}
 				</div>

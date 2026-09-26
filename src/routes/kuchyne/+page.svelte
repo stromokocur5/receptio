@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '$lib/components/Seo.svelte';
 	import { hashString, blobPath, seededRandom } from '$lib/art';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
@@ -23,7 +24,10 @@
 	}
 </script>
 
-<svelte:head><title>Kuchyne sveta · Receptio</title></svelte:head>
+<Seo
+	title="Kuchyne sveta"
+	description="Rastlinné jedlá z kuchýň celého sveta a na čo si v nich dať pozor."
+/>
 
 <div class="wrap page">
 	<header class="rise">

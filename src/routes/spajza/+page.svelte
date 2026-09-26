@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '$lib/components/Seo.svelte';
 	import { formatGrams } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
@@ -61,7 +62,7 @@
 	}
 </script>
 
-<svelte:head><title>Špajza · Receptio</title></svelte:head>
+<Seo title="Špajza" description="Nakliknem, čo mám doma, a Receptio zoradí recepty podľa zhody." />
 
 <div class="wrap page">
 	<header class="rise">

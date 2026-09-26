@@ -56,6 +56,11 @@ export interface Ingredient {
 	category: IngredientCategory;
 	/** Ingredients sharing a group are interchangeable for pantry matching (dry vs canned chickpeas). */
 	group: string;
+	/**
+	 * Grams of the group's reference form one gram of this makes, so pantry amounts compare
+	 * fairly (1 g dry chickpeas ≈ 2.4 g drained canned ones). 1 for most ingredients.
+	 */
+	groupFactor: number;
 	gluten: GlutenStatus;
 	allergens: Allergen[];
 	/** Assumed to be at home (salt, oil, water) – never blocks a pantry match. */
@@ -132,9 +137,26 @@ export interface RecipeSummary extends RecipeComputed {
 	/** none = no substitutes; optional = a variant avoids them; required = every version uses them. */
 	substitutes: 'none' | 'optional' | 'required';
 	variants: RecipeVariant[];
+	/** Equipment ids, so lists can filter out recipes needing an oven or blender. */
+	equipment: string[];
+}
+
+export const EQUIPMENT_LEVELS = ['zaklad', 'uzitocne', 'specialne'] as const;
+export type EquipmentLevel = (typeof EQUIPMENT_LEVELS)[number];
+
+export interface Equipment {
+	id: string;
+	name: string;
+	level: EquipmentLevel;
+	icon: string;
+	about: string;
+	/** What to use when you don't have it. */
+	alternatives: string[];
 }
 
 export interface RecipeDetail extends RecipeSummary {
+	/** Tools the recipe needs, basic ones first. */
+	equipmentDetail: Equipment[];
 	steps: string[];
 	tips: string[];
 	howto: { slug: string; title: string }[];

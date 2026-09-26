@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '$lib/components/Seo.svelte';
 	import { useCatalog } from '$lib/catalog';
 	import Icon, { isIconName } from '$lib/components/Icon.svelte';
 	import type { WikiSection } from '$lib/types';
@@ -27,7 +28,7 @@
 	];
 </script>
 
-<svelte:head><title>Wiki · Receptio</title></svelte:head>
+<Seo title="Wiki" description="Základy varenia, suplementy a návody pre rastlinnú stravu." />
 
 <div class="wrap page">
 	<header class="rise">
@@ -43,6 +44,15 @@
 			<h2>{section.title}</h2>
 			<p class="muted">{section.text}</p>
 			<div class="grid">
+				{#if section.id === 'zaklady'}
+					<a class="item card draw-host rise" href="/vybavenie">
+						<span class="ico"><Icon name="pan" size={26} /></span>
+						<span>
+							<strong>Vybavenie kuchyne</strong>
+							<span class="sum">Panvice, hrnce, mixér, rúra – čo treba a čím to nahradiť.</span>
+						</span>
+					</a>
+				{/if}
 				{#each catalog.wiki.filter((w) => w.section === section.id) as page, i (page.slug)}
 					<a class="item card draw-host rise" href="/wiki/{page.slug}" style:--i={i}>
 						<span class="ico"

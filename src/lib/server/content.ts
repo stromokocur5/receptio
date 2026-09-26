@@ -3,15 +3,18 @@ import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
 import { parseAmount, toGrams } from '$lib/amounts';
 import { recipeAllergens, recipeGluten, recipeNutrients, recipeWarnings } from '$lib/nutrition';
+import { normalizeSearch } from '$lib/labels';
 import { bestPrice } from '$lib/pricing';
 import {
 	ALLERGENS,
+	EQUIPMENT_LEVELS,
 	INGREDIENT_CATEGORIES,
 	MEALS,
 	UNITS,
 	WIKI_SECTIONS,
 	type Catalog,
 	type Cuisine,
+	type Equipment,
 	type Ingredient,
 	type IngredientCategory,
 	type PriceEntry,
@@ -70,6 +73,7 @@ const ingredientSchema = z
 		name: z.string().min(1),
 		category: z.enum(INGREDIENT_CATEGORIES),
 		group: slug.optional(),
+		group_factor: z.number().positive().default(1),
 		gluten: z.enum(['free', 'risk', 'contains']).default('free'),
 		allergens: z.array(z.enum(ALLERGENS)).default([]),
 		staple: z.boolean().default(false),
@@ -124,7 +128,34 @@ const recipeSchema = z
 		steps: z.array(z.string().min(1)).min(1),
 		tips: z.array(z.string()).default([]),
 		howto: z.array(slug).default([]),
-		variants: z.array(variantSchema).default([])
+		variants: z.array(variantSchema).default([]),
+		/** Tools the step text doesn't reveal, and false positives of the detection. */
+		equipment: z.array(slug).default([]),
+		no_equipment: z.array(slug).default([])
+	})
+	.strict();
+
+const pattern = z.string().transform((source, ctx) => {
+	try {
+		return new RegExp(source, 'u');
+	} catch {
+		ctx.addIssue({ code: 'custom', message: `neplatný regulárny výraz: ${source}` });
+		return z.NEVER;
+	}
+});
+
+const equipmentSchema = z
+	.object({
+		id: slug,
+		name: z.string().min(1),
+		level: z.enum(EQUIPMENT_LEVELS),
+		icon: z.string().min(1),
+		about: z.string().min(1),
+		alternatives: z.array(z.string().min(1)).min(1),
+		match: z.array(pattern),
+		/** Weaker clues, used only when none of `unless` was detected. */
+		weak: z.array(pattern).default([]),
+		unless: z.array(slug).default([])
 	})
 	.strict();
 
@@ -191,11 +222,13 @@ function fileId(path: string): string {
 
 export interface Content extends Catalog {
 	recipeDetails: Map<string, RecipeDetail>;
+	equipment: Equipment[];
 	wiki: WikiPage[];
 }
 
 export interface RawContent {
 	ingredients: string;
+	equipment: string;
 	cuisines: string;
 	prices: string;
 	recipes: Record<string, string>;
@@ -212,6 +245,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		name: i.name,
 		category: i.category,
 		group: i.group ?? i.id,
+		groupFactor: i.group_factor,
 		gluten: i.gluten,
 		allergens: i.allergens,
 		staple: i.staple,
@@ -374,6 +408,31 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		};
 	};
 
+	const equipmentRules = parseWith(
+		z.array(equipmentSchema),
+		parseYaml(raw.equipment),
+		'content/equipment.yaml'
+	);
+	const equipment: Equipment[] = equipmentRules.map(
+		({ match: _match, weak: _weak, unless: _unless, ...e }) => e
+	);
+	const equipmentById = new Map(equipment.map((e) => [e.id, e]));
+	if (equipmentById.size !== equipment.length) throw new Error('equipment.yaml: duplicitné id');
+	const levelOrder = (e: Equipment) => EQUIPMENT_LEVELS.indexOf(e.level);
+
+	/** Tools mentioned in the steps or ingredient notes ("prelisovaný" → garlic press). */
+	function detectEquipment(steps: string[], lines: RecipeLine[]): Set<string> {
+		const text = normalizeSearch([...steps, ...lines.map((l) => l.note ?? '')].join('\n'));
+		const found = new Set(
+			equipmentRules.filter((e) => e.match.some((re) => re.test(text))).map((e) => e.id)
+		);
+		for (const e of equipmentRules) {
+			if (found.has(e.id) || e.unless.some((id) => found.has(id))) continue;
+			if (e.weak.some((re) => re.test(text))) found.add(e.id);
+		}
+		return found;
+	}
+
 	const recipeDetails = new Map<string, RecipeDetail>();
 	for (const [path, text] of Object.entries(raw.recipes)) {
 		const id = fileId(path);
@@ -439,6 +498,16 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			});
 		}
 
+		for (const toolId of [...r.equipment, ...r.no_equipment]) {
+			if (!equipmentById.has(toolId)) throw new Error(`${where}: neznáme vybavenie "${toolId}"`);
+		}
+		const tools = detectEquipment(r.steps, lines);
+		for (const toolId of r.equipment) tools.add(toolId);
+		for (const toolId of r.no_equipment) tools.delete(toolId);
+		const equipmentDetail = [...tools]
+			.map((toolId) => equipmentById.get(toolId)!)
+			.sort((a, b) => levelOrder(a) - levelOrder(b) || a.name.localeCompare(b.name, 'sk'));
+
 		const allUsed = new Set(
 			[...lines, ...variants.flatMap((v) => v.lines)].map((l) => l.ingredientId)
 		);
@@ -463,6 +532,8 @@ export function compileContent(raw: RawContent, today: Date): Content {
 					? 'optional'
 					: 'required',
 			variants,
+			equipment: equipmentDetail.map((e) => e.id),
+			equipmentDetail,
 			steps: r.steps,
 			tips: r.tips,
 			howto: [...new Set([...r.howto, ...[...allUsed].flatMap((i) => byId.get(i)!.howto)])].map(
@@ -486,10 +557,19 @@ export function compileContent(raw: RawContent, today: Date): Content {
 	}
 
 	const recipes = [...recipeDetails.values()]
-		.map(({ steps: _steps, tips: _tips, howto: _howto, related: _related, ...summary }) => summary)
+		.map(
+			({
+				steps: _steps,
+				tips: _tips,
+				howto: _howto,
+				related: _related,
+				equipmentDetail: _equipment,
+				...summary
+			}) => summary
+		)
 		.sort((a, b) => a.title.localeCompare(b.title, 'sk'));
 
-	return { ingredients, recipes, cuisines, stores, prices, recipeDetails, wiki };
+	return { ingredients, recipes, cuisines, stores, prices, recipeDetails, wiki, equipment };
 }
 
 let cached: Content | undefined;
@@ -502,6 +582,11 @@ export function getContent(): Content {
 				import: 'default',
 				eager: true
 			})['/content/ingredients.yaml'] as string,
+			equipment: import.meta.glob('/content/equipment.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/equipment.yaml'] as string,
 			cuisines: import.meta.glob('/content/cuisines.yaml', {
 				query: '?raw',
 				import: 'default',

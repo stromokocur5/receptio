@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Seo from '$lib/components/Seo.svelte';
 	import { useCatalog } from '$lib/catalog';
 	import Icon, { isIconName } from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
@@ -42,10 +43,7 @@
 	);
 </script>
 
-<svelte:head>
-	<title>{page.title} · Receptio</title>
-	<meta name="description" content={page.summary} />
-</svelte:head>
+<Seo title={page.title} description={page.summary} type="article" />
 
 <article class="wrap page">
 	<a class="back" href="/wiki"><Icon name="arrow-left" size={18} /> Wiki</a>

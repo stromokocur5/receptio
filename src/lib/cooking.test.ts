@@ -1,0 +1,83 @@
+import { describe, expect, it } from 'vitest';
+import { formatDuration, splitStep, stepLines } from './cooking';
+import type { Ingredient, RecipeLine } from './types';
+
+const timers = (step: string) =>
+	splitStep(step)
+		.filter((s) => 'timer' in s)
+		.map((s) => ('timer' in s ? [s.text, s.timer.seconds] : null));
+
+describe('splitStep', () => {
+	it('finds minutes, seconds, hours and ranges', () => {
+		expect(timers('Opraž 30 sekúnd, potom duste 8–10 minút a nechaj 1 hodinu kysnúť.')).toEqual([
+			['30 sekúnd', 30],
+			['8–10 minút', 480],
+			['1 hodinu', 3600]
+		]);
+		expect(timers('Po 10–15 minútach sa mlieko zrazí, pečieš 25 min.')).toEqual([
+			['10–15 minútach', 600],
+			['25 min', 1500]
+		]);
+		expect(timers('Nechaj odpočívať pol hodiny.')).toEqual([['pol hodiny', 1800]]);
+	});
+
+	it('skips waits too long to time on a phone and plain numbers', () => {
+		expect(timers('Namoč na 12 hodín. Pridaj 2 minútky… a 3 PL oleja.')).toEqual([]);
+	});
+
+	it('keeps the whole text around the timers', () => {
+		const step = 'Var 15 minút, kým nezmäkne.';
+		expect(
+			splitStep(step)
+				.map((s) => s.text)
+				.join('')
+		).toBe(step);
+	});
+});
+
+function ing(id: string, name: string): Ingredient {
+	return { id, name } as Ingredient;
+}
+const line = (ingredientId: string): RecipeLine => ({
+	ingredientId,
+	grams: 100,
+	amount: 100,
+	unit: 'g'
+});
+
+describe('stepLines', () => {
+	const byId = new Map(
+		[
+			ing('cicer', 'Cícer sterilizovaný'),
+			ing('aquafaba', 'Aquafaba (voda z cíceru)'),
+			ing('cibula', 'Cibuľa'),
+			ing('jarna', 'Jarná cibuľka'),
+			ing('olej', 'Olivový olej'),
+			ing('kmin', 'Rasca rímska (kmín)'),
+			ing('zrna', 'Sójové zrná')
+		].map((i) => [i.id, i])
+	);
+	const lines = [...byId.keys()].map(line);
+	const ids = (step: string) => stepLines(step, lines, byId).map((l) => l.ingredientId);
+
+	it('matches inflected nouns, ignoring adjectives', () => {
+		expect(ids('Na olivovom oleji opeč cibuľu.')).toEqual(['cibula', 'olej']);
+	});
+
+	it('prefers the most specific ingredient for a word', () => {
+		expect(ids('Pridaj biele časti cibuľky.')).toEqual(['jarna']);
+		expect(ids('Cícer ošúp.')).toEqual(['cicer']);
+	});
+
+	it('uses aliases in parentheses and all-adjective names', () => {
+		expect(ids('Pridaj kmín a zrná namoč.')).toEqual(['kmin', 'zrna']);
+	});
+});
+
+describe('formatDuration', () => {
+	it('formats minutes and hours', () => {
+		expect(formatDuration(65)).toBe('1:05');
+		expect(formatDuration(3725)).toBe('1:02:05');
+		expect(formatDuration(-3)).toBe('0:00');
+	});
+});

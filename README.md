@@ -25,14 +25,20 @@ pnpm dev                                                  # http://localhost:517
   vypočíta živiny na porciu, bezlepkovosť (vrátane „po zámene“ napr. sójovka → tamari), alergény, cenu
   a odkazy na návody zo sekcie Základy.
 - **Špajza, plán a nákupný zoznam** sú v `localStorage` prehliadača, žiadne kontá.
-- **Lajky** sú jediná serverová vec: D1 tabuľka `likes`, anonymne podľa náhodného ID v httpOnly cookie.
-- Všetky stránky sa prerenderujú, Worker obsluhuje iba `/api/likes`.
+- **Špajza, plán, história varenia, obľúbené a poznámky** sa dajú zálohovať a obnoviť na stránke Moje (JSON súbor).
+- **Nákupný zoznam sa zdieľa odkazom** `/zoznam#…` – plán a zoznam sú vo fragmente URL, na server nejdú.
+- **Lajky a návrhy receptov** sú jediné serverové veci (D1). Lajky sú anonymné podľa náhodného ID v httpOnly
+  cookie, obe API majú limit na IP (Workers Rate Limiting).
+- Všetky stránky sa prerenderujú, Worker obsluhuje iba `/api/*`. Náhľadové obrázky `/og/*.png` sa kreslia pri
+  builde (resvg), do Workera sa nedostanú.
+- **Offline:** service worker drží aplikáciu, plán, špajzu a naposledy otvorené recepty.
 
 ```
 content/
   ingredients.yaml   suroviny: živiny na 100 g, jednotky, lepok, alergény, odhad ceny, návody
   recipes/*.yaml     recepty (id = názov súboru)
   cuisines.yaml      kuchyne sveta + na čo si dať pozor
+  equipment.yaml     kuchynské vybavenie, náhrady a slová, podľa ktorých ho recept rozpozná
   prices.yaml        reálne ceny z obchodov (produkt, balenie, cena, dátum, akcia)
   wiki/*.md          základy varenia, suplementy, návody
 src/lib/
@@ -75,6 +81,8 @@ nutrition: false # nezobrazovať živiny (výsledok sa sceďuje, napr. sójové 
 gf_swap: false # nevytvárať automatickú bezlepkovú verziu (pizza, halušky)
 related: [domace-tofu] # odkazy na iné recepty
 howto: [vyprazanie] # návody navyše k tým zo surovín
+equipment: [teplomer] # vybavenie, ktoré z postupu nevyčítať (inak sa rozpozná samo)
+no_equipment: [panvica] # omylom rozpoznané vybavenie
 variants:
   - name: Bez náhrad
     description: Čo robiť inak.
@@ -97,6 +105,15 @@ Nová surovina patrí do `content/ingredients.yaml` (hodnoty na 100 g, ideálne 
 `content/prices.yaml`, každý záznam je konkrétny produkt v konkrétnom obchode a dni. Porovnáva sa cena za kg,
 bežná cena po 60 dňoch zastará, akciová platí do `sale_until`. Kým pre surovinu nie je reálna cena, použije sa
 odhad z `ingredients.yaml` a appka ho označí.
+
+## Návrhy receptov
+
+Formulár `/navrhni` ukladá do D1 tabuľky `suggestions`. Nič sa nezverejní samo – prečítaj a prepíš do YAML:
+
+```sh
+pnpm exec wrangler d1 execute receptio --remote --command "SELECT * FROM suggestions WHERE status = 'new'"
+pnpm exec wrangler d1 execute receptio --remote --command "UPDATE suggestions SET status = 'added' WHERE id = 1"
+```
 
 ## Nasadenie (Cloudflare)
 

@@ -6,7 +6,9 @@
 	import { indexCatalog, provideCatalog } from '$lib/catalog';
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
 	import Logo from '$lib/components/Logo.svelte';
+	import TimerDock from '$lib/components/TimerDock.svelte';
 	import { loadLikes, loadPersisted, plan, settings } from '$lib/state.svelte';
+	import { loadTimers } from '$lib/timers.svelte';
 
 	let { data, children } = $props();
 
@@ -28,6 +30,7 @@
 
 	onMount(() => {
 		loadPersisted();
+		loadTimers();
 		void loadLikes();
 	});
 
@@ -57,14 +60,6 @@
 	});
 </script>
 
-<svelte:head>
-	<title>Receptio – rastlinné recepty</title>
-	<meta
-		name="description"
-		content="Vegánske a bezlepkové recepty so živinami, cenami, špajzou a nákupným zoznamom."
-	/>
-</svelte:head>
-
 <a class="skip" href="#main">Preskočiť na obsah</a>
 
 <header class="top">
@@ -84,6 +79,15 @@
 				</a>
 			{/each}
 		</nav>
+		<a
+			class="icon-btn mine"
+			class:active={isActive('/moje')}
+			href="/moje"
+			aria-label="Moje: obľúbené, história, záloha"
+			title="Moje"
+		>
+			<Icon name="bookmark" size={19} />
+		</a>
 		<button class="icon-btn theme" onclick={toggleTheme} aria-label="Prepnúť svetlý/tmavý režim">
 			<span class="sun"><Icon name="sun" size={19} /></span>
 			<span class="moon"><Icon name="moon" size={19} /></span>
@@ -100,10 +104,13 @@
 		<Logo size={28} />
 		<p>
 			Komunitné, otvorené a zadarmo. Nutričné hodnoty a ceny sú orientačné.
-			<a href="/wiki/o-receptiu">Ako to funguje</a>
+			<a href="/wiki/o-receptiu">Ako to funguje</a> · <a href="/navrhni">Navrhni recept</a> ·
+			<a href="/moje">Záloha dát</a>
 		</p>
 	</div>
 </footer>
+
+{#if !page.state.cooking}<TimerDock floating />{/if}
 
 <nav class="mobile" aria-label="Navigácia">
 	{#each NAV as item (item.href)}
@@ -192,6 +199,13 @@
 		color: #fff;
 		font-size: 0.7rem;
 		font-weight: 800;
+	}
+	.mine {
+		margin-right: -8px;
+	}
+	.mine.active {
+		background: var(--leaf-soft);
+		color: var(--leaf);
 	}
 	.theme .moon,
 	:global([data-theme='dark']) .theme .sun {

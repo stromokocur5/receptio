@@ -1,0 +1,37 @@
+import { describe, expect, it } from 'vitest';
+import { mealSchedule } from './schedule';
+
+const summary = (days: ReturnType<typeof mealSchedule>['days']) =>
+	days.map((d) =>
+		d.meals.map((m) => (m ? `${m.kind === 'cook' ? '+' : '~'}${m.entry.recipeId}${m.age}` : '-'))
+	);
+
+describe('mealSchedule', () => {
+	it('cooks each batch once and eats leftovers until it runs out', () => {
+		const { days, unplannedMeals, extraServings } = mealSchedule(
+			[
+				{ recipeId: 'cili', servings: 6 },
+				{ recipeId: 'dal', servings: 3 }
+			],
+			2,
+			1,
+			5
+		);
+		expect(summary(days)).toEqual([['+cili0'], ['~cili1'], ['~cili2'], ['+dal0'], ['-']]);
+		// 3 servings of dal for two people: one meal and a spare portion.
+		expect(unplannedMeals).toBe(1);
+		expect(extraServings).toBe(1);
+	});
+
+	it('reports empty slots and servings beyond the planned days', () => {
+		const short = mealSchedule([{ recipeId: 'cili', servings: 2 }], 1, 2, 2);
+		expect(summary(short.days)).toEqual([
+			['+cili0', '~cili0'],
+			['-', '-']
+		]);
+		expect(short.unplannedMeals).toBe(2);
+
+		const long = mealSchedule([{ recipeId: 'cili', servings: 8 }], 1, 1, 3);
+		expect(long.extraServings).toBe(5);
+	});
+});

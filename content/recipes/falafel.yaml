@@ -27,6 +27,8 @@ ingredients:
   - paradajky: 2 ks
   - uhorka: 1 ks
   - salat: 1/2 ks
+equipment: [hrniec, teplomer]
+no_equipment: [panvica]
 steps:
   - Namočený cícer dôkladne sceď a osuš. Musí byť surový, nevarený – to je trik pravého falafelu.
   - V sekáčiku zomeľ cícer s cibuľou, 2 strúčikmi cesnaku, bylinkami, korením a soľou na hrubú drvinu, ktorá drží pokope, keď ju stlačíš v dlani. Nie na hladkú pastu.

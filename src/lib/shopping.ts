@@ -1,3 +1,4 @@
+import { formatNumber } from './amounts';
 import { bestPrice } from './pricing';
 import { isAssumedAtHome, type Pantry } from './pantry';
 import type { Ingredient, IngredientCategory, PriceEntry, RecipeSummary } from './types';
@@ -65,17 +66,22 @@ export function buildShoppingList(
 		const ingredient = byId.get(id);
 		if (!ingredient) continue;
 		const prev = remainingByGroup.get(ingredient.group) ?? 0;
-		remainingByGroup.set(ingredient.group, grams === null ? Infinity : prev + grams);
+		remainingByGroup.set(
+			ingredient.group,
+			grams === null ? Infinity : prev + grams * ingredient.groupFactor
+		);
 	}
 
 	const items: ShoppingItem[] = [];
 	for (const [id, { grams, usedIn }] of needed) {
 		const ingredient = byId.get(id)!;
+		// The pantry is counted in the group's reference form (see Ingredient.groupFactor).
 		const available = remainingByGroup.get(ingredient.group) ?? 0;
-		const fromPantry = Math.min(available, grams);
+		const neededInGroup = grams * ingredient.groupFactor;
+		const fromPantry = Math.min(available, neededInGroup);
 		remainingByGroup.set(ingredient.group, available - fromPantry);
 
-		const buyGrams = grams - fromPantry;
+		const buyGrams = (neededInGroup - fromPantry) / ingredient.groupFactor;
 		const price = bestPrice(ingredient, prices, today);
 		items.push({
 			ingredient,
@@ -107,4 +113,11 @@ export function buildShoppingList(
 		total: toBuy.reduce((sum, i) => sum + i.cost, 0),
 		hasEstimates: toBuy.some((i) => i.costIsEstimate)
 	};
+}
+
+/** " · ~2 ks" for things bought by the piece (onions, lemons), empty otherwise. */
+export function approxPieces(ingredient: Ingredient, grams: number): string {
+	const ks = ingredient.units.ks;
+	if (!ks || ks < 20) return '';
+	return ` · ~${formatNumber(Math.ceil((grams / ks) * 2) / 2)} ks`;
 }

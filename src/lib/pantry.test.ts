@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { rankByPantry } from './pantry';
+import { consumeFromPantry, rankByPantry } from './pantry';
 import { buildShoppingList } from './shopping';
 import { basketByStore } from './pricing';
 import type { Ingredient, PriceEntry, RecipeSummary } from './types';
@@ -34,6 +34,7 @@ function ing(id: string, group = id, extra: Partial<Ingredient> = {}): Ingredien
 		color: '#000000',
 		howto: [],
 		byproduct: false,
+		groupFactor: 1,
 		...extra
 	};
 }
@@ -69,6 +70,7 @@ function recipe(id: string, lines: [string, number][], servings = 2): RecipeSumm
 		substitutes: 'none',
 		showNutrition: true,
 		variants: [],
+		equipment: [],
 		lines: lines.map(([ingredientId, grams]) => ({ ingredientId, grams, amount: grams, unit: 'g' }))
 	};
 }
@@ -185,5 +187,42 @@ describe('basketByStore', () => {
 
 		const stale = basketByStore(items, stores, [entry('a', 3), entry('b', 2, '2026-01-01')], today);
 		expect(stale.map((b) => b.store.id)).toEqual(['a']);
+	});
+});
+
+describe('consumeFromPantry', () => {
+	const hummus = recipe('hummus', [
+		['cicer-sterilizovany', 240],
+		['ryza', 100],
+		['sol', 5]
+	]);
+
+	it('takes the exact ingredient first, then the same group, scaled to servings', () => {
+		const { pantry, used } = consumeFromPantry(
+			{ 'cicer-suchy': 500, 'cicer-sterilizovany': 200, ryza: 1000 },
+			hummus.lines,
+			1.5,
+			byId
+		);
+		expect(pantry).toEqual({ 'cicer-suchy': 340, ryza: 850 });
+		expect(used.map((u) => [u.ingredient.id, u.grams, u.usedUp])).toEqual([
+			['cicer-sterilizovany', 200, true],
+			['cicer-suchy', 160, false],
+			['ryza', 150, false]
+		]);
+	});
+
+	it('converts between forms of a group (dry chickpeas swell 2.4×)', () => {
+		const withDry = new Map(byId);
+		withDry.set('cicer-suchy', ing('cicer-suchy', 'cicer', { groupFactor: 2.4 }));
+		const { pantry, used } = consumeFromPantry({ 'cicer-suchy': 500 }, hummus.lines, 1, withDry);
+		expect(pantry).toEqual({ 'cicer-suchy': 400 });
+		expect(used[0].grams).toBeCloseTo(100);
+	});
+
+	it('leaves unweighed items and untracked ingredients alone', () => {
+		const { pantry, used } = consumeFromPantry({ 'cicer-suchy': null }, hummus.lines, 1, byId);
+		expect(pantry).toEqual({ 'cicer-suchy': null });
+		expect(used).toEqual([]);
 	});
 });

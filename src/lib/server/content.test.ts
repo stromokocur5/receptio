@@ -70,6 +70,22 @@ describe('content', () => {
 		expect(dal.howto.map((h) => h.slug)).toContain('strukoviny');
 	});
 
+	it('detects equipment from the steps, with per-recipe overrides', () => {
+		const tools = (id: string) => content.recipeDetails.get(id)!.equipment;
+		expect(tools('hummus')).toContain('mixer');
+		expect(tools('granola')).toEqual(expect.arrayContaining(['rura', 'plech']));
+		// "Opeč cibuľu" in a one-pot dish doesn't add a pan…
+		expect(tools('minestrone')).not.toContain('panvica');
+		// …and "prikry utierkou" (rising dough) isn't a lid.
+		expect(tools('pizza')).not.toContain('pokrievka');
+		expect(tools('falafel')).toEqual(expect.arrayContaining(['hrniec', 'teplomer']));
+		expect(tools('falafel')).not.toContain('panvica');
+		for (const r of content.recipeDetails.values()) {
+			for (const e of r.equipmentDetail)
+				expect(e.alternatives.length, `${r.id}/${e.id}`).toBeGreaterThan(0);
+		}
+	});
+
 	it('uses only known cuisines and has wiki pages in every section', () => {
 		const ids = new Set(content.cuisines.map((c) => c.id));
 		for (const r of content.recipes) expect(ids.has(r.cuisine), r.id).toBe(true);

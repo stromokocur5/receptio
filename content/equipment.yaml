@@ -1,0 +1,282 @@
+# Kuchynské vybavenie. Recept dostane zoznam automaticky podľa slov v postupe a v poznámkach surovín
+# (match = regulárne výrazy na text bez diakritiky a malými písmenami, napr. "rozmixuj" → "rozmixuj").
+# weak = slabšie stopy, ktoré platia, len ak recept nepoužíva nič z `unless`
+# ("opeč cibuľu" v hrnci neznamená, že treba aj panvicu).
+# V recepte sa dá doplniť `equipment: [id]` alebo vyhodiť `no_equipment: [id]`.
+#
+# level: zaklad (má mať každá kuchyňa) | uzitocne (oplatí sa) | specialne (na pár receptov)
+# alternatives: čo spraviť, keď to doma nemáš
+# icon: názov ikony zo src/lib/components/Icon.svelte
+
+- id: noz-doska
+  name: Ostrý nôž a doska
+  level: zaklad
+  icon: knife
+  about: Jeden poriadny kuchársky nôž (20 cm) urobí viac ako sada tupých. Tupý nôž je nebezpečnejší – kĺže.
+  alternatives:
+    - Na mäkkú zeleninu stačí aj menší nôž, len krájaj pomalšie.
+    - Nôž nabrúsiš aj o neglazovaný spodok keramického hrnčeka.
+  match: []
+
+- id: panvica
+  name: Panvica
+  level: zaklad
+  icon: pan
+  about: Ideálne jedna väčšia (28 cm) s nepriľnavým povrchom a jedna liatinová alebo nerezová na opekanie dozlatista.
+  alternatives:
+    - Hrniec so širším dnom – opekaj po menších dávkach, nech sa zelenina neduší.
+    - Wok funguje na všetko, čo sa robí na panvici.
+  match:
+    - panvic
+    - \bwok
+  weak:
+    - \bopec
+    - \bopraz
+    - \borestuj
+    - \bosmaz
+    - \bspen(?!at)
+    - \bopekaj
+    - \bvyprazaj
+  unless: [hrniec]
+
+- id: hrniec
+  name: Hrniec
+  level: zaklad
+  icon: pot
+  about: Stredný (3 l) na prílohy a omáčky, veľký (5 l) na polievky, cestoviny a strukoviny.
+  alternatives:
+    - Hlboká panvica s pokrievkou zvládne omáčky, kari aj ryžu.
+    - Rýchlovarná kanvica + miska na zaliatie kuskusu, bulguru či ryžových rezancov.
+  match:
+    - hrn(ec|ci|ca|com|iec)\b
+    - \b(u|po|do|pre|roz|z)?var(i|ia|te|ime|om|u)?\b
+    - vriac
+    - do varu
+    - \bdus
+    - \bzovri
+
+- id: pokrievka
+  name: Pokrievka
+  level: zaklad
+  icon: lid
+  about: Ryža, strukoviny a dusená zelenina potrebujú prikryť, inak sa voda vyparí skôr, ako zmäknú.
+  alternatives:
+    - Väčší plochý tanier, plech alebo kúsok alobalu.
+  match:
+    # prikryté cesto na kysnutie alebo "prikry utierkou/fóliou" nie je pokrievka
+    - (?<!kysn[^.]*)\bprikr(?![^.]*(utierk|foli|kysn))
+    - pokriev
+
+- id: sitko
+  name: Sitko alebo cedník
+  level: zaklad
+  icon: sieve
+  about: Na scedenie cestovín a strukovín aj na preplachovanie ryže a quinoy.
+  alternatives:
+    - Cestoviny sceď cez pokrievku nakrivo priloženú na hrniec.
+    - Na ryžu a quinou stačí preplachovať v miske a vodu opatrne zliať.
+  match:
+    - \b(s|pre|od|vy)?ced(i|t|en|ovan)?
+    - sitk
+    - cednik
+
+- id: struhadlo
+  name: Strúhadlo
+  level: zaklad
+  icon: grater
+  about: Štvorhranné strúhadlo stačí; jemná strana na zázvor, cesnak a citrónovú kôru.
+  alternatives:
+    - Nakrájaj nožom čo najjemnejšie.
+    - Zázvor a cesnak nastrúhaš aj o zúbky vidličky.
+  match:
+    - struh(?!ank)
+
+- id: lis-na-cesnak
+  name: Lis na cesnak
+  level: uzitocne
+  icon: garlic
+  about: Pohodlný, no nie nutný.
+  alternatives:
+    - Cesnak rozpučí plochá strana noža, potom ho nasekaj a posoľ – soľ ho rozotrie na pastu.
+    - Jemná strana strúhadla.
+  match:
+    - prelis
+
+- id: miska
+  name: Misky na miešanie
+  level: zaklad
+  icon: bowl
+  about: Aspoň jedna veľká na cesto a šaláty a pár menších na omáčky a marinády.
+  alternatives:
+    - Hrniec poslúži ako veľká misa, hrnček ako malá.
+  match:
+    - \bmis(k|u\b|e\b)
+    - roztlac
+    - rozdrv
+
+- id: rura
+  name: Rúra
+  level: uzitocne
+  icon: oven
+  about: Pečená zelenina, cícer, tofu a zapekané jedlá. Teploty v receptoch sú pre klasický ohrev hore-dole.
+  alternatives:
+    - Teplovzdušná fritéza (airfryer) na menšie dávky, zvyčajne o 20 °C menej a kratšie.
+    - Veľa receptov zvládneš na panvici s pokrievkou na strednom ohni, len obracaj častejšie.
+  match:
+    - \brur
+    - predhrej
+
+- id: plech
+  name: Plech a papier na pečenie
+  level: uzitocne
+  icon: tray
+  about: Plech s papierom = žiadne drhnutie. Opakovane použiteľná silikónová podložka sa oplatí.
+  alternatives:
+    - Zapekacia misa, len zelenina bude menej chrumkavá (dáva sa na seba).
+    - Plech bez papiera tenko potri olejom.
+  match:
+    - \bplech(?!ov)
+    - papier(om)? na pecenie
+
+- id: zapekacia-misa
+  name: Zapekacia misa
+  level: uzitocne
+  icon: dish
+  about: Sklenená alebo keramická, na lasagne, enchiladas a zapekanú zeleninu.
+  alternatives:
+    - Hlbší plech alebo liatinová panvica bez plastovej rúčky.
+  match:
+    - zapek
+
+- id: forma
+  name: Forma na pečenie
+  level: specialne
+  icon: tray
+  about: Na chlebíček a cheesecake – podlhovastá (25 cm) a okrúhla s odnímateľným okrajom (22 cm).
+  alternatives:
+    - Zapekacia misa podobnej veľkosti vystlaná papierom; čas pečenia skontroluj špajdľou.
+  match:
+    - \bform(a|y|u|e|ou)\b
+
+- id: mixer
+  name: Stolový mixér
+  level: uzitocne
+  icon: blender
+  about: Na smoothie, omáčky, hummus a rastlinné mlieka. Čím silnejší motor, tým hladší výsledok.
+  alternatives:
+    - Tyčový (ponorný) mixér vo vysokej nádobe – na hummus pridaj trochu viac tekutiny.
+    - Hummus a pesto sa dajú roztlačiť vidličkou alebo v mažiari, budú hrubšie, ale chutné.
+  match:
+    - mix(er|uj|ovan|eri|erom)
+    - \b(roz|vy|pre)mix
+
+- id: tycovy-mixer
+  name: Tyčový mixér
+  level: uzitocne
+  icon: stick-blender
+  about: Krémové polievky rozmixuješ rovno v hrnci. Lacný a malý.
+  alternatives:
+    - Stolový mixér – polievku nechaj trochu vychladnúť a mixuj po dávkach, horúca para vie odraziť veko.
+    - Mäkkú zeleninu roztlač štuchadlom na zemiaky.
+  match:
+    - ponorn
+    - tycov
+
+- id: sekacik
+  name: Sekáčik (kuchynský robot)
+  level: specialne
+  icon: blender
+  about: Na falafel, energetické guľky a cestá, kde mixér robí kašu.
+  alternatives:
+    - Stolový mixér po malých dávkach s pulzným režimom.
+    - Mlynček na mäso, ak ho máš po babke – na falafel ideálny.
+  match:
+    - sekac
+    - kuchynsk\w* robot
+
+- id: metlicka
+  name: Metlička
+  level: zaklad
+  icon: whisk
+  about: Na zálievky, cestá na palacinky a vyšľahanie aquafaby (tam už treba elektrický šľahač).
+  alternatives:
+    - Vidlička – šľahaj dlhšie.
+    - Zálievku pretrep v uzavretom pohári.
+  match:
+    - slah
+    - metlick
+
+- id: utierka
+  name: Čistá kuchynská utierka
+  level: zaklad
+  icon: towel
+  about: Na vyžmýkanie tofu a scedenie rastlinného mlieka. Bavlnená, bez aviváže.
+  alternatives:
+    - Papierové utierky (na tofu), vrecko na orechové mlieko alebo nová silonová pančucha (na mlieko).
+  match:
+    - utierk
+
+- id: skrabka
+  name: Škrabka
+  level: zaklad
+  icon: peeler
+  about: Rýchlejšia a bezpečnejšia ako nôž na zemiaky, mrkvu a uhorky.
+  alternatives:
+    - Malý nôž; zázvor ošúpeš hranou lyžičky.
+  match:
+    - (?<!ne)osup
+
+- id: valcek
+  name: Valček
+  level: specialne
+  icon: rolling-pin
+  about: Na pizzu, placky a cesto na pirohy.
+  alternatives:
+    - Fľaša od vína posypaná múkou.
+    - Pizzu stačí roztiahnuť prstami od stredu k okrajom.
+  match:
+    - valc
+    - vyvalk
+
+- id: maziar
+  name: Mažiar
+  level: specialne
+  icon: mortar
+  about: Pesto, pasty na kari a čerstvo drvené korenie voňajú viac ako z mixéra.
+  alternatives:
+    - Mixér alebo sekáčik, len krátko.
+    - Korenie rozdrv dnom ťažkého hrnca na doske.
+  match:
+    - maziar
+    - roztlc
+
+- id: pohare
+  name: Zaváracie poháre a dózy
+  level: uzitocne
+  icon: jar
+  about: Na overnight oats, fermentovanie, zálievky a zvyšky do chladničky.
+  alternatives:
+    - Akákoľvek čistá nádoba s vekom; na fermentovanie sklo, nie plast.
+  match:
+    - pohar
+    - \bdoz(a|u|y|e)\b
+
+- id: teplomer
+  name: Kuchynský teplomer
+  level: specialne
+  icon: thermometer
+  about: Na jogurt, tempeh a olej na vyprážanie, kde rozhodujú stupne.
+  alternatives:
+    - Olej na vyprážanie je pripravený, keď okolo drevenej paličky vystúpia bublinky.
+    - 40 °C je teplota, pri ktorej udržíš prst v tekutine, ale nie je ti príjemne.
+  match:
+    - teplomer
+
+- id: vaha
+  name: Kuchynská váha
+  level: zaklad
+  icon: scale
+  about: Najpresnejšia cesta k rovnakému výsledku, hlavne pri pečení. Digitálna stojí pár eur.
+  alternatives:
+    - Odmerky PL, ČL a hrnček – pozri návod Jednotky.
+  match: []

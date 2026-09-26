@@ -61,3 +61,20 @@ export async function toggleLike(
 		.first<{ n: number }>();
 	return { liked, count: row?.n ?? 0 };
 }
+
+/**
+ * Per-IP limits: a general one on toggles, and a stricter one on minting new device IDs,
+ * since clearing the cookie is the only way to like the same recipe twice.
+ * Returns false when the request should be refused. Missing bindings (tests, preview) allow.
+ */
+export async function withinLikeLimits(
+	env: Pick<Env, 'LIKE_LIMITER' | 'NEW_DEVICE_LIMITER'>,
+	clientIp: string,
+	isNewDevice: boolean
+): Promise<boolean> {
+	const general = await env.LIKE_LIMITER?.limit({ key: clientIp });
+	if (general && !general.success) return false;
+	if (!isNewDevice) return true;
+	const minting = await env.NEW_DEVICE_LIMITER?.limit({ key: clientIp });
+	return !minting || minting.success;
+}
