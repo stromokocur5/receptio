@@ -1,0 +1,34 @@
+title: Fazuľová polievka so zeleninou
+description: Hustá fazuľovica s koreňovou zeleninou, majoránkou a kyslastou smotanou. Chuť babkinej kuchyne.
+cuisine: slovenska
+meals: [obed, vecera]
+time: 40
+active: 15
+servings: 6
+difficulty: 1
+tags: [polievka, klasika]
+ingredients:
+  - olej: 2 pl
+  - cibula: 1 ks
+  - mrkva: 2 ks | na kolieska
+  - petrzlen-koren: 1 ks | na kolieska
+  - zemiaky: 2 ks | na kocky
+  - fazula-cervena: 2 ks
+  - voda: 6 hrnček
+  - bobkovy-list: 2 ks
+  - sladka-paprika: 2 čl
+  - hladka-muka: 1 pl
+  - cesnak: 3 ks
+  - majoranka: 1 pl
+  - ocot: 1 pl
+  - rastlinna-smotana: 1/2 hrnček
+  - sol: 1,5 čl
+steps:
+  - Na polovici oleja speň cibuľu, pridaj mrkvu, petržlen, zemiaky, fazuľu, vodu a bobkový list. Var 20 minút.
+  - Zápražka. Na zvyšnom oleji krátko opraž múku, odstav, vmiešaj papriku a rozmiešaj s naberačkou polievky.
+  - Vlej zápražku do polievky a 5 minút var. Pridaj prelisovaný cesnak, majoránku, ocot a soľ.
+  - Na konci vmiešaj smotanu.
+variants:
+  - name: Bez náhrad
+    description: Vynechaj smotanu – ocot a zápražka dajú polievke telo aj bez nej.
+    remove: [rastlinna-smotana]

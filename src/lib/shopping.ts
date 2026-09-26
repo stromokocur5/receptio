@@ -2,9 +2,17 @@ import { bestPrice } from './pricing';
 import { isAssumedAtHome, type Pantry } from './pantry';
 import type { Ingredient, IngredientCategory, PriceEntry, RecipeSummary } from './types';
 
+const TAP_WATER_ID = 'voda';
+
 export interface PlanEntry {
 	recipeId: string;
 	servings: number;
+	/** Name of the chosen recipe variant; the base recipe when absent. */
+	variant?: string;
+}
+
+export function planLines(recipe: RecipeSummary, variant: string | undefined) {
+	return (variant && recipe.variants.find((v) => v.name === variant)?.lines) || recipe.lines;
 }
 
 export interface ShoppingItem {
@@ -16,11 +24,13 @@ export interface ShoppingItem {
 	cost: number;
 	costIsEstimate: boolean;
 	usedIn: string[];
+	/** A usually-at-home basic the user said they're out of. */
+	restock: boolean;
 }
 
 export interface ShoppingList {
 	byCategory: [IngredientCategory, ShoppingItem[]][];
-	/** Spices, oils and basics: listed to double-check, not counted in the total. */
+	/** Spices, oils, basics and leftovers: listed to double-check, not counted in the total. */
 	staples: ShoppingItem[];
 	total: number;
 	hasEstimates: boolean;
@@ -32,7 +42,9 @@ export function buildShoppingList(
 	byId: Map<string, Ingredient>,
 	pantry: Pantry,
 	prices: PriceEntry[],
-	today: Date
+	today: Date,
+	/** Basics (spices, oils) the user is out of – moved from "check at home" to the list. */
+	outOfStock: ReadonlySet<string> = new Set()
 ): ShoppingList {
 	const needed = new Map<string, { grams: number; usedIn: Set<string> }>();
 
@@ -40,7 +52,7 @@ export function buildShoppingList(
 		const recipe = recipesById.get(entry.recipeId);
 		if (!recipe) continue;
 		const factor = entry.servings / recipe.servings;
-		for (const line of recipe.lines) {
+		for (const line of planLines(recipe, entry.variant)) {
 			const acc = needed.get(line.ingredientId) ?? { grams: 0, usedIn: new Set() };
 			acc.grams += line.grams * factor;
 			acc.usedIn.add(recipe.title);
@@ -71,11 +83,15 @@ export function buildShoppingList(
 			buyGrams,
 			cost: (price.perKg * buyGrams) / 1000,
 			costIsEstimate: price.isEstimate,
-			usedIn: [...usedIn]
+			usedIn: [...usedIn],
+			restock: outOfStock.has(ingredient.id) && isAssumedAtHome(ingredient)
 		});
 	}
 
-	const toBuy = items.filter((i) => !isAssumedAtHome(i.ingredient) && i.buyGrams > 0.5);
+	// Leftovers (aquafaba from the chickpea can, okara) come from other ingredients, not the shop.
+	const notBought = (i: Ingredient) => i.byproduct || (isAssumedAtHome(i) && !outOfStock.has(i.id));
+	const worthChecking = (i: Ingredient) => notBought(i) && i.id !== TAP_WATER_ID;
+	const toBuy = items.filter((i) => !notBought(i.ingredient) && i.buyGrams > 0.5);
 	const categories = new Map<IngredientCategory, ShoppingItem[]>();
 	for (const item of toBuy.sort((a, b) =>
 		a.ingredient.name.localeCompare(b.ingredient.name, 'sk')
@@ -87,7 +103,7 @@ export function buildShoppingList(
 
 	return {
 		byCategory: [...categories],
-		staples: items.filter((i) => isAssumedAtHome(i.ingredient) && i.buyGrams > 0),
+		staples: items.filter((i) => worthChecking(i.ingredient) && i.buyGrams > 0),
 		total: toBuy.reduce((sum, i) => sum + i.cost, 0),
 		hasEstimates: toBuy.some((i) => i.costIsEstimate)
 	};

@@ -1,0 +1,29 @@
+title: Overnight oats s jablkom a škoricou
+description: Raňajky, ktoré sa pripravia samé cez noc. Ráno len vyberieš z chladničky a ideš.
+cuisine: moderna
+meals: [ranajky]
+time: 5
+active: 5
+servings: 2
+difficulty: 1
+tags: [ranajky, bez-varenia, do-krabicky]
+ahead: Priprav večer, cez noc nechaj v chladničke.
+ingredients:
+  - ovsene-vlocky: 100 g
+  - sojovy-jogurt: 1/2 hrnček
+  - sojove-mlieko: 1 hrnček
+  - chia: 1 pl
+  - javorovy-sirup: 1 pl
+  - skorica: 1 štipka
+  - jablko: 1 ks | nastrúhané
+  - vlasske-orechy: 2 pl | nasekané
+steps:
+  - Vločky, jogurt, mlieko, chia, sirup a škoricu premiešaj v dvoch pohároch.
+  - Pridaj nastrúhané jablko, zatvor a daj cez noc do chladničky.
+  - Ráno posyp orechmi. Ak je príliš hustá, prilej mlieko.
+variants:
+  - name: Bez náhrad
+    description: Namiesto jogurtu viac mlieka – kaša bude o niečo menej krémová.
+    replace:
+      - from: sojovy-jogurt
+        to: sojove-mlieko

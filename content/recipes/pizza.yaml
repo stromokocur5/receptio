@@ -1,0 +1,40 @@
+title: Domáca pizza zo sporáka a rúry
+description: Nadýchané kysnuté cesto, paradajková omáčka s oreganom a zelenina. Dve pizze na plech.
+cuisine: talianska
+meals: [obed, vecera]
+time: 100
+active: 30
+servings: 4
+difficulty: 3
+tags: [party]
+gf_swap: false
+ingredients:
+  - hladka-muka: 500 g | ideálne typ 00
+  - drozdie: 1 ks
+  - cukor: 1 čl
+  - voda: 320 ml | vlažná
+  - olivovy-olej: 3 pl
+  - sol: 1,5 čl
+  - passata: 1 hrnček
+  - cesnak: 1 ks
+  - oregano: 1 čl
+  - vegansky-syr: 2 hrnček
+  - sampinony: 150 g | na plátky
+  - paprika-cervena: 1 ks | na prúžky
+  - cibula-cervena: 1/2 ks
+  - bazalka: 1/2 hrnček
+steps:
+  - Cesto. Zmiešaj múku, droždie a cukor, prilej vodu a 2 PL oleja, pridaj soľ a mies 10 minút do hladka.
+  - Nechaj kysnúť prikryté na teplom mieste hodinu, kým nezdvojnásobí objem.
+  - Omáčka. Passatu zmiešaj s prelisovaným cesnakom, oreganom, zvyškom oleja a štipkou soli. Nevar ju, dopečie sa.
+  - Rúru rozpáľ na maximum (250 °C) aj s plechom vo vnútri.
+  - Cesto rozdeľ na dve časti a rukami roztiahni na tenké placky. Okraje nechaj hrubšie.
+  - Natri omáčkou, posyp syrom a zeleninou a peč na rozpálenom plechu 8–10 minút. Po upečení pridaj bazalku.
+tips:
+  - Na bezlepkovú pizzu nestačí ryžová múka – kúp hotovú bezlepkovú zmes na pizzu.
+  - Cesto uložené v chladničke 24–72 hodín bude ešte chutnejšie.
+howto: [kysnute-cesto]
+variants:
+  - name: Marinara (bez náhrad)
+    description: Neapolská klasika bez syra – omáčka, cesnak, oregano a olivový olej. Zelenina podľa chuti.
+    remove: [vegansky-syr]

@@ -1,0 +1,48 @@
+title: Chrumkavý falafel s tahini omáčkou
+description: Pravý falafel zo surového namočeného cíceru a kopy byliniek – zvonka chrumkavý, vnútri zelený a jemný.
+cuisine: libanonska
+meals: [obed, vecera]
+time: 45
+active: 35
+servings: 4
+difficulty: 2
+tags: [party]
+ahead: Suchý cícer namoč večer predtým (12–24 h). So sterilizovaným cícerom sa falafel rozpadne.
+ingredients:
+  - cicer-suchy: 250 g | namočený cez noc, scedený (nevarený!)
+  - cibula: 1 ks
+  - cesnak: 3 ks
+  - petrzlenova-vnat: 1 hrnček
+  - bylinky-koriander: 4 pl
+  - kmin: 2 čl
+  - koriander-mlety: 1 čl
+  - cili: 1/2 čl
+  - sol: 1,5 čl
+  - kypriaci-prasok: 1 čl
+  - ryzova-muka: 2 pl | len ak sa zmes rozpadá
+  - olej: 5 pl | toľko vsiakne, na vyprážanie treba ~500 ml
+  - tahini: 4 pl
+  - citron: 1 ks
+  - voda: 4 pl
+  - paradajky: 2 ks
+  - uhorka: 1 ks
+  - salat: 1/2 ks
+steps:
+  - Namočený cícer dôkladne sceď a osuš. Musí byť surový, nevarený – to je trik pravého falafelu.
+  - V sekáčiku zomeľ cícer s cibuľou, 2 strúčikmi cesnaku, bylinkami, korením a soľou na hrubú drvinu, ktorá drží pokope, keď ju stlačíš v dlani. Nie na hladkú pastu.
+  - Vmiešaj prášok do pečiva a zmes daj na 20 minút do chladničky. Ak sa pri tvarovaní rozpadá, pridaj ryžovú múku.
+  - Vytvaruj guľky alebo placky veľkosti vlašského orecha.
+  - Vyprážaj po dávkach v oleji rozohriatom na 175 °C 3–4 minúty dotmava zlatista. Vyber na papierovú utierku.
+  - Omáčka. Tahini vyšľahaj s citrónovou šťavou, zvyšným cesnakom a štipkou soli. Najprv zhustne – postupne prilievaj vodu, kým nie je hladká ako smotana.
+  - Podávaj so zeleninou a omáčkou, v miske alebo v pite.
+tips:
+  - Surovú zmes môžeš zamraziť a vyprážať rovno zmrazenú, len o minútu dlhšie.
+  - Falafel v pite je s lepkom – na bezlepkovú verziu podávaj v miske so šalátom.
+howto: [vyprazanie]
+variants:
+  - name: Pečený v rúre
+    description: Namiesto vyprážania potri guľky 2 PL oleja a peč 25 min na 200 °C, v polovici otoč. Menej tuku, trochu menej chrumkavé.
+    replace:
+      - from: olej
+        to: olej
+        amount: 2 pl

@@ -1,0 +1,24 @@
+title: Domáce ovsené mlieko
+description: Liter ovseného mlieka za pár centov. Trik je krátke mixovanie a ľadová voda, inak je slizké.
+cuisine: moderna
+meals: [domace, ranajky]
+time: 10
+active: 10
+servings: 4
+difficulty: 1
+tags: [urob-si-sam, lacne]
+nutrition: false
+yields: cca 1 l mlieka
+ingredients:
+  - ovsene-vlocky: 80 g
+  - voda: 1 l | ľadová
+  - sol: 1 štipka
+  - datle: 2 ks | voliteľne na sladko
+steps:
+  - Vločky, ľadovú vodu, soľ (a datle) mixuj len 20–30 sekúnd. Dlhé mixovanie uvoľní škrob a mlieko bude slizké.
+  - Preceď cez jemnú utierku alebo sitko. Netlač nasilu – aj to robí mlieko slizkým.
+  - Prelej do fľaše a vychlaď.
+tips:
+  - Vydrží 4 dni v chladničke, pred použitím pretras.
+  - Nezohrievaj ho nad 60 °C, zhustne na kašu. Do kávy je lepšie kupované „barista“.
+  - Pri celiakii použi certifikované bezlepkové vločky.

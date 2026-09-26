@@ -1,0 +1,25 @@
+title: Shiro
+description: Etiópska hodvábna kaša z cícerovej múky s berbere. Za 25 minút, zo 4 surovín, sýta a lacná.
+cuisine: etiopska
+meals: [obed, vecera]
+time: 25
+active: 15
+servings: 4
+difficulty: 1
+tags: [one-pot, lacne]
+ingredients:
+  - cibula: 2 ks | veľmi nadrobno
+  - olej: 3 pl
+  - cesnak: 3 ks
+  - paradajky: 2 ks | nastrúhané
+  - berbere: 1 pl
+  - cicerova-muka: 1 hrnček
+  - voda: 3 hrnček | studená
+  - sol: 1 čl
+  - ryza-basmati: 300 g | alebo injera zo 100 % teffu
+steps:
+  - Cibuľu duste 5 minút v suchom hrnci za stáleho miešania, potom pridaj olej a ďalších 5 minút.
+  - Pridaj cesnak, paradajky a berbere a var, kým sa paradajky nerozpadnú.
+  - Cícerovú múku rozšľahaj v studenej vode bez hrudiek a vlej do hrnca.
+  - Var 10–15 minút za stáleho miešania, kým kaša nezhustne a nestratí múčnu chuť. Podlievaj, ak treba – má byť ako hustý dip.
+  - Osoľ a podávaj s ryžou alebo injerou.

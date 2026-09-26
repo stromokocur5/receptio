@@ -31,6 +31,39 @@ describe('content', () => {
 		expect(content.recipeDetails.get('chana-masala')!.gluten).toBe('free');
 	});
 
+	it('compiles variants and an automatic gluten-free version', () => {
+		const masala = content.recipeDetails.get('tofu-butter-masala')!;
+		expect(masala.usesSubstitutes).toBe(true);
+		expect(masala.substitutes).toBe('optional');
+		const plain = masala.variants.find((v) => v.name === 'Bez náhrad')!;
+		expect(plain.usesSubstitutes).toBe(false);
+		expect(plain.lines.some((l) => l.ingredientId === 'kesu')).toBe(true);
+		const oil = plain.lines.filter((l) => l.ingredientId === 'olej');
+		expect(oil).toHaveLength(1);
+		expect(oil[0].amount).toBe(4);
+
+		const teriyaki = content.recipeDetails.get('teriyaki-tofu')!;
+		const gf = teriyaki.variants.find((v) => v.name === 'Bezlepková verzia')!;
+		expect(gf.gluten).toBe('free');
+		expect(gf.lines.some((l) => l.ingredientId === 'tamari')).toBe(true);
+
+		expect(content.recipeDetails.get('pizza')!.variants.map((v) => v.name)).not.toContain(
+			'Bezlepková verzia'
+		);
+	});
+
+	it('leaves not-eaten lines out of nutrition', () => {
+		const seitan = content.recipeDetails.get('seitan')!;
+		expect(seitan.lines.find((l) => l.ingredientId === 'zeleninovy-vyvar')?.notEaten).toBe(true);
+		expect(seitan.perServing.salt).toBeLessThan(2);
+	});
+
+	it('resolves related recipes', () => {
+		const milk = content.recipeDetails.get('domace-sojove-mlieko')!;
+		expect(milk.related.map((r) => r.id)).toContain('domace-tofu');
+		expect(milk.related.every((r) => r.title.length > 0)).toBe(true);
+	});
+
 	it('links beginner guides from ingredients', () => {
 		const dal = content.recipeDetails.get('kokosovy-dal')!;
 		expect(dal.howto.map((h) => h.slug)).toContain('ryza');

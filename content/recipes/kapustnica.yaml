@@ -1,0 +1,39 @@
+title: Kapustnica s hubami a údeným tofu
+description: Poriadna slovenská kapustnica so sušenými hríbmi, údenou paprikou a údeným tofu namiesto klobásy. Vianočná aj nedeľná.
+cuisine: slovenska
+meals: [obed, vecera]
+time: 60
+active: 20
+servings: 6
+difficulty: 2
+tags: [polievka, klasika, meal-prep]
+ingredients:
+  - susene-huby: 20 g | namočené v 1 hrnčeku horúcej vody
+  - olej: 2 pl
+  - cibula: 2 ks | nadrobno
+  - tofu-udene: 200 g | na kocky
+  - sladka-paprika: 1 pl
+  - udena-paprika: 1 čl
+  - cesnak: 3 ks
+  - kysla-kapusta: 500 g
+  - voda: 8 hrnček
+  - bobkovy-list: 2 ks
+  - nove-korenie: 4 ks
+  - rasca: 1 čl
+  - zemiaky: 3 ks | na kocky
+  - rastlinna-smotana: 1/2 hrnček | na zjemnenie
+  - sol: podľa chuti
+steps:
+  - Huby vylov z vody a nakrájaj, vodu preceď a odlož.
+  - Na oleji speň cibuľu dozlatista, pridaj tofu a 3 minúty opekaj.
+  - Odstav z ohňa, vmiešaj obe papriky a cesnak – na ohni by paprika zhorkla.
+  - Pridaj kapustu aj so šťavou, huby s vodou z namáčania, vodu, bobkový list, nové korenie a rascu. Var 30 minút.
+  - Pridaj zemiaky a var ďalších 15 minút.
+  - Vmiešaj smotanu, dochuť soľou. Ak je príliš kyslá, osladí ju štipka cukru.
+tips:
+  - Na vianočnú verziu pridaj hrsť sušených sliviek spolu s kapustou.
+  - Na druhý deň je najlepšia.
+variants:
+  - name: Bez náhrad
+    description: Bez smotany – tradičná „čistá“ kapustnica je rovnako dobrá.
+    remove: [rastlinna-smotana]

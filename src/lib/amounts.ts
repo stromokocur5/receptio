@@ -4,6 +4,7 @@ export interface ParsedAmount {
 	amount: number | null;
 	unit: Unit | null;
 	note?: string;
+	notEaten?: boolean;
 }
 
 const TO_TASTE = 'podľa chuti';
@@ -14,12 +15,15 @@ const VOLUME_ML: Partial<Record<Unit, number>> = { ml: 1, l: 1000, pl: 15, čl: 
 
 /**
  * Parses an authored amount like `200 g`, `1,5 ks`, `1/2 hrnček`, `podľa chuti`,
- * optionally followed by `| note`.
+ * optionally followed by `| note`. A leading `~` marks something used but not eaten
+ * (`~6 hrnček` of simmering broth).
  */
 export function parseAmount(raw: string): ParsedAmount {
 	const [amountPart, ...noteParts] = raw.split('|');
 	const note = noteParts.join('|').trim() || undefined;
-	const text = amountPart.trim();
+	const trimmed = amountPart.trim();
+	const notEaten = trimmed.startsWith('~') || undefined;
+	const text = notEaten ? trimmed.slice(1).trim() : trimmed;
 
 	if (text === TO_TASTE) return { amount: null, unit: null, note };
 
@@ -32,7 +36,9 @@ export function parseAmount(raw: string): ParsedAmount {
 		: Number(value.replace(',', '.'));
 	if (!Number.isFinite(amount) || amount <= 0) throw new Error(`Neplatné množstvo: "${raw}"`);
 
-	return { amount, unit: unit as Unit, note };
+	return notEaten
+		? { amount, unit: unit as Unit, note, notEaten }
+		: { amount, unit: unit as Unit, note };
 }
 
 export function toGrams(amount: number | null, unit: Unit | null, ingredient: Ingredient): number {

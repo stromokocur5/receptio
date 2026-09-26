@@ -2,7 +2,7 @@
 	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
-	import { CATEGORY_LABELS } from '$lib/labels';
+	import { CATEGORY_LABELS, normalizeSearch } from '$lib/labels';
 	import { proteinEnergyShare } from '$lib/nutrition';
 	import {
 		BULK_PACK_GRAMS,
@@ -21,17 +21,11 @@
 	let search = $state('');
 	let category = $state<IngredientCategory | ''>('');
 
-	const normalize = (t: string) =>
-		t
-			.toLowerCase()
-			.normalize('NFD')
-			.replace(/\p{Diacritic}/gu, '');
-
 	const rows = $derived(
 		catalog.ingredients
 			.filter((i) => i.id !== 'voda')
 			.filter((i) => !category || i.category === category)
-			.filter((i) => normalize(i.name).includes(normalize(search.trim())))
+			.filter((i) => normalizeSearch(i.name).includes(normalizeSearch(search.trim())))
 			.map((ingredient) => ({
 				ingredient,
 				best: bestPrice(ingredient, catalog.prices, today),
@@ -45,7 +39,11 @@
 	const proteinPerEuro = $derived(
 		catalog.ingredients
 			// Protein must be a meaningful share of energy, otherwise cheap starches (flour) top the chart.
-			.filter((i) => i.category !== 'koreniny' && proteinEnergyShare(i.per100g) >= 0.13)
+			// Protein must be a meaningful share of energy, otherwise cheap starches (flour) top the chart;
+			// free leftovers (okara, aquafaba) would divide by ~0.
+			.filter(
+				(i) => !i.byproduct && i.category !== 'koreniny' && proteinEnergyShare(i.per100g) >= 0.15
+			)
 			.map((i) => {
 				const best = bestPrice(i, catalog.prices, today);
 				return { ingredient: i, best, gramsPerEuro: (i.per100g.protein * 10) / best.perKg };
@@ -81,7 +79,7 @@
 		<h2><Icon name="bean" size={24} /> Najviac bielkovín za euro</h2>
 		<p class="muted small">
 			Gramy bielkovín, ktoré dostaneš za 1 €. Počítané zo suchej váhy, len potraviny, kde bielkoviny
-			tvoria aspoň 13 % energie.
+			tvoria aspoň 15 % energie.
 		</p>
 		<ol>
 			{#each proteinPerEuro as p, i (p.ingredient.id)}
@@ -121,8 +119,14 @@
 							<span class="muted small">{CATEGORY_LABELS[ingredient.category]}</span>
 						</div>
 						<div class="best">
-							{formatEur(best.perKg)}<small>/kg</small>
-							{#if best.isEstimate}
+							{#if ingredient.byproduct}
+								<span class="badge leaf">zvyšok – zadarmo</span>
+							{:else}
+								{formatEur(best.perKg)}<small>/kg</small>
+							{/if}
+							{#if ingredient.byproduct}
+								<!-- a leftover has no price to label -->
+							{:else if best.isEstimate}
 								<span class="badge">odhad</span>
 							{:else}
 								<span class="badge leaf">{catalog.storesById.get(best.storeId!)?.name}</span>
@@ -280,7 +284,7 @@
 	}
 	.main {
 		display: grid;
-		grid-template-columns: auto 1fr auto;
+		grid-template-columns: auto minmax(0, 1fr) auto;
 		gap: 12px;
 		align-items: center;
 	}
@@ -315,7 +319,7 @@
 	}
 	.entries li {
 		display: grid;
-		grid-template-columns: auto auto 1fr auto;
+		grid-template-columns: auto auto minmax(0, 1fr) auto;
 		gap: 4px 10px;
 		align-items: center;
 		font-size: 0.86rem;

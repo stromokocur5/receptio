@@ -1,0 +1,25 @@
+title: Fakes – grécka šošovicová polievka
+description: Hustá šošovicová polievka s bobkovým listom, oreganom a kvapkou octu. Grécka babičkovská klasika.
+cuisine: grecka
+meals: [obed, vecera]
+time: 45
+active: 10
+servings: 4
+difficulty: 1
+tags: [polievka, one-pot, lacne]
+ingredients:
+  - olivovy-olej: 4 pl
+  - cibula: 1 ks
+  - mrkva: 1 ks | nadrobno
+  - cesnak: 3 ks
+  - sosovica-hneda: 250 g
+  - paradajkovy-pretlak: 2 pl
+  - bobkovy-list: 2 ks
+  - oregano: 1 čl
+  - voda: 5 hrnček
+  - sol: 1,5 čl
+  - ocot: 1 pl | ideálne červený vínny
+steps:
+  - Na polovici oleja speň cibuľu a mrkvu 5 minút, pridaj cesnak.
+  - Pridaj šošovicu, pretlak, bobkový list, oregano a vodu. Var 35 minút, kým šošovica nezmäkne.
+  - Osoľ, odstav a vmiešaj ocot a zvyšný olej. Ocot polievku prekvapivo „rozsvieti“.

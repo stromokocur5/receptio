@@ -3,7 +3,7 @@
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
-	import { CATEGORY_LABELS } from '$lib/labels';
+	import { CATEGORY_LABELS, normalizeSearch } from '$lib/labels';
 	import { rankByPantry } from '$lib/pantry';
 	import { pantry, removePantryItem, setPantryItem, ui } from '$lib/state.svelte';
 	import { INGREDIENT_CATEGORIES, type Ingredient } from '$lib/types';
@@ -13,15 +13,9 @@
 	let search = $state('');
 	let confirmClear = $state(false);
 
-	const normalize = (t: string) =>
-		t
-			.toLowerCase()
-			.normalize('NFD')
-			.replace(/\p{Diacritic}/gu, '');
-
 	const pickable = $derived(
 		catalog.ingredients.filter(
-			(i) => !i.staple && normalize(i.name).includes(normalize(search.trim()))
+			(i) => !i.staple && normalizeSearch(i.name).includes(normalizeSearch(search.trim()))
 		)
 	);
 	const pickableByCategory = $derived(

@@ -1,0 +1,20 @@
+title: Zelené proteínové smoothie
+description: Banán, špenát, sójové mlieko a arašidové maslo. Chutí ako milkshake, nie ako šalát.
+cuisine: moderna
+meals: [ranajky, snack]
+time: 5
+active: 5
+servings: 1
+difficulty: 1
+tags: [ranajky, rychle, bez-varenia]
+ingredients:
+  - banan: 1 ks | ideálne zmrazený
+  - spenat: 40 g
+  - sojove-mlieko: 1 hrnček
+  - arasidove-maslo: 1 pl
+  - lanove-semienko: 1 pl
+  - ovsene-vlocky: 2 pl
+steps:
+  - Všetko rozmixuj dohladka.
+tips:
+  - Zrelé banány nakrájaj a zamraz – smoothie bude husté a studené bez ľadu.

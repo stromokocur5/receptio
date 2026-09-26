@@ -15,8 +15,10 @@ import {
 	type Ingredient,
 	type IngredientCategory,
 	type PriceEntry,
+	type RecipeComputed,
 	type RecipeDetail,
 	type RecipeLine,
+	type RecipeVariant,
 	type Store,
 	type WikiPage
 } from '$lib/types';
@@ -42,6 +44,7 @@ const CATEGORY_COLORS: Record<IngredientCategory, string> = {
 	'omacky-pasty': '#b8452c',
 	koreniny: '#d99a2b',
 	oleje: '#e8c65a',
+	nahrady: '#f3ecdc',
 	ine: '#cfc6b4'
 };
 
@@ -74,11 +77,29 @@ const ingredientSchema = z
 		units: z.partialRecord(z.enum(UNITS), z.number().positive()).default({}),
 		density: z.number().positive().default(1),
 		price: z.number().positive(),
+		byproduct: z.boolean().default(false),
 		color: hexColor.optional(),
 		note: z.string().optional(),
 		warn: z.string().optional(),
 		gf_alternative: slug.optional(),
 		howto: z.array(slug).default([])
+	})
+	.strict();
+
+const ingredientLineSchema = z
+	.record(slug, z.string())
+	.refine((r) => Object.keys(r).length === 1, 'každý riadok má mať práve jednu surovinu');
+
+const variantSchema = z
+	.object({
+		name: z.string().min(1),
+		description: z.string().min(1),
+		/** Swap one ingredient for another; without `amount` the same quantity is used. */
+		replace: z
+			.array(z.object({ from: slug, to: slug, amount: z.string().optional() }).strict())
+			.default([]),
+		add: z.array(ingredientLineSchema).default([]),
+		remove: z.array(slug).default([])
 	})
 	.strict();
 
@@ -93,14 +114,21 @@ const recipeSchema = z
 		servings: z.number().int().positive(),
 		difficulty: z.union([z.literal(1), z.literal(2), z.literal(3)]),
 		tags: z.array(z.string()).default([]),
-		ingredients: z
-			.array(z.record(slug, z.string()).refine((r) => Object.keys(r).length === 1))
-			.min(1),
+		ahead: z.string().optional(),
+		/** false when a 1:1 flour swap would ruin the dish (pizza dough, halušky). */
+		gf_swap: z.boolean().default(true),
+		yields: z.string().optional(),
+		nutrition: z.boolean().default(true),
+		related: z.array(slug).default([]),
+		ingredients: z.array(ingredientLineSchema).min(1),
 		steps: z.array(z.string().min(1)).min(1),
 		tips: z.array(z.string()).default([]),
-		howto: z.array(slug).default([])
+		howto: z.array(slug).default([]),
+		variants: z.array(variantSchema).default([])
 	})
 	.strict();
+
+const GF_VARIANT_NAME = 'Bezlepková verzia';
 
 const cuisineSchema = z
 	.object({
@@ -203,6 +231,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		units: i.units,
 		density: i.density,
 		priceEstimate: i.price,
+		byproduct: i.byproduct,
 		color: i.color ?? CATEGORY_COLORS[i.category],
 		note: i.note,
 		warn: i.warn,
@@ -266,6 +295,85 @@ export function compileContent(raw: RawContent, today: Date): Content {
 	};
 	for (const i of ingredients) for (const h of i.howto) howtoLink(h, `ingredients.yaml ${i.id}`);
 
+	const parseLine = (ingredientId: string, amountText: string, where: string): RecipeLine => {
+		const ingredient = byId.get(ingredientId);
+		if (!ingredient) throw new Error(`${where}: neznáma surovina "${ingredientId}"`);
+		try {
+			const { amount, unit, note, notEaten } = parseAmount(amountText);
+			const line: RecipeLine = {
+				ingredientId,
+				grams: toGrams(amount, unit, ingredient),
+				amount,
+				unit,
+				note
+			};
+			if (notEaten) line.notEaten = true;
+			return line;
+		} catch (error) {
+			throw new Error(`${where}: ${ingredientId}: ${(error as Error).message}`);
+		}
+	};
+
+	/** Same quantity, new ingredient: keep the kitchen unit when it still makes sense, else grams. */
+	const swapLine = (line: RecipeLine, toId: string, where: string): RecipeLine => {
+		const to = byId.get(toId);
+		if (!to) throw new Error(`${where}: neznáma surovina "${toId}"`);
+		try {
+			toGrams(line.amount, line.unit, to);
+			return { ...line, ingredientId: toId };
+		} catch {
+			return { ...line, ingredientId: toId, amount: Math.round(line.grams), unit: 'g' };
+		}
+	};
+
+	/** A swap can leave the same ingredient twice (butter → oil next to oil); merge same-unit lines. */
+	const mergeLines = (lines: RecipeLine[]): RecipeLine[] => {
+		const merged: RecipeLine[] = [];
+		for (const line of lines) {
+			const twin = merged.find(
+				(m) =>
+					m.ingredientId === line.ingredientId &&
+					m.unit === line.unit &&
+					m.unit !== null &&
+					!m.notEaten === !line.notEaten
+			);
+			if (!twin) {
+				merged.push({ ...line });
+				continue;
+			}
+			twin.amount = (twin.amount ?? 0) + (line.amount ?? 0);
+			twin.grams += line.grams;
+			if (line.note && line.note !== twin.note) {
+				twin.note = twin.note ? `${twin.note}; ${line.note}` : line.note;
+			}
+		}
+		return merged;
+	};
+
+	const compute = (lines: RecipeLine[], servings: number): RecipeComputed => {
+		const used = [...new Set(lines.map((l) => l.ingredientId))].map((i) => byId.get(i)!);
+		const gluten = recipeGluten(used);
+		const perServing = recipeNutrients(lines, byId, servings);
+		let cost = 0;
+		let costIsEstimate = false;
+		for (const line of lines) {
+			const price = bestPrice(byId.get(line.ingredientId)!, prices, today);
+			cost += (price.perKg * line.grams) / 1000;
+			if (price.isEstimate && line.grams > 0) costIsEstimate = true;
+		}
+		return {
+			lines,
+			gluten: gluten.status,
+			gfSwappable: gluten.swappable,
+			allergens: recipeAllergens(used),
+			perServing,
+			costPerServing: cost / servings,
+			costIsEstimate,
+			usesSubstitutes: used.some((i) => i.category === 'nahrady'),
+			warnings: recipeWarnings(used, byId, perServing)
+		};
+	};
+
 	const recipeDetails = new Map<string, RecipeDetail>();
 	for (const [path, text] of Object.entries(raw.recipes)) {
 		const id = fileId(path);
@@ -275,30 +383,65 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		if (!cuisineIds.has(r.cuisine)) throw new Error(`${where}: neznáma kuchyňa "${r.cuisine}"`);
 		if (r.active > r.time) throw new Error(`${where}: active nesmie byť viac ako time`);
 
-		const lines: RecipeLine[] = r.ingredients.map((entry) => {
+		const lines = r.ingredients.map((entry) => {
 			const [ingredientId, amountText] = Object.entries(entry)[0];
-			const ingredient = byId.get(ingredientId);
-			if (!ingredient) throw new Error(`${where}: neznáma surovina "${ingredientId}"`);
-			try {
-				const { amount, unit, note } = parseAmount(amountText);
-				return { ingredientId, grams: toGrams(amount, unit, ingredient), amount, unit, note };
-			} catch (error) {
-				throw new Error(`${where}: ${ingredientId}: ${(error as Error).message}`);
+			return parseLine(ingredientId, amountText, where);
+		});
+		const base = compute(lines, r.servings);
+		if (!r.gf_swap) base.gfSwappable = false;
+		// Iron/salt hints are nutrition-derived; meaningless when the result is strained.
+		if (!r.nutrition) base.warnings = base.warnings.filter((w) => w.level !== 'info');
+
+		const variants: RecipeVariant[] = r.variants.map((v) => {
+			const vWhere = `${where} variant "${v.name}"`;
+			const baseIds = new Set(lines.map((l) => l.ingredientId));
+			for (const id of [...v.replace.map((x) => x.from), ...v.remove]) {
+				if (!baseIds.has(id)) throw new Error(`${vWhere}: "${id}" nie je v surovinách receptu`);
 			}
+			const variantLines = lines
+				.filter((l) => !v.remove.includes(l.ingredientId))
+				.map((l) => {
+					const rep = v.replace.find((x) => x.from === l.ingredientId);
+					if (!rep) return l;
+					return rep.amount ? parseLine(rep.to, rep.amount, vWhere) : swapLine(l, rep.to, vWhere);
+				})
+				.concat(
+					v.add.map((entry) => {
+						const [ingredientId, amountText] = Object.entries(entry)[0];
+						return parseLine(ingredientId, amountText, vWhere);
+					})
+				);
+			return {
+				name: v.name,
+				description: v.description,
+				...compute(mergeLines(variantLines), r.servings)
+			};
 		});
 
-		const used = [...new Set(lines.map((l) => l.ingredientId))].map((i) => byId.get(i)!);
-		const gluten = recipeGluten(used);
-		const perServing = recipeNutrients(lines, byId, r.servings);
-
-		let cost = 0;
-		let costIsEstimate = false;
-		for (const line of lines) {
-			const price = bestPrice(byId.get(line.ingredientId)!, prices, today);
-			cost += (price.perKg * line.grams) / 1000;
-			if (price.isEstimate && line.grams > 0) costIsEstimate = true;
+		if (
+			base.gluten === 'contains' &&
+			base.gfSwappable &&
+			!variants.some((v) => v.name === GF_VARIANT_NAME)
+		) {
+			const culprits = lines
+				.map((l) => byId.get(l.ingredientId)!)
+				.filter((i) => i.gluten === 'contains');
+			const gfLines = lines.map((l) => {
+				const ingredient = byId.get(l.ingredientId)!;
+				return ingredient.gluten === 'contains' ? swapLine(l, ingredient.gfAlternative!, where) : l;
+			});
+			variants.push({
+				name: GF_VARIANT_NAME,
+				description: `Zámena: ${[...new Set(culprits)]
+					.map((i) => `${i.name} → ${byId.get(i.gfAlternative!)!.name}`)
+					.join(', ')}.`,
+				...compute(mergeLines(gfLines), r.servings)
+			});
 		}
 
+		const allUsed = new Set(
+			[...lines, ...variants.flatMap((v) => v.lines)].map((l) => l.ingredientId)
+		);
 		recipeDetails.set(id, {
 			id,
 			title: r.title,
@@ -310,26 +453,40 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			servings: r.servings,
 			difficulty: r.difficulty,
 			tags: r.tags,
-			gluten: gluten.status,
-			gfSwappable: gluten.swappable,
-			allergens: recipeAllergens(used),
-			perServing,
-			costPerServing: cost / r.servings,
-			costIsEstimate,
-			lines,
+			ahead: r.ahead,
+			yields: r.yields,
+			showNutrition: r.nutrition,
+			...base,
+			substitutes: !base.usesSubstitutes
+				? 'none'
+				: variants.some((v) => !v.usesSubstitutes)
+					? 'optional'
+					: 'required',
+			variants,
 			steps: r.steps,
 			tips: r.tips,
-			warnings: recipeWarnings(used, byId, perServing),
-			howto: [...new Set([...r.howto, ...used.flatMap((i) => i.howto)])].map((h) =>
-				howtoLink(h, where)
-			)
+			howto: [...new Set([...r.howto, ...[...allUsed].flatMap((i) => byId.get(i)!.howto)])].map(
+				(h) => howtoLink(h, where)
+			),
+			// Resolved below, once every recipe is known.
+			related: r.related.map((relatedId) => ({ id: relatedId, title: '' }))
+		});
+	}
+
+	for (const recipe of recipeDetails.values()) {
+		recipe.related = recipe.related.map(({ id: relatedId }) => {
+			const target = recipeDetails.get(relatedId);
+			if (!target) {
+				throw new Error(
+					`content/recipes/${recipe.id}.yaml: neznámy súvisiaci recept "${relatedId}"`
+				);
+			}
+			return { id: relatedId, title: target.title };
 		});
 	}
 
 	const recipes = [...recipeDetails.values()]
-		.map(
-			({ steps: _steps, tips: _tips, warnings: _warnings, howto: _howto, ...summary }) => summary
-		)
+		.map(({ steps: _steps, tips: _tips, howto: _howto, related: _related, ...summary }) => summary)
 		.sort((a, b) => a.title.localeCompare(b.title, 'sk'));
 
 	return { ingredients, recipes, cuisines, stores, prices, recipeDetails, wiki };

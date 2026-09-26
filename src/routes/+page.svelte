@@ -52,6 +52,13 @@
 			tone: 'var(--tomato)'
 		},
 		{
+			href: '/recepty?jedlo=domace',
+			title: 'Urob si sám',
+			text: 'Domáce tofu, tempeh, sójové mlieko, jogurt, tahini či arašidové maslo.',
+			icon: 'cube',
+			tone: 'var(--plum)'
+		},
+		{
 			href: '/plan',
 			title: 'Týždenný plán a nákup',
 			text: 'Vyber recepty a dostaneš jeden nákupný zoznam bez vecí, ktoré máš doma.',

@@ -33,6 +33,7 @@ function ing(id: string, group = id, extra: Partial<Ingredient> = {}): Ingredien
 		priceEstimate: 2,
 		color: '#000000',
 		howto: [],
+		byproduct: false,
 		...extra
 	};
 }
@@ -63,6 +64,11 @@ function recipe(id: string, lines: [string, number][], servings = 2): RecipeSumm
 		perServing: zero,
 		costPerServing: 1,
 		costIsEstimate: true,
+		usesSubstitutes: false,
+		warnings: [],
+		substitutes: 'none',
+		showNutrition: true,
+		variants: [],
 		lines: lines.map(([ingredientId, grams]) => ({ ingredientId, grams, amount: grams, unit: 'g' }))
 	};
 }
@@ -115,6 +121,21 @@ describe('buildShoppingList', () => {
 		expect(items.find((i) => i.ingredient.id === 'cicer-sterilizovany')?.buyGrams).toBe(480);
 		expect(list.staples.map((i) => i.ingredient.id)).toEqual(['sol']);
 		expect(list.hasEstimates).toBe(true);
+	});
+
+	it('moves out-of-stock basics from the check list to the shopping list', () => {
+		const list = buildShoppingList(
+			[{ recipeId: 'r', servings: 2 }],
+			recipesById,
+			byId,
+			{},
+			[],
+			today,
+			new Set(['sol'])
+		);
+		const salt = list.byCategory.flatMap(([, i]) => i).find((i) => i.ingredient.id === 'sol');
+		expect(salt?.restock).toBe(true);
+		expect(list.staples).toEqual([]);
 	});
 
 	it('uses real prices when available', () => {

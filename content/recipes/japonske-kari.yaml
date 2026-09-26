@@ -1,0 +1,38 @@
+title: Japonské kari
+description: Hustá, jemne sladká kari omáčka so zemiakmi a mrkvou z domácej zápražky – bez hotových kociek, ktoré bývajú s mliekom.
+cuisine: japonska
+meals: [obed, vecera]
+time: 45
+active: 20
+servings: 4
+difficulty: 2
+tags: [meal-prep]
+ingredients:
+  - rastlinne-maslo: 3 pl
+  - hladka-muka: 3 pl
+  - kari-korenie: 2 pl
+  - garam-masala: 1 čl
+  - olej: 2 pl
+  - tofu-natural: 300 g | na kocky
+  - cibula: 2 ks | na polmesiačiky
+  - mrkva: 2 ks | na kúsky
+  - zemiaky: 3 ks | na kocky
+  - zeleninovy-vyvar: 3 hrnček
+  - jablko: 1/2 ks | nastrúhané
+  - tamari: 2 pl
+  - javorovy-sirup: 1 čl
+  - ryza-jazminova: 300 g
+steps:
+  - Zápražka. Na miernom ohni rozpusti maslo, vmiešaj múku a za stáleho miešania 5–8 minút praž, kým nie je svetlohnedá a nevonia orieškovo. Primiešaj kari a garam masalu, 30 sekúnd praž a odstav.
+  - V hrnci opeč tofu na oleji dozlatista a daj bokom. Na tom istom oleji restuj cibuľu 10 minút do zlatista.
+  - Pridaj mrkvu, zemiaky, vývar a jablko a var 15 minút, kým zemiaky nezmäknú.
+  - Po naberačkách vývaru rozmiešaj zápražku a vlej ju do hrnca. Var 5 minút, kým omáčka nezhustne.
+  - Dochuť tamari a sirupom, vráť tofu a podávaj s ryžou.
+tips:
+  - Japonské kari je na druhý deň ešte lepšie.
+variants:
+  - name: Bez náhrad
+    description: Zápražku sprav na oleji namiesto rastlinného masla. Chuť je o niečo menej maslová, postup rovnaký.
+    replace:
+      - from: rastlinne-maslo
+        to: olej

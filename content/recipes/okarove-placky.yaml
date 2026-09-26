@@ -1,0 +1,27 @@
+title: Okarové placky
+description: Chrumkavé placky z okary, ktorá zostane po výrobe sójového mlieka či tofu. Nič nevyhodíš a máš obed.
+cuisine: moderna
+meals: [domace, obed, vecera]
+time: 30
+active: 25
+servings: 3
+difficulty: 1
+tags: [zvysky]
+related: [domace-sojove-mlieko, domace-tofu]
+ingredients:
+  - okara: 300 g | čerstvá
+  - cibula: 1 ks | nadrobno
+  - mrkva: 1 ks | nastrúhaná
+  - cesnak: 2 ks
+  - cicerova-muka: 4 pl
+  - tamari: 1 pl
+  - udena-paprika: 1 čl
+  - majoranka: 1 čl
+  - sol: 1/2 čl
+  - olej: 4 pl
+steps:
+  - Okaru zmiešaj s cibuľou, mrkvou, prelisovaným cesnakom, cícerovou múkou, tamari a korením.
+  - Zmes má držať pokope – ak je suchá, pridaj lyžicu vody, ak mokrá, lyžicu múky.
+  - Vytvaruj 8 placiek a opeč na oleji 4 minúty z každej strany dozlatista.
+tips:
+  - Výborné so zemiakovým šalátom alebo v žemli ako burger.

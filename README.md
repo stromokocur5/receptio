@@ -66,6 +66,29 @@ tips:
   - Voliteľný tip.
 ```
 
+Voliteľné polia:
+
+```yaml
+ahead: Cícer namoč cez noc. # príprava vopred, nepočíta sa do time
+yields: cca 400 g tofu # výťažok (DIY recepty)
+nutrition: false # nezobrazovať živiny (výsledok sa sceďuje, napr. sójové mlieko)
+gf_swap: false # nevytvárať automatickú bezlepkovú verziu (pizza, halušky)
+related: [domace-tofu] # odkazy na iné recepty
+howto: [vyprazanie] # návody navyše k tým zo surovín
+variants:
+  - name: Bez náhrad
+    description: Čo robiť inak.
+    replace:
+      - { from: rastlinna-smotana, to: kesu, amount: 60 g | namočené }
+      - { from: rastlinne-maslo, to: olej } # bez amount = rovnaké množstvo
+    add:
+      - voda: 3/4 hrnček
+    remove: [sojovy-jogurt]
+```
+
+Množstvo s `~` na začiatku (`~6 hrnček`) sa kúpi, ale nezje (vývar na dusenie) – nepočíta sa do živín.
+Bezlepková verzia sa vytvorí sama, ak má každá lepková surovina v `ingredients.yaml` `gf_alternative`.
+
 Potom `pnpm test`. Ak surovina neexistuje, jednotka nedáva zmysel alebo chýba hmotnosť pre `ks`, test povie kde.
 Nová surovina patrí do `content/ingredients.yaml` (hodnoty na 100 g, ideálne z USDA FoodData Central).
 

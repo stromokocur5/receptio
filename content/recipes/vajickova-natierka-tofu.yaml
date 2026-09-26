@@ -1,0 +1,34 @@
+title: „Vajíčková“ nátierka z tofu
+description: Slovenská klasika na chlebík bez vajec. Kala namak jej dá presnú vajíčkovú vôňu.
+cuisine: slovenska
+meals: [ranajky, snack]
+time: 10
+active: 10
+servings: 4
+difficulty: 1
+tags: [bez-varenia, rychle]
+ingredients:
+  - tofu-natural: 300 g
+  - veganska-majoneza: 3 pl
+  - horcica: 1 čl
+  - kurkuma: 1/2 čl
+  - kala-namak: 1 čl
+  - cibula: 1/2 ks | nadrobno
+  - pazitka: 2 pl
+  - cierne-korenie: podľa chuti
+  - chlieb: 4 ks
+steps:
+  - Tofu roztlač vidličkou na drobné kúsky ako nasekané vajíčka.
+  - Zmiešaj s majonézou, horčicou, kurkumou, kala namak, cibuľou a korením.
+  - Natri na chlieb a posyp pažítkou.
+tips:
+  - Po hodine v chladničke má ešte výraznejšiu chuť.
+variants:
+  - name: Bez náhrad
+    description: Namiesto majonézy olivový olej s citrónom. Nátierka bude trochu sypkejšia.
+    replace:
+      - from: veganska-majoneza
+        to: olivovy-olej
+        amount: 2 pl
+    add:
+      - citron: 1/2 ks

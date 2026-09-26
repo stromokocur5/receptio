@@ -1,0 +1,49 @@
+title: Lasagne so šošovicovým ragú a bešamelom
+description: Vrstvené lasagne s hustým šošovicovo-hubovým ragú a krémovým rastlinným bešamelom. Nedeľný obed, ktorý uspokojí aj starých rodičov.
+cuisine: talianska
+meals: [obed, vecera]
+time: 110
+active: 45
+servings: 6
+difficulty: 3
+tags: [party, meal-prep]
+ingredients:
+  - olivovy-olej: 3 pl
+  - cibula: 1 ks
+  - mrkva: 2 ks | nadrobno
+  - zeler-stonkovy: 1 ks | nadrobno
+  - cesnak: 3 ks
+  - sampinony: 250 g | nadrobno nasekané
+  - sosovica-hneda: 200 g
+  - paradajkovy-pretlak: 2 pl
+  - passata: 3 hrnček
+  - voda: 2 hrnček
+  - oregano: 1 čl
+  - tamari: 1 pl
+  - sol: 1,5 čl
+  - rastlinne-maslo: 4 pl
+  - hladka-muka: 4 pl
+  - sojove-mlieko: 3 hrnček
+  - muskatovy-orech: 1/4 čl
+  - vyzivne-drozdie: 2 pl
+  - lasagne-platne: 12 ks
+  - vegansky-syr: 1 hrnček
+  - bazalka: 2 pl
+steps:
+  - Ragú. Na oleji speň cibuľu, mrkvu a zeler 8 minút, pridaj cesnak a huby a opekaj, kým sa neodparí voda.
+  - Pridaj šošovicu, pretlak, passatu, vodu, oregano, tamari a soľ. Var 35 minút, kým šošovica nezmäkne a ragú nezhustne.
+  - Bešamel. Na masle 2 minúty praž múku, za stáleho šľahania prilievaj mlieko a var 5 minút do hustoty. Dochuť muškátom, droždím a soľou.
+  - Do zapekacej misy daj na dno trochu ragú, potom vrstvi platne, ragú a bešamel – 3–4 vrstvy. Posledná vrstva je bešamel.
+  - Posyp syrom, prikry alobalom a peč na 190 °C 30 minút, potom bez alobalu 15 minút dozlatista.
+  - Nechaj 15 minút odpočinúť, inak sa pri krájaní rozpadne. Posyp bazalkou.
+tips:
+  - Lasagne sa dajú zložiť deň vopred a upiecť až na druhý deň.
+variants:
+  - name: Bez náhrad
+    description: Bešamel na olivovom oleji a namiesto vegánskeho syra navrch výživné droždie s kvapkou oleja.
+    replace:
+      - from: rastlinne-maslo
+        to: olivovy-olej
+    remove: [vegansky-syr]
+    add:
+      - vyzivne-drozdie: 2 pl | navrch

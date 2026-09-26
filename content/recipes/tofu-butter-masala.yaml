@@ -1,0 +1,48 @@
+title: Tofu butter masala
+description: Krémové paradajkové kari ako „butter chicken“ – s chrumkavým tofu, rastlinným maslom a smotanou.
+cuisine: indicka-sever
+meals: [obed, vecera]
+time: 40
+active: 25
+servings: 4
+difficulty: 2
+tags: []
+ingredients:
+  - tofu-natural: 400 g | vylisované, na kocky
+  - kukuricny-skrob: 1 pl
+  - olej: 2 pl
+  - rastlinne-maslo: 2 pl
+  - cibula: 1 ks | nadrobno
+  - cesnak: 4 ks
+  - zazvor: 1 pl | nastrúhaný
+  - garam-masala: 2 čl
+  - kmin: 1 čl
+  - sladka-paprika: 2 čl
+  - cili: 1/2 čl
+  - kurkuma: 1/2 čl
+  - passata: 2 hrnček
+  - javorovy-sirup: 1 čl
+  - rastlinna-smotana: 1 hrnček
+  - sol: 1 čl
+  - bylinky-koriander: 2 pl
+  - ryza-basmati: 300 g
+steps:
+  - Uvar ryžu.
+  - Tofu obaľ v škrobe a na oleji opeč dozlatista. Daj bokom.
+  - Na rastlinnom masle speň cibuľu 8 minút, pridaj cesnak, zázvor a všetko korenie a minútu restuj.
+  - Vlej passatu so sirupom a soľou a var 10 minút.
+  - Vmiešaj smotanu, omáčku rozmixuj ponorným mixérom dohladka a vráť do nej tofu. Zohrej 2 minúty.
+  - Podávaj s ryžou a koriandrom.
+tips:
+  - Tofu pridaj až na konci, v omáčke by zmäklo.
+variants:
+  - name: Bez náhrad
+    description: Kešu krém namiesto rastlinnej smotany a olej namiesto rastlinného masla. 60 g kešu zalej vriacou vodou na 15 minút, sceď a rozmixuj s 3/4 hrnčeka vody dohladka.
+    replace:
+      - from: rastlinna-smotana
+        to: kesu
+        amount: 60 g | namočené a rozmixované s vodou
+      - from: rastlinne-maslo
+        to: olej
+    add:
+      - voda: 3/4 hrnček

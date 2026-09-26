@@ -6,6 +6,7 @@
 	import GlutenBadge from './GlutenBadge.svelte';
 	import Icon from './Icon.svelte';
 	import LikeButton from './LikeButton.svelte';
+	import { addToPlan, servingsInPlan, ui } from '$lib/state.svelte';
 	import PlateArt from './PlateArt.svelte';
 
 	let {
@@ -16,11 +17,18 @@
 
 	const catalog = useCatalog();
 	const cuisine = $derived(catalog.cuisinesById.get(recipe.cuisine));
+	const inPlan = $derived(ui.loaded ? servingsInPlan(recipe.id) : 0);
+	let justAdded = $state(false);
+
+	function planIt() {
+		addToPlan(recipe.id, recipe.servings);
+		justAdded = true;
+		setTimeout(() => (justAdded = false), 1400);
+	}
 </script>
 
-<a
+<article
 	class="recipe-card card plate-host draw-host rise"
-	href="/recepty/{recipe.id}"
 	style:--i={index}
 	style:--accent={cuisine?.color}
 >
@@ -33,15 +41,36 @@
 				animate={false}
 			/>
 		</div>
-		<div class="like-slot"><LikeButton recipeId={recipe.id} compact /></div>
+		<div class="actions">
+			<button
+				class="plan-btn"
+				class:added={justAdded}
+				class:in-plan={inPlan > 0}
+				title={inPlan ? `V pláne: ${inPlan} porcií – pridať ďalšie` : 'Pridať do plánu'}
+				aria-label="Pridať {recipe.title} do plánu"
+				onclick={planIt}
+			>
+				<Icon name={justAdded ? 'check' : inPlan ? 'calendar' : 'plus'} size={16} stroke={2.2} />
+				{#if inPlan && !justAdded}<span>{inPlan}</span>{/if}
+			</button>
+			<LikeButton recipeId={recipe.id} compact />
+		</div>
 		{#if cuisine}<span class="cuisine">{cuisine.name}</span>{/if}
 	</div>
 	<div class="body">
-		<h3>{recipe.title}</h3>
+		<h3><a class="stretched" href="/recepty/{recipe.id}">{recipe.title}</a></h3>
 		<div class="meta">
+			<span title="Náročnosť {recipe.difficulty}/3">
+				<Icon name="chef" size={16} />
+				<span class="dots" aria-label="náročnosť {recipe.difficulty} z 3">
+					{#each [1, 2, 3] as d (d)}<i class:on={d <= recipe.difficulty}></i>{/each}
+				</span>
+			</span>
 			<span><Icon name="clock" size={16} /> {recipe.time} min</span>
-			<span><Icon name="bean" size={16} /> {formatNumber(recipe.perServing.protein, 0)} g</span>
-			<span><Icon name="flame" size={16} /> {formatNumber(recipe.perServing.kcal, 0)}</span>
+			{#if recipe.showNutrition}
+				<span><Icon name="bean" size={16} /> {formatNumber(recipe.perServing.protein, 0)} g</span>
+				<span><Icon name="flame" size={16} /> {formatNumber(recipe.perServing.kcal, 0)}</span>
+			{/if}
 			<span title={recipe.costIsEstimate ? 'Odhad ceny' : 'Podľa aktuálnych cien'}>
 				<Icon name="euro" size={16} />
 				{formatEur(recipe.costPerServing)}{recipe.costIsEstimate ? '*' : ''}
@@ -49,6 +78,7 @@
 		</div>
 		<div class="badges">
 			<GlutenBadge {recipe} />
+			{#if recipe.ahead}<span class="badge sky" title={recipe.ahead}>Pripraviť vopred</span>{/if}
 			{#if match}
 				{#if match.missing.length === 0 && match.short.length === 0}
 					<span class="badge leaf sticker"
@@ -65,14 +95,13 @@
 			{/if}
 		</div>
 	</div>
-</a>
+</article>
 
 <style>
 	.recipe-card {
+		position: relative;
 		display: flex;
 		flex-direction: column;
-		text-decoration: none;
-		color: inherit;
 		overflow: hidden;
 		transition:
 			transform 0.35s var(--ease-spring),
@@ -102,10 +131,63 @@
 	.recipe-card:hover .plate-wrap {
 		transform: scale(1.04);
 	}
-	.like-slot {
+	/* The title link covers the whole card; the buttons sit above it. */
+	.stretched {
+		color: inherit;
+		text-decoration: none;
+	}
+	.stretched::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+	}
+	.stretched:focus-visible {
+		outline: none;
+	}
+	.recipe-card:has(.stretched:focus-visible) {
+		outline: 3px solid var(--turmeric);
+		outline-offset: 2px;
+	}
+	.actions {
 		position: absolute;
 		top: 10px;
 		right: 10px;
+		z-index: 2;
+		display: flex;
+		gap: 6px;
+	}
+	.plan-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 3px;
+		height: 30px;
+		min-width: 30px;
+		justify-content: center;
+		padding: 0 8px;
+		border: 0;
+		border-radius: 999px;
+		background: color-mix(in srgb, var(--card) 88%, transparent);
+		backdrop-filter: blur(6px);
+		color: var(--ink-2);
+		font-size: 0.8rem;
+		font-weight: 700;
+		transition:
+			transform 0.25s var(--ease-spring),
+			background 0.2s,
+			color 0.2s;
+	}
+	.plan-btn:hover {
+		transform: scale(1.08);
+		color: var(--leaf);
+	}
+	.plan-btn.in-plan {
+		color: var(--leaf);
+	}
+	.plan-btn.added {
+		background: var(--leaf);
+		color: var(--paper);
+		transform: scale(1.12);
 	}
 	.cuisine {
 		position: absolute;
@@ -146,6 +228,19 @@
 	}
 	.missing {
 		white-space: normal;
+	}
+	.dots {
+		display: inline-flex;
+		gap: 2px;
+	}
+	.dots i {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--line);
+	}
+	.dots i.on {
+		background: var(--tomato);
 	}
 	.badges {
 		display: flex;

@@ -1,0 +1,39 @@
+title: Hubové rizoto
+description: Krémové rizoto so šampiňónmi a sušenými hríbmi. Trpezlivé miešanie za tie peniaze stojí.
+cuisine: talianska
+meals: [obed, vecera]
+time: 40
+active: 35
+servings: 4
+difficulty: 2
+tags: []
+ingredients:
+  - susene-huby: 15 g | namočené v 1 hrnčeku horúcej vody
+  - zeleninovy-vyvar: 5 hrnček | horúci
+  - olivovy-olej: 2 pl
+  - sampinony: 400 g | na plátky
+  - cibula: 1 ks | nadrobno
+  - cesnak: 2 ks
+  - ryza-arborio: 300 g
+  - tymian: 1/2 čl
+  - rastlinne-maslo: 2 pl
+  - vyzivne-drozdie: 3 pl
+  - citron: 1/2 ks
+  - petrzlenova-vnat: 3 pl
+  - sol: podľa chuti
+  - cierne-korenie: podľa chuti
+steps:
+  - Sušené huby vylov z vody a nasekaj. Vodu preceď a prilej k vývaru, ktorý nechaj na miernom ohni teplý.
+  - Šampiňóny opeč na polovici oleja na vysokom ohni dohneda, osoľ a daj bokom.
+  - Na zvyšnom oleji speň cibuľu 5 minút, pridaj cesnak a ryžu a 2 minúty praž, kým zrnká nie sú na okrajoch priesvitné.
+  - Prilievaj horúci vývar po naberačke a miešaj. Ďalšiu pridaj, až keď sa predchádzajúca vpije. Trvá to 18–20 minút, ryža má ostať jemne na skus.
+  - Vmiešaj huby, tymian, maslo, droždie a citrón a nechaj 2 minúty odpočívať pod pokrievkou. Rizoto má tiecť ako láva.
+  - Posyp petržlenovou vňaťou a korením.
+tips:
+  - Ak máš vegánske biele víno, podlej ním ryžu hneď po opražení.
+variants:
+  - name: Bez náhrad
+    description: Na konci vmiešaj 2 PL olivového oleja namiesto rastlinného masla.
+    replace:
+      - from: rastlinne-maslo
+        to: olivovy-olej

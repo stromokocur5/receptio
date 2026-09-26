@@ -1,0 +1,43 @@
+title: Bibimbap s tofu
+description: Kórejská miska ryže s osobitne dochutenou zeleninou, tofu a pikantnou gochujang omáčkou. Pred jedlom všetko premiešaj.
+cuisine: korejska
+meals: [obed, vecera]
+time: 45
+active: 40
+servings: 4
+difficulty: 2
+tags: []
+ingredients:
+  - ryza-jazminova: 300 g
+  - gochujang: 3 pl
+  - javorovy-sirup: 1 pl
+  - sezamovy-olej: 2 pl
+  - ocot: 1 pl
+  - tofu-natural: 300 g | na plátky
+  - tamari: 3 pl
+  - olej: 2 pl
+  - cesnak: 3 ks
+  - spenat: 200 g
+  - klicky: 1 hrnček
+  - mrkva: 2 ks | na tenké prúžky
+  - cuketa: 1 ks | na prúžky
+  - sampinony: 200 g | na plátky
+  - sezam: 1 pl
+  - jarna-cibulka: 2 ks
+steps:
+  - Uvar ryžu. Omáčka – zmiešaj gochujang, sirup, 1 PL sezamového oleja, ocot a 2 PL vody.
+  - Tofu opeč na polovici oleja, na konci pridaj 2 PL tamari a nechaj ho zglazovať.
+  - Špenát a klíčky zvlášť spar 30 sekúnd vo vriacej vode, sceď a vytlač. Každé dochuť kvapkou sezamového oleja, trochou cesnaku a soľou.
+  - Mrkvu, cuketu a huby zvlášť rýchlo orestuj na zvyšnom oleji, každú dávku pokvapkaj tamari.
+  - Do misiek daj ryžu, na ňu v kôpkach zeleninu a tofu, posyp sezamom a cibuľkou a pridaj lyžicu omáčky.
+tips:
+  - V kórejských reštauráciách sa podáva v rozpálenej kamennej miske, aby ryža pripiekla dochrumkava – doma to zvládne liatinová panvica.
+variants:
+  - name: Bez gochujangu
+    description: Gochujang takmer vždy obsahuje lepok. Náhrada – miso s čili a sirupom. Použi ryžové miso s označením bezlepkové.
+    replace:
+      - from: gochujang
+        to: miso
+        amount: 2 pl
+    add:
+      - cili: 1 čl

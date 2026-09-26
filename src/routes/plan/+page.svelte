@@ -4,6 +4,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import PlateArt from '$lib/components/PlateArt.svelte';
+	import RecipePicker from '$lib/components/RecipePicker.svelte';
 	import { CATEGORY_LABELS } from '$lib/labels';
 	import {
 		DAILY_REFERENCE,
@@ -14,8 +15,8 @@
 	import { basketByStore } from '$lib/pricing';
 	import { buildShoppingList, type ShoppingItem } from '$lib/shopping';
 	import {
-		addToPlan,
 		checkedItems,
+		outOfStock,
 		pantry,
 		plan,
 		setPantryItem,
@@ -27,7 +28,6 @@
 	const catalog = useCatalog();
 	const today = $derived(new Date());
 
-	let pick = $state('');
 	let copied = $state(false);
 	let confirmClear = $state(false);
 
@@ -35,7 +35,12 @@
 		plan.current
 			.map((e) => ({ ...e, recipe: catalog.recipesById.get(e.recipeId) }))
 			.filter((e) => e.recipe !== undefined)
-			.map((e) => ({ ...e, recipe: e.recipe! }))
+			.map((e) => {
+				const recipe = e.recipe!;
+				const variant = e.variant ? recipe.variants.find((v) => v.name === e.variant) : undefined;
+				// `data` holds whatever differs between variants: lines, nutrition, cost.
+				return { ...e, recipe, data: variant ?? recipe, key: `${e.recipeId}|${e.variant ?? ''}` };
+			})
 	);
 	const totalServings = $derived(entries.reduce((s, e) => s + e.servings, 0));
 
@@ -46,7 +51,8 @@
 			catalog.ingredientsById,
 			pantry.current,
 			catalog.prices,
-			today
+			today,
+			new Set(Object.keys(outOfStock.current).filter((id) => outOfStock.current[id]))
 		)
 	);
 	const allItems = $derived(list.byCategory.flatMap(([, items]) => items));
@@ -67,7 +73,7 @@
 		const total = emptyNutrients();
 		for (const e of entries) {
 			const factor = e.servings;
-			const n = e.recipe.perServing;
+			const n = e.data.perServing;
 			for (const key of Object.keys(total) as (keyof typeof total)[]) total[key] += n[key] * factor;
 		}
 		return scaleNutrients(total, 1 / settings.current.planDays);
@@ -79,13 +85,11 @@
 			: DAILY_REFERENCE.protein
 	});
 
-	const planCost = $derived(entries.reduce((s, e) => s + e.recipe.costPerServing * e.servings, 0));
+	const planCost = $derived(entries.reduce((s, e) => s + e.data.costPerServing * e.servings, 0));
 
-	function add() {
-		if (!pick) return;
-		const recipe = catalog.recipesById.get(pick);
-		if (recipe) addToPlan(recipe.id, recipe.servings);
-		pick = '';
+	function setOutOfStock(id: string, missing: boolean) {
+		const { [id]: _previous, ...rest } = outOfStock.current;
+		outOfStock.current = missing ? { ...rest, [id]: true } : rest;
 	}
 
 	function toggleChecked(id: string) {
@@ -117,6 +121,10 @@
 	function boughtToPantry() {
 		for (const item of allItems) {
 			if (!checkedItems.current[item.ingredient.id]) continue;
+			if (item.restock) {
+				setOutOfStock(item.ingredient.id, false);
+				continue;
+			}
 			const current = pantry.current[item.ingredient.id];
 			if (current === null) continue;
 			setPantryItem(item.ingredient.id, Math.round((current ?? 0) + item.buyGrams));
@@ -161,50 +169,37 @@
 					{/if}
 				</div>
 
-				<form
-					class="add"
-					onsubmit={(e) => {
-						e.preventDefault();
-						add();
-					}}
-				>
-					<label class="field grow">
-						<span class="sr-only">Vyber recept</span>
-						<select bind:value={pick}>
-							<option value="">Pridať recept…</option>
-							{#each catalog.recipes as r (r.id)}<option value={r.id}>{r.title}</option>{/each}
-						</select>
-					</label>
-					<button class="btn leaf" disabled={!pick}><Icon name="plus" size={18} /> Pridať</button>
-				</form>
-
 				{#if !ui.loaded}
 					<p class="muted">Načítavam…</p>
 				{:else if entries.length === 0}
 					<p class="muted empty">
-						Plán je prázdny. Pridaj recept tu alebo tlačidlom „Do plánu“ pri recepte.
+						Plán je prázdny. Pridaj recept nižšie, tlačidlom + na karte receptu alebo „Do plánu“ v
+						detaile.
 					</p>
 				{:else}
 					<ul class="entries">
-						{#each entries as e (e.recipeId)}
+						{#each entries as e (e.key)}
 							<li>
 								<div class="mini plate-host">
 									<PlateArt
 										seed={e.recipe.id}
-										lines={e.recipe.lines}
+										lines={e.data.lines}
 										byId={catalog.ingredientsById}
 										animate={false}
 									/>
 								</div>
 								<div class="info">
 									<a href="/recepty/{e.recipe.id}">{e.recipe.title}</a>
-									<span class="muted">{formatEur(e.recipe.costPerServing * e.servings)}</span>
+									<span class="muted">
+										{#if e.variant}{e.variant} ·
+										{/if}{formatEur(e.data.costPerServing * e.servings)}
+									</span>
 								</div>
 								<div class="stepper" role="group" aria-label="Porcie pre {e.recipe.title}">
 									<button
 										class="icon-btn"
 										aria-label="Menej porcií"
-										onclick={() => setPlanServings(e.recipeId, e.servings - 1)}
+										onclick={() => setPlanServings(e.recipeId, e.variant, e.servings - 1)}
 									>
 										<Icon name={e.servings === 1 ? 'trash' : 'minus'} size={16} />
 									</button>
@@ -212,7 +207,7 @@
 									<button
 										class="icon-btn"
 										aria-label="Viac porcií"
-										onclick={() => setPlanServings(e.recipeId, e.servings + 1)}
+										onclick={() => setPlanServings(e.recipeId, e.variant, e.servings + 1)}
 									>
 										<Icon name="plus" size={16} />
 									</button>
@@ -225,6 +220,11 @@
 						· <strong>{formatEur(totalServings ? planCost / totalServings : 0)}</strong> / porcia
 					</p>
 				{/if}
+
+				<div class="picker-wrap">
+					<h3><Icon name="plus" size={18} /> Pridať recept</h3>
+					<RecipePicker />
+				</div>
 			</section>
 
 			{#if entries.length}
@@ -320,11 +320,22 @@
 											<small>
 												{formatGrams(item.buyGrams)}{approxPieces(item)}
 												{#if item.buyGrams < item.needGrams - 0.5}· zvyšok máš doma{/if}
+												{#if item.restock}· stačí najmenšie balenie{/if}
 											</small>
 										</span>
 										<span class="price" class:est={item.costIsEstimate}>{formatEur(item.cost)}</span
 										>
 									</label>
+									{#if item.restock}
+										<button
+											class="undo"
+											title="Predsa to mám doma"
+											aria-label="Predsa mám doma: {item.ingredient.name}"
+											onclick={() => setOutOfStock(item.ingredient.id, false)}
+										>
+											<Icon name="x" size={14} />
+										</button>
+									{/if}
 								</li>
 							{/each}
 						</ul>
@@ -332,9 +343,30 @@
 				{/each}
 
 				{#if list.staples.length}
-					<p class="muted small staples">
-						Skontroluj aj: {list.staples.map((s) => s.ingredient.name.toLowerCase()).join(', ')}.
-					</p>
+					<div class="staples">
+						<h3><Icon name="jar" size={16} /> Skontroluj doma</h3>
+						<p class="muted small">
+							Korenie a oleje nerátame do nákupu. Ťukni na to, čo doma nemáš, a pridá sa do zoznamu.
+						</p>
+						<div class="staple-chips">
+							{#each list.staples as item (item.ingredient.id)}
+								{#if item.ingredient.byproduct}
+									<span class="chip byproduct" title="Nekupuje sa – zostane z inej suroviny">
+										{item.ingredient.name}
+									</span>
+								{:else}
+									<button
+										class="chip"
+										title="Nemám doma – pridať do nákupu"
+										onclick={() => setOutOfStock(item.ingredient.id, true)}
+									>
+										<Icon name="plus" size={12} stroke={2.4} />
+										{item.ingredient.name}
+									</button>
+								{/if}
+							{/each}
+						</div>
+					</div>
 				{/if}
 
 				<div class="total">
@@ -413,14 +445,6 @@
 	.box-head h2 {
 		margin: 0;
 	}
-	.add {
-		display: flex;
-		gap: 8px;
-	}
-	.grow {
-		flex: 1;
-		min-width: 0;
-	}
 	.empty {
 		display: flex;
 		align-items: center;
@@ -475,6 +499,17 @@
 		min-width: 1.4em;
 		text-align: center;
 	}
+	.picker-wrap {
+		margin-top: 20px;
+		padding-top: 16px;
+		border-top: 1px dashed var(--line);
+	}
+	.picker-wrap h3 {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 1.05rem;
+	}
 	.summary {
 		margin: 14px 0 0;
 		font-size: 0.92rem;
@@ -523,6 +558,29 @@
 		list-style: none;
 		margin: 0;
 		padding: 0;
+	}
+	.cat li {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.cat li label {
+		flex: 1;
+		min-width: 0;
+	}
+	.undo {
+		display: grid;
+		place-items: center;
+		width: 26px;
+		height: 26px;
+		border: 0;
+		border-radius: 50%;
+		background: transparent;
+		color: var(--muted);
+	}
+	.undo:hover {
+		background: var(--tomato-soft);
+		color: var(--tomato);
 	}
 	.cat label {
 		display: grid;
@@ -583,7 +641,33 @@
 		color: var(--muted);
 	}
 	.staples {
-		margin-top: 16px;
+		margin-top: 18px;
+		padding: 14px;
+		border-radius: var(--radius-sm);
+		background: var(--paper);
+	}
+	.staples h3 {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 1rem;
+		margin-bottom: 4px;
+	}
+	.staples p {
+		margin: 0 0 10px;
+	}
+	.staple-chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+	.staple-chips .chip {
+		font-size: 0.8rem;
+		padding: 0.25em 0.7em;
+	}
+	.staple-chips .byproduct {
+		border-style: dashed;
+		color: var(--muted);
 	}
 	.total {
 		display: flex;

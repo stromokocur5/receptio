@@ -4,7 +4,7 @@
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
-	import { pluralRecipes } from '$lib/labels';
+	import { MEAL_LABELS, normalizeSearch, pluralRecipes } from '$lib/labels';
 	import { ALLERGEN_LABELS, computedTags } from '$lib/nutrition';
 	import { rankByPantry, type PantryMatch } from '$lib/pantry';
 	import { likes, pantry, ui } from '$lib/state.svelte';
@@ -12,13 +12,6 @@
 
 	const catalog = useCatalog();
 
-	const MEAL_LABELS: Record<Meal, string> = {
-		ranajky: 'Raňajky',
-		obed: 'Obed',
-		vecera: 'Večera',
-		snack: 'Snack',
-		dezert: 'Dezert'
-	};
 	const SORTS = {
 		odporucane: 'Odporúčané',
 		'protein-eur': 'Bielkoviny za €',
@@ -39,6 +32,9 @@
 	let maxTimeIndex = $state(TIME_STEPS.length - 1);
 	let minProtein = $state(0);
 	let excluded = $state<Allergen[]>([]);
+	/** all | bez = works without vegan substitutes | s = uses them (base or a variant) */
+	let subs = $state<'all' | 'bez' | 's'>('all');
+	let difficulty = $state<0 | 1 | 2 | 3>(0);
 	let onlyPantry = $state(false);
 	let sort = $state<Sort>('odporucane');
 	let filtersOpen = $state(false);
@@ -52,7 +48,7 @@
 		new Map(
 			catalog.recipes.map((r) => [
 				r.id,
-				normalize(
+				normalizeSearch(
 					[
 						r.title,
 						r.description,
@@ -75,7 +71,7 @@
 	const hasPantry = $derived(ui.loaded && Object.keys(pantry.current).length > 0);
 
 	const results = $derived.by(() => {
-		const terms = normalize(q).split(/\s+/).filter(Boolean);
+		const terms = normalizeSearch(q).split(/\s+/).filter(Boolean);
 		const list = catalog.recipes.filter((r) => {
 			if (terms.length && !terms.every((t) => searchIndex.get(r.id)!.includes(t))) return false;
 			if (gf === 1 && r.gluten === 'contains') return false;
@@ -85,6 +81,11 @@
 			if (maxTime && r.time > maxTime) return false;
 			if (r.perServing.protein < minProtein) return false;
 			if (excluded.some((a) => r.allergens.includes(a))) return false;
+			if (subs === 'bez' && r.substitutes === 'required') return false;
+			if (subs === 's' && !r.usesSubstitutes && !r.variants.some((v) => v.usesSubstitutes)) {
+				return false;
+			}
+			if (difficulty && r.difficulty !== difficulty) return false;
 			if (onlyPantry) {
 				const m = matches.get(r.id)!;
 				if (m.missing.length > 0) return false;
@@ -113,15 +114,18 @@
 	});
 
 	const activeFilterCount = $derived(
-		[gf, cuisine, meal, maxTime, minProtein, excluded.length, onlyPantry].filter(Boolean).length
+		[
+			gf,
+			cuisine,
+			meal,
+			maxTime,
+			minProtein,
+			excluded.length,
+			onlyPantry,
+			subs !== 'all',
+			difficulty
+		].filter(Boolean).length
 	);
-
-	function normalize(text: string) {
-		return text
-			.toLowerCase()
-			.normalize('NFD')
-			.replace(/\p{Diacritic}/gu, '');
-	}
 
 	function toggleAllergen(a: Allergen) {
 		excluded = excluded.includes(a) ? excluded.filter((x) => x !== a) : [...excluded, a];
@@ -135,6 +139,8 @@
 		maxTimeIndex = TIME_STEPS.length - 1;
 		minProtein = 0;
 		excluded = [];
+		subs = 'all';
+		difficulty = 0;
 		onlyPantry = false;
 		sort = 'odporucane';
 	}
@@ -151,6 +157,10 @@
 		const s = p.get('sort');
 		if (s && s in SORTS) sort = s as Sort;
 		if (p.get('spajza') === '1') onlyPantry = true;
+		const n = p.get('nahrady');
+		if (n === 'bez' || n === 's') subs = n;
+		const d = Number(p.get('narocnost'));
+		if (d === 1 || d === 2 || d === 3) difficulty = d;
 		urlReady = true;
 	});
 
@@ -162,6 +172,8 @@
 		if (meal) p.set('jedlo', meal);
 		if (sort !== 'odporucane') p.set('sort', sort);
 		if (onlyPantry) p.set('spajza', '1');
+		if (subs !== 'all') p.set('nahrady', subs);
+		if (difficulty) p.set('narocnost', String(difficulty));
 		if (!urlReady) return;
 		const search = p.toString();
 		if (search !== location.search.slice(1))
@@ -228,6 +240,41 @@
 							onclick={() => (meal = meal === m ? '' : m)}
 						>
 							{MEAL_LABELS[m]}
+						</button>
+					{/each}
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<legend>Vegánske náhrady</legend>
+				<div class="chips">
+					<button class="chip" aria-pressed={subs === 'all'} onclick={() => (subs = 'all')}
+						>Všetko</button
+					>
+					<button class="chip" aria-pressed={subs === 'bez'} onclick={() => (subs = 'bez')}>
+						Bez náhrad
+					</button>
+					<button class="chip" aria-pressed={subs === 's'} onclick={() => (subs = 's')}>
+						S náhradami
+					</button>
+				</div>
+				<p class="hint">
+					Rastlinná smotana, maslo, syr, jogurt, majonéza, sójové mäso. <a href="/wiki/nahrady"
+						>Čo kupovať</a
+					>
+				</p>
+			</fieldset>
+
+			<fieldset>
+				<legend>Náročnosť</legend>
+				<div class="chips">
+					{#each ['Jednoduché', 'Stredné', 'Náročnejšie'] as label, i (label)}
+						<button
+							class="chip"
+							aria-pressed={difficulty === i + 1}
+							onclick={() => (difficulty = difficulty === i + 1 ? 0 : ((i + 1) as 1 | 2 | 3))}
+						>
+							{label}
 						</button>
 					{/each}
 				</div>

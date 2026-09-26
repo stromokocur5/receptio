@@ -28,6 +28,7 @@ const ingredient = (overrides: Partial<Ingredient> = {}): Ingredient => ({
 	priceEstimate: 1,
 	color: '#000000',
 	howto: [],
+	byproduct: false,
 	...overrides
 });
 
@@ -40,6 +41,15 @@ describe('parseAmount', () => {
 
 	it('extracts a note after the pipe', () => {
 		expect(parseAmount('2 ks | nadrobno')).toEqual({ amount: 2, unit: 'ks', note: 'nadrobno' });
+	});
+
+	it('marks amounts prefixed with ~ as not eaten', () => {
+		expect(parseAmount('~6 hrnček | na dusenie')).toEqual({
+			amount: 6,
+			unit: 'hrnček',
+			note: 'na dusenie',
+			notEaten: true
+		});
 	});
 
 	it('handles to-taste amounts', () => {

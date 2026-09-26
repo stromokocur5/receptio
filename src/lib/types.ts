@@ -42,11 +42,12 @@ export const INGREDIENT_CATEGORIES = [
 	'omacky-pasty',
 	'koreniny',
 	'oleje',
+	'nahrady',
 	'ine'
 ] as const;
 export type IngredientCategory = (typeof INGREDIENT_CATEGORIES)[number];
 
-export const MEALS = ['ranajky', 'obed', 'vecera', 'snack', 'dezert'] as const;
+export const MEALS = ['ranajky', 'obed', 'vecera', 'snack', 'dezert', 'domace'] as const;
 export type Meal = (typeof MEALS)[number];
 
 export interface Ingredient {
@@ -65,6 +66,8 @@ export interface Ingredient {
 	density: number;
 	/** Rough €/kg used when no store price is known. Always labeled as an estimate. */
 	priceEstimate: number;
+	/** Leftover of another recipe (okara, aquafaba) – effectively free, never "bought". */
+	byproduct: boolean;
 	color: string;
 	note?: string;
 	warn?: string;
@@ -80,6 +83,8 @@ export interface RecipeLine {
 	amount: number | null;
 	unit: Unit | null;
 	note?: string;
+	/** Used for cooking but not eaten (simmering broth, frying oil) – bought, not counted in nutrition. */
+	notEaten?: boolean;
 }
 
 export interface Warning {
@@ -87,7 +92,27 @@ export interface Warning {
 	text: string;
 }
 
-export interface RecipeSummary {
+/** Everything that depends on the ingredient list, so a variant can recompute it. */
+export interface RecipeComputed {
+	lines: RecipeLine[];
+	gluten: GlutenStatus;
+	/** True when every ingredient that contains gluten has a GF alternative (risky ones only need a label check). */
+	gfSwappable: boolean;
+	allergens: Allergen[];
+	perServing: Nutrients;
+	costPerServing: number;
+	costIsEstimate: boolean;
+	/** Uses vegan convenience substitutes (plant cream, butter, cheese, mayo…). */
+	usesSubstitutes: boolean;
+	warnings: Warning[];
+}
+
+export interface RecipeVariant extends RecipeComputed {
+	name: string;
+	description: string;
+}
+
+export interface RecipeSummary extends RecipeComputed {
 	id: string;
 	title: string;
 	description: string;
@@ -98,21 +123,22 @@ export interface RecipeSummary {
 	servings: number;
 	difficulty: 1 | 2 | 3;
 	tags: string[];
-	gluten: GlutenStatus;
-	/** True when every ingredient that contains gluten has a GF alternative (risky ones only need a label check). */
-	gfSwappable: boolean;
-	allergens: Allergen[];
-	perServing: Nutrients;
-	costPerServing: number;
-	costIsEstimate: boolean;
-	lines: RecipeLine[];
+	/** Preparation that has to start earlier (soaking, overnight rest), not counted in `time`. */
+	ahead?: string;
+	/** What a batch makes (DIY staples), e.g. "cca 400 g tofu". */
+	yields?: string;
+	/** False when summing ingredients misstates the result (strained soy milk, tofu). */
+	showNutrition: boolean;
+	/** none = no substitutes; optional = a variant avoids them; required = every version uses them. */
+	substitutes: 'none' | 'optional' | 'required';
+	variants: RecipeVariant[];
 }
 
 export interface RecipeDetail extends RecipeSummary {
 	steps: string[];
 	tips: string[];
-	warnings: Warning[];
 	howto: { slug: string; title: string }[];
+	related: { id: string; title: string }[];
 }
 
 export interface Store {

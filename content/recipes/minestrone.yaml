@@ -1,0 +1,33 @@
+title: Minestrone
+description: Talianska zeleninová polievka s fazuľou a cestovinami. Hustá ako jedlo, varí sa z toho, čo je doma.
+cuisine: talianska
+meals: [obed, vecera]
+time: 45
+active: 15
+servings: 6
+difficulty: 1
+tags: [polievka, one-pot, meal-prep]
+ingredients:
+  - olivovy-olej: 3 pl
+  - cibula: 1 ks
+  - mrkva: 2 ks | na kocky
+  - zeler-stonkovy: 2 ks | na kocky
+  - cesnak: 3 ks
+  - zemiaky: 2 ks | na kocky
+  - cuketa: 1 ks | na kocky
+  - paradajky-sterilizovane: 1 ks
+  - zeleninovy-vyvar: 6 hrnček
+  - fazula-biela: 1 ks
+  - zelene-fazulky: 100 g | na kúsky
+  - cestoviny: 100 g | malé tvary
+  - spenat: 100 g
+  - oregano: 1 čl
+  - bazalka: 3 pl
+  - sol: podľa chuti
+steps:
+  - Na oleji 8 minút pomaly duste cibuľu, mrkvu a zeler, pridaj cesnak.
+  - Pridaj zemiaky, cuketu, paradajky, vývar a oregano a var 15 minút.
+  - Pridaj fazuľu, fazuľky a cestoviny a var podľa času na obale cestovín.
+  - Na konci vmiešaj špenát a bazalku a dochuť soľou.
+tips:
+  - Ak ju chceš zamraziť, cestoviny uvar zvlášť – v polievke by sa rozvarili.

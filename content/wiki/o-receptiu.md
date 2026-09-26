@@ -14,6 +14,12 @@ Každý recept je vybraný ručne. Suroviny sa neodkazujú textom, ale na **data
 - **bezlepkovosť a alergény** zo surovín,
 - **cenu na porciu**.
 
+## Varianty a náhrady
+
+Recept môže mať varianty – napríklad „Bez náhrad“ (kešu namiesto rastlinnej smotany) alebo automatickú **bezlepkovú verziu**, keď má každá lepková surovina bezlepkovú náhradu. Prepnutím variantu sa prepočítajú suroviny, živiny, cena aj upozornenia a do plánu sa uloží vybraný variant.
+
+Vegánske náhrady (rastlinná smotana, maslo, syr, jogurt, majonéza, sójové mäso) sú samostatná kategória surovín, preto ich vo filtri receptov vieš skryť.
+
 ## Nutričné hodnoty
 
 Hodnoty surovín sú orientačné (podľa databázy USDA FoodData Central) a počítajú sa zo surovej/suchej váhy. Konkrétne výrobky sa líšia, preto ich ber ako dobrý odhad, nie laboratórny výsledok. Receptio nie je lekár, pri zdravotných problémoch sa poraď s odborníkom.

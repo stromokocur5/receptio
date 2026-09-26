@@ -74,7 +74,9 @@ export function recipeNutrients(
 	servings: number
 ): Nutrients {
 	const total = emptyNutrients();
-	for (const line of lines) addScaled(total, byId.get(line.ingredientId)!.per100g, line.grams);
+	for (const line of lines) {
+		if (!line.notEaten) addScaled(total, byId.get(line.ingredientId)!.per100g, line.grams);
+	}
 	return scaleNutrients(total, 1 / servings);
 }
 
@@ -123,9 +125,11 @@ export function computedTags(r: RecipeSummary): ComputedTag[] {
 	const n = r.perServing;
 	const tags: ComputedTag[] = [];
 	if (r.gluten === 'free') tags.push('bezlepkove');
-	if (n.protein >= HIGH_PROTEIN_G || proteinEnergyShare(n) >= 0.25) tags.push('vela-bielkovin');
 	if (r.time <= QUICK_MINUTES) tags.push('rychle');
 	if (r.costPerServing <= CHEAP_EUR) tags.push('lacne');
+	// Strained DIY staples (soy milk, tofu) don't contain everything their ingredients do.
+	if (!r.showNutrition) return tags;
+	if (n.protein >= HIGH_PROTEIN_G || proteinEnergyShare(n) >= 0.25) tags.push('vela-bielkovin');
 	if (n.fiber >= 10) tags.push('vela-vlakniny');
 	if (n.iron >= 5) tags.push('zelezo');
 	if (n.ala >= 1.5) tags.push('omega-3');

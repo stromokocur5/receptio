@@ -1,0 +1,37 @@
+title: Paprikáš z hlivy
+description: Klasický smotanový paprikáš, kde kuracie nahrádza natrhaná hliva ustricová. Podávaj s cestovinami alebo haluškami.
+cuisine: slovenska
+meals: [obed, vecera]
+time: 35
+active: 20
+servings: 4
+difficulty: 1
+tags: [klasika]
+ingredients:
+  - hliva: 500 g | natrhaná na prúžky
+  - olej: 3 pl
+  - cibula: 2 ks | nadrobno
+  - cesnak: 2 ks
+  - sladka-paprika: 2 pl
+  - cili: 1/4 čl
+  - paradajkovy-pretlak: 1 pl
+  - zeleninovy-vyvar: 1 hrnček
+  - rastlinna-smotana: 1 hrnček
+  - hladka-muka: 1 pl
+  - sol: 1 čl
+  - cestoviny: 300 g
+steps:
+  - Hlivu opeč na polovici oleja na vysokom ohni 6–8 minút dozlatista, nech nie je gumová. Daj bokom.
+  - Na zvyšnom oleji speň cibuľu 8 minút dozlatista, pridaj cesnak.
+  - Odstav, vmiešaj papriku a čili, potom pretlak a vývar. Var 10 minút.
+  - Smotanu rozšľahaj s múkou, vlej do omáčky a za stáleho miešania 3 minúty var, kým nezhustne.
+  - Vráť hlivu, osoľ a podávaj s cestovinami.
+variants:
+  - name: Bez náhrad
+    description: Namiesto rastlinnej smotany kešu krém – 60 g kešu namoč 15 min vo vriacej vode a rozmixuj s 3/4 hrnčeka vody.
+    replace:
+      - from: rastlinna-smotana
+        to: kesu
+        amount: 60 g | namočené a rozmixované
+    add:
+      - voda: 3/4 hrnček

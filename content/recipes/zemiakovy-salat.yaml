@@ -1,0 +1,37 @@
+title: Zemiakový šalát
+description: Vianočný (a nielen vianočný) zemiakový šalát s koreňovou zeleninou, hráškom a kyslými uhorkami.
+cuisine: slovenska
+meals: [obed, vecera, snack]
+time: 60
+active: 30
+servings: 8
+difficulty: 1
+tags: [klasika, party]
+ahead: Najlepší je uležaný cez noc v chladničke.
+ingredients:
+  - zemiaky: 8 ks | v šupke
+  - mrkva: 3 ks
+  - petrzlen-koren: 2 ks
+  - hrasok: 1 hrnček
+  - kysle-uhorky: 6 ks
+  - cibula: 1 ks | nadrobno
+  - veganska-majoneza: 8 pl
+  - sojovy-jogurt: 4 pl
+  - horcica: 2 čl
+  - sol: 1,5 čl
+  - cierne-korenie: podľa chuti
+steps:
+  - Zemiaky, mrkvu a petržlen uvar celé v osolenej vode do mäkka (zelenina ~20 min, zemiaky ~25 min). Hrášok var 3 minúty.
+  - Nechaj všetko úplne vychladnúť – teplé zemiaky by sa rozpadli a nasali majonézu.
+  - Ošúp a nakrájaj na malé kocky, pridaj uhorky, cibuľu a hrášok.
+  - Majonézu zmiešaj s jogurtom, horčicou, soľou, korením a trochou nálevu z uhoriek a vmiešaj do šalátu.
+variants:
+  - name: Bez náhrad
+    description: Octový šalát bez majonézy – olej, ocot a horčica s nálevom z uhoriek.
+    replace:
+      - from: veganska-majoneza
+        to: olej
+        amount: 4 pl
+    remove: [sojovy-jogurt]
+    add:
+      - ocot: 2 pl

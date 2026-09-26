@@ -1,0 +1,50 @@
+title: Chili sin carne
+description: Poriadne husté chili so sójovým mäsom, dvoma druhmi korenia a štipkou kakaa. Veľký hrniec na celý týždeň.
+cuisine: mexicka
+meals: [obed, vecera]
+time: 45
+active: 15
+servings: 6
+difficulty: 1
+tags: [meal-prep, one-pot]
+ingredients:
+  - sojove-granule: 100 g
+  - zeleninovy-vyvar: 1 hrnček | horúci, na namočenie granúl
+  - olej: 2 pl
+  - cibula: 2 ks
+  - cesnak: 4 ks
+  - paprika-cervena: 1 ks | na kocky
+  - kmin: 2 čl
+  - udena-paprika: 2 čl
+  - cili: 1 čl
+  - oregano: 1 čl
+  - paradajkovy-pretlak: 2 pl
+  - paradajky-sterilizovane: 2 ks
+  - fazula-cervena: 2 ks
+  - kukurica: 1 ks
+  - kakao: 1 čl
+  - sol: 1,5 čl
+  - limetka: 1 ks
+  - ryza-basmati: 400 g | na prílohu
+  - sojovy-jogurt: 6 pl | namiesto kyslej smotany
+steps:
+  - Sójové granule zalej horúcim vývarom a nechaj 10 minút nasiaknuť.
+  - Na oleji speň cibuľu a papriku 6 minút, pridaj cesnak, všetko korenie a pretlak a 2 minúty praž.
+  - Pridaj granule aj s tekutinou a 5 minút opekaj, nech chytia farbu.
+  - Pridaj paradajky, fazuľu, kukuricu, kakao a soľ. Var 25 minút na miernom ohni, občas premiešaj.
+  - Dochuť limetkou a podávaj s ryžou a lyžicou jogurtu.
+tips:
+  - Kakao chili nerobí sladkým, len mu dodá hĺbku.
+  - Zamrazené v porciách vydrží 3 mesiace.
+variants:
+  - name: Bez náhrad
+    description: Hnedá šošovica namiesto sójových granúl a avokádo namiesto jogurtu. Šošovicu pridaj spolu s paradajkami a var 30–35 minút do mäkka, podlievaj vodou.
+    replace:
+      - from: sojove-granule
+        to: sosovica-hneda
+        amount: 150 g
+      - from: sojovy-jogurt
+        to: avokado
+        amount: 1 ks
+    add:
+      - voda: 2 hrnček

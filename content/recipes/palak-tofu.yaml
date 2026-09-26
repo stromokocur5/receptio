@@ -1,0 +1,42 @@
+title: Palak tofu
+description: Hodvábna špenátová omáčka s korením a opečeným tofu namiesto paneeru. Zelená, výživná a plná železa.
+cuisine: indicka-sever
+meals: [obed, vecera]
+time: 35
+active: 25
+servings: 4
+difficulty: 2
+tags: []
+ingredients:
+  - spenat: 500 g
+  - tofu-natural: 400 g | na kocky
+  - olej: 3 pl
+  - kmin: 1 čl
+  - cibula: 1 ks
+  - cesnak: 4 ks
+  - zazvor: 1 pl
+  - cili: 1/2 čl
+  - paradajky: 1 ks
+  - garam-masala: 1,5 čl
+  - koriander-mlety: 1 čl
+  - kesu: 40 g | namočené 15 min vo vriacej vode
+  - voda: 1/2 hrnček
+  - sol: 1 čl
+  - citron: 1/2 ks
+  - ryza-basmati: 300 g
+steps:
+  - Uvar ryžu. Tofu opeč na 1 PL oleja dozlatista a daj bokom.
+  - Špenát spar vo vriacej vode 1 minútu a hneď prelej studenou – ostane sýto zelený.
+  - Na zvyšnom oleji opraž kmín, pridaj cibuľu a 6 minút restuj. Potom cesnak, zázvor, čili, paradajku a korenie.
+  - Špenát, zmes z panvice, scedené kešu a vodu rozmixuj dohladka.
+  - Omáčku vráť do panvice, osoľ, 5 minút var a pridaj tofu. Dochuť citrónom a podávaj s ryžou.
+tips:
+  - Citrón nevynechaj – vitamín C pomôže vstrebať železo zo špenátu.
+variants:
+  - name: Rýchla so smotanou
+    description: Namiesto namáčania a mixovania kešu vmiešaj na konci rastlinnú smotanu.
+    replace:
+      - from: kesu
+        to: rastlinna-smotana
+        amount: 1/2 hrnček
+    remove: [voda]

@@ -217,3 +217,36 @@
   pitfalls:
     - Náhrady mäsa a syra bývajú zo seitanu (lepok), vždy čítaj zloženie.
     - Ovos je bezpečný len certifikovaný bezlepkový.
+
+- id: severoafricka
+  name: Severoafrická (Maroko, Tunisko)
+  region: Afrika
+  tagline: Voňavé tagine, cícer, sušené ovocie a harissa.
+  color: '#c8641e'
+  staples: [cícer, šošovica, paradajky, kmín, škorica, sušené marhule, harissa]
+  dishes: [Zeleninový tagine, Harira bez mäsa, Shakshuka s tofu, Zaalouk (baklažánový šalát)]
+  pitfalls:
+    - Kuskus je pšeničný, nahraď ho quinoou alebo ryžou.
+    - Tagine a harira sa často varia na mäsovom vývare alebo so smen (fermentované maslo).
+
+- id: indonezska
+  name: Indonézska
+  region: Ázia
+  tagline: Tempeh je odtiaľto doma. Arašidové omáčky a sambal.
+  color: '#a0522d'
+  staples: [ryža, tempeh, tofu, arašidy, kokosové mlieko, sambal]
+  dishes: [Gado-gado, Tempeh goreng, Nasi goreng bez vajca, Sayur lodeh]
+  pitfalls:
+    - Krevetová pasta (terasi) je v sambaloch aj omáčkach.
+    - Kecap manis (sladká sójová omáčka) obsahuje pšenicu.
+
+- id: americka
+  name: Americká a comfort food
+  region: Svet
+  tagline: Burgre, lievance a pečenie – rastlinne a poriadne.
+  color: '#b8452c'
+  staples: [fazuľa, zemiaky, ovsené vločky, arašidové maslo, javorový sirup]
+  dishes: [Burger z čiernej fazule, Lievance s javorovým sirupom, Banánový chlebík, Cookies]
+  pitfalls:
+    - Bulky a pečivo často obsahujú mlieko, vajcia alebo maslo.
+    - BBQ a worcester omáčky môžu obsahovať med alebo ančovičky.

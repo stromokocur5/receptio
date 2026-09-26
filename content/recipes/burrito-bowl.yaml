@@ -1,0 +1,38 @@
+title: Burrito bowl
+description: Všetko dobré z burrita v miske – limetková ryža, korenená čierna fazuľa, salsa, kukurica a avokádo.
+cuisine: mexicka
+meals: [obed, vecera]
+time: 30
+active: 20
+servings: 4
+difficulty: 1
+tags: [do-krabicky, meal-prep]
+ingredients:
+  - ryza-basmati: 250 g
+  - limetka: 2 ks
+  - bylinky-koriander: 4 pl
+  - olej: 2 pl
+  - cesnak: 2 ks
+  - kmin: 1 čl
+  - udena-paprika: 1 čl
+  - fazula-cierna: 2 ks
+  - kukurica: 1 ks
+  - paradajky: 3 ks | na drobné kocky
+  - cibula-cervena: 1 ks | nadrobno
+  - cili: 1/2 čl
+  - avokado: 2 ks
+  - salat: 1/2 ks
+  - sojovy-jogurt: 8 pl
+  - sol: 1 čl
+steps:
+  - Uvar ryžu a primiešaj šťavu z jednej limetky, polovicu koriandra a štipku soli.
+  - Na oleji 30 sekúnd opraž cesnak, kmín a papriku, pridaj fazuľu s 3 PL vody a 5 minút var. Časť fazule roztlač.
+  - Salsa. Zmiešaj paradajky, polovicu cibule, čili, zvyšný koriander, šťavu z polovice limetky a soľ.
+  - Avokádo nakrájaj a pokvapkaj limetkou.
+  - Do misiek daj ryžu, šalát, fazuľu, kukuricu, salsu, avokádo a lyžicu jogurtu.
+tips:
+  - Do krabičky daj avokádo a jogurt zvlášť.
+variants:
+  - name: Bez náhrad
+    description: Vynechaj jogurt – guacamole alebo avokádo dá krémovosť aj bez neho.
+    remove: [sojovy-jogurt]

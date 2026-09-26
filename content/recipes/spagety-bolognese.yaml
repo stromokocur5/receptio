@@ -1,0 +1,41 @@
+title: Špagety bolognese so sójovým mäsom
+description: Rodinná klasika, ktorú nikto nerozozná od originálu. Sójové granule, soffritto a poriadne dlho dusená omáčka.
+cuisine: talianska
+meals: [obed, vecera]
+time: 45
+active: 20
+servings: 4
+difficulty: 1
+tags: [meal-prep]
+ingredients:
+  - sojove-granule: 80 g
+  - zeleninovy-vyvar: 1 hrnček | horúci
+  - olivovy-olej: 3 pl
+  - cibula: 1 ks | nadrobno
+  - mrkva: 1 ks | nadrobno
+  - zeler-stonkovy: 1 ks | nadrobno
+  - cesnak: 3 ks
+  - paradajkovy-pretlak: 2 pl
+  - passata: 2 hrnček
+  - oregano: 1 čl
+  - bobkovy-list: 1 ks
+  - tamari: 1 pl | pre umami
+  - sol: 1/2 čl
+  - cestoviny: 400 g | špagety
+  - vyzivne-drozdie: 2 pl | namiesto parmezánu
+  - bazalka: 2 pl
+steps:
+  - Granule zalej horúcim vývarom na 10 minút.
+  - Na oleji 8 minút pomaly duste cibuľu, mrkvu a zeler (soffritto), pridaj cesnak.
+  - Pridaj granule aj s tekutinou a opekaj 5 minút, kým nechytia farbu. Pridaj pretlak a minútu praž.
+  - Vlej passatu, pridaj oregano, bobkový list, tamari a soľ a na miernom ohni 20 minút var.
+  - Uvar špagety al dente, zmiešaj s omáčkou a trochou vody z cestovín. Posyp droždím a bazalkou.
+variants:
+  - name: Bez náhrad
+    description: Hnedá šošovica namiesto sójových granúl. Pridaj ju spolu s passatou a var 30 minút, podlievaj vodou.
+    replace:
+      - from: sojove-granule
+        to: sosovica-hneda
+        amount: 150 g
+    add:
+      - voda: 1 hrnček

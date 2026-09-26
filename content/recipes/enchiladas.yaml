@@ -1,0 +1,45 @@
+title: Enchiladas s fazuľou a batátom
+description: Kukuričné tortilly plnené fazuľou, batátom a špenátom, zapečené v pikantnej omáčke so syrom.
+cuisine: mexicka
+meals: [obed, vecera]
+time: 50
+active: 25
+servings: 4
+difficulty: 2
+tags: [party]
+ingredients:
+  - olej: 2 pl
+  - cibula: 1 ks
+  - cesnak: 3 ks
+  - kmin: 2 čl
+  - udena-paprika: 1 čl
+  - cili: 1 čl
+  - oregano: 1 čl
+  - passata: 2 hrnček
+  - zeleninovy-vyvar: 1/2 hrnček
+  - sol: 1/2 čl
+  - batat: 1 ks | na drobné kocky
+  - fazula-cierna: 2 ks
+  - spenat: 100 g
+  - kukuricne-tortilly: 8 ks
+  - vegansky-syr: 1 hrnček
+  - avokado: 1 ks
+  - bylinky-koriander: 3 pl
+steps:
+  - Omáčka. Na oleji speň polovicu cibule, pridaj polovicu cesnaku, korenie, passatu, vývar a soľ a 10 minút var.
+  - Batát uvar v osolenej vode 8 minút do mäkka a sceď.
+  - Zvyšnú cibuľu a cesnak speň, pridaj fazuľu, batát, špenát a 4 PL omáčky. Časť fazule roztlač.
+  - Tortilly zohrej, aby sa nelámali, naplň ich, zroluj a ulož spojom nadol do zapekacej misy s trochou omáčky na dne.
+  - Zalej zvyšnou omáčkou, posyp syrom a peč na 200 °C 20 minút.
+  - Podávaj s avokádom a koriandrom.
+variants:
+  - name: Bez náhrad
+    description: Namiesto vegánskeho syra kešu omáčka. 60 g kešu namoč 15 min vo vriacej vode, sceď a rozmixuj s 1/2 hrnčeka vody, citrónom, výživným droždím a soľou. Nalej navrch pred pečením.
+    replace:
+      - from: vegansky-syr
+        to: kesu
+        amount: 60 g | namočené
+    add:
+      - voda: 1/2 hrnček
+      - vyzivne-drozdie: 2 pl
+      - citron: 1/2 ks

@@ -68,7 +68,8 @@ function validatePlan(raw: unknown): PlanEntry[] | undefined {
 			typeof e.recipeId === 'string' &&
 			typeof e.servings === 'number' &&
 			e.servings > 0 &&
-			e.servings <= 100
+			e.servings <= 100 &&
+			(e.variant === undefined || typeof e.variant === 'string')
 	);
 }
 
@@ -100,6 +101,8 @@ function validateSettings(raw: unknown): Settings | undefined {
 export const pantry = new Persisted<Pantry>('pantry', {}, validatePantry);
 export const plan = new Persisted<PlanEntry[]>('plan', [], validatePlan);
 export const checkedItems = new Persisted<Record<string, boolean>>('checked', {}, validateFlags);
+/** Basics (spices, oils) the user marked as missing at home. */
+export const outOfStock = new Persisted<Record<string, boolean>>('out-of-stock', {}, validateFlags);
 export const settings = new Persisted<Settings>(
 	'settings',
 	{ weightKg: null, planDays: 7, theme: 'auto' },
@@ -112,6 +115,7 @@ export function loadPersisted() {
 	pantry.load();
 	plan.load();
 	checkedItems.load();
+	outOfStock.load();
 	settings.load();
 	ui.loaded = true;
 }
@@ -125,22 +129,27 @@ export function removePantryItem(id: string) {
 	pantry.current = rest;
 }
 
-export function addToPlan(recipeId: string, servings: number) {
-	const existing = plan.current.find((e) => e.recipeId === recipeId);
+const sameEntry = (e: PlanEntry, recipeId: string, variant?: string) =>
+	e.recipeId === recipeId && e.variant === variant;
+
+export function addToPlan(recipeId: string, servings: number, variant?: string) {
+	const existing = plan.current.find((e) => sameEntry(e, recipeId, variant));
 	plan.current = existing
 		? plan.current.map((e) => (e === existing ? { ...e, servings: e.servings + servings } : e))
-		: [...plan.current, { recipeId, servings }];
+		: [...plan.current, variant ? { recipeId, servings, variant } : { recipeId, servings }];
 }
 
-export function setPlanServings(recipeId: string, servings: number) {
+export function setPlanServings(recipeId: string, variant: string | undefined, servings: number) {
 	plan.current =
 		servings <= 0
-			? plan.current.filter((e) => e.recipeId !== recipeId)
-			: plan.current.map((e) => (e.recipeId === recipeId ? { ...e, servings } : e));
+			? plan.current.filter((e) => !sameEntry(e, recipeId, variant))
+			: plan.current.map((e) => (sameEntry(e, recipeId, variant) ? { ...e, servings } : e));
 }
 
 export function servingsInPlan(recipeId: string): number {
-	return plan.current.find((e) => e.recipeId === recipeId)?.servings ?? 0;
+	return plan.current
+		.filter((e) => e.recipeId === recipeId)
+		.reduce((sum, e) => sum + e.servings, 0);
 }
 
 // ── Likes (server-backed, anonymous per device) ──────────────────

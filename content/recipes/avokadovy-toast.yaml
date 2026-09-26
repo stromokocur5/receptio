@@ -1,0 +1,22 @@
+title: Avokádový toast s cícerom
+description: Rýchle raňajky alebo obed – chrumkavý chlieb, roztlačené avokádo s cícerom, citrón a čili.
+cuisine: moderna
+meals: [ranajky, obed]
+time: 10
+active: 10
+servings: 2
+difficulty: 1
+tags: [rychle]
+ingredients:
+  - chlieb: 4 ks
+  - avokado: 1 ks
+  - cicer-sterilizovany: 1/2 ks
+  - citron: 1/2 ks
+  - sol: 1/2 čl
+  - cili: 1 štipka
+  - paradajky: 1 ks | na plátky
+  - tekvicove-semienka: 1 pl
+steps:
+  - Chlieb opeč dochrumkava.
+  - Avokádo s cícerom roztlač vidličkou, dochuť citrónom a soľou.
+  - Natri na chlieb, pridaj paradajku a posyp čili a semienkami.

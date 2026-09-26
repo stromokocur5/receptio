@@ -1,0 +1,40 @@
+title: Burger z čiernej fazule
+description: Šťavnatý burger z čiernej fazule s údenou paprikou, ktorý na grile ani na panvici nerozpadne.
+cuisine: americka
+meals: [obed, vecera]
+time: 40
+active: 30
+servings: 4
+difficulty: 2
+tags: [party]
+ingredients:
+  - fazula-cierna: 2 ks | dobre scedená
+  - ovsene-vlocky: 1/2 hrnček | zomleté
+  - olej: 3 pl
+  - cibula: 1 ks | nadrobno
+  - cesnak: 2 ks
+  - udena-paprika: 1 čl
+  - kmin: 1 čl
+  - tamari: 1 pl
+  - paradajkovy-pretlak: 1 pl
+  - sol: 1/2 čl
+  - hamburgerova-zemla: 4 ks
+  - veganska-majoneza: 4 pl
+  - salat: 40 g
+  - paradajky: 1 ks | na plátky
+  - cibula-cervena: 1/2 ks | na kolieska
+  - kysle-uhorky: 2 ks | na plátky
+steps:
+  - Fazuľu rozprestri na plech a vysuš 10 minút v rúre na 180 °C. Toto je trik proti kašovitým burgrom.
+  - Na lyžici oleja speň cibuľu s cesnakom.
+  - Fazuľu roztlač vidličkou (nech ostanú kúsky), pridaj cibuľu, vločky, korenie, tamari, pretlak a soľ.
+  - Vytvaruj 4 placky a nechaj 15 minút v chladničke stuhnúť.
+  - Opeč na zvyšnom oleji 4 minúty z každej strany.
+  - Žemle krátko opeč, natri majonézou a zlož burger so zeleninou.
+variants:
+  - name: Bez náhrad
+    description: Namiesto majonézy roztlačené avokádo s limetkou a soľou.
+    replace:
+      - from: veganska-majoneza
+        to: avokado
+        amount: 1 ks

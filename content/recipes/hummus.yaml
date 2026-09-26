@@ -1,0 +1,33 @@
+title: Krémový hummus
+description: Nadýchaný hummus ako z libanonskej reštaurácie. Trik je ošúpaný cícer a poriadna dávka tahini.
+cuisine: libanonska
+meals: [snack, obed, domace]
+time: 15
+active: 15
+servings: 6
+difficulty: 1
+tags: [bez-varenia, meal-prep, party]
+ingredients:
+  - cicer-sterilizovany: 2 ks | vodu z plechovky odlož
+  - tahini: 5 pl
+  - citron: 1 ks
+  - cesnak: 1 ks
+  - kmin: 1/2 čl
+  - sol: 1 čl
+  - aquafaba: 4 pl | alebo ľadová voda
+  - olivovy-olej: 2 pl | na pokvapkanie
+  - sladka-paprika: 1 štipka
+steps:
+  - Pre najjemnejší hummus cícer ošúp – stláčaj zrná medzi prstami a šupky odpadnú. Trvá to 5 minút a je to veľký rozdiel.
+  - V mixéri najprv vyšľahaj tahini s citrónovou šťavou asi 1 minútu, kým nezbelie a nezhustne.
+  - Pridaj cesnak, kmín, soľ a cícer a mixuj 2 minúty. Po lyžiciach prilievaj aquafabu, kým hummus nie je hladký a nadýchaný.
+  - Dochuť soľou a citrónom, v miske sprav lyžicou vlnky, polej olivovým olejom a posyp paprikou.
+tips:
+  - V chladničke vydrží 5 dní.
+  - Zvyšnú aquafabu použi na čokoládovú penu.
+variants:
+  - name: S pečenou paprikou
+    description: Pridaj 2 upečené a ošúpané červené papriky (200 °C, 25 min) a čajovú lyžičku údenej papriky. Menej aquafaby, paprika pustí šťavu.
+    add:
+      - paprika-cervena: 2 ks | upečená, ošúpaná
+      - udena-paprika: 1 čl

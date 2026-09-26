@@ -1,0 +1,33 @@
+title: Zemiakové placky
+description: Chrumkavé cesnakové placky s majoránkou ako z jarmoku. Namiesto vajíčka ľanové semienko.
+cuisine: slovenska
+meals: [obed, vecera]
+time: 40
+active: 35
+servings: 4
+difficulty: 2
+tags: [klasika]
+ingredients:
+  - lanove-semienko: 1 pl
+  - voda: 3 pl
+  - zemiaky: 8 ks
+  - cibula: 1 ks
+  - cesnak: 4 ks
+  - hladka-muka: 5 pl
+  - majoranka: 1 pl
+  - sol: 1,5 čl
+  - cierne-korenie: podľa chuti
+  - olej: 6 pl | na vyprážanie
+  - sojovy-jogurt: 8 pl | na podávanie
+steps:
+  - Ľanové semienko zmiešaj s vodou a nechaj 10 minút postáť – vznikne rôsol, ktorý nahradí vajce.
+  - Zemiaky a cibuľu nastrúhaj najemno a v utierke poriadne vytlač. Šťavu nechaj 5 minút postáť, vylej vodu a škrob, ktorý sa usadí na dne, vráť k zemiakom.
+  - Zmiešaj so ľanovým vajcom, prelisovaným cesnakom, múkou, majoránkou, soľou a korením.
+  - Na rozpálenom oleji rob tenké placky a vyprážaj 3–4 minúty z každej strany dozlatista.
+  - Podávaj horúce s jogurtom.
+tips:
+  - Hotové placky ukladaj na mriežku, nie na seba – ostanú chrumkavé.
+variants:
+  - name: Bez náhrad
+    description: Bez jogurtu – podávaj s kyslou kapustou alebo len natreté cesnakom.
+    remove: [sojovy-jogurt]
