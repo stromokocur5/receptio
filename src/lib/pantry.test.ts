@@ -34,6 +34,7 @@ function ing(id: string, group = id, extra: Partial<Ingredient> = {}): Ingredien
 		co2: 1,
 		color: '#000000',
 		howto: [],
+		homemade: false,
 		byproduct: false,
 		groupFactor: 1,
 		season: [],

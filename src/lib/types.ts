@@ -81,6 +81,8 @@ export interface Ingredient {
 	gfAlternative?: string;
 	/** Slugs of beginner technique pages (wiki section `zaklady`). */
 	howto: string[];
+	/** Can be made at home instead of bought (details in IngredientInfo). */
+	homemade: boolean;
 	/** Months (1–12) when it's grown locally and cheapest; empty = no season. */
 	season: number[];
 }
@@ -189,6 +191,17 @@ export interface IngredientInfo {
 	choose?: string;
 	storage?: string;
 	uses: string[];
+	homemade?: Homemade;
+}
+
+/** How to make an ingredient yourself instead of buying it. */
+export interface Homemade {
+	/** A full recipe on the site, when there is one. */
+	recipe?: { id: string; title: string };
+	/** Short steps, for things too simple (or too long-winded) for a recipe. */
+	steps: string[];
+	/** Whether it pays off, how long it keeps. */
+	note?: string;
 }
 
 export interface RecipeDetail extends RecipeSummary {

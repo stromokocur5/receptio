@@ -11,6 +11,7 @@
 
 	let q = $state('');
 	let onlySeason = $state(false);
+	let onlyHomemade = $state(false);
 
 	const recipeCount = $derived.by(() => {
 		const counts = new Map<string, number>();
@@ -28,6 +29,7 @@
 			.filter((i) => i.id !== 'voda')
 			.filter((i) => !term || normalizeSearch(i.name).includes(term))
 			.filter((i) => !onlySeason || i.season.includes(month))
+			.filter((i) => !onlyHomemade || i.homemade)
 			.sort((a, b) => a.name.localeCompare(b.name, 'sk'));
 		return INGREDIENT_CATEGORIES.map(
 			(c) => [c, visible.filter((i) => i.category === c)] as const
@@ -58,6 +60,9 @@
 		</label>
 		<button class="chip" aria-pressed={onlySeason} onclick={() => (onlySeason = !onlySeason)}>
 			<Icon name="leaf" size={14} /> Práve v sezóne
+		</button>
+		<button class="chip" aria-pressed={onlyHomemade} onclick={() => (onlyHomemade = !onlyHomemade)}>
+			<Icon name="chef" size={14} /> Dá sa urobiť doma
 		</button>
 	</div>
 

@@ -5,6 +5,7 @@
 	import AutoPlanner from '$lib/components/AutoPlanner.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
+	import PlanSettings from '$lib/components/PlanSettings.svelte';
 	import PlateArt from '$lib/components/PlateArt.svelte';
 	import RecipePicker from '$lib/components/RecipePicker.svelte';
 	import { CATEGORY_LABELS } from '$lib/labels';
@@ -342,43 +343,7 @@
 			{#if entries.length}
 				<section class="card box">
 					<h2><Icon name="clock" size={24} /> Rozpis dní</h2>
-					<div class="settings">
-						<label>
-							Plán na
-							<select
-								value={settings.current.planDays}
-								onchange={(e) => updateSettings({ planDays: Number(e.currentTarget.value) })}
-							>
-								{#each [1, 2, 3, 4, 5, 6, 7, 10, 14] as d (d)}<option value={d}>{d}</option>{/each}
-							</select>
-							dní
-						</label>
-						<label>
-							Varím pre
-							<select
-								value={settings.current.people}
-								onchange={(e) => updateSettings({ people: Number(e.currentTarget.value) })}
-							>
-								{#each [1, 2, 3, 4, 5, 6, 8] as p (p)}<option value={p}>{p}</option>{/each}
-							</select>
-							{settings.current.people === 1
-								? 'osobu'
-								: settings.current.people < 5
-									? 'osoby'
-									: 'osôb'}
-						</label>
-						<label>
-							Jedál denne
-							<select
-								value={settings.current.mealsPerDay}
-								onchange={(e) =>
-									updateSettings({ mealsPerDay: e.currentTarget.value === '2' ? 2 : 1 })}
-							>
-								<option value={1}>1 (obed)</option>
-								<option value={2}>2 (obed a večera)</option>
-							</select>
-						</label>
-					</div>
+					<PlanSettings />
 					<ol class="days">
 						{#each schedule.days as day, d (d)}
 							<li>
@@ -815,15 +780,12 @@
 		font-weight: 600;
 		font-size: 0.92rem;
 	}
-	.settings select,
 	.settings input {
 		border: 1.5px solid var(--line);
 		border-radius: 10px;
 		background: var(--paper);
 		padding: 4px 8px;
 		margin: 0 4px;
-	}
-	.settings input {
 		width: 4.5em;
 	}
 	.small {

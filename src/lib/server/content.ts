@@ -17,6 +17,7 @@ import {
 	type Equipment,
 	type EquipmentFull,
 	type Ingredient,
+	type Homemade,
 	type IngredientInfo,
 	type IngredientCategory,
 	type PriceEntry,
@@ -113,6 +114,15 @@ const ingredientSchema = z
 		choose: z.string().min(1).optional(),
 		storage: z.string().min(1).optional(),
 		uses: z.array(z.string().min(1)).default([]),
+		homemade: z
+			.object({
+				recipe: slug.optional(),
+				steps: z.array(z.string().min(1)).default([]),
+				note: z.string().min(1).optional()
+			})
+			.strict()
+			.refine((h) => h.recipe || h.steps.length, 'homemade potrebuje `recipe` alebo `steps`')
+			.optional(),
 		substitutes: z
 			.array(
 				z
@@ -327,6 +337,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		warn: i.warn,
 		gfAlternative: i.gf_alternative,
 		howto: i.howto,
+		homemade: i.homemade !== undefined,
 		season: [...new Set(i.season)].sort((a, b) => a - b)
 	}));
 
@@ -660,10 +671,32 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		)
 		.sort((a, b) => a.title.localeCompare(b.title, 'sk'));
 
+	const homemadeInfo = (
+		ingredientId: string,
+		{ recipe, steps, note }: { recipe?: string; steps: string[]; note?: string }
+	): Homemade => {
+		const target = recipe ? recipeDetails.get(recipe) : undefined;
+		if (recipe && !target) {
+			throw new Error(`ingredients.yaml ${ingredientId}: neznámy recept "${recipe}" v homemade`);
+		}
+		return {
+			...(target && { recipe: { id: target.id, title: target.title } }),
+			steps,
+			...(note && { note })
+		};
+	};
+
 	const ingredientInfo = new Map<string, IngredientInfo>(
 		rawIngredients.map((i) => [
 			i.id,
-			{ about: i.about, kinds: i.kinds, choose: i.choose, storage: i.storage, uses: i.uses }
+			{
+				about: i.about,
+				kinds: i.kinds,
+				choose: i.choose,
+				storage: i.storage,
+				uses: i.uses,
+				homemade: i.homemade && homemadeInfo(i.id, i.homemade)
+			}
 		])
 	);
 

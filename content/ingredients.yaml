@@ -148,6 +148,12 @@
     - 'Var v osolenej vode, pohár vody z cestovín odlož do omáčky'
   choose: 'Durum pšenica a bronzová matrica – drsný povrch drží omáčku.'
   storage: 'Suché rok.'
+  homemade:
+    steps:
+      - 'Zmiešaj 200 g semoliny (múky z tvrdej pšenice) s asi 100 ml vlažnej vody a mies 10 minút dohladka.'
+      - 'Zabaľ cesto do fólie a nechaj ho 30 minút odpočívať.'
+      - 'Vyvaľkaj ho natenko valčekom alebo strojčekom, nakrájaj na rezance a var 2–4 minúty.'
+    note: 'Ide to aj s hladkou múkou, cestoviny budú mäkšie. Čerstvé sa dajú zamraziť.'
 
 - id: cestoviny-bezlepkove
   name: Cestoviny bezlepkové (kukurica/ryža)
@@ -201,6 +207,11 @@
   uses:
     - 'Bezlepková zápražka a obaľovanie'
   storage: 'Suchá pol roka.'
+  homemade:
+    steps:
+      - 'Pomel ryžu po malých dávkach v silnom mixéri alebo mlynčeku na obilie.'
+      - 'Preosej a hrubé zvyšky pomel znova.'
+    note: 'Na zahustenie a obaľovanie stačí aj domáca, na pečenie je lepšia jemnejšia kúpená.'
 
 - id: kukuricne-tortilly
   name: Kukuričné tortilly (100 % kukurica)
@@ -461,6 +472,9 @@
     - 'Vyžmýkaj ho – bude chrumkavejšie'
   choose: 'Hľadaj „zrážané síranom vápenatým“ – má vápnika ako mlieko.'
   storage: 'Otvorené v nádobe s vodou v chladničke 5 dní, vodu vymieňaj. Zamrazené zmení textúru na hubovitú – lepšie nasaje marinádu.'
+  homemade:
+    recipe: domace-tofu
+    note: 'Zo sójových bôbov a zrážadla (nigari). Ako bonus dostaneš okaru.'
 
 - id: tofu-udene
   name: Tofu údené
@@ -478,6 +492,12 @@
   uses:
     - 'Kapustnica, guláš, strapačky, lečo'
   storage: 'Otvorené v chladničke týždeň.'
+  homemade:
+    steps:
+      - 'Tofu natural vylisuj a nakrájaj na hrubé plátky.'
+      - 'Aspoň hodinu ho marinuj v sójovej omáčke s kvapkou oleja.'
+      - 'Uď ho 2–3 hodiny v udiarni pri nízkej teplote, potom nechaj vychladnúť v chladničke.'
+    note: 'Bez udiarne ho zmiešaj s údenou paprikou a upeč pri 200 °C asi 25 minút – nebude to to isté, ale údenú chuť to dá.'
 
 # ── Zelenina ───────────────────────────────────────────────────
 - id: cibula
@@ -693,6 +713,12 @@
     - 'Shakshuka a guláše'
   choose: 'Zloženie – len paradajky, šťava, prípadne kyselina citrónová. Talianske bývajú najlepšie.'
   storage: 'Neotvorené roky. Otvorené prelož do misky, v chladničke 4 dni.'
+  homemade:
+    steps:
+      - 'Paradajky ponor na 30 sekúnd do vriacej vody, potom do studenej a ošúp ich.'
+      - 'Nakrájaj ich na kúsky a natlač do čistých pohárov, aby ich zaliala vlastná šťava.'
+      - 'Sterilizuj 40 minút vo vriacej vode.'
+    note: 'Paradajky nie sú dosť kyslé na bezpečné zaváranie – do každého pollitrového pohára pridaj 1 PL citrónovej šťavy. Najjednoduchšie je zamraziť ich.'
 
 - id: paradajkovy-pretlak
   name: Paradajkový pretlak
@@ -710,6 +736,12 @@
     - 'Do gulášu, bolognese a polievok'
   choose: 'Dvojito alebo trojito koncentrovaný, bez soli a cukru.'
   storage: 'Otvorený v chladničke týždeň. Zvyšok zamraz po lyžiciach na papieri.'
+  homemade:
+    steps:
+      - 'Zrelé paradajky nakrájaj, povar 10 minút a prepasíruj, aby ostali šupky a jadierka.'
+      - 'Šťavu var bez pokrievky na miernom ohni a často miešaj, kým nezhustne na pastu. Z 3 kg paradajok vyjde asi 0,5 kg pretlaku.'
+      - 'Ľahšie to ide v rúre pri 120 °C v širokom pekáči, nepripáli sa. Miešaj každých 20 minút.'
+    note: 'Najjednoduchšie je zamraziť ho po lyžiciach vo formičke na ľad. Paradajky nie sú dosť kyslé na bezpečné zaváranie – do každého pollitrového pohára pridaj 1 PL citrónovej šťavy. Najjednoduchšie je zamraziť ich.'
 
 - id: uhorka
   name: Uhorka šalátová
@@ -978,6 +1010,8 @@
     - 'Maafe, cookies, kaša, smoothie'
   choose: 'Len arašidy (a soľ) – bez palmového oleja a cukru. Olej na povrchu je dobré znamenie.'
   storage: 'Pri izbovej teplote mesiace, olej pred použitím zamiešaj.'
+  homemade:
+    recipe: domace-arasidove-maslo
 
 - id: sezam
   name: Sezam
@@ -1104,6 +1138,9 @@
     - 'S octom zrazí – náhrada cmaru'
   choose: 'Nesladené a obohatené vápnikom (a B12). Na kávu „barista“ verzia.'
   storage: 'Neotvorené mesiace, otvorené v chladničke 5 dní.'
+  homemade:
+    recipe: domace-sojove-mlieko
+    note: 'Vychádza oveľa lacnejšie ako kúpené a zvyšnú okaru využiješ do placiek.'
 
 - id: kokosove-mlieko
   name: Kokosové mlieko (plechovka)
@@ -1123,6 +1160,12 @@
     - 'Vychladené cez noc sa dá vyšľahať ako šľahačka'
   choose: 'Čím viac kokosového extraktu (ideálne 60 % a viac), tým krémovejšie. „Light“ je zriedené vodou.'
   storage: 'Otvorené prelož do nádoby, 4 dni v chladničke.'
+  homemade:
+    steps:
+      - 'Zalej 200 g nesladeného strúhaného kokosu 800 ml horúcej vody a nechaj 10 minút postáť.'
+      - 'Mixuj 2 minúty na najvyšší výkon.'
+      - 'Preceď cez utierku alebo sáčok na rastlinné mlieko a poriadne vyžmýkaj.'
+    note: 'Vyjde redšie ako z plechovky – na hustejšie daj polovicu vody. V chladničke vydrží 3–4 dni, tuk sa usadí navrchu.'
 
 # ── Omáčky, pasty, dochucovadlá ────────────────────────────────
 - id: sojova-omacka
@@ -1185,6 +1228,11 @@
     - 'Zelené kari – najprv ju opraž na oleji'
   choose: 'Skontroluj zloženie – nesmie obsahovať rybiu omáčku ani krevetovú pastu. Veľa thajských pást ich má, hľadaj označenie vegánska.'
   storage: 'Otvorená v chladničke mesiac.'
+  homemade:
+    steps:
+      - 'Rozmixuj 6–10 zelených čili, spodnú mäkkú časť z 3 stoniek citrónovej trávy, 4 strúčiky cesnaku, 2 šalotky, kúsok zázvoru a hrsť koriandra aj so stonkami.'
+      - 'Pridaj kôru a šťavu z limetky, 1 ČL mletého koriandra, 1 ČL kmínu, 1 PL sójovej omáčky a toľko oleja, aby vznikla hladká pasta.'
+    note: 'Domáca vydrží v chladničke týždeň, zamrazená po lyžiciach vo formičke na ľad mesiace. Kúpená často obsahuje krevetovú pastu, pri domácej máš istotu, že je vegánska.'
 
 - id: zeleninovy-vyvar
   name: Zeleninový vývar (pripravený)
@@ -1204,6 +1252,9 @@
     - 'Polievky, rizoto, namáčanie sójových granúl'
   choose: 'Bujón bez glutamanu a palmového tuku, alebo vývar v tetrapaku.'
   storage: 'Domáci v chladničke 5 dní, zamrazený 4 mesiace.'
+  homemade:
+    recipe: domaci-zeleninovy-vyvar
+    note: 'Šupky a odrezky zo zeleniny zbieraj do vrecka v mrazničke a keď je plné, uvar z nich vývar.'
 
 - id: javorovy-sirup
   name: Javorový sirup
@@ -1292,6 +1343,12 @@
     - 'Kyslá šošovica, prívarky, nakladanie'
     - 'So sójovým mliekom ako náhrada cmaru'
   storage: 'Roky.'
+  homemade:
+    steps:
+      - 'Jablkové šupky a jadrovníky alebo nakrájané padané jablká daj do pohára a zalej ich vodou s cukrom (1 PL na 250 ml), aby boli celé pod hladinou.'
+      - 'Prikry ho utierkou a nechaj 2–3 týždne pri izbovej teplote, denne premiešaj.'
+      - 'Preceď a nechaj ďalšie 3–6 týždňov kvasiť pod utierkou, kým nie je výrazne kyslý.'
+    note: 'Takto vznikne jablčný ocot, nie liehový. Jeho kyslosť nepoznáš, preto ho nepoužívaj na zaváranie.'
 
 # ── Oleje ──────────────────────────────────────────────────────
 - id: olej
@@ -1402,6 +1459,11 @@
   uses:
     - 'Hummus, chili, kari, dal'
   storage: 'V uzavretom pohári rok.'
+  homemade:
+    steps:
+      - 'Kúp kmín celé – vydrží voňavé rok aj dlhšie, mleté stratí arómu za pár mesiacov.'
+      - 'Pred použitím ho 1–2 minúty opraž na suchej panvici, kým nezavonia.'
+      - 'Nechaj vychladnúť a pomel v mlynčeku na kávu alebo v mažiari.'
 
 - id: kurkuma
   name: Kurkuma mletá
@@ -1432,6 +1494,12 @@
   uses:
     - 'Chana masala, butter masala, dal'
   storage: 'V uzavretom pohári pol roka.'
+  homemade:
+    steps:
+      - 'Na suchej panvici opraž 2 PL celého koriandra, 1 PL celého kmínu, 1 PL čierneho korenia, 1 ČL klinčekov, semienka z 8 zelených kardamómov a kúsok škorice – asi 2 minúty, kým zavoňajú.'
+      - 'Nechaj vychladnúť a pomel v mlynčeku na kávu alebo v mažiari.'
+      - 'Primiešaj ½ ČL strúhaného muškátového orecha.'
+    note: 'Čerstvo namletá vonia najviac prvé 2–3 mesiace, preto mel radšej menej a častejšie.'
 
 - id: koriander-mlety
   name: Koriander mletý
@@ -1446,6 +1514,12 @@
   uses:
     - 'Kari, falafel, chili'
   storage: 'Pol roka.'
+  homemade:
+    steps:
+      - 'Kúp koriander celé – vydrží voňavé rok aj dlhšie, mleté stratí arómu za pár mesiacov.'
+      - 'Pred použitím ho 1–2 minúty opraž na suchej panvici, kým nezavonia.'
+      - 'Nechaj vychladnúť a pomel v mlynčeku na kávu alebo v mažiari.'
+    note: 'Koriander zo záhrady nechaj vykvitnúť – semienka zober, keď zhnednú, a dosuš ich.'
 
 - id: cili
   name: Čili mleté
@@ -1464,6 +1538,12 @@
   uses:
     - 'Pridávaj po štipkách – ubrať sa nedá'
   storage: 'V tme pol roka.'
+  homemade:
+    steps:
+      - 'Pálivé papričky (napríklad zo záhrady) umy a osuš.'
+      - 'Navleč ich na niť a zaves na teplé vzdušné miesto na 3–4 týždne, alebo ich suš v sušičke pri 50 °C 8–12 hodín.'
+      - 'Keď sú úplne suché a lámu sa, pomel ich v mlynčeku. S jadierkami bude čili pálivejšie.'
+    note: 'Pri mletí nevdychuj prach a nešúchaj si oči. Na veľmi pálivé papričky si daj rukavice.'
 
 - id: udena-paprika
   name: Údená paprika
@@ -1479,6 +1559,12 @@
   uses:
     - 'Kapustnica, chili, pečený cícer, tofu'
   storage: 'V tme pol roka.'
+  homemade:
+    steps:
+      - 'Priprav prúžky papriky ako pri sladkej paprike.'
+      - 'Namiesto sušičky ich suš v udiarni pri teplote do 50 °C nad dubovým alebo bukovým drevom, kým nie sú krehké (aj 1–2 dni).'
+      - 'Pomel čo najjemnejšie.'
+    note: 'Bez udiarne to nejde – paprika sušená v rúre bude len sladká.'
 
 - id: sladka-paprika
   name: Sladká paprika mletá
@@ -1494,6 +1580,13 @@
   uses:
     - 'Guláš, lečo, paprikáš – odstav z ohňa, inak zhorkne'
   storage: 'V tme pol roka – starne a hnedne.'
+  homemade:
+    steps:
+      - 'Vyber zrelé červené papriky s tenkou dužinou – najlepšie sú korenisté odrody na mletie, semená dostaneš v záhradkárstve.'
+      - 'Vyber jadrovník a nakrájaj ich na prúžky.'
+      - 'Suš ich v sušičke pri 50–55 °C, kým nie sú krehké (10–15 hodín).'
+      - 'Pomel čo najjemnejšie a preosej.'
+    note: 'Suš pri nízkej teplote – pri vysokej paprika zhnedne a zhorkne.'
 
 - id: rasca
   name: Rasca celá
@@ -1520,6 +1613,12 @@
   uses:
     - 'Fazuľová a cesnaková polievka, guláš – na konci'
   storage: 'Pol roka.'
+  homemade:
+    steps:
+      - 'Vňať nastrihaj tesne pred kvitnutím, dopoludnia, keď oschne rosa – vtedy je najvoňavejšia.'
+      - 'Zviaž do malých zväzkov a zaves hlavou dolu na tmavé, suché a vzdušné miesto na 1–2 týždne (alebo suš v sušičke pri 35–40 °C).'
+      - 'Keď sa listy drobia, oddeľ ich od stoniek a ulož celé do tesného pohára. Drv ich až pri varení.'
+    note: 'Majoránka je jednoročná, zasej ju každý rok. Darí sa jej aj v kvetináči na balkóne.'
 
 - id: oregano
   name: Oregano sušené
@@ -1534,6 +1633,12 @@
   uses:
     - 'Pizza, bolognese, grécke jedlá'
   storage: 'Pol roka.'
+  homemade:
+    steps:
+      - 'Vňať nastrihaj tesne pred kvitnutím, dopoludnia, keď oschne rosa – vtedy je najvoňavejšia.'
+      - 'Zviaž do malých zväzkov a zaves hlavou dolu na tmavé, suché a vzdušné miesto na 1–2 týždne (alebo suš v sušičke pri 35–40 °C).'
+      - 'Keď sa listy drobia, oddeľ ich od stoniek a ulož celé do tesného pohára. Drv ich až pri varení.'
+    note: 'Oregano je trvalka – raz ho zasadíš a máš na roky. Sušené je aromatickejšie ako čerstvé.'
 
 - id: tymian
   name: Tymián sušený
@@ -1547,6 +1652,12 @@
   uses:
     - 'Polievky, pečená zelenina, fazuľa'
   storage: 'Sušený pol roka.'
+  homemade:
+    steps:
+      - 'Vňať nastrihaj tesne pred kvitnutím, dopoludnia, keď oschne rosa – vtedy je najvoňavejšia.'
+      - 'Zviaž do malých zväzkov a zaves hlavou dolu na tmavé, suché a vzdušné miesto na 1–2 týždne (alebo suš v sušičke pri 35–40 °C).'
+      - 'Keď sa listy drobia, oddeľ ich od stoniek a ulož celé do tesného pohára. Drv ich až pri varení.'
+    note: 'Tymián je trvalka, stačí mu slnko a chudobná pôda.'
 
 - id: rozmarin
   name: Rozmarín čerstvý
@@ -1593,6 +1704,10 @@
   uses:
     - 'Polievky, guláše, omáčky'
   storage: 'Rok.'
+  homemade:
+    steps:
+      - 'Vavrín pestuj v kvetináči – vonku u nás nezimuje, v zime ho daj do chladnej svetlej miestnosti.'
+      - 'Listy odtrhni a suš ich 1–2 týždne na tienistom mieste medzi dvoma papiermi, aby ostali rovné.'
 
 - id: nove-korenie
   name: Nové korenie
@@ -1637,6 +1752,12 @@
   uses:
     - 'Misir wot, shiro'
   storage: 'Pol roka.'
+  homemade:
+    steps:
+      - 'Na suchej panvici opraž 1 ČL celého koriandra, ½ ČL senovky gréckej, ½ ČL čierneho korenia, 4 zrnká nového korenia, 4 klinčeky a semienka zo 4 kardamómov.'
+      - 'Nechaj vychladnúť a pomel.'
+      - 'Zmiešaj s 3 PL sladkej papriky, 1–2 PL mletého čili, 1 ČL mletého zázvoru, ½ ČL škorice a 1 ČL soli.'
+    note: 'Kúpiť sa dá ťažko, domáce je jediná istota. Pálivosť nastavíš množstvom čili.'
 
 - id: kukuricna-krupica
   name: Kukuričná krupica (polenta)
@@ -1681,6 +1802,11 @@
     - 'Kapustnica, prívarky, omáčky'
   choose: 'Sójová je najkrémovejšia a zrazí sa najmenej.'
   storage: 'Otvorená v chladničke 4 dni.'
+  homemade:
+    steps:
+      - 'Namoč 100 g kešu na 4 hodiny (alebo na 15 minút do vriacej vody).'
+      - 'Sceď a rozmixuj s 200 ml vody a štipkou soli úplne dohladka.'
+    note: 'Varí sa ako kúpená a nezrazí sa. Obsahuje orechy.'
 
 - id: rastlinne-maslo
   name: Rastlinné maslo / vegánsky margarín
@@ -1700,6 +1826,12 @@
     - 'Pečenie, bešamel, pečená kukurica'
   choose: 'Na pečenie tuhý blok (napr. Flora Plant, Alsan).'
   storage: 'V chladničke.'
+  homemade:
+    steps:
+      - 'Roztop 100 g rafinovaného kokosového oleja, len kým nie je tekutý.'
+      - 'Zmixuj ho s 50 ml neutrálneho oleja, 60 ml sójového mlieka, ½ ČL soli a 1 ČL jablčného octu. Ak máš lecitín, pridaj ½ ČL – zmes sa potom neoddelí.'
+      - 'Nalej do formičky, nechaj hodinu stuhnúť v mrazničke a potom skladuj v chladničke.'
+    note: 'Kokosový olej musí byť rafinovaný, inak bude maslo chutiť po kokose. V chladničke vydrží 2 týždne.'
 
 - id: vegansky-syr
   name: Vegánsky syr strúhaný (na zapekanie)
@@ -1752,6 +1884,8 @@
     - 'Raňajky s granolou'
   choose: 'Nesladený a obohatený o vápnik.'
   storage: 'Otvorený v chladničke 5 dní.'
+  homemade:
+    recipe: domaci-sojovy-jogurt
 
 - id: veganska-majoneza
   name: Vegánska majonéza
@@ -1769,6 +1903,8 @@
   uses:
     - 'Zemiakový šalát, sendviče'
   storage: 'V chladničke po otvorení mesiac.'
+  homemade:
+    recipe: domaca-majoneza
 
 - id: sojove-granule
   name: Sójové granule / sójové mäso (sušené)
@@ -1810,6 +1946,12 @@
     - 'Čokoládová pena, majonéza'
     - 'Do hummusu namiesto vody'
   storage: 'V chladničke 3 dni, zamrazená vo formičkách mesiace.'
+  homemade:
+    steps:
+      - 'Namoč cícer cez noc, sceď ho a uvar v čerstvej vode (na 250 g suchého cíceru asi 1 l vody).'
+      - 'Cícer vyber a vodu var ďalej bez pokrievky, kým sa neodparí asi na polovicu a nie je hustá ako vaječný bielok.'
+      - 'Nechaj ju vychladnúť v chladničke, ešte zhustne.'
+    note: 'Pri varení cíceru ju máš zadarmo. V chladničke vydrží 3–4 dni, dá sa zamraziť.'
 
 # ── Ďalšie bielkoviny ──────────────────────────────────────────
 - id: tofu-hodvabne
@@ -1848,6 +1990,8 @@
     - 'Gado-gado, bowly, sendviče'
     - 'Pred marinovaním povar 10 minút – zmizne horkosť'
   storage: 'V chladničke 1–2 týždne, zamrazený 3 mesiace.'
+  homemade:
+    recipe: domaci-tempeh
 
 - id: lepok-vital
   name: Pšeničný lepok (vital wheat gluten)
@@ -1900,6 +2044,12 @@
     - 'Bhaji, placky, omeleta'
     - 'Cestíčko na obaľovanie'
   storage: 'Suchá pol roka, dlhšie v chladničke.'
+  homemade:
+    steps:
+      - 'Suchý cícer môžeš 5 minút opražiť nasucho, bude orieškovejší.'
+      - 'Pomel ho po malých dávkach najjemnejšie, ako to ide, v silnom mixéri alebo mlynčeku na obilie.'
+      - 'Preosej a hrubé zvyšky pomel znova.'
+    note: 'Kúpená je jemnejšia, ale na placky a omelety stačí aj domáca.'
 
 # ── Zelenina, huby, bylinky ────────────────────────────────────
 - id: karfiol
@@ -2102,6 +2252,12 @@
     - 'Namoč do horúcej vody, vodu použi do polievky'
     - 'Kapustnica, rizoto, omáčky'
   storage: 'V uzavretom pohári v suchu rok.'
+  homemade:
+    steps:
+      - 'Zdravé, nie prezreté huby očisti suchou kefkou, neumývaj ich.'
+      - 'Nakrájaj ich na 5 mm plátky a suš v sušičke pri 40–50 °C alebo na sitách na vzdušnom mieste, kým sa nelámu.'
+      - 'Skladuj ich v suchom, tesne uzavretom pohári.'
+    note: 'Zbieraj len huby, ktoré s istotou poznáš.'
 
 - id: kysla-kapusta
   name: Kyslá kapusta
@@ -2120,6 +2276,13 @@
     - 'Surová ako príloha – probiotiká varením zaniknú'
   choose: 'Z pultu alebo vrecúška, bez octu – pravá je kvasená len so soľou.'
   storage: 'V chladničke 2 týždne, v nálevu.'
+  homemade:
+    steps:
+      - 'Neskorú hlávkovú kapustu nakrájaj nadrobno. Na každý kilogram pridaj 15–20 g soli, najlepšie nejódovanej, a podľa chuti rascu.'
+      - 'Mies ju rukami, kým nepustí šťavu, a pevne ju natlač do sudu alebo veľkých pohárov. Šťava ju musí celú prekryť.'
+      - 'Zaťaž ju tanierikom a nechaj 3–4 dni pri 18–22 °C. Každý deň ju prepichni drevenou paličkou, aby unikol plyn.'
+      - 'Potom ju daj do chladna, napríklad do pivnice. O 3–6 týždňov je hotová.'
+    note: 'Kapusta nad šťavou plesnivie, preto ju drž pod hladinou. Biely povlak na hladine je neškodný, zober ho.'
 
 - id: biela-kapusta
   name: Biela hlávková kapusta
@@ -2187,6 +2350,13 @@
   uses:
     - 'Pad thai, pho, závitky – pridaj na konci'
   storage: 'V chladničke 2–3 dni, rýchlo sa kazia.'
+  homemade:
+    steps:
+      - 'Namoč 3 PL mungo fazule na 8–12 hodín.'
+      - 'Sceď ju do pohára s gázou alebo klíčiacej misky a polož ju šikmo hore dnom, aby voda odtiekla.'
+      - '2-krát denne prepláchni studenou vodou a dobre sceď.'
+      - 'Za 3–5 dní sú klíčky hotové. V chladničke vydržia 3 dni.'
+    note: 'Kupuj semená určené na klíčenie. V teple a vlhku sa darí aj baktériám, preto dbaj na čistotu. Deťom, tehotným a starším ich radšej krátko povar alebo opraž.'
 
 - id: redkovka
   name: Reďkovka
@@ -2242,6 +2412,12 @@
     - 'Zemiakový šalát, sendviče, burgre'
     - 'Nálev do šalátov namiesto octu'
   storage: 'Otvorené v chladničke v náleve mesiac.'
+  homemade:
+    steps:
+      - 'Povar nálev: 1 l vody, 250 ml 8 % octu, 100–200 g cukru podľa chuti a 1 PL soli.'
+      - 'Do čistých pohárov natlač umyté malé uhorky, kolieska cibule, kôpor, horčičné semienko, bobkový list a nové korenie.'
+      - 'Zalej ich horúcim nálevom, zavri a sterilizuj 10 minút pri 85 °C.'
+    note: 'Kvasené uhorky sú bez octu: uhorky s kôprom a cesnakom zalej 3 % soľankou (30 g soli na liter) a nechaj 1–2 týždne kvasiť.'
 
 - id: passata
   name: Paradajková passata
@@ -2259,6 +2435,12 @@
     - 'Pizza omáčka – passata, soľ, oregano, olej'
     - 'Plnené papriky a rýchle omáčky na cestoviny'
   storage: 'Otvorená v chladničke 5 dní.'
+  homemade:
+    steps:
+      - 'Zrelé paradajky nakrájaj, povar 10 minút a prepasíruj.'
+      - 'Var ďalších 10–20 minút, kým trochu nezhustne, a osoľ.'
+      - 'Nalej horúcu do horúcich čistých pohárov a sterilizuj 35 minút vo vriacej vode.'
+    note: 'Paradajky nie sú dosť kyslé na bezpečné zaváranie – do každého pollitrového pohára pridaj 1 PL citrónovej šťavy. Najjednoduchšie je zamraziť ich.'
 
 - id: petrzlenova-vnat
   name: Petržlenová vňať
@@ -2405,6 +2587,11 @@
     - 'Tagine a kuskus'
     - 'Granola a energetické guľky'
   storage: 'V uzavretej nádobe mesiace.'
+  homemade:
+    steps:
+      - 'Zrelé, ale pevné marhule prekroj a vykôstkuj.'
+      - 'Uprav ich reznou stranou nahor na sitá sušičky a suš pri 55–60 °C 12–24 hodín, kým nie sú kožovité a pri stlačení nepustia šťavu.'
+    note: 'Domáce sú hnedšie ako kúpené, oranžové z obchodu sú sírené. Farbu udržíš, keď ich pred sušením na 10 minút ponoríš do vody s citrónovou šťavou.'
 
 - id: datle
   name: Datle (vykôstkované)
@@ -2449,6 +2636,9 @@
     - 'Omáčka – tahini, citrón, cesnak, studená voda'
   choose: 'Tekuté a hladké. Libanonské a izraelské bývajú najjemnejšie.'
   storage: 'Pri izbovej teplote mesiace, pred použitím zamiešaj.'
+  homemade:
+    recipe: domace-tahini
+    note: 'Stačí sezam a silný mixér, kúpené je niekoľkonásobne drahšie.'
 
 - id: kesu
   name: Kešu orechy (nepražené)
@@ -2576,6 +2766,13 @@
     - 'Toasty, nátierky, krutóny'
     - 'Starý chlieb na strúhanku'
   storage: 'V ľanovom vrecúšku 3 dni, nakrájaný zamrazený mesiace.'
+  homemade:
+    steps:
+      - 'Zmiešaj 400 g chlebovej pšeničnej múky, 100 g ražnej múky, 350 ml vlažnej vody a 100 g aktívneho kvásku. Nechaj 30 minút stáť.'
+      - 'Zapracuj 10 g soli a počas nasledujúcich 2 hodín cesto 3–4-krát preklop.'
+      - 'Nechaj ho kysnúť, kým nezväčší objem asi o polovicu (4–6 hodín), vytvaruj bochník a daj ho cez noc do chladničky do ošatky.'
+      - 'Peč v rozpálenom liatinovom hrnci s pokrievkou 20 minút pri 250 °C, potom bez pokrievky 20–25 minút pri 230 °C.'
+    note: 'Kvások si založíš za 5–7 dní z ražnej múky a vody (denne ho prikrm rovnakým dielom oboch), alebo si ho vypýtaj od známych. Rýchlejšie to ide so 7 g sušeného droždia namiesto kvásku – cesto vykysne za 1–2 hodiny.'
 
 - id: chlieb-bezlepkovy
   name: Chlieb bezlepkový
@@ -2605,6 +2802,13 @@
   uses:
     - 'Bánh mì, sendviče'
   storage: 'Najlepšia v deň kúpy, potom na krutóny.'
+  homemade:
+    steps:
+      - 'Zmiešaj 500 g chlebovej alebo hladkej múky, 350 ml vlažnej vody, 10 g soli a 3 g sušeného droždia.'
+      - 'Počas prvej hodiny cesto 3-krát preklop a potom ho nechaj cez noc v chladničke.'
+      - 'Rozdeľ ho na 3 diely, vytvaruj dlhé bagety a nechaj ich 45 minút kysnúť. Nareži ich.'
+      - 'Peč 20–25 minút pri 240 °C s parou – na spodok rúry daj plech s vodou.'
+    note: 'Málo droždia a dlhé kysnutie v chladničke dajú bagete chuť.'
 
 - id: hamburgerova-zemla
   name: Hamburgerová žemľa (vegánska)
@@ -2621,6 +2825,11 @@
   uses:
     - 'Burgre – opeč reznou stranou na panvici'
   storage: 'Zamrazená mesiace.'
+  homemade:
+    steps:
+      - 'Vymiešaj hladké cesto z 500 g hladkej múky, 280 ml vlažného sójového mlieka, 7 g sušeného droždia, 2 PL cukru, 1 ČL soli a 40 g rastlinného masla. Nechaj ho hodinu kysnúť.'
+      - 'Rozdeľ ho na 8 guliek, jemne ich splošti a nechaj ešte 30 minút kysnúť.'
+      - 'Potri ich sójovým mliekom, posyp sezamom a peč 15–18 minút pri 200 °C.'
 
 - id: pecivo-bezlepkove
   name: Bezlepkové pečivo (bageta, žemle)
@@ -2656,6 +2865,11 @@
     - 'Obaľovanie rezňov a nuggetov'
     - 'Posyp zapekaných jedál s olejom'
   storage: 'Suchá mesiace.'
+  homemade:
+    steps:
+      - 'Starý chlieb alebo rožky nakrájaj na kocky a nechaj úplne vyschnúť – pár dní na vzduchu alebo 30–40 minút v rúre pri 120 °C.'
+      - 'Rozmixuj alebo nastrúhaj najemno.'
+    note: 'V suchom pohári vydrží mesiace – dobrý spôsob, ako nevyhodiť starý chlieb.'
 
 - id: struhanka-bezlepkova
   name: Strúhanka bezlepková
@@ -2670,6 +2884,11 @@
   uses:
     - 'Obaľovanie pri bezlepkovej strave'
   storage: 'Suchá mesiace.'
+  homemade:
+    steps:
+      - 'Bezlepkový chlieb alebo pečivo nakrájaj na kocky a vysuš v rúre pri 120 °C 30–40 minút.'
+      - 'Rozmixuj najemno.'
+    note: 'Mixér, strúhadlo a doska nesmú mať zvyšky lepku.'
 
 - id: lasagne-platne
   name: Lasagne platne (suché)
@@ -2687,6 +2906,11 @@
   uses:
     - 'Lasagne – omáčka má byť redšia, platne nasajú tekutinu'
   storage: 'Suché rok.'
+  homemade:
+    steps:
+      - 'Priprav cesto ako na domáce cestoviny: 200 g semoliny a asi 100 ml vody, 10 minút mies a nechaj 30 minút odpočívať.'
+      - 'Vyvaľkaj ho natenko a nakrájaj na pláty veľké ako tvoja zapekacia misa.'
+      - 'Nemusíš ich predvárať, rovno ich vrstvi do lasagní.'
 
 - id: lasagne-platne-bezlepkove
   name: Lasagne platne bezlepkové
@@ -2749,6 +2973,11 @@
   uses:
     - 'Bublanina, lievance, muffiny'
   storage: 'V suchu, po roku stráca silu.'
+  homemade:
+    steps:
+      - 'Zmiešaj 1 diel sódy bikarbóny a 2 diely vínneho kameňa.'
+      - 'Ak ho chceš skladovať, pridaj 1 diel kukuričného škrobu, aby nevlhol.'
+    note: 'Používa sa rovnako ako kúpený. Bez škrobu ho namiešaj len tesne pred pečením.'
 
 - id: cukor
   name: Cukor
@@ -2862,6 +3091,12 @@
   uses:
     - 'Bánh mì, pho, majonéza, bowly'
   storage: 'V chladničke rok.'
+  homemade:
+    steps:
+      - 'Rozmixuj 250 g červených čili papričiek bez stopiek, 4 strúčiky cesnaku, 1 PL cukru a 1 ČL soli na hrubú pastu.'
+      - 'Daj ju do čistého pohára, prikry voľne viečkom a nechaj 3–7 dní pri izbovej teplote. Denne premiešaj – začne bublať.'
+      - 'Pridaj 60 ml octu, rozmixuj dohladka, povar 5 minút a pretlač cez sitko.'
+    note: 'Domáca vydrží v chladničke mesiace. Keby sa počas kvasenia objavila pleseň, celú várku vyhoď.'
 
 - id: horcica
   name: Horčica plnotučná
@@ -2881,6 +3116,13 @@
   uses:
     - 'Dresingy, majonéza, zemiakový šalát'
   storage: 'Po otvorení v chladničke.'
+  homemade:
+    steps:
+      - 'Zmiešaj 50 g žltého horčičného semienka (s hnedým bude ostrejšia) a 50 ml studenej vody a nechaj cez noc napučať.'
+      - 'Pridaj 50 ml octu, 1 ČL soli, 1–2 ČL cukru alebo sirupu a štipku kurkumy na farbu.'
+      - 'Rozmixuj ponorným mixérom – krátko na plnotučnú, dlhšie na jemnú.'
+      - 'Nechaj 1–2 dni dozrieť v chladničke. Čerstvá je horká a štipľavá, potom sa uhladí.'
+    note: 'V chladničke vydrží niekoľko mesiacov.'
 
 - id: wakame
   name: Wakame (sušené riasy)
@@ -2912,6 +3154,12 @@
   uses:
     - 'Japonské kari, tekvicová polievka'
   storage: 'Pol roka.'
+  homemade:
+    steps:
+      - 'Na suchej panvici opraž 2 PL celého koriandra, 1 PL kmínu, 1 ČL horčičného semienka, 1 ČL čierneho korenia a 3 klinčeky.'
+      - 'Nechaj vychladnúť a pomel.'
+      - 'Primiešaj 1 PL kurkumy, 1 ČL mletého zázvoru a ½–1 ČL mletého čili podľa pálivosti.'
+    note: 'Ak zoženieš senovku grécku, pridaj ½ ČL – dáva kari tú typickú vôňu.'
 
 - id: badian
   name: Badián (celý)
@@ -3019,6 +3267,9 @@
     - 'Placky, fašírky, pečivo'
     - 'Do kaše a granoly'
   storage: 'V chladničke 2 dni, zamrazená 3 mesiace.'
+  homemade:
+    recipe: domace-sojove-mlieko
+    note: 'Vzniká ako zvyšok pri výrobe sójového mlieka alebo tofu.'
 
 - id: nigari
   name: Nigari (chlorid horečnatý na tofu)

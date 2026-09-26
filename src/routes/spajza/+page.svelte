@@ -19,6 +19,7 @@
 			(i) => !i.staple && normalizeSearch(i.name).includes(normalizeSearch(search.trim()))
 		)
 	);
+	const staples = catalog.ingredients.filter((i) => i.staple && i.id !== 'voda');
 	const pickableByCategory = $derived(
 		INGREDIENT_CATEGORIES.map((c) => [c, pickable.filter((i) => i.category === c)] as const).filter(
 			([, list]) => list.length > 0
@@ -92,6 +93,9 @@
 				<label for="pantry-q" class="sr-only">Hľadať surovinu</label>
 				<input id="pantry-q" type="search" bind:value={search} placeholder="Hľadaj surovinu…" />
 			</div>
+			<p class="muted small staples">
+				{staples.map((i) => i.name).join(', ')} a vodu nepridávaš – počítame, že ich máš doma vždy.
+			</p>
 			<div class="cats">
 				{#each pickableByCategory as [category, list] (category)}
 					<div class="cat">
@@ -351,6 +355,9 @@
 		justify-items: center;
 		padding: 24px 0 8px;
 		text-align: center;
+	}
+	.staples {
+		margin: 10px 0 0;
 	}
 	.small {
 		font-size: 0.82rem;

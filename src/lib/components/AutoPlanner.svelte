@@ -3,6 +3,7 @@
 	import { autoPlan, type AutoPlanOptions, type AutoPlanResult } from '$lib/autoplan';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
+	import PlanSettings from '$lib/components/PlanSettings.svelte';
 	import { ALLERGEN_LABELS } from '$lib/nutrition';
 	import { matchRecipe, pantryByGroup } from '$lib/pantry';
 	import { recipeSeason } from '$lib/season';
@@ -100,6 +101,7 @@
 
 	{#if open}
 		<div class="form">
+			<PlanSettings />
 			<label>
 				Rozpočet na celý plán
 				<span class="inline">
@@ -157,8 +159,8 @@
 				{/each}
 			</div>
 			<p class="muted small">
-				Plánuje obedy{settings.current.mealsPerDay === 2 ? ' a večere' : ''} – počet dní, ľudí a jedál
-				denne nastavíš v Rozpise dní nižšie. Raňajky a snacky rieš zvlášť.
+				Plánuje obedy{settings.current.mealsPerDay === 2 ? ' a večere' : ''}. Raňajky a snacky rieš
+				zvlášť.
 			</p>
 			<button class="btn leaf" onclick={suggest}><Icon name="sparkle" size={18} /> Navrhnúť</button>
 		</div>

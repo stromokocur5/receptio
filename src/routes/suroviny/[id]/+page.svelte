@@ -107,6 +107,22 @@
 					</ul>
 				</section>
 			{/if}
+			{#if info.homemade}
+				<section class="homemade">
+					<h2><Icon name="chef" size={20} /> Urob si sám</h2>
+					{#if info.homemade.steps.length}
+						<ol>
+							{#each info.homemade.steps as step, i (i)}<li>{step}</li>{/each}
+						</ol>
+					{/if}
+					{#if info.homemade.recipe}
+						<a class="btn leaf small" href="/recepty/{info.homemade.recipe.id}">
+							<Icon name="arrow-right" size={16} /> Recept: {info.homemade.recipe.title}
+						</a>
+					{/if}
+					{#if info.homemade.note}<p class="muted">{info.homemade.note}</p>{/if}
+				</section>
+			{/if}
 			{#if info.choose}
 				<section>
 					<h2><Icon name="basket" size={20} /> Ako vybrať</h2>
@@ -286,9 +302,20 @@
 		font-size: 1.2rem;
 		margin: 0 0 8px;
 	}
-	.text ul {
+	.text ul,
+	.text ol {
 		margin: 0;
 		padding-left: 1.2em;
+	}
+	.homemade {
+		padding: 16px 18px;
+		border-radius: 16px;
+		background: var(--leaf-soft);
+	}
+	.homemade ol + .btn,
+	.homemade ol + p,
+	.homemade .btn + p {
+		margin-top: 12px;
 	}
 	.text li {
 		margin: 5px 0;
