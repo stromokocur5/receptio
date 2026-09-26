@@ -1,24 +1,36 @@
 import { describe, expect, it } from 'vitest';
-import { matchesSearch, normalizeSearch } from './labels';
+import { normalizeSearch, searchMatcher } from './labels';
 
-const text = normalizeSearch('Šošovicový dal s brokolicou a ryžou – indická kuchyňa');
+const dal = normalizeSearch(
+	'Šošovicový dal s brokolicou a ryžou – indická kuchyňa, čierne korenie'
+);
+const hummus = normalizeSearch('Hummus z cíceru s tahini');
+const texts = [dal, hummus];
+const find = (query: string) => texts.filter(searchMatcher(texts, query));
 
-describe('matchesSearch', () => {
+describe('searchMatcher', () => {
 	it('matches plain and diacritic-free words', () => {
-		expect(matchesSearch(text, 'šošovic')).toBe(true);
-		expect(matchesSearch(text, 'ryza')).toBe(true);
-		expect(matchesSearch(text, '')).toBe(true);
+		expect(find('šošovic')).toEqual([dal]);
+		expect(find('ryza')).toEqual([dal]);
+		expect(find('')).toEqual(texts);
 	});
 
 	it('tolerates typos and swapped letters', () => {
-		expect(matchesSearch(text, 'brokolca')).toBe(true);
-		expect(matchesSearch(text, 'sosovcia')).toBe(true);
-		expect(matchesSearch(text, 'idnicka')).toBe(true);
+		expect(find('brokolca')).toEqual([dal]);
+		expect(find('sosovcia')).toEqual([dal]);
+		expect(find('idnicka')).toEqual([dal]);
 	});
 
-	it('needs every word and stays strict for short or unrelated words', () => {
-		expect(matchesSearch(text, 'brokolica tofu')).toBe(false);
-		expect(matchesSearch(text, 'rys')).toBe(false);
-		expect(matchesSearch(text, 'cicer')).toBe(false);
+	it('keeps words that exist exact, so they never match look-alikes', () => {
+		expect(find('cicer')).toEqual([hummus]);
+		expect(find('cicer brokolca')).toEqual([]);
+	});
+
+	it('does not stretch a word into the start of another one', () => {
+		expect(find('cicre')).toEqual([hummus]);
+		expect(find('cicr')).toEqual([hummus]);
+		expect(find('cier')).toEqual([dal]);
+		expect(find('tofu')).toEqual([]);
+		expect(find('rys')).toEqual([]);
 	});
 });

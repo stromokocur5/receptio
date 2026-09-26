@@ -5,7 +5,7 @@
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
-	import { MEAL_LABELS, matchesSearch, normalizeSearch, pluralRecipes } from '$lib/labels';
+	import { MEAL_LABELS, normalizeSearch, searchMatcher, pluralRecipes } from '$lib/labels';
 	import { ALLERGEN_LABELS, COMPUTED_TAG_LABELS, computedTags, cookingStyle } from '$lib/nutrition';
 	import { recipeSeason } from '$lib/season';
 	import { rankByPantry, type PantryMatch } from '$lib/pantry';
@@ -92,9 +92,11 @@
 	);
 	const hasPantry = $derived(ui.loaded && Object.keys(pantry.current).length > 0);
 
+	const matchesQuery = $derived(searchMatcher([...searchIndex.values()], q));
+
 	const filtered = $derived.by(() => {
 		const list = catalog.recipes.filter((r) => {
-			if (!matchesSearch(searchIndex.get(r.id)!, q)) return false;
+			if (!matchesQuery(searchIndex.get(r.id)!)) return false;
 			if (gf === 1 && r.gluten === 'contains') return false;
 			if (gf === 2 && r.gluten === 'contains' && !r.gfSwappable) return false;
 			if (cuisine && r.cuisine !== cuisine) return false;

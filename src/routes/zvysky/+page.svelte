@@ -3,7 +3,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
-	import { matchesSearch, normalizeSearch } from '$lib/labels';
+	import { normalizeSearch, searchMatcher } from '$lib/labels';
 	import { isAssumedAtHome, rankByLeftovers } from '$lib/pantry';
 
 	const catalog = useCatalog();
@@ -13,12 +13,14 @@
 	let q = $state('');
 	let chosen = $state<string[]>([]);
 
+	const ingredientNames = catalog.ingredients.map((i) => normalizeSearch(i.name));
+
 	const suggestions = $derived.by(() => {
-		const term = normalizeSearch(q.trim());
-		if (!term) return [];
+		if (!q.trim()) return [];
+		const matchesName = searchMatcher(ingredientNames, q);
 		return catalog.ingredients
 			.filter((i) => !isAssumedAtHome(i) && !chosen.includes(i.id) && i.id !== 'voda')
-			.filter((i) => matchesSearch(normalizeSearch(i.name), term))
+			.filter((i) => matchesName(normalizeSearch(i.name)))
 			.slice(0, 8);
 	});
 	const matches = $derived(

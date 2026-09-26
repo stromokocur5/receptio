@@ -4,7 +4,7 @@
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
-	import { CATEGORY_LABELS, matchesSearch, normalizeSearch } from '$lib/labels';
+	import { CATEGORY_LABELS, normalizeSearch, searchMatcher } from '$lib/labels';
 	import { rankByPantry, TAP_WATER_ID } from '$lib/pantry';
 	import { pantry, removePantryItem, setPantryItem, ui } from '$lib/state.svelte';
 	import { INGREDIENT_CATEGORIES, type Ingredient } from '$lib/types';
@@ -14,10 +14,10 @@
 	let search = $state('');
 	let confirmClear = $state(false);
 
+	const ingredientNames = catalog.ingredients.map((i) => normalizeSearch(i.name));
+	const matchesName = $derived(searchMatcher(ingredientNames, search));
 	const pickable = $derived(
-		catalog.ingredients.filter(
-			(i) => i.id !== TAP_WATER_ID && matchesSearch(normalizeSearch(i.name), search)
-		)
+		catalog.ingredients.filter((i) => i.id !== TAP_WATER_ID && matchesName(normalizeSearch(i.name)))
 	);
 	const pickableByCategory = $derived(
 		INGREDIENT_CATEGORIES.map((c) => [c, pickable.filter((i) => i.category === c)] as const).filter(

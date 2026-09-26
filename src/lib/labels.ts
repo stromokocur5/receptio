@@ -68,25 +68,44 @@ function allowedTypos(term: string): number {
 }
 
 /**
- * Whether every word of the query appears in the (normalized) text, tolerating typos:
- * "sosovcia" finds "šošovica", "brokolca" finds "brokolica". A query word may also be the
- * start of a longer word ("sosov" → "šošovicová").
+ * Whether one of the words is `term` with a few typos or another ending: the whole word
+ * ("cicre" → "cicer"), the start of a longer word for 5+ letters ("brokolca" → "brokolicou"),
+ * or the same stem ("ryza" → "ryzou"). A typo never shortens a word into the start of another
+ * one, so "cicr" doesn't find "cier|ne".
  */
-export function matchesSearch(text: string, query: string): boolean {
-	const terms = normalizeSearch(query).split(/\s+/).filter(Boolean);
-	if (!terms.length) return true;
-	let words: string[] | undefined;
-	return terms.every((term) => {
-		if (text.includes(term)) return true;
-		const max = allowedTypos(term);
-		if (!max) return false;
-		words ??= text.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
-		return words.some((word) => {
-			for (let len = term.length - max; len <= term.length + max; len++) {
-				if (len < 1 || len > word.length) continue;
-				if (editDistance(term, word.slice(0, len), max) <= max) return true;
-			}
-			return false;
-		});
+function nearWord(words: string[], term: string): boolean {
+	const max = allowedTypos(term);
+	if (!max) return false;
+	const stem = term.slice(0, -1);
+	return words.some((word) => {
+		if (word.startsWith(stem)) return true;
+		for (let len = term.length - max; len <= term.length + max; len++) {
+			if (len < 1 || len > word.length) continue;
+			const wholeWord = len === word.length;
+			if (!wholeWord && (len < term.length || term.length < 5)) continue;
+			if (editDistance(term, word.slice(0, len), max) <= max) return true;
+		}
+		return false;
 	});
+}
+
+/**
+ * Search over a list of (normalized) texts. Every word of the query must appear; a word that
+ * appears nowhere as typed is matched with typos instead ("sosovcia" finds "šošovica"), and a
+ * query word may be the start of a longer word ("sosov" → "šošovicová"). Words that do appear
+ * somewhere stay exact, so "cicer" never turns into "čierne".
+ */
+export function searchMatcher(texts: string[], query: string): (text: string) => boolean {
+	const terms = normalizeSearch(query).split(/\s+/).filter(Boolean);
+	if (!terms.length) return () => true;
+	const typoTerms = new Set(terms.filter((t) => !texts.some((text) => text.includes(t))));
+	return (text) => {
+		let words: string[] | undefined;
+		return terms.every((term) => {
+			if (text.includes(term)) return true;
+			if (!typoTerms.has(term)) return false;
+			words ??= text.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+			return nearWord(words, term);
+		});
+	};
 }
