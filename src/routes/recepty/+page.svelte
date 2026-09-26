@@ -240,6 +240,11 @@
 	<header class="page-head rise">
 		<p class="eyebrow">Recepty</p>
 		<h1>Čo dnes uvaríme?</h1>
+		<p class="shortcuts">
+			<a href="/zvysky"><Icon name="jar" size={16} /> Zo zvyškov</a>
+			<a href="/sezona"><Icon name="leaf" size={16} /> Sezónne</a>
+			<a href="/plan"><Icon name="sparkle" size={16} /> Navrhni mi plán</a>
+		</p>
 	</header>
 
 	<div class="toolbar">
@@ -480,6 +485,19 @@
 </div>
 
 <style>
+	.shortcuts {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px 16px;
+		margin: 6px 0 0;
+		font-size: 0.9rem;
+		font-weight: 650;
+	}
+	.shortcuts a {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+	}
 	.page {
 		padding-top: 28px;
 	}

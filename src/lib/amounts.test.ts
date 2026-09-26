@@ -28,6 +28,7 @@ const ingredient = (overrides: Partial<Ingredient> = {}): Ingredient => ({
 	units: {},
 	density: 1,
 	priceEstimate: 1,
+	co2: 1,
 	color: '#000000',
 	howto: [],
 	byproduct: false,

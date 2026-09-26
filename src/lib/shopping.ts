@@ -5,6 +5,22 @@ import type { Ingredient, IngredientCategory, PriceEntry, RecipeSummary } from '
 
 const TAP_WATER_ID = 'voda';
 
+/** The order you walk a typical Slovak supermarket: fresh first, chilled, then dry goods. */
+export const AISLE_ORDER: IngredientCategory[] = [
+	'zelenina',
+	'ovocie',
+	'bielkoviny',
+	'rastlinne-mlieka',
+	'nahrady',
+	'obilniny',
+	'strukoviny',
+	'orechy-semienka',
+	'omacky-pasty',
+	'oleje',
+	'koreniny',
+	'ine'
+];
+
 export interface PlanEntry {
 	recipeId: string;
 	servings: number;
@@ -24,6 +40,8 @@ export interface ShoppingItem {
 	buyGrams: number;
 	cost: number;
 	costIsEstimate: boolean;
+	/** Store with the cheapest real price, null when only an estimate is known. */
+	storeId: string | null;
 	usedIn: string[];
 	/** A usually-at-home basic the user said they're out of. */
 	restock: boolean;
@@ -89,6 +107,7 @@ export function buildShoppingList(
 			buyGrams,
 			cost: (price.perKg * buyGrams) / 1000,
 			costIsEstimate: price.isEstimate,
+			storeId: price.storeId,
 			usedIn: [...usedIn],
 			restock: outOfStock.has(ingredient.id) && isAssumedAtHome(ingredient)
 		});
@@ -108,7 +127,7 @@ export function buildShoppingList(
 	}
 
 	return {
-		byCategory: [...categories],
+		byCategory: [...categories].sort(([a], [b]) => AISLE_ORDER.indexOf(a) - AISLE_ORDER.indexOf(b)),
 		staples: items.filter((i) => worthChecking(i.ingredient) && i.buyGrams > 0),
 		total: toBuy.reduce((sum, i) => sum + i.cost, 0),
 		hasEstimates: toBuy.some((i) => i.costIsEstimate)

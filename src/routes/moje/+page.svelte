@@ -4,7 +4,11 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
-	import { RATING_LABELS, favorites, history, notes, ui } from '$lib/state.svelte';
+	import { formatEur, formatNumber } from '$lib/amounts';
+	import NutrientBars from '$lib/components/NutrientBars.svelte';
+	import { DAILY_REFERENCE, VEGAN_PROTEIN_G_PER_KG } from '$lib/nutrition';
+	import { RATING_LABELS, favorites, history, notes, settings, ui } from '$lib/state.svelte';
+	import { weekSummary } from '$lib/week';
 
 	const catalog = useCatalog();
 	const dateFormat = new Intl.DateTimeFormat('sk-SK', { day: 'numeric', month: 'long' });
@@ -34,6 +38,18 @@
 	const noted = $derived(
 		ui.loaded ? Object.entries(notes.current).filter(([id]) => catalog.recipesById.has(id)) : []
 	);
+
+	const week = $derived(
+		ui.loaded
+			? weekSummary(history.current, catalog.recipesById, settings.current.people, new Date())
+			: null
+	);
+	const targets = $derived({
+		...DAILY_REFERENCE,
+		protein: settings.current.weightKg
+			? settings.current.weightKg * VEGAN_PROTEIN_G_PER_KG
+			: DAILY_REFERENCE.protein
+	});
 
 	let showAllHistory = $state(false);
 	let restoreMessage = $state<{ ok: boolean; text: string } | null>(null);
@@ -88,6 +104,29 @@
 			</div>
 		{/if}
 	</section>
+
+	{#if week && week.portions > 0}
+		<section class="card box weekbox">
+			<h2><Icon name="calendar" size={24} /> Posledných 7 dní</h2>
+			<p class="stats">
+				<strong>{formatNumber(week.portions, 0)}</strong>
+				{week.portions < 1.5 ? 'porcia' : week.portions < 4.5 ? 'porcie' : 'porcií'} na osobu ·
+				{formatEur(week.cost)} · ≈ {formatNumber(week.co2, 1)} kg CO₂e
+			</p>
+			<NutrientBars
+				values={week.perDay}
+				{targets}
+				keys={['protein', 'fiber', 'iron', 'calcium', 'zinc', 'ala']}
+			/>
+			<p class="muted small">
+				Priemer na deň len z jedál uvarených podľa Receptia, rozdelených na
+				{settings.current.people}
+				{settings.current.people === 1 ? 'osobu' : settings.current.people < 5 ? 'osoby' : 'osôb'} (nastavíš
+				v Pláne). Raňajky a jedlá mimo Receptia tu nie sú, takže reálne číslo je vyššie. B12 a vitamín
+				D rieš <a href="/wiki/b12">suplementom</a>.
+			</p>
+		</section>
+	{/if}
 
 	<div class="two">
 		<section class="card box">
@@ -243,6 +282,9 @@
 		white-space: pre-line;
 		color: var(--ink-2);
 		font-size: 0.92rem;
+	}
+	.weekbox {
+		margin-bottom: 20px;
 	}
 	.backup {
 		margin-top: 20px;

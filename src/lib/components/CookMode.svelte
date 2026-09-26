@@ -4,6 +4,7 @@
 	import { useCatalog } from '$lib/catalog';
 	import { splitStep, stepLines } from '$lib/cooking';
 	import Icon from '$lib/components/Icon.svelte';
+	import RecipeFeedback from '$lib/components/RecipeFeedback.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
 	import type { PantryUse } from '$lib/pantry';
 	import {
@@ -14,6 +15,13 @@
 		type Rating
 	} from '$lib/state.svelte';
 	import { startTimer } from '$lib/timers.svelte';
+	import {
+		createListener,
+		recognitionSupported,
+		speak,
+		speechSupported,
+		type VoiceCommand
+	} from '$lib/voice';
 	import type { RecipeLine } from '$lib/types';
 
 	let {
@@ -50,6 +58,9 @@
 	let cooked = $state<PantryUse[] | null>(null);
 	let started = $state<string[]>([]);
 	let rated = $state<Rating | null>(null);
+	let voiceOn = $state(false);
+	let voiceNote = $state('');
+	let listener: ReturnType<typeof createListener> | null = null;
 	let dialog: HTMLDialogElement;
 
 	const done = $derived(index >= steps.length);
@@ -83,6 +94,64 @@
 			catalog.ingredientsById
 		);
 	}
+
+	/** Reads the current step aloud; the mic pauses meanwhile so it doesn't hear itself. */
+	function readStep() {
+		const text = done
+			? 'Hotovo. Dobrú chuť!'
+			: `Krok ${index + 1}. ${steps[index]}${segments.some((s) => 'timer' in s) ? ' Povedz časovač a spustím ho.' : ''}`;
+		listener?.pause();
+		speak(text, () => listener?.resume());
+	}
+
+	function runCommand(command: VoiceCommand) {
+		if (command === 'next') go(index + 1);
+		else if (command === 'prev') go(index - 1);
+		else if (command === 'repeat') readStep();
+		else if (command === 'ingredients') showAll = !showAll;
+		else if (command === 'stop') toggleVoice();
+		else if (command === 'timer') {
+			const i = segments.findIndex((s) => 'timer' in s);
+			const segment = segments[i];
+			if (segment && 'timer' in segment) {
+				timer(segment.timer.label, segment.timer.seconds, `${index}:${i}`);
+				listener?.pause();
+				speak(`Časovač ${segment.timer.label} beží.`, () => listener?.resume());
+			}
+		}
+	}
+
+	function toggleVoice() {
+		if (voiceOn) {
+			voiceOn = false;
+			listener?.stop();
+			listener = null;
+			speechSynthesis.cancel();
+			return;
+		}
+		if (!speechSupported()) {
+			voiceNote = 'Tento prehliadač nevie čítať nahlas.';
+			return;
+		}
+		voiceOn = true;
+		voiceNote = recognitionSupported()
+			? 'Povedz „ďalej“, „späť“, „zopakuj“, „časovač“ alebo „suroviny“. Rozpoznávanie reči robí prehliadač (v Chrome cez Google).'
+			: 'Tento prehliadač nevie počúvať povely, kroky ti len prečítam.';
+		if (recognitionSupported()) {
+			listener = createListener(runCommand, (reason) => {
+				voiceNote = `${reason} Kroky ti aspoň prečítam.`;
+				listener = null;
+			});
+			listener.start();
+		}
+		readStep();
+	}
+
+	$effect(() => {
+		// Read each new step aloud while voice mode is on.
+		void index;
+		if (voiceOn) readStep();
+	});
 
 	function onkeydown(event: KeyboardEvent) {
 		if (event.key === 'ArrowRight') go(index + 1);
@@ -136,6 +205,8 @@
 		const overflow = document.body.style.overflow;
 		document.body.style.overflow = 'hidden';
 		return () => {
+			listener?.stop();
+			if (speechSupported()) speechSynthesis.cancel();
 			document.removeEventListener('visibilitychange', onvisible);
 			void lock?.release();
 			document.body.style.overflow = overflow;
@@ -156,16 +227,31 @@
 				{#if screenLock === 'on'}· <Icon name="sun" size={13} /> displej nezhasne{/if}
 			</span>
 		</div>
-		<button
-			class="icon-btn"
-			class:on={showAll}
-			onclick={() => (showAll = !showAll)}
-			aria-label="Všetky suroviny"
-			aria-expanded={showAll}
-		>
-			<Icon name="basket" size={20} />
-		</button>
+		<div class="head-btns">
+			<button
+				class="icon-btn"
+				class:on={voiceOn}
+				onclick={toggleVoice}
+				aria-pressed={voiceOn}
+				aria-label="Hlasové ovládanie"
+				title="Čítať kroky nahlas a počúvať povely"
+			>
+				<Icon name="mic" size={20} />
+			</button>
+			<button
+				class="icon-btn"
+				class:on={showAll}
+				onclick={() => (showAll = !showAll)}
+				aria-label="Všetky suroviny"
+				aria-expanded={showAll}
+			>
+				<Icon name="basket" size={20} />
+			</button>
+		</div>
 	</header>
+	{#if voiceNote}
+		<p class="voice-note" role="status">{voiceNote}</p>
+	{/if}
 
 	<nav class="progress" aria-label="Kroky">
 		{#each steps as _, i (i)}
@@ -244,6 +330,7 @@
 									Čo zmeniť nabudúce? Zapíš si to do poznámok pod postupom receptu.
 								</p>
 							{/if}
+							<RecipeFeedback {recipeId} />
 							{#if cooked.length}
 								<ul class="used">
 									{#each cooked as use (use.ingredient.id)}
@@ -310,8 +397,8 @@
 		max-height: none;
 		margin: 0;
 		border: 0;
-		display: grid;
-		grid-template-rows: auto auto 1fr auto auto;
+		display: flex;
+		flex-direction: column;
 		background: var(--paper);
 		color: var(--ink);
 		padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
@@ -344,6 +431,16 @@
 		gap: 4px;
 		font-size: 0.8rem;
 	}
+	.head-btns {
+		display: flex;
+		gap: 6px;
+	}
+	.voice-note {
+		margin: 0 16px 6px;
+		font-size: 0.8rem;
+		color: var(--muted);
+		text-align: center;
+	}
 	.icon-btn.on {
 		background: var(--leaf);
 		color: var(--paper);
@@ -369,6 +466,8 @@
 		background: var(--leaf);
 	}
 	main {
+		flex: 1;
+		min-height: 0;
 		position: relative;
 		overflow-y: auto;
 		overflow-x: hidden;

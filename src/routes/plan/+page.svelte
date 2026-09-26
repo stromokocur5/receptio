@@ -2,6 +2,7 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
+	import AutoPlanner from '$lib/components/AutoPlanner.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import PlateArt from '$lib/components/PlateArt.svelte';
@@ -64,6 +65,27 @@
 		)
 	);
 	const allItems = $derived(list.byCategory.flatMap(([, items]) => items));
+
+	/** Aisles (default) or one list per store where each item is cheapest. */
+	let groupBy = $state<'aisle' | 'store'>('aisle');
+	const hasRealPrices = $derived(allItems.some((i) => i.storeId));
+	const groups = $derived.by((): [string, string, ShoppingItem[]][] => {
+		if (groupBy === 'aisle') {
+			return list.byCategory.map(([c, items]) => [c, CATEGORY_LABELS[c], items]);
+		}
+		const byStore = new Map<string, ShoppingItem[]>();
+		for (const item of allItems) {
+			const key = item.storeId ?? '';
+			byStore.set(key, [...(byStore.get(key) ?? []), item]);
+		}
+		return [...byStore]
+			.sort(([a], [b]) => (a === '' ? 1 : b === '' ? -1 : a.localeCompare(b)))
+			.map(([id, items]) => [
+				id || 'any',
+				id ? (catalog.storesById.get(id)?.name ?? id) : 'Kdekoľvek (reálnu cenu zatiaľ nepoznáme)',
+				items
+			]);
+	});
 	const checkedCount = $derived(
 		allItems.filter((i) => checkedItems.current[i.ingredient.id]).length
 	);
@@ -227,6 +249,7 @@
 
 	<div class="layout">
 		<div class="left">
+			<AutoPlanner />
 			<section class="card box">
 				<div class="box-head">
 					<h2><Icon name="calendar" size={24} /> Recepty v pláne</h2>
@@ -467,9 +490,27 @@
 			{:else if allItems.length === 0}
 				<p class="empty"><Icon name="check" size={20} /> Všetko máš doma. Môžeš variť.</p>
 			{:else}
-				{#each list.byCategory as [category, items] (category)}
+				{#if hasRealPrices}
+					<div class="group-by" role="group" aria-label="Zoradenie zoznamu">
+						<button
+							class="chip"
+							aria-pressed={groupBy === 'aisle'}
+							onclick={() => (groupBy = 'aisle')}
+						>
+							Podľa uličiek
+						</button>
+						<button
+							class="chip"
+							aria-pressed={groupBy === 'store'}
+							onclick={() => (groupBy = 'store')}
+						>
+							Kde je najlacnejšie
+						</button>
+					</div>
+				{/if}
+				{#each groups as [key, label, items] (key)}
 					<div class="cat">
-						<h3>{CATEGORY_LABELS[category]}</h3>
+						<h3>{label}</h3>
 						<ul>
 							{#each items as item (item.ingredient.id)}
 								{@const checked = !!checkedItems.current[item.ingredient.id]}
@@ -666,6 +707,12 @@
 	.stepper span {
 		min-width: 1.4em;
 		text-align: center;
+	}
+	.group-by {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin-top: 6px;
 	}
 	.head-actions {
 		display: flex;

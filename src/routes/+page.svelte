@@ -49,6 +49,13 @@
 			tone: 'var(--turmeric)'
 		},
 		{
+			href: '/zvysky',
+			title: 'Čo uvariť zo zvyškov',
+			text: 'Pol cukety, ryža zo včera? Vyber, čo treba minúť, a nájde sa recept.',
+			icon: 'jar',
+			tone: 'var(--leaf-2)'
+		},
+		{
 			href: '/recepty?gf=1',
 			title: 'Bezlepkovo',
 			text: 'Lepok odvodený zo surovín vrátane zámen typu tamari.',
@@ -179,8 +186,8 @@
 	<section class="wrap block">
 		<div class="head">
 			<h2>Teraz v sezóne</h2>
-			<a class="btn ghost small" href="/recepty?rychlo=sezonne"
-				>Všetky sezónne <Icon name="arrow-right" size={16} /></a
+			<a class="btn ghost small" href="/sezona"
+				>Sezónny kalendár <Icon name="arrow-right" size={16} /></a
 			>
 		</div>
 		<p class="muted season-note">

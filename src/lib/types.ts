@@ -71,6 +71,8 @@ export interface Ingredient {
 	density: number;
 	/** Rough €/kg used when no store price is known. Always labeled as an estimate. */
 	priceEstimate: number;
+	/** kg CO₂e per kg, from Our World in Data (category average when unknown). */
+	co2: number;
 	/** Leftover of another recipe (okara, aquafaba) – effectively free, never "bought". */
 	byproduct: boolean;
 	color: string;
@@ -115,6 +117,8 @@ export interface RecipeComputed {
 	perServing: Nutrients;
 	costPerServing: number;
 	costIsEstimate: boolean;
+	/** Rough kg CO₂e of the ingredients per serving. */
+	co2PerServing: number;
 	/** Uses vegan convenience substitutes (plant cream, butter, cheese, mayo…). */
 	usesSubstitutes: boolean;
 	warnings: Warning[];

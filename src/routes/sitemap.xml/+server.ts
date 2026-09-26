@@ -13,6 +13,8 @@ const STATIC_PAGES = [
 	'/ceny',
 	'/wiki',
 	'/vybavenie',
+	'/sezona',
+	'/zvysky',
 	'/navrhni'
 ];
 

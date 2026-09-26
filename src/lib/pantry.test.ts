@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { consumeFromPantry, rankByPantry } from './pantry';
+import { consumeFromPantry, rankByLeftovers, rankByPantry } from './pantry';
 import { buildShoppingList } from './shopping';
 import { basketByStore } from './pricing';
 import type { Ingredient, PriceEntry, RecipeSummary } from './types';
@@ -31,6 +31,7 @@ function ing(id: string, group = id, extra: Partial<Ingredient> = {}): Ingredien
 		units: {},
 		density: 1,
 		priceEstimate: 2,
+		co2: 1,
 		color: '#000000',
 		howto: [],
 		byproduct: false,
@@ -66,6 +67,7 @@ function recipe(id: string, lines: [string, number][], servings = 2): RecipeSumm
 		perServing: zero,
 		costPerServing: 1,
 		costIsEstimate: true,
+		co2PerServing: 0.5,
 		usesSubstitutes: false,
 		warnings: [],
 		substitutes: 'none',
@@ -227,5 +229,25 @@ describe('consumeFromPantry', () => {
 		const { pantry, used } = consumeFromPantry({ 'cicer-suchy': null }, hummus.lines, 1, byId);
 		expect(pantry).toEqual({ 'cicer-suchy': null });
 		expect(used).toEqual([]);
+	});
+});
+
+describe('rankByLeftovers', () => {
+	const both = recipe('oboje', [
+		['cicer-sterilizovany', 240],
+		['ryza', 200]
+	]);
+	const onlyRice = recipe('ryza-sama', [
+		['ryza', 200],
+		['sol', 5]
+	]);
+	const none = recipe('nic', [['sol', 5]]);
+
+	it('puts recipes using more leftovers first and counts interchangeable forms', () => {
+		const ranked = rankByLeftovers([onlyRice, none, both], ['ryza', 'cicer-suchy'], byId);
+		expect(ranked.map((m) => m.recipe.id)).toEqual(['oboje', 'ryza-sama']);
+		expect(ranked[0].uses.map((i) => i.id)).toEqual(['cicer-sterilizovany', 'ryza']);
+		// Salt is assumed at home, so nothing else is needed.
+		expect(ranked[1].others).toEqual([]);
 	});
 });

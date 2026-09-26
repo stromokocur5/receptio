@@ -10,6 +10,7 @@
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import PlateArt from '$lib/components/PlateArt.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
+	import RecipeFeedback from '$lib/components/RecipeFeedback.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import {
 		ALLERGEN_LABELS,
@@ -245,6 +246,12 @@
 						<li><Icon name="snowflake" size={16} /> mraznička {monthsLabel(base.keeps.freezer)}</li>
 					{/if}
 				{/if}
+				<li title="Uhlíková stopa surovín na porciu (Our World in Data)">
+					<Icon name="leaf" size={16} />
+					<a class="co2" href="/wiki/uhlikova-stopa"
+						>≈ {formatNumber(recipe.co2PerServing, 1)} kg CO₂e</a
+					>
+				</li>
 				<li class:tested={!!base.tested}>
 					{#if base.tested}
 						<Icon name="check" size={16} /> Vyskúšané
@@ -506,6 +513,8 @@
 					value={ui.loaded ? (notes.current[base.id] ?? '') : ''}
 					oninput={(e) => setNote(base.id, e.currentTarget.value)}></textarea>
 			</div>
+
+			<div class="fb-wrap"><RecipeFeedback recipeId={base.id} /></div>
 
 			{#if recipe.tips.length}
 				<div class="tips">
@@ -807,6 +816,10 @@
 		align-items: center;
 		gap: 5px;
 	}
+	.meta .co2 {
+		color: inherit;
+		text-decoration: underline dotted;
+	}
 	.meta .tested {
 		color: var(--leaf);
 		font-weight: 650;
@@ -916,6 +929,9 @@
 		font-weight: 650;
 		text-decoration: underline;
 		cursor: pointer;
+	}
+	.fb-wrap {
+		margin-top: 18px;
 	}
 	.my-note {
 		margin-top: 26px;

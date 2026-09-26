@@ -115,6 +115,16 @@ pnpm exec wrangler d1 execute receptio --remote --command "SELECT * FROM suggest
 pnpm exec wrangler d1 execute receptio --remote --command "UPDATE suggestions SET status = 'added' WHERE id = 1"
 ```
 
+## Spätná väzba k receptom
+
+Tlačidlá „Funguje, ako je napísané“ a „Niečo nesedí“ pri recepte ukladajú do tabuľky `feedback`. Recept
+s potvrdeniami označíš ako vyskúšaný poľom `tested: 2026-10-01` v jeho YAML.
+
+```sh
+pnpm exec wrangler d1 execute receptio --remote --command "SELECT recipe_id, kind, message FROM feedback WHERE status = 'new'"
+pnpm exec wrangler d1 execute receptio --remote --command "SELECT recipe_id, COUNT(*) FROM feedback WHERE kind = 'worked' GROUP BY recipe_id"
+```
+
 ## Nasadenie (Cloudflare)
 
 1. `pnpm exec wrangler d1 create receptio` a vrátené `database_id` vlož do `wrangler.jsonc`.

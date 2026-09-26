@@ -5,6 +5,7 @@
 # price: HRUBÝ ODHAD €/kg (v appke označený ako odhad), reálne ceny patria do prices.yaml
 # gluten: free | risk (kontroluj etiketu / krížová kontaminácia) | contains
 # group: zameniteľné suroviny pre špajzu (suchý vs. sterilizovaný cícer)
+# co2: kg CO₂e na kg (Our World in Data, Poore & Nemecek 2018); bez údaja platí priemer kategórie
 # group_factor: koľko gramov „bežnej“ formy v skupine urobí 1 g tejto (suchý cícer 2.4 = po uvarení 2,4× ťažší)
 # howto: návody zo sekcie Základy (content/wiki), recept na ne odkáže automaticky
 
@@ -17,6 +18,7 @@
   n: { kcal: 360, p: 7.1, c: 79, f: 0.7, fib: 1.3, salt: 0, fe: 0.8, ca: 9, zn: 1.1 }
   units: { hrnček: 185 }
   price: 3.5
+  co2: 4.5
   color: '#f4ecd8'
   substitutes:
     - { to: ryza-jazminova, note: 'lepkavejšia, voňavá' }
@@ -36,6 +38,7 @@
   n: { kcal: 360, p: 7, c: 79, f: 0.6, fib: 1, salt: 0, fe: 0.8, ca: 10, zn: 1.1 }
   units: { hrnček: 185 }
   price: 3.5
+  co2: 4.5
   color: '#f4ecd8'
   substitutes:
     - { to: ryza-basmati, note: 'sypkejšia, menej voňavá' }
@@ -51,6 +54,7 @@
   n: { kcal: 368, p: 14.1, c: 64.2, f: 6.1, fib: 7, salt: 0, fe: 4.6, ca: 47, zn: 3.1, ala: 0.26 }
   units: { hrnček: 170 }
   price: 7
+  co2: 1.5
   color: '#e9d9b0'
   substitutes:
     - { to: ryza-basmati, note: 'menej bielkovín' }
@@ -71,6 +75,7 @@
   n: { kcal: 343, p: 13.3, c: 71.5, f: 3.4, fib: 10, salt: 0, fe: 2.2, ca: 18, zn: 2.4 }
   units: { hrnček: 170 }
   price: 3
+  co2: 1.4
   color: '#b58a5a'
   note: prirodzene bez lepku, ale kupuj s označením bezlepková (krížová kontaminácia)
   substitutes:
@@ -94,6 +99,7 @@
   n: { kcal: 379, p: 13.2, c: 67.7, f: 6.5, fib: 10.1, salt: 0, fe: 4.3, ca: 52, zn: 3.6, ala: 0.1 }
   units: { hrnček: 90, pl: 8 }
   price: 1.8
+  co2: 2.5
   color: '#e6d3a8'
   substitutes:
     - { note: 'pohánkové vločky – bez lepku, výraznejšia chuť' }
@@ -114,6 +120,7 @@
   n: { kcal: 379, p: 13.2, c: 67.7, f: 6.5, fib: 10.1, salt: 0, fe: 4.3, ca: 52, zn: 3.6, ala: 0.1 }
   units: { hrnček: 90, pl: 8 }
   price: 6
+  co2: 2.5
   color: '#e6d3a8'
   about: 'Ovos pestovaný a spracovaný oddelene od pšenice, aby nebol kontaminovaný lepkom.'
   uses:
@@ -128,6 +135,7 @@
   gf_alternative: cestoviny-bezlepkove
   n: { kcal: 371, p: 13, c: 75, f: 1.5, fib: 3.2, salt: 0, fe: 1.3, ca: 21, zn: 1.4 }
   price: 2
+  co2: 1.6
   color: '#f0d890'
   substitutes:
     - { to: cestoviny-bezlepkove, note: 'var o minútu kratšie, rýchlo sa rozvaria' }
@@ -148,6 +156,7 @@
   group: cestoviny
   n: { kcal: 357, p: 7, c: 79, f: 1.5, fib: 2.5, salt: 0, fe: 0.8, ca: 10, zn: 1 }
   price: 5
+  co2: 2.5
   color: '#f0d890'
   about: 'Cestoviny z kukurice, ryže alebo strukovín. Rýchlo sa rozvaria.'
   uses:
@@ -163,6 +172,7 @@
   n: { kcal: 364, p: 10.3, c: 76, f: 1, fib: 2.7, salt: 0, fe: 1.2, ca: 15, zn: 0.7 }
   units: { pl: 10 }
   price: 0.8
+  co2: 1.6
   substitutes:
     - { note: 'polohrubá múka 1:1' }
     - { note: 'špaldová múka 1:1, cesto bude hutnejšie' }
@@ -184,6 +194,7 @@
   n: { kcal: 366, p: 6, c: 80, f: 1.4, fib: 2.4, salt: 0, fe: 0.35, ca: 10, zn: 0.8 }
   units: { pl: 10 }
   price: 3
+  co2: 4.5
   substitutes:
     - { to: hladka-muka, note: 'len ak nevaríš bezlepkovo' }
   about: 'Bezlepková múka z ryže – na zahusťovanie a pečenie.'
@@ -199,6 +210,7 @@
   n: { kcal: 218, p: 5.7, c: 44.6, f: 2.9, fib: 6.3, salt: 0.1, fe: 1.2, ca: 81, zn: 0.9 }
   units: { ks: 30 }
   price: 10
+  co2: 1.7
   color: '#e8c56a'
   substitutes:
     - { note: 'pšeničné tortilly (obsahujú lepok)' }
@@ -214,6 +226,7 @@
   n: { kcal: 340, p: 3, c: 83, f: 0.3, fib: 1, salt: 0.8, fe: 0.8, ca: 20, zn: 0.5 }
   units: { ks: 9 }
   price: 12
+  co2: 4.5
   color: '#f7f1e3'
   substitutes:
     - { to: salat, note: 'zabaľ do listov šalátu' }
@@ -227,6 +240,7 @@
   category: obilniny
   n: { kcal: 364, p: 6, c: 80, f: 0.6, fib: 1.6, salt: 0.1, fe: 0.7, ca: 18, zn: 0.7 }
   price: 6
+  co2: 4.5
   color: '#f7f1e3'
   substitutes:
     - { to: cestoviny, note: 'špagety – iná chuť, ale funguje (s lepkom)' }
@@ -243,6 +257,7 @@
   n: { kcal: 77, p: 2, c: 17, f: 0.1, fib: 2.2, salt: 0, fe: 0.8, ca: 12, zn: 0.3 }
   units: { ks: 150 }
   price: 1
+  co2: 0.46
   color: '#e3c98f'
   substitutes:
     - { to: batat, note: 'sladšie' }
@@ -266,6 +281,7 @@
   n: { kcal: 86, p: 1.6, c: 20, f: 0.1, fib: 3, salt: 0.1, fe: 0.6, ca: 30, zn: 0.3 }
   units: { ks: 250 }
   price: 2.5
+  co2: 0.5
   color: '#e8873a'
   substitutes:
     - { to: tekvica-hokkaido }
@@ -289,6 +305,7 @@
   n: { kcal: 358, p: 24, c: 63, f: 2.2, fib: 11, salt: 0, fe: 7.4, ca: 48, zn: 3.6, ala: 0.1 }
   units: { hrnček: 190 }
   price: 3
+  co2: 1.8
   color: '#e39a55'
   substitutes:
     - { to: zlty-hrach, note: 'namočiť cez noc, variť dlhšie' }
@@ -307,6 +324,7 @@
   n: { kcal: 352, p: 24.6, c: 63, f: 1.1, fib: 10.7, salt: 0, fe: 6.5, ca: 35, zn: 3.3, ala: 0.1 }
   units: { hrnček: 190 }
   price: 3
+  co2: 1.8
   color: '#8a6a3d'
   substitutes:
     - { to: sosovica-cervena, note: 'rozvarí sa na kašu – skráť čas' }
@@ -329,6 +347,7 @@
   n: { kcal: 140, p: 7.4, c: 22, f: 2.6, fib: 6.5, salt: 0.5, fe: 1.5, ca: 45, zn: 1.2, ala: 0.05 }
   units: { ks: 240 }
   price: 3
+  co2: 1.1
   color: '#dcb66c'
   note: 1 ks = plechovka 400 g, po scedení ~240 g
   substitutes:
@@ -349,6 +368,7 @@
   group_factor: 2.4
   n: { kcal: 378, p: 20.5, c: 63, f: 6, fib: 12.2, salt: 0, fe: 4.3, ca: 57, zn: 2.8, ala: 0.1 }
   price: 3
+  co2: 1.8
   color: '#dcb66c'
   substitutes:
     - { to: cicer-sterilizovany, note: '2,4× viac podľa hmotnosti, bez namáčania' }
@@ -365,6 +385,7 @@
   n: { kcal: 132, p: 8.9, c: 23.7, f: 0.5, fib: 8.7, salt: 0.5, fe: 2.1, ca: 27, zn: 1.1, ala: 0.1 }
   units: { ks: 240 }
   price: 3.5
+  co2: 1.1
   color: '#3a2f33'
   substitutes:
     - { to: fazula-cervena }
@@ -381,6 +402,7 @@
   n: { kcal: 127, p: 8.7, c: 22.8, f: 0.5, fib: 6.4, salt: 0.5, fe: 2.9, ca: 35, zn: 1, ala: 0.1 }
   units: { ks: 240 }
   price: 3
+  co2: 1.1
   color: '#8e2f2a'
   substitutes:
     - { to: fazula-cierna }
@@ -397,6 +419,7 @@
   n: { kcal: 139, p: 9.7, c: 25, f: 0.4, fib: 6.3, salt: 0.5, fe: 3.7, ca: 90, zn: 1.4, ala: 0.1 }
   units: { ks: 240 }
   price: 3
+  co2: 1.1
   color: '#efe6d2'
   substitutes:
     - { to: cicer-sterilizovany, note: 'pevnejší' }
@@ -420,6 +443,7 @@
   allergens: [soy]
   n: { kcal: 144, p: 15, c: 2, f: 8.5, fib: 1.5, salt: 0, fe: 2.5, ca: 150, zn: 1.6, ala: 0.5 }
   price: 7
+  co2: 3.2
   color: '#f3ead2'
   note: tofu zrážané síranom vápenatým má výrazne viac vápnika
   substitutes:
@@ -446,6 +470,7 @@
   allergens: [soy]
   n: { kcal: 160, p: 16, c: 2, f: 9.5, fib: 1, salt: 1.2, fe: 2.5, ca: 150, zn: 1.6, ala: 0.5 }
   price: 9
+  co2: 3.2
   color: '#c89458'
   substitutes:
     - { to: tofu-natural, note: 'pridaj ½ ČL údenej papriky a trochu sójovky' }
@@ -462,6 +487,7 @@
   n: { kcal: 40, p: 1.1, c: 9.3, f: 0.1, fib: 1.7, salt: 0, fe: 0.2, ca: 23, zn: 0.2 }
   units: { ks: 110 }
   price: 1
+  co2: 0.5
   color: '#ecd9b4'
   substitutes:
     - { to: cibula-cervena, note: 'sladšia' }
@@ -486,6 +512,7 @@
   n: { kcal: 40, p: 1.1, c: 9.3, f: 0.1, fib: 1.7, salt: 0, fe: 0.2, ca: 23, zn: 0.2 }
   units: { ks: 110 }
   price: 1.5
+  co2: 0.5
   color: '#9b3d6b'
   substitutes:
     - { to: cibula, note: 'ostrejšia – v šaláte ju spari vriacou vodou' }
@@ -502,6 +529,7 @@
   n: { kcal: 32, p: 1.8, c: 7.3, f: 0.2, fib: 2.6, salt: 0, fe: 1.5, ca: 72, zn: 0.4 }
   units: { ks: 15 }
   price: 6
+  co2: 0.5
   color: '#8cc063'
   season: [4, 5, 6, 7]
   substitutes:
@@ -521,6 +549,7 @@
   n: { kcal: 149, p: 6.4, c: 33, f: 0.5, fib: 2.1, salt: 0, fe: 1.7, ca: 181, zn: 1.2 }
   units: { ks: 5 }
   price: 6
+  co2: 0.5
   color: '#f5efe1'
   substitutes:
     - { note: 'sušený granulovaný cesnak – ¼ ČL za strúčik' }
@@ -560,6 +589,7 @@
   n: { kcal: 41, p: 0.9, c: 9.6, f: 0.2, fib: 2.8, salt: 0.2, fe: 0.3, ca: 33, zn: 0.2 }
   units: { ks: 80 }
   price: 1
+  co2: 0.43
   color: '#ef8a2d'
   season: [7, 8, 9, 10, 11]
   substitutes:
@@ -623,6 +653,7 @@
   n: { kcal: 18, p: 0.9, c: 3.9, f: 0.2, fib: 1.2, salt: 0, fe: 0.3, ca: 10, zn: 0.2 }
   units: { ks: 120 }
   price: 2.5
+  co2: 2.1
   color: '#e2452f'
   season: [7, 8, 9]
   substitutes:
@@ -646,6 +677,7 @@
   n: { kcal: 24, p: 1.2, c: 4, f: 0.2, fib: 1.3, salt: 0.3, fe: 1, ca: 30, zn: 0.2 }
   units: { ks: 400 }
   price: 2
+  co2: 1.5
   color: '#c73a26'
   note: 1 ks = plechovka 400 g
   substitutes:
@@ -668,6 +700,7 @@
   n: { kcal: 82, p: 4.3, c: 19, f: 0.5, fib: 4.1, salt: 0.2, fe: 3, ca: 36, zn: 0.6 }
   units: { pl: 16 }
   price: 5
+  co2: 3.0
   color: '#b8321f'
   substitutes:
     - { to: passata, note: '3× viac, dlhšie povar' }
@@ -705,6 +738,7 @@
   n: { kcal: 34, p: 2.8, c: 6.6, f: 0.4, fib: 2.6, salt: 0.1, fe: 0.7, ca: 47, zn: 0.4 }
   units: { ks: 400 }
   price: 3
+  co2: 0.5
   color: '#4f8f3a'
   season: [6, 7, 8, 9, 10]
   substitutes:
@@ -724,6 +758,7 @@
   category: zelenina
   n: { kcal: 23, p: 2.9, c: 3.6, f: 0.4, fib: 2.2, salt: 0.2, fe: 2.7, ca: 99, zn: 0.5, ala: 0.1 }
   price: 4
+  co2: 0.5
   color: '#3e7d34'
   season: [4, 5, 9, 10]
   substitutes:
@@ -769,8 +804,8 @@
   n: { kcal: 80, p: 2.5, c: 15, f: 1.2, fib: 2.5, salt: 0.5, fe: 0.5, ca: 5, zn: 0.6 }
   units: { ks: 285 }
   price: 3.5
+  co2: 1.2
   color: '#f2c230'
-  season: [8, 9]
   substitutes:
     - { to: hrasok }
   about: 'Sterilizovaná kukurica z plechovky – sladká a pohodlná po celý rok.'
@@ -785,6 +820,7 @@
   n: { kcal: 160, p: 2, c: 8.5, f: 14.7, fib: 6.7, salt: 0, fe: 0.6, ca: 12, zn: 0.6, ala: 0.1 }
   units: { ks: 150 }
   price: 7
+  co2: 1.3
   color: '#7fa843'
   note: 1 ks = dužina jedného avokáda
   substitutes:
@@ -841,6 +877,7 @@
   n: { kcal: 25, p: 0.4, c: 8.4, f: 0.1, fib: 0.4, salt: 0, fe: 0.1, ca: 14, zn: 0.1 }
   units: { ks: 30, pl: 15 }
   price: 6
+  co2: 0.39
   color: '#b5d34a'
   note: 1 ks = šťava z jednej limetky
   substitutes:
@@ -858,6 +895,7 @@
   n: { kcal: 22, p: 0.4, c: 6.9, f: 0.2, fib: 0.3, salt: 0, fe: 0.1, ca: 6, zn: 0.1 }
   units: { ks: 45, pl: 15 }
   price: 3
+  co2: 0.39
   color: '#f4d73c'
   note: 1 ks = šťava z jedného citróna
   substitutes:
@@ -876,6 +914,7 @@
   n: { kcal: 89, p: 1.1, c: 22.8, f: 0.3, fib: 2.6, salt: 0, fe: 0.3, ca: 5, zn: 0.2 }
   units: { ks: 120 }
   price: 1.5
+  co2: 0.86
   color: '#f5d565'
   substitutes:
     - { to: jablko, note: 'strúhané, v pečení' }
@@ -892,6 +931,7 @@
   n: { kcal: 47, p: 0.9, c: 11.8, f: 0.1, fib: 2.4, salt: 0, fe: 0.1, ca: 40, zn: 0.1 }
   units: { ks: 150 }
   price: 1.8
+  co2: 0.39
   color: '#f39a2b'
   season: [11, 12, 1, 2, 3]
   substitutes:
@@ -908,6 +948,7 @@
   n: { kcal: 52, p: 1.2, c: 12, f: 0.7, fib: 6.5, salt: 0, fe: 0.7, ca: 25, zn: 0.4, ala: 0.1 }
   units: { hrnček: 125 }
   price: 7
+  co2: 1.5
   color: '#d6335a'
   season: [7, 8]
   substitutes:
@@ -926,6 +967,7 @@
   n: { kcal: 588, p: 25, c: 20, f: 50, fib: 6, salt: 0, fe: 1.9, ca: 43, zn: 2.9 }
   units: { pl: 16, čl: 6 }
   price: 7
+  co2: 3.2
   color: '#b77a3f'
   substitutes:
     - { to: tahini, note: 'menej sladké, pridaj trochu sirupu' }
@@ -956,6 +998,7 @@
     }
   units: { pl: 9, čl: 3 }
   price: 8
+  co2: 1.5
   color: '#efe0bd'
   note: hodnoty pre nelúpaný sezam; lúpaný má vápnika len zlomok
   substitutes:
@@ -988,6 +1031,7 @@
     }
   units: { pl: 7, čl: 2.5 }
   price: 5
+  co2: 1.5
   color: '#9a6b3c'
   note: mleté skladuj v chladničke, omega-3 rýchlo oxidujú
   substitutes:
@@ -1017,6 +1061,7 @@
     }
   units: { pl: 12, čl: 4 }
   price: 10
+  co2: 1.5
   color: '#5b5550'
   substitutes:
     - { to: lanove-semienko, note: 'mleté, zhustne rovnako' }
@@ -1048,6 +1093,7 @@
   units: { hrnček: 240 }
   density: 1.03
   price: 2
+  co2: 1.0
   color: '#f7f1e3'
   note: hodnoty vápnika a B12 platia len pre obohatené nápoje
   substitutes:
@@ -1065,6 +1111,7 @@
   n: { kcal: 197, p: 2, c: 2.8, f: 21, fib: 0, salt: 0, fe: 3.3, ca: 18, zn: 0.6 }
   units: { ks: 400 }
   price: 5
+  co2: 1.5
   color: '#fbf6ec'
   note: 1 ks = plechovka 400 ml
   substitutes:
@@ -1164,6 +1211,7 @@
   n: { kcal: 260, p: 0, c: 67, f: 0.1, fib: 0, salt: 0, fe: 0.1, ca: 102, zn: 1.5 }
   units: { pl: 20, čl: 7 }
   price: 25
+  co2: 2.5
   color: '#a8561d'
   substitutes:
     - { to: cukor, note: 'rozpusti v lyžici vody' }
@@ -1180,6 +1228,7 @@
   n: { kcal: 228, p: 19.6, c: 57.9, f: 13.7, fib: 37, salt: 0.1, fe: 13.9, ca: 128, zn: 6.8 }
   units: { pl: 6, čl: 2 }
   price: 12
+  co2: 40.0
   color: '#5a3322'
   substitutes:
     - { to: horka-cokolada, note: 'roztopená, uber cukor' }
@@ -1214,6 +1263,7 @@
   n: { kcal: 381, p: 0.3, c: 91, f: 0.1, fib: 0.9, salt: 0, fe: 0.5, ca: 2, zn: 0.1 }
   units: { pl: 8, čl: 3 }
   price: 3
+  co2: 1.7
   substitutes:
     - { note: 'zemiakový škrob 1:1' }
     - { to: hladka-muka, note: '2× viac, dlhšie povar' }
@@ -1252,6 +1302,7 @@
   units: { pl: 13, čl: 4.5 }
   density: 0.92
   price: 2.5
+  co2: 3.8
   substitutes:
     - { note: 'slnečnicový olej 1:1' }
   about: 'Repkový olej – neutrálny, s omega-3 a znesie vysokú teplotu.'
@@ -1267,6 +1318,7 @@
   units: { pl: 13, čl: 4.5 }
   density: 0.92
   price: 9
+  co2: 5.4
   substitutes:
     - { to: olej, note: 'na tepelnú úpravu úplne v poriadku' }
   about: 'Olivový olej – ovocná chuť, stredomorská kuchyňa.'
@@ -1287,6 +1339,7 @@
   n: { kcal: 0, p: 0, c: 0, f: 0, fib: 0, salt: 100, fe: 0.3, ca: 24, zn: 0.1 }
   units: { čl: 6, pl: 18 }
   price: 0.5
+  co2: 0.2
   note: jódovaná soľ je na Slovensku hlavný zdroj jódu, morská a himalájska ho väčšinou nemajú
   about: 'Jódovaná soľ – na Slovensku hlavný zdroj jódu pre vegánov.'
   uses:
@@ -1315,6 +1368,7 @@
   n: { kcal: 0, p: 0, c: 0, f: 0, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0 }
   units: { hrnček: 240 }
   price: 0.001
+  co2: 0
   color: '#dcebf2'
   about: 'Z vodovodu. Na slovenskú vodu sa dá spoľahnúť.'
   uses:
@@ -1590,6 +1644,7 @@
   n: { kcal: 370, p: 8.1, c: 79, f: 1.6, fib: 4, salt: 0, fe: 1.1, ca: 3, zn: 0.7 }
   units: { hrnček: 160 }
   price: 2
+  co2: 1.7
   color: '#f2c94c'
   substitutes:
     - { note: 'kuskus alebo pšeničná krupica (s lepkom)' }
@@ -1614,6 +1669,7 @@
   n: { kcal: 160, p: 2.2, c: 4.5, f: 15, fib: 0.3, salt: 0.1, fe: 0.4, ca: 10, zn: 0.2, ala: 1.2 }
   units: { hrnček: 240 }
   price: 7
+  co2: 1.5
   color: '#fbf5e8'
   note: ovsená funguje rovnako, ale môže obsahovať stopy lepku
   warn: Niektoré „rastlinné“ smotany (aj známe značky ako Rama Cremefine) majú verzie s mliekom – kupuj s označením vegan.
@@ -1633,6 +1689,7 @@
   n: { kcal: 720, p: 0.2, c: 0.5, f: 80, fib: 0, salt: 1, fe: 0, ca: 0, zn: 0, ala: 3 }
   units: { pl: 14, čl: 5 }
   price: 9
+  co2: 3.0
   color: '#f5e2a0'
   warn: Veľa margarínov obsahuje srvátku alebo mlieko – hľadaj označenie vegan (na pečenie bloky s ~80 % tuku).
   substitutes:
@@ -1651,6 +1708,7 @@
   n: { kcal: 290, p: 0.5, c: 22, f: 22, fib: 0, salt: 2, fe: 0, ca: 0, zn: 0 }
   units: { hrnček: 100 }
   price: 14
+  co2: 4.0
   color: '#f4dc8c'
   note: väčšinou kokosový olej a škrob, takmer bez bielkovín – je to chuťovka, nie zdroj bielkovín
   substitutes:
@@ -1682,6 +1740,7 @@
     }
   units: { hrnček: 245, pl: 15 }
   price: 4
+  co2: 1.2
   color: '#fbf8f1'
   note: vápnik a B12 len v obohatených; kokosové jogurty majú bielkovín minimum
   substitutes:
@@ -1702,6 +1761,7 @@
   n: { kcal: 560, p: 0.5, c: 3, f: 60, fib: 0, salt: 1.5, fe: 0, ca: 0, zn: 0, ala: 5 }
   units: { pl: 14, čl: 5 }
   price: 8
+  co2: 3.5
   color: '#fbf1cf'
   substitutes:
     - { to: sojovy-jogurt, note: 'so štipkou horčice a soli – ľahšie' }
@@ -1718,6 +1778,7 @@
   n: { kcal: 330, p: 50, c: 30, f: 1.5, fib: 17, salt: 0, fe: 9, ca: 240, zn: 2.5, ala: 0.1 }
   units: { hrnček: 90 }
   price: 8
+  co2: 2.0
   color: '#9b6a42'
   note: pred použitím 10 min namoč vo vriacom vývare – zväčší objem asi 3×
   substitutes:
@@ -1738,6 +1799,7 @@
   n: { kcal: 20, p: 1, c: 3, f: 0.2, fib: 0, salt: 0.5, fe: 0.2, ca: 5, zn: 0.1 }
   units: { hrnček: 240, pl: 15 }
   price: 0.001
+  co2: 0
   byproduct: true
   color: '#f6eedc'
   note: 1 plechovka cíceru dá ~120 ml; vyšľahá sa ako bielky
@@ -1757,6 +1819,7 @@
   allergens: [soy]
   n: { kcal: 55, p: 5, c: 2.5, f: 2.7, fib: 0.1, salt: 0, fe: 0.8, ca: 30, zn: 0.5, ala: 0.2 }
   price: 8
+  co2: 3.2
   color: '#fbf7ec'
   note: jemné ako puding – do krémov, dezertov a omáčok, nie na opekanie
   substitutes:
@@ -1774,6 +1837,7 @@
   allergens: [soy]
   n: { kcal: 192, p: 20.3, c: 7.6, f: 10.8, fib: 4, salt: 0, fe: 2.7, ca: 111, zn: 1.1, ala: 0.1 }
   price: 15
+  co2: 2.5
   color: '#c9a36b'
   substitutes:
     - { to: tofu-natural, note: 'jemnejšie, dobre ho vyžmýkaj' }
@@ -1792,6 +1856,7 @@
   n: { kcal: 370, p: 75, c: 14, f: 1.9, fib: 0.6, salt: 0.1, fe: 5.2, ca: 142, zn: 0.9 }
   units: { hrnček: 120 }
   price: 12
+  co2: 3.0
   color: '#d9c29a'
   note: základ seitanu – čistý lepok, pri celiakii úplne vylúčené
   substitutes:
@@ -1809,6 +1874,7 @@
   n: { kcal: 341, p: 24.5, c: 60, f: 1.2, fib: 25.5, salt: 0, fe: 4.4, ca: 55, zn: 3 }
   units: { hrnček: 200 }
   price: 2
+  co2: 1.0
   color: '#e7c14e'
   substitutes:
     - { to: sosovica-cervena, note: 'rýchlejšia, netreba namáčať' }
@@ -1825,6 +1891,7 @@
   n: { kcal: 387, p: 22.4, c: 57.8, f: 6.7, fib: 10.8, salt: 0.1, fe: 4.9, ca: 45, zn: 2.8 }
   units: { pl: 8, hrnček: 92 }
   price: 5
+  co2: 1.8
   color: '#e9c77a'
   substitutes:
     - { to: hladka-muka, note: 'cestíčko bude menej chrumkavé, pridaj štipku kurkumy' }
@@ -1842,6 +1909,7 @@
   n: { kcal: 25, p: 1.9, c: 5, f: 0.3, fib: 2, salt: 0.1, fe: 0.4, ca: 22, zn: 0.3 }
   units: { ks: 600 }
   price: 3
+  co2: 0.5
   color: '#f3ecd6'
   season: [6, 7, 8, 9, 10]
   substitutes:
@@ -1880,6 +1948,7 @@
   n: { kcal: 27, p: 1.7, c: 6.2, f: 0.1, fib: 3.6, salt: 0, fe: 0.4, ca: 24, zn: 0.1 }
   units: { ks: 250 }
   price: 3
+  co2: 0.5
   color: '#b7d98b'
   season: [5, 6, 7, 8, 9, 10]
   substitutes:
@@ -1903,6 +1972,7 @@
   n: { kcal: 43, p: 1.6, c: 9.6, f: 0.2, fib: 2.8, salt: 0.2, fe: 0.8, ca: 16, zn: 0.4 }
   units: { ks: 150 }
   price: 1.5
+  co2: 0.43
   color: '#8e1b3c'
   season: [7, 8, 9, 10, 11, 12, 1, 2, 3]
   substitutes:
@@ -1922,6 +1992,7 @@
   n: { kcal: 86, p: 3.3, c: 19, f: 1.4, fib: 2, salt: 0, fe: 0.5, ca: 2, zn: 0.5 }
   units: { ks: 150 }
   price: 3.5
+  co2: 1.2
   color: '#f2c94c'
   note: 1 ks = zrná z jedného klasu (~150 g)
   season: [8, 9]
@@ -1984,6 +2055,7 @@
   n: { kcal: 22, p: 3.1, c: 3.3, f: 0.3, fib: 1, salt: 0, fe: 0.5, ca: 3, zn: 0.5 }
   units: { hrnček: 70 }
   price: 5
+  co2: 1.5
   color: '#d8c7aa'
   substitutes:
     - { to: hliva }
@@ -2005,6 +2077,7 @@
   category: zelenina
   n: { kcal: 33, p: 3.3, c: 6, f: 0.4, fib: 2.3, salt: 0, fe: 1.3, ca: 3, zn: 0.8 }
   price: 8
+  co2: 1.5
   color: '#cdbfa6'
   note: natrhaná na prúžky sa textúrou podobá kuraciemu mäsu
   substitutes:
@@ -2020,6 +2093,7 @@
   category: zelenina
   n: { kcal: 300, p: 20, c: 55, f: 3, fib: 20, salt: 0.1, fe: 5, ca: 30, zn: 5 }
   price: 60
+  co2: 6.0
   color: '#7a5634'
   substitutes:
     - { to: sampinony, note: 'čerstvé, 5× viac, menej aromatické' }
@@ -2035,6 +2109,7 @@
   n: { kcal: 19, p: 0.9, c: 4.3, f: 0.1, fib: 2.9, salt: 1.7, fe: 1.5, ca: 30, zn: 0.2 }
   units: { hrnček: 140 }
   price: 2
+  co2: 0.6
   color: '#e4dca0'
   season: [10, 11, 12, 1, 2, 3]
   substitutes:
@@ -2052,6 +2127,7 @@
   n: { kcal: 25, p: 1.3, c: 5.8, f: 0.1, fib: 2.5, salt: 0, fe: 0.5, ca: 40, zn: 0.2 }
   units: { hrnček: 90 }
   price: 1.2
+  co2: 0.5
   color: '#d9e8b8'
   season: [7, 8, 9, 10, 11, 12]
   substitutes:
@@ -2068,6 +2144,7 @@
   category: zelenina
   n: { kcal: 31, p: 1.8, c: 7, f: 0.2, fib: 2.7, salt: 0, fe: 1, ca: 37, zn: 0.2 }
   price: 5
+  co2: 0.6
   color: '#5d9a3e'
   season: [7, 8, 9]
   substitutes:
@@ -2086,8 +2163,8 @@
   n: { kcal: 81, p: 5.4, c: 14.5, f: 0.4, fib: 5.1, salt: 0.1, fe: 1.5, ca: 25, zn: 1.2 }
   units: { hrnček: 145 }
   price: 3
+  co2: 1.0
   color: '#7dbb4a'
-  season: [6, 7]
   substitutes:
     - { to: edamame }
     - { to: kukurica }
@@ -2139,6 +2216,7 @@
   n: { kcal: 55, p: 2.3, c: 12, f: 0.6, fib: 4.4, salt: 0, fe: 0.6, ca: 36, zn: 0.3 }
   units: { ks: 80 }
   price: 3
+  co2: 0.43
   color: '#f0e3c0'
   season: [9, 10, 11, 12, 1, 2, 3]
   substitutes:
@@ -2171,6 +2249,7 @@
   n: { kcal: 30, p: 1.4, c: 5.3, f: 0.2, fib: 1.2, salt: 0.3, fe: 0.8, ca: 18, zn: 0.2 }
   units: { hrnček: 245 }
   price: 2.5
+  co2: 1.5
   color: '#c7301f'
   substitutes:
     - { to: paradajky-sterilizovane, note: 'rozmixuj' }
@@ -2278,6 +2357,7 @@
   n: { kcal: 52, p: 0.3, c: 13.8, f: 0.2, fib: 2.4, salt: 0, fe: 0.1, ca: 6, zn: 0 }
   units: { ks: 180 }
   price: 1.8
+  co2: 0.43
   color: '#d9453a'
   season: [8, 9, 10, 11, 12, 1, 2, 3]
   substitutes:
@@ -2297,6 +2377,7 @@
   n: { kcal: 46, p: 0.7, c: 11.4, f: 0.3, fib: 1.4, salt: 0, fe: 0.2, ca: 6, zn: 0.1 }
   units: { ks: 40 }
   price: 2.5
+  co2: 0.5
   color: '#5b3a6e'
   season: [8, 9]
   substitutes:
@@ -2315,6 +2396,7 @@
   n: { kcal: 241, p: 3.4, c: 62.6, f: 0.5, fib: 7.3, salt: 0, fe: 2.7, ca: 55, zn: 0.4 }
   units: { ks: 8 }
   price: 12
+  co2: 2.0
   color: '#ee9a3c'
   substitutes:
     - { to: datle }
@@ -2330,6 +2412,7 @@
   n: { kcal: 282, p: 2.5, c: 75, f: 0.4, fib: 8, salt: 0, fe: 1, ca: 39, zn: 0.3 }
   units: { ks: 8 }
   price: 8
+  co2: 1.0
   color: '#7b3f22'
   substitutes:
     - { to: susene-marhule }
@@ -2351,6 +2434,7 @@
   n: { kcal: 595, p: 17, c: 21, f: 54, fib: 9.3, salt: 0.1, fe: 4.5, ca: 140, zn: 4.6, ala: 0.4 }
   units: { pl: 15, čl: 5 }
   price: 10
+  co2: 1.5
   color: '#d8b98a'
   note: hodnoty pre svetlé (lúpané) tahini, tmavé z celého sezamu má vápnika oveľa viac
   substitutes:
@@ -2374,6 +2458,7 @@
   n: { kcal: 553, p: 18.2, c: 30, f: 43.9, fib: 3.3, salt: 0, fe: 6.7, ca: 37, zn: 5.8, ala: 0.1 }
   units: { hrnček: 130, pl: 10 }
   price: 16
+  co2: 0.4
   color: '#efdcb2'
   note: namočené a rozmixované s vodou nahradia smotanu aj syrový krém
   substitutes:
@@ -2393,6 +2478,7 @@
   n: { kcal: 654, p: 15.2, c: 13.7, f: 65, fib: 6.7, salt: 0, fe: 2.9, ca: 98, zn: 3.1, ala: 9.1 }
   units: { hrnček: 100, pl: 7 }
   price: 16
+  co2: 0.4
   color: '#a8743f'
   substitutes:
     - { to: tekvicove-semienka, note: 'bez orechov' }
@@ -2411,6 +2497,7 @@
   n: { kcal: 585, p: 24, c: 21, f: 49.7, fib: 8, salt: 0, fe: 2.3, ca: 54, zn: 3.3 }
   units: { hrnček: 145, pl: 9 }
   price: 6
+  co2: 3.2
   color: '#c98f4f'
   substitutes:
     - { to: kesu }
@@ -2427,6 +2514,7 @@
   n: { kcal: 559, p: 30, c: 10.7, f: 49, fib: 6, salt: 0, fe: 8.8, ca: 46, zn: 7.8, ala: 0.1 }
   units: { pl: 9 }
   price: 12
+  co2: 1.5
   color: '#5d7a3a'
   substitutes:
     - { note: 'slnečnicové semienka' }
@@ -2442,6 +2530,7 @@
   n: { kcal: 890, p: 0, c: 0, f: 99, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0 }
   units: { pl: 13, čl: 4.5 }
   price: 10
+  co2: 4.0
   substitutes:
     - { to: rastlinne-maslo, note: 'v pečení' }
     - { to: olej, note: 'na varenie' }
@@ -2460,6 +2549,7 @@
   n: { kcal: 884, p: 0, c: 0, f: 100, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0, ala: 0.3 }
   units: { pl: 13, čl: 4.5 }
   price: 15
+  co2: 4.0
   substitutes:
     - { to: olej, note: '+ lyžica opraženého sezamu' }
   about: 'Pražený sezamový olej – intenzívna aróma, dochucuje sa ním, nevypráža sa na ňom.'
@@ -2476,6 +2566,7 @@
   n: { kcal: 250, p: 8.5, c: 48, f: 1.5, fib: 4, salt: 1.3, fe: 2, ca: 30, zn: 0.9 }
   units: { ks: 40 }
   price: 4
+  co2: 1.6
   color: '#b9844f'
   note: 1 ks = krajec
   substitutes:
@@ -2493,6 +2584,7 @@
   n: { kcal: 240, p: 3, c: 45, f: 5, fib: 5, salt: 1.1, fe: 1, ca: 20, zn: 0.5 }
   units: { ks: 35 }
   price: 10
+  co2: 2.5
   color: '#c9975c'
   about: 'Chlieb z bezlepkových múk. Rýchlo vysychá.'
   uses:
@@ -2507,6 +2599,7 @@
   n: { kcal: 270, p: 9, c: 55, f: 1.5, fib: 2.5, salt: 1.3, fe: 1.5, ca: 20, zn: 0.8 }
   units: { ks: 250 }
   price: 3
+  co2: 1.6
   color: '#d9a55f'
   about: 'Biela bageta – väčšinou vegánska (múka, voda, droždie, soľ).'
   uses:
@@ -2521,6 +2614,7 @@
   n: { kcal: 270, p: 9, c: 49, f: 4, fib: 2.5, salt: 1.2, fe: 2, ca: 60, zn: 0.8 }
   units: { ks: 70 }
   price: 5
+  co2: 1.6
   color: '#d9a55f'
   note: niektoré bulky obsahujú mlieko alebo vajcia, kontroluj zloženie
   about: 'Mäkká žemľa na burgre – skontroluj mlieko a maslo v zložení.'
@@ -2534,6 +2628,7 @@
   n: { kcal: 250, p: 4, c: 45, f: 6, fib: 5, salt: 1.1, fe: 1, ca: 20, zn: 0.5 }
   units: { ks: 70 }
   price: 12
+  co2: 2.5
   color: '#d9a55f'
   about: 'Bezlepkové žemle a bagety.'
   uses:
@@ -2548,6 +2643,7 @@
   n: { kcal: 395, p: 13, c: 72, f: 5, fib: 4.5, salt: 1.8, fe: 2, ca: 100, zn: 1.2 }
   units: { hrnček: 110, pl: 7 }
   price: 2
+  co2: 1.6
   color: '#e0b36a'
   substitutes:
     - { to: ovsene-vlocky, note: 'rozmixované nadrobno' }
@@ -2568,6 +2664,7 @@
   n: { kcal: 380, p: 5, c: 80, f: 3, fib: 3, salt: 1, fe: 1, ca: 20, zn: 0.6 }
   units: { hrnček: 110, pl: 7 }
   price: 8
+  co2: 2.5
   color: '#e0b36a'
   about: 'Strúhanka z bezlepkového pečiva alebo kukurice.'
   uses:
@@ -2582,6 +2679,7 @@
   n: { kcal: 371, p: 13, c: 75, f: 1.5, fib: 3.2, salt: 0, fe: 1.3, ca: 21, zn: 1.4 }
   units: { ks: 20 }
   price: 3
+  co2: 1.6
   color: '#f0d890'
   substitutes:
     - { to: cuketa, note: 'pozdĺžne plátky namiesto platní' }
@@ -2597,6 +2695,7 @@
   n: { kcal: 357, p: 7, c: 79, f: 1.5, fib: 2.5, salt: 0, fe: 0.8, ca: 10, zn: 1 }
   units: { ks: 20 }
   price: 7
+  co2: 2.5
   color: '#f0d890'
   about: 'Bezlepkové platne z kukurice a ryže.'
   uses:
@@ -2609,6 +2708,7 @@
   n: { kcal: 350, p: 6.5, c: 79, f: 0.6, fib: 1, salt: 0, fe: 0.8, ca: 5, zn: 1 }
   units: { hrnček: 200 }
   price: 5
+  co2: 4.5
   color: '#f4ecd8'
   substitutes:
     - { note: 'akákoľvek guľatozrnná ryža; basmati rizoto nebude krémové' }
@@ -2656,6 +2756,7 @@
   n: { kcal: 387, p: 0, c: 100, f: 0, fib: 0, salt: 0, fe: 0, ca: 1, zn: 0 }
   units: { pl: 12, čl: 4, hrnček: 200 }
   price: 1
+  co2: 1.8
   substitutes:
     - { to: javorovy-sirup, note: 'uber trochu tekutiny' }
   about: 'Biely alebo trstinový cukor. Väčšina slovenského je z repy a vegánska.'
@@ -2668,6 +2769,7 @@
   category: ine
   n: { kcal: 600, p: 7.8, c: 46, f: 43, fib: 11, salt: 0, fe: 11.9, ca: 73, zn: 3.3 }
   price: 20
+  co2: 46.7
   color: '#4a2a1c'
   note: väčšina horkých čokolád je vegánska, niektoré ale obsahujú mliečny tuk alebo „môžu obsahovať mlieko“
   substitutes:
@@ -2872,6 +2974,7 @@
   n: { kcal: 446, p: 36.5, c: 30, f: 20, fib: 9.3, salt: 0, fe: 15.7, ca: 277, zn: 4.9, ala: 1.3 }
   units: { hrnček: 185 }
   price: 3
+  co2: 2.0
   color: '#e8d08a'
   note: surové sú nestráviteľné – vždy namočiť a poriadne uvariť
   substitutes:
@@ -2888,6 +2991,7 @@
   allergens: [soy]
   n: { kcal: 67, p: 6.5, c: 4.9, f: 2.9, fib: 2.9, salt: 0, fe: 1.3, ca: 35, zn: 0.8, ala: 0.2 }
   price: 8
+  co2: 1.0
   color: '#78b04a'
   note: hodnoty prepočítané na hmotnosť aj so strukmi (jedlá časť je asi polovica)
   substitutes:
@@ -2904,6 +3008,7 @@
   allergens: [soy]
   n: { kcal: 77, p: 3.5, c: 12.5, f: 1.7, fib: 5.8, salt: 0, fe: 1.3, ca: 80, zn: 0.6 }
   price: 0.001
+  co2: 0
   byproduct: true
   color: '#f1e8cf'
   note: vznikne pri výrobe sójového mlieka alebo tofu, v chladničke vydrží 3 dni, dá sa zamraziť

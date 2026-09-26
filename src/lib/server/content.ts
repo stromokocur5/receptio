@@ -39,6 +39,22 @@ const isoDate = z.union([z.string(), z.date()]).transform((v, ctx) => {
 	return iso;
 });
 
+/** kg CO₂e per kg when an ingredient has no own value (Our World in Data category averages). */
+const CATEGORY_CO2: Record<IngredientCategory, number> = {
+	zelenina: 0.5,
+	ovocie: 0.7,
+	strukoviny: 1.8,
+	bielkoviny: 3,
+	obilniny: 1.6,
+	'orechy-semienka': 1,
+	'rastlinne-mlieka': 1,
+	'omacky-pasty': 1.5,
+	koreniny: 2,
+	oleje: 3.8,
+	nahrady: 2,
+	ine: 1.5
+};
+
 const CATEGORY_COLORS: Record<IngredientCategory, string> = {
 	zelenina: '#6fa35a',
 	ovocie: '#e0643c',
@@ -84,6 +100,7 @@ const ingredientSchema = z
 		units: z.partialRecord(z.enum(UNITS), z.number().positive()).default({}),
 		density: z.number().positive().default(1),
 		price: z.number().positive(),
+		co2: z.number().min(0).max(100).optional(),
 		byproduct: z.boolean().default(false),
 		color: hexColor.optional(),
 		note: z.string().optional(),
@@ -303,6 +320,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		units: i.units,
 		density: i.density,
 		priceEstimate: i.price,
+		co2: i.co2 ?? CATEGORY_CO2[i.category],
 		byproduct: i.byproduct,
 		color: i.color ?? CATEGORY_COLORS[i.category],
 		note: i.note,
@@ -456,6 +474,10 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			perServing,
 			costPerServing: cost / servings,
 			costIsEstimate,
+			// Everything bought counts, including broth that isn't eaten.
+			co2PerServing:
+				lines.reduce((sum, l) => sum + (l.grams / 1000) * byId.get(l.ingredientId)!.co2, 0) /
+				servings,
 			usesSubstitutes: used.some((i) => i.category === 'nahrady'),
 			warnings: recipeWarnings(used, byId, perServing)
 		};

@@ -54,6 +54,13 @@
 							>
 						</span>
 					</a>
+					<a class="item card draw-host rise" href="/sezona">
+						<span class="ico"><Icon name="leaf" size={26} /></span>
+						<span>
+							<strong>Sezónny kalendár</strong>
+							<span class="sum">Čo sa na Slovensku kedy zbiera a čo z toho uvariť.</span>
+						</span>
+					</a>
 					<a class="item card draw-host rise" href="/vybavenie">
 						<span class="ico"><Icon name="pan" size={26} /></span>
 						<span>

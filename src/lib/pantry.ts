@@ -121,3 +121,36 @@ export function consumeFromPantry(
 	}
 	return { pantry: next, used: [...used.values()] };
 }
+
+export interface LeftoverMatch {
+	recipe: RecipeSummary;
+	/** How many of the chosen leftovers the recipe uses. */
+	uses: Ingredient[];
+	/** Other ingredients to buy or have (spices and oils not counted). */
+	others: Ingredient[];
+}
+
+/**
+ * Recipes that use up the chosen leftovers (half a zucchini, yesterday's rice): most leftovers
+ * used first, then the fewest other ingredients needed. Interchangeable forms count (group).
+ */
+export function rankByLeftovers(
+	recipes: RecipeSummary[],
+	leftoverIds: string[],
+	byId: Map<string, Ingredient>
+): LeftoverMatch[] {
+	const groups = new Set(leftoverIds.map((id) => byId.get(id)?.group).filter(Boolean));
+	return recipes
+		.map((recipe) => {
+			const ingredients = [...new Set(recipe.lines.map((l) => l.ingredientId))].map((id) =>
+				byId.get(id)!
+			);
+			return {
+				recipe,
+				uses: ingredients.filter((i) => groups.has(i.group)),
+				others: ingredients.filter((i) => !groups.has(i.group) && !isAssumedAtHome(i))
+			};
+		})
+		.filter((m) => m.uses.length > 0)
+		.sort((a, b) => b.uses.length - a.uses.length || a.others.length - b.others.length);
+}

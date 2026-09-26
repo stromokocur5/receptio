@@ -73,6 +73,16 @@
 			presnejší nákupný zoznam. Soľ, oleje a korenie berieme ako samozrejmosť. Všetko ostáva len v
 			tvojom prehliadači.
 		</p>
+		<a class="leftovers-link card draw-host" href="/zvysky">
+			<Icon name="jar" size={22} />
+			<span>
+				<strong>Treba minúť len pár vecí?</strong>
+				<small
+					>Pol cukety, ryža zo včera – nájdi recept zo zvyškov bez vypĺňania celej špajze.</small
+				>
+			</span>
+			<Icon name="arrow-right" size={18} />
+		</a>
 	</header>
 
 	<div class="layout">
@@ -195,6 +205,27 @@
 </div>
 
 <style>
+	.leftovers-link {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		align-items: center;
+		gap: 12px;
+		max-width: 560px;
+		margin-top: 14px;
+		padding: 12px 16px;
+		color: var(--ink);
+		text-decoration: none;
+		transition: transform 0.25s var(--ease-spring);
+	}
+	.leftovers-link:hover {
+		transform: translateY(-2px);
+	}
+	.leftovers-link strong {
+		display: block;
+	}
+	.leftovers-link small {
+		color: var(--ink-2);
+	}
 	.page {
 		padding-top: 28px;
 	}
