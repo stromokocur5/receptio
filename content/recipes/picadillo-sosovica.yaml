@@ -1,0 +1,31 @@
+title: Kubánske picadillo zo šošovice
+description: Sladko-slaný kubánsky „mletý“ guláš – šošovica s paradajkami, olivami, hrozienkami a kmínom. S ryžou a plantainom.
+cuisine: karibska
+meals: [obed, vecera]
+time: 40
+active: 15
+servings: 4
+difficulty: 1
+tags: [meal-prep, lacne, one-pot]
+spicy: 0
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - olivovy-olej: 2 pl
+  - cibula: 1 ks
+  - paprika-cervena: 1 ks
+  - cesnak: 3 ks
+  - kmin: 1 čl
+  - oregano: 1 čl
+  - sosovica-hneda: 200 g
+  - passata: 1 hrnček
+  - voda: 500 ml
+  - olivy: 10 ks | nakrájané
+  - hrozienka: 3 pl
+  - zemiaky: 2 ks | na drobné kocky
+  - sol: 3/4 čl
+  - ocot: 1 pl
+  - ryza-basmati: 300 g
+steps:
+  - Na oleji na strednom ohni speň cibuľu, papriku a cesnak, pridaj kmín a oregano.
+  - Pridaj šošovicu, passatu, vodu a zemiaky a var na miernom ohni 25 minút.
+  - Vmiešaj olivy, hrozienka, soľ a ocot a var ešte 5 minút. Podávaj s ryžou.

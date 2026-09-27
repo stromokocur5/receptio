@@ -1,0 +1,27 @@
+title: Đậu hũ xả ớt
+description: Vietnamské chrumkavé tofu s citrónovou trávou a čili. Voňavé, pikantné a hotové za 20 minút.
+cuisine: vietnamska
+meals: [obed, vecera]
+time: 20
+active: 20
+servings: 3
+difficulty: 1
+tags: [rychle, vela-bielkovin]
+spicy: 2
+keeps: { fridge: 2 }
+ingredients:
+  - tofu-natural: 400 g | vylisované, na kocky
+  - kukuricny-skrob: 1 pl
+  - olej: 3 pl
+  - citronova-trava: 3 ks | najemno nasekané
+  - cesnak: 3 ks
+  - cili-papricka: 2 ks
+  - sojova-omacka: 2 pl
+  - cukor: 1 čl
+  - kurkuma: 1/4 čl
+  - jarna-cibulka: 2 ks
+  - ryza-jazminova: 250 g
+steps:
+  - Tofu obaľ v škrobe a opeč na 2 PL oleja na strednom ohni dochrumkava. Vyber.
+  - Na zvyšnom oleji na strednom ohni opekaj citrónovú trávu, cesnak a papričky 3 minúty, kým nie sú zlatisté.
+  - Pridaj sójovú omáčku, cukor a kurkumu, vráť tofu a premiešaj. Posyp cibuľkou a podávaj s ryžou.

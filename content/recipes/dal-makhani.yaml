@@ -1,0 +1,33 @@
+title: Dal makhani
+description: Hodvábny dal z čiernej fazuľky a červenej fazule, pomaly varený s maslom a smotanou. Najkrémovejší dal Indie.
+cuisine: indicka-sever
+meals: [obed, vecera]
+time: 120
+active: 25
+servings: 4
+difficulty: 2
+tags: [meal-prep, klasika]
+spicy: 1
+ahead: Fazuľku namoč cez noc.
+keeps: { fridge: 5, freezer: 3 }
+leftovers: 'Na druhý deň je ešte lepší.'
+ingredients:
+  - urad-dal: 150 g | celý čierny, namočený
+  - fazula-cervena: 1 ks
+  - voda: 1,2 l
+  - rastlinne-maslo: 40 g
+  - kmin: 1 čl
+  - cibula: 1 ks
+  - cesnak: 4 ks
+  - zazvor: 1 pl
+  - paradajkovy-pretlak: 2 pl
+  - cili: 1/2 čl
+  - garam-masala: 1,5 čl
+  - sol: 1,5 čl
+  - rastlinna-smotana: 1/2 hrnček
+  - ryza-basmati: 300 g
+steps:
+  - Namočený dal var vo vode na miernom ohni 60–75 minút, kým sa nerozpadá medzi prstami.
+  - Na masle na strednom ohni opraž kmín, pridaj cibuľu a opekaj 8 minút, potom cesnak, zázvor, pretlak a čili.
+  - Pridaj zmes do dalu s fazuľou a soľou a var na miernom ohni ďalších 30 minút, často miešaj a roztláčaj.
+  - Vmiešaj garam masalu a smotanu a podávaj s ryžou.

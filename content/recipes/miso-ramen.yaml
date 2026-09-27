@@ -1,0 +1,33 @@
+title: Miso ramen
+description: Krémový sezamovo-miso ramen s kukuricou, pak choi, opečeným tofu a nori. Misa, ktorá zahreje v zime.
+cuisine: japonska
+meals: [obed, vecera]
+time: 40
+active: 25
+servings: 2
+difficulty: 2
+tags: [polievka]
+spicy: 1
+keeps: { fridge: 2 }
+ingredients:
+  - voda: 800 ml
+  - susene-huby: 10 g | shiitake
+  - sojove-mlieko: 200 ml | nesladené
+  - miso: 2,5 pl
+  - tahini: 2 pl
+  - sojova-omacka: 1 pl
+  - cesnak: 2 ks
+  - zazvor: 1 pl
+  - sezamovy-olej: 1 pl
+  - cili: 1/4 čl
+  - psenicne-rezance: 200 g | ramen
+  - tofu-natural: 200 g | na plátky, opečené
+  - pak-choi: 2 ks
+  - kukurica: 1/2 ks
+  - jarna-cibulka: 2 ks
+  - nori: 1 ks
+steps:
+  - Vodu s hubami var na miernom ohni 10 minút – to je vývar. Huby vyber a nakrájaj.
+  - Na sezamovom oleji na strednom ohni krátko opraž cesnak, zázvor a čili a vlej do vývaru. Pridaj mlieko.
+  - Miso, tahini a sójovú omáčku rozmiešaj s naberačkou vývaru a vmiešaj späť. Už nevar.
+  - Rezance uvar, pak choi spar. Do misiek daj rezance, zalej vývarom a navrch naukladaj tofu, huby, pak choi, kukuricu, cibuľku a nori.

@@ -1,0 +1,25 @@
+title: Kelewele
+description: Ghanský pouličný snack – kúsky zrelého plantainu v zázvore, čili a muškáte, opečené do karamelova.
+cuisine: zapadoafricka
+meals: [snack, dezert]
+time: 25
+active: 20
+servings: 3
+difficulty: 1
+tags: [snack, party]
+spicy: 2
+keeps: { fridge: 0 }
+ingredients:
+  - plantain: 3 ks | zrelé, s tmavou šupkou
+  - zazvor: 1 pl | nastrúhaný
+  - cesnak: 1 ks
+  - cili: 1/2 čl
+  - muskatovy-orech: 1/4 čl
+  - nove-korenie: 1/4 čl
+  - sol: 1/2 čl
+  - olej: 4 pl
+  - arasidy: 3 pl | pražené
+steps:
+  - Plantain olúp a nakrájaj na kocky.
+  - Zázvor, cesnak, korenie a soľ rozmixuj s lyžicou vody na pastu a obaľ v nej plantain. Nechaj 10 minút.
+  - Opekaj na oleji na strednom ohni po dávkach 6–8 minút, kým nie sú okraje tmavé a karamelové. Podávaj s arašidmi.

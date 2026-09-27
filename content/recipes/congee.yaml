@@ -1,0 +1,28 @@
+title: Congee
+description: Hodvábna ryžová kaša so zázvorom, podávaná s jarnou cibuľkou, sójovou omáčkou a chrumkavými doplnkami. Čínske raňajky pre žalúdok.
+cuisine: cinska
+meals: [ranajky]
+time: 75
+active: 10
+servings: 4
+difficulty: 1
+tags: [ranajky, lacne, one-pot]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - ryza-jazminova: 150 g
+  - voda: 1,8 l
+  - zazvor: 1 pl | na tenké prúžky
+  - sol: 1 čl
+  - susene-huby: 10 g | namočené, nakrájané
+  - sojova-omacka: 2 pl
+  - sezamovy-olej: 1 pl
+  - jarna-cibulka: 3 ks
+  - arasidy: 3 pl | pražené
+  - tofu-udene: 100 g | na kocky
+steps:
+  - Ryžu prepláchni a var s vodou, zázvorom a hubami na miernom ohni 60 minút, občas premiešaj, kým sa zrnká nerozpadnú na krémovú kašu.
+  - Osoľ a podľa potreby rozrieď vodou.
+  - Podávaj s kvapkou sójovej omáčky a sezamového oleja, cibuľkou, arašidmi a tofu.
+tips:
+  - Zamrazená ryža (pred varením) sa rozvarí rýchlejšie – zrnká popraskajú.

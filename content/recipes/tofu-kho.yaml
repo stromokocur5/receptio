@@ -1,0 +1,27 @@
+title: Tofu kho
+description: Vietnamské tofu dusené v karamelovej omáčke s čiernym korením a zázvorom. Tmavé, lesklé a slano-sladké.
+cuisine: vietnamska
+meals: [obed, vecera]
+time: 30
+active: 20
+servings: 3
+difficulty: 2
+tags: [klasika, vela-bielkovin]
+spicy: 1
+keeps: { fridge: 4 }
+ingredients:
+  - tofu-natural: 400 g | na hrubé plátky
+  - olej: 2 pl
+  - cukor: 2 pl
+  - voda: 150 ml
+  - sojova-omacka: 3 pl
+  - cesnak: 3 ks
+  - zazvor: 1 pl
+  - cierne-korenie: 1 čl | nahrubo
+  - jarna-cibulka: 3 ks
+  - ryza-jazminova: 250 g
+steps:
+  - Tofu opeč na oleji na strednom ohni z oboch strán dozlatista. Vyber.
+  - Do panvice nasyp cukor a na miernom ohni ho nechaj roztopiť a stmavnúť na jantárový karamel.
+  - Opatrne vlej vodu (prská), pridaj sójovú omáčku, cesnak a zázvor a miešaj, kým sa karamel nerozpustí.
+  - Vráť tofu a duste na miernom ohni 10 minút, obracaj, kým omáčka nezhustne. Posyp korením a cibuľkou, podávaj s ryžou.

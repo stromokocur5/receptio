@@ -1,0 +1,28 @@
+title: Tempeh orek
+description: Jávske chrumkavé prúžky tempehu v lepkavej sladko-pikantnej glazúre z kecap manis. Vydrží týždeň a jedáva sa s ryžou.
+cuisine: indonezska
+meals: [obed, vecera, snack]
+time: 25
+active: 25
+servings: 4
+difficulty: 1
+tags: [meal-prep, vela-bielkovin, do-krabicky]
+spicy: 2
+keeps: { fridge: 7 }
+ingredients:
+  - tempeh: 300 g | na tenké prúžky
+  - olej: 4 pl
+  - cesnak: 3 ks
+  - cibula: 1 ks | na tenké mesiačiky
+  - cili-papricka: 2 ks | na krúžky
+  - bobkovy-list: 2 ks
+  - zazvor: 1 čl
+  - kecap-manis: 3 pl
+  - tamarind: 1 čl
+  - sol: 1/4 čl
+  - ryza-jazminova: 300 g
+steps:
+  - Tempeh opeč na oleji na strednom ohni po dávkach dochrumkava, vyber.
+  - Na zvyšnom oleji na strednom ohni opeč cesnak, cibuľu, papričky, bobkový list a zázvor 3 minúty.
+  - Pridaj kecap manis, tamarind, soľ a 2 PL vody a var na miernom ohni, kým nezhustne na sirup.
+  - Vráť tempeh a miešaj, kým nie je obalený a glazúra nezaschne. Podávaj s ryžou.

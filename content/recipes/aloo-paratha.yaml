@@ -1,0 +1,30 @@
+title: Aloo paratha
+description: Pandžábske placky plnené korenistými zemiakmi, opečené na masle. Raňajky s jogurtom a nakladanou zeleninou.
+cuisine: indicka-sever
+meals: [ranajky, obed]
+time: 60
+active: 45
+servings: 4
+difficulty: 2
+tags: [ranajky]
+spicy: 1
+keeps: { fridge: 2, freezer: 2 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 300 g | ideálne celozrnná
+  - voda: 180 ml
+  - sol: 1,25 čl
+  - zemiaky: 4 ks | uvarené
+  - cili-papricka: 1 ks | nadrobno
+  - zazvor: 1 čl
+  - kmin: 1 čl
+  - garam-masala: 1 čl
+  - bylinky-koriander: 3 pl
+  - citron: 1/2 ks
+  - rastlinne-maslo: 40 g
+  - sojovy-jogurt: 1 hrnček
+steps:
+  - Múku, vodu a štipku soli vymies na mäkké cesto a nechaj 20 minút odpočívať.
+  - Zemiaky roztlač s papričkou, zázvorom, korením, koriandrom, citrónom a zvyškom soli.
+  - Cesto rozdeľ na 8 guliek. Každú rozvaľkaj na malý kruh, daj doň zemiakovú guľku, zavri a opatrne rozvaľkaj na placku.
+  - Peč na rozpálenej suchej panvici na strednom ohni minútu z každej strany, potom potri maslom a opeč dozlatista. Podávaj s jogurtom.

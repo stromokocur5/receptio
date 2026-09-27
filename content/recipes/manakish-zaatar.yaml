@@ -1,0 +1,28 @@
+title: Manakish so zaatarom
+description: Libanonské raňajkové placky potreté zaatarom v olivovom oleji. Voňavé po tymiáne a sumaku, s paradajkou a mätou.
+cuisine: libanonska
+meals: [ranajky, snack]
+time: 90
+active: 25
+servings: 4
+difficulty: 1
+tags: [ranajky, pecenie]
+spicy: 0
+keeps: { fridge: 2, freezer: 2 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 300 g
+  - drozdie: 1,5 čl | sušené
+  - cukor: 1 čl
+  - sol: 1 čl
+  - voda: 190 ml | vlažná
+  - olivovy-olej: 6 pl
+  - zaatar: 4 pl
+  - paradajky: 2 ks
+  - uhorka: 1 ks
+  - bylinky-mata: 2 pl
+steps:
+  - Múku, droždie, cukor, soľ, vodu a 1 PL oleja vymies na hladké cesto a nechaj hodinu kysnúť.
+  - Zaatar zmiešaj so zvyšným olejom na hustú pastu.
+  - Cesto rozdeľ na 4 časti a rozvaľkaj na tenké kruhy. Prstami v nich urob jamky a natri zaatarovou pastou.
+  - Peč na rozpálenom plechu na 240 °C 8 minút. Podávaj s paradajkou, uhorkou a mätou.

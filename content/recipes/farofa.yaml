@@ -1,0 +1,23 @@
+title: Farofa
+description: Opražená manioková múka s cibuľou, cesnakom a banánom. Chrumkavá brazílska posypka na fazuľu a ryžu.
+cuisine: brazilska
+meals: [obed]
+time: 15
+active: 15
+servings: 4
+difficulty: 1
+tags: [rychle]
+spicy: 0
+keeps: { fridge: 7 }
+ingredients:
+  - rastlinne-maslo: 40 g
+  - cibula: 1 ks | nadrobno
+  - cesnak: 2 ks
+  - banan: 1 ks | nakrájaný
+  - maniokova-muka: 200 g
+  - sol: 1/2 čl
+  - petrzlenova-vnat: 2 pl
+steps:
+  - Na masle na strednom ohni speň cibuľu s cesnakom 5 minút, pridaj banán a minútu opekaj.
+  - Nasyp múku a za stáleho miešania praž 5–7 minút, kým nezozlatne a nevonia orieškovo.
+  - Osoľ, vmiešaj petržlen a posyp ňou feijoadu alebo fazuľu.

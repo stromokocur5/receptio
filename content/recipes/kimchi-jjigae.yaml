@@ -1,0 +1,29 @@
+title: Kimchi jjigae
+description: Kórejský kyslý pikantný guláš z prekysnutého kimchi s tofu. Najlepší spôsob, ako zjesť staré kimchi.
+cuisine: korejska
+meals: [obed, vecera]
+time: 30
+active: 15
+servings: 3
+difficulty: 1
+tags: [one-pot, zvysky, polievka]
+spicy: 2
+keeps: { fridge: 3 }
+related: [kimchi]
+ingredients:
+  - sezamovy-olej: 1 pl
+  - kimchi: 300 g | čím staršie, tým lepšie
+  - gochugaru: 1 pl
+  - gochujang: 1 pl
+  - cesnak: 3 ks
+  - cibula: 1/2 ks
+  - susene-huby: 10 g | namočené
+  - voda: 600 ml
+  - sojova-omacka: 1 pl
+  - tofu-natural: 300 g | na plátky
+  - jarna-cibulka: 3 ks
+  - ryza-sushi: 200 g
+steps:
+  - Na sezamovom oleji na strednom ohni opekaj nakrájané kimchi 5 minút, pridaj gochugaru, gochujang, cesnak a cibuľu.
+  - Zalej vodou s nálevom z kimchi, pridaj huby a sójovú omáčku a var na miernom ohni 10 minút.
+  - Pridaj tofu a var na miernom ohni 5 minút. Posyp cibuľkou a podávaj s ryžou.

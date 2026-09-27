@@ -1,0 +1,29 @@
+title: Pšenové placky so zeleninou
+description: Chrumkavé placky z uvareného prosa s mrkvou, cuketou a bylinkami. Obed aj snack do krabičky, bez lepku.
+cuisine: slovenska
+meals: [obed, vecera, snack]
+time: 45
+active: 25
+servings: 4
+difficulty: 1
+tags: [lacne, do-krabicky, zvysky]
+spicy: 0
+keeps: { fridge: 3, freezer: 2 }
+ingredients:
+  - proso: 150 g
+  - voda: 400 ml
+  - mrkva: 1 ks | nastrúhaná
+  - cuketa: 1/2 ks | nastrúhaná a vytlačená
+  - cibula: 1/2 ks | nadrobno
+  - cesnak: 1 ks
+  - cicerova-muka: 4 pl
+  - petrzlenova-vnat: 3 pl
+  - majoranka: 1 čl
+  - sol: 1 čl
+  - olej: 4 pl
+  - sojovy-jogurt: 1 hrnček
+steps:
+  - Prepláchnuté pšeno var vo vode na miernom ohni 20 minút do mäkka a nechaj vychladnúť.
+  - Zmiešaj so zeleninou, cesnakom, múkou, bylinkami a soľou na lepivú hmotu.
+  - Mokrými rukami tvaruj placky a opekaj na oleji na strednom ohni 4 minúty z každej strany dozlatista.
+  - Podávaj s jogurtom s cesnakom.

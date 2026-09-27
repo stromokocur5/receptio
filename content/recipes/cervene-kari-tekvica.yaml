@@ -1,0 +1,28 @@
+title: Červené kari s tekvicou
+description: Thajské kokosové kari s tekvicou, fazuľkami a bazalkou. Sladkastá tekvica krotí pálivosť pasty.
+cuisine: thajska
+meals: [obed, vecera]
+time: 35
+active: 15
+servings: 4
+difficulty: 1
+tags: [one-pot, meal-prep]
+spicy: 2
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - olej: 1 pl
+  - cervena-kari-pasta: 2 pl
+  - kokosove-mlieko: 400 ml
+  - zeleninovy-vyvar: 300 ml
+  - tekvica-hokkaido: 600 g | na kocky
+  - zelene-fazulky: 200 g
+  - tofu-natural: 200 g | na kocky
+  - sojova-omacka: 1 pl
+  - cukor: 1 čl
+  - limetka: 1 ks
+  - bazalka: 1/2 hrnček
+  - ryza-jazminova: 300 g
+steps:
+  - Na oleji na strednom ohni opraž kari pastu minútu, pridaj tretinu kokosového mlieka a var, kým nezavonia a olej sa neoddelí.
+  - Pridaj zvyšok mlieka, vývar a tekvicu a var na miernom ohni 12 minút.
+  - Pridaj fazuľky a tofu a var na miernom ohni 5 minút. Dochuť sójovou omáčkou, cukrom a limetkou a vmiešaj bazalku. Podávaj s ryžou.

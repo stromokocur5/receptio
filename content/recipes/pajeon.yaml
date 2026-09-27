@@ -1,0 +1,28 @@
+title: Pajeon
+description: Kórejská chrumkavá placka s jarnou cibuľkou a zeleninou, namáčaná do sójovej omáčky s octom. Jedáva sa, keď prší.
+cuisine: korejska
+meals: [snack, vecera]
+time: 25
+active: 25
+servings: 2
+difficulty: 1
+tags: [rychle, lacne, snack]
+spicy: 0
+keeps: { fridge: 1 }
+ingredients:
+  - hladka-muka: 100 g
+  - ryzova-muka: 30 g
+  - sol: 1/2 čl
+  - voda: 180 ml | ľadová
+  - jarna-cibulka: 8 ks | na 6 cm kúsky
+  - cuketa: 1/2 ks | na prúžky
+  - cili-papricka: 1 ks | na krúžky
+  - olej: 4 pl
+  - sojova-omacka: 2 pl
+  - ryzovy-ocot: 1 pl
+  - gochugaru: 1/2 čl
+steps:
+  - Múky, soľ a ľadovú vodu rozmiešaj na riedke cesto. Vmiešaj zeleninu.
+  - Na panvici s 2 PL oleja rozpálenej na strednom až vysokom ohni rozotri polovicu cesta na tenkú placku.
+  - Peč 3–4 minúty, obráť, pridaj olej po okrajoch a peč ďalšie 3 minúty dochrumkava. Opakuj.
+  - Podávaj s omáčkou zo sójovej omáčky, octu a gochugaru.

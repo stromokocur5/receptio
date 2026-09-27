@@ -1,0 +1,27 @@
+title: Čučoriedkové muffiny
+description: Nadýchané americké muffiny s čučoriedkami a citrónovou kôrou. Raňajky do ruky a snack do školy.
+cuisine: americka
+meals: [ranajky, snack, dezert]
+time: 35
+active: 10
+servings: 12
+difficulty: 1
+tags: [pecenie, deti]
+spicy: 0
+keeps: { fridge: 3, freezer: 3 }
+ingredients:
+  - hladka-muka: 280 g
+  - cukor: 130 g
+  - kypriaci-prasok: 1 pl
+  - sol: 1/4 čl
+  - sojove-mlieko: 250 ml
+  - ocot: 1 pl
+  - olej: 80 ml
+  - vanilka: 1 čl
+  - citron: 1/2 ks | kôra
+  - cucoriedky: 1,5 hrnček
+steps:
+  - Mlieko s octom nechaj 5 minút zraziť.
+  - Zmiešaj suché suroviny, v inej miske mlieko, olej, vanilku a kôru.
+  - Spoj len pár ťahmi – hrudky sú v poriadku. Vmiešaj čučoriedky obalené v lyžici múky, aby neklesli.
+  - Rozdeľ do 12 foriem a peč na 200 °C 20–22 minút.

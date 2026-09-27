@@ -1,0 +1,32 @@
+title: Ital stew
+description: Rastafariánsky kokosový guláš z tekvice, batátu, kukurice a fazule. Ital znamená „vital“ – bez soli, len čisté bylinky a korenie.
+cuisine: karibska
+meals: [obed, vecera]
+time: 45
+active: 15
+servings: 4
+difficulty: 1
+tags: [one-pot, meal-prep]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - kokosovy-olej: 1 pl
+  - cibula: 1 ks
+  - cesnak: 3 ks
+  - zazvor: 1 pl
+  - tymian: 1 čl
+  - nove-korenie: 1 čl
+  - batat: 1 ks | na kocky
+  - tekvica-hokkaido: 300 g | na kocky
+  - mrkva: 2 ks
+  - kukurica-klas: 2 ks | na kolieska
+  - fazula-cervena: 1 ks
+  - kokosove-mlieko: 400 ml
+  - voda: 300 ml
+  - cili-papricka: 1 ks | celá
+  - jarna-cibulka: 3 ks
+  - kel: 100 g | nakrájaný
+steps:
+  - Na oleji na strednom ohni speň cibuľu, cesnak a zázvor, pridaj tymian a nové korenie.
+  - Pridaj batát, tekvicu, mrkvu, kukuricu, fazuľu, kokosové mlieko, vodu a celú papričku. Var pod pokrievkou na miernom ohni 25 minút.
+  - Pridaj kel a cibuľku a var ešte 5 minút. Ak chceš, dosoľ – Rastafariáni by nesolili.

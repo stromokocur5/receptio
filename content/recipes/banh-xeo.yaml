@@ -1,0 +1,35 @@
+title: Bánh xèo
+description: Chrumkavé vietnamské palacinky z ryžovej múky s kurkumou a kokosovým mliekom, plnené klíčkami a hubami. Balia sa do šalátu s bylinkami.
+cuisine: vietnamska
+meals: [obed, vecera]
+time: 45
+active: 35
+servings: 3
+difficulty: 2
+tags: [party]
+spicy: 1
+ahead: Cesto nechaj aspoň 30 minút odpočívať.
+keeps: { fridge: 0 }
+ingredients:
+  - ryzova-muka: 200 g
+  - kurkuma: 1 čl
+  - sol: 1/2 čl
+  - kokosove-mlieko: 200 ml
+  - voda: 250 ml
+  - jarna-cibulka: 3 ks | nadrobno
+  - olej: 4 pl
+  - sampinony: 2 hrnček | na plátky
+  - tofu-natural: 150 g | na prúžky
+  - klicky: 2 hrnček
+  - salat: 1 ks
+  - bylinky-mata: 3 pl
+  - sojova-omacka: 2 pl
+  - limetka: 1 ks
+  - cukor: 1 pl
+  - cili-papricka: 1 ks
+steps:
+  - Múku, kurkumu, soľ, kokosové mlieko, vodu a cibuľku rozmiešaj na riedke cesto a nechaj 30 minút odpočívať.
+  - Huby a tofu opeč na 1 PL oleja na strednom ohni.
+  - Veľkú panvicu rozpáľ s lyžičkou oleja na vysokom ohni, nalej naberačku cesta a krúživo ho rozlej. Pridaj huby, tofu a hrsť klíčkov, prikry na 2 minúty.
+  - Odkry, stíš na stredný oheň a peč ďalšie 3 minúty, kým okraje nie sú chrumkavé. Prelož na polovicu.
+  - Kúsky palacinky zabaľ do šalátu s mätou a namáčaj do omáčky zo sójovej omáčky, limetky, cukru a papričky.

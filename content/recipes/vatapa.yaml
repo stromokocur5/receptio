@@ -1,0 +1,32 @@
+title: Vatapá
+description: Krémová bahijská kaša z chleba, arašidov, kokosového mlieka a zázvoru. Podáva sa s ryžou alebo ako náplň.
+cuisine: brazilska
+meals: [obed, vecera]
+time: 30
+active: 20
+servings: 4
+difficulty: 2
+tags: [zvysky]
+spicy: 1
+keeps: { fridge: 3 }
+ingredients:
+  - chlieb: 4 ks | starý, bez kôrky
+  - kokosove-mlieko: 400 ml
+  - voda: 200 ml
+  - arasidy: 80 g | pražené
+  - kesu: 40 g
+  - olej: 2 pl
+  - cibula: 1 ks
+  - cesnak: 2 ks
+  - zazvor: 1 pl
+  - sladka-paprika: 2 čl
+  - cili-papricka: 1 ks
+  - sol: 1 čl
+  - limetka: 1 ks
+  - bylinky-koriander: 2 pl
+  - ryza-basmati: 300 g
+steps:
+  - Chlieb namoč do kokosového mlieka s vodou na 10 minút.
+  - Arašidy a kešu pomeli v sekáčiku najemno.
+  - Na oleji na strednom ohni speň cibuľu, cesnak, zázvor a papričku 5 minút a s chlebom a mliekom rozmixuj dohladka.
+  - Vráť do hrnca, pridaj orechy, papriku a soľ a za stáleho miešania var na miernom ohni 10 minút do hustého krému. Dochuť limetkou a koriandrom, podávaj s ryžou.

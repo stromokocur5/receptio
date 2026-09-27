@@ -1,0 +1,31 @@
+title: Sloppy joes so šošovicou
+description: Americké „špinavé“ burgre – šošovica v sladko-dymovej paradajkovej omáčke nakopená v žemli. Rýchla rodinná večera.
+cuisine: americka
+meals: [obed, vecera]
+time: 35
+active: 15
+servings: 4
+difficulty: 1
+tags: [deti, lacne, meal-prep]
+spicy: 0
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - olej: 1 pl
+  - cibula: 1 ks
+  - paprika-cervena: 1 ks
+  - cesnak: 2 ks
+  - sosovica-hneda: 200 g
+  - passata: 1 hrnček
+  - voda: 400 ml
+  - paradajkovy-pretlak: 2 pl
+  - javorovy-sirup: 1 pl
+  - horcica: 1 pl
+  - sojova-omacka: 1 pl
+  - udena-paprika: 1 čl
+  - ocot: 1 pl
+  - hamburgerova-zemla: 4 ks
+  - kysle-uhorky: 2 ks
+steps:
+  - Na oleji na strednom ohni speň cibuľu, papriku a cesnak.
+  - Pridaj šošovicu, passatu, vodu, pretlak a všetko ochucovadlo a var na miernom ohni 25 minút, kým šošovica nezmäkne a zmes nezhustne.
+  - Nakop do opečených žemlí a pridaj uhorky.

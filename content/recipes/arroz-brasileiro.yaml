@@ -1,0 +1,22 @@
+title: Arroz brasileiro
+description: Brazílska denná ryža opražená s cibuľou a cesnakom pred varením. Každé zrnko zvlášť.
+cuisine: brazilska
+meals: [obed, vecera]
+time: 25
+active: 5
+servings: 4
+difficulty: 1
+tags: [lacne, klasika]
+spicy: 0
+keeps: { fridge: 3, freezer: 2 }
+ingredients:
+  - olej: 2 pl
+  - cibula: 1/2 ks | nadrobno
+  - cesnak: 2 ks
+  - ryza-basmati: 300 g | prepláchnutá
+  - voda: 600 ml | vriaca
+  - sol: 1 čl
+steps:
+  - Na oleji na strednom ohni speň cibuľu s cesnakom 3 minúty.
+  - Pridaj ryžu a 2 minúty praž, kým zrnká nie sú priesvitné na krajoch.
+  - Zalej vriacou vodou, osoľ, prikry a var na miernom ohni 15 minút. Nechaj 5 minút dôjsť a prehrab vidličkou.

@@ -1,0 +1,32 @@
+title: Pelau
+description: Trinidadská jednohrncová ryža s karamelizovaným cukrom, holubím hrachom, tekvicou a kokosovým mliekom. Nedeľné jedlo na pláž.
+cuisine: karibska
+meals: [obed, vecera]
+time: 50
+active: 20
+servings: 4
+difficulty: 2
+tags: [one-pot, meal-prep, party]
+spicy: 1
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - olej: 2 pl
+  - cukor: 2 pl
+  - tofu-udene: 200 g | na kocky
+  - cibula: 1 ks
+  - cesnak: 3 ks
+  - tymian: 1 čl
+  - ryza-basmati: 300 g
+  - fazula-cervena: 1 ks | alebo holubí hrach
+  - tekvica-hokkaido: 250 g | na kocky
+  - mrkva: 1 ks | na kocky
+  - kokosove-mlieko: 400 ml
+  - voda: 300 ml
+  - sol: 1 čl
+  - cili-papricka: 1 ks | celá
+  - jarna-cibulka: 3 ks
+steps:
+  - V hrnci na strednom ohni zohrej olej s cukrom a nechaj ho karamelizovať do tmavohneda (asi 3 minúty). Pozor, nespáľ.
+  - Hneď pridaj tofu a obaľ ho v karameli. Pridaj cibuľu, cesnak a tymian a 3 minúty opekaj.
+  - Pridaj ryžu, fazuľu, tekvicu, mrkvu, kokosové mlieko, vodu, soľ a celú papričku (dá vôňu, nie pálivosť – nerozpuč ju).
+  - Prikry a var na miernom ohni 20 minút, kým ryža nevsiakne tekutinu. Posyp cibuľkou.

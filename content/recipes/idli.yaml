@@ -1,0 +1,26 @@
+title: Idli
+description: Nadýchané ryžové koláčiky na pare z kvaseného cesta. Ľahké raňajky s chutney a sambarom.
+cuisine: indicka-juh
+meals: [ranajky]
+time: 30
+active: 15
+servings: 4
+difficulty: 2
+tags: [ranajky, fermentacia]
+spicy: 0
+ahead: Ryžu a dal namoč na 6 hodín, cesto potom kvasí 10–12 hodín.
+keeps: { fridge: 3, freezer: 2 }
+related: [sambar, kokosove-chutney]
+ingredients:
+  - ryza-basmati: 300 g | alebo predvarená (parboiled)
+  - urad-dal: 100 g
+  - voda: 350 ml
+  - sol: 1 čl
+  - olej: 1 čl | na formičky
+steps:
+  - Ryžu a dal namoč zvlášť na 6 hodín. Dal rozmixuj na nadýchanú penu, ryžu na jemne zrnité cesto. Zmiešaj so soľou a nechaj kvasiť 10–12 hodín, kým nenarastie.
+  - Formičky na idli (alebo malé misky či formy na muffiny) vymasti a naplň do troch štvrtín cestom.
+  - Var na pare nad vriacou vodou pod pokrievkou 12 minút. Špáradlo zapichnuté do stredu má vyjsť čisté.
+  - Nechaj 2 minúty odpočinúť a vyber mokrou lyžičkou.
+tips:
+  - Bez formičky na idli ich uvar v silikónových formičkách na muffiny v hrnci s napareným košíkom.

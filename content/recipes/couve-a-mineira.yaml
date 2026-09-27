@@ -1,0 +1,19 @@
+title: Couve à mineira
+description: Najtenšie nakrájaný kel, rýchlo opečený s cesnakom. Brazílska príloha k fazuli, hotová za 5 minút.
+cuisine: brazilska
+meals: [obed, vecera]
+time: 10
+active: 10
+servings: 4
+difficulty: 1
+tags: [rychle, lacne]
+spicy: 0
+keeps: { fridge: 2 }
+ingredients:
+  - kel: 300 g | bez stoniek
+  - olivovy-olej: 2 pl
+  - cesnak: 3 ks | nadrobno
+  - sol: 1/2 čl
+steps:
+  - Listy naukladaj na seba, zroluj do tuhej cigary a nakrájaj na čo najtenšie nitky.
+  - Na oleji na strednom ohni krátko opraž cesnak, pridaj kel a soľ a za stáleho miešania opekaj len 2–3 minúty – má ostať jasne zelený.

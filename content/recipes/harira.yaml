@@ -1,0 +1,37 @@
+title: Harira
+description: Marocká polievka zo šošovice a cíceru s paradajkami, zázvorom a čerstvými bylinkami. Sýta ako hlavné jedlo, tradične sa ňou láme pôst.
+cuisine: severoafricka
+meals: [obed, vecera]
+time: 50
+active: 20
+servings: 4
+difficulty: 1
+tags: [polievka, one-pot, meal-prep]
+spicy: 0
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Na druhý deň zhustne – rozrieď vodou.'
+ingredients:
+  - olivovy-olej: 2 pl
+  - cibula: 1 ks | nadrobno
+  - zeler-stonkovy: 2 ks | nadrobno
+  - cesnak: 3 ks
+  - zazvor: 1 čl | nastrúhaný
+  - kurkuma: 1 čl
+  - skorica: 1/2 čl
+  - sladka-paprika: 1 čl
+  - paradajky-sterilizovane: 1 ks
+  - sosovica-hneda: 100 g
+  - cicer-sterilizovany: 1 ks
+  - zeleninovy-vyvar: 1,5 l
+  - hladka-muka: 2 pl | rozmiešaná v 100 ml vody
+  - bylinky-koriander: 4 pl
+  - petrzlenova-vnat: 4 pl
+  - citron: 1 ks
+  - sol: 1 čl
+steps:
+  - Na oleji na strednom ohni speň cibuľu so zelerom 6 minút, pridaj cesnak, zázvor a korenie a minútu restuj.
+  - Pridaj paradajky, prepláchnutú šošovicu a vývar. Var na miernom ohni 30 minút, kým šošovica nezmäkne.
+  - Pridaj cícer a polovicu byliniek. Za stáleho miešania vlej múku rozmiešanú vo vode a 5 minút var – polievka jemne zhustne.
+  - Osoľ, pridaj zvyšok byliniek a podávaj s mesiačikmi citróna.
+tips:
+  - Múka dáva harire typickú zamatovú hustotu. Bez lepku ju nahraď ryžovou.

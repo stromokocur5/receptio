@@ -1,0 +1,31 @@
+title: Okonomiyaki
+description: Japonská kapustová placka z Osaky s omáčkou okonomi a majonézou. Okonomi znamená „ako chceš“.
+cuisine: japonska
+meals: [obed, vecera]
+time: 35
+active: 30
+servings: 2
+difficulty: 2
+tags: [lacne]
+spicy: 0
+keeps: { fridge: 1 }
+ingredients:
+  - hladka-muka: 120 g
+  - cicerova-muka: 30 g | namiesto vajca
+  - kypriaci-prasok: 1/2 čl
+  - sol: 1/2 čl
+  - voda: 200 ml
+  - biela-kapusta: 350 g | na tenké prúžky
+  - jarna-cibulka: 4 ks
+  - zazvor: 1 pl | nasekaný
+  - olej: 2 pl
+  - sojova-omacka: 1 pl
+  - paradajkovy-pretlak: 1 pl
+  - javorovy-sirup: 1 pl
+  - veganska-majoneza: 2 pl
+  - nori: 1 ks | rozdrobený
+steps:
+  - Múky, prášok, soľ a vodu rozmiešaj na husté cesto. Vmiešaj kapustu, cibuľku a zázvor.
+  - Na panvici s olejom rozotri polovicu na placku hrubú 2 cm, prikry a peč na strednom ohni 5 minút.
+  - Obráť (pomôž si tanierom) a peč ďalších 5 minút.
+  - Sójovú omáčku, pretlak a sirup zmiešaj, natri na placku, pokresli majonézou a posyp nori.

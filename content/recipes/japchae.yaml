@@ -1,0 +1,31 @@
+title: Japchae
+description: Kórejské sklenené rezance so špenátom, hubami, mrkvou a paprikou v sladkej sezamovej sójovej omáčke. Sviatočné jedlo, ktoré chutí aj studené.
+cuisine: korejska
+meals: [obed, vecera]
+time: 35
+active: 30
+servings: 4
+difficulty: 2
+tags: [party, do-krabicky]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - sklenene-rezance: 200 g
+  - sojova-omacka: 4 pl
+  - cukor: 1,5 pl
+  - sezamovy-olej: 2 pl
+  - cesnak: 3 ks
+  - olej: 2 pl
+  - cibula: 1 ks | na tenké mesiačiky
+  - mrkva: 1 ks | na tenké prúžky
+  - paprika-cervena: 1 ks | na prúžky
+  - susene-huby: 15 g | shiitake, namočené, na prúžky
+  - spenat: 200 g
+  - tofu-natural: 150 g | na prúžky
+  - sezam: 1 pl
+steps:
+  - Rezance var vo vriacej vode 6 minút, sceď, prepláchni a nastrihaj nožnicami na kratšie kusy.
+  - Zmiešaj sójovú omáčku, cukor, sezamový olej a cesnak.
+  - Špenát spar, vytlač a dochuť kvapkou omáčky.
+  - Na oleji na strednom ohni postupne opeč tofu, cibuľu, mrkvu, papriku a huby, každé zvlášť 2–3 minúty.
+  - Všetko premiešaj s rezancami a omáčkou, prehrej 2 minúty na panvici a posyp sezamom.

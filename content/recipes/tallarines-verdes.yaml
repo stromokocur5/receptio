@@ -1,0 +1,27 @@
+title: Tallarines verdes
+description: Peruánske „zelené špagety“ – cestoviny so špenátovo-bazalkovou omáčkou s orechmi. Talianske pesto po andsky.
+cuisine: peruanska
+meals: [obed, vecera]
+time: 25
+active: 15
+servings: 4
+difficulty: 1
+tags: [rychle, deti]
+spicy: 0
+keeps: { fridge: 2 }
+ingredients:
+  - cestoviny: 400 g | špagety alebo linguine
+  - spenat: 200 g
+  - bazalka: 1 hrnček | listy
+  - vlasske-orechy: 50 g
+  - cesnak: 2 ks
+  - cibula: 1/2 ks
+  - olej: 3 pl
+  - sojove-mlieko: 150 ml
+  - vyzivne-drozdie: 2 pl
+  - sol: 1 čl
+steps:
+  - Uvar cestoviny.
+  - Na oleji na strednom ohni speň cibuľu a cesnak 4 minúty.
+  - Špenát spar 30 sekúnd a so všetkým ostatným rozmixuj dohladka.
+  - Omáčku zohrej na miernom ohni a premiešaj s cestovinami. Tradične sa podávajú s opečeným zemiakom.

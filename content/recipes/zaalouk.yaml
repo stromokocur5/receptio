@@ -1,0 +1,30 @@
+title: Zaalouk
+description: Teplý marocký šalát z pečeného baklažánu a paradajok s cesnakom, kmínom a paprikou. Nabiera sa chlebom.
+cuisine: severoafricka
+meals: [snack, vecera]
+time: 40
+active: 15
+servings: 4
+difficulty: 1
+tags: [party, meal-prep]
+spicy: 1
+keeps: { fridge: 4 }
+ingredients:
+  - baklazan: 2 ks
+  - olivovy-olej: 4 pl
+  - cesnak: 4 ks | prelisovaný
+  - paradajky: 4 ks | nastrúhané
+  - kmin: 1 čl
+  - sladka-paprika: 2 čl
+  - cili: 1/4 čl
+  - sol: 1 čl
+  - citron: 1/2 ks
+  - petrzlenova-vnat: 3 pl
+  - bylinky-koriander: 3 pl
+steps:
+  - Baklažány niekoľkokrát popichaj vidličkou a peč v rúre na 220 °C 30 minút, kým úplne nezmäknú. Dužinu vydlabi a nasekaj.
+  - Na oleji na miernom ohni minútu opraž cesnak s korením, pridaj nastrúhané paradajky a var na miernom ohni 8 minút, kým sa neodparí voda.
+  - Vmiešaj baklažán a za stáleho roztláčania var ďalších 5 minút.
+  - Dochuť soľou a citrónom, vmiešaj bylinky. Podávaj teplé alebo izbovej teploty s chlebom.
+tips:
+  - Paradajky nastrúhaj na hrubom strúhadle rezom k sebe – šupka ti ostane v ruke.

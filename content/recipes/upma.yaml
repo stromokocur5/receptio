@@ -1,0 +1,31 @@
+title: Upma
+description: Slaná krupicová kaša so zeleninou, horčičnými semienkami a kešu. Rýchle juhoindické raňajky za 20 minút.
+cuisine: indicka-juh
+meals: [ranajky]
+time: 20
+active: 20
+servings: 2
+difficulty: 1
+tags: [ranajky, rychle, lacne]
+spicy: 1
+keeps: { fridge: 2 }
+ingredients:
+  - psenicna-krupica: 120 g
+  - olej: 2 pl
+  - horcicne-semienko: 1 čl
+  - kesu: 2 pl
+  - kari-listy: 8 ks
+  - cibula: 1 ks | nadrobno
+  - zazvor: 1 čl | nastrúhaný
+  - cili-papricka: 1 ks | nadrobno
+  - mrkva: 1 ks | na drobné kocky
+  - hrasok: 1/2 hrnček
+  - voda: 500 ml | vriaca
+  - sol: 3/4 čl
+  - citron: 1/2 ks
+  - bylinky-koriander: 2 pl
+steps:
+  - Krupicu opraž nasucho na panvici na strednom ohni 4 minúty, kým nezavonia. Daj bokom.
+  - Na oleji na strednom ohni nechaj prasknúť horčičné semienka, pridaj kešu a kari listy, potom cibuľu, zázvor a papričku a 3 minúty opekaj.
+  - Pridaj mrkvu a hrášok, zalej vriacou vodou a osoľ.
+  - Za stáleho miešania pomaly sypaj krupicu a var na miernom ohni 3 minúty, kým nezhustne. Prikry a nechaj 2 minúty dôjsť. Dochuť citrónom a koriandrom.

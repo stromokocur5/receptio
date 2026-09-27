@@ -1,0 +1,25 @@
+title: Konopné pesto
+description: Svieže pesto z bazalky, petržlenu a konopných semienok namiesto píniových orieškov. Omega-3, zinok a polovičná cena.
+cuisine: moderna
+meals: [domace, snack]
+time: 10
+active: 10
+servings: 6
+difficulty: 1
+tags: [rychle, urob-si-sam]
+spicy: 0
+yields: cca 200 ml
+keeps: { fridge: 5, freezer: 3 }
+ingredients:
+  - bazalka: 1 hrnček
+  - petrzlenova-vnat: 1/2 hrnček
+  - konopne-semienka: 60 g
+  - cesnak: 1 ks
+  - citron: 1/2 ks
+  - vyzivne-drozdie: 2 pl
+  - olivovy-olej: 6 pl
+  - sol: 1/2 čl
+steps:
+  - Všetko okrem oleja rozmixuj v sekáčiku nahrubo.
+  - Za chodu pomaly prilievaj olej, kým nevznikne hustá omáčka.
+  - Skladuj v pohári zaliate tenkou vrstvou oleja. Na cestoviny, chlieb aj do polievky.

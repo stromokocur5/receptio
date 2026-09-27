@@ -1,0 +1,28 @@
+title: Ven pongal
+description: Krémová slaná kaša z ryže a mungo dalu s čiernym korením, zázvorom a kešu. Tamilské raňajky, ktoré hrejú.
+cuisine: indicka-juh
+meals: [ranajky, vecera]
+time: 35
+active: 10
+servings: 3
+difficulty: 1
+tags: [ranajky, one-pot, lacne]
+spicy: 1
+keeps: { fridge: 2 }
+ingredients:
+  - ryza-basmati: 120 g
+  - mungo: 60 g | lúpané (moong dal)
+  - voda: 900 ml
+  - sol: 1 čl
+  - rastlinne-maslo: 2 pl
+  - cierne-korenie: 1 čl | nahrubo pomleté
+  - kmin: 1 čl
+  - zazvor: 1 čl | nastrúhaný
+  - kesu: 3 pl
+  - kari-listy: 8 ks
+steps:
+  - Dal opraž nasucho na strednom ohni 2 minúty, kým nezavonia. S ryžou ho prepláchni.
+  - Var ryžu s dalom a soľou vo vode na miernom ohni 25 minút do rozvarenia, občas premiešaj a roztlač.
+  - Na masle na strednom ohni opraž korenie, kmín, zázvor, kešu a kari listy a vmiešaj do kaše.
+tips:
+  - Kaša po vychladnutí tuhne – pri zohrievaní prilej horúcu vodu.

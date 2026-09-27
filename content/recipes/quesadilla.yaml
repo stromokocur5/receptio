@@ -1,0 +1,25 @@
+title: Quesadilla s fazuľou a kukuricou
+description: Chrumkavé tortilly plnené fazuľou, kukuricou, paprikou a roztaveným vegánskym syrom. Desaťminútová večera.
+cuisine: mexicka
+meals: [obed, vecera, snack]
+time: 15
+active: 15
+servings: 2
+difficulty: 1
+tags: [rychle, deti]
+spicy: 1
+keeps: { fridge: 1 }
+ingredients:
+  - kukuricne-tortilly: 6 ks | alebo 4 pšeničné
+  - fazula-cierna: 1 ks | roztlačená
+  - kukurica: 1/2 ks
+  - paprika-cervena: 1/2 ks | nadrobno
+  - kmin: 1/2 čl
+  - udena-paprika: 1/2 čl
+  - vegansky-syr: 1 hrnček | strúhaný
+  - olej: 1 pl
+  - sojovy-jogurt: 4 pl
+steps:
+  - Fazuľu zmiešaj s kukuricou, paprikou a korením.
+  - Na polovicu tortilly natri fazuľu, posyp syrom a prelož.
+  - Opeč na panvici s kvapkou oleja na strednom ohni 2–3 minúty z každej strany, kým syr neroztopí. Podávaj s jogurtom a salsou.

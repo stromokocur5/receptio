@@ -1,0 +1,25 @@
+title: Kapustové poriyal
+description: Rýchlo opečená kapusta s horčičnými semienkami, kokosom a mungo dalom. Juhoindická príloha za 15 minút.
+cuisine: indicka-juh
+meals: [obed, vecera]
+time: 15
+active: 15
+servings: 4
+difficulty: 1
+tags: [rychle, lacne]
+spicy: 1
+keeps: { fridge: 3 }
+ingredients:
+  - biela-kapusta: 500 g | najemno nakrájaná
+  - olej: 2 pl
+  - horcicne-semienko: 1 čl
+  - urad-dal: 1 pl | chrumká ako orieškom
+  - kari-listy: 8 ks
+  - cili-papricka: 1 ks | nadrobno
+  - kurkuma: 1/4 čl
+  - sol: 3/4 čl
+  - kokos-struhany: 4 pl
+steps:
+  - Na oleji na strednom ohni nechaj prasknúť horčičné semienka, pridaj dal a opekaj do zlatista.
+  - Pridaj kari listy, papričku a kurkumu, potom kapustu a soľ.
+  - Na vyššom ohni opekaj za miešania 6–8 minút, aby kapusta zmäkla, ale chrumkala. Vmiešaj kokos a podávaj.

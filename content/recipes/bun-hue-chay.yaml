@@ -1,0 +1,33 @@
+title: Bún Huế chay
+description: Pikantná polievka z cisárskeho mesta Huế s citrónovou trávou, čili olejom, hrubými ryžovými rezancami a tofu.
+cuisine: vietnamska
+meals: [obed, vecera]
+time: 50
+active: 20
+servings: 4
+difficulty: 2
+tags: [polievka]
+spicy: 3
+keeps: { fridge: 2 }
+ingredients:
+  - zeleninovy-vyvar: 1,8 l
+  - citronova-trava: 4 ks | rozdrvené
+  - cibula: 1 ks | rozpolená, opečená dočierna
+  - zazvor: 1 pl
+  - sojova-omacka: 3 pl
+  - cukor: 1 pl
+  - olej: 2 pl
+  - cili: 2 čl
+  - sladka-paprika: 1 čl
+  - cesnak: 3 ks
+  - tofu-natural: 300 g | opečené
+  - hliva: 200 g
+  - ryzove-rezance: 250 g | hrubé
+  - klicky: 1 hrnček
+  - bazalka: 3 pl
+  - limetka: 1 ks
+steps:
+  - Vývar s citrónovou trávou, opečenou cibuľou a zázvorom var na miernom ohni 20 minút. Dochuť sójovou omáčkou a cukrom.
+  - Na oleji na strednom ohni krátko opraž cesnak s čili a paprikou (nespáľ) a vlej do vývaru – vznikne červená vrstva navrchu.
+  - Pridaj tofu a hlivu a var na miernom ohni 5 minút.
+  - Rezance uvar podľa návodu, rozdeľ do misiek, zalej polievkou a pridaj klíčky, bazalku a limetku.

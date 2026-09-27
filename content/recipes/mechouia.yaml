@@ -1,0 +1,30 @@
+title: Mechouia
+description: Tuniský šalát z grilovaných paprík, paradajok a cibule, nasekaný s cesnakom a rascou. Dymový a pikantný.
+cuisine: severoafricka
+meals: [snack, obed]
+time: 40
+active: 15
+servings: 4
+difficulty: 1
+tags: [party, bez-varenia]
+spicy: 2
+keeps: { fridge: 3 }
+ingredients:
+  - paprika-cervena: 3 ks
+  - cili-papricka: 2 ks
+  - paradajky: 3 ks
+  - cibula: 1 ks | nešúpaná, rozpolená
+  - cesnak: 2 ks
+  - rasca: 1/2 čl | mletá
+  - koriander-mlety: 1/2 čl
+  - olivovy-olej: 3 pl
+  - citron: 1/2 ks
+  - sol: 3/4 čl
+  - olivy: 8 ks
+steps:
+  - Papriky, čili, paradajky a cibuľu peč pod grilom v rúre alebo nad plynom, kým šupka nezčernie. Otáčaj ich.
+  - Zapar ich v miske pod pokrievkou 10 minút, potom olúp a zbav semienok.
+  - Všetko najemno nasekaj nožom s cesnakom, korením, olejom, citrónom a soľou.
+  - Ozdob olivami a podávaj s chlebom.
+tips:
+  - Nemixuj – šalát má mať kúsky, nie byť pyré.

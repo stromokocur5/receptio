@@ -1,0 +1,23 @@
+title: Kokosové drops
+description: Jamajské cukríky z kokosu a zázvoru uvarené v karamelizovanom cukre. Žuvacie, voňavé a návykové.
+cuisine: karibska
+meals: [dezert, snack]
+time: 30
+active: 25
+servings: 16
+difficulty: 1
+tags: [dezert, party]
+spicy: 0
+keeps: { fridge: 14 }
+ingredients:
+  - kokos-struhany: 150 g
+  - cukor: 150 g | ideálne hnedý
+  - voda: 200 ml
+  - zazvor: 1 pl | nastrúhaný
+  - skorica: 1/2 čl
+  - nove-korenie: 1/4 čl
+  - sol: 1 štipka
+steps:
+  - Vodu s cukrom, zázvorom a korením priveď do varu.
+  - Pridaj kokos a var na strednom ohni za stáleho miešania 15–20 minút, kým sa tekutina neodparí a hmota nie je lepkavá a lesklá.
+  - Lyžicou klaď kôpky na papier na pečenie a nechaj stuhnúť.

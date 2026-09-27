@@ -1,0 +1,27 @@
+title: Focaccia
+description: Janovská nadýchaná focaccia s jamkami plnými olivového oleja, rozmarínom a hrubou soľou. Cesto sa takmer nemiesi.
+cuisine: talianska
+meals: [snack, obed]
+time: 180
+active: 20
+servings: 8
+difficulty: 1
+tags: [pecenie, party]
+spicy: 0
+keeps: { fridge: 2, freezer: 2 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 500 g | ideálne chlebová
+  - drozdie: 2 čl | sušené
+  - sol: 2 čl
+  - voda: 400 ml | vlažná
+  - olivovy-olej: 6 pl
+  - rozmarin: 2 ks
+  - paradajky: 6 ks | cherry, nepovinné
+  - olivy: 10 ks | nepovinné
+steps:
+  - Múku, droždie, 1,5 ČL soli a vodu premiešaj varechou na lepkavé cesto. Prikry a nechaj 30 minút.
+  - Mokrou rukou cesto 4× prelož v miske (zdvihni okraj a prelož na stred). Opakuj ešte 2× po 30 minútach.
+  - Plech vymasti 3 PL oleja, cesto naň vyklop a nechaj 30 minút, potom ho prstami roztiahni do rohov.
+  - Prstami urob hlboké jamky, polej zvyšným olejom, posyp rozmarínom, paradajkami, olivami a zvyškom soli.
+  - Peč na 230 °C 22–25 minút dozlatista.

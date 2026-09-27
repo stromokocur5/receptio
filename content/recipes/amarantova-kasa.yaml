@@ -1,0 +1,28 @@
+title: Amarantová kaša s hruškou
+description: Krémová teplá kaša z amarantu s kardamómom, hruškou alebo jablkom a orechmi. Veľa železa a vápnika na raňajky.
+cuisine: moderna
+meals: [ranajky]
+time: 30
+active: 5
+servings: 2
+difficulty: 1
+tags: [ranajky, one-pot]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - amarant: 100 g
+  - voda: 300 ml
+  - sojove-mlieko: 200 ml
+  - kardamom: 1/4 čl
+  - skorica: 1/4 čl
+  - sol: 1 štipka
+  - jablko: 1 ks | alebo hruška, na kocky
+  - javorovy-sirup: 1 pl
+  - vlasske-orechy: 2 pl
+  - konopne-semienka: 1 pl
+steps:
+  - Amarant s vodou, korením a soľou priveď do varu a pod pokrievkou var na miernom ohni 20 minút, občas premiešaj.
+  - Pridaj mlieko a ovocie a var ešte 5 minút do krémova.
+  - Osladi sirupom a posyp orechmi a konopnými semienkami.
+tips:
+  - Amarant ostane aj po uvarení jemne chrumkavý ako kaviár – to je v poriadku.

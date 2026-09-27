@@ -1,0 +1,20 @@
+title: Sigeumchi namul
+description: Sparený špenát so sezamovým olejom, cesnakom a sezamom. Päťminútová kórejská príloha.
+cuisine: korejska
+meals: [snack, obed]
+time: 10
+active: 10
+servings: 3
+difficulty: 1
+tags: [rychle]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - spenat: 400 g
+  - sojova-omacka: 1 pl
+  - sezamovy-olej: 1 pl
+  - cesnak: 1 ks | prelisovaný
+  - sezam: 1 pl | opražený
+steps:
+  - Špenát spar 30 sekúnd vo vriacej vode, prelej studenou a poriadne vytlač.
+  - Nahrubo nakrájaj a premiešaj rukami s ostatnými surovinami.

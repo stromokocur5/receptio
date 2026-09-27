@@ -1,0 +1,29 @@
+title: Kootu
+description: Hustá tamilská zmes mungo dalu, tekvice a kokosu. Jemná, sýta a mierne sladká.
+cuisine: indicka-juh
+meals: [obed, vecera]
+time: 40
+active: 15
+servings: 4
+difficulty: 1
+tags: [meal-prep, one-pot, lacne]
+spicy: 1
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - mungo: 120 g | lúpané (moong dal)
+  - voda: 800 ml
+  - kurkuma: 1/2 čl
+  - tekvica-hokkaido: 400 g | na kocky
+  - kokos-struhany: 40 g
+  - kmin: 1 čl
+  - cili-papricka: 1 ks
+  - sol: 1 čl
+  - olej: 1 pl
+  - horcicne-semienko: 1 čl
+  - kari-listy: 8 ks
+  - ryza-basmati: 300 g
+steps:
+  - Dal var s kurkumou vo vode na miernom ohni 20 minút do mäkka.
+  - Pridaj tekvicu a var ďalších 10 minút.
+  - Kokos, kmín a papričku rozmixuj s trochou vody a vmiešaj so soľou do dalu. 3 minúty povar.
+  - Na oleji na strednom ohni nechaj prasknúť horčičné semienka s kari listami, vlej do kootu a podávaj s ryžou.

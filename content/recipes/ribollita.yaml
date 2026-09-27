@@ -1,0 +1,31 @@
+title: Ribollita
+description: Toskánska „prevarená“ polievka z fazule, kelu, zeleniny a starého chleba. Hustá ako guláš, na druhý deň ešte lepšia.
+cuisine: talianska
+meals: [obed, vecera]
+time: 60
+active: 20
+servings: 4
+difficulty: 1
+tags: [polievka, one-pot, zvysky, meal-prep]
+spicy: 0
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - olivovy-olej: 4 pl
+  - cibula: 1 ks
+  - mrkva: 2 ks
+  - zeler-stonkovy: 2 ks
+  - cesnak: 4 ks
+  - rozmarin: 1 ks
+  - paradajky-sterilizovane: 1 ks
+  - fazula-biela: 2 ks
+  - kel: 250 g | na prúžky
+  - biela-kapusta: 150 g
+  - zeleninovy-vyvar: 1,2 l
+  - chlieb: 3 ks | starý
+  - sol: 1/2 čl
+  - cierne-korenie: 1/2 čl
+steps:
+  - Na 2 PL oleja na strednom ohni speň cibuľu, mrkvu, zeler a cesnak 10 minút.
+  - Pridaj rozmarín, paradajky, fazuľu, kel, kapustu a vývar a var na miernom ohni 30 minút.
+  - Natrhaj chlieb do polievky a var ešte 10 minút, kým sa nerozpadne a polievka nezhustne.
+  - Okoreň, osoľ a podávaj pokvapkané zvyšným olejom.

@@ -1,0 +1,32 @@
+title: Tom yum
+description: Thajská kyslo-pikantná polievka s citrónovou trávou, hubami, paradajkami a limetkou. Číra, ostrá a osviežujúca.
+cuisine: thajska
+meals: [obed, vecera]
+time: 25
+active: 15
+servings: 3
+difficulty: 1
+tags: [polievka, rychle]
+spicy: 3
+keeps: { fridge: 2 }
+ingredients:
+  - zeleninovy-vyvar: 1 l
+  - citronova-trava: 2 ks | rozdrvené, na kúsky
+  - zazvor: 1 pl | na plátky, ako galangal
+  - cili-papricka: 3 ks | rozdrvené
+  - hliva: 200 g | natrhaná
+  - sampinony: 1 hrnček
+  - paradajky: 2 ks | na mesiačiky
+  - cibula: 1/2 ks | na mesiačiky
+  - tofu-natural: 200 g | na kocky
+  - sojova-omacka: 2 pl
+  - cukor: 1 čl
+  - limetka: 2 ks
+  - bylinky-koriander: 3 pl
+steps:
+  - Vývar s citrónovou trávou, zázvorom a papričkami var na miernom ohni 5 minút, aby sa aromatizoval.
+  - Pridaj huby, paradajky, cibuľu a tofu a var na miernom ohni 5 minút.
+  - Dochuť sójovou omáčkou, cukrom a limetkovou šťavou až po odstavení – varená limetka zhorkne. Posyp koriandrom.
+tips:
+  - Citrónová tráva a zázvor sa nejedia, len dávajú vôňu – vylov ich alebo ich obíď.
+  - Krémovú verziu (tom yum nam khon) urobíš s 100 ml kokosového mlieka.

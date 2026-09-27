@@ -1,0 +1,25 @@
+title: Nasu dengaku
+description: Japonský baklažán pečený s lesklou sladkou miso glazúrou. Krémový vnútri, karamelový navrchu.
+cuisine: japonska
+meals: [obed, vecera, snack]
+time: 35
+active: 10
+servings: 2
+difficulty: 1
+tags: [rychle]
+spicy: 0
+keeps: { fridge: 2 }
+ingredients:
+  - baklazan: 2 ks | pozdĺžne rozpolené
+  - olej: 2 pl
+  - miso: 2 pl
+  - javorovy-sirup: 1 pl
+  - sojova-omacka: 1 čl
+  - ryzovy-ocot: 1 čl
+  - sezam: 1 čl
+  - jarna-cibulka: 1 ks
+  - ryza-sushi: 150 g
+steps:
+  - Dužinu baklažánu nareži do mriežky, potri olejom a peč reznou stranou nahor na 210 °C 25 minút do mäkka.
+  - Miso, sirup, sójovú omáčku a ocot zmiešaj na glazúru.
+  - Natri na baklažán a daj pod gril na 3–4 minúty, kým nezačne bublať a karamelizovať. Posyp sezamom a cibuľkou.

@@ -1,0 +1,27 @@
+title: Mì xào chay
+description: Vietnamské opekané pšeničné rezance so zeleninou, hubami a tofu v jednoduchej sójovej omáčke. Rýchla večera z chladničky.
+cuisine: vietnamska
+meals: [obed, vecera]
+time: 20
+active: 20
+servings: 2
+difficulty: 1
+tags: [rychle, zvysky]
+spicy: 0
+keeps: { fridge: 2 }
+ingredients:
+  - psenicne-rezance: 200 g
+  - olej: 2 pl
+  - cesnak: 3 ks
+  - tofu-natural: 150 g | na prúžky
+  - pak-choi: 2 ks
+  - mrkva: 1 ks | na prúžky
+  - sampinony: 1 hrnček
+  - sojova-omacka: 2 pl
+  - kecap-manis: 1 pl
+  - cierne-korenie: 1/4 čl
+  - jarna-cibulka: 2 ks
+steps:
+  - Rezance uvar, sceď a prepláchni.
+  - Na oleji na strednom ohni opeč cesnak a tofu, pridaj mrkvu, huby a pak choi a 3 minúty opekaj.
+  - Pridaj rezance a omáčky a 2 minúty premiešavaj na prudkom ohni. Okoreň a posyp cibuľkou.

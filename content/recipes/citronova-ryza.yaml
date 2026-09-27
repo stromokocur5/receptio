@@ -1,0 +1,28 @@
+title: Citrónová ryža
+description: Žltá ryža s citrónom, kurkumou, arašidmi a kari listami. Juhoindické jedlo do krabičky z včerajšej ryže.
+cuisine: indicka-juh
+meals: [obed, vecera]
+time: 20
+active: 15
+servings: 3
+difficulty: 1
+tags: [rychle, zvysky, do-krabicky]
+spicy: 1
+keeps: { fridge: 3 }
+ingredients:
+  - ryza-basmati: 250 g | uvarená a vychladnutá
+  - olej: 2 pl
+  - horcicne-semienko: 1 čl
+  - arasidy: 50 g
+  - kari-listy: 10 ks
+  - cili-papricka: 1 ks | pozdĺžne rozrezaná
+  - zazvor: 1 čl | nastrúhaný
+  - kurkuma: 1/2 čl
+  - asafetida: 1 štipka
+  - sol: 3/4 čl
+  - citron: 1 ks
+  - bylinky-koriander: 2 pl
+steps:
+  - Na oleji na strednom ohni nechaj prasknúť horčičné semienka, pridaj arašidy a opekaj do zlatista.
+  - Pridaj kari listy, papričku, zázvor, kurkumu a asafetidu a 30 sekúnd restuj.
+  - Vmiešaj ryžu a soľ, prehrej a stiahni z ohňa. Pokvapkaj citrónom a posyp koriandrom.

@@ -18,6 +18,14 @@
 				<span class="time" aria-live={ringing ? 'assertive' : 'off'}>
 					{ringing ? 'Hotovo!' : formatDuration(left)}
 				</span>
+				<button
+					class="more"
+					onclick={() => addTime(timer.id, -60)}
+					disabled={ringing || left <= 60}
+					aria-label="Ubrať minútu"
+				>
+					−1
+				</button>
 				<button class="more" onclick={() => addTime(timer.id, 60)} aria-label="Pridať minútu">
 					+1
 				</button>
@@ -61,7 +69,7 @@
 		position: relative;
 		overflow: hidden;
 		display: grid;
-		grid-template-columns: auto 1fr auto auto auto;
+		grid-template-columns: auto 1fr auto auto auto auto;
 		align-items: center;
 		gap: 8px;
 		padding: 8px 8px 8px 12px;
@@ -103,6 +111,9 @@
 		color: inherit;
 		font-weight: 700;
 		font-size: 0.8rem;
+	}
+	button:disabled {
+		opacity: 0.35;
 	}
 	.ringing .stop {
 		background: var(--paper);

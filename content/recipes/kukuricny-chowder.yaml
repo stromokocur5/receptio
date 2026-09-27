@@ -1,0 +1,28 @@
+title: Kukuričný chowder
+description: Hustá krémová polievka z Nového Anglicka s kukuricou, zemiakmi, údenou paprikou a tymianom.
+cuisine: americka
+meals: [obed, vecera]
+time: 35
+active: 15
+servings: 4
+difficulty: 1
+tags: [polievka, one-pot, deti]
+spicy: 0
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - olej: 2 pl
+  - cibula: 1 ks
+  - zeler-stonkovy: 2 ks
+  - cesnak: 2 ks
+  - zemiaky: 4 ks | na kocky
+  - kukurica: 2 ks
+  - zeleninovy-vyvar: 800 ml
+  - tymian: 1 čl
+  - udena-paprika: 1 čl
+  - sojove-mlieko: 250 ml
+  - sol: 1/2 čl
+  - pazitka: 2 pl
+steps:
+  - Na oleji na strednom ohni speň cibuľu, zeler a cesnak.
+  - Pridaj zemiaky, kukuricu, vývar a korenie a var na miernom ohni 15 minút.
+  - Tretinu rozmixuj a vráť, pridaj mlieko a soľ a prehrej. Posyp pažítkou.

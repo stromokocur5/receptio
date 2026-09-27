@@ -1,0 +1,25 @@
+title: Loubieh bi zeit
+description: Zelené fazuľky pomaly dusené v paradajkách a olivovom oleji s cesnakom a škoricou. Podávajú sa vlažné.
+cuisine: libanonska
+meals: [obed, vecera]
+time: 50
+active: 15
+servings: 4
+difficulty: 1
+tags: [lacne, meal-prep]
+spicy: 0
+keeps: { fridge: 4 }
+ingredients:
+  - olivovy-olej: 4 pl
+  - cibula: 1 ks
+  - cesnak: 5 ks
+  - zelene-fazulky: 600 g
+  - paradajky-sterilizovane: 1 ks
+  - skorica: 1/4 čl
+  - nove-korenie: 1/4 čl
+  - sol: 1 čl
+  - pita: 4 ks
+steps:
+  - Na oleji na strednom ohni speň cibuľu a cesnak 6 minút.
+  - Pridaj fazuľky a 5 minút opekaj, potom paradajky, korenie a soľ.
+  - Prikry a duste na miernom ohni 30 minút, kým fazuľky nie sú úplne mäkké. Podávaj vlažné s pitou.

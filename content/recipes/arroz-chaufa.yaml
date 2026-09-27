@@ -1,0 +1,27 @@
+title: Arroz chaufa
+description: Peruánsko-čínska smažená ryža s tofu, jarnou cibuľkou, zázvorom a sójovou omáčkou. Chifa klasika.
+cuisine: peruanska
+meals: [obed, vecera]
+time: 20
+active: 20
+servings: 3
+difficulty: 1
+tags: [rychle, zvysky]
+spicy: 0
+keeps: { fridge: 2 }
+ingredients:
+  - ryza-jazminova: 250 g | uvarená a vychladnutá
+  - olej: 3 pl
+  - tofu-natural: 200 g | rozdrobené
+  - kurkuma: 1/4 čl
+  - kala-namak: 1/4 čl
+  - zazvor: 1 pl | nadrobno
+  - cesnak: 2 ks
+  - paprika-cervena: 1 ks | na kocky
+  - jarna-cibulka: 5 ks
+  - sojova-omacka: 3 pl
+  - sezamovy-olej: 1 čl
+steps:
+  - Tofu opeč na 1 PL oleja na strednom ohni s kurkumou a kala namakom ako praženicu, vyber.
+  - Na zvyšnom oleji na prudkom ohni opeč zázvor, cesnak, papriku a biele časti cibuľky.
+  - Pridaj ryžu a opekaj 4 minúty. Vmiešaj sójovú omáčku, tofu a zelenú cibuľku a pokvapkaj sezamovým olejom.

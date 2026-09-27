@@ -1,0 +1,26 @@
+title: Caldo verde
+description: Portugalsko-brazílska zemiaková polievka s najtenšie nakrájaným kelom a údenou paprikou. Krémová bez smotany.
+cuisine: brazilska
+meals: [obed, vecera]
+time: 35
+active: 15
+servings: 4
+difficulty: 1
+tags: [polievka, lacne, one-pot]
+spicy: 0
+keeps: { fridge: 3, freezer: 2 }
+ingredients:
+  - olivovy-olej: 3 pl
+  - cibula: 1 ks
+  - cesnak: 3 ks
+  - zemiaky: 6 ks | na kocky
+  - voda: 1,3 l
+  - sol: 1,5 čl
+  - kel: 200 g | na tenučké nitky
+  - tofu-udene: 150 g | na kocky
+  - udena-paprika: 1 čl
+steps:
+  - Na 1 PL oleja na strednom ohni speň cibuľu s cesnakom, pridaj zemiaky, vodu a soľ a var na miernom ohni 20 minút.
+  - Rozmixuj dohladka.
+  - Pridaj kel a var len 3 minúty, aby ostal zelený.
+  - Tofu opeč na zvyšnom oleji na strednom ohni s údenou paprikou dochrumkava a podávaj na polievke.

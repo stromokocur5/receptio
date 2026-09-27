@@ -1,0 +1,26 @@
+title: Slnečnicová nátierka s bylinkami
+description: Krémová nátierka z namočených slnečnicových semienok s citrónom, cesnakom a pažítkou. Chutí ako bylinkový syr za zlomok ceny.
+cuisine: slovenska
+meals: [ranajky, snack]
+time: 15
+active: 10
+servings: 6
+difficulty: 1
+tags: [lacne, rychle, bez-varenia]
+spicy: 0
+ahead: Semienka namoč aspoň na 4 hodiny.
+keeps: { fridge: 5 }
+ingredients:
+  - slnecnicove-semienka: 150 g | namočené
+  - citron: 1 ks
+  - cesnak: 1 ks
+  - vyzivne-drozdie: 2 pl
+  - horcica: 1 čl
+  - voda: 80 ml
+  - sol: 3/4 čl
+  - pazitka: 3 pl
+  - petrzlenova-vnat: 2 pl
+steps:
+  - Namočené semienka sceď a s citrónom, cesnakom, droždím, horčicou, vodou a soľou rozmixuj dohladka.
+  - Vmiešaj nasekané bylinky.
+  - Natieraj na chlieb s reďkovkou alebo uhorkou.

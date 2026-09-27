@@ -1,0 +1,32 @@
+title: Polievka z čiernej fazule
+description: Hustá mexická polievka z čiernej fazule s kmínom, údenou paprikou a limetkou. Podávaná s avokádom a tortilla chipsami.
+cuisine: mexicka
+meals: [obed, vecera]
+time: 35
+active: 15
+servings: 4
+difficulty: 1
+tags: [polievka, one-pot, lacne, meal-prep]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - olej: 2 pl
+  - cibula: 1 ks
+  - mrkva: 1 ks
+  - cesnak: 3 ks
+  - kmin: 2 čl
+  - udena-paprika: 1 čl
+  - oregano: 1 čl
+  - cili-papricka: 1 ks
+  - fazula-cierna: 3 ks
+  - zeleninovy-vyvar: 800 ml
+  - paradajky-sterilizovane: 1/2 ks
+  - limetka: 1 ks
+  - sol: 1/2 čl
+  - avokado: 1 ks
+  - kukuricne-tortilly: 3 ks | nakrájané a upečené
+steps:
+  - Na oleji na strednom ohni speň cibuľu, mrkvu a cesnak 6 minút, pridaj korenie a papričku.
+  - Pridaj fazuľu, vývar a paradajky a var na miernom ohni 15 minút.
+  - Polovicu rozmixuj a vráť. Dochuť limetkou a soľou.
+  - Podávaj s avokádom a chrumkavými tortillami.

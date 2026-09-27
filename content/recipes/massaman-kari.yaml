@@ -1,0 +1,32 @@
+title: Massaman kari
+description: Najjemnejšie thajské kari s perzskými koreninami – škorica, kardamóm, badián – so zemiakmi, arašidmi a tofu.
+cuisine: thajska
+meals: [obed, vecera]
+time: 45
+active: 20
+servings: 4
+difficulty: 1
+tags: [meal-prep, deti]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - olej: 1 pl
+  - cervena-kari-pasta: 2 pl
+  - skorica: 1/2 čl
+  - kardamom: 1/4 čl
+  - badian: 1 ks
+  - kmin: 1/2 čl
+  - kokosove-mlieko: 400 ml
+  - voda: 300 ml
+  - zemiaky: 4 ks | na kocky
+  - cibula: 1 ks | na mesiačiky
+  - tofu-natural: 300 g | na kocky, opečené
+  - arasidy: 60 g | pražené
+  - tamarind: 1 pl
+  - cukor: 1 pl
+  - sojova-omacka: 1 pl
+  - ryza-jazminova: 300 g
+steps:
+  - Na oleji na strednom ohni opraž kari pastu s korením 2 minúty, pridaj polovicu kokosového mlieka a var, kým sa olej neoddelí.
+  - Pridaj zvyšné mlieko, vodu, zemiaky a cibuľu a var na miernom ohni 20 minút do mäkka.
+  - Pridaj tofu, arašidy, tamarind, cukor a sójovú omáčku a var na miernom ohni 5 minút. Podávaj s ryžou.

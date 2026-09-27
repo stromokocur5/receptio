@@ -1,0 +1,29 @@
+title: Kyslo-pikantná polievka
+description: Pekingská suan la tang s tofu, hubami, bambusom a bielym korením. Zahustená a zahrievajúca.
+cuisine: cinska
+meals: [obed, vecera]
+time: 30
+active: 20
+servings: 4
+difficulty: 1
+tags: [polievka, rychle]
+spicy: 2
+keeps: { fridge: 3 }
+ingredients:
+  - susene-huby: 20 g | shiitake alebo ucho Judášovo, namočené
+  - zeleninovy-vyvar: 1,2 l
+  - tofu-natural: 200 g | na prúžky
+  - mrkva: 1 ks | na tenké prúžky
+  - sampinony: 1 hrnček | na plátky
+  - sojova-omacka: 3 pl
+  - ryzovy-ocot: 4 pl
+  - cierne-korenie: 1 čl | ideálne biele
+  - cili: 1/2 čl
+  - kukuricny-skrob: 3 pl | rozmiešaný v 5 PL vody
+  - sezamovy-olej: 1 čl
+  - jarna-cibulka: 3 ks
+steps:
+  - Namočené huby nakrájaj na prúžky. Vývar s hubami, mrkvou a šampiňónmi var na miernom ohni 8 minút.
+  - Pridaj tofu, sójovú omáčku, ocot, korenie a čili.
+  - Za miešania vlej škrob a var minútu, kým polievka nezhustne.
+  - Dochuť octom a korením – má byť naozaj kyslá a pálivá. Pokvapkaj sezamovým olejom a posyp cibuľkou.

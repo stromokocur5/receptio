@@ -1,0 +1,30 @@
+title: Batátový puding
+description: Jamajský pečený puding z batátu, kokosového mlieka, zázvoru a muškátu. „Hell a top, hell a bottom, hallelujah in the middle.“
+cuisine: karibska
+meals: [dezert]
+time: 90
+active: 20
+servings: 8
+difficulty: 1
+tags: [dezert, pecenie]
+spicy: 0
+keeps: { fridge: 5, freezer: 2 }
+gf_swap: false
+ingredients:
+  - batat: 3 ks | olúpané, nastrúhané
+  - hladka-muka: 100 g
+  - kukuricna-krupica: 50 g
+  - cukor: 150 g
+  - kokosove-mlieko: 400 ml
+  - zazvor: 1 pl | nastrúhaný
+  - muskatovy-orech: 1/2 čl
+  - skorica: 1 čl
+  - vanilka: 1 čl
+  - sol: 1 štipka
+  - hrozienka: 4 pl
+  - rastlinne-maslo: 40 g | rozpustené
+steps:
+  - Batát najemno nastrúhaj alebo rozmixuj s kokosovým mliekom.
+  - Vmiešaj všetko ostatné na husté cesto ako na bublaninu.
+  - Prelej do vymastenej formy 20×20 cm a peč na 180 °C 60–70 minút, kým povrch nie je tmavý a stred pevný.
+  - Nechaj vychladnúť, stuhne. Podávaj vlažný alebo studený.

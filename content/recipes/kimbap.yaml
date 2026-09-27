@@ -1,0 +1,31 @@
+title: Kimbap
+description: Kórejské rolky z ryže a nori plnené marinovaným tofu, mrkvou, špenátom, uhorkou a kyslou reďkvou. Na piknik a do krabičky.
+cuisine: korejska
+meals: [obed, snack]
+time: 60
+active: 45
+servings: 4
+difficulty: 2
+tags: [do-krabicky, party]
+spicy: 0
+keeps: { fridge: 1 }
+ingredients:
+  - ryza-sushi: 300 g
+  - sezamovy-olej: 2 pl
+  - olej: 1 pl
+  - sol: 1 čl
+  - nori: 5 ks
+  - tofu-natural: 200 g | na dlhé prúžky
+  - sojova-omacka: 2 pl
+  - cukor: 1 čl
+  - mrkva: 2 ks | na prúžky
+  - spenat: 200 g
+  - uhorka: 1 ks | na dlhé prúžky
+  - biela-redkev: 150 g | na dlhé prúžky
+  - ryzovy-ocot: 3 pl
+  - sezam: 1 pl
+steps:
+  - Ryžu uvar a ešte teplú premiešaj s 1 PL sezamového oleja a polovicou soli.
+  - Reďkev nalož na 20 minút do octu so štipkou cukru a soli. Tofu opeč na oleji na strednom ohni a na konci glazuj sójovou omáčkou s cukrom. Mrkvu krátko opeč na tej istej panvici, špenát spar a vytlač.
+  - Na nori (lesklou stranou dole) rozotri tenkú vrstvu ryže, na hornom okraji nechaj 3 cm voľné. Pri spodnom okraji naukladaj po prúžku každej náplne.
+  - Pevne zroluj, potri sezamovým olejom, posyp sezamom a mokrým nožom nakrájaj na kolieska.

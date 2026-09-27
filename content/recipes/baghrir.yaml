@@ -1,0 +1,29 @@
+title: Baghrir
+description: Marocké „tisícdierkové“ palacinky z krupice – mäkké, pórovité a pečené len z jednej strany. Pijú sirup ako špongia.
+cuisine: severoafricka
+meals: [ranajky, dezert]
+time: 45
+active: 25
+servings: 4
+difficulty: 2
+tags: [ranajky]
+spicy: 0
+keeps: { fridge: 2, freezer: 2 }
+gf_swap: false
+ingredients:
+  - psenicna-krupica: 250 g | jemná
+  - hladka-muka: 60 g
+  - drozdie: 1 čl | sušené
+  - kypriaci-prasok: 1 čl
+  - cukor: 1 pl
+  - sol: 1/4 čl
+  - voda: 500 ml | vlažná
+  - rastlinne-maslo: 40 g
+  - javorovy-sirup: 4 pl
+steps:
+  - Všetky suché suroviny a vodu rozmixuj 2 minúty dohladka. Prikry a nechaj 30 minút kysnúť – na povrchu budú bublinky.
+  - Nepriľnavú panvicu zohrej na stredný oheň, nemasti ju. Nalej naberačku cesta a nechaj ho piecť len z jednej strany, kým sa neobjavia dierky a povrch nie je suchý (2–3 min).
+  - Neobracaj. Palacinky ukladaj vedľa seba na utierku, kým nevychladnú, potom sa neslepia.
+  - Rozpusti maslo so sirupom a palacinky ním polievaj.
+tips:
+  - Ak sa dierky nerobia, cesto je husté – pridaj lyžicu vody.

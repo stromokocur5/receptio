@@ -1,0 +1,30 @@
+title: Cà ri chay
+description: Vietnamské kokosové kari s batátom, mrkvou, tofu a citrónovou trávou. Jemné, podáva sa s bagetou.
+cuisine: vietnamska
+meals: [obed, vecera]
+time: 40
+active: 15
+servings: 4
+difficulty: 1
+tags: [one-pot, meal-prep]
+spicy: 1
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - olej: 2 pl
+  - cibula: 1 ks
+  - cesnak: 3 ks
+  - citronova-trava: 2 ks | rozdrvené
+  - kari-korenie: 2 pl
+  - kokosove-mlieko: 400 ml
+  - zeleninovy-vyvar: 500 ml
+  - batat: 2 ks | na kocky
+  - mrkva: 2 ks
+  - tofu-natural: 250 g | opečené
+  - sojova-omacka: 2 pl
+  - cukor: 1 čl
+  - bazalka: 3 pl
+  - bageta: 1 ks | alebo ryža
+steps:
+  - Na oleji na strednom ohni speň cibuľu, cesnak a citrónovú trávu, pridaj kari a minútu restuj.
+  - Pridaj kokosové mlieko, vývar, batát a mrkvu a var na miernom ohni 20 minút.
+  - Pridaj tofu, sójovú omáčku a cukor a var na miernom ohni 5 minút. Posyp bazalkou a podávaj s bagetou na namáčanie.

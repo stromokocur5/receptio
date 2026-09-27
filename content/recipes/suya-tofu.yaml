@@ -1,0 +1,27 @@
+title: Suya tofu
+description: Nigérijské pikantné špízy obalené v korení yaji z mletých arašidov, zázvoru a čili. Podávané s cibuľou a paradajkou.
+cuisine: zapadoafricka
+meals: [obed, vecera, snack]
+time: 35
+active: 20
+servings: 4
+difficulty: 1
+tags: [party, vela-bielkovin]
+spicy: 3
+keeps: { fridge: 3 }
+ingredients:
+  - tofu-natural: 500 g | vylisované, na kocky
+  - arasidy: 80 g | pražené, nesolené
+  - zazvor: 1 čl | mletý alebo nastrúhaný
+  - cili: 1,5 čl
+  - sladka-paprika: 2 čl
+  - cesnak: 2 ks | prelisovaný
+  - sol: 1 čl
+  - olej: 3 pl
+  - cibula-cervena: 1 ks | na tenké mesiačiky
+  - paradajky: 2 ks | na plátky
+steps:
+  - Arašidy pomeli na jemný prášok a zmiešaj so zázvorom, čili, paprikou a soľou – to je yaji.
+  - Tofu natri olejom s cesnakom a obaľ v polovici yaji.
+  - Napichaj na špajdle a opekaj na grile alebo pod grilom v rúre 10 minút, obracaj.
+  - Posyp zvyšným yaji a podávaj s cibuľou a paradajkami.

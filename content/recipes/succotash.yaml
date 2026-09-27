@@ -1,0 +1,27 @@
+title: Succotash s bôbom
+description: Americká letná zmes kukurice a bôbu s paprikou a bylinkami. Recept pôvodných obyvateľov Ameriky – „tri sestry“ na tanieri.
+cuisine: americka
+meals: [obed, vecera]
+time: 20
+active: 15
+servings: 4
+difficulty: 1
+tags: [rychle, vela-bielkovin]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - rastlinne-maslo: 2 pl
+  - cibula-cervena: 1 ks
+  - paprika-cervena: 1 ks
+  - cesnak: 2 ks
+  - kukurica: 1 ks
+  - bob-sterilizovany: 1 ks
+  - cuketa: 1 ks | na kocky
+  - paradajky: 2 ks
+  - tymian: 1/2 čl
+  - sol: 3/4 čl
+  - bazalka: 2 pl
+steps:
+  - Na masle na strednom ohni speň cibuľu, papriku a cesnak 5 minút.
+  - Pridaj cuketu a opekaj 3 minúty, potom kukuricu, bôb, paradajky a tymian.
+  - Duste na miernom ohni 5 minút, osoľ a posyp bazalkou.

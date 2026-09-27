@@ -1,0 +1,32 @@
+title: Kung pao tofu
+description: Sečuánske tofu s arašidmi, sušeným čili a sladkokyslou lesklou omáčkou. Hotové rýchlejšie ako donáška.
+cuisine: cinska
+meals: [obed, vecera]
+time: 30
+active: 25
+servings: 3
+difficulty: 2
+tags: [rychle, vela-bielkovin]
+spicy: 2
+keeps: { fridge: 3 }
+ingredients:
+  - tofu-natural: 400 g | vylisované, na kocky
+  - kukuricny-skrob: 2 pl
+  - olej: 3 pl
+  - arasidy: 60 g | pražené
+  - cili: 1 čl | alebo 8 sušených papričiek
+  - secuanske-korenie: 1 čl
+  - cesnak: 3 ks
+  - zazvor: 1 pl
+  - jarna-cibulka: 4 ks | na 2 cm kúsky
+  - paprika-cervena: 1 ks | na kocky
+  - sojova-omacka: 3 pl
+  - ryzovy-ocot: 2 pl
+  - cukor: 1 pl
+  - voda: 4 pl
+  - ryza-jazminova: 250 g
+steps:
+  - Tofu obaľ v 1,5 PL škrobu a na 2 PL oleja na strednom ohni opeč dochrumkava. Daj bokom.
+  - Zmiešaj sójovú omáčku, ocot, cukor, vodu a zvyšný škrob.
+  - Na zvyšnom oleji krátko opraž čili a sečuánske korenie, pridaj cesnak, zázvor, papriku a cibuľku a 2 minúty opekaj na prudkom ohni.
+  - Vlej omáčku, pridaj tofu a arašidy a premiešaj, kým omáčka nezhustne a nezaleskne sa. Podávaj s ryžou.

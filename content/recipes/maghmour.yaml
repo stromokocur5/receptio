@@ -1,0 +1,28 @@
+title: Maghmour
+description: Libanonská „musaka“ – pečený baklažán dusený s cícerom, paradajkami, cesnakom a mätou. Chutí najlepšie vychladnutý.
+cuisine: libanonska
+meals: [obed, vecera]
+time: 60
+active: 20
+servings: 4
+difficulty: 1
+tags: [meal-prep]
+spicy: 1
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - baklazan: 2 ks | na kocky
+  - olivovy-olej: 5 pl
+  - cibula: 1 ks | na mesiačiky
+  - cesnak: 5 ks
+  - cicer-sterilizovany: 1 ks
+  - paradajky-sterilizovane: 1 ks
+  - paradajkovy-pretlak: 1 pl
+  - nove-korenie: 1/2 čl
+  - cili: 1/4 čl
+  - sol: 1 čl
+  - bylinky-mata: 2 pl | alebo sušená
+  - pita: 4 ks
+steps:
+  - Baklažán premiešaj s 3 PL oleja a štipkou soli a peč na 220 °C 25 minút dozlatista.
+  - Na zvyšnom oleji na strednom ohni speň cibuľu s cesnakom, pridaj paradajky, pretlak, korenie a cícer a 10 minút var.
+  - Vmiešaj baklažán a soľ a duste na miernom ohni 10 minút. Posyp mätou a podávaj vlažné alebo studené s pitou.

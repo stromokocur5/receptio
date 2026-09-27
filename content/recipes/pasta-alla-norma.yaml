@@ -1,0 +1,26 @@
+title: Pasta alla Norma
+description: Sicílske cestoviny s opečeným baklažánom v paradajkovej omáčke s bazalkou a strúhaným „ricotta salata“ z tofu.
+cuisine: talianska
+meals: [obed, vecera]
+time: 40
+active: 25
+servings: 4
+difficulty: 1
+tags: [klasika]
+spicy: 1
+keeps: { fridge: 3 }
+ingredients:
+  - baklazan: 2 ks | na kocky
+  - olivovy-olej: 5 pl
+  - sol: 1,25 čl
+  - cesnak: 3 ks
+  - cili: 1/4 čl
+  - paradajky-sterilizovane: 1 ks
+  - cestoviny: 400 g
+  - bazalka: 1/2 hrnček
+  - tofu-natural: 80 g | rozdrobené s citrónom a soľou
+steps:
+  - Baklažán premiešaj s 3 PL oleja a štipkou soli a peč na 220 °C 25 minút dozlatista.
+  - Na zvyšnom oleji na strednom ohni opraž cesnak s čili, pridaj paradajky a zvyšok soli a var na miernom ohni 15 minút.
+  - Uvar cestoviny. Vmiešaj baklažán do omáčky a premiešaj s cestovinami.
+  - Posyp bazalkou a drobeným tofu.

@@ -1,0 +1,29 @@
+title: Nasi goreng
+description: Indonézska smažená ryža s kecap manis, sambalom a tempehom, podávaná s uhorkou a pečenými šalotkami. Najlepšia z včerajšej ryže.
+cuisine: indonezska
+meals: [obed, vecera, ranajky]
+time: 20
+active: 20
+servings: 3
+difficulty: 1
+tags: [rychle, zvysky]
+spicy: 2
+keeps: { fridge: 2 }
+ingredients:
+  - ryza-jazminova: 250 g | uvarená a vychladnutá
+  - olej: 3 pl
+  - tempeh: 200 g | na kocky
+  - cibula: 1 ks | nadrobno
+  - cesnak: 3 ks
+  - cili-papricka: 2 ks
+  - mrkva: 1 ks | na drobné kocky
+  - kecap-manis: 3 pl
+  - sojova-omacka: 1 pl
+  - uhorka: 1/2 ks | na plátky
+  - paradajky: 1 ks | na mesiačiky
+  - jarna-cibulka: 2 ks
+steps:
+  - Na 1 PL oleja na strednom ohni opeč tempeh dozlatista, vyber.
+  - Cibuľu, cesnak a papričky roztlač v mažiari alebo nasekaj najemno a na zvyšnom oleji na strednom ohni opekaj 3 minúty.
+  - Pridaj mrkvu, po 2 minútach ryžu a opekaj na prudkom ohni za stáleho miešania 5 minút.
+  - Pridaj kecap manis, sójovú omáčku a tempeh a premiešaj, kým ryža nezhnedne. Podávaj s uhorkou, paradajkou a cibuľkou.

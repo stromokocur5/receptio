@@ -1,0 +1,31 @@
+title: Pečené samosy
+description: Chrumkavé trojuholníky z cesta plnené zemiakmi a hráškom s koriandrom a citrónom. Z rúry namiesto fritézy.
+cuisine: indicka-sever
+meals: [snack, obed]
+time: 75
+active: 45
+servings: 6
+difficulty: 2
+tags: [party, snack, pecenie]
+spicy: 1
+keeps: { fridge: 3, freezer: 3 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 250 g
+  - sol: 1,25 čl
+  - olej: 6 pl
+  - voda: 100 ml | studená
+  - zemiaky: 4 ks | uvarené, na drobné kocky
+  - hrasok: 1 hrnček
+  - kmin: 1 čl
+  - koriander-mlety: 1 čl
+  - garam-masala: 1 čl
+  - cili-papricka: 1 ks
+  - zazvor: 1 čl
+  - citron: 1/2 ks
+  - bylinky-koriander: 3 pl
+steps:
+  - Múku, pol ČL soli a 4 PL oleja premiešaj prstami na drobky, pridaj vodu a spoj do tuhého cesta. Nechaj 30 minút odpočívať.
+  - Na 1 PL oleja na strednom ohni opraž kmín, pridaj zemiaky, hrášok, korenie, papričku, zázvor a zvyšok soli a 5 minút opekaj. Dochuť citrónom a koriandrom.
+  - Cesto rozdeľ na 6 guliek, každú rozvaľkaj na ovál a rozrež na polovice. Z polkruhu sprav kornútik, naplň a okraj zlep vodou.
+  - Potri zvyšným olejom a peč na 200 °C 25 minút, v polovici obráť.

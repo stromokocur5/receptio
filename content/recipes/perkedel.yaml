@@ -1,0 +1,25 @@
+title: Perkedel
+description: Indonézske zemiakové placky s jarnou cibuľkou, cesnakom a muškátom. Chrumkavé zvonka, krémové vnútri.
+cuisine: indonezska
+meals: [snack, obed]
+time: 40
+active: 25
+servings: 4
+difficulty: 1
+tags: [lacne, deti, snack]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - zemiaky: 6 ks
+  - cesnak: 2 ks | prelisovaný
+  - jarna-cibulka: 4 ks | nadrobno
+  - petrzlenova-vnat: 2 pl
+  - muskatovy-orech: 1/4 čl
+  - cierne-korenie: 1/2 čl
+  - sol: 1 čl
+  - kukuricny-skrob: 3 pl
+  - olej: 5 pl
+steps:
+  - Zemiaky uvar v šupke, olúp a roztlač.
+  - Vmiešaj cesnak, cibuľku, petržlen, korenie, soľ a škrob.
+  - Tvaruj malé placky hrubé 1,5 cm a opekaj na oleji na strednom ohni po 3–4 minúty z každej strany dozlatista.

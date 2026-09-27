@@ -1,0 +1,27 @@
+title: Zapekaný čierny koreň
+description: Zabudnutá zimná zelenina zapečená v bešamele s muškátom a strúhankou. Jemná, orieškovo chutí ako chrest.
+cuisine: slovenska
+meals: [obed, vecera]
+time: 55
+active: 25
+servings: 3
+difficulty: 2
+tags: [klasika]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - cierny-koren: 600 g
+  - citron: 1 ks
+  - rastlinne-maslo: 40 g
+  - hladka-muka: 3 pl
+  - sojove-mlieko: 400 ml
+  - muskatovy-orech: 1/4 čl
+  - sol: 1 čl
+  - struhanka: 3 pl
+  - vyzivne-drozdie: 2 pl
+  - zemiaky: 4 ks | uvarené
+steps:
+  - Čierny koreň šúp v rukaviciach pod tečúcou vodou a hneď daj do vody s citrónom, inak zhnedne. Nakrájaj na 5 cm kúsky.
+  - Var v osolenej vode s citrónom 12 minút do mäkka.
+  - Na masle na strednom ohni opraž múku, za stáleho miešania vlej mlieko a var, kým nezhustne. Dochuť muškátom a soľou.
+  - Koreň daj do misy, zalej bešamelom, posyp strúhankou s droždím a zapeč na 200 °C 20 minút. Podávaj so zemiakmi.

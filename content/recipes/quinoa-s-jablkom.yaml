@@ -1,0 +1,24 @@
+title: Quinoa s jablkom a škoricou
+description: Andské teplé raňajky – quinoa varená v mlieku s jablkom, škoricou a klinčekom. Pije sa aj riedka ako nápoj.
+cuisine: peruanska
+meals: [ranajky]
+time: 25
+active: 10
+servings: 2
+difficulty: 1
+tags: [ranajky, one-pot]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - quinoa: 90 g | prepláchnutá
+  - voda: 300 ml
+  - sojove-mlieko: 250 ml
+  - jablko: 1 ks | na kocky
+  - skorica: 1/2 čl
+  - klincek: 2 ks
+  - javorovy-sirup: 1 pl
+  - vlasske-orechy: 2 pl
+steps:
+  - Quinou var s vodou, jablkom, škoricou a klinčekmi na miernom ohni 15 minút.
+  - Pridaj mlieko a sirup a var ešte 5 minút do krémova. Vyber klinčeky.
+  - Podávaj teplé posypané orechmi.

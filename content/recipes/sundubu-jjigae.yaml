@@ -1,0 +1,28 @@
+title: Sundubu jjigae
+description: Kórejský ohnivý guláš s hodvábnym tofu, hubami a cuketou. Tofu sa rozpadá na mäkké obláčiky.
+cuisine: korejska
+meals: [obed, vecera]
+time: 25
+active: 15
+servings: 2
+difficulty: 1
+tags: [one-pot, rychle, polievka]
+spicy: 3
+keeps: { fridge: 1 }
+ingredients:
+  - sezamovy-olej: 1 pl
+  - cesnak: 3 ks
+  - cibula: 1/2 ks
+  - gochugaru: 1,5 pl
+  - sojova-omacka: 1,5 pl
+  - zeleninovy-vyvar: 500 ml
+  - sampinony: 1 hrnček | na plátky
+  - cuketa: 1/2 ks | na polkolieska
+  - tofu-hodvabne: 350 g
+  - jarna-cibulka: 2 ks
+  - ryza-sushi: 180 g
+steps:
+  - Na oleji na strednom ohni opraž cesnak s cibuľou, pridaj gochugaru a 30 sekúnd miešaj, kým sa olej nezafarbí.
+  - Pridaj sójovú omáčku, vývar, huby a cuketu a var na miernom ohni 5 minút.
+  - Tofu vyklop lyžicou vo veľkých kusoch do polievky a var ešte 3 minúty. Nemiešaj, len potras.
+  - Posyp cibuľkou a podávaj bublajúce s ryžou.

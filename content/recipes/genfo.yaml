@@ -1,0 +1,24 @@
+title: Genfo
+description: Hustá etiópska kaša s jamkou uprostred plnenou korenistým maslom a berbere. Teplé a sýte raňajky.
+cuisine: etiopska
+meals: [ranajky]
+time: 20
+active: 15
+servings: 2
+difficulty: 1
+tags: [ranajky]
+spicy: 1
+keeps: { fridge: 0 }
+ingredients:
+  - teff: 100 g | mletý, alebo jačmenná či pohánková múka
+  - voda: 400 ml
+  - sol: 1/4 čl
+  - rastlinne-maslo: 30 g
+  - kardamom: 1/4 čl
+  - berbere: 1 čl
+  - sojovy-jogurt: 4 pl
+steps:
+  - Vodu so soľou priveď do varu. Za stáleho miešania varechou pomaly sypaj múku.
+  - Var na miernom ohni 10 minút a silno miešaj, kým nie je hustá a hladká ako cesto.
+  - Rozpusti maslo s kardamómom.
+  - Kašu vyklop do misky, urob uprostred jamku a nalej do nej maslo. Posyp berbere a okolo daj jogurt. Jedz lyžicou, namáčaj kúsky kaše do masla.

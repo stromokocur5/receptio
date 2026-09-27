@@ -1,0 +1,26 @@
+title: Injera
+description: Etiópska kvásková placka z teffu – kyslastá, mäkká a plná dierok. Je tanierom aj príborom zároveň.
+cuisine: etiopska
+meals: [domace]
+time: 40
+active: 30
+servings: 8
+difficulty: 3
+tags: [urob-si-sam, fermentacia]
+yields: 8 placiek
+ahead: Cesto kvasí 2–3 dni pri izbovej teplote.
+keeps: { fridge: 3, freezer: 2 }
+ingredients:
+  - teff: 300 g | mletý (teffová múka)
+  - voda: 600 ml | vlažná
+  - sol: 1/2 čl
+  - kypriaci-prasok: 1/2 čl
+steps:
+  - V sklenenej miske rozmiešaj teffovú múku s vodou na riedke cesto. Prikry utierkou a nechaj 2–3 dni pri izbovej teplote. Raz denne premiešaj. Keď bublinkuje a kyslo vonia, je hotové.
+  - Tmavú tekutinu, ktorá sa usadí navrchu, zlej. Vmiešaj soľ, prášok do pečiva a toľko vody, aby malo cesto hustotu palacinkového.
+  - Veľkú nepriľnavú panvicu zohrej na stredný oheň. Nalej naberačku cesta krúživým pohybom zvonka dnu, nerozťahuj.
+  - Keď sa objavia dierky (asi 30 s), prikry pokrievkou a peč ešte 1–2 minúty, kým nie je povrch suchý. Neobracaj.
+  - Hotové placky ukladaj na utierku a nechaj vychladnúť, aby sa nezlepili.
+tips:
+  - Zo 100 % teffu je injera bez lepku. V Etiópii sa často mieša s jačmennou alebo pšeničnou múkou.
+  - Ak dierky nevznikajú, cesto je husté alebo nedostatočne vykvasené.

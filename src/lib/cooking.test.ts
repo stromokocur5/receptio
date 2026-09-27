@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDuration, splitStep, stepLines } from './cooking';
+import { formatDuration, splitStep, stepGuides, stepLines } from './cooking';
 import type { Ingredient, RecipeLine } from './types';
 
 const timers = (step: string) =>
@@ -79,5 +79,29 @@ describe('formatDuration', () => {
 		expect(formatDuration(65)).toBe('1:05');
 		expect(formatDuration(3725)).toBe('1:02:05');
 		expect(formatDuration(-3)).toBe('0:00');
+	});
+});
+
+describe('stepGuides', () => {
+	const rice = { ...ing('ryza', 'Ryža basmati'), howto: ['ryza'] } as Ingredient;
+	const oil = { ...ing('olej', 'Olej'), howto: [] } as Ingredient;
+	const byId = new Map([rice, oil].map((i) => [i.id, i]));
+	const line = (ingredientId: string) => ({ ingredientId }) as RecipeLine;
+
+	it('links guides of the ingredients a step uses, if the recipe lists them', () => {
+		expect(stepGuides('Uvar ryžu.', [line('ryza')], byId, ['ryza'])).toEqual(['ryza']);
+		expect(stepGuides('Uvar ryžu.', [line('ryza')], byId, [])).toEqual([]);
+	});
+
+	it('links technique guides by the words of the step', () => {
+		expect(stepGuides('Vyprážaj v oleji na 175 °C.', [line('olej')], byId, [])).toEqual([
+			'vyprazanie'
+		]);
+		expect(stepGuides('Na oleji speň cibuľu, potom duste 10 minút.', [], byId, [])).toEqual([
+			'slovnik'
+		]);
+		expect(stepGuides('Peč na 200 °C 25 minút.', [], byId, [])).toEqual(['pecenie-zeleniny']);
+		expect(stepGuides('Nechaj hodinu kysnúť.', [], byId, [])).toEqual(['kysnute-cesto']);
+		expect(stepGuides('Premiešaj a podávaj.', [], byId, [])).toEqual([]);
 	});
 });

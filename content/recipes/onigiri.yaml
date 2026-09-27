@@ -1,0 +1,28 @@
+title: Onigiri
+description: Japonské ryžové trojuholníky plnené slivkovou pastou, tuniakom z cíceru alebo miso hubami, zabalené v nori. Desiata do vrecka.
+cuisine: japonska
+meals: [snack, obed, ranajky]
+time: 40
+active: 20
+servings: 3
+difficulty: 1
+tags: [do-krabicky, deti]
+spicy: 0
+keeps: { fridge: 1 }
+ingredients:
+  - ryza-sushi: 300 g
+  - sol: 1 čl
+  - nori: 3 ks | rozpolené
+  - cicer-sterilizovany: 1/2 ks
+  - veganska-majoneza: 1 pl
+  - sojova-omacka: 1 čl
+  - miso: 1 čl
+  - sampinony: 1/2 hrnček | nadrobno, opečené
+  - sezam: 1 pl
+steps:
+  - Ryžu prepláchni do čírej vody a uvar s 1,2-násobkom vody. Nechaj 10 minút dôjsť.
+  - Náplň 1 – cícer roztlač s majonézou a sójovou omáčkou. Náplň 2 – opečené huby zmiešaj s miso.
+  - Ruky navlhči vodou a posoľ. Naber hrsť teplej ryže, urob jamku, daj lyžičku náplne a prikry ryžou.
+  - Stláčaj dlaňami do trojuholníka, ovinutého pásikom nori. Posyp sezamom.
+tips:
+  - Nori pridaj tesne pred jedlom, inak zvlhne. Do krabičky ho zabaľ zvlášť.

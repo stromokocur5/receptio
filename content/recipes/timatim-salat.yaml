@@ -1,0 +1,24 @@
+title: Timatim salata
+description: Etiópsky paradajkový šalát s cibuľou a čili, namočený s kúskami injery. Osvieži tanier plný wotov.
+cuisine: etiopska
+meals: [snack, obed]
+time: 10
+active: 10
+servings: 4
+difficulty: 1
+tags: [rychle, bez-varenia]
+spicy: 1
+keeps: { fridge: 1 }
+ingredients:
+  - paradajky: 5 ks | na kocky
+  - cibula-cervena: 1 ks | nadrobno
+  - cili-papricka: 1 ks | nadrobno
+  - citron: 1 ks
+  - olivovy-olej: 2 pl
+  - sol: 1/2 čl
+  - cierne-korenie: 1/4 čl
+steps:
+  - Zmiešaj paradajky, cibuľu a papričku.
+  - Prelej citrónovou šťavou a olejom, osoľ, okoreň a nechaj 10 minút odstáť.
+tips:
+  - 'Ako timatim fitfit: vmiešaj natrhanú injeru a nechaj ju nasiaknuť šťavou.'

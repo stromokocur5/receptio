@@ -1,0 +1,24 @@
+title: Kinpira z mrkvy a paštrnáka
+description: Japonská príloha zo zeleniny na tenké prúžky, opekanej na sezamovom oleji so sójou a čili. Tradične z koreňa lopúcha.
+cuisine: japonska
+meals: [snack, obed]
+time: 20
+active: 20
+servings: 3
+difficulty: 1
+tags: [rychle, lacne, do-krabicky]
+spicy: 1
+keeps: { fridge: 4 }
+ingredients:
+  - mrkva: 2 ks | na tenké prúžky
+  - pastinak: 1 ks | na tenké prúžky
+  - sezamovy-olej: 1 pl
+  - cili: 1/4 čl
+  - sojova-omacka: 1,5 pl
+  - javorovy-sirup: 1 pl
+  - voda: 2 pl
+  - sezam: 1 pl
+steps:
+  - Na sezamovom oleji na strednom ohni opekaj zeleninu s čili 4 minúty.
+  - Pridaj sójovú omáčku, sirup a vodu a opekaj, kým sa tekutina neodparí a zelenina nie je lesklá, ale stále chrumkavá.
+  - Posyp sezamom. Chutí teplá aj studená.

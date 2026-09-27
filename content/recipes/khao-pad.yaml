@@ -1,0 +1,27 @@
+title: Khao pad
+description: Thajská smažená ryža s tofu, paradajkami, cibuľou a limetkou. Jemnejšia ako indonézska, s uhorkou na boku.
+cuisine: thajska
+meals: [obed, vecera]
+time: 15
+active: 15
+servings: 2
+difficulty: 1
+tags: [rychle, zvysky]
+spicy: 0
+keeps: { fridge: 2 }
+ingredients:
+  - olej: 2 pl
+  - cesnak: 3 ks
+  - cibula: 1 ks
+  - tofu-natural: 200 g | na kocky
+  - paradajky: 1 ks
+  - ryza-jazminova: 180 g | uvarená a vychladnutá
+  - sojova-omacka: 2 pl
+  - cukor: 1 čl
+  - jarna-cibulka: 2 ks
+  - uhorka: 1/2 ks
+  - limetka: 1 ks
+steps:
+  - Na oleji na strednom ohni opeč cesnak, cibuľu a tofu 4 minúty.
+  - Pridaj paradajku a ryžu a opekaj 4 minúty na prudkom ohni.
+  - Pridaj sójovú omáčku, cukor a cibuľku. Podávaj s uhorkou a limetkou.

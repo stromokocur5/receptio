@@ -1,0 +1,25 @@
+title: Zaru soba
+description: Studené pohánkové rezance na bambusovej podložke s omáčkou na namáčanie, wasabi a cibuľkou. Letný obed za 15 minút.
+cuisine: japonska
+meals: [obed, vecera]
+time: 20
+active: 15
+servings: 2
+difficulty: 1
+tags: [rychle]
+spicy: 0
+keeps: { fridge: 0 }
+ingredients:
+  - soba: 200 g
+  - voda: 250 ml
+  - susene-huby: 5 g
+  - sojova-omacka: 3 pl | na namáčanie, nevypije sa všetka
+  - javorovy-sirup: 1 pl
+  - jarna-cibulka: 2 ks | na tenké krúžky
+  - nori: 1 ks | na prúžky
+  - chren: 1 čl | namiesto wasabi
+  - edamame: 150 g
+steps:
+  - Vodu s hubami var na miernom ohni 5 minút, pridaj sójovú omáčku a sirup a nechaj vychladnúť – to je tsuyu.
+  - Rezance uvar podľa návodu, sceď a pod studenou vodou rukami premývaj, kým nie sú úplne studené.
+  - Podávaj na tanieri s nori, v miskách omáčku s cibuľkou a chrenom. Edamame uvar ako prílohu.

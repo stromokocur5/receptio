@@ -1,0 +1,26 @@
+title: Chin chin
+description: Chrumkavé nigérijské kocky z cesta s muškátom, vyprážané dozlatista. Snack na oslavy do veľkých dóz.
+cuisine: zapadoafricka
+meals: [snack]
+time: 45
+active: 40
+servings: 10
+difficulty: 1
+tags: [snack, party, deti]
+spicy: 0
+keeps: { fridge: 21 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 300 g
+  - cukor: 60 g
+  - muskatovy-orech: 1/2 čl
+  - kypriaci-prasok: 1/2 čl
+  - sol: 1/4 čl
+  - rastlinne-maslo: 60 g | studené
+  - sojove-mlieko: 120 ml
+  - olej: ~500 ml | na vyprážanie, zostane v hrnci
+steps:
+  - Zmiešaj múku, cukor, muškát, prášok a soľ. Vtrhaj maslo na drobky, pridaj mlieko a spoj do tuhého cesta.
+  - Vyvaľkaj na 5 mm a nakrájaj na kocky 1 × 1 cm.
+  - Vyprážaj po dávkach v oleji na 170 °C 4–5 minút za miešania, kým nie sú zlatohnedé.
+  - Vychladnuté skladuj v tesnej dóze.

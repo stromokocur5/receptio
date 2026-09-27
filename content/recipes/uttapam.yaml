@@ -1,0 +1,27 @@
+title: Uttapam
+description: Hrubá mäkká placka z dosového cesta posypaná paradajkami, cibuľou a čili. Ako indická pizza na raňajky.
+cuisine: indicka-juh
+meals: [ranajky, vecera]
+time: 20
+active: 20
+servings: 2
+difficulty: 1
+tags: [ranajky, zvysky]
+spicy: 1
+ahead: Potrebuješ vykvasené cesto na dosu (alebo idli).
+keeps: { fridge: 1 }
+related: [masala-dosa, kokosove-chutney]
+ingredients:
+  - ryza-basmati: 150 g | ako cesto na dosu
+  - urad-dal: 50 g | ako cesto na dosu
+  - sol: 1/2 čl
+  - cibula-cervena: 1 ks | nadrobno
+  - paradajky: 1 ks | nadrobno
+  - cili-papricka: 1 ks | nadrobno
+  - bylinky-koriander: 2 pl
+  - olej: 2 pl
+steps:
+  - Cesto priprav ako na dosu, ale nechaj ho hustejšie.
+  - Na naolejovanej panvici rozpálenej na strednom ohni rozlej naberačku cesta na kruh hrubý asi 1 cm.
+  - Hneď posyp cibuľou, paradajkami, papričkou a koriandrom a jemne pritlač.
+  - Pokvapkaj olejom, peč 3 minúty, obráť a peč ďalšie 2 minúty.

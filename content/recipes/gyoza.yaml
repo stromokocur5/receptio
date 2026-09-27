@@ -1,0 +1,33 @@
+title: Gyoza
+description: Japonské taštičky opečené zospodu dochrumkava a dopečené na pare. Náplň z kapusty, húb a tofu so zázvorom.
+cuisine: japonska
+meals: [obed, vecera, snack]
+time: 75
+active: 50
+servings: 4
+difficulty: 3
+tags: [party, meal-prep]
+spicy: 0
+keeps: { fridge: 2, freezer: 3 }
+gf_swap: false
+related: [jiaozi]
+ingredients:
+  - hladka-muka: 250 g
+  - voda: 140 ml | vriaca
+  - sol: 1 čl
+  - cinska-kapusta: 250 g | nadrobno
+  - susene-huby: 15 g | shiitake, namočené
+  - tofu-natural: 150 g | rozdrobené
+  - zazvor: 1 pl
+  - cesnak: 2 ks
+  - jarna-cibulka: 3 ks
+  - sojova-omacka: 3 pl
+  - sezamovy-olej: 1 pl
+  - olej: 3 pl
+  - ryzovy-ocot: 2 pl
+steps:
+  - Múku zamies s vriacou vodou a štipkou soli na hladké cesto a nechaj 30 minút pod miskou.
+  - Kapustu posoľ, po 10 minútach vytlač. Zmiešaj s nasekanými hubami, tofu, zázvorom, cesnakom, cibuľkou, 1 PL sójovej omáčky a sezamovým olejom.
+  - Cesto vyvaľkaj tenko a vykrajuj kruhy 8 cm. Daj lyžičku náplne a jeden okraj skladaj do záhybov proti rovnému.
+  - Na panvici s olejom na strednom ohni opeč gyozy spodkom 2 minúty, prilej 100 ml vody, prikry a nechaj 5 minút na pare. Odkry a nechaj spodky znova zachrumkať.
+  - Podávaj s omáčkou zo zvyšnej sójovej omáčky a octu.

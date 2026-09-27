@@ -1,0 +1,26 @@
+title: Bolinho de chuva
+description: Brazílske „dažďové“ šišky – malé vyprážané guľky obalené v škoricovom cukre. Robia sa, keď prší.
+cuisine: brazilska
+meals: [dezert, snack]
+time: 30
+active: 30
+servings: 6
+difficulty: 1
+tags: [dezert, deti]
+spicy: 0
+keeps: { fridge: 1 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 250 g
+  - cukor: 60 g | + 4 PL na obalenie
+  - kypriaci-prasok: 1 pl
+  - sol: 1 štipka
+  - sojove-mlieko: 200 ml
+  - banan: 1 ks | roztlačený, namiesto vajca
+  - vanilka: 1 čl
+  - olej: ~500 ml | na vyprážanie, zostane v hrnci
+  - skorica: 1 čl
+steps:
+  - Zmiešaj múku, cukor, prášok a soľ. Vmiešaj mlieko, banán a vanilku na husté lepkavé cesto.
+  - Olej zohrej na 170 °C. Dvomi lyžičkami vkladaj malé kôpky cesta a vyprážaj 4–5 minút, kým nie sú zlatohnedé a upečené vnútri.
+  - Vyber na papierovú utierku a ešte teplé obaľ v cukre zmiešanom so škoricou.

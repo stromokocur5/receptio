@@ -1,0 +1,37 @@
+title: Sambar
+description: Kyslastá juhoindická polievka z hrachu so zeleninou a tamarindom. Každodenná klasika k ryži, dose aj idli.
+cuisine: indicka-juh
+meals: [obed, vecera]
+time: 50
+active: 20
+servings: 4
+difficulty: 2
+tags: [polievka, meal-prep, one-pot]
+spicy: 2
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - zlty-hrach: 150 g | alebo toor dal
+  - voda: 1,2 l
+  - kurkuma: 1/2 čl
+  - mrkva: 2 ks | na kúsky
+  - baklazan: 1/2 ks | na kocky
+  - zelene-fazulky: 150 g
+  - paradajky: 2 ks
+  - cibula: 1 ks | na mesiačiky
+  - tamarind: 1 pl
+  - koriander-mlety: 2 čl
+  - kmin: 1 čl
+  - cili: 1 čl
+  - cierne-korenie: 1/2 čl
+  - sol: 1,5 čl
+  - olej: 2 pl
+  - horcicne-semienko: 1 čl
+  - kari-listy: 10 ks
+  - asafetida: 1 štipka
+steps:
+  - Hrach var s kurkumou v litri vody na miernom ohni 35–40 minút do rozvarenia, potom ho rozšľahaj.
+  - Zeleninu var v zvyšnej vode s tamarindom, korením a soľou na miernom ohni 10 minút, kým nezmäkne.
+  - Pridaj rozvarený hrach a 5 minút spolu povar. Hustota má byť ako hustejšia polievka.
+  - Na oleji na strednom ohni nechaj prasknúť horčičné semienka, pridaj kari listy a asafetidu a hneď to vlej do sambaru.
+tips:
+  - Hotové sambar korenie (sambar powder) z indického obchodu nahradí koriander, kmín, čili aj korenie.

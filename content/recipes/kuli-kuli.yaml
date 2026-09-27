@@ -1,0 +1,23 @@
+title: Kuli kuli
+description: Chrumkavé arašidové tyčinky zo severnej Nigérie so zázvorom a čili. Vznikajú, keď sa z arašidov vylisuje olej.
+cuisine: zapadoafricka
+meals: [snack]
+time: 35
+active: 30
+servings: 8
+difficulty: 2
+tags: [snack, vela-bielkovin]
+spicy: 1
+keeps: { fridge: 21 }
+ingredients:
+  - arasidy: 300 g | pražené, nesolené
+  - zazvor: 1 čl | mletý
+  - cili: 1/2 čl
+  - sol: 1/2 čl
+  - voda: 2 pl | teplá
+  - olej: ~300 ml | na vyprážanie, zostane v panvici
+steps:
+  - Arašidy pomeli v sekáčiku na hustú pastu.
+  - Pastu po kúskoch stláčaj v rukách a vytlač čo najviac oleja (zachyť ho, použiješ ho na vyprážanie).
+  - Pridaj korenie, soľ a vodu a vymies tuhé cesto. Tvaruj tenké tyčinky alebo krúžky.
+  - Vyprážaj na 160 °C 3–4 minúty dozlatista. Po vychladnutí stvrdnú a chrumkajú.

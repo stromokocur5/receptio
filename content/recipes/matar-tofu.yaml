@@ -1,0 +1,32 @@
+title: Matar tofu
+description: Hrášok a tofu v paradajkovej kari omáčke s kešu. Vegánske „matar paneer“ na každý deň.
+cuisine: indicka-sever
+meals: [obed, vecera]
+time: 35
+active: 20
+servings: 4
+difficulty: 1
+tags: [vela-bielkovin, meal-prep]
+spicy: 1
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - tofu-natural: 400 g | na kocky, opečené
+  - olej: 2 pl
+  - kmin: 1 čl
+  - cibula: 1 ks
+  - cesnak: 3 ks
+  - zazvor: 1 pl
+  - paradajky: 3 ks
+  - kesu: 30 g | namočené
+  - kurkuma: 1/2 čl
+  - cili: 1/2 čl
+  - koriander-mlety: 1 čl
+  - garam-masala: 1 čl
+  - hrasok: 1,5 hrnček
+  - voda: 250 ml
+  - sol: 1 čl
+  - ryza-basmati: 300 g
+steps:
+  - Cibuľu, cesnak, zázvor, paradajky a kešu rozmixuj na pastu.
+  - Na oleji na strednom ohni opraž kmín, pridaj pastu a korenie a var 10 minút, kým nezhustne.
+  - Pridaj vodu, hrášok, tofu a soľ a var na miernom ohni 8 minút. Vmiešaj garam masalu, podávaj s ryžou.

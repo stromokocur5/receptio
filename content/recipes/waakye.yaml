@@ -1,0 +1,26 @@
+title: Waakye
+description: Ghanská ryža varená s fazuľou, ktorá sa zafarbí dočervena. Podáva sa so shito (čili omáčkou), plantainom a šalátom.
+cuisine: zapadoafricka
+meals: [obed, ranajky]
+time: 50
+active: 10
+servings: 4
+difficulty: 1
+tags: [lacne, one-pot]
+spicy: 1
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - fazula-cervena: 2 ks | aj s nálevom
+  - ryza-basmati: 300 g | prepláchnutá
+  - voda: 500 ml
+  - sol: 1 čl
+  - kypriaci-prasok: 1/4 čl | zafarbí ryžu ako listy ciroku
+  - plantain: 2 ks | zrelé, opečené
+  - olej: 2 pl
+steps:
+  - Fazuľu s nálevom, vodu a soľ priveď do varu, pridaj ryžu a prášok do pečiva.
+  - Prikry a var na miernom ohni 20 minút, kým ryža nevsiakne tekutinu.
+  - Plantain nakrájaj šikmo a opeč na oleji na strednom ohni dozlatista.
+  - Podávaj s plantainom, čili omáčkou a čerstvým šalátom.
+tips:
+  - V Ghane sa varí s listami ciroku, ktoré ryžu zafarbia dočervena. Sóda alebo prášok urobia podobne.

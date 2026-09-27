@@ -1,0 +1,23 @@
+title: Azifa
+description: Etiópsky šalát zo zelenej šošovice s horčicou, citrónom a čili. Podáva sa studený, hlavne počas pôstu.
+cuisine: etiopska
+meals: [obed, snack]
+time: 35
+active: 10
+servings: 4
+difficulty: 1
+tags: [meal-prep, do-krabicky, vela-bielkovin]
+spicy: 1
+keeps: { fridge: 4 }
+ingredients:
+  - sosovica-hneda: 250 g
+  - cibula-cervena: 1 ks | nadrobno
+  - cili-papricka: 1 ks | nadrobno
+  - horcica: 1 pl
+  - citron: 1 ks
+  - olivovy-olej: 3 pl
+  - sol: 3/4 čl
+steps:
+  - Šošovicu var v nesolenej vode 20–25 minút, aby bola mäkká, ale držala tvar. Sceď a nechaj vychladnúť.
+  - Horčicu rozmiešaj s citrónovou šťavou, olejom a soľou.
+  - Premiešaj so šošovicou, cibuľou a papričkou a nechaj aspoň 20 minút v chladničke.

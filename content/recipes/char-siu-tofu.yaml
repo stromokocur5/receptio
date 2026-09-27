@@ -1,0 +1,29 @@
+title: Char siu tofu
+description: Kantonské pečené tofu v červenej glazúre s päťkorením, medovou sladkosťou a sójou. Do bao, na rezance aj s ryžou.
+cuisine: cinska
+meals: [obed, vecera]
+time: 50
+active: 15
+servings: 3
+difficulty: 1
+tags: [meal-prep, vela-bielkovin]
+spicy: 0
+ahead: Tofu sa marinuje aspoň hodinu.
+keeps: { fridge: 4 }
+ingredients:
+  - tofu-natural: 400 g | vylisované, na hrubé plátky
+  - sojova-omacka: 3 pl
+  - miso: 1 pl
+  - javorovy-sirup: 2 pl
+  - paradajkovy-pretlak: 1 pl
+  - cesnak: 2 ks
+  - badian: 1 ks | pomletý, alebo 1 ČL päťkorenia
+  - skorica: 1/4 čl
+  - sladka-paprika: 1 čl
+  - sezamovy-olej: 1 pl
+  - pak-choi: 3 ks
+  - ryza-jazminova: 250 g
+steps:
+  - Zmiešaj sójovú omáčku, miso, sirup, pretlak, cesnak, korenie a olej. Tofu v nej nechaj hodinu marinovať.
+  - Peč na plechu na 200 °C 25 minút, v polovici obráť a potri marinádou.
+  - Pak choi krátko spar a podávaj s tofu a ryžou.

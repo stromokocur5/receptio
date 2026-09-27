@@ -1,0 +1,27 @@
+title: Arroz rojo
+description: Mexická červená ryža opražená a varená v paradajkovom vývare s cesnakom a cibuľou. Príloha k fazuli a tacos.
+cuisine: mexicka
+meals: [obed, vecera]
+time: 30
+active: 10
+servings: 4
+difficulty: 1
+tags: [lacne]
+spicy: 0
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - olej: 2 pl
+  - ryza-basmati: 250 g | prepláchnutá, osušená
+  - cibula: 1/2 ks
+  - cesnak: 2 ks
+  - paradajky: 2 ks
+  - zeleninovy-vyvar: 450 ml
+  - kmin: 1/2 čl
+  - sol: 1/2 čl
+  - hrasok: 1/2 hrnček
+  - mrkva: 1 ks | na drobné kocky
+steps:
+  - Paradajky, cibuľu a cesnak rozmixuj dohladka.
+  - Ryžu praž na oleji na strednom ohni 5 minút za častého miešania, kým nezozlatne.
+  - Pridaj paradajkovú zmes a minútu var, potom vývar, kmín, soľ, mrkvu a hrášok.
+  - Prikry a var na miernom ohni 18 minút. Nechaj 5 minút dôjsť.

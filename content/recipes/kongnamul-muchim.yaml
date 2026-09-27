@@ -1,0 +1,22 @@
+title: Kongnamul muchim
+description: Kórejský šalát zo sójových klíčkov so sezamovým olejom a cesnakom. Chrumkavý banchan do každého jedla.
+cuisine: korejska
+meals: [snack, obed]
+time: 15
+active: 10
+servings: 4
+difficulty: 1
+tags: [rychle, lacne]
+spicy: 1
+keeps: { fridge: 3 }
+ingredients:
+  - klicky: 3 hrnček | sójové alebo mungo
+  - sol: 1/2 čl
+  - sezamovy-olej: 1 pl
+  - cesnak: 1 ks | prelisovaný
+  - jarna-cibulka: 1 ks
+  - gochugaru: 1 čl
+  - sezam: 1 čl
+steps:
+  - Klíčky var vo vriacej osolenej vode 4 minúty (sójové) alebo 1 minútu (mungo), sceď a schlaď.
+  - Premiešaj so všetkým ostatným a nechaj 10 minút odstáť.

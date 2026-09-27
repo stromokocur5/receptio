@@ -1,0 +1,34 @@
+title: Jerk tofu
+description: Jamajské tofu v pikantnej marináde z nového korenia, tymianu, škorice a čili, upečené do karamelova.
+cuisine: karibska
+meals: [obed, vecera]
+time: 45
+active: 15
+servings: 4
+difficulty: 1
+tags: [meal-prep, vela-bielkovin, party]
+spicy: 3
+ahead: Tofu sa marinuje aspoň 2 hodiny, ideálne cez noc.
+keeps: { fridge: 4 }
+related: [rice-and-peas]
+ingredients:
+  - tofu-natural: 600 g | vylisované, na plátky
+  - jarna-cibulka: 4 ks
+  - cesnak: 4 ks
+  - zazvor: 1 pl
+  - cili-papricka: 1 ks | habanero, podľa odvahy
+  - nove-korenie: 2 čl
+  - tymian: 2 čl
+  - skorica: 1/2 čl
+  - muskatovy-orech: 1/4 čl
+  - cierne-korenie: 1 čl
+  - sojova-omacka: 3 pl
+  - limetka: 2 ks
+  - javorovy-sirup: 2 pl
+  - olej: 3 pl
+steps:
+  - Všetko okrem tofu rozmixuj na hladkú marinádu.
+  - Tofu natri marinádou a nechaj v chladničke aspoň 2 hodiny.
+  - Peč na plechu s papierom na 210 °C 25–30 minút, v polovici obráť a potri zvyškom marinády, kým okraje nekaramelizujú.
+tips:
+  - Habanero je extrémne pálivé. Pre deti použi polovicu jalapeña bez semienok.

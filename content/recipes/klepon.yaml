@@ -1,0 +1,23 @@
+title: Klepon
+description: Zelené ryžové guľky plnené karamelovým cukrom, obalené v kokose. Pri zahryznutí vybuchnú sladkým sirupom.
+cuisine: indonezska
+meals: [dezert, snack]
+time: 40
+active: 30
+servings: 6
+difficulty: 2
+tags: [dezert]
+spicy: 0
+keeps: { fridge: 1 }
+ingredients:
+  - lepkava-ryzova-muka: 200 g
+  - spenat: 50 g | rozmixovaný s vodou, alebo pandan
+  - voda: 120 ml
+  - sol: 1 štipka
+  - cukor: 80 g | ideálne palmový alebo trstinový
+  - kokos-struhany: 60 g | naparený so štipkou soli
+steps:
+  - Špenát rozmixuj s vodou a preceď. Zelenou vodou zamies múku so soľou na mäkké cesto ako plastelína.
+  - Z cesta tvaruj guľky veľkosti orecha, do každej vtlač štipku cukru a zavri.
+  - Var vo vriacej vode, kým nevyplávajú, potom ešte minútu.
+  - Vyber dierovanou lyžicou a hneď obaľ v kokose. Jedz vcelku, kým sú vlažné.

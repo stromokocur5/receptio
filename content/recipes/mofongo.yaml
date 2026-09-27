@@ -1,0 +1,25 @@
+title: Mofongo
+description: Portorické roztlačené vyprážané plantainy s cesnakom a olivovým olejom, tvarované do kopčeka a zaliate vývarom.
+cuisine: karibska
+meals: [obed, vecera]
+time: 35
+active: 30
+servings: 3
+difficulty: 2
+tags: [klasika]
+spicy: 0
+keeps: { fridge: 0 }
+ingredients:
+  - plantain: 3 ks | zelené
+  - olej: ~300 ml | na vyprážanie, zostane v panvici
+  - cesnak: 5 ks
+  - sol: 3/4 čl
+  - olivovy-olej: 3 pl
+  - tofu-udene: 100 g | na drobné kocky, opečené
+  - zeleninovy-vyvar: 300 ml | horúci
+  - petrzlenova-vnat: 2 pl
+steps:
+  - Plantain olúp a nakrájaj na 3 cm kúsky. Vyprážaj na 170 °C 8–10 minút, kým nie sú zlatisté a mäkké vnútri.
+  - V mažiari alebo miske roztlač cesnak so soľou a olivovým olejom.
+  - Pridaj teplý plantain a tofu a roztlač na hrubú kašu.
+  - Natlač do misky, vyklop na tanier a zalej horúcim vývarom. Posyp petržlenom.

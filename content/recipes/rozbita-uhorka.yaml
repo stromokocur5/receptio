@@ -1,0 +1,25 @@
+title: Rozbitá uhorka
+description: Pai huang gua – uhorka rozbitá nožom v cesnakovej zálievke s octom a čili olejom. Najsviežejšia čínska príloha.
+cuisine: cinska
+meals: [snack, obed]
+time: 10
+active: 10
+servings: 3
+difficulty: 1
+tags: [rychle, bez-varenia]
+spicy: 1
+keeps: { fridge: 1 }
+ingredients:
+  - uhorka: 2 ks
+  - sol: 1/2 čl
+  - cesnak: 3 ks | prelisovaný
+  - sojova-omacka: 1 pl
+  - ryzovy-ocot: 2 pl
+  - cukor: 1 čl
+  - sezamovy-olej: 1 čl
+  - cili: 1/4 čl
+  - sezam: 1 čl
+steps:
+  - Uhorku polož na dosku a búchni do nej plochou stranou noža, aby popraskala. Nakrájaj na kúsky.
+  - Posyp soľou, nechaj 10 minút a zlej vodu.
+  - Zmiešaj s cesnakom, sójovou omáčkou, octom, cukrom, olejom a čili. Posyp sezamom.

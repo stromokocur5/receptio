@@ -1,0 +1,29 @@
+title: Causa limeña
+description: Studená vrstvená torta zo zemiakovej kaše s limetkou a čili, plnená avokádom a „tuniakovým“ cícerom.
+cuisine: peruanska
+meals: [obed, snack]
+time: 45
+active: 30
+servings: 4
+difficulty: 2
+tags: [party, bez-varenia]
+spicy: 1
+keeps: { fridge: 2 }
+ingredients:
+  - zemiaky: 6 ks | múčne
+  - limetka: 2 ks
+  - olej: 3 pl
+  - kurkuma: 1/2 čl
+  - cili: 1/4 čl
+  - sol: 1 čl
+  - cicer-sterilizovany: 1 ks
+  - veganska-majoneza: 3 pl
+  - cibula-cervena: 1/2 ks | nadrobno
+  - nori: 1 ks | rozdrobený, dá morskú chuť
+  - avokado: 2 ks | na plátky
+  - olivy: 6 ks
+steps:
+  - Zemiaky uvar v šupke, olúp a ešte teplé prelisuj alebo roztlač dohladka. Vmiešaj šťavu z 1,5 limetky, olej, kurkumu, čili a soľ. Nechaj vychladnúť.
+  - Cícer roztlač vidličkou s majonézou, cibuľou, nori a zvyšnou limetkou.
+  - Do formy alebo krúžku vtlač tretinu zemiakov, potom cícer, vrstvu avokáda a navrch zvyšok zemiakov.
+  - Nechaj hodinu v chladničke, vyklop a ozdob olivami.

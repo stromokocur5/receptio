@@ -1,0 +1,31 @@
+title: Avial
+description: Keralská zmes zeleniny v kokosovo-jogurtovej omáčke s kari listami a kokosovým olejom. Jemná a krémová.
+cuisine: indicka-juh
+meals: [obed, vecera]
+time: 35
+active: 20
+servings: 4
+difficulty: 2
+tags: [one-pot]
+spicy: 1
+keeps: { fridge: 3 }
+ingredients:
+  - mrkva: 2 ks | na tyčinky
+  - zelene-fazulky: 150 g | na 5 cm kúsky
+  - zemiaky: 2 ks | na tyčinky
+  - cuketa: 1 ks | na tyčinky
+  - tekvica-hokkaido: 200 g | na tyčinky
+  - kurkuma: 1/2 čl
+  - voda: 200 ml
+  - sol: 1 čl
+  - kokos-struhany: 60 g | namočený
+  - cili-papricka: 2 ks
+  - kmin: 1 čl
+  - sojovy-jogurt: 4 pl | nesladený
+  - kokosovy-olej: 2 pl
+  - kari-listy: 10 ks
+steps:
+  - Zeleninu var s kurkumou, soľou a vodou pod pokrievkou na miernom ohni 12 minút, kým nezmäkne, ale nerozpadne sa.
+  - Kokos, papričky a kmín rozmixuj s troškou vody na hrubú pastu.
+  - Pastu vmiešaj do zeleniny a 3 minúty povar. Stiahni z ohňa a vmiešaj jogurt.
+  - Navrch pokvapkaj kokosovým olejom a pridaj kari listy. Prikry a nechaj 5 minút.

@@ -1,0 +1,33 @@
+title: Baozi
+description: Nadýchané kysnuté buchtičky na pare plnené hubami, kapustou a tofu. Čínske raňajky, ktoré sa dajú zamraziť.
+cuisine: cinska
+meals: [ranajky, obed, snack]
+time: 120
+active: 60
+servings: 6
+difficulty: 3
+tags: [meal-prep, party]
+spicy: 0
+keeps: { fridge: 3, freezer: 3 }
+leftovers: 'Zamrazené ohrej na pare 10 minút.'
+gf_swap: false
+ingredients:
+  - hladka-muka: 400 g
+  - drozdie: 1,5 čl | sušené
+  - cukor: 1 pl
+  - kypriaci-prasok: 1 čl
+  - voda: 220 ml | vlažná
+  - olej: 2 pl
+  - susene-huby: 20 g | shiitake, namočené
+  - cinska-kapusta: 300 g | nadrobno
+  - tofu-udene: 200 g | nadrobno
+  - zazvor: 1 pl
+  - jarna-cibulka: 3 ks
+  - sojova-omacka: 3 pl
+  - sezamovy-olej: 1 pl
+  - sol: 1/2 čl
+steps:
+  - Múku, droždie, cukor, prášok, vodu a 1 PL oleja vymies na hladké cesto a nechaj hodinu kysnúť.
+  - Kapustu posyp soľou, po 10 minútach vytlač vodu. Zmiešaj s nasekanými hubami, tofu, zázvorom, cibuľkou, sójovou omáčkou a sezamovým olejom.
+  - Cesto rozdeľ na 12 guliek, každú rozvaľkaj na kruh s tenšími okrajmi, daj do stredu náplň a okraje pozbieraj do záhybov navrch.
+  - Buchtičky daj na štvorčeky papiera do košíka na pare, nechaj 15 minút podkysnúť a var na pare nad vriacou vodou (stredný oheň) 12–15 minút. Pokrievku otvor až po 3 minútach, inak spľasnú.

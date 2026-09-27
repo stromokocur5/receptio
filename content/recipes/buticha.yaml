@@ -1,0 +1,25 @@
+title: Buticha
+description: Etiópska nátierka z cícerovej múky s citrónom, cibuľou a čili. Chutí ako vajíčková nátierka bez vajec.
+cuisine: etiopska
+meals: [snack, ranajky]
+time: 20
+active: 15
+servings: 4
+difficulty: 1
+tags: [rychle, lacne, party]
+spicy: 1
+keeps: { fridge: 3 }
+ingredients:
+  - cicerova-muka: 100 g
+  - voda: 300 ml
+  - olej: 3 pl
+  - cibula-cervena: 1/2 ks | nadrobno
+  - cili-papricka: 1 ks | nadrobno
+  - citron: 1 ks
+  - sol: 3/4 čl
+  - kurkuma: 1/4 čl
+steps:
+  - Cícerovú múku rozšľahaj s vodou a kurkumou dohladka.
+  - V hrnci na miernom ohni za stáleho miešania var 6–8 minút, kým nezhustne ako hustá kaša a nestratí surovú chuť.
+  - Nechaj vychladnúť, potom vidličkou prešľahaj s olejom, citrónom, soľou, cibuľou a papričkou.
+  - Podávaj studenú s injerou, chlebom alebo zeleninou.

@@ -1,0 +1,30 @@
+title: Lomo saltado s hlivou
+description: Čínsko-peruánsky wok – hliva, cibuľa a paradajky so sójovou omáčkou a octom, podávané s hranolkami aj ryžou naraz.
+cuisine: peruanska
+meals: [obed, vecera]
+time: 40
+active: 25
+servings: 3
+difficulty: 2
+tags: [klasika]
+spicy: 1
+keeps: { fridge: 2 }
+ingredients:
+  - zemiaky: 4 ks | na hranolky
+  - olej: 4 pl
+  - hliva: 400 g | natrhaná na prúžky
+  - cibula-cervena: 1 ks | na hrubé mesiačiky
+  - paradajky: 2 ks | na mesiačiky
+  - cili-papricka: 1 ks | na prúžky
+  - cesnak: 3 ks
+  - kmin: 1/2 čl
+  - sojova-omacka: 3 pl
+  - ocot: 1 pl
+  - sol: 1/2 čl
+  - bylinky-koriander: 2 pl
+  - ryza-basmati: 200 g
+steps:
+  - Zemiaky potri 1 PL oleja a so soľou upeč na 220 °C 30 minút ako hranolky. Uvar ryžu.
+  - Na 2 PL oleja opeč hlivu na prudkom ohni 5 minút dozlatista.
+  - Pridaj zvyšok oleja, cibuľu, papričku, cesnak a kmín a 2 minúty opekaj.
+  - Pridaj paradajky, sójovú omáčku a ocot, minútu premiešavaj a nakoniec vmiešaj hranolky. Posyp koriandrom a podávaj s ryžou.

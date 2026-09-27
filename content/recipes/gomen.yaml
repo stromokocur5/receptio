@@ -1,0 +1,27 @@
+title: Gomen
+description: Etiópsky dusený kel s cesnakom, zázvorom a zelenou papričkou. Jednoduchá príloha, ktorá na tanieri s wotmi nesmie chýbať.
+cuisine: etiopska
+meals: [obed, vecera]
+time: 30
+active: 15
+servings: 4
+difficulty: 1
+tags: [lacne, one-pot]
+spicy: 1
+keeps: { fridge: 4 }
+ingredients:
+  - kel: 400 g | bez stoniek, nakrájaný
+  - olej: 3 pl
+  - cibula: 1 ks | nadrobno
+  - cesnak: 4 ks
+  - zazvor: 1 pl | nastrúhaný
+  - cili-papricka: 2 ks | pozdĺžne rozrezané
+  - kurkuma: 1/4 čl
+  - kardamom: 1/4 čl
+  - voda: 100 ml
+  - sol: 3/4 čl
+  - citron: 1/2 ks
+steps:
+  - Na oleji na strednom ohni speň cibuľu 6 minút, pridaj cesnak, zázvor, kurkumu a kardamóm a minútu restuj.
+  - Pridaj kel po hrstiach, papričky a vodu. Prikry a duste na miernom ohni 15 minút, kým nezmäkne.
+  - Osoľ, dochuť citrónom a podávaj s injerou alebo ryžou.

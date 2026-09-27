@@ -1,0 +1,24 @@
+title: Akara
+description: Nadýchané nigérijské placky z mixovanej fazule čierne oko s cibuľou a čili, vyprážané dozlatista. Raňajky s kašou.
+cuisine: zapadoafricka
+meals: [ranajky, snack]
+time: 45
+active: 35
+servings: 4
+difficulty: 2
+tags: [snack, vela-bielkovin]
+spicy: 2
+ahead: Fazuľu namoč aspoň na 4 hodiny.
+keeps: { fridge: 1 }
+ingredients:
+  - fazula-cierne-oko: 250 g | namočená
+  - cibula: 1 ks
+  - cili-papricka: 1 ks
+  - sol: 1 čl
+  - voda: 4 pl
+  - olej: ~400 ml | na vyprážanie, zostane v hrnci
+steps:
+  - Namočenú fazuľu šúchaj medzi dlaňami vo vode, aby sa zbavila šupiek, ktoré vyplávajú. Zlej ich (nemusíš všetky).
+  - Fazuľu rozmixuj s cibuľou, papričkou a vodou na hustú hladkú pastu.
+  - Osoľ a šľahaj varechou 3 minúty, aby do cesta vnikol vzduch – placky budú nadýchané.
+  - Lyžicou klaď kôpky do oleja zohriateho na 175 °C a vyprážaj 4 minúty, kým nie sú zlatohnedé.

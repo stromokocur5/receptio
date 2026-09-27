@@ -1,0 +1,28 @@
+title: Proteínové palacinky s lupinou
+description: Nadýchané raňajkové palacinky, v ktorých lupinová múka dodá bielkoviny a žltú farbu. S ovocím a jogurtom.
+cuisine: moderna
+meals: [ranajky]
+time: 25
+active: 20
+servings: 2
+difficulty: 1
+tags: [ranajky, vela-bielkovin]
+spicy: 0
+keeps: { fridge: 2 }
+gf_swap: false
+ingredients:
+  - lupinova-muka: 60 g
+  - hladka-muka: 80 g
+  - kypriaci-prasok: 2 čl
+  - cukor: 1 pl
+  - sol: 1 štipka
+  - sojove-mlieko: 250 ml
+  - olej: 2 pl
+  - sojovy-jogurt: 1/2 hrnček
+  - cucoriedky: 1/2 hrnček
+  - javorovy-sirup: 1 pl
+steps:
+  - Múky, prášok, cukor a soľ zmiešaj, pridaj mlieko a 1 PL oleja a krátko rozšľahaj.
+  - Nechaj 5 minút odstáť, cesto zhustne.
+  - Na panvici s kvapkou oleja na strednom ohni peč malé lievance 2 minúty z každej strany.
+  - Podávaj s jogurtom, čučoriedkami a sirupom.

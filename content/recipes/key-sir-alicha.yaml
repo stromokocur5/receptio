@@ -1,0 +1,25 @@
+title: Key sir alicha
+description: Etiópska cvikla so zemiakmi dusená s cibuľou a zázvorom. Sýto ružová, sladkastá a nepálivá.
+cuisine: etiopska
+meals: [obed, vecera]
+time: 50
+active: 15
+servings: 4
+difficulty: 1
+tags: [lacne, one-pot]
+spicy: 0
+keeps: { fridge: 4 }
+ingredients:
+  - olej: 3 pl
+  - cibula: 1 ks | nadrobno
+  - cesnak: 3 ks
+  - zazvor: 1 čl | nastrúhaný
+  - cvikla: 4 ks | na kocky
+  - zemiaky: 3 ks | na kocky
+  - voda: 300 ml
+  - sol: 3/4 čl
+  - cili-papricka: 1 ks | pozdĺžne rozrezaná
+steps:
+  - Na oleji na strednom ohni speň cibuľu 6 minút, pridaj cesnak a zázvor.
+  - Pridaj cviklu a vodu, prikry a duste na miernom ohni 15 minút.
+  - Pridaj zemiaky, papričku a soľ a duste ďalších 20 minút do mäkka.

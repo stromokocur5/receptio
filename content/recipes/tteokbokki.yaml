@@ -1,0 +1,28 @@
+title: Tteokbokki
+description: Žuvacie ryžové valčeky v lepkavej pikantnej gochujang omáčke. Najslávnejšie kórejské pouličné jedlo.
+cuisine: korejska
+meals: [snack, obed]
+time: 25
+active: 20
+servings: 2
+difficulty: 1
+tags: [snack, rychle]
+spicy: 3
+keeps: { fridge: 1 }
+ingredients:
+  - tteok: 400 g
+  - voda: 400 ml
+  - susene-huby: 5 g | alebo kúsok kombu
+  - gochujang: 2 pl
+  - gochugaru: 1 pl
+  - sojova-omacka: 1 pl
+  - cukor: 1 pl
+  - cesnak: 2 ks
+  - biela-kapusta: 150 g | na kusy
+  - jarna-cibulka: 3 ks
+  - sezam: 1 čl
+steps:
+  - Tvrdé valčeky namoč na 20 minút do teplej vody.
+  - Vodu s hubami priveď do varu a 5 minút var na miernom ohni. Vmiešaj gochujang, gochugaru, sójovú omáčku, cukor a cesnak.
+  - Pridaj valčeky a kapustu a var na strednom ohni za miešania 8–10 minút, kým valčeky nezmäknú a omáčka nezhustne.
+  - Pridaj cibuľku, posyp sezamom a jedz hneď – vychladnuté stvrdnú.

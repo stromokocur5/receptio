@@ -1,0 +1,28 @@
+title: Dolmades
+description: Viničové listy plnené citrónovou ryžou s mätou a kôprom. Podávajú sa studené ako meze.
+cuisine: grecka
+meals: [snack, obed]
+time: 90
+active: 45
+servings: 6
+difficulty: 2
+tags: [party, meal-prep]
+spicy: 0
+keeps: { fridge: 5 }
+ingredients:
+  - vinicove-listy: 30 ks | prepláchnuté
+  - ryza-arborio: 200 g
+  - cibula: 2 ks | nadrobno
+  - olivovy-olej: 6 pl
+  - bylinky-mata: 3 pl
+  - kopor: 3 pl
+  - petrzlenova-vnat: 3 pl
+  - citron: 2 ks
+  - sol: 1 čl
+  - cierne-korenie: 1/2 čl
+  - voda: 500 ml
+steps:
+  - Na 2 PL oleja na strednom ohni speň cibuľu, pridaj ryžu a minútu praž. Vmiešaj bylinky, soľ, korenie a šťavu z 1 citróna.
+  - List polož lesklou stranou dole, daj lyžičku náplne, zahni boky a pevne zroluj.
+  - Dno hrnca vylož poškodenými listami a naukladaj závitky tesne vedľa seba. Zalej vodou, zvyšným olejom a citrónom a zaťaž tanierikom.
+  - Var na miernom ohni 45 minút, kým ryža nezmäkne. Nechaj vychladnúť v hrnci.

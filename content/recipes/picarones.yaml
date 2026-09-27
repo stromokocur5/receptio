@@ -1,0 +1,29 @@
+title: Picarones
+description: Peruánske kysnuté šišky z tekvice a batátu, polievané korenistým sirupom. Najobľúbenejší pouličný dezert v Lime.
+cuisine: peruanska
+meals: [dezert]
+time: 120
+active: 40
+servings: 6
+difficulty: 3
+tags: [dezert, party]
+spicy: 0
+keeps: { fridge: 1 }
+gf_swap: false
+ingredients:
+  - tekvica-hokkaido: 300 g | na kocky
+  - batat: 1 ks | na kocky
+  - skorica: 1 čl
+  - klincek: 3 ks
+  - badian: 1 ks
+  - drozdie: 2 čl | sušené
+  - cukor: 150 g
+  - hladka-muka: 350 g
+  - sol: 1 štipka
+  - olej: ~500 ml | na vyprážanie, zostane v hrnci
+  - pomaranc: 1 ks | kôra
+steps:
+  - Tekvicu a batát var so škoricou, klinčekmi a badiánom v 500 ml vody na miernom ohni 15 minút do mäkka. Zeleninu vyber a roztlač, vodu si odlož.
+  - Keď pyré vychladne na vlažné, vmiešaj droždie, 1 PL cukru, soľ, múku a toľko vody z varenia, aby bolo cesto lepkavé a mäkké. Nechaj 1,5 hodiny kysnúť.
+  - Zo zvyšnej vody, cukru a pomarančovej kôry uvar na strednom ohni hustý sirup (15 minút).
+  - Mokrými prstami ťahaj z cesta kúsky, urob v nich dieru a vkladaj do oleja zohriateho na 175 °C. Vyprážaj 2 minúty z každej strany a polej sirupom.

@@ -1,0 +1,30 @@
+title: Fajitas s hlivou
+description: Prúžky hlivy, paprík a cibule opečené na prudkom ohni s kmínom a limetkou, podávané v teplých tortillách.
+cuisine: mexicka
+meals: [obed, vecera]
+time: 25
+active: 20
+servings: 3
+difficulty: 1
+tags: [rychle, party]
+spicy: 1
+keeps: { fridge: 2 }
+ingredients:
+  - hliva: 400 g | natrhaná
+  - paprika-cervena: 2 ks | na prúžky
+  - cibula: 1 ks | na mesiačiky
+  - olej: 3 pl
+  - kmin: 1 čl
+  - udena-paprika: 1 čl
+  - oregano: 1 čl
+  - cesnak: 2 ks
+  - sol: 3/4 čl
+  - limetka: 1 ks
+  - kukuricne-tortilly: 9 ks
+  - avokado: 1 ks
+  - sojovy-jogurt: 4 pl
+steps:
+  - Hlivu opeč na rozpálenej panvici s 2 PL oleja na vysokom ohni 5 minút dozlatista, osoľ a vyber.
+  - Na zvyšnom oleji opekaj papriky a cibuľu 5 minút na prudkom ohni, nech ostanú chrumkavé.
+  - Vráť hlivu, pridaj korenie a cesnak, premiešaj a pokvapkaj limetkou.
+  - Podávaj v teplých tortillách s avokádom a jogurtom.

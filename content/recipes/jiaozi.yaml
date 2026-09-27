@@ -1,0 +1,32 @@
+title: Jiaozi
+description: Čínske varené taštičky so zeleninovou náplňou a omáčkou na namáčanie. Robia sa vo veľkom, zvyšok sa zamrazí.
+cuisine: cinska
+meals: [obed, vecera]
+time: 90
+active: 60
+servings: 4
+difficulty: 3
+tags: [meal-prep, party]
+spicy: 0
+keeps: { fridge: 2, freezer: 3 }
+leftovers: 'Surové zamraz rozložené na plechu a var rovno z mrazu o 2 minúty dlhšie.'
+gf_swap: false
+ingredients:
+  - hladka-muka: 300 g
+  - voda: 160 ml
+  - sol: 1 čl
+  - cinska-kapusta: 300 g | nadrobno
+  - tofu-natural: 200 g | rozdrobené
+  - susene-huby: 15 g | namočené, nasekané
+  - mrkva: 1 ks | nastrúhaná
+  - zazvor: 1 pl
+  - jarna-cibulka: 3 ks
+  - sojova-omacka: 3 pl
+  - sezamovy-olej: 1 pl
+  - ryzovy-ocot: 2 pl
+  - cili: 1/4 čl
+steps:
+  - Múku, vodu a štipku soli vymies na tuhé hladké cesto a nechaj 30 minút pod fóliou.
+  - Kapustu posyp zvyškom soli, po 10 minútach vytlač vodu. Zmiešaj s tofu, hubami, mrkvou, zázvorom, cibuľkou, 1 PL sójovej omáčky a sezamovým olejom.
+  - Cesto rozdeľ na 32 kúskov a každý rozvaľkaj na tenký kruh. Daj lyžičku náplne, prelož a okraje zlep do záhybov.
+  - Var vo vriacej osolenej vode 4–5 minút, kým nevyplávajú. Miešaj, aby sa neprilepili na dno. Podávaj s omáčkou zo zvyšnej sójovej omáčky, octu a čili.

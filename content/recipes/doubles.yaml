@@ -1,0 +1,33 @@
+title: Doubles
+description: Trinidadský pouličný sendvič – dve mäkké vyprážané placky bara s kari cícerom, uhorkou a pikantnou omáčkou.
+cuisine: karibska
+meals: [ranajky, obed]
+time: 90
+active: 40
+servings: 6
+difficulty: 2
+tags: [klasika, party]
+spicy: 2
+keeps: { fridge: 2 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 300 g
+  - drozdie: 1 čl | sušené
+  - kurkuma: 1 čl
+  - cukor: 1 čl
+  - sol: 1 čl
+  - voda: 200 ml | vlažná
+  - olej: ~400 ml | na vyprážanie, zostane v hrnci
+  - cibula: 1 ks
+  - cesnak: 4 ks
+  - kari-korenie: 1,5 pl
+  - kmin: 1 čl
+  - cicer-sterilizovany: 2 ks
+  - uhorka: 1/2 ks | na tenké plátky
+  - tamarind: 1 pl
+  - cili-papricka: 1 ks
+steps:
+  - Múku, droždie, polovicu kurkumy, cukor, pol ČL soli a vodu zmiešaj na mäkké cesto a nechaj hodinu kysnúť.
+  - Na 2 PL oleja na strednom ohni speň cibuľu s cesnakom, pridaj kari, kmín a zvyšok kurkumy. Pridaj cícer, zvyšok soli a 300 ml vody a var na miernom ohni 20 minút, kým cícer nezmäkne a omáčka nezhustne. Časť roztlač.
+  - Cesto rozdeľ na 12 guliek, naolejovanými rukami ich rozťahaj na tenké placky a vyprážaj v oleji zohriatom na 180 °C po 20 sekúnd z každej strany, kým sa nenafúknu.
+  - Dve placky daj na seba, navrch cícer, uhorku a tamarind s nasekanou papričkou. Prelož a jedz rukami.

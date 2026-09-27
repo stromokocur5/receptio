@@ -1,0 +1,28 @@
+title: Rasam
+description: Riedka pikantná paradajková polievka s tamarindom, čiernym korením a cesnakom. Pije sa z pohára alebo leje na ryžu, lieči prechladnutie.
+cuisine: indicka-juh
+meals: [obed, vecera]
+time: 25
+active: 10
+servings: 4
+difficulty: 1
+tags: [polievka, rychle, lacne]
+spicy: 2
+keeps: { fridge: 3 }
+ingredients:
+  - paradajky: 3 ks | nakrájané
+  - tamarind: 1 pl
+  - voda: 800 ml
+  - cesnak: 4 ks | rozdrvené
+  - cierne-korenie: 1 čl | nahrubo pomleté
+  - kmin: 1 čl | nahrubo pomletý
+  - kurkuma: 1/4 čl
+  - sol: 1 čl
+  - olej: 1 pl
+  - horcicne-semienko: 1 čl
+  - kari-listy: 8 ks
+  - bylinky-koriander: 3 pl
+steps:
+  - Paradajky, tamarind, vodu, cesnak, korenie, kmín, kurkumu a soľ var na miernom ohni 10 minút.
+  - Na oleji na strednom ohni nechaj prasknúť horčičné semienka, pridaj kari listy a vlej do polievky.
+  - Posyp koriandrom a nechaj pod pokrievkou 5 minút lúhovať. Podávaj s ryžou alebo samostatne v pohári.

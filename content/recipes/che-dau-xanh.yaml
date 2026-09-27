@@ -1,0 +1,24 @@
+title: Chè đậu xanh
+description: Vietnamský sladký dezert z mungo fazuľky s kokosovým mliekom, podávaný teplý alebo s ľadom.
+cuisine: vietnamska
+meals: [dezert]
+time: 40
+active: 10
+servings: 4
+difficulty: 1
+tags: [dezert, lacne]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - mungo: 150 g | lúpané
+  - voda: 800 ml
+  - cukor: 70 g
+  - sol: 1 štipka
+  - kokosove-mlieko: 200 ml
+  - kukuricny-skrob: 1 čl
+  - sezam: 1 čl | opražený
+steps:
+  - Mungo prepláchni a var vo vode na miernom ohni 25 minút, kým sa nerozpadne.
+  - Pridaj cukor a var ešte 5 minút.
+  - Kokosové mlieko so soľou a škrobom povar na hustú omáčku.
+  - Podávaj teplé alebo studené s ľadom, polievané kokosovou omáčkou a posypané sezamom.

@@ -1,0 +1,30 @@
+title: Baião de dois
+description: Ryža a fazuľa varené spolu v jednom hrnci s údeným tofu, koriandrom a syrom. Jedlo severovýchodnej Brazílie.
+cuisine: brazilska
+meals: [obed, vecera]
+time: 40
+active: 15
+servings: 4
+difficulty: 1
+tags: [one-pot, lacne, meal-prep]
+spicy: 0
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - olej: 2 pl
+  - tofu-udene: 150 g | na kocky
+  - cibula: 1 ks | nadrobno
+  - cesnak: 3 ks
+  - paprika-cervena: 1 ks | na kocky
+  - ryza-basmati: 250 g
+  - fazula-cierne-oko: 150 g | uvarená, alebo 2 plechovky bielej
+  - zeleninovy-vyvar: 600 ml
+  - sol: 1/2 čl
+  - kmin: 1/2 čl
+  - bylinky-koriander: 3 pl
+  - vegansky-syr: 1/2 hrnček | na kocky
+steps:
+  - Na oleji na strednom ohni opeč tofu, pridaj cibuľu, cesnak a papriku a 5 minút opekaj.
+  - Pridaj ryžu a minútu praž, potom fazuľu, vývar, soľ a kmín.
+  - Prikry a var na miernom ohni 15 minút. Vmiešaj koriander a syr a nechaj pod pokrievkou 5 minút.
+tips:
+  - Suchú fazuľu čierne oko var 45 minút bez namáčania, alebo ju uvar deň vopred vo väčšej dávke.

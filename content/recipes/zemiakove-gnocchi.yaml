@@ -1,0 +1,27 @@
+title: Zemiakové gnocchi
+description: Domáce mäkké zemiakové halušky z Talianska s maslom a šalviou alebo paradajkovou omáčkou. Chuť babičkinej kuchyne.
+cuisine: talianska
+meals: [obed, vecera]
+time: 75
+active: 40
+servings: 4
+difficulty: 2
+tags: [klasika, deti]
+spicy: 0
+keeps: { fridge: 1, freezer: 3 }
+leftovers: 'Surové zamraz rozložené na plechu, var rovno z mrazu.'
+gf_swap: false
+ingredients:
+  - zemiaky: 6 ks | múčne, rovnako veľké
+  - hladka-muka: 180 g
+  - sol: 1,5 čl
+  - muskatovy-orech: 1 štipka
+  - rastlinne-maslo: 40 g
+  - passata: 1 hrnček
+  - cesnak: 2 ks
+  - bazalka: 3 pl
+steps:
+  - Zemiaky upeč v šupke na 200 °C 50 minút (menej vody ako varené). Ešte horúce olúp a prelisuj.
+  - Nechaj vychladnúť do vlažna, pridaj soľ, muškát a postupne toľko múky, aby cesto nebolo lepkavé. Neprepracuj ho.
+  - Vyvaľkaj valčeky hrubé ako palec a nakrájaj na 2 cm kúsky. Vidličkou urob ryhy.
+  - Var vo vriacej osolenej vode, kým nevyplávajú, a ešte 30 sekúnd. Opeč na masle s cesnakom na strednom ohni a podávaj s passatou prevarenou s bazalkou.

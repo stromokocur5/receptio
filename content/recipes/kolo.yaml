@@ -1,0 +1,26 @@
+title: Kolo
+description: Etiópsky pražený snack z pražených zŕn, cíceru a arašidov s berbere. Chrumkavé do vrecka.
+cuisine: etiopska
+meals: [snack]
+time: 20
+active: 15
+servings: 6
+difficulty: 1
+tags: [snack, lacne, party]
+spicy: 1
+keeps: { fridge: 14 }
+ingredients:
+  - cirok: 150 g | uvarený a osušený
+  - cicer-sterilizovany: 1 ks | osušený
+  - arasidy: 80 g
+  - slnecnicove-semienka: 40 g
+  - olej: 1 pl
+  - berbere: 1 čl
+  - sol: 1/2 čl
+steps:
+  - Cirok a cícer dôkladne osuš utierkou.
+  - Na veľkej suchej panvici opekaj cícer a cirok 10 minút na strednom ohni za stáleho potriasania, kým nie sú chrumkavé.
+  - Pridaj arašidy a semienka a opekaj ďalšie 3 minúty.
+  - Stiahni z ohňa, pokvapkaj olejom, posyp berbere a soľou a premiešaj. Po vychladnutí skladuj v dóze.
+tips:
+  - Tradične sa praží jačmeň alebo pšenica – cirok je bezlepkový a rovnako chrumká.

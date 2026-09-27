@@ -1,0 +1,34 @@
+title: Soto s tofu
+description: Žltá indonézska polievka s kurkumou, citrónovou trávou, ryžovými rezancami, tofu a klíčkami. Svieža ako pho, voňavá ako kari.
+cuisine: indonezska
+meals: [obed, vecera]
+time: 40
+active: 20
+servings: 4
+difficulty: 1
+tags: [polievka]
+spicy: 1
+keeps: { fridge: 3 }
+ingredients:
+  - cibula: 1 ks
+  - cesnak: 4 ks
+  - zazvor: 1 pl
+  - kurkuma: 2 čl
+  - koriander-mlety: 1 čl
+  - olej: 2 pl
+  - citronova-trava: 2 ks | rozdrvené
+  - bobkovy-list: 2 ks
+  - zeleninovy-vyvar: 1,5 l
+  - tofu-natural: 300 g | na kocky
+  - sol: 1 čl
+  - ryzove-rezance: 150 g
+  - klicky: 1 hrnček
+  - biela-kapusta: 150 g | na tenké prúžky
+  - limetka: 1 ks
+  - jarna-cibulka: 3 ks
+  - zemiaky: 2 ks | na tenké plátky, opečené
+steps:
+  - Cibuľu, cesnak, zázvor a korenie rozmixuj na pastu a na oleji na strednom ohni 3 minúty opekaj.
+  - Pridaj citrónovú trávu, bobkový list, vývar a tofu a var na miernom ohni 15 minút. Osoľ.
+  - Rezance zalej vriacou vodou a nechaj 5 minút zmäknúť.
+  - Do misiek daj rezance, kapustu a klíčky, zalej horúcou polievkou a pridaj opečené zemiaky, limetku a cibuľku.

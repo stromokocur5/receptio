@@ -1,0 +1,33 @@
+title: Jambalaya
+description: Kreolská jednohrncová ryža z Louisiany so „svätou trojicou“ – cibuľa, zeler, paprika – údeným tofu, fazuľou a cajunským korením.
+cuisine: americka
+meals: [obed, vecera]
+time: 45
+active: 20
+servings: 4
+difficulty: 1
+tags: [one-pot, meal-prep]
+spicy: 2
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - olej: 2 pl
+  - tofu-udene: 200 g | na kocky
+  - cibula: 1 ks
+  - zeler-stonkovy: 2 ks
+  - paprika-cervena: 1 ks
+  - cesnak: 3 ks
+  - udena-paprika: 2 čl
+  - oregano: 1 čl
+  - tymian: 1 čl
+  - cili: 1/2 čl
+  - ryza-basmati: 250 g
+  - paradajky-sterilizovane: 1 ks
+  - zeleninovy-vyvar: 600 ml
+  - fazula-cervena: 1 ks
+  - okra: 8 ks | nepovinné
+  - sol: 1/2 čl
+  - jarna-cibulka: 3 ks
+steps:
+  - Na oleji na strednom ohni opeč tofu, pridaj cibuľu, zeler, papriku a cesnak a 6 minút opekaj.
+  - Pridaj korenie a ryžu a minútu praž.
+  - Pridaj paradajky, vývar, fazuľu, okru a soľ, prikry a var na miernom ohni 20 minút. Posyp cibuľkou.

@@ -1,0 +1,25 @@
+title: Kokosové chutney
+description: Svieža biela omáčka z kokosu, zázvoru a zeleného čili, prelievaná horčičnými semienkami. Patrí k dose, idli aj vadám.
+cuisine: indicka-juh
+meals: [snack]
+time: 15
+active: 15
+servings: 4
+difficulty: 1
+tags: [rychle, bez-varenia]
+spicy: 1
+keeps: { fridge: 2 }
+ingredients:
+  - kokos-struhany: 80 g | namočený 10 min v horúcej vode
+  - cili-papricka: 1 ks
+  - zazvor: 1 čl
+  - arasidy: 2 pl | pražené
+  - sol: 1/2 čl
+  - citron: 1/2 ks
+  - voda: 150 ml
+  - olej: 1 pl
+  - horcicne-semienko: 1/2 čl
+  - kari-listy: 6 ks
+steps:
+  - Kokos s vodou, papričkou, zázvorom, arašidmi, soľou a citrónom rozmixuj na hustú hladkú omáčku.
+  - Na oleji na strednom ohni nechaj prasknúť horčičné semienka s kari listami a vlej to na chutney.

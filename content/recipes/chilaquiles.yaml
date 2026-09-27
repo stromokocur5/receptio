@@ -1,0 +1,29 @@
+title: Chilaquiles verdes
+description: Mexické raňajky zo včerajších tortíl – chrumkavé trojuholníky v zelenej salse s tofu, avokádom a cibuľou.
+cuisine: mexicka
+meals: [ranajky, obed]
+time: 30
+active: 25
+servings: 2
+difficulty: 1
+tags: [ranajky, zvysky]
+spicy: 2
+keeps: { fridge: 0 }
+ingredients:
+  - kukuricne-tortilly: 6 ks | nakrájané na trojuholníky
+  - olej: 2 pl
+  - paradajky: 3 ks | zelené alebo nezrelé
+  - cili-papricka: 2 ks
+  - cibula: 1/2 ks
+  - cesnak: 2 ks
+  - bylinky-koriander: 3 pl
+  - zeleninovy-vyvar: 150 ml
+  - sol: 1/2 čl
+  - tofu-natural: 150 g | rozdrobené
+  - avokado: 1 ks
+  - cibula-cervena: 1/4 ks | na tenké krúžky
+steps:
+  - Tortilly potri olejom a peč na 200 °C 10 minút dochrumkava.
+  - Paradajky, papričky, cibuľu a cesnak var na miernom ohni 10 minút vo vývare a s koriandrom rozmixuj. Osoľ.
+  - Tofu opeč na panvici s kvapkou oleja na strednom ohni.
+  - Salsu zohrej na panvici, vmiešaj tortilly a hneď podávaj s tofu, avokádom a cibuľou, kým chrumkajú.

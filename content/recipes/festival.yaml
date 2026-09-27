@@ -1,0 +1,25 @@
+title: Festival
+description: Jamajské sladkasté vyprážané šúľance z kukuričnej a pšeničnej múky. Príloha k jerk tofu aj samostatný snack.
+cuisine: karibska
+meals: [snack]
+time: 30
+active: 25
+servings: 6
+difficulty: 1
+tags: [party, snack]
+spicy: 0
+keeps: { fridge: 1 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 200 g
+  - kukuricna-krupica: 100 g | jemná
+  - cukor: 2 pl
+  - kypriaci-prasok: 2 čl
+  - sol: 1/2 čl
+  - vanilka: 1/2 čl
+  - sojove-mlieko: 150 ml
+  - olej: ~400 ml | na vyprážanie, zostane v hrnci
+steps:
+  - Zmiešaj suché suroviny, pridaj vanilku a mlieko a vymies hladké pevné cesto.
+  - Rozdeľ na 12 kúskov a vyval šúľance dlhé ako prst.
+  - Vyprážaj v oleji na 170 °C 5–6 minút, kým nie sú zlatohnedé.

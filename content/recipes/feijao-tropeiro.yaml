@@ -1,0 +1,26 @@
+title: Feijão tropeiro
+description: Fazuľa „pohoničov dobytka“ z Minas Gerais – opekaná s údeným tofu, kelom a maniokovou múkou. Sýta jednohrncová klasika.
+cuisine: brazilska
+meals: [obed, vecera]
+time: 30
+active: 25
+servings: 4
+difficulty: 1
+tags: [one-pot, vela-bielkovin]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - olej: 3 pl
+  - tofu-udene: 200 g | na drobné kocky
+  - cibula: 1 ks | nadrobno
+  - cesnak: 3 ks
+  - fazula-cervena: 2 ks | scedená
+  - kel: 150 g | na tenké prúžky
+  - maniokova-muka: 100 g
+  - sol: 3/4 čl
+  - cierne-korenie: 1/2 čl
+  - jarna-cibulka: 3 ks
+steps:
+  - Na oleji na strednom ohni opeč tofu dochrumkava, pridaj cibuľu a cesnak a 4 minúty opekaj.
+  - Pridaj fazuľu a kel, 3 minúty opekaj.
+  - Postupne vmiešaj múku, kým nenasiakne a nie je všetko vlhké, ale sypké. Osoľ, okoreň a posyp jarnou cibuľkou.

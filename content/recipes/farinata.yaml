@@ -1,0 +1,24 @@
+title: Farinata
+description: Tenká chrumkavá placka z cícerovej múky, vody a olivového oleja s rozmarínom. Janovský pouličný snack, prirodzene bez lepku.
+cuisine: talianska
+meals: [snack, obed]
+time: 40
+active: 10
+servings: 4
+difficulty: 1
+tags: [lacne, snack]
+spicy: 0
+ahead: Cesto nechaj aspoň 2 hodiny odstáť.
+keeps: { fridge: 2 }
+ingredients:
+  - cicerova-muka: 200 g
+  - voda: 600 ml
+  - sol: 1 čl
+  - olivovy-olej: 5 pl
+  - rozmarin: 1 ks
+  - cierne-korenie: 1/2 čl
+steps:
+  - Múku rozšľahaj s vodou a soľou dohladka a nechaj aspoň 2 hodiny (ideálne cez noc). Penu z povrchu zober.
+  - Olej nalej na plech (30 cm) a daj ho rozpáliť do rúry na 250 °C.
+  - Vlej cesto na horúci olej, posyp rozmarínom a peč 20–25 minút, kým nie je povrch zlatý a okraje chrumkavé.
+  - Okoreň a jedz teplú, nakrájanú na kusy.

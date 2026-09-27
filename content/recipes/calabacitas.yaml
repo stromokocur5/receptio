@@ -1,0 +1,27 @@
+title: Calabacitas
+description: Mexická dusená cuketa s kukuricou, paradajkami a jalapeñom. Letná príloha za 15 minút.
+cuisine: mexicka
+meals: [obed, vecera]
+time: 20
+active: 15
+servings: 4
+difficulty: 1
+tags: [rychle, lacne]
+spicy: 1
+keeps: { fridge: 3 }
+ingredients:
+  - olej: 2 pl
+  - cibula: 1 ks
+  - cesnak: 2 ks
+  - cili-papricka: 1 ks
+  - cuketa: 3 ks | na kocky
+  - kukurica: 1 ks
+  - paradajky: 2 ks
+  - kmin: 1/2 čl
+  - oregano: 1/2 čl
+  - sol: 3/4 čl
+  - bylinky-koriander: 2 pl
+steps:
+  - Na oleji na strednom ohni speň cibuľu, cesnak a papričku 4 minúty.
+  - Pridaj cuketu a opekaj 5 minút, potom kukuricu, paradajky a korenie.
+  - Duste na miernom ohni 5 minút, osoľ a posyp koriandrom.

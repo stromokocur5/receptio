@@ -1,0 +1,26 @@
+title: Marocký mrkvový šalát
+description: Varená mrkva v zálievke z citróna, olivového oleja, kmínu a škorice. Sladký, kyslý a voňavý.
+cuisine: severoafricka
+meals: [snack, obed]
+time: 20
+active: 10
+servings: 4
+difficulty: 1
+tags: [rychle, lacne, meal-prep]
+spicy: 0
+keeps: { fridge: 4 }
+ingredients:
+  - mrkva: 6 ks | na kolieska
+  - olivovy-olej: 3 pl
+  - citron: 1 ks
+  - cesnak: 1 ks | prelisovaný
+  - kmin: 1 čl
+  - skorica: 1/4 čl
+  - sladka-paprika: 1 čl
+  - sol: 1/2 čl
+  - javorovy-sirup: 1 čl
+  - petrzlenova-vnat: 3 pl
+steps:
+  - Mrkvu var v osolenej vode 6–8 minút, aby bola mäkká, ale ešte pevná. Sceď.
+  - Zmiešaj olej, šťavu z citróna, cesnak, korenie, soľ a sirup.
+  - Teplú mrkvu prelej zálievkou, premiešaj s petržlenom a nechaj aspoň 15 minút odstáť.

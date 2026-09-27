@@ -1,0 +1,27 @@
+title: Callaloo
+description: Karibská dusená zelenina v kokosovom mlieku s tymianom a novým korením. Tradične z listov amarantu – spenát či mangold poslúžia rovnako.
+cuisine: karibska
+meals: [obed, vecera, ranajky]
+time: 25
+active: 15
+servings: 4
+difficulty: 1
+tags: [rychle, one-pot]
+spicy: 1
+keeps: { fridge: 3 }
+ingredients:
+  - olej: 1 pl
+  - cibula: 1 ks | nadrobno
+  - cesnak: 3 ks
+  - tymian: 1 čl
+  - nove-korenie: 1/2 čl
+  - cili-papricka: 1/2 ks
+  - okra: 6 ks | na kolieska, nepovinné
+  - mangold: 400 g | nakrájaný
+  - spenat: 200 g
+  - kokosove-mlieko: 200 ml
+  - sol: 3/4 čl
+steps:
+  - Na oleji na strednom ohni speň cibuľu s cesnakom, pridaj tymian, nové korenie a papričku.
+  - Pridaj okru, mangold a kokosové mlieko, prikry a duste na miernom ohni 10 minút.
+  - Pridaj špenát, osoľ a var ešte 3 minúty. Podávaj s ryžou alebo na raňajky s pečeným plantainom.

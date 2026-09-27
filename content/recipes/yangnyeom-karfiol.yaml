@@ -1,0 +1,30 @@
+title: Yangnyeom karfiol
+description: Chrumkavý karfiol v lepkavej sladko-pikantnej gochujang glazúre ako kórejské kuracie krídelká. Na párty zmizne prvý.
+cuisine: korejska
+meals: [snack, vecera]
+time: 45
+active: 20
+servings: 3
+difficulty: 2
+tags: [party, snack]
+spicy: 2
+keeps: { fridge: 1 }
+ingredients:
+  - karfiol: 1 ks | na ružičky
+  - hladka-muka: 60 g
+  - kukuricny-skrob: 40 g
+  - sol: 1/2 čl
+  - voda: 120 ml
+  - olej: 2 pl
+  - gochujang: 2 pl
+  - sojova-omacka: 1 pl
+  - javorovy-sirup: 3 pl
+  - cesnak: 2 ks
+  - ryzovy-ocot: 1 pl
+  - sezam: 1 pl
+  - jarna-cibulka: 2 ks
+steps:
+  - Múku, škrob, soľ a vodu rozmiešaj na cesto a obaľ v ňom karfiol.
+  - Rozlož na plech s papierom, pokvapkaj olejom a peč na 230 °C 25 minút, v polovici obráť.
+  - Gochujang, sójovú omáčku, sirup, cesnak a ocot povar na miernom ohni 2 minúty do lepkava.
+  - Horúci karfiol obaľ v glazúre, posyp sezamom a cibuľkou a hneď podávaj.

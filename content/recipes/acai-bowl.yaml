@@ -1,0 +1,24 @@
+title: Açaí bowl
+description: Hustý mrazený smoothie z açaí a banánu, posypaný granolou a ovocím. Brazílske plážové raňajky.
+cuisine: brazilska
+meals: [ranajky, snack]
+time: 10
+active: 10
+servings: 2
+difficulty: 1
+tags: [ranajky, rychle, bez-varenia]
+spicy: 0
+keeps: { fridge: 0 }
+ingredients:
+  - acai: 2 ks | mrazené balíčky
+  - banan: 2 ks | 1 mrazený, 1 na ozdobu
+  - cucoriedky: 1/2 hrnček | mrazené
+  - sojove-mlieko: 100 ml
+  - javorovy-sirup: 1 pl
+  - ovsene-vlocky: 6 pl | alebo granola
+  - kokos-struhany: 1 pl
+  - chia: 1 čl
+steps:
+  - Açaí balíčky krátko ponor do teplej vody a nalám na kúsky.
+  - Rozmixuj s mrazeným banánom, čučoriedkami, mliekom a sirupom na hustý krém. Pridávaj mlieko len po lyžiciach – má byť hustejší ako zmrzlina.
+  - Rozdeľ do misiek a posyp vločkami, nakrájaným banánom, kokosom a chia.

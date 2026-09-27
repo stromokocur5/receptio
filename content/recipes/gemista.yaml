@@ -1,0 +1,29 @@
+title: Gemista
+description: Grécke paradajky a papriky plnené ryžou s bylinkami a pečené so zemiakmi. Letná nedeľa v Grécku.
+cuisine: grecka
+meals: [obed, vecera]
+time: 90
+active: 30
+servings: 4
+difficulty: 2
+tags: [klasika]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - paradajky: 4 ks | veľké
+  - paprika-cervena: 4 ks
+  - ryza-arborio: 180 g
+  - cibula: 1 ks | nadrobno
+  - cesnak: 2 ks
+  - cuketa: 1 ks | nastrúhaná
+  - bylinky-mata: 2 pl
+  - petrzlenova-vnat: 4 pl
+  - olivovy-olej: 5 pl
+  - paradajkovy-pretlak: 1 pl
+  - sol: 1,5 čl
+  - zemiaky: 3 ks | na kliny
+steps:
+  - Paradajkám a paprikám odrež vrchnáky. Paradajky vydlabi a dužinu nasekaj.
+  - Na 2 PL oleja na strednom ohni speň cibuľu s cesnakom, pridaj dužinu, cuketu, pretlak, ryžu, bylinky a soľ a 5 minút var.
+  - Zeleninu naplň do troch štvrtín (ryža napučí), prikry vrchnákmi a ulož do plechu. Medzi ne daj zemiaky, polej olejom a prilej 200 ml vody.
+  - Peč na 190 °C 60–70 minút, kým ryža nie je mäkká a zelenina opečená.

@@ -1,0 +1,31 @@
+title: Žlté kari
+description: Jemné thajské kari s kurkumou, zemiakmi, mrkvou a cibuľou. Ideálne prvé kari pre deti.
+cuisine: thajska
+meals: [obed, vecera]
+time: 35
+active: 15
+servings: 4
+difficulty: 1
+tags: [deti, one-pot, lacne]
+spicy: 1
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - olej: 1 pl
+  - kari-korenie: 1 pl
+  - kurkuma: 1 čl
+  - citronova-trava: 1 ks | rozdrvená
+  - cesnak: 3 ks
+  - zazvor: 1 pl
+  - kokosove-mlieko: 400 ml
+  - voda: 300 ml
+  - zemiaky: 3 ks | na kocky
+  - mrkva: 2 ks
+  - cibula: 1 ks
+  - cicer-sterilizovany: 1 ks
+  - sojova-omacka: 1 pl
+  - cukor: 1 čl
+  - ryza-jazminova: 300 g
+steps:
+  - Na oleji na strednom ohni opraž kari, kurkumu, citrónovú trávu, cesnak a zázvor minútu.
+  - Pridaj kokosové mlieko, vodu, zemiaky, mrkvu a cibuľu a var na miernom ohni 20 minút.
+  - Pridaj cícer, sójovú omáčku a cukor a var na miernom ohni 5 minút. Podávaj s ryžou.

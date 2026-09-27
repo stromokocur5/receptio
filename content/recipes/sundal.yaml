@@ -1,0 +1,26 @@
+title: Sundal
+description: Teplý cícerový snack s kokosom, horčičnými semienkami a kari listami. Chennaiský pouličný snack na pláži.
+cuisine: indicka-juh
+meals: [snack]
+time: 10
+active: 10
+servings: 3
+difficulty: 1
+tags: [rychle, snack, vela-bielkovin]
+spicy: 1
+keeps: { fridge: 3 }
+ingredients:
+  - cicer-sterilizovany: 2 ks | scedený
+  - olej: 1 pl
+  - horcicne-semienko: 1 čl
+  - kari-listy: 8 ks
+  - cili-papricka: 1 ks | nadrobno
+  - zazvor: 1 čl | nastrúhaný
+  - asafetida: 1 štipka
+  - sol: 1/2 čl
+  - kokos-struhany: 3 pl
+  - citron: 1/2 ks
+steps:
+  - Na oleji na strednom ohni nechaj prasknúť horčičné semienka, pridaj kari listy, papričku, zázvor a asafetidu.
+  - Pridaj cícer a soľ a 3 minúty prehrievaj za miešania.
+  - Vmiešaj kokos a citrón a podávaj teplé.

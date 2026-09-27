@@ -1,0 +1,26 @@
+title: Moi moi
+description: Nigérijský puding na pare z mixovanej fazule čierne oko s paprikou a cibuľou. Jemný, sýty a plný bielkovín.
+cuisine: zapadoafricka
+meals: [obed, ranajky]
+time: 75
+active: 25
+servings: 4
+difficulty: 2
+tags: [vela-bielkovin, meal-prep]
+spicy: 2
+ahead: Fazuľu namoč aspoň na 4 hodiny.
+keeps: { fridge: 3, freezer: 3 }
+ingredients:
+  - fazula-cierne-oko: 300 g | namočená a olúpaná
+  - paprika-cervena: 2 ks
+  - cibula: 1 ks
+  - cili-papricka: 1 ks
+  - olej: 4 pl
+  - zeleninovy-vyvar: 250 ml
+  - sol: 1 čl
+  - sladka-paprika: 1 čl
+steps:
+  - Olúpanú fazuľu rozmixuj s paprikami, cibuľou, papričkou a vývarom na hladké tekuté cesto.
+  - Vmiešaj olej, soľ a papriku. Cesto má byť ako hustá smotana.
+  - Nalej do vymastených hrnčekov alebo foriem na muffiny a prikry alobalom.
+  - Var na pare alebo vo vodnom kúpeli pod pokrievkou 50 minút, kým nie je stred pevný.

@@ -1,0 +1,34 @@
+title: Bún chay
+description: Vietnamská studená miska s ryžovými rezancami, bylinkami, zeleninou a opečeným tofu, zaliata sladkokyslou limetkovou zálievkou.
+cuisine: vietnamska
+meals: [obed, vecera]
+time: 30
+active: 25
+servings: 3
+difficulty: 1
+tags: [do-krabicky, rychle]
+spicy: 1
+keeps: { fridge: 2 }
+ingredients:
+  - ryzove-rezance: 200 g | tenké vermicelli
+  - tofu-natural: 300 g | na plátky
+  - olej: 2 pl
+  - citronova-trava: 1 ks | nadrobno
+  - sojova-omacka: 2 pl
+  - salat: 1/2 ks | natrhaný
+  - uhorka: 1 ks | na prúžky
+  - mrkva: 1 ks | na prúžky
+  - klicky: 1 hrnček
+  - bylinky-mata: 2 pl
+  - bylinky-koriander: 2 pl
+  - arasidy: 3 pl | nasekané
+  - limetka: 2 ks
+  - cukor: 2 pl
+  - voda: 4 pl
+  - cesnak: 1 ks
+  - cili-papricka: 1 ks
+steps:
+  - Rezance uvar, prepláchni studenou vodou a nechaj odkvapkať.
+  - Tofu opeč na oleji na strednom ohni s citrónovou trávou dozlatista a na konci pokvapkaj sójovou omáčkou.
+  - Na zálievku zmiešaj limetkovú šťavu, cukor, vodu, nasekaný cesnak a papričku.
+  - Do misiek daj šalát, rezance, zeleninu, bylinky a tofu. Posyp arašidmi a zalej zálievkou.

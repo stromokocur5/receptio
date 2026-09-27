@@ -1,0 +1,24 @@
+title: Tostones
+description: Dvakrát vyprážané plátky zeleného plantainu – chrumkavé ako hranolky, s cesnakovou omáčkou mojo.
+cuisine: karibska
+meals: [snack, obed]
+time: 25
+active: 25
+servings: 4
+difficulty: 1
+tags: [snack, party]
+spicy: 0
+keeps: { fridge: 0 }
+ingredients:
+  - plantain: 3 ks | zelené
+  - olej: ~300 ml | na vyprážanie, zostane v panvici
+  - sol: 1 čl
+  - cesnak: 4 ks | prelisovaný
+  - limetka: 1 ks
+  - olivovy-olej: 3 pl
+steps:
+  - Plantain olúp (šupku narež nožom pozdĺžne) a nakrájaj na 3 cm kúsky.
+  - Vyprážaj v oleji na 170 °C 4 minúty, kým nie sú svetlo zlaté. Vyber.
+  - Každý kúsok rozpľacni dnom pohára na placku hrubú 1 cm.
+  - Vyprážaj druhýkrát na 190 °C 2–3 minúty dochrumkava. Osoľ.
+  - Na mojo zmiešaj cesnak, limetku, olivový olej a štipku soli a podávaj na namáčanie.

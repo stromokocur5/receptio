@@ -1,0 +1,31 @@
+title: Baingan bharta
+description: Údený baklažán opečený nad plameňom, roztlačený s paradajkami, cibuľou a korením. Dymová pandžábska klasika.
+cuisine: indicka-sever
+meals: [obed, vecera]
+time: 45
+active: 25
+servings: 3
+difficulty: 1
+tags: [lacne]
+spicy: 2
+keeps: { fridge: 3 }
+ingredients:
+  - baklazan: 2 ks
+  - olej: 2 pl
+  - kmin: 1 čl
+  - cibula: 1 ks
+  - cesnak: 3 ks
+  - zazvor: 1 čl
+  - cili-papricka: 1 ks
+  - paradajky: 2 ks
+  - kurkuma: 1/4 čl
+  - koriander-mlety: 1 čl
+  - garam-masala: 1 čl
+  - sol: 3/4 čl
+  - bylinky-koriander: 2 pl
+  - ryza-basmati: 200 g
+steps:
+  - Baklažán opekaj priamo nad plynom alebo pod grilom 15 minút, otáčaj, kým šupka nezuhoľnatie a vnútro nezmäkne. Olúp a roztlač.
+  - Na oleji na strednom ohni opraž kmín, pridaj cibuľu a 6 minút opekaj, potom cesnak, zázvor a papričku.
+  - Pridaj paradajky a korenie a var na miernom ohni 6 minút. Vmiešaj baklažán a soľ a 5 minút opekaj.
+  - Posyp koriandrom, podávaj s ryžou alebo chapati.

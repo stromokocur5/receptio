@@ -519,6 +519,12 @@
 
 		<section class="steps">
 			<h2>Postup</h2>
+			{#if recipe.howto.length}
+				<p class="steps-sub" data-noprint>
+					Podrobnejšie, ako na jednotlivé kroky, nájdeš nižšie v časti
+					<a href="#ako-na-to">Ako na to</a>.
+				</p>
+			{/if}
 			<ol>
 				{#each recipe.steps as step, i (i)}
 					<li>
@@ -582,7 +588,7 @@
 			{/if}
 
 			{#if recipe.howto.length}
-				<div class="howto" data-noprint>
+				<div class="howto" id="ako-na-to" data-noprint>
 					<h3>Ako na to</h3>
 					<div class="howto-list">
 						{#each recipe.howto as h (h.slug)}
@@ -663,6 +669,7 @@
 		recipeServings={recipe.servings}
 		variant={variantName ?? undefined}
 		tools={base.equipmentDetail.map((e) => e.name)}
+		guides={recipe.howto}
 		onclose={() => window.history.back()}
 	/>
 {/if}
@@ -1262,6 +1269,14 @@
 		opacity: 0.5;
 		text-decoration: line-through;
 		text-decoration-color: var(--leaf-2);
+	}
+	.steps-sub {
+		margin: -6px 0 14px;
+		font-size: 0.86rem;
+		color: var(--muted);
+	}
+	.howto {
+		scroll-margin-top: 90px;
 	}
 	.tap-hint {
 		font-size: 0.82rem;

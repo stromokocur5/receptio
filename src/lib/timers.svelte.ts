@@ -156,9 +156,11 @@ export function startTimer(label: string, recipeId: string, seconds: number) {
 	sync();
 }
 
+/** Adds (or with a negative value takes away) time; a running timer never ends in the past. */
 export function addTime(id: string, seconds: number) {
+	const now = Date.now();
 	kitchen.timers = kitchen.timers.map((t) =>
-		t.id === id ? { ...t, endsAt: Math.max(t.endsAt, Date.now()) + seconds * 1000 } : t
+		t.id === id ? { ...t, endsAt: Math.max(Math.max(t.endsAt, now) + seconds * 1000, now) } : t
 	);
 	kitchen.ringing = kitchen.ringing.filter((r) => r !== id);
 	notified.delete(id);

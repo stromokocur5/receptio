@@ -1,0 +1,27 @@
+title: Spanakorizo
+description: Grécka špenátová ryža s kôprom, cibuľkou a citrónom. Jednoduchá, krémová a zelená.
+cuisine: grecka
+meals: [obed, vecera]
+time: 35
+active: 15
+servings: 4
+difficulty: 1
+tags: [one-pot, lacne, rychle]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - olivovy-olej: 4 pl
+  - cibula: 1 ks
+  - jarna-cibulka: 4 ks
+  - cesnak: 2 ks
+  - ryza-arborio: 200 g
+  - paradajkovy-pretlak: 1 pl
+  - zeleninovy-vyvar: 700 ml
+  - spenat: 500 g
+  - kopor: 3 pl
+  - citron: 1 ks
+  - sol: 1 čl
+steps:
+  - Na oleji na strednom ohni speň cibule a cesnak, pridaj ryžu a pretlak a minútu praž.
+  - Pridaj vývar a var na miernom ohni 12 minút.
+  - Pridaj špenát po hrstiach, soľ a kôpor a var na miernom ohni ďalších 6 minút, kým ryža nezmäkne. Dochuť citrónom a nechaj 5 minút odstáť.

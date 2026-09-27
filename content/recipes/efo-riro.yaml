@@ -1,0 +1,29 @@
+title: Efo riro
+description: Jorubský hustý špenátový guláš s paprikou, cibuľou a údeným tofu. Podáva sa s ryžou alebo pyré z batátu.
+cuisine: zapadoafricka
+meals: [obed, vecera]
+time: 35
+active: 20
+servings: 4
+difficulty: 1
+tags: [one-pot]
+spicy: 2
+keeps: { fridge: 3 }
+ingredients:
+  - paprika-cervena: 2 ks
+  - paradajky: 2 ks
+  - cili-papricka: 1 ks
+  - cibula: 2 ks
+  - olej: 3 pl
+  - sladka-paprika: 1 čl
+  - tofu-udene: 200 g | na kocky
+  - susene-huby: 10 g | namočené, nasekané
+  - spenat: 500 g
+  - kel: 100 g
+  - sol: 3/4 čl
+  - ryza-basmati: 250 g
+steps:
+  - Papriky, paradajky, čili a jednu cibuľu rozmixuj nahrubo a var bez oleja na strednom ohni 10 minút, kým sa neodparí voda.
+  - Na oleji s paprikou na strednom ohni speň druhú cibuľu, pridaj tofu a huby a 5 minút opekaj.
+  - Pridaj paprikovú zmes a var na miernom ohni 10 minút.
+  - Pridaj špenát, kel a soľ a var na miernom ohni 5 minút. Podávaj s ryžou.

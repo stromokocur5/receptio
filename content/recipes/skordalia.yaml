@@ -1,0 +1,23 @@
+title: Skordalia
+description: Silná grécka cesnaková nátierka zo zemiakov, mandlí, olivového oleja a octu. K pečenej zelenine a chlebu.
+cuisine: grecka
+meals: [snack]
+time: 30
+active: 15
+servings: 6
+difficulty: 1
+tags: [party, lacne]
+spicy: 0
+keeps: { fridge: 4 }
+ingredients:
+  - zemiaky: 3 ks | múčne
+  - cesnak: 5 ks
+  - mandle: 40 g | lúpané
+  - olivovy-olej: 6 pl
+  - ocot: 2 pl
+  - citron: 1/2 ks
+  - sol: 1 čl
+steps:
+  - Zemiaky uvar v šupke, olúp a prelisuj.
+  - Cesnak roztlač so soľou a zomeľ s mandľami a octom na pastu.
+  - Vmiešaj do zemiakov a postupne za miešania vlievaj olej. Dochuť citrónom. Nemixuj zemiaky mixérom – zlepia sa.

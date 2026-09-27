@@ -1,0 +1,23 @@
+title: Bubur kacang hijau
+description: Sladká kaša z mungo fazuľky v kokosovom mlieku so zázvorom. Indonézske raňajky aj dezert.
+cuisine: indonezska
+meals: [ranajky, dezert]
+time: 50
+active: 10
+servings: 4
+difficulty: 1
+tags: [ranajky, one-pot, lacne]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - mungo: 200 g | celé zelené
+  - voda: 1,2 l
+  - zazvor: 1 pl | na plátky
+  - skorica: 1/4 čl
+  - cukor: 60 g
+  - sol: 1 štipka
+  - kokosove-mlieko: 200 ml
+steps:
+  - Mungo prepláchni a var so zázvorom a vodou na miernom ohni 40 minút, kým sa zrnká nerozpučia.
+  - Pridaj cukor, soľ a skoricu a var ešte 5 minút.
+  - Podávaj teplé, polievané kokosovým mliekom.

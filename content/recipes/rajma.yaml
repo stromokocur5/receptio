@@ -1,0 +1,32 @@
+title: Rajma
+description: Pandžábska červená fazuľa v hustej paradajkovo-cibuľovej omáčke s garam masalou. Nedeľný obed s ryžou.
+cuisine: indicka-sever
+meals: [obed, vecera]
+time: 45
+active: 20
+servings: 4
+difficulty: 1
+tags: [meal-prep, one-pot, lacne]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - olej: 3 pl
+  - kmin: 1 čl
+  - cibula: 2 ks | nadrobno
+  - cesnak: 4 ks
+  - zazvor: 1 pl
+  - paradajky: 3 ks | rozmixované
+  - kurkuma: 1/2 čl
+  - koriander-mlety: 2 čl
+  - cili: 1/2 čl
+  - garam-masala: 1,5 čl
+  - fazula-cervena: 3 ks
+  - voda: 400 ml
+  - sol: 1 čl
+  - bylinky-koriander: 2 pl
+  - ryza-basmati: 300 g
+steps:
+  - Na oleji na strednom ohni opraž kmín, pridaj cibuľu a opekaj 10 minút do zlatohneda.
+  - Pridaj cesnak, zázvor, paradajky a korenie okrem garam masaly a var na miernom ohni 8 minút, kým sa olej neoddelí.
+  - Pridaj fazuľu, vodu a soľ a var na miernom ohni 15 minút. Časť fazule roztlač, aby omáčka zhustla.
+  - Vmiešaj garam masalu a koriander a podávaj s ryžou.

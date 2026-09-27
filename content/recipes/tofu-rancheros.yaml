@@ -1,0 +1,31 @@
+title: Tofu rancheros
+description: Mexické raňajky – tortilly s fazuľou, tofu praženicou a teplou salsou ranchera s avokádom.
+cuisine: mexicka
+meals: [ranajky, obed]
+time: 25
+active: 25
+servings: 2
+difficulty: 1
+tags: [ranajky, vela-bielkovin]
+spicy: 2
+keeps: { fridge: 1 }
+ingredients:
+  - olej: 2 pl
+  - tofu-natural: 250 g | rozdrobené
+  - kurkuma: 1/4 čl
+  - kala-namak: 1/4 čl
+  - cibula: 1/2 ks
+  - cesnak: 1 ks
+  - cili-papricka: 1 ks | jalapeño
+  - paradajky-sterilizovane: 1/2 ks
+  - kmin: 1/2 čl
+  - fazula-cierna: 1/2 ks | roztlačená
+  - kukuricne-tortilly: 4 ks
+  - avokado: 1 ks
+  - bylinky-koriander: 2 pl
+  - limetka: 1/2 ks
+steps:
+  - Na 1 PL oleja na strednom ohni speň cibuľu, cesnak a jalapeño, pridaj paradajky a kmín a 8 minút var na miernom ohni na hustú salsu. Osoľ.
+  - Tofu opeč na zvyšnom oleji na strednom ohni s kurkumou 5 minút a dochuť kala namakom.
+  - Tortilly opeč na suchej panvici na strednom ohni, natri fazuľou, navrch daj tofu a salsu.
+  - Ozdob avokádom, koriandrom a limetkou.

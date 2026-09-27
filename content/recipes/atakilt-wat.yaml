@@ -1,0 +1,27 @@
+title: Atakilt wat
+description: Jemné etiópske dusené zemiaky, kapusta a mrkva s kurkumou a zázvorom. Nepálivý, sladkastý a veľmi lacný.
+cuisine: etiopska
+meals: [obed, vecera]
+time: 45
+active: 15
+servings: 4
+difficulty: 1
+tags: [lacne, one-pot, meal-prep, deti]
+spicy: 0
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - olej: 4 pl
+  - cibula: 2 ks | na mesiačiky
+  - cesnak: 3 ks
+  - zazvor: 1 pl | nastrúhaný
+  - kurkuma: 1,5 čl
+  - kmin: 1/2 čl
+  - mrkva: 4 ks | na kolieska
+  - zemiaky: 4 ks | na kocky
+  - biela-kapusta: 500 g | nakrájaná
+  - voda: 200 ml
+  - sol: 1 čl
+steps:
+  - Na oleji na strednom ohni speň cibuľu 8 minút do zlatista, pridaj cesnak, zázvor, kurkumu a kmín.
+  - Pridaj mrkvu a zemiaky, premiešaj a 5 minút opekaj.
+  - Pridaj kapustu, vodu a soľ. Prikry a duste na miernom ohni 25 minút, občas premiešaj, kým zemiaky nezmäknú.

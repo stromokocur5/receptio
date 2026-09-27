@@ -1,0 +1,24 @@
+title: Gamja jorim
+description: Kórejské malé zemiaky dusené v sladkej sójovej glazúre do lesklej karamelovej farby. Banchan, ktorý deti milujú.
+cuisine: korejska
+meals: [snack, obed]
+time: 30
+active: 15
+servings: 4
+difficulty: 1
+tags: [deti, lacne, meal-prep]
+spicy: 0
+keeps: { fridge: 5 }
+ingredients:
+  - zemiaky: 6 ks | na kocky 2 cm
+  - olej: 1 pl
+  - voda: 250 ml
+  - sojova-omacka: 3 pl
+  - javorovy-sirup: 2 pl
+  - cesnak: 2 ks
+  - sezamovy-olej: 1 čl
+  - sezam: 1 čl
+steps:
+  - Zemiaky namoč na 10 minút do vody, sceď a osuš.
+  - Na oleji na strednom ohni ich 4 minúty opekaj, pridaj vodu, sójovú omáčku a cesnak a var pod pokrievkou na miernom ohni 10 minút.
+  - Odkry, pridaj sirup a var za miešania, kým sa tekutina nezredukuje na lesklú glazúru. Pokvapkaj sezamovým olejom a posyp sezamom.

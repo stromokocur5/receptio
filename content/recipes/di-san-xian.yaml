@@ -1,0 +1,27 @@
+title: Di san xian
+description: „Tri poklady zeme“ zo severovýchodnej Číny – zemiaky, baklažán a paprika v lesklej cesnakovej omáčke.
+cuisine: cinska
+meals: [obed, vecera]
+time: 35
+active: 30
+servings: 3
+difficulty: 2
+tags: [lacne]
+spicy: 0
+keeps: { fridge: 2 }
+ingredients:
+  - zemiaky: 2 ks | na kliny
+  - baklazan: 1 ks | na kliny
+  - paprika-cervena: 1 ks | na kusy
+  - kukuricny-skrob: 2 pl
+  - olej: 5 pl
+  - cesnak: 4 ks
+  - sojova-omacka: 2 pl
+  - cukor: 1 čl
+  - voda: 100 ml
+  - ryza-jazminova: 250 g
+steps:
+  - Baklažán obaľ v 1,5 PL škrobu.
+  - Na oleji na strednom ohni opeč zemiaky dozlatista a domäkka, vyber. Potom baklažán, vyber. Papriku opeč len minútu.
+  - Z panvice zlej olej, nechaj 1 PL. Opraž cesnak, pridaj sójovú omáčku, cukor, vodu a zvyšný škrob a nechaj zhustnúť.
+  - Vráť zeleninu, obaľ v omáčke a podávaj s ryžou.

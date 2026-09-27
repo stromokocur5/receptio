@@ -1,0 +1,24 @@
+title: Frijoles refritos
+description: Mexická krémová roztlačená fazuľa s cibuľou, cesnakom a kmínom. Na tacos, tostady, burrito aj na chlieb.
+cuisine: mexicka
+meals: [obed, snack]
+time: 20
+active: 15
+servings: 4
+difficulty: 1
+tags: [rychle, lacne, meal-prep]
+spicy: 0
+keeps: { fridge: 5, freezer: 3 }
+ingredients:
+  - olej: 3 pl
+  - cibula: 1 ks | nadrobno
+  - cesnak: 3 ks
+  - kmin: 1 čl
+  - oregano: 1/2 čl
+  - fazula-cervena: 2 ks | aj s trochou nálevu
+  - sol: 1/2 čl
+  - limetka: 1/2 ks
+steps:
+  - Na oleji na strednom ohni speň cibuľu do zlatista, pridaj cesnak, kmín a oregano.
+  - Pridaj fazuľu s nálevom a za stáleho roztláčania var na miernom ohni 10 minút, kým nie je hustá a krémová.
+  - Osoľ a dochuť limetkou.

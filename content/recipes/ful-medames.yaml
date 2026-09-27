@@ -1,0 +1,26 @@
+title: Ful medames
+description: Teplý bôb s cesnakom, citrónom, kmínom a olivovým olejom. Raňajky celého Blízkeho východu, sýte až do obeda.
+cuisine: libanonska
+meals: [ranajky, obed]
+time: 15
+active: 15
+servings: 2
+difficulty: 1
+tags: [ranajky, rychle, vela-bielkovin, lacne]
+spicy: 1
+keeps: { fridge: 3 }
+ingredients:
+  - bob-sterilizovany: 1 ks | aj s trochou nálevu
+  - cesnak: 2 ks | prelisovaný
+  - kmin: 1 čl
+  - citron: 1 ks
+  - olivovy-olej: 3 pl
+  - sol: 1/2 čl
+  - cili: 1/4 čl
+  - paradajky: 1 ks | na kocky
+  - petrzlenova-vnat: 3 pl
+  - pita: 2 ks
+steps:
+  - Bôb s nálevom zohrej v hrnčeku, pridaj cesnak a kmín a 5 minút var na miernom ohni.
+  - Polovicu roztlač, dochuť citrónom a soľou.
+  - Prelej do misky, polej olejom, posyp čili, paradajkami a petržlenom. Podávaj s pitou.

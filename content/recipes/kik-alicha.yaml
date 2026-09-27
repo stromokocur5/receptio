@@ -1,0 +1,26 @@
+title: Kik alicha
+description: Jemný etiópsky prívarok zo žltého hrachu s kurkumou a zázvorom. Nepálivý protipól ostrého misir wot.
+cuisine: etiopska
+meals: [obed, vecera]
+time: 55
+active: 15
+servings: 4
+difficulty: 1
+tags: [lacne, meal-prep, one-pot]
+spicy: 0
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - zlty-hrach: 250 g | polený, prepláchnutý
+  - olej: 3 pl
+  - cibula: 2 ks | veľmi nadrobno
+  - cesnak: 3 ks
+  - zazvor: 1 pl | nastrúhaný
+  - kurkuma: 1 čl
+  - voda: 1 l
+  - sol: 1 čl
+  - cili-papricka: 1 ks | zelená, nepovinná
+steps:
+  - Cibuľu opekaj v suchom hrnci na strednom ohni 4 minúty, potom pridaj olej a opekaj ďalších 5 minút do zlatista.
+  - Pridaj cesnak, zázvor a kurkumu, minútu restuj a pridaj hrach a vodu.
+  - Var na miernom ohni 40 minút, kým sa hrach nerozvarí na hustú kašu. Podlievaj a miešaj, aby sa neprilepil.
+  - Osoľ a na konci pridaj papričku.

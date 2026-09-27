@@ -1,0 +1,31 @@
+title: Saté tempe
+description: Grilované špízy z marinovaného tempehu s hustou arašidovou omáčkou. Indonézske pouličné jedlo.
+cuisine: indonezska
+meals: [obed, vecera, snack]
+time: 40
+active: 25
+servings: 4
+difficulty: 1
+tags: [party, vela-bielkovin]
+spicy: 1
+ahead: Tempeh sa marinuje aspoň 30 minút.
+keeps: { fridge: 3 }
+ingredients:
+  - tempeh: 400 g | na kocky
+  - kecap-manis: 3 pl
+  - cesnak: 3 ks
+  - koriander-mlety: 1 čl
+  - limetka: 1 ks
+  - olej: 1 pl
+  - arasidove-maslo: 4 pl
+  - kokosove-mlieko: 150 ml
+  - sojova-omacka: 1 pl
+  - cukor: 1 čl
+  - cili: 1/2 čl
+  - uhorka: 1/2 ks
+  - cibula-cervena: 1/2 ks
+steps:
+  - Tempeh var na miernom ohni 10 minút vo vode (zbaví sa horkosti). Zmiešaj 2 PL kecap manis, polovicu cesnaku, koriander, šťavu z polovice limetky a olej a tempeh v tom marinuj 30 minút.
+  - Napichaj na špajdle a opekaj na grilovacej panvici na strednom až vysokom ohni alebo pod grilom 8 minút, obracaj a potieraj marinádou.
+  - Arašidové maslo s kokosovým mliekom, zvyšným cesnakom, kecap manis, sójovou omáčkou, cukrom a čili zohrej na miernom ohni a miešaj, kým nie je hladká a hustá.
+  - Podávaj s omáčkou, uhorkou a cibuľou pokvapkanou limetkou.

@@ -1,0 +1,25 @@
+title: Cong you bing
+description: Vrstvené cibuľkové placky – chrumkavé, lístkové a voňavé po jarnej cibuľke. Čínske raňajky z ulice.
+cuisine: cinska
+meals: [ranajky, snack]
+time: 60
+active: 35
+servings: 4
+difficulty: 2
+tags: [snack, lacne]
+spicy: 0
+keeps: { fridge: 2, freezer: 2 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 300 g
+  - voda: 180 ml | horúca
+  - sol: 1 čl
+  - olej: 4 pl
+  - jarna-cibulka: 6 ks | nadrobno
+  - sojova-omacka: 2 pl | na namáčanie
+  - ryzovy-ocot: 1 pl
+steps:
+  - Múku zmiešaj s horúcou vodou a pol ČL soli, vymies hladké cesto a nechaj 30 minút pod miskou odpočívať.
+  - Rozdeľ na 4 časti. Každú vyvaľkaj na tenký obdĺžnik, potri olejom, posyp soľou a cibuľkou.
+  - Zroluj do dlhého valčeka, ten zatoč do slimáka a znova rozvaľkaj na placku hrubú 5 mm.
+  - Peč na panvici s olejom na strednom ohni 3–4 minúty z každej strany dozlatista. Podávaj so sójovou omáčkou s octom.

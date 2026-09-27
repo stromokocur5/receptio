@@ -1,0 +1,36 @@
+title: Masala dosa
+description: Tenká chrumkavá kvásková palacinka z ryže a urad dalu, plnená korenistými zemiakmi. Kráľovná juhoindických raňajok.
+cuisine: indicka-juh
+meals: [ranajky, obed]
+time: 60
+active: 40
+servings: 4
+difficulty: 3
+tags: [klasika, fermentacia]
+spicy: 1
+ahead: Ryžu a dal namoč na 6 hodín, cesto potom kvasí 10–12 hodín.
+keeps: { fridge: 5 }
+leftovers: 'Zvyšné cesto vydrží v chladničke 5 dní – každý deň je kyslejšie. Použi ho na uttapam.'
+related: [sambar, kokosove-chutney, uttapam]
+ingredients:
+  - ryza-basmati: 300 g | alebo lacná dlhozrnná
+  - urad-dal: 100 g
+  - voda: 400 ml | na mixovanie
+  - sol: 1,5 čl
+  - olej: 4 pl
+  - zemiaky: 5 ks
+  - horcicne-semienko: 1 čl
+  - kari-listy: 10 ks
+  - cibula: 1 ks | na tenké mesiačiky
+  - cili-papricka: 1 ks | nadrobno
+  - zazvor: 1 čl | nastrúhaný
+  - kurkuma: 1/2 čl
+steps:
+  - Ryžu a dal namoč zvlášť na 6 hodín. Dal rozmixuj s trochou vody na nadýchanú penu, potom rozmixuj ryžu na jemné cesto. Zmiešaj, pridaj 1 ČL soli a nechaj 10–12 hodín v teple kvasiť, kým objem nenarastie.
+  - Zemiaky uvar v šupke, olúp a nahrubo roztlač.
+  - Na 2 PL oleja na strednom ohni nechaj prasknúť horčičné semienka, pridaj kari listy, cibuľu, papričku a zázvor a 5 minút opekaj. Pridaj kurkumu, zemiaky, zvyšnú soľ a trochu vody a premiešaj.
+  - Cesto rozrieď vodou na hustotu smotany. Liatinovú alebo nepriľnavú panvicu rozpáľ na strednom až vysokom ohni, nalej naberačku cesta a jej dnom ho krúživým pohybom rozotri na tenký kruh.
+  - Pokvapkaj olejom a peč 2–3 minúty, kým spodok nie je zlatý a chrumkavý. Neobracaj. Na polovicu daj zemiaky, prelož a podávaj so sambarom a chutney.
+tips:
+  - V chladnom byte kvas cesto v rúre so zapnutým svetlom.
+  - Ak sa lepí, panvica je studená – pred každou dosou ju potri polovicou cibule namočenou v oleji.

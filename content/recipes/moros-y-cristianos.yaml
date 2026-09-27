@@ -1,0 +1,28 @@
+title: Moros y cristianos
+description: Kubánska ryža varená spolu s čiernou fazuľou, kmínom a oreganom. Tmavá, voňavá a sýta.
+cuisine: karibska
+meals: [obed, vecera]
+time: 40
+active: 10
+servings: 4
+difficulty: 1
+tags: [lacne, one-pot, meal-prep]
+spicy: 0
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - olivovy-olej: 2 pl
+  - cibula: 1 ks
+  - paprika-cervena: 1 ks
+  - cesnak: 4 ks
+  - kmin: 1 čl
+  - oregano: 1 čl
+  - bobkovy-list: 1 ks
+  - ryza-basmati: 300 g
+  - fazula-cierna: 2 ks | aj s trochou nálevu
+  - voda: 450 ml
+  - sol: 1 čl
+  - ocot: 1 pl
+steps:
+  - Na oleji na strednom ohni speň cibuľu, papriku a cesnak 6 minút, pridaj kmín, oregano a bobkový list.
+  - Pridaj ryžu a minútu praž, potom fazuľu s nálevom, vodu a soľ.
+  - Prikry a var na miernom ohni 20 minút. Pokvapkaj octom a premiešaj.

@@ -1,0 +1,30 @@
+title: Yassa s tofu
+description: Senegalská klasika – tofu dusené v kope cibule s horčicou a citrónom, kým nie je sladká a kyslá naraz.
+cuisine: zapadoafricka
+meals: [obed, vecera]
+time: 60
+active: 25
+servings: 4
+difficulty: 1
+tags: [klasika, meal-prep]
+spicy: 1
+ahead: Tofu sa marinuje aspoň hodinu.
+keeps: { fridge: 4 }
+ingredients:
+  - tofu-natural: 400 g | vylisované, na kocky
+  - citron: 2 ks
+  - horcica: 2 pl
+  - cesnak: 4 ks
+  - cili-papricka: 1 ks | celá
+  - bobkovy-list: 2 ks
+  - cibula: 5 ks | na tenké mesiačiky
+  - olej: 4 pl
+  - zeleninovy-vyvar: 200 ml
+  - olivy: 8 ks | zelené
+  - sol: 1 čl
+  - ryza-basmati: 300 g
+steps:
+  - Zmiešaj citrónovú šťavu, horčicu, cesnak, soľ a cibuľu. Tofu a cibuľu v tom nechaj aspoň hodinu marinovať.
+  - Tofu vyber a opeč na 2 PL oleja na strednom ohni dozlatista.
+  - Na zvyšnom oleji duste cibuľu z marinády na miernom ohni 20 minút, kým nie je mäkká a jemne hnedá.
+  - Pridaj marinádu, vývar, bobkový list, papričku a olivy, vráť tofu a duste na miernom ohni 10 minút. Podávaj s ryžou.

@@ -1,0 +1,27 @@
+title: Gỏi bắp cải
+description: Vietnamský kapustový šalát s mrkvou, mätou, arašidmi a limetkovou zálievkou. Chrumkavý a osviežujúci.
+cuisine: vietnamska
+meals: [snack, obed]
+time: 15
+active: 15
+servings: 4
+difficulty: 1
+tags: [rychle, bez-varenia, lacne]
+spicy: 1
+keeps: { fridge: 1 }
+ingredients:
+  - biela-kapusta: 400 g | najemno
+  - mrkva: 2 ks | na prúžky
+  - cibula-cervena: 1/2 ks
+  - bylinky-mata: 3 pl
+  - bylinky-koriander: 2 pl
+  - arasidy: 4 pl | pražené
+  - limetka: 2 ks
+  - cukor: 1,5 pl
+  - sojova-omacka: 2 pl
+  - cesnak: 1 ks
+  - cili-papricka: 1 ks
+steps:
+  - Kapustu s mrkvou a cibuľou premiešaj.
+  - Zmiešaj limetkovú šťavu, cukor, sójovú omáčku, cesnak a papričku.
+  - Šalát zalej zálievkou, pridaj bylinky a premiešaj. Posyp arašidmi tesne pred podávaním.

@@ -1,0 +1,23 @@
+title: Brigadeiro
+description: Brazílske čokoládové guľky na každej oslave. Vegánske z kokosového mlieka, uvareného do karamelovej hustoty.
+cuisine: brazilska
+meals: [dezert, snack]
+time: 45
+active: 30
+servings: 20
+difficulty: 2
+tags: [dezert, party, deti]
+spicy: 0
+keeps: { fridge: 7 }
+ingredients:
+  - kokosove-mlieko: 800 ml | plnotučné
+  - cukor: 150 g
+  - kakao: 4 pl
+  - rastlinne-maslo: 20 g
+  - sol: 1 štipka
+  - horka-cokolada: 40 g | nastrúhaná, na obalenie
+steps:
+  - Kokosové mlieko s cukrom var v širokom hrnci na strednom ohni za častého miešania 25–30 minút, kým sa neredukuje na hustú sladkú smotanu (asi tretinu).
+  - Vmiešaj kakao, maslo a soľ a var na miernom ohni ďalších 5–8 minút za stáleho miešania, kým sa hmota neodlepuje od dna.
+  - Prelej na tanier a nechaj v chladničke 2 hodiny stuhnúť.
+  - Mastnými rukami tvaruj guľky a obaľ v strúhanej čokoláde.

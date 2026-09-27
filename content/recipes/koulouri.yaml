@@ -1,0 +1,26 @@
+title: Koulouri
+description: Solúnske sezamové kruhy – chrumkavé zvonka, mäkké vnútri. Grécke raňajky na ulici s kávou.
+cuisine: grecka
+meals: [ranajky, snack]
+time: 120
+active: 30
+servings: 8
+difficulty: 2
+tags: [pecenie, ranajky]
+spicy: 0
+keeps: { fridge: 2, freezer: 2 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 450 g
+  - drozdie: 2 čl | sušené
+  - cukor: 1 pl
+  - sol: 1,5 čl
+  - voda: 280 ml | vlažná
+  - olivovy-olej: 2 pl
+  - javorovy-sirup: 3 pl | rozmiešaný v 200 ml vody
+  - sezam: 100 g
+steps:
+  - Múku, droždie, cukor, soľ, vodu a olej vymies na hladké cesto a nechaj hodinu kysnúť.
+  - Rozdeľ na 8 kusov, z každého vyval tenký valček dlhý 50 cm a spoj do kruhu.
+  - Kruhy ponor do sirupovej vody a potom obaľ v sezame.
+  - Nechaj 20 minút kysnúť na plechu a peč na 210 °C 18–20 minút dozlatista.

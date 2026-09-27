@@ -1,0 +1,32 @@
+title: Pulled jackfruit
+description: Trhaný jackfruit v dymovej BBQ omáčke v žemli s kapustovým šalátom. Vyzerá ako pulled pork, bielkovín má ale málo – pridaj fazuľu.
+cuisine: americka
+meals: [obed, vecera]
+time: 45
+active: 20
+servings: 4
+difficulty: 1
+tags: [party]
+spicy: 1
+keeps: { fridge: 3, freezer: 2 }
+ingredients:
+  - jackfruit: 2 ks | scedený, opláchnutý
+  - olej: 2 pl
+  - cibula: 1 ks
+  - cesnak: 2 ks
+  - paradajkovy-pretlak: 3 pl
+  - javorovy-sirup: 2 pl
+  - ocot: 2 pl
+  - sojova-omacka: 1 pl
+  - horcica: 1 pl
+  - udena-paprika: 2 čl
+  - voda: 150 ml
+  - fazula-cierna: 1 ks
+  - hamburgerova-zemla: 4 ks
+  - biela-kapusta: 200 g | na tenké prúžky
+  - veganska-majoneza: 2 pl
+steps:
+  - Jackfruit odrež od tvrdých jadier a vidličkou natrhaj.
+  - Na oleji na strednom ohni speň cibuľu s cesnakom, pridaj jackfruit a 5 minút opekaj.
+  - Pridaj pretlak, sirup, ocot, sójovú omáčku, horčicu, papriku a vodu a duste na miernom ohni 20 minút, potom pridaj fazuľu a ešte 5 minút.
+  - Kapustu premiešaj s majonézou a štipkou soli. Podávaj v žemliach s kapustou.

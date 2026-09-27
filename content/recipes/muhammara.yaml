@@ -1,0 +1,26 @@
+title: Muhammara
+description: Sýrsky dip z pečených paprík, vlašských orechov, strúhanky a granátového sirupu. Sladký, dymový a jemne pálivý.
+cuisine: libanonska
+meals: [snack]
+time: 40
+active: 15
+servings: 6
+difficulty: 1
+tags: [party, meal-prep]
+spicy: 1
+keeps: { fridge: 5 }
+ingredients:
+  - paprika-cervena: 3 ks
+  - vlasske-orechy: 80 g | opražené
+  - struhanka: 4 pl
+  - cesnak: 1 ks
+  - citron: 1/2 ks
+  - javorovy-sirup: 1 pl | namiesto granátovej melasy
+  - kmin: 1 čl
+  - cili: 1/2 čl
+  - olivovy-olej: 4 pl
+  - sol: 3/4 čl
+steps:
+  - Papriky upeč na 230 °C 25 minút dočierna, zapar pod pokrievkou a olúp.
+  - Všetko rozmixuj na hustý hrubší dip.
+  - Podávaj s kvapkou oleja a nasekanými orechmi.

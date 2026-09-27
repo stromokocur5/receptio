@@ -1,0 +1,26 @@
+title: Ceviche zo šampiňónov
+description: Peruánske ceviche bez rýb – tenké šampiňóny marinované v limetke s červenou cibuľou, čili a koriandrom. Podáva sa s batátom a kukuricou.
+cuisine: peruanska
+meals: [snack, obed]
+time: 30
+active: 15
+servings: 3
+difficulty: 1
+tags: [bez-varenia, party]
+spicy: 2
+keeps: { fridge: 1 }
+ingredients:
+  - sampinony: 4 hrnček | pevné, na tenké plátky
+  - limetka: 4 ks
+  - cibula-cervena: 1 ks | na tenučké mesiačiky
+  - cili-papricka: 1 ks | nadrobno
+  - cesnak: 1 ks | prelisovaný
+  - zazvor: 1 čl | nastrúhaný
+  - sol: 3/4 čl
+  - bylinky-koriander: 3 pl
+  - batat: 1 ks | uvarený, na plátky
+  - kukurica-klas: 1 ks | uvarený, na kolieska
+steps:
+  - Cibuľu namoč na 10 minút do studenej osolenej vody, zmierni sa.
+  - Šampiňóny zalej šťavou z limetiek, pridaj cesnak, zázvor, čili a soľ a nechaj 15 minút marinovať.
+  - Pridaj scedenú cibuľu a koriander. Podávaj so studeným batátom a kukuricou a vypi aj „leche de tigre“ – marinádu.

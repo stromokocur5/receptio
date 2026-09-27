@@ -1,0 +1,28 @@
+title: Hotteok
+description: Kórejské kysnuté placky plnené škoricovým cukrom a orieškami, ktorý sa pri pečení roztopí na sirup. Zimný pouličný dezert.
+cuisine: korejska
+meals: [dezert, snack]
+time: 90
+active: 30
+servings: 6
+difficulty: 2
+tags: [dezert]
+spicy: 0
+keeps: { fridge: 1 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 250 g
+  - lepkava-ryzova-muka: 50 g
+  - drozdie: 1,5 čl | sušené
+  - cukor: 100 g | 1 PL do cesta, zvyšok do plnky
+  - sol: 1/4 čl
+  - sojove-mlieko: 200 ml | vlažné
+  - skorica: 1 čl
+  - arasidy: 40 g | nasekané
+  - slnecnicove-semienka: 2 pl
+  - olej: 3 pl
+steps:
+  - Múky, droždie, 1 PL cukru, soľ a mlieko zmiešaj na lepkavé cesto a nechaj hodinu kysnúť.
+  - Zvyšný cukor zmiešaj so škoricou, arašidmi a semienkami.
+  - Naolejovanými rukami vezmi kus cesta, sploští ho, daj doň 1,5 PL plnky a uzavri do guľky.
+  - Na naolejovanej panvici na strednom ohni opeč guľku minútu, obráť a stlač stierkou na placku. Peč na miernom ohni 2 minúty z každej strany. Pozor, plnka je horúca.

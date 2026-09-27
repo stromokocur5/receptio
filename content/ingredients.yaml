@@ -3350,3 +3350,1017 @@
   uses:
     - 'Domáci tempeh'
   storage: 'V chladničke podľa obalu.'
+
+# ── Odolné a menej známe plodiny ───────────────────────────────
+# Plodiny, ktorým sa u nás darí aj v suchu a teple a potrebujú málo chémie.
+
+- id: topinambur
+  name: Topinambur
+  category: zelenina
+  n: { kcal: 73, p: 2, c: 17.4, f: 0, fib: 1.6, salt: 0, fe: 3.4, ca: 14, zn: 0.1 }
+  units: { ks: 60 }
+  price: 4
+  co2: 0.4
+  color: '#c9a77c'
+  season: [10, 11, 12, 1, 2, 3]
+  substitutes:
+    - { to: zemiaky, note: 'menej orieškové' }
+    - { to: pastinak, note: 'sladší' }
+  about: 'Hľuza slnečnice hľuznatej – chrumkavá ako kalerab, po upečení orieškovo sladká. Rastie takmer sama a na záhrade sa ťažko vyhubí.'
+  uses:
+    - 'Krémová polievka, pečený s tymianom'
+    - 'Surový nastrúhaný do šalátu'
+  choose: 'Pevné hľuzy s čo najmenej výrastkami – ľahšie sa čistia.'
+  storage: 'V chladničke v sáčku 2 týždne, v zemi cez zimu.'
+  note: Má veľa inulínu – kto nie je zvyknutý, začni s menšou porciou, inak nadúva.
+
+- id: amarant
+  name: Amarant (láskavec)
+  category: obilniny
+  n: { kcal: 371, p: 13.6, c: 65, f: 7, fib: 6.7, salt: 0, fe: 7.6, ca: 159, zn: 2.9 }
+  units: { hrnček: 195 }
+  price: 6
+  co2: 1.2
+  color: '#e8cf8f'
+  substitutes:
+    - { to: quinoa, note: 'sypkejšia, var 15 min' }
+    - { to: proso }
+  about: 'Drobné semienka láskavca, pestovaného už Aztékmi. Znesie sucho aj horúčavu, u nás rastie bez problémov. Uvarený je krémový, dá sa aj pukať ako popcorn.'
+  uses:
+    - 'Kaša na raňajky, zahustenie polievok'
+    - 'Pukaný do granoly a tyčiniek'
+  choose: 'Bez lepku, ale kontroluj označenie – spracúva sa často s obilím.'
+  storage: 'Suchý rok.'
+
+- id: proso
+  name: Proso lúpané (pšeno)
+  category: obilniny
+  n: { kcal: 378, p: 11, c: 73, f: 4.2, fib: 8.5, salt: 0, fe: 3, ca: 8, zn: 1.7 }
+  units: { hrnček: 200 }
+  price: 2.5
+  co2: 1
+  color: '#f2d56b'
+  substitutes:
+    - { to: quinoa }
+    - { to: ryza-basmati, note: 'menej vlákniny' }
+  about: 'Staré slovanské obilie bez lepku. Potrebuje málo vody a živín – jedna z najodolnejších plodín, čo u nás môžeš pestovať.'
+  uses:
+    - 'Sladká kaša s jablkom, slaná príloha namiesto ryže'
+    - 'Pšenové placky, plnené papriky'
+  choose: 'Pred varením preplách horúcou vodou – zmyje horkastú chuť.'
+  storage: 'Suché pol roka, rýchlejšie žltne a horkne ako ryža.'
+
+- id: cirok
+  name: Cirok (sorghum, celé zrno)
+  category: obilniny
+  n: { kcal: 329, p: 10.6, c: 72, f: 3.5, fib: 6.7, salt: 0, fe: 3.4, ca: 13, zn: 1.7 }
+  units: { hrnček: 190 }
+  price: 4
+  co2: 1
+  color: '#d7b58a'
+  substitutes:
+    - { to: krupy, note: 's lepkom' }
+    - { to: pohanka }
+  about: 'Obilie, ktoré znáša sucho lepšie ako kukurica. Na juhu Slovenska sa ho pestuje čoraz viac. Uvarené zrno je žuvacie ako krúpy, ale bez lepku.'
+  uses:
+    - 'Do šalátov a namiesto krúp či ryže'
+  choose: 'Namoč cez noc, varí sa 50–60 minút.'
+  storage: 'Suchý rok. Uvarený sa dá zamraziť.'
+
+- id: bob-suchy
+  name: Bôb suchý (fava)
+  howto: [strukoviny]
+  category: strukoviny
+  group: bob
+  group_factor: 2.3
+  n: { kcal: 341, p: 26, c: 58, f: 1.5, fib: 25, salt: 0, fe: 6.7, ca: 103, zn: 3.1 }
+  units: { hrnček: 150 }
+  price: 4
+  co2: 1
+  color: '#b89a63'
+  substitutes:
+    - { to: bob-sterilizovany, note: '2,3× viac, bez namáčania' }
+    - { to: cicer-suchy }
+  about: 'Najstaršia európska strukovina. Rastie v chladnom počasí, zúrodňuje pôdu dusíkom a u nás sa dá siať už v marci.'
+  uses:
+    - 'Ful medames, bissara, pyré'
+    - 'Lúpaný žltý bôb sa rozvarí za 30 minút'
+  choose: 'Lúpaný (žltý) sa nemusí šúpať a varí sa rýchlo.'
+  storage: 'Suchý rok.'
+  warn: Pri vrodenom nedostatku enzýmu G6PD (favizmus) bôb nejedz.
+
+- id: bob-sterilizovany
+  name: Bôb sterilizovaný (scedený)
+  howto: [strukoviny]
+  category: strukoviny
+  group: bob
+  n: { kcal: 110, p: 7.6, c: 19.6, f: 0.4, fib: 5.4, salt: 0.5, fe: 1.5, ca: 36, zn: 1 }
+  units: { ks: 240 }
+  price: 5
+  co2: 1.2
+  color: '#b89a63'
+  note: 1 ks = plechovka 400 g, po scedení ~240 g
+  substitutes:
+    - { to: cicer-sterilizovany }
+    - { to: fazula-biela }
+  about: 'Uvarený bôb (foul) v plechovke z arabských a ázijských obchodov.'
+  uses:
+    - 'Ful medames na raňajky'
+  storage: 'Otvorený v chladničke 3 dni.'
+  warn: Pri vrodenom nedostatku enzýmu G6PD (favizmus) bôb nejedz.
+
+- id: lupinova-muka
+  name: Lupínová múka
+  category: strukoviny
+  allergens: [lupin]
+  n: { kcal: 370, p: 40, c: 11, f: 9, fib: 30, salt: 0, fe: 4.4, ca: 180, zn: 3 }
+  units: { pl: 8, hrnček: 110 }
+  price: 9
+  co2: 0.8
+  color: '#f0d77a'
+  substitutes:
+    - { to: cicerova-muka, note: 'menej bielkovín' }
+  about: 'Múka zo sladkej lupiny (vlčieho bôbu). Lupina rastie aj na chudobných piesočnatých pôdach a má najviac bielkovín zo všetkých strukovín.'
+  uses:
+    - 'Do placiek a palaciniek (tretinu múky)'
+    - 'Zvýši bielkoviny pečiva'
+  storage: 'Suchá pol roka.'
+  warn: Lupina je alergén – často spolu s alergiou na arašidy.
+
+- id: pastinak
+  name: Paštrnák
+  category: zelenina
+  n: { kcal: 75, p: 1.2, c: 18, f: 0.3, fib: 4.9, salt: 0, fe: 0.6, ca: 36, zn: 0.6 }
+  units: { ks: 150 }
+  price: 3
+  co2: 0.4
+  color: '#efe3c2'
+  season: [9, 10, 11, 12, 1, 2, 3]
+  substitutes:
+    - { to: petrzlen-koren }
+    - { to: mrkva, note: 'menej sladký, iná farba' }
+  about: 'Biely koreň podobný petržlenu, ale väčší a sladší. Po mraze je ešte sladší – v zemi vydrží celú zimu.'
+  uses:
+    - 'Pečený s tymianom, pyré, do polievok'
+  choose: 'Stredne veľký, pevný – veľké bývajú drevnaté v strede.'
+  storage: 'V chladničke 3 týždne.'
+
+- id: kel
+  name: Kučeravý kel (kale)
+  category: zelenina
+  n: { kcal: 49, p: 4.3, c: 8.8, f: 0.9, fib: 3.6, salt: 0, fe: 1.5, ca: 150, zn: 0.6, ala: 0.18 }
+  units: { hrnček: 40, ks: 250 }
+  price: 8
+  co2: 0.4
+  color: '#3f7a3a'
+  season: [9, 10, 11, 12, 1, 2, 3]
+  substitutes:
+    - { to: spenat, note: 'mäkší, var kratšie' }
+    - { to: mangold }
+  about: 'Zimná listová zelenina, ktorá prežije aj -15 °C a po mraze zosladne. Veľa vápnika, ktorý sa dobre vstrebáva.'
+  uses:
+    - 'Chipsy z rúry, do polievok a dusený s cesnakom'
+    - 'Surový premasírovaný so soľou do šalátu'
+  choose: 'Tuhé tmavé listy, odstráň hrubé stonky.'
+  storage: 'V chladničke 5 dní.'
+
+- id: mangold
+  name: Mangold
+  category: zelenina
+  n: { kcal: 19, p: 1.8, c: 3.7, f: 0.2, fib: 1.6, salt: 0.5, fe: 1.8, ca: 51, zn: 0.4 }
+  units: { hrnček: 36, ks: 300 }
+  price: 4
+  co2: 0.4
+  color: '#5b8c3a'
+  season: [5, 6, 7, 8, 9, 10]
+  substitutes:
+    - { to: spenat }
+    - { to: kel, note: 'tuhší, var dlhšie' }
+  about: 'Cviklový príbuzný pestovaný pre listy a farebné stonky. Rastie celé leto a ľahko sa zberá postupne.'
+  uses:
+    - 'Stonky osmaž ako chrest, listy duš ako špenát'
+    - 'Plnené mangoldové listy'
+  storage: 'V chladničke 4 dni.'
+  note: Obsahuje veľa oxalátov – krátko spar a vodu vylej.
+
+- id: konopne-semienka
+  name: Konopné semienka lúpané
+  category: orechy-semienka
+  n: { kcal: 553, p: 31.6, c: 8.7, f: 48.8, fib: 4, salt: 0, fe: 8, ca: 70, zn: 9.9, ala: 8.7 }
+  units: { pl: 10, čl: 3.5 }
+  price: 18
+  co2: 1
+  color: '#a4a878'
+  substitutes:
+    - { to: slnecnicove-semienka, note: 'bez omega-3' }
+    - { to: lanove-semienko }
+  about: 'Mäkké orieškové semienka technického konope (bez THC). Konope rastie rýchlo bez postrekov. Veľa bielkovín, omega-3 aj zinku.'
+  uses:
+    - 'Posyp na kašu a šaláty, do pesta'
+    - 'Konopné mlieko – rozmixuj s vodou'
+  storage: 'V chladničke, rýchlo žltnú.'
+
+- id: slnecnicove-semienka
+  name: Slnečnicové semienka lúpané
+  category: orechy-semienka
+  n: { kcal: 584, p: 20.8, c: 20, f: 51.5, fib: 8.6, salt: 0, fe: 5.2, ca: 78, zn: 5 }
+  units: { pl: 9, hrnček: 140 }
+  price: 4
+  co2: 1.2
+  color: '#b9b09a'
+  substitutes:
+    - { to: tekvicove-semienka }
+    - { to: kesu, note: 'drahšie, v krémoch jemnejšie' }
+  about: 'Najlacnejšie domáce semienka. Namočené a rozmixované nahradia kešu v krémoch a nátierkach.'
+  uses:
+    - 'Nátierky, pesto, syrové omáčky'
+    - 'Opražené na šaláty'
+  storage: 'V chladničke pol roka.'
+
+- id: cierny-koren
+  name: Čierny koreň (hadomor)
+  category: zelenina
+  n: { kcal: 82, p: 3.3, c: 18.6, f: 0.2, fib: 3.3, salt: 0.1, fe: 0.7, ca: 60, zn: 0.4 }
+  units: { ks: 60 }
+  price: 6
+  co2: 0.4
+  color: '#3d3129'
+  season: [10, 11, 12, 1, 2, 3]
+  substitutes:
+    - { to: pastinak }
+    - { to: petrzlen-koren }
+  about: 'Zabudnutá zimná zelenina, „chrest chudobných“. Pod čiernou šupkou je biely, jemne orieškový koreň.'
+  uses:
+    - 'Varený s bešamelom, pečený, v polievke'
+  choose: 'Šúp v rukaviciach pod vodou a daj hneď do vody s citrónom – lepí a hnedne.'
+  storage: 'V chladničke zabalený v papieri 2 týždne.'
+
+- id: por
+  name: Pór
+  category: zelenina
+  n: { kcal: 61, p: 1.5, c: 14, f: 0.3, fib: 1.8, salt: 0.1, fe: 2.1, ca: 59, zn: 0.1 }
+  units: { ks: 150 }
+  price: 2.5
+  co2: 0.4
+  color: '#b8d58f'
+  season: [9, 10, 11, 12, 1, 2, 3]
+  substitutes:
+    - { to: cibula, note: 'ostrejšia' }
+    - { to: jarna-cibulka }
+  about: 'Jemnejší príbuzný cibule, ktorý na záhrade prezimuje.'
+  uses:
+    - 'Polievky, quiche, dusený na masle'
+  choose: 'Rozrež pozdĺžne a vypláchni – medzi vrstvami býva hlina.'
+  storage: 'V chladničke 2 týždne.'
+
+- id: ruzickovy-kel
+  name: Ružičkový kel
+  category: zelenina
+  n: { kcal: 43, p: 3.4, c: 9, f: 0.3, fib: 3.8, salt: 0.1, fe: 1.4, ca: 42, zn: 0.4 }
+  units: { hrnček: 90 }
+  price: 4
+  co2: 0.5
+  color: '#6f9e3b'
+  season: [10, 11, 12, 1, 2]
+  substitutes:
+    - { to: brokolica }
+    - { to: biela-kapusta }
+  about: 'Mini kapustičky, ktoré mráz nezničí – zberajú sa do februára. Pečené sú sladké, nie horké.'
+  uses:
+    - 'Pečený s balzamikom, osmažený na panvici'
+  storage: 'V chladničke týždeň.'
+
+- id: chren
+  name: Chren (strúhaný)
+  category: zelenina
+  n: { kcal: 48, p: 1.2, c: 11, f: 0.7, fib: 3.3, salt: 0.8, fe: 0.4, ca: 56, zn: 0.8 }
+  units: { pl: 15, čl: 5 }
+  price: 8
+  co2: 0.4
+  color: '#ece7d4'
+  substitutes:
+    - { to: horcica, note: 'menej ostrá' }
+  about: 'Ostrý koreň, ktorý rastie ako burina. Čerstvo nastrúhaný vyženie slzy.'
+  uses:
+    - 'K zemiakom, do nátierok a omáčok'
+  storage: 'Koreň v chladničke mesiac, strúhaný v pohári s octom týždne.'
+
+- id: krupy
+  name: Jačmenné krúpy
+  category: obilniny
+  gluten: contains
+  gf_alternative: pohanka
+  n: { kcal: 352, p: 9.9, c: 77.7, f: 1.2, fib: 15.6, salt: 0, fe: 2.5, ca: 29, zn: 2.1 }
+  units: { hrnček: 200 }
+  price: 1.8
+  co2: 1.1
+  color: '#e6d7b3'
+  substitutes:
+    - { to: cirok, note: 'bez lepku' }
+    - { to: pohanka }
+  about: 'Lúpaný jačmeň – najlacnejšie domáce obilie. Rozvarené zahustia polievku, uvarené sú ako rizoto.'
+  uses:
+    - 'Kapustnica, krúpové rizoto (krupoto), šaláty'
+  storage: 'Suché rok.'
+
+# ── Svetová špajza ──────────────────────────────────────────────
+
+- id: urad-dal
+  name: Urad dal (čierna fazuľka, lúpaná)
+  howto: [strukoviny]
+  category: strukoviny
+  n: { kcal: 341, p: 25, c: 59, f: 1.6, fib: 18, salt: 0, fe: 7.6, ca: 138, zn: 3.4 }
+  units: { hrnček: 200 }
+  price: 5
+  co2: 1
+  color: '#ece4d2'
+  substitutes:
+    - { to: mungo, note: 'cesto bude menej nadýchané' }
+  about: 'Lúpaná čierna fazuľka z indických obchodov. Namočená a rozmixovaná vykvasí ako cesto – základ dosy a idli.'
+  uses:
+    - 'Dosa, idli, dal makhani (celý nelúpaný)'
+  storage: 'Suchý rok.'
+
+- id: mungo
+  name: Mungo fazuľka
+  howto: [strukoviny]
+  category: strukoviny
+  n: { kcal: 347, p: 23.9, c: 62.6, f: 1.2, fib: 16.3, salt: 0, fe: 6.7, ca: 132, zn: 2.7 }
+  units: { hrnček: 200 }
+  price: 4
+  co2: 1
+  color: '#7fa05a'
+  substitutes:
+    - { to: sosovica-cervena, note: 'rozvarí sa rýchlejšie' }
+  about: 'Drobná zelená fazuľka – varí sa bez namáčania za 30 minút. Lúpaná žltá (moong dal) za 20.'
+  kinds:
+    - 'Celá zelená – do kaší, dezertov, na klíčky'
+    - 'Lúpaná žltá (moong dal) – do dalu a pongalu'
+  uses:
+    - 'Dal, pongal, vietnamský dezert chè'
+  storage: 'Suchá rok.'
+
+- id: kari-listy
+  name: Kari listy (čerstvé alebo mrazené)
+  category: koreniny
+  n: { kcal: 108, p: 6, c: 18.7, f: 1, fib: 6.4, salt: 0, fe: 0.9, ca: 830, zn: 0.2 }
+  units: { ks: 0.2 }
+  price: 80
+  color: '#2f6b2a'
+  substitutes:
+    - { note: 'vynechaj – nič ich nenahradí, jedlo bude len menej voňavé' }
+  about: 'Voňavé listy stromu murraya, typické pre juhoindickú kuchyňu. Nemajú nič spoločné s kari korením.'
+  uses:
+    - 'Opraž v oleji s horčičnými semienkami na začiatku varenia'
+  storage: 'Mrazené mesiace.'
+
+- id: asafetida
+  name: Asafetida (hing)
+  category: koreniny
+  gluten: risk
+  note: mletá sa často mieša s pšeničnou múkou
+  n: { kcal: 297, p: 4, c: 68, f: 1, fib: 4, salt: 0, fe: 39, ca: 690, zn: 1 }
+  units: { čl: 3 }
+  price: 60
+  color: '#e8d9a8'
+  substitutes:
+    - { note: 'štipka cesnakového prášku' }
+  about: 'Zapáchajúca živica, ktorá v horúcom oleji zvoňavie ako cesnak s cibuľou. Stačí štipka.'
+  uses:
+    - 'Dal, sambar, jedlá bez cibule'
+  storage: 'V tesnej dóze, inak prevonia špajzu.'
+
+- id: psenicna-krupica
+  name: Pšeničná krupica
+  category: obilniny
+  gluten: contains
+  gf_alternative: kukuricna-krupica
+  n: { kcal: 360, p: 12.7, c: 73, f: 1, fib: 3.9, salt: 0, fe: 1.2, ca: 17, zn: 1 }
+  units: { hrnček: 170, pl: 12 }
+  price: 1.2
+  co2: 1.6
+  color: '#f1e3b5'
+  substitutes:
+    - { to: kukuricna-krupica, note: 'bez lepku' }
+  about: 'Hrubšie mletá pšenica – detská krupica aj semolina.'
+  uses:
+    - 'Upma, baghrir, krupicová kaša'
+  storage: 'Suchá pol roka.'
+
+- id: kokos-struhany
+  name: Kokos strúhaný
+  category: orechy-semienka
+  n: { kcal: 660, p: 6.9, c: 23.7, f: 64.5, fib: 16.3, salt: 0, fe: 3.3, ca: 26, zn: 2 }
+  units: { pl: 6, hrnček: 80 }
+  price: 6
+  co2: 2
+  color: '#f7f3ea'
+  substitutes:
+    - { to: kokosove-mlieko, note: 'do omáčok' }
+  about: 'Sušená kokosová dužina. Namočená v horúcej vode sa správa ako čerstvý kokos.'
+  uses:
+    - 'Chutney, avial, dezerty a guľky'
+  storage: 'V tesnej dóze pol roka.'
+
+- id: poha
+  name: Poha (sploštená ryža)
+  category: obilniny
+  n: { kcal: 350, p: 6.6, c: 77, f: 1.2, fib: 1.8, salt: 0, fe: 2.6, ca: 10, zn: 1.2 }
+  units: { hrnček: 60 }
+  price: 6
+  co2: 3
+  color: '#f3ead3'
+  substitutes:
+    - { to: ovsene-vlocky, note: 'iná chuť, ale podobná textúra' }
+  about: 'Rozpučená predvarená ryža. Stačí ju opláchnuť, nevarí sa.'
+  uses:
+    - 'Poha na raňajky, chrumkavý mix'
+  choose: 'Na poha hrubšie vločky (thick poha).'
+  storage: 'Suchá pol roka.'
+
+- id: cili-papricka
+  name: Čili paprička čerstvá
+  category: zelenina
+  n: { kcal: 40, p: 1.9, c: 8.8, f: 0.4, fib: 1.5, salt: 0, fe: 1, ca: 14, zn: 0.3 }
+  units: { ks: 15 }
+  price: 10
+  co2: 0.8
+  color: '#d0342c'
+  season: [7, 8, 9, 10]
+  substitutes:
+    - { to: cili, note: '¼ ČL mletého za 1 papričku' }
+  about: 'Čerstvé čili – jalapeño, thajské, habanero. Pálivosť je hlavne v semienkach a bielych rebrách.'
+  kinds:
+    - 'Jalapeño – mierne, mäsité'
+    - 'Thajské (vtáčie oko) – malé a veľmi pálivé'
+    - 'Habanero / scotch bonnet – ovocné, extrémne pálivé'
+  uses:
+    - 'Salsy, kari, marinády'
+  choose: 'Na menej pálivé vyber semienka.'
+  storage: 'V chladničke týždeň, celé sa dajú zamraziť.'
+
+- id: cervena-kari-pasta
+  name: Červená kari pasta
+  category: omacky-pasty
+  n: { kcal: 120, p: 2, c: 12, f: 7, fib: 4, salt: 8, fe: 2, ca: 40, zn: 0.4 }
+  units: { pl: 18, čl: 6 }
+  price: 25
+  color: '#b8321f'
+  substitutes:
+    - { to: zelena-kari-pasta, note: 'bylinkovejšia' }
+  about: 'Thajská pasta zo sušeného čili, citrónovej trávy, galangalu a cesnaku.'
+  uses:
+    - 'Červené kari, polievky, marinády'
+  storage: 'Otvorená v chladničke mesiac.'
+  warn: Mnohé thajské pasty obsahujú krevetovú pastu (kapi) – kontroluj zloženie.
+
+- id: mango
+  name: Mango
+  category: ovocie
+  n: { kcal: 60, p: 0.8, c: 15, f: 0.4, fib: 1.6, salt: 0, fe: 0.2, ca: 11, zn: 0.1 }
+  units: { ks: 200, hrnček: 165 }
+  price: 3
+  co2: 1.5
+  color: '#f5a623'
+  substitutes:
+    - { note: 'mrazené mango, broskyne' }
+  about: 'Zrelé mango je mäkké pod prstom a pri stopke vonia.'
+  uses:
+    - 'Lepkavá ryža s mangom, smoothie, salsa'
+  storage: 'Nezrelé pri izbovej teplote, zrelé v chladničke 3 dni.'
+
+- id: lepkava-ryza
+  name: Lepkavá ryža (glutinózna)
+  howto: [ryza]
+  category: obilniny
+  n: { kcal: 370, p: 6.8, c: 81.7, f: 0.6, fib: 2.8, salt: 0, fe: 1.5, ca: 11, zn: 1.2 }
+  units: { hrnček: 190 }
+  price: 5
+  co2: 4.5
+  color: '#f7f3ea'
+  substitutes:
+    - { to: ryza-sushi, note: 'menej lepkavá' }
+  about: 'Ryža, ktorá sa po uvarení na pare zlepí – napriek menu je bez lepku (gluténu).'
+  uses:
+    - 'Mango sticky rice, xôi, onigiri'
+  choose: 'Namoč aspoň na 4 hodiny a var na pare.'
+  storage: 'Suchá rok.'
+
+- id: lepkava-ryzova-muka
+  name: Lepkavá ryžová múka
+  category: obilniny
+  n: { kcal: 370, p: 6, c: 80, f: 1, fib: 2.4, salt: 0, fe: 0.4, ca: 10, zn: 0.9 }
+  units: { pl: 9, hrnček: 130 }
+  price: 6
+  co2: 4.5
+  color: '#f7f3ea'
+  substitutes:
+    - { note: 'bežná ryžová múka nefunguje – cesto nebude pružné' }
+  about: 'Múka z glutinóznej ryže (mochiko, bột nếp). Bez lepku, ale cesto je pružné ako žuvačka.'
+  uses:
+    - 'Klepon, mochi, hotteok'
+  storage: 'Suchá rok.'
+
+- id: teff
+  name: Teff
+  category: obilniny
+  n: { kcal: 367, p: 13.3, c: 73, f: 2.4, fib: 8, salt: 0, fe: 7.6, ca: 180, zn: 3.6 }
+  units: { hrnček: 190 }
+  price: 12
+  co2: 1
+  color: '#8a5a3c'
+  substitutes:
+    - { to: pohanka, note: 'mletá pohánka, injera bude hustejšia' }
+  about: 'Najmenšie obilie na svete z Etiópie. Znesie sucho aj záplavy a skúša sa pestovať aj v strednej Európe. Veľa železa a vápnika.'
+  uses:
+    - 'Injera (kvásková placka), kaša'
+  storage: 'Suchý rok.'
+
+- id: fazula-cierne-oko
+  name: Fazuľa čierne oko (suchá)
+  howto: [strukoviny]
+  category: strukoviny
+  n: { kcal: 336, p: 23.5, c: 60, f: 1.3, fib: 10.6, salt: 0, fe: 8.3, ca: 110, zn: 3.4 }
+  units: { hrnček: 170 }
+  price: 4
+  co2: 1
+  color: '#efe6d2'
+  substitutes:
+    - { to: fazula-biela, note: 'sterilizovaná, bez varenia' }
+  about: 'Krémová fazuľa s čiernym očkom. Nemusí sa namáčať, varí sa 45 minút. Rastie v teple a suchu.'
+  uses:
+    - 'Akara, red red, hoppin john'
+  storage: 'Suchá rok.'
+
+- id: plantain
+  name: Plantain (zeleninový banán)
+  category: zelenina
+  n: { kcal: 122, p: 1.3, c: 31.9, f: 0.4, fib: 2.3, salt: 0, fe: 0.6, ca: 3, zn: 0.1 }
+  units: { ks: 200 }
+  price: 4
+  co2: 0.9
+  color: '#e6c34a'
+  substitutes:
+    - { to: batat, note: 'podobne sladký a škrobovitý' }
+  about: 'Veľký škrobovitý banán, ktorý sa jedáva len varený alebo vyprážaný. Zelený chutí ako zemiak, s čiernou šupkou je sladký.'
+  uses:
+    - 'Tostones (zelený), kelewele a maduros (zrelý)'
+  choose: 'V ázijských a afrických obchodoch.'
+  storage: 'Pri izbovej teplote dozrieva týždeň.'
+
+- id: tapiokovy-skrob
+  name: Tapiokový škrob
+  category: obilniny
+  n: { kcal: 358, p: 0.2, c: 88.7, f: 0, fib: 0.9, salt: 0, fe: 1.6, ca: 20, zn: 0.1 }
+  units: { pl: 8, hrnček: 120 }
+  price: 5
+  co2: 1
+  color: '#fbfaf6'
+  substitutes:
+    - { to: kukuricny-skrob, note: 'v omáčkach, na pão de queijo nie' }
+  about: 'Škrob z koreňa manioku. Cesto z neho je po upečení pružné a ťahavé ako syr.'
+  uses:
+    - 'Pão de queijo, tapioca palacinky, zahustenie'
+  storage: 'Suchý rok.'
+
+- id: maniokova-muka
+  name: Manioková múka (farinha)
+  category: obilniny
+  n: { kcal: 365, p: 1.6, c: 88, f: 0.3, fib: 6.4, salt: 0, fe: 1.2, ca: 70, zn: 0.4 }
+  units: { hrnček: 150, pl: 10 }
+  price: 8
+  co2: 1
+  color: '#efe2c0'
+  substitutes:
+    - { to: struhanka, note: 's lepkom' }
+  about: 'Hrubá opražená múka z manioku. V Brazílii sa sype na všetko.'
+  uses:
+    - 'Farofa'
+  storage: 'Suchá rok.'
+
+- id: acai
+  name: Açaí dreň mrazená (nesladená)
+  category: ovocie
+  n: { kcal: 70, p: 1, c: 4, f: 5, fib: 3, salt: 0, fe: 0.6, ca: 35, zn: 0.3 }
+  units: { ks: 100 }
+  price: 20
+  co2: 1.5
+  color: '#4b1f4a'
+  note: 1 ks = 100 g balíček
+  substitutes:
+    - { note: 'mrazené čučoriedky' }
+  about: 'Dreň z palmových bobúľ z Amazónie. Chutí ako čučoriedky s kakaom.'
+  uses:
+    - 'Açaí bowl'
+  storage: 'V mrazničke.'
+
+- id: jackfruit
+  name: Mladý jackfruit (sterilizovaný, scedený)
+  category: zelenina
+  n: { kcal: 50, p: 1.2, c: 10, f: 0.3, fib: 3, salt: 0.4, fe: 0.3, ca: 25, zn: 0.2 }
+  units: { ks: 280 }
+  price: 8
+  co2: 1
+  color: '#e6d9a8'
+  note: 1 ks = plechovka 565 g, po scedení ~280 g
+  substitutes:
+    - { to: hliva, note: 'natrhaná, viac bielkovín' }
+  about: 'Nezrelé chlebovníkové ovocie v slanom náleve. Po uvarení sa trhá na vlákna ako mäso, ale bielkovín má málo.'
+  uses:
+    - 'Pulled jackfruit, rendang, coxinha'
+  choose: 'V slanom náleve (brine), nie v sirupe.'
+  storage: 'Otvorený v chladničke 3 dni.'
+
+- id: filo-cesto
+  name: Filo cesto
+  category: obilniny
+  gluten: contains
+  n: { kcal: 300, p: 7, c: 53, f: 6, fib: 1.9, salt: 1, fe: 3.2, ca: 11, zn: 0.5 }
+  units: { ks: 20 }
+  price: 6
+  co2: 1.5
+  color: '#f3e6c4'
+  note: 1 ks = jeden plát
+  about: 'Tenučké listy cesta z múky a vody – bežne vegánske.'
+  uses:
+    - 'Spanakopita, baklava, štrúdle'
+  choose: 'Chladené. Pri práci ho prikry vlhkou utierkou, inak vyschne.'
+  storage: 'V chladničke 2 týždne, dá sa zamraziť.'
+
+- id: olivy
+  name: Olivy (čierne, kalamata)
+  category: zelenina
+  n: { kcal: 115, p: 0.8, c: 6, f: 10.7, fib: 3.2, salt: 1.8, fe: 3.3, ca: 88, zn: 0.2 }
+  units: { ks: 4, pl: 10 }
+  price: 10
+  co2: 1.5
+  color: '#4a3b4a'
+  substitutes:
+    - { note: 'zelené olivy, kapary' }
+  about: 'Kalamata sú fialové a vínne, čierne španielske jemnejšie.'
+  uses:
+    - 'Grécky šalát, pizza, tapenáda'
+  storage: 'Otvorené v náleve v chladničke 3 týždne.'
+
+- id: vinicove-listy
+  name: Viničové listy v náleve
+  category: zelenina
+  n: { kcal: 93, p: 4.3, c: 11.7, f: 2.1, fib: 6.9, salt: 2, fe: 1.5, ca: 290, zn: 0.4 }
+  units: { ks: 3 }
+  price: 15
+  co2: 1
+  color: '#6d8b3f'
+  note: soľ je po prepláchnutí
+  substitutes:
+    - { note: 'čerstvé listy z viniča spar 1 minútu' }
+  about: 'Mladé listy viniča nakladané v slanom náleve. Pred použitím prepláchni.'
+  uses:
+    - 'Dolmades (sarma)'
+  storage: 'Otvorené v chladničke 2 týždne.'
+
+- id: sumak
+  name: Sumak
+  category: koreniny
+  n: { kcal: 250, p: 4, c: 70, f: 5, fib: 30, salt: 2, fe: 3, ca: 80, zn: 1 }
+  units: { čl: 3 }
+  price: 30
+  color: '#8b2a2a'
+  substitutes:
+    - { to: citron, note: 'kôra a trochu šťavy' }
+  about: 'Kyslé bordové korenie z bobúľ – citrónová chuť bez tekutiny.'
+  uses:
+    - 'Fattoush, zaatar, na cibuľu a hummus'
+  storage: 'V tme pol roka.'
+
+- id: zaatar
+  name: Zaatar (zmes)
+  category: koreniny
+  allergens: [sesame]
+  n: { kcal: 300, p: 10, c: 40, f: 15, fib: 25, salt: 3, fe: 30, ca: 800, zn: 3 }
+  units: { pl: 7, čl: 2.5 }
+  price: 30
+  color: '#7b8b4a'
+  substitutes:
+    - { to: tymian, note: '+ sezam a kôra z citróna' }
+  about: 'Blízkovýchodná zmes tymiánu (alebo yzopu), sumaku a praženého sezamu.'
+  uses:
+    - 'Manakish, na hummus, do olivového oleja na chlieb'
+  homemade:
+    steps:
+      - '2 PL sušeného tymiánu, 1 PL sumaku a 1 PL opraženého sezamu premiešaj so štipkou soli.'
+  storage: 'V tme pol roka.'
+
+- id: pita
+  name: Pita chlieb
+  category: obilniny
+  gluten: contains
+  gf_alternative: pecivo-bezlepkove
+  n: { kcal: 275, p: 9, c: 55, f: 1.2, fib: 2.2, salt: 1.3, fe: 2.6, ca: 86, zn: 0.8 }
+  units: { ks: 60 }
+  price: 5
+  co2: 1.5
+  color: '#e9cf98'
+  substitutes:
+    - { to: kukuricne-tortilly, note: 'bez lepku' }
+  about: 'Plochý chlieb s vreckom.'
+  uses:
+    - 'Fattoush, k hummusu, falafel'
+  storage: 'Zamrazená mesiace.'
+
+- id: kuskus
+  name: Kuskus
+  category: obilniny
+  gluten: contains
+  gf_alternative: proso
+  n: { kcal: 376, p: 12.8, c: 77, f: 0.6, fib: 5, salt: 0, fe: 1.1, ca: 24, zn: 0.8 }
+  units: { hrnček: 175 }
+  price: 3
+  co2: 1.6
+  color: '#f1dca0'
+  substitutes:
+    - { to: proso, note: 'bez lepku, treba uvariť' }
+    - { to: quinoa }
+  about: 'Drobné guľôčky z pšeničnej krupice. Stačí ho zaliať vriacou vodou.'
+  uses:
+    - 'Marocký kuskus so zeleninou, šaláty'
+  storage: 'Suchý rok.'
+
+- id: nori
+  name: Nori (morská riasa, plát)
+  category: ine
+  n: { kcal: 300, p: 41, c: 40, f: 1, fib: 30, salt: 1.5, fe: 18, ca: 280, zn: 3 }
+  units: { ks: 3 }
+  price: 80
+  co2: 1
+  color: '#1f2b1c'
+  note: 1 ks = plát 3 g
+  about: 'Sušené lisované riasy na sushi a onigiri. Pár plátov týždenne je dobrý zdroj jódu.'
+  uses:
+    - 'Sushi, onigiri, kimbap, na ryžu'
+  storage: 'V tesnom obale, inak zvlhne.'
+
+- id: ryzovy-ocot
+  name: Ryžový ocot
+  category: omacky-pasty
+  n: { kcal: 18, p: 0, c: 1, f: 0, fib: 0, salt: 0, fe: 0, ca: 6, zn: 0 }
+  units: { pl: 15, čl: 5 }
+  price: 6
+  color: '#f4eecf'
+  substitutes:
+    - { to: ocot, note: 'jablčný zriedený vodou 1:1' }
+  about: 'Jemný sladkastý ocot na sushi a ázijské zálievky.'
+  uses:
+    - 'Sushi ryža, nakladaná zelenina, zálievky'
+  storage: 'Roky.'
+
+- id: ryza-sushi
+  name: Ryža na sushi (guľatozrnná)
+  howto: [ryza]
+  category: obilniny
+  group: ryza
+  n: { kcal: 360, p: 6.5, c: 79, f: 0.5, fib: 1, salt: 0, fe: 0.8, ca: 3, zn: 1.1 }
+  units: { hrnček: 200 }
+  price: 4
+  co2: 4.5
+  color: '#f7f3ea'
+  substitutes:
+    - { to: ryza-arborio, note: 'v núdzi' }
+  about: 'Krátkozrnná japonská ryža, ktorá sa po uvarení jemne lepí.'
+  uses:
+    - 'Sushi, onigiri, kimbap, ku kari'
+  storage: 'Suchá rok.'
+
+- id: soba
+  name: Soba rezance (pohánkové)
+  category: obilniny
+  gluten: contains
+  gf_alternative: ryzove-rezance
+  note: väčšina obsahuje aj pšeničnú múku; 100 % pohánkové sú bez lepku
+  n: { kcal: 336, p: 14.4, c: 74.6, f: 0.7, fib: 4, salt: 2, fe: 4, ca: 35, zn: 1.5 }
+  price: 12
+  co2: 1.5
+  color: '#8d7a64'
+  about: 'Japonské rezance z pohánky – orieškové, dobré aj studené.'
+  uses:
+    - 'Zaru soba, polievky'
+  storage: 'Suché rok.'
+
+- id: psenicne-rezance
+  name: Pšeničné rezance (ramen, udon, lo mein)
+  category: obilniny
+  gluten: contains
+  gf_alternative: ryzove-rezance
+  n: { kcal: 360, p: 12, c: 74, f: 1.5, fib: 3, salt: 0.5, fe: 1.5, ca: 20, zn: 0.8 }
+  price: 5
+  co2: 1.5
+  color: '#f0d99a'
+  substitutes:
+    - { to: cestoviny, note: 'špagety varené so štipkou sódy bikarbóny' }
+  about: 'Ázijské pšeničné rezance. Kupuj bez vajec (egg noodles sú s vajcom).'
+  uses:
+    - 'Ramen, yakisoba, dan dan, lo mein'
+  storage: 'Suché rok.'
+
+- id: sklenene-rezance
+  name: Sklenené rezance (batátové)
+  category: obilniny
+  n: { kcal: 350, p: 0.1, c: 86, f: 0.1, fib: 1, salt: 0, fe: 1, ca: 20, zn: 0.1 }
+  price: 8
+  co2: 1
+  color: '#d9d4c7'
+  substitutes:
+    - { to: ryzove-rezance, note: 'jemnejšie, menej žuvacie' }
+  about: 'Kórejské dangmyeon zo škrobu batátov – po uvarení priehľadné a pružné.'
+  uses:
+    - 'Japchae, polievky'
+  storage: 'Suché rok.'
+
+- id: tteok
+  name: Tteok (kórejské ryžové valčeky)
+  category: obilniny
+  n: { kcal: 225, p: 4, c: 50, f: 0.4, fib: 0.6, salt: 0.3, fe: 0.3, ca: 5, zn: 0.8 }
+  price: 10
+  co2: 2
+  color: '#f7f3ea'
+  substitutes:
+    - { note: 'gnocchi – mäkšie, s lepkom' }
+  about: 'Žuvacie valčeky z ryžovej múky z ázijských obchodov (chladené alebo mrazené).'
+  uses:
+    - 'Tteokbokki, polievka tteokguk'
+  choose: 'Pred varením namoč 20 minút do vody, ak sú tvrdé.'
+  storage: 'V chladničke týždeň, v mrazničke mesiace.'
+
+- id: kecap-manis
+  name: Kecap manis (sladká sójová omáčka)
+  category: omacky-pasty
+  gluten: contains
+  gf_alternative: tamari
+  allergens: [soy]
+  n: { kcal: 280, p: 3, c: 65, f: 0, fib: 0, salt: 12, fe: 1, ca: 20, zn: 0.2 }
+  units: { pl: 20, čl: 7 }
+  price: 12
+  color: '#2b1a12'
+  substitutes:
+    - { to: sojova-omacka, note: 'zmiešaná s rovnakým dielom cukru, prevarená' }
+  about: 'Hustá sladká sójová omáčka z Indonézie.'
+  uses:
+    - 'Nasi goreng, mie goreng, tempeh orek'
+  storage: 'Otvorená rok.'
+
+- id: okra
+  name: Okra
+  category: zelenina
+  n: { kcal: 33, p: 1.9, c: 7.5, f: 0.2, fib: 3.2, salt: 0, fe: 0.6, ca: 82, zn: 0.6 }
+  units: { ks: 12, hrnček: 100 }
+  price: 10
+  co2: 0.8
+  color: '#6f9a3b'
+  season: [7, 8, 9]
+  substitutes:
+    - { to: zelene-fazulky, note: 'nezahustí' }
+  about: 'Zelené struky ibišteka. Varené zahusťujú (slizkavosť), opečené nasucho sú chrumkavé. U nás rastie v teplých letách.'
+  uses:
+    - 'Gumbo, bhindi masala'
+  storage: 'V chladničke 3 dni.'
+
+- id: hrozienka
+  name: Hrozienka
+  category: ovocie
+  n: { kcal: 299, p: 3.1, c: 79, f: 0.5, fib: 3.7, salt: 0, fe: 1.9, ca: 50, zn: 0.2 }
+  units: { pl: 10, hrnček: 145 }
+  price: 5
+  co2: 1
+  color: '#6b3a2a'
+  substitutes:
+    - { to: susene-marhule, note: 'nakrájané' }
+  about: 'Sušené hrozno.'
+  uses:
+    - 'Kaše, pečivo, marocké jedlá'
+  storage: 'Rok.'
+
+- id: mandle
+  name: Mandle
+  category: orechy-semienka
+  allergens: [nuts]
+  n: { kcal: 579, p: 21, c: 21.6, f: 49.9, fib: 12.5, salt: 0, fe: 3.7, ca: 269, zn: 3.1 }
+  units: { pl: 9, hrnček: 140 }
+  price: 14
+  co2: 3.5
+  color: '#c89a6a'
+  substitutes:
+    - { to: slnecnicove-semienka, note: 'lacnejšie, bez orechov' }
+  about: 'Veľa vápnika a vitamínu E.'
+  uses:
+    - 'Muhammara, romesco, mandľové mlieko'
+  storage: 'V chladničke rok.'
+
+- id: granatove-jablko
+  name: Granátové jablko
+  category: ovocie
+  n: { kcal: 83, p: 1.7, c: 18.7, f: 1.2, fib: 4, salt: 0, fe: 0.3, ca: 10, zn: 0.4 }
+  units: { ks: 150 }
+  price: 4
+  co2: 1
+  color: '#b0213a'
+  season: [10, 11, 12, 1]
+  note: 1 ks = zrnká z jedného plodu
+  about: 'Šťavnaté kyslosladké zrnká.'
+  uses:
+    - 'Fattoush, na hummus a kašu'
+  choose: 'Rozrež na polovice a vyklepávaj varechou nad miskou.'
+  storage: 'Celé v chladničke mesiac.'
+
+- id: cucoriedky
+  name: Čučoriedky (aj mrazené)
+  category: ovocie
+  n: { kcal: 57, p: 0.7, c: 14.5, f: 0.3, fib: 2.4, salt: 0, fe: 0.3, ca: 6, zn: 0.2 }
+  units: { hrnček: 150 }
+  price: 12
+  co2: 1
+  color: '#3b4a8c'
+  season: [7, 8]
+  substitutes:
+    - { to: maliny }
+  about: 'Kultúrne čučoriedky – mrazené sú lacnejšie a do pečenia rovnako dobré.'
+  uses:
+    - 'Muffiny, kaše, smoothie'
+  storage: 'Čerstvé 5 dní, mrazené rok.'
+
+- id: pak-choi
+  name: Pak choi
+  category: zelenina
+  n: { kcal: 13, p: 1.5, c: 2.2, f: 0.2, fib: 1, salt: 0.2, fe: 0.8, ca: 105, zn: 0.2 }
+  units: { ks: 150 }
+  price: 6
+  co2: 0.5
+  color: '#7bb35a'
+  season: [5, 6, 9, 10]
+  substitutes:
+    - { to: cinska-kapusta }
+    - { to: spenat }
+  about: 'Čínska kapusta s hrubými bielymi stonkami. Na záhrade rastie za 6 týždňov.'
+  uses:
+    - 'Wok, ramen, dusený s cesnakom'
+  storage: 'V chladničke 4 dni.'
+
+- id: kardamom
+  name: Kardamóm mletý
+  category: koreniny
+  n: { kcal: 311, p: 11, c: 68, f: 6.7, fib: 28, salt: 0, fe: 14, ca: 383, zn: 7.5 }
+  units: { čl: 2 }
+  price: 60
+  color: '#8a9a5b'
+  substitutes:
+    - { to: skorica, note: 'iná chuť, ale tiež hreje' }
+  about: 'Kráľ korenia – kvetinovo-citrusový. Najvoňavejší je čerstvo pomletý zo zelených struk.'
+  uses:
+    - 'Chai, kaše, indické a arabské sladkosti'
+  storage: 'Struky rok, mletý pol roka.'
+
+- id: vanilka
+  name: Vanilkový extrakt
+  category: koreniny
+  n: { kcal: 288, p: 0, c: 12.7, f: 0, fib: 0, salt: 0, fe: 0.1, ca: 11, zn: 0.1 }
+  units: { čl: 4 }
+  price: 100
+  color: '#4a2c1a'
+  substitutes:
+    - { note: 'vanilkový cukor (bez sirupu uber cukor)' }
+  about: 'Pravá vanilka v alkohole. Aróma (vanilín) je lacnejšia a v pečení poslúži.'
+  uses:
+    - 'Pečenie, kaše, krémy'
+  storage: 'Roky.'
+
+- id: harissa
+  name: Harissa
+  category: omacky-pasty
+  n: { kcal: 180, p: 3, c: 12, f: 14, fib: 5, salt: 3, fe: 3, ca: 40, zn: 0.5 }
+  units: { pl: 16, čl: 5 }
+  price: 20
+  color: '#9e2a1c'
+  substitutes:
+    - { to: cili, note: '½ ČL + 1 ČL papriky a kmín' }
+  about: 'Tuniská pálivá pasta z čili, cesnaku, rasce a kmínu.'
+  uses:
+    - 'Kuskus, polievky, marinády, do hummusu'
+  homemade:
+    recipe: harissa
+  storage: 'Pod vrstvou oleja v chladničke mesiac.'
+
+- id: kimchi
+  name: Kimchi (vegánske)
+  category: zelenina
+  allergens: [soy]
+  n: { kcal: 15, p: 1.1, c: 2.4, f: 0.5, fib: 1.6, salt: 1.8, fe: 2.5, ca: 33, zn: 0.2 }
+  units: { hrnček: 150 }
+  price: 8
+  co2: 0.6
+  color: '#c8412c'
+  substitutes:
+    - { to: kysla-kapusta, note: '+ gochugaru a cesnak' }
+  about: 'Kórejská kvasená kapusta s čili. Kupované často obsahuje rybaciu omáčku alebo krevety – kontroluj zloženie.'
+  uses:
+    - 'Samotné k ryži, kimchi jjigae, smažená ryža'
+  homemade:
+    recipe: kimchi
+  storage: 'V chladničke mesiace, stále kyslejšie.'

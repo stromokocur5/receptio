@@ -1,0 +1,29 @@
+title: Caponata
+description: Sicílsky sladkokyslý šalát z baklažánu, zeleru, olív a kapar s octom a hrozienkami. Najlepší na druhý deň.
+cuisine: talianska
+meals: [snack, obed]
+time: 50
+active: 25
+servings: 4
+difficulty: 1
+tags: [meal-prep, party]
+spicy: 0
+keeps: { fridge: 5 }
+ingredients:
+  - baklazan: 2 ks | na kocky
+  - olivovy-olej: 5 pl
+  - cibula-cervena: 1 ks
+  - zeler-stonkovy: 3 ks
+  - paradajky-sterilizovane: 1/2 ks
+  - olivy: 12 ks | zelené
+  - hrozienka: 2 pl
+  - ocot: 3 pl
+  - cukor: 1 pl
+  - sol: 1 čl
+  - bazalka: 3 pl
+  - mandle: 2 pl | opražené
+steps:
+  - Baklažán opekaj na 3 PL oleja na strednom až vysokom ohni po dávkach dozlatista, vyber.
+  - Na zvyšnom oleji na strednom ohni speň cibuľu so zelerom 6 minút, pridaj paradajky, olivy a hrozienka a 8 minút var.
+  - Pridaj ocot, cukor a soľ, vráť baklažán a duste na miernom ohni 5 minút.
+  - Nechaj vychladnúť, posyp bazalkou a mandľami.

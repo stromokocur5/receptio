@@ -1,0 +1,31 @@
+title: Khao soi
+description: Severothajská kokosová kari polievka s rezancami, navrchu chrumkavé vyprážané rezance, nakladaná kapusta a limetka.
+cuisine: thajska
+meals: [obed, vecera]
+time: 40
+active: 25
+servings: 3
+difficulty: 2
+tags: [polievka]
+spicy: 2
+keeps: { fridge: 2 }
+ingredients:
+  - olej: 3 pl
+  - cervena-kari-pasta: 2 pl
+  - kari-korenie: 1 čl
+  - kurkuma: 1/2 čl
+  - kokosove-mlieko: 400 ml
+  - zeleninovy-vyvar: 500 ml
+  - tofu-natural: 250 g | na kocky
+  - sojova-omacka: 2 pl
+  - cukor: 1 čl
+  - psenicne-rezance: 250 g
+  - kysla-kapusta: 1/2 hrnček
+  - cibula-cervena: 1/2 ks | nadrobno
+  - limetka: 1 ks
+  - bylinky-koriander: 2 pl
+steps:
+  - Na 1 PL oleja na strednom ohni opraž kari pastu s korením, pridaj tretinu kokosového mlieka a var, kým sa olej neoddelí.
+  - Pridaj zvyšné mlieko, vývar, tofu, sójovú omáčku a cukor a var na miernom ohni 10 minút.
+  - Rezance uvar. Hrsť uvarených osuš a na zvyšnom oleji na strednom až vysokom ohni vyprážaj dochrumkava.
+  - Do misiek daj rezance, zalej polievkou a navrch daj chrumkavé rezance, kapustu, cibuľu, limetku a koriander.

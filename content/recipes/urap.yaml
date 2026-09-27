@@ -1,0 +1,27 @@
+title: Urap
+description: Jávsky šalát z krátko spareného špenátu, kapusty, fazuliek a klíčkov s korenistým kokosom. Svieži a ľahký.
+cuisine: indonezska
+meals: [obed, snack]
+time: 25
+active: 20
+servings: 4
+difficulty: 1
+tags: [rychle]
+spicy: 1
+keeps: { fridge: 1 }
+ingredients:
+  - kokos-struhany: 80 g | namočený v 100 ml horúcej vody
+  - cesnak: 2 ks
+  - cili-papricka: 1 ks
+  - koriander-mlety: 1 čl
+  - limetka: 1 ks
+  - cukor: 1 čl
+  - sol: 3/4 čl
+  - zelene-fazulky: 200 g
+  - biela-kapusta: 200 g | na prúžky
+  - spenat: 200 g
+  - klicky: 1 hrnček
+steps:
+  - Cesnak, papričku, koriander, cukor a soľ roztlač v mažiari, vmiešaj kokos a limetku a na suchej panvici na strednom ohni 3 minúty opekaj.
+  - Fazuľky var vo vriacej vode 3 minúty, kapustu minútu, špenát a klíčky len spar. Všetko sceď a vytlač.
+  - Zeleninu premiešaj s kokosom tesne pred podávaním.

@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { formatAmount, formatGrams } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
-	import { splitStep, stepLines } from '$lib/cooking';
+	import { splitStep, stepGuides, stepLines } from '$lib/cooking';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeFeedback from '$lib/components/RecipeFeedback.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
@@ -33,6 +33,7 @@
 		recipeServings,
 		variant,
 		tools = [],
+		guides = [],
 		onclose
 	}: {
 		recipeId: string;
@@ -45,6 +46,8 @@
 		variant?: string;
 		/** Equipment names, shown with the ingredients so everything is ready before starting. */
 		tools?: string[];
+		/** The recipe's beginner guides; each step shows the ones it needs. */
+		guides?: { slug: string; title: string }[];
 		onclose: () => void;
 	} = $props();
 
@@ -62,17 +65,54 @@
 	let voiceNote = $state('');
 	let listener: ReturnType<typeof createListener> | null = null;
 	let dialog: HTMLDialogElement;
+	let guide = $state<{ slug: string; title: string; html: string | null; failed: boolean } | null>(
+		null
+	);
+	const guideCache = new Map<string, string>();
 
 	const done = $derived(index >= steps.length);
 	const segments = $derived(done ? [] : splitStep(steps[index]));
 	const needed = $derived(done ? [] : stepLines(steps[index], lines, catalog.ingredientsById));
 	const hasPantry = $derived(Object.keys(pantry.current).length > 0);
+	const guideTitles = $derived(
+		new Map([...catalog.wiki, ...guides].map((g) => [g.slug, g.title] as const))
+	);
+	const neededGuides = $derived(
+		done
+			? []
+			: stepGuides(
+					steps[index],
+					needed,
+					catalog.ingredientsById,
+					guides.map((g) => g.slug)
+				).flatMap((slug) => {
+					const title = guideTitles.get(slug);
+					return title ? [{ slug, title }] : [];
+				})
+	);
+
+	/** Opens a guide in a sheet, so the cook doesn't lose their place in the recipe. */
+	async function openGuide(slug: string, title: string) {
+		showAll = false;
+		guide = { slug, title, html: guideCache.get(slug) ?? null, failed: false };
+		if (guide.html !== null) return;
+		try {
+			const res = await fetch(`/wiki/${slug}/obsah.json`);
+			if (!res.ok) throw new Error(`guide ${slug}: ${res.status}`);
+			const body = (await res.json()) as { html: string };
+			guideCache.set(slug, body.html);
+			if (guide?.slug === slug) guide = { ...guide, html: body.html };
+		} catch {
+			if (guide?.slug === slug) guide = { ...guide, failed: true };
+		}
+	}
 
 	function go(to: number) {
 		const next = Math.max(0, Math.min(steps.length, to));
 		direction = next >= index ? 1 : -1;
 		index = next;
 		showAll = false;
+		guide = null;
 	}
 
 	function amount(line: RecipeLine) {
@@ -161,7 +201,8 @@
 	/** Escape: close the ingredient sheet first, then cooking (through history, like Back). */
 	function oncancel(event: Event) {
 		event.preventDefault();
-		if (showAll) showAll = false;
+		if (guide) guide = null;
+		else if (showAll) showAll = false;
 		else onclose();
 	}
 
@@ -241,7 +282,10 @@
 			<button
 				class="icon-btn"
 				class:on={showAll}
-				onclick={() => (showAll = !showAll)}
+				onclick={() => {
+					guide = null;
+					showAll = !showAll;
+				}}
 				aria-label="Všetky suroviny"
 				aria-expanded={showAll}
 			>
@@ -295,6 +339,16 @@
 								</li>
 							{/each}
 						</ul>
+					{/if}
+					{#if neededGuides.length}
+						<div class="guides" aria-label="Ako na to">
+							{#each neededGuides as g (g.slug)}
+								<button class="guide-chip" onclick={() => openGuide(g.slug, g.title)}>
+									<Icon name="book" size={16} />
+									{g.title}
+								</button>
+							{/each}
+						</div>
 					{/if}
 				{:else}
 					<div class="finish">
@@ -364,6 +418,30 @@
 			<button class="btn ghost" onclick={onclose}>Zavrieť <Icon name="x" size={18} /></button>
 		{/if}
 	</footer>
+
+	{#if guide}
+		<aside class="sheet guide" aria-label={guide.title}>
+			<div class="guide-head">
+				<h2>{guide.title}</h2>
+				<button class="icon-btn" onclick={() => (guide = null)} aria-label="Zavrieť návod">
+					<Icon name="x" size={20} />
+				</button>
+			</div>
+			{#if guide.html !== null}
+				<div class="prose">
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -- markdown from the repo's own content/ -->
+					{@html guide.html}
+				</div>
+				<a class="guide-full" href="/wiki/{guide.slug}" target="_blank" rel="noopener">
+					Otvoriť návod na samostatnej stránke
+				</a>
+			{:else if guide.failed}
+				<p class="muted">Návod sa nepodarilo načítať. Si offline?</p>
+			{:else}
+				<p class="muted">Načítavam…</p>
+			{/if}
+		</aside>
+	{/if}
 
 	{#if showAll}
 		<aside class="sheet" aria-label="Všetky suroviny">
@@ -606,16 +684,49 @@
 			transform: translateY(100%);
 		}
 	}
+	.guides {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin-top: 16px;
+	}
+	.guide-chip {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 8px 12px;
+		border: 0;
+		border-radius: 12px;
+		background: var(--leaf-soft);
+		color: var(--leaf);
+		font: inherit;
+		font-size: 0.9rem;
+		font-weight: 600;
+	}
+	.guide-head {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 12px;
+	}
+	.sheet.guide {
+		max-height: 85%;
+	}
+	.guide-full {
+		display: inline-block;
+		margin-top: 12px;
+		font-weight: 600;
+	}
 	.sheet h2 {
 		font-size: 1.3rem;
 		margin: 0 0 10px;
 	}
-	.sheet ul {
+	.sheet > ul {
 		list-style: none;
 		margin: 0;
 		padding: 0;
 	}
-	.sheet li {
+	.sheet > ul > li {
 		display: grid;
 		grid-template-columns: 6em 1fr;
 		gap: 10px;
@@ -623,7 +734,7 @@
 		border-bottom: 1px dashed var(--line);
 		border-radius: 8px;
 	}
-	.sheet li.now {
+	.sheet > ul > li.now {
 		background: var(--leaf-soft);
 	}
 	.sheet .tools-title {
@@ -633,10 +744,10 @@
 		margin: 0;
 		color: var(--ink-2);
 	}
-	.sheet strong {
+	.sheet > ul strong {
 		color: var(--leaf);
 	}
-	.sheet small {
+	.sheet > ul small {
 		display: block;
 		color: var(--muted);
 	}

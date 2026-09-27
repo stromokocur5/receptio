@@ -1,0 +1,27 @@
+title: Pad kra pao
+description: Thajské rýchle tofu s bazalkou, cesnakom a čili na ryži. Najčastejší obed v Bangkoku.
+cuisine: thajska
+meals: [obed, vecera]
+time: 15
+active: 15
+servings: 2
+difficulty: 1
+tags: [rychle, vela-bielkovin]
+spicy: 3
+keeps: { fridge: 1 }
+ingredients:
+  - olej: 2 pl
+  - cesnak: 5 ks
+  - cili-papricka: 3 ks
+  - tofu-natural: 300 g | rozdrobené
+  - zelene-fazulky: 100 g | nadrobno
+  - sojova-omacka: 2 pl
+  - kecap-manis: 1 pl
+  - cukor: 1 čl
+  - voda: 3 pl
+  - bazalka: 1 hrnček
+  - ryza-jazminova: 180 g
+steps:
+  - Cesnak s papričkami roztlač v mažiari alebo nasekaj.
+  - Na rozpálenom oleji ich 20 sekúnd opraž, pridaj tofu a fazuľky a na prudkom ohni 5 minút opekaj.
+  - Pridaj omáčky, cukor a vodu a premiešaj, kým sa neodparí. Vmiešaj bazalku, len aby zvädla. Podávaj s ryžou.

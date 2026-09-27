@@ -1,0 +1,33 @@
+title: Ají de tofu
+description: Krémová žltá omáčka z chleba, orechov a čili ako v ají de gallina, s natrhaným tofu. Podáva sa s ryžou, zemiakmi a olivami.
+cuisine: peruanska
+meals: [obed, vecera]
+time: 40
+active: 25
+servings: 4
+difficulty: 2
+tags: [klasika, zvysky]
+spicy: 1
+keeps: { fridge: 3 }
+ingredients:
+  - chlieb: 3 ks | starý
+  - sojove-mlieko: 300 ml
+  - vlasske-orechy: 50 g
+  - olej: 3 pl
+  - cibula: 1 ks
+  - cesnak: 3 ks
+  - kurkuma: 1 čl
+  - sladka-paprika: 1 čl
+  - cili: 1/2 čl
+  - kmin: 1/2 čl
+  - tofu-natural: 400 g | natrhané na vlákna
+  - vyzivne-drozdie: 2 pl
+  - sol: 1 čl
+  - zemiaky: 4 ks | uvarené, na plátky
+  - olivy: 8 ks
+  - ryza-basmati: 250 g
+steps:
+  - Chlieb namoč do mlieka a s orechmi rozmixuj dohladka.
+  - Na oleji na strednom ohni speň cibuľu s cesnakom, pridaj korenie a minútu restuj. Pridaj tofu a 5 minút opekaj.
+  - Vlej chlebovú omáčku, pridaj droždie a soľ a za miešania var na miernom ohni 8 minút, kým nezhustne. Ak treba, podlej vodou.
+  - Podávaj s ryžou, plátkami zemiakov a olivami.

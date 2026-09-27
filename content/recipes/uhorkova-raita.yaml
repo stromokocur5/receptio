@@ -1,0 +1,21 @@
+title: Uhorková raita
+description: Chladivý jogurtový dip s uhorkou, mätou a opraženým kmínom. Hasí pálivé kari.
+cuisine: indicka-sever
+meals: [snack]
+time: 10
+active: 10
+servings: 4
+difficulty: 1
+tags: [rychle, bez-varenia]
+spicy: 0
+keeps: { fridge: 2 }
+ingredients:
+  - sojovy-jogurt: 1,5 hrnček | nesladený
+  - uhorka: 1 ks | nastrúhaná a vytlačená
+  - kmin: 1/2 čl | opražený a pomletý
+  - bylinky-mata: 2 pl
+  - sol: 1/2 čl
+  - cili: 1 štipka
+steps:
+  - Jogurt rozmiešaj dohladka.
+  - Vmiešaj uhorku, kmín, mätu a soľ a posyp čili.

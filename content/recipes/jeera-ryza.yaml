@@ -1,0 +1,23 @@
+title: Jeera ryža
+description: Sypká basmati ryža s opraženým kmínom, bobkovým listom a kardamómom. Voňavá príloha ku každému kari.
+cuisine: indicka-sever
+meals: [obed, vecera]
+time: 25
+active: 5
+servings: 4
+difficulty: 1
+tags: [lacne]
+spicy: 0
+keeps: { fridge: 3, freezer: 2 }
+ingredients:
+  - ryza-basmati: 300 g | namočená 20 min
+  - olej: 1 pl
+  - kmin: 1,5 čl | celý
+  - bobkovy-list: 1 ks
+  - kardamom: 1/4 čl
+  - voda: 500 ml
+  - sol: 1 čl
+steps:
+  - Na oleji na strednom ohni opraž kmín s bobkovým listom a kardamómom, kým kmín nepraskne.
+  - Pridaj scedenú ryžu a minútu opatrne premiešavaj.
+  - Zalej vodou, osoľ, prikry a var na miernom ohni 12 minút. Nechaj 5 minút dôjsť a prehrab vidličkou.

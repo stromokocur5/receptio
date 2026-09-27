@@ -1,0 +1,29 @@
+title: Anticuchos z tofu
+description: Peruánske pouličné špízy v marináde z čili, kmínu, cesnaku a octu, opekané na grile. So zemiakmi a kukuricou.
+cuisine: peruanska
+meals: [obed, vecera, snack]
+time: 40
+active: 20
+servings: 4
+difficulty: 1
+tags: [party, vela-bielkovin]
+spicy: 2
+ahead: Tofu sa marinuje aspoň hodinu.
+keeps: { fridge: 3 }
+ingredients:
+  - tofu-natural: 500 g | vylisované, na kocky
+  - sladka-paprika: 2 čl
+  - cili: 1 čl
+  - kmin: 1 čl
+  - oregano: 1 čl
+  - cesnak: 4 ks | prelisovaný
+  - ocot: 3 pl
+  - sojova-omacka: 1 pl
+  - olej: 3 pl
+  - sol: 1/2 čl
+  - zemiaky: 4 ks | uvarené
+  - kukurica-klas: 2 ks | uvarené
+steps:
+  - Zmiešaj korenie, cesnak, ocot, sójovú omáčku, olej a soľ. Tofu v tom marinuj aspoň hodinu.
+  - Napichaj na špajdle a opekaj na rozpálenej grilovacej panvici na vysokom ohni 8 minút, obracaj a potieraj marinádou.
+  - Zemiaky prekroj a opeč spolu so špízmi. Podávaj s kukuricou.

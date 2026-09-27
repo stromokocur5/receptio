@@ -1,0 +1,25 @@
+title: Pšenová kaša s jablkom a škoricou
+description: Babkina sladká kaša z prosa varená v mlieku s jablkom a škoricou. Bez lepku, lacná a zahrievajúca.
+cuisine: slovenska
+meals: [ranajky, dezert]
+time: 30
+active: 5
+servings: 3
+difficulty: 1
+tags: [ranajky, lacne, klasika]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - proso: 150 g
+  - voda: 400 ml
+  - sojove-mlieko: 300 ml
+  - jablko: 2 ks | nastrúhané
+  - skorica: 1/2 čl
+  - sol: 1 štipka
+  - javorovy-sirup: 2 pl
+  - hrozienka: 2 pl
+steps:
+  - Pšeno prepláchni horúcou vodou (zbaví ho horkosti).
+  - Var ho vo vode so soľou na miernom ohni 15 minút.
+  - Pridaj mlieko, jablko, škoricu a hrozienka a var ďalších 8 minút do krémova.
+  - Osladi sirupom a podávaj teplú.

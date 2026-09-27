@@ -1,0 +1,31 @@
+title: Dan dan rezance
+description: Sečuánske rezance v pikantnej sezamovej omáčke s čili olejom a chrumkavým „mletým“ tofu.
+cuisine: cinska
+meals: [obed, vecera]
+time: 25
+active: 25
+servings: 3
+difficulty: 2
+tags: [rychle]
+spicy: 3
+keeps: { fridge: 2 }
+ingredients:
+  - psenicne-rezance: 300 g
+  - tofu-udene: 200 g | nadrobno rozdrobené
+  - olej: 2 pl
+  - doubanjiang: 1 pl
+  - cesnak: 3 ks
+  - tahini: 3 pl
+  - sojova-omacka: 3 pl
+  - ryzovy-ocot: 1 pl
+  - cukor: 1 čl
+  - cili: 1 čl | alebo čili olej
+  - secuanske-korenie: 1/2 čl | pomleté
+  - pak-choi: 2 ks | rozštvrtené
+  - jarna-cibulka: 3 ks
+  - arasidy: 3 pl | nasekané
+steps:
+  - Na oleji na strednom ohni opeč tofu dochrumkava, pridaj doubanjiang a cesnak a minútu restuj.
+  - Do misiek rozdeľ tahini, sójovú omáčku, ocot, cukor, čili a sečuánske korenie a do každej pridaj 3 PL horúcej vody z rezancov.
+  - Rezance uvar podľa návodu, posledné 2 minúty s pak choi.
+  - Rezance daj do misiek, navrch tofu, pak choi, cibuľku a arašidy. Pred jedlom všetko premiešaj.

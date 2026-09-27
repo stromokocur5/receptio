@@ -1,0 +1,26 @@
+title: Cornbread
+description: Americký kukuričný chlieb z plechu – vlhký, sladkastý a drobivý. K chili, fazuli aj na raňajky s džemom.
+cuisine: americka
+meals: [ranajky, snack, obed]
+time: 35
+active: 10
+servings: 8
+difficulty: 1
+tags: [pecenie, lacne]
+spicy: 0
+keeps: { fridge: 4, freezer: 3 }
+gf_swap: false
+ingredients:
+  - kukuricna-krupica: 150 g | jemná
+  - hladka-muka: 120 g
+  - cukor: 50 g
+  - kypriaci-prasok: 1 pl
+  - sol: 1/2 čl
+  - sojove-mlieko: 250 ml
+  - ocot: 1 pl
+  - olej: 80 ml
+  - kukurica: 1/2 ks
+steps:
+  - Mlieko s octom nechaj 5 minút zraziť – vznikne cmar.
+  - Zmiešaj suché suroviny, pridaj cmar, olej a kukuricu a len krátko premiešaj.
+  - Nalej do vymastenej formy 20×20 cm a peč na 200 °C 22–25 minút dozlatista.

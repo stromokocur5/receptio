@@ -1,0 +1,29 @@
+title: Horiatiki s tofu fetou
+description: Pravý grécky dedinský šalát – paradajky, uhorka, paprika, cibuľa, olivy a blok „fety“ z marinovaného tofu. Listový šalát doň nepatrí.
+cuisine: grecka
+meals: [obed, vecera, snack]
+time: 20
+active: 20
+servings: 3
+difficulty: 1
+tags: [bez-varenia, rychle]
+spicy: 0
+ahead: Tofu fetu nalož aspoň hodinu vopred.
+keeps: { fridge: 1 }
+ingredients:
+  - tofu-natural: 200 g | na hrubý plát
+  - citron: 1 ks
+  - ocot: 1 pl
+  - vyzivne-drozdie: 1 pl
+  - sol: 1 čl
+  - oregano: 1 čl
+  - paradajky: 4 ks | na kusy
+  - uhorka: 1 ks | na hrubé polkolieska
+  - paprika-cervena: 1 ks | na kolieska
+  - cibula-cervena: 1 ks | na kolieska
+  - olivy: 12 ks
+  - olivovy-olej: 4 pl
+steps:
+  - Tofu nalož do citrónovej šťavy, octu, droždia, polovice soli a oregana aspoň na hodinu.
+  - Zeleninu a olivy daj do misky a osoľ zvyškom soli.
+  - Navrch polož plát tofu, posyp oreganom a prelej olejom aj marinádou.

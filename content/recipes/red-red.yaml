@@ -1,0 +1,28 @@
+title: Red red
+description: Ghanská fazuľa čierne oko v paradajkovej omáčke s paprikou, podávaná s vyprážaným plantainom. Dvakrát červená.
+cuisine: zapadoafricka
+meals: [obed, vecera]
+time: 60
+active: 20
+servings: 4
+difficulty: 1
+tags: [meal-prep, lacne, vela-bielkovin]
+spicy: 2
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - fazula-cierne-oko: 250 g
+  - olej: 4 pl
+  - sladka-paprika: 2 čl | dáva farbu ako palmový olej
+  - cibula: 2 ks
+  - cesnak: 3 ks
+  - zazvor: 1 pl
+  - cili-papricka: 1 ks
+  - paradajkovy-pretlak: 2 pl
+  - paradajky-sterilizovane: 1 ks
+  - sol: 1 čl
+  - plantain: 3 ks | zrelé
+steps:
+  - Fazuľu var bez namáčania vo veľa vode na miernom ohni 45 minút do mäkka, sceď.
+  - Na 3 PL oleja s paprikou na strednom ohni speň cibuľu 8 minút, pridaj cesnak, zázvor, papričku a pretlak a 3 minúty restuj.
+  - Pridaj paradajky a soľ, var na miernom ohni 10 minút, potom fazuľu a var ešte 10 minút.
+  - Plantain nakrájaj šikmo a opeč na zvyšnom oleji na strednom ohni dozlatista. Podávaj k fazuli.

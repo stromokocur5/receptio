@@ -1,0 +1,23 @@
+title: Tapioca crepe
+description: Brazílska bezlepková placka z tapiokového škrobu, ktorá sa na suchej panvici spečie za minútu. Plní sa slano aj sladko.
+cuisine: brazilska
+meals: [ranajky, snack]
+time: 15
+active: 15
+servings: 2
+difficulty: 2
+tags: [ranajky, rychle]
+spicy: 0
+keeps: { fridge: 0 }
+ingredients:
+  - tapiokovy-skrob: 100 g
+  - voda: 60 ml
+  - sol: 1 štipka
+  - avokado: 1 ks
+  - paradajky: 1 ks
+  - tofu-udene: 80 g | na plátky
+steps:
+  - Škrob so soľou pokvapkaj vodou a prstami premiešaj, kým nie je vlhký ako piesok. Prepasíruj cez sitko – vznikne jemný vlhký prášok.
+  - Na suchú nepriľnavú panvicu rozohriatu na strednom ohni nasyp cez sitko tenkú vrstvu (3–4 PL) a zarovnaj.
+  - Po minúte sa zrnká spoja do placky. Obráť a peč ešte 30 sekúnd.
+  - Plň avokádom, paradajkou a tofu, alebo sladko banánom a arašidovým maslom. Prelož na polovicu.

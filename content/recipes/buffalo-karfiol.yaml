@@ -1,0 +1,31 @@
+title: Buffalo karfiol
+description: Pečené karfiolové ružičky v ostrej maslovej buffalo omáčke s ranch dipom. Hviezda športových večerov.
+cuisine: americka
+meals: [snack, vecera]
+time: 40
+active: 15
+servings: 3
+difficulty: 1
+tags: [party, snack]
+spicy: 3
+keeps: { fridge: 1 }
+ingredients:
+  - karfiol: 1 ks | na ružičky
+  - hladka-muka: 60 g
+  - sojove-mlieko: 120 ml
+  - cesnak: 1 ks | prelisovaný
+  - udena-paprika: 1 čl
+  - sol: 1/2 čl
+  - sriracha: 4 pl
+  - rastlinne-maslo: 30 g
+  - ocot: 1 pl
+  - sojovy-jogurt: 1/2 hrnček
+  - veganska-majoneza: 2 pl
+  - kopor: 1 pl
+  - pazitka: 1 pl
+  - zeler-stonkovy: 3 ks | na tyčinky
+steps:
+  - Múku, mlieko, cesnak, papriku a soľ rozmiešaj na cesto a obaľ v ňom karfiol.
+  - Peč na plechu s papierom na 230 °C 20 minút.
+  - Srirachu, maslo a ocot rozpusti, obaľ v tom karfiol a peč ešte 8 minút.
+  - Jogurt, majonézu, kôpor a pažítku zmiešaj na dip. Podávaj so zelerom.

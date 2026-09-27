@@ -1,0 +1,25 @@
+title: Domáci sambal
+description: Indonézska čili pasta z čerstvých papričiek, cesnaku a limetky. Lyžička oživí ryžu, rezance aj polievky.
+cuisine: indonezska
+meals: [domace]
+time: 20
+active: 15
+servings: 10
+difficulty: 1
+tags: [urob-si-sam]
+spicy: 3
+yields: cca 200 ml
+keeps: { fridge: 14 }
+ingredients:
+  - cili-papricka: 12 ks
+  - cesnak: 4 ks
+  - cibula: 1 ks
+  - paradajky: 1 ks
+  - olej: 3 pl
+  - cukor: 1 čl
+  - sol: 3/4 čl
+  - limetka: 1 ks
+steps:
+  - Papričky, cesnak, cibuľu a paradajku nahrubo rozmixuj alebo roztlač v mažiari.
+  - Na oleji na strednom ohni opekaj 8–10 minút, kým sa voda neodparí a pasta nestmavne.
+  - Dochuť cukrom, soľou a limetkou, nechaj vychladnúť a skladuj v pohári.

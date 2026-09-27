@@ -1,0 +1,30 @@
+title: Mac and cheese
+description: Krémové makaróny v „syrovej“ omáčke zo zemiakov, mrkvy, kešu a výživného droždia. Deti nepoznajú rozdiel.
+cuisine: americka
+meals: [obed, vecera]
+time: 30
+active: 20
+servings: 4
+difficulty: 1
+tags: [deti, rychle, klasika]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - cestoviny: 350 g | makaróny
+  - zemiaky: 2 ks | na kocky
+  - mrkva: 1 ks | na kolieska
+  - cibula: 1/2 ks
+  - kesu: 50 g
+  - vyzivne-drozdie: 4 pl
+  - horcica: 1 čl
+  - citron: 1/2 ks
+  - cesnak: 1 ks
+  - udena-paprika: 1/2 čl
+  - sol: 1 čl
+  - olej: 2 pl
+  - sojove-mlieko: 150 ml
+steps:
+  - Zemiaky, mrkvu, cibuľu a kešu zalej 500 ml vody a var na miernom ohni 15 minút do mäkka.
+  - Uvar cestoviny.
+  - Zeleninu s kešu a 150 ml vody z varenia rozmixuj so všetkým ostatným dohladka.
+  - Omáčku premiešaj s cestovinami a podávaj. Zapečená so strúhankou 15 minút na 200 °C je ešte lepšia.

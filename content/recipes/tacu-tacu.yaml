@@ -1,0 +1,28 @@
+title: Tacu tacu
+description: Chrumkavý placok zo zvyšnej ryže a fazule, opečený na panvici. Afro-peruánske jedlo zo zvyškov.
+cuisine: peruanska
+meals: [obed, vecera, ranajky]
+time: 25
+active: 20
+servings: 3
+difficulty: 1
+tags: [zvysky, lacne]
+spicy: 1
+keeps: { fridge: 2 }
+ingredients:
+  - ryza-basmati: 150 g | uvarená
+  - fazula-biela: 1 ks | scedená
+  - olej: 3 pl
+  - cibula: 1 ks | nadrobno
+  - cesnak: 2 ks
+  - kmin: 1/2 čl
+  - cili: 1/4 čl
+  - oregano: 1/2 čl
+  - sol: 3/4 čl
+  - cibula-cervena: 1/2 ks | na mesiačiky, na šalát
+  - limetka: 1 ks
+steps:
+  - Na 1 PL oleja na strednom ohni speň cibuľu s cesnakom a korením.
+  - Pridaj fazuľu, roztlač ju a zmiešaj s ryžou a soľou.
+  - Na panvici so zvyšným olejom rozpálenej na strednom ohni rozotri zmes na hrubý placok a opekaj 6 minút, kým spodok nie je chrumkavý. Obráť pomocou taniera a opeč druhú stranu.
+  - Podávaj s červenou cibuľou pokvapkanou limetkou.

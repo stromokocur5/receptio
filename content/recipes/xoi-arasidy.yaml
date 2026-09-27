@@ -1,0 +1,23 @@
+title: Xôi đậu phộng
+description: Vietnamské raňajky z lepkavej ryže s arašidmi, kokosom a sezamovou soľou. Balia sa do banánového listu na cestu.
+cuisine: vietnamska
+meals: [ranajky]
+time: 40
+active: 10
+servings: 3
+difficulty: 1
+tags: [ranajky]
+spicy: 0
+ahead: Ryžu a arašidy namoč cez noc.
+keeps: { fridge: 2 }
+ingredients:
+  - lepkava-ryza: 250 g | namočená
+  - arasidy: 80 g | namočené
+  - sol: 1/2 čl
+  - kokos-struhany: 3 pl
+  - sezam: 2 pl
+  - cukor: 1 pl
+steps:
+  - Ryžu s arašidmi a štipkou soli var na pare 30 minút, v polovici premiešaj.
+  - Sezam opraž na suchej panvici na strednom ohni so zvyšnou soľou a cukrom a nahrubo roztlač.
+  - Podávaj ryžu posypanú kokosom a sezamovou soľou.

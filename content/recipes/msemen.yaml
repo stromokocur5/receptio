@@ -1,0 +1,27 @@
+title: Msemen
+description: Vrstvené marocké placky na panvici – chrumkavé zvonka, lístkové vnútri. Na raňajky s medom z datlí alebo s džemom.
+cuisine: severoafricka
+meals: [ranajky, snack]
+time: 60
+active: 40
+servings: 8
+difficulty: 3
+tags: [pecenie]
+spicy: 0
+keeps: { fridge: 3, freezer: 3 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 300 g
+  - psenicna-krupica: 100 g
+  - sol: 1 čl
+  - cukor: 1 čl
+  - voda: 250 ml | vlažná
+  - olej: 4 pl | na rozťahovanie
+  - rastlinne-maslo: 40 g | rozpustené
+steps:
+  - Zmiešaj múku, polovicu krupice, soľ, cukor a vodu a mies 8 minút do hladkého, mäkkého cesta. Rozdeľ na 8 guliek, potri olejom a nechaj 15 minút odpočívať.
+  - Pracovnú dosku natri olejom. Guľku rozťahuj prstami na tenučký priesvitný plát.
+  - Potri ho maslom, posyp krupicou a prelož na tretiny ako list a potom znova na tretiny – vznikne štvorec.
+  - Štvorček roztiahni na dvojnásobnú veľkosť a peč na suchej panvici na strednom ohni 2–3 minúty z každej strany dozlatista.
+tips:
+  - Ruky a dosku maj stále naolejované, cesto sa potom netrhá.

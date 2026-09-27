@@ -1,0 +1,31 @@
+title: Bakwan sayur
+description: Chrumkavé indonézske zeleninové placky z kapusty, mrkvy a klíčkov. Pouličný snack s čili omáčkou.
+cuisine: indonezska
+meals: [snack]
+time: 30
+active: 30
+servings: 4
+difficulty: 1
+tags: [snack, lacne, party]
+spicy: 1
+keeps: { fridge: 1 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 120 g
+  - ryzova-muka: 40 g
+  - kurkuma: 1/2 čl
+  - koriander-mlety: 1/2 čl
+  - cesnak: 2 ks | prelisovaný
+  - sol: 3/4 čl
+  - voda: 180 ml | ľadová
+  - biela-kapusta: 200 g | na tenké prúžky
+  - mrkva: 1 ks | na tenké prúžky
+  - klicky: 1 hrnček
+  - jarna-cibulka: 3 ks
+  - olej: ~300 ml | na vyprážanie, zostane v panvici
+  - sriracha: 3 pl | na namáčanie
+steps:
+  - Múky, korenie, cesnak a soľ rozmiešaj s vodou na husté cesto.
+  - Vmiešaj zeleninu tak, aby bola len obalená.
+  - Olej v panvici (asi 1 cm) zohrej na 175 °C. Naberačkou klaď doň cesto, placky rozrovnaj a vyprážaj 3 minúty z každej strany dozlatista.
+  - Nechaj odkvapkať a podávaj so srirachou.

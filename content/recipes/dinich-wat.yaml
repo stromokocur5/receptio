@@ -1,0 +1,26 @@
+title: Dinich wat
+description: Etiópsky zemiakový wot v pikantnej berbere omáčke s paradajkami. Lacný, sýty a hriejúci.
+cuisine: etiopska
+meals: [obed, vecera]
+time: 45
+active: 15
+servings: 4
+difficulty: 1
+tags: [lacne, one-pot, meal-prep]
+spicy: 2
+keeps: { fridge: 4, freezer: 2 }
+ingredients:
+  - cibula: 2 ks | veľmi nadrobno
+  - olej: 3 pl
+  - cesnak: 4 ks
+  - zazvor: 1 pl | nastrúhaný
+  - berbere: 1,5 pl
+  - paradajkovy-pretlak: 2 pl
+  - paradajky: 2 ks | nakrájané
+  - zemiaky: 6 ks | na kocky
+  - voda: 500 ml
+  - sol: 1 čl
+steps:
+  - Cibuľu opekaj v suchom hrnci na strednom ohni 5 minút za stáleho miešania, potom pridaj olej a opekaj ďalších 8 minút.
+  - Pridaj cesnak, zázvor, berbere a pretlak a 2 minúty restuj, kým sa olej nezafarbí.
+  - Pridaj paradajky, zemiaky, vodu a soľ a pod pokrievkou duste na miernom ohni 25 minút, kým zemiaky nezmäknú a omáčka nezhustne.

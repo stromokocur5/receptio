@@ -1,0 +1,28 @@
+title: Som tam
+description: Thajský šalát z nezrelej papáje – u nás z kalerábu a mrkvy – roztlačený v mažiari s limetkou, čili a arašidmi.
+cuisine: thajska
+meals: [snack, obed]
+time: 20
+active: 20
+servings: 3
+difficulty: 1
+tags: [bez-varenia, rychle]
+spicy: 3
+keeps: { fridge: 0 }
+ingredients:
+  - kalerab: 2 ks | na tenké hranolčeky
+  - mrkva: 2 ks | na tenké hranolčeky
+  - zelene-fazulky: 100 g | na 3 cm kúsky
+  - paradajky: 6 ks | cherry, rozpolené
+  - cesnak: 2 ks
+  - cili-papricka: 2 ks
+  - limetka: 2 ks
+  - sojova-omacka: 2 pl
+  - tamarind: 1 čl
+  - cukor: 2 čl
+  - arasidy: 4 pl | pražené
+steps:
+  - V mažiari alebo veľkej miske roztlač cesnak s papričkami.
+  - Pridaj fazuľky a paradajky a zľahka roztlač, aby pustili šťavu.
+  - Pridaj limetkovú šťavu, sójovú omáčku, tamarind a cukor, potom kaleráb a mrkvu. Tlkom a lyžicou striedavo búchaj a premiešavaj minútu.
+  - Posyp arašidmi a hneď podávaj s lepkavou ryžou.

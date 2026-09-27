@@ -1,0 +1,24 @@
+title: Batata harra
+description: Libanonské „pálivé zemiaky“ – chrumkavé pečené kocky s cesnakom, koriandrom, čili a citrónom.
+cuisine: libanonska
+meals: [snack, obed]
+time: 45
+active: 10
+servings: 4
+difficulty: 1
+tags: [lacne, party]
+spicy: 2
+keeps: { fridge: 2 }
+ingredients:
+  - zemiaky: 6 ks | na kocky
+  - olivovy-olej: 4 pl
+  - sol: 1 čl
+  - cesnak: 4 ks
+  - cili: 1/2 čl
+  - koriander-mlety: 1 čl
+  - bylinky-koriander: 4 pl
+  - citron: 1 ks
+steps:
+  - Zemiaky premiešaj s 3 PL oleja a soľou a peč na 220 °C 35 minút dochrumkava.
+  - Na zvyšnom oleji na strednom ohni krátko opraž cesnak s čili a mletým koriandrom.
+  - Horúce zemiaky obaľ v cesnakovom oleji, čerstvom koriandri a citróne.

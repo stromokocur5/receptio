@@ -1,0 +1,29 @@
+title: Briam
+description: Grécka pečená letná zelenina – zemiaky, cuketa, baklažán a paprika – v olivovom oleji s paradajkami a oreganom.
+cuisine: grecka
+meals: [obed, vecera]
+time: 90
+active: 20
+servings: 4
+difficulty: 1
+tags: [meal-prep, lacne]
+spicy: 0
+keeps: { fridge: 4 }
+leftovers: 'Druhý deň je lepší, vlažný s chlebom.'
+ingredients:
+  - zemiaky: 4 ks | na plátky
+  - cuketa: 2 ks | na kolieska
+  - baklazan: 1 ks | na kolieska
+  - paprika-cervena: 2 ks | na prúžky
+  - cibula-cervena: 2 ks | na mesiačiky
+  - cesnak: 4 ks
+  - paradajky-sterilizovane: 1 ks
+  - oregano: 2 čl
+  - petrzlenova-vnat: 3 pl
+  - olivovy-olej: 6 pl
+  - sol: 1,5 čl
+  - cierne-korenie: 1/2 čl
+steps:
+  - Všetku zeleninu premiešaj v zapekacej mise s paradajkami, cesnakom, oreganom, olejom, soľou a korením.
+  - Prilej 100 ml vody, prikry alobalom a peč na 200 °C 40 minút.
+  - Odkry a peč ďalších 30 minút, kým zelenina nie je mäkká a na povrchu opečená. Posyp petržlenom.

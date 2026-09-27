@@ -1,0 +1,22 @@
+title: Pomaranče so škoricou a mätou
+description: Najjednoduchší marocký dezert – plátky pomaranča s kvetinovým sirupom, škoricou a mätou. Osvieži po ťažkom jedle.
+cuisine: severoafricka
+meals: [dezert]
+time: 10
+active: 10
+servings: 4
+difficulty: 1
+tags: [rychle, bez-varenia, dezert]
+spicy: 0
+keeps: { fridge: 1 }
+ingredients:
+  - pomaranc: 4 ks
+  - javorovy-sirup: 1 pl
+  - skorica: 1/2 čl
+  - bylinky-mata: 1 pl | natrhaná
+  - datle: 4 ks | nakrájané
+  - mandle: 2 pl | nasekané
+steps:
+  - Pomaranče olúp nožom aj s bielou vrstvou a nakrájaj na tenké kolieska.
+  - Rozlož na tanier, pokvapkaj sirupom a šťavou, ktorá pri krájaní vytiekla.
+  - Posyp škoricou, datľami, mandľami a mätou. Nechaj 10 minút v chlade.

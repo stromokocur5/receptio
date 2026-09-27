@@ -1,0 +1,30 @@
+title: Sopa de quinua
+description: Andská zeleninová polievka s quinou, zemiakmi a oreganom. Varí sa v každej domácnosti od Cusca po Punu.
+cuisine: peruanska
+meals: [obed, vecera]
+time: 40
+active: 15
+servings: 4
+difficulty: 1
+tags: [polievka, one-pot, lacne]
+spicy: 0
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - olej: 2 pl
+  - cibula: 1 ks
+  - cesnak: 2 ks
+  - mrkva: 2 ks
+  - zeler-stonkovy: 2 ks
+  - kmin: 1/2 čl
+  - oregano: 1 čl
+  - quinoa: 100 g | prepláchnutá
+  - zemiaky: 3 ks | na kocky
+  - zeleninovy-vyvar: 1,5 l
+  - zelene-fazulky: 100 g
+  - kukurica: 1 ks
+  - sol: 1 čl
+  - petrzlenova-vnat: 3 pl
+steps:
+  - Na oleji na strednom ohni speň cibuľu, cesnak, mrkvu a zeler 5 minút, pridaj kmín a oregano.
+  - Pridaj quinou, zemiaky a vývar a var na miernom ohni 15 minút.
+  - Pridaj fazuľky, kukuricu a soľ a var na miernom ohni ďalších 8 minút. Posyp petržlenom.

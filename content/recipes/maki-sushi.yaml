@@ -1,0 +1,30 @@
+title: Maki sushi
+description: Rolky sushi s avokádom, uhorkou, mrkvou a marinovaným tofu. Domáca sushi párty bez surových rýb.
+cuisine: japonska
+meals: [obed, vecera]
+time: 60
+active: 40
+servings: 3
+difficulty: 2
+tags: [party]
+spicy: 0
+keeps: { fridge: 0 }
+ingredients:
+  - ryza-sushi: 300 g
+  - ryzovy-ocot: 4 pl
+  - cukor: 1 pl
+  - sol: 1 čl
+  - nori: 5 ks
+  - avokado: 1 ks | na prúžky
+  - uhorka: 1/2 ks | na prúžky
+  - mrkva: 1 ks | na prúžky
+  - tofu-natural: 150 g | na prúžky
+  - sojova-omacka: 4 pl
+  - chren: 1 čl
+  - zazvor: 2 pl | nakladaný
+steps:
+  - Ryžu prepláchni do čírej vody a uvar. Ocot, cukor a soľ zohrej do rozpustenia a vmiešaj do teplej ryže. Nechaj vychladnúť na izbovú teplotu.
+  - Tofu marinuj 10 minút v 2 PL sójovej omáčky a krátko opeč na suchej nepriľnavej panvici na strednom ohni.
+  - Nori polož na podložku lesklou stranou dole, mokrými rukami rozotri tenkú vrstvu ryže a na hornom okraji nechaj 2 cm.
+  - Na spodok daj prúžok náplne, pevne zroluj a nechaj minútu odpočívať. Mokrým nožom nakrájaj na 8 kúskov.
+  - Podávaj so sójovou omáčkou, chrenom a zázvorom.

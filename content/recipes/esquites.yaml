@@ -1,0 +1,26 @@
+title: Esquites
+description: Mexický pouličný snack v pohári – opečená kukurica s limetkou, majonézou, čili a koriandrom.
+cuisine: mexicka
+meals: [snack]
+time: 15
+active: 15
+servings: 3
+difficulty: 1
+tags: [rychle, snack, party]
+spicy: 1
+keeps: { fridge: 1 }
+ingredients:
+  - kukurica: 2 ks | scedená, alebo 4 klasy
+  - olej: 1 pl
+  - cibula-cervena: 1/4 ks | nadrobno
+  - cili-papricka: 1 ks | nadrobno
+  - veganska-majoneza: 3 pl
+  - limetka: 1 ks
+  - cili: 1/4 čl
+  - vyzivne-drozdie: 1 pl | ako cotija syr
+  - bylinky-koriander: 2 pl
+  - sol: 1/4 čl
+steps:
+  - Kukuricu opekaj na rozpálenej panvici s olejom na vysokom ohni 6–8 minút, kým miestami nezhnedne.
+  - Pridaj cibuľu a papričku a minútu opekaj.
+  - Vmiešaj majonézu, limetku a soľ a podávaj v pohároch posypané čili, droždím a koriandrom.

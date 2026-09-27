@@ -1,0 +1,28 @@
+title: Solterito
+description: Farebný šalát z Arequipy – bôb, kukurica, paradajky, olivy a syr v limetkovej zálievke. „Mládenecký“, lebo ho zvládne každý.
+cuisine: peruanska
+meals: [obed, snack]
+time: 15
+active: 15
+servings: 4
+difficulty: 1
+tags: [rychle, bez-varenia, do-krabicky, vela-bielkovin]
+spicy: 1
+keeps: { fridge: 2 }
+ingredients:
+  - bob-sterilizovany: 1 ks | scedený
+  - kukurica: 1 ks
+  - paradajky: 3 ks | na kocky
+  - cibula-cervena: 1 ks | nadrobno
+  - cili-papricka: 1 ks | nadrobno
+  - olivy: 10 ks
+  - tofu-natural: 150 g | na kocky, ako syr
+  - limetka: 2 ks
+  - olivovy-olej: 3 pl
+  - oregano: 1/2 čl
+  - sol: 3/4 čl
+  - petrzlenova-vnat: 3 pl
+steps:
+  - Tofu premiešaj so štipkou soli a šťavou z polovice limetky, nech sa naloží ako syr.
+  - V miske zmiešaj bôb, kukuricu, paradajky, cibuľu, papričku a olivy.
+  - Zalej zvyšnou limetkou, olejom, oreganom a soľou, pridaj tofu a petržlen a premiešaj.

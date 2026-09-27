@@ -1,0 +1,25 @@
+title: Mango sticky rice
+description: Thajský dezert z lepkavej ryže v slanosladkom kokosovom mlieku so zrelým mangom. Najlepší v sezóne mang.
+cuisine: thajska
+meals: [dezert]
+time: 45
+active: 15
+servings: 4
+difficulty: 2
+tags: [dezert]
+spicy: 0
+ahead: Ryžu namoč aspoň na 4 hodiny.
+keeps: { fridge: 1 }
+ingredients:
+  - lepkava-ryza: 250 g | namočená
+  - kokosove-mlieko: 400 ml
+  - cukor: 70 g
+  - sol: 1/2 čl
+  - kukuricny-skrob: 1 čl
+  - mango: 2 ks | zrelé
+  - sezam: 1 čl | opražený
+steps:
+  - Namočenú ryžu var na pare 20–25 minút, kým nie je priesvitná a mäkká.
+  - Tri štvrtiny kokosového mlieka zohrej s cukrom a štipkou soli (nevar) a zalej ním horúcu ryžu. Prikry a nechaj 20 minút nasiaknuť.
+  - Zvyšné mlieko povar so zvyšnou soľou a škrobom na hustú omáčku.
+  - Podávaj ryžu s plátkami manga, polej omáčkou a posyp sezamom.

@@ -1,0 +1,26 @@
+title: Pad see ew
+description: Široké ryžové rezance opekané s brokolicou a tofu v sladkej sójovej omáčke dochrumkava. Thajský comfort food.
+cuisine: thajska
+meals: [obed, vecera]
+time: 25
+active: 20
+servings: 2
+difficulty: 1
+tags: [rychle]
+spicy: 0
+keeps: { fridge: 1 }
+ingredients:
+  - ryzove-rezance: 200 g | široké
+  - olej: 3 pl
+  - cesnak: 3 ks
+  - tofu-natural: 200 g | na plátky
+  - brokolica: 1/2 ks | na ružičky
+  - kecap-manis: 2 pl
+  - sojova-omacka: 1 pl
+  - ryzovy-ocot: 1 čl
+  - cierne-korenie: 1/4 čl
+steps:
+  - Rezance namoč podľa návodu, aby boli ohybné, nie mäkké.
+  - Na 1 PL oleja na strednom ohni opeč tofu a vyber. Brokolicu opeč s cesnakom 3 minúty.
+  - Pridaj zvyšný olej a rezance, zvýš oheň na vysoký a nechaj ich minútu bez miešania chytiť kôrku.
+  - Pridaj omáčky, ocot, korenie a tofu a premiešaj.

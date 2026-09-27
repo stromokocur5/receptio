@@ -1,0 +1,25 @@
+title: Puff-puff
+description: Kysnuté guľôčky z Nigérie a Ghany, vyprážané do zlatista a posypané cukrom. Mäkké a nadýchané ako šišky.
+cuisine: zapadoafricka
+meals: [dezert, snack]
+time: 90
+active: 25
+servings: 6
+difficulty: 2
+tags: [dezert, party, deti]
+spicy: 0
+keeps: { fridge: 1 }
+gf_swap: false
+ingredients:
+  - hladka-muka: 300 g
+  - cukor: 70 g | + na posypanie
+  - drozdie: 2 čl | sušené
+  - muskatovy-orech: 1/4 čl
+  - sol: 1/2 čl
+  - voda: 250 ml | vlažná
+  - olej: ~500 ml | na vyprážanie, zostane v hrnci
+steps:
+  - Zmiešaj múku, cukor, droždie, muškát a soľ, pridaj vodu a vymiešaj hladké lepkavé cesto.
+  - Prikry a nechaj hodinu kysnúť, kým nezdvojnásobí objem.
+  - Mokrou rukou stláčaj cesto v päsťi a medzi palcom a ukazovákom vytláčaj guľky do oleja zohriateho na 170 °C.
+  - Vyprážaj 3–4 minúty, obracaj, kým nie sú zlatohnedé. Posyp cukrom.

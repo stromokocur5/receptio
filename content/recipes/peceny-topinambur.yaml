@@ -1,0 +1,25 @@
+title: Pečený topinambur a paštrnák
+description: Zimná zelenina upečená s tymianom a cesnakom do karamelových okrajov. Sladká, orieškovo chutná príloha.
+cuisine: moderna
+meals: [obed, vecera]
+time: 45
+active: 10
+servings: 3
+difficulty: 1
+tags: [lacne, meal-prep]
+spicy: 0
+keeps: { fridge: 3 }
+ingredients:
+  - topinambur: 400 g | na kusy
+  - pastinak: 2 ks | na hranolky
+  - cibula-cervena: 1 ks | na mesiačiky
+  - olivovy-olej: 3 pl
+  - tymian: 1 čl
+  - cesnak: 4 ks | celé v šupke
+  - sol: 3/4 čl
+  - javorovy-sirup: 1 pl
+  - slnecnicove-semienka: 2 pl
+steps:
+  - Zeleninu premiešaj s olejom, tymianom, cesnakom a soľou a rozlož na plech.
+  - Peč na 210 °C 30 minút, v polovici premiešaj.
+  - Pokvapkaj sirupom, posyp semienkami a peč ešte 5 minút. Cesnak vytlač zo šupky a rozotri po zelenine.

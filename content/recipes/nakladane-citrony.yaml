@@ -1,0 +1,26 @@
+title: Nakladané citróny
+description: Marocké solené citróny, ktoré za mesiac zmäknú a zmenia sa na slanú, voňavú pochúťku. Kôrka nakrájaná do tagine, šalátov a hummusu.
+cuisine: severoafricka
+meals: [domace]
+time: 20
+active: 20
+servings: 20
+difficulty: 1
+tags: [urob-si-sam, fermentacia]
+yields: 1 pohár 0,5 l
+ahead: Citróny sa nakladajú 4 týždne.
+keeps: { fridge: 30 }
+nutrition: false
+ingredients:
+  - citron: 6 ks | bio, nevoskované
+  - sol: 5 pl | hrubá
+  - bobkovy-list: 2 ks
+  - skorica: 1/4 čl
+equipment: [pohare]
+steps:
+  - Citróny umy a rozrež zhora krížom na štvrtiny tak, aby držali pri spodku pokope.
+  - Do každého nasyp lyžicu soli a natlač ich do pohára. Pri tlačení pusti šťavu.
+  - Pridaj bobkový list a zalej šťavou z ďalších citrónov, aby boli celé ponorené.
+  - Zatvor a nechaj 4 týždne pri izbovej teplote, každých pár dní pohár otoč. Potom skladuj v chladničke.
+tips:
+  - Používa sa hlavne kôra – dužinu vyber, kôru opláchni a nakrájaj nadrobno.

@@ -1,0 +1,28 @@
+title: Bissara
+description: Hustá zamatová polievka z lúpaného bôbu s olivovým olejom, kmínom a paprikou. Lacné marocké raňajky, ktoré zasýtia do obeda.
+cuisine: severoafricka
+meals: [ranajky, obed]
+time: 60
+active: 15
+servings: 4
+difficulty: 1
+tags: [polievka, lacne, one-pot, vela-bielkovin]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Vychladnutá stuhne na nátierku – natieraj na chlieb.'
+ingredients:
+  - bob-suchy: 300 g | lúpaný, namočený cez noc
+  - cesnak: 5 ks
+  - voda: 1,5 l
+  - kmin: 2 čl
+  - sladka-paprika: 1 čl
+  - sol: 1 čl
+  - olivovy-olej: 4 pl
+  - citron: 1/2 ks
+  - cili: 1/4 čl
+steps:
+  - Namočený bôb sceď a daj variť s cesnakom do vody. Var na miernom ohni 40–50 minút, kým sa úplne nerozpadne. Penu zbieraj.
+  - Rozmixuj ponorným mixérom dohladka, pridaj kmín, papriku a soľ. Ak je príliš hustá, pridaj vodu.
+  - Podávaj polievku v miskách pokvapkanú olivovým olejom, citrónom a posypanú kmínom a čili.
+tips:
+  - Lúpaný žltý bôb sa rozvarí oveľa rýchlejšie ako celý hnedý.

@@ -130,6 +130,43 @@ export function stepLines(
 	return lines.filter((line) => found.has(line));
 }
 
+/**
+ * Guides for techniques a step names without a telling ingredient. Guides tied to ingredients
+ * (ryža, strukoviny, cibuľa…) come from the ingredients the step mentions.
+ */
+const TECHNIQUE_GUIDES: [RegExp, string][] = [
+	[/\bvyprazaj|\bvyprazanie/, 'vyprazanie'],
+	[/\bkysnut|\bpodkysn/, 'kysnute-cesto'],
+	[/skrob\w* rozmiesan|rozmiesan\w* .*skrob|zapraz/, 'zahustovanie'],
+	[/\bolup|\bosup/, 'supanie'],
+	[/\bdochut/, 'dochucovanie'],
+	[/\bpec\w* .*na \d+ °c/, 'pecenie-zeleniny'],
+	[
+		/\b(spen|restuj|orestuj|dus|sced|spar|zredukuj|odstav|prived\w* do varu|prelisuj|vyslahaj|dotiah)/,
+		'slovnik'
+	]
+];
+
+/**
+ * Guides that help with one step: those of the ingredients it mentions (when the recipe links
+ * them) plus technique guides whose words appear in it. Returns guide slugs in a stable order.
+ */
+export function stepGuides(
+	step: string,
+	needed: RecipeLine[],
+	byId: Map<string, Ingredient>,
+	recipeGuides: string[]
+): string[] {
+	const text = normalizeSearch(step);
+	const fromIngredients = needed.flatMap((line) => byId.get(line.ingredientId)?.howto ?? []);
+	const fromTechnique = TECHNIQUE_GUIDES.filter(([re]) => re.test(text)).map(([, slug]) => slug);
+	const wanted = new Set([
+		...fromIngredients.filter((slug) => recipeGuides.includes(slug)),
+		...fromTechnique
+	]);
+	return [...wanted];
+}
+
 export function formatDuration(totalSeconds: number): string {
 	const s = Math.max(0, Math.ceil(totalSeconds));
 	const h = Math.floor(s / 3600);

@@ -1,0 +1,33 @@
+title: Locro de zapallo
+description: Hustý andský guláš z tekvice, zemiakov, kukurice a hrášku s oreganom. Krémový bez smotany.
+cuisine: peruanska
+meals: [obed, vecera]
+time: 45
+active: 15
+servings: 4
+difficulty: 1
+tags: [one-pot, lacne, meal-prep]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - olej: 2 pl
+  - cibula: 1 ks
+  - cesnak: 3 ks
+  - kmin: 1/2 čl
+  - oregano: 1 čl
+  - sladka-paprika: 1 čl
+  - kurkuma: 1/2 čl
+  - cili: 1/4 čl
+  - tekvica-hokkaido: 800 g | na kocky
+  - zemiaky: 3 ks | na kocky
+  - zeleninovy-vyvar: 500 ml
+  - kukurica: 1 ks
+  - hrasok: 1 hrnček
+  - vegansky-syr: 1/2 hrnček | na kocky, nepovinný
+  - sol: 1 čl
+  - ryza-basmati: 250 g
+steps:
+  - Na oleji na strednom ohni speň cibuľu s cesnakom, pridaj korenie a minútu restuj.
+  - Pridaj tekvicu, zemiaky a vývar a duste na miernom ohni 20 minút, kým tekvica nezmäkne.
+  - Časť tekvice roztlač, aby guláš zhustol. Pridaj kukuricu, hrášok a soľ a var na miernom ohni 5 minút.
+  - Vmiešaj syr a podávaj s ryžou.

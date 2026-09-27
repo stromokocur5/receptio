@@ -1,0 +1,27 @@
+title: Tod man khao pod
+description: Thajské kukuričné placky s červenou kari pastou, chrumkavé a sladkasté. Namáčajú sa do sladkej čili omáčky.
+cuisine: thajska
+meals: [snack]
+time: 25
+active: 25
+servings: 4
+difficulty: 1
+tags: [snack, party]
+spicy: 2
+keeps: { fridge: 1 }
+ingredients:
+  - kukurica: 1 ks | scedená
+  - ryzova-muka: 60 g
+  - kukuricny-skrob: 2 pl
+  - cervena-kari-pasta: 1 pl
+  - sojova-omacka: 1 pl
+  - zelene-fazulky: 50 g | na tenké kolieska
+  - voda: 4 pl
+  - olej: 5 pl
+  - sriracha: 2 pl
+  - javorovy-sirup: 1 pl
+  - limetka: 1/2 ks
+steps:
+  - Polovicu kukurice nahrubo rozmixuj, zmiešaj s celou kukuricou, múkou, škrobom, kari pastou, sójovou omáčkou, fazuľkami a vodou.
+  - Lyžicou tvaruj malé placky a opekaj na oleji na strednom ohni 2–3 minúty z každej strany dochrumkava.
+  - Srirachu zmiešaj so sirupom a limetkou a podávaj na namáčanie.
