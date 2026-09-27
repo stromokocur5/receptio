@@ -167,7 +167,7 @@
 		{
 			icon: 'euro',
 			title: 'Lacno a zdravo',
-			text: 'Uvidíš, koľko stojí porcia a či máš dosť bielkovín, B12, železa a vápnika.'
+			text: 'Uvidíš, koľko stojí porcia a či máš dosť bielkovín, železa a vápnika.'
 		},
 		{
 			icon: 'users',
@@ -472,7 +472,7 @@
 			<h2>Z domácej potreby</h2>
 			<p>
 				Receptio vzniklo pre seba a kamarátov. Chýbali dobré rastlinné a bezlepkové recepty po
-				slovensky, pri ktorých by bolo jasné, koľko bielkovín, B12 či železa v nich je a koľko stojí
+				slovensky, pri ktorých by bolo jasné, koľko bielkovín či železa v nich je a koľko stojí
 				porcia. Weby s receptami boli plné reklám a vyskakovacích okien, čísla na nich chýbali.
 			</p>
 			<p>

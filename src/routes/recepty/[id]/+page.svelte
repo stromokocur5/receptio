@@ -190,6 +190,16 @@
 		return () => observer.disconnect();
 	});
 
+	/** Near the end of the page the footer takes over; the bar would cover its links. */
+	let footerInView = $state(false);
+	$effect(() => {
+		const footer = document.querySelector('footer');
+		if (!footer) return;
+		const observer = new IntersectionObserver(([entry]) => (footerInView = entry.isIntersecting));
+		observer.observe(footer);
+		return () => observer.disconnect();
+	});
+
 	const SECTIONS = [
 		{ id: 'suroviny', label: 'Suroviny' },
 		{ id: 'postup', label: 'Postup' },
@@ -734,15 +744,11 @@
 				<NutrientBars
 					values={recipe.perServing}
 					{targets}
-					keys={['iron', 'calcium', 'zinc', 'ala', 'b12']}
+					keys={recipe.perServing.b12 >= 0.5
+						? ['iron', 'calcium', 'zinc', 'ala', 'b12']
+						: ['iron', 'calcium', 'zinc', 'ala']}
 				/>
 			</div>
-			{#if recipe.perServing.b12 < 0.5}
-				<p class="b12-note">
-					<Icon name="pill" size={18} /> B12 z jedla nezískaš,
-					<a href="/wiki/b12">suplementuj ho</a>.
-				</p>
-			{/if}
 		</section>
 	{/if}
 
@@ -756,7 +762,11 @@
 	{/if}
 </article>
 
-<div class="quick-bar" class:shown={actionsGone && !page.state.cooking} data-noprint>
+<div
+	class="quick-bar"
+	class:shown={actionsGone && !footerInView && !page.state.cooking}
+	data-noprint
+>
 	<button class="btn ghost" onclick={plan}>
 		<Icon name={justAdded ? 'check' : 'calendar'} size={18} />
 		{justAdded ? 'Pridané' : 'Do plánu'}
@@ -1562,14 +1572,6 @@
 	.nut-grid {
 		display: grid;
 		gap: 12px 40px;
-	}
-	.b12-note {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		margin: 18px 0 0;
-		font-size: 0.9rem;
-		color: var(--sky);
 	}
 
 	.similar,

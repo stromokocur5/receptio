@@ -21,7 +21,7 @@
 		{
 			icon: 'euro',
 			title: 'Lacno a zdravo',
-			text: 'Pri každom recepte vidíš cenu porcie a bielkoviny, B12, železo či vápnik – živiny, na ktoré si pri rastlinnej strave treba dať pozor.'
+			text: 'Pri každom recepte vidíš cenu porcie a bielkoviny, železo, vápnik či zinok – živiny, na ktoré si pri rastlinnej strave treba dať pozor. B12 z jedla nezískaš, ten treba suplementovať.'
 		},
 		{
 			icon: 'book',
@@ -57,7 +57,7 @@
 			<p>
 				Receptio vzniklo pre seba a kamarátov. Varíme rastlinne a chýbali nám dobré vegánske a
 				bezlepkové recepty <strong>po slovensky</strong>, pri ktorých by bolo hneď jasné, koľko
-				bielkovín, B12 či železa v nich je a <strong>koľko stojí porcia</strong>.
+				bielkovín či železa v nich je a <strong>koľko stojí porcia</strong>.
 			</p>
 			<p>
 				Weby s receptami boli plné reklám, vyskakovacích okien a príbehov nad receptom. Čísla

@@ -99,7 +99,7 @@
 		{
 			icon: 'scale',
 			title: 'Čísla sa počítajú, nie odhadujú',
-			text: 'Živiny na porciu, B12, železo, cena porcie aj CO₂ – všetko zo surovín receptu. Zmeň porcie a prepočíta sa to.'
+			text: 'Bielkoviny, železo, vápnik, cena porcie aj CO₂ – všetko zo surovín receptu. Zmeň porcie a prepočíta sa to.'
 		},
 		{
 			icon: 'wheat-off',
