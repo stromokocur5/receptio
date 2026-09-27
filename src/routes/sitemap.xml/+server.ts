@@ -14,6 +14,7 @@ const STATIC_PAGES = [
 	'/wiki',
 	'/vybavenie',
 	'/sezona',
+	'/pestuj',
 	'/zvysky',
 	'/navrhni'
 ];

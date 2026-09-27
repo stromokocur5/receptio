@@ -22,8 +22,14 @@
 		{
 			id: 'navody',
 			title: 'Návody',
-			text: 'Bezlepkovo, zásoby, nákup vo veľkom a ako Receptio počíta.',
+			text: 'Bezlepkovo, zásoby, pestovanie a ako Receptio počíta.',
 			tone: 'var(--turmeric)'
+		},
+		{
+			id: 'pohyb',
+			title: 'Pohyb',
+			text: 'Pre toho, kto chce k dobrému jedlu aj trochu cvičiť. Bez posilňovne.',
+			tone: 'var(--tomato)'
 		}
 	];
 </script>
@@ -66,6 +72,17 @@
 						<span>
 							<strong>Vybavenie kuchyne</strong>
 							<span class="sum">Panvice, hrnce, mixér, rúra – čo treba a čím to nahradiť.</span>
+						</span>
+					</a>
+				{/if}
+				{#if section.id === 'navody'}
+					<a class="item card draw-host rise" href="/pestuj">
+						<span class="ico"><Icon name="sprout" size={26} /></span>
+						<span>
+							<strong>Pestuj si sám</strong>
+							<span class="sum"
+								>Čo sa u nás oplatí pestovať, plánovač záhradky, balkóna aj okna v byte.</span
+							>
 						</span>
 					</a>
 				{/if}

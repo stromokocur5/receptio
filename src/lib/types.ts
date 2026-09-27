@@ -250,7 +250,69 @@ export interface Cuisine {
 	pitfalls: string[];
 }
 
-export const WIKI_SECTIONS = ['zaklady', 'suplementy', 'navody'] as const;
+export const GROW_PLACES = ['parapet', 'balkon', 'zahrada'] as const;
+export type GrowPlace = (typeof GROW_PLACES)[number];
+export const GROW_SUN = ['slnko', 'polotien', 'tien'] as const;
+export type GrowSun = (typeof GROW_SUN)[number];
+
+/** How to grow an ingredient yourself (content/pestovanie.yaml). */
+export interface GrowGuide {
+	ingredientId: string;
+	name: string;
+	where: GrowPlace[];
+	/** Light it copes with, best first. */
+	sun: GrowSun[];
+	/** 1 easy … 3 needs care. */
+	level: 1 | 2 | 3;
+	/** Distance between plants in cm (0 = sown densely, e.g. sprouts). */
+	spacing: number;
+	/** Plant family, for rotating beds year to year. */
+	family: string;
+	/** Months (1–12) to start seedlings indoors. */
+	indoor: number[];
+	/** Months to sow or plant outside (or into the pot). */
+	sow: number[];
+	harvest: number[];
+	/** Perennials stay in place for years. */
+	perennial: boolean;
+	how: string;
+	tip?: string;
+	/** Why it's one of the crops worth growing here; featured on /pestuj. */
+	recommend?: string;
+	/** Good neighbours and plants to keep away (ingredient ids). */
+	friends: string[];
+	avoid: string[];
+}
+
+/** Why an ingredient isn't grown here and where it comes from. */
+export interface NotGrown {
+	ingredientId: string;
+	name: string;
+	/** `nie` = not in our climate, `tazko` = only with luck, a greenhouse or as a pot curiosity. */
+	status: 'nie' | 'tazko';
+	origin: string;
+	note?: string;
+}
+
+/** A polyculture: plants that help each other, planted together as one module of `area` m². */
+export interface GrowCombo {
+	id: string;
+	name: string;
+	where: GrowPlace[];
+	sun: GrowSun[];
+	level: 1 | 2 | 3;
+	area: number;
+	/** Most modules worth planting (perennial borders, herb spirals); unlimited when absent. */
+	max?: number;
+	/** Plants per module, by ingredient id. */
+	members: { ingredientId: string; name: string; count: number }[];
+	how: string;
+	why: string;
+	/** Containers, supports and covers this combination needs beyond basic tools. */
+	gear: string[];
+}
+
+export const WIKI_SECTIONS = ['zaklady', 'suplementy', 'navody', 'pohyb'] as const;
 export type WikiSection = (typeof WIKI_SECTIONS)[number];
 
 export interface WikiPage {

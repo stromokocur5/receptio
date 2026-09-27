@@ -12,10 +12,11 @@ const PAGES_CACHE = `pages-${version}`;
 
 /** Pages that must work offline even if never visited: the shopping list above all. */
 const OFFLINE_PAGES = ['/', '/plan', '/spajza', '/recepty'];
-const offlinePages = OFFLINE_PAGES.flatMap((p) => [
-	p,
-	p === '/' ? '/__data.json' : `${p}/__data.json`
-]);
+const offlinePages = [
+	// Every page renders from the catalog, so it must never be trimmed away.
+	'/catalog.json',
+	...OFFLINE_PAGES.flatMap((p) => [p, p === '/' ? '/__data.json' : `${p}/__data.json`])
+];
 
 const shell = [...build, ...files.filter((f) => !f.endsWith('.png') || f.includes('icon'))];
 const immutable = new Set(shell);
@@ -43,8 +44,8 @@ sw.addEventListener('activate', (event) => {
 	);
 });
 
-/** Every page embeds the whole catalog (~0.4 MB), so keep only the most recent visits. */
-const MAX_CACHED_PAGES = 60;
+/** Pages are ~100 kB (the catalog is cached once), so a few hundred visits fit comfortably. */
+const MAX_CACHED_PAGES = 200;
 /** On a weak signal in a shop, fall back to the saved copy instead of waiting. */
 const SLOW_NETWORK_MS = 4000;
 

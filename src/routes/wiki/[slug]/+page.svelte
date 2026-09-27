@@ -16,7 +16,8 @@
 		vapnik: 'calcium',
 		zinok: 'zinc',
 		'omega-3': 'ala',
-		bielkoviny: 'protein'
+		bielkoviny: 'protein',
+		'jedlo-a-cvicenie': 'protein'
 	};
 
 	const related = $derived.by(() => {

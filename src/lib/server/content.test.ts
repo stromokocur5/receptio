@@ -52,6 +52,17 @@ describe('content', () => {
 		);
 	});
 
+	it('offers a low-salt version of salty recipes', () => {
+		const soup = content.recipeDetails.get('bun-hue-chay')!;
+		const low = soup.variants.find((v) => v.name === 'Menej soli')!;
+		expect(low.perServing.salt).toBeLessThan(soup.perServing.salt * 0.8);
+		expect(low.description).toContain('Polovicu vývaru nahraď vodou');
+		expect(low.lines.some((l) => l.ingredientId === 'voda')).toBe(true);
+		expect(content.recipeDetails.get('hummus')!.variants.map((v) => v.name)).not.toContain(
+			'Menej soli'
+		);
+	});
+
 	it('leaves not-eaten lines out of nutrition', () => {
 		const seitan = content.recipeDetails.get('seitan')!;
 		expect(seitan.lines.find((l) => l.ingredientId === 'zeleninovy-vyvar')?.notEaten).toBe(true);
@@ -90,6 +101,6 @@ describe('content', () => {
 		const ids = new Set(content.cuisines.map((c) => c.id));
 		for (const r of content.recipes) expect(ids.has(r.cuisine), r.id).toBe(true);
 		const sections = new Set(content.wiki.map((w) => w.section));
-		expect([...sections].sort()).toEqual(['navody', 'suplementy', 'zaklady']);
+		expect([...sections].sort()).toEqual(['navody', 'pohyb', 'suplementy', 'zaklady']);
 	});
 });

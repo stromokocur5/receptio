@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { formatAmount, formatGrams } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
-	import { splitStep, stepGuides, stepLines } from '$lib/cooking';
+	import { scaleStep, splitStep, stepGuides, stepLines } from '$lib/cooking';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeFeedback from '$lib/components/RecipeFeedback.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
@@ -71,7 +71,9 @@
 	const guideCache = new Map<string, string>();
 
 	const done = $derived(index >= steps.length);
-	const segments = $derived(done ? [] : splitStep(steps[index]));
+	/** The step as written for the servings being cooked. */
+	const stepText = $derived(done ? '' : scaleStep(steps[index], factor));
+	const segments = $derived(done ? [] : splitStep(stepText));
 	const needed = $derived(done ? [] : stepLines(steps[index], lines, catalog.ingredientsById));
 	const hasPantry = $derived(Object.keys(pantry.current).length > 0);
 	const guideTitles = $derived(
@@ -91,17 +93,24 @@
 				})
 	);
 
+	async function loadGuide(slug: string): Promise<string> {
+		const cached = guideCache.get(slug);
+		if (cached !== undefined) return cached;
+		const res = await fetch(`/wiki/${slug}/obsah.json`);
+		if (!res.ok) throw new Error(`guide ${slug}: ${res.status}`);
+		const { html } = (await res.json()) as { html: string };
+		guideCache.set(slug, html);
+		return html;
+	}
+
 	/** Opens a guide in a sheet, so the cook doesn't lose their place in the recipe. */
 	async function openGuide(slug: string, title: string) {
 		showAll = false;
 		guide = { slug, title, html: guideCache.get(slug) ?? null, failed: false };
 		if (guide.html !== null) return;
 		try {
-			const res = await fetch(`/wiki/${slug}/obsah.json`);
-			if (!res.ok) throw new Error(`guide ${slug}: ${res.status}`);
-			const body = (await res.json()) as { html: string };
-			guideCache.set(slug, body.html);
-			if (guide?.slug === slug) guide = { ...guide, html: body.html };
+			const html = await loadGuide(slug);
+			if (guide?.slug === slug) guide = { ...guide, html };
 		} catch {
 			if (guide?.slug === slug) guide = { ...guide, failed: true };
 		}
@@ -139,7 +148,7 @@
 	function readStep() {
 		const text = done
 			? 'Hotovo. Dobrú chuť!'
-			: `Krok ${index + 1}. ${steps[index]}${segments.some((s) => 'timer' in s) ? ' Povedz časovač a spustím ho.' : ''}`;
+			: `Krok ${index + 1}. ${stepText}${segments.some((s) => 'timer' in s) ? ' Povedz časovač a spustím ho.' : ''}`;
 		listener?.pause();
 		speak(text, () => listener?.resume());
 	}
@@ -221,6 +230,20 @@
 	onMount(() => {
 		// A modal <dialog> sits in the top layer, above the sticky header and any stacking context.
 		dialog.showModal();
+
+		// Fetch every guide the recipe's steps link now, while there's signal – the service
+		// worker keeps them, so they open in a cellar kitchen too.
+		const slugs = new Set(
+			steps.flatMap((step) =>
+				stepGuides(
+					step,
+					stepLines(step, lines, catalog.ingredientsById),
+					catalog.ingredientsById,
+					guides.map((g) => g.slug)
+				)
+			)
+		);
+		for (const slug of slugs) loadGuide(slug).catch(() => {});
 
 		// Keep the screen on while cooking; the lock drops whenever the tab is hidden.
 		let lock: WakeLockSentinel | null = null;

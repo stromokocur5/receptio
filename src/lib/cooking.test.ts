@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatDuration, splitStep, stepGuides, stepLines } from './cooking';
+import { formatDuration, scaleStep, splitStep, stepGuides, stepLines } from './cooking';
 import type { Ingredient, RecipeLine } from './types';
 
 const timers = (step: string) =>
@@ -103,5 +103,27 @@ describe('stepGuides', () => {
 		expect(stepGuides('Peč na 200 °C 25 minút.', [], byId, [])).toEqual(['pecenie-zeleniny']);
 		expect(stepGuides('Nechaj hodinu kysnúť.', [], byId, [])).toEqual(['kysnute-cesto']);
 		expect(stepGuides('Premiešaj a podávaj.', [], byId, [])).toEqual([]);
+	});
+});
+
+describe('scaleStep', () => {
+	it('scales spoons, grams, liters and cups', () => {
+		expect(scaleStep('Na 2 PL oleja speň cibuľu a zalej 500 ml vody.', 0.5)).toBe(
+			'Na 1 PL oleja speň cibuľu a zalej 250 ml vody.'
+		);
+		expect(scaleStep('Pridaj ½ ČL soli a 1,5 l vývaru.', 2)).toBe('Pridaj 1 ČL soli a 3 l vývaru.');
+		expect(scaleStep('Šošovicu var v 2 hrnčekoch vody, pridaj 1 hrnček ryže.', 2)).toBe(
+			'Šošovicu var v 4 hrnčekoch vody, pridaj 2 hrnčeky ryže.'
+		);
+		expect(scaleStep('Var v 2 hrnčekoch vody.', 0.5)).toBe('Var v 1 hrnčeku vody.');
+		expect(scaleStep('Pridaj 3 PL oleja.', 0.5)).toBe('Pridaj 1½ PL oleja.');
+		expect(scaleStep('Pridaj 2–3 PL vody.', 2)).toBe('Pridaj 4–6 PL vody.');
+	});
+
+	it('leaves times, temperatures, sizes and counts alone', () => {
+		const step =
+			'Peč na 200 °C 25 minút, vytvaruj 8 guliek hrubých 2 cm a var s 1,5-násobkom vody.';
+		expect(scaleStep(step, 2)).toBe(step);
+		expect(scaleStep('Pridaj 2 PL oleja.', 1)).toBe('Pridaj 2 PL oleja.');
 	});
 });

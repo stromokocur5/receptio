@@ -56,6 +56,13 @@
 			tone: 'var(--leaf-2)'
 		},
 		{
+			href: '/pestuj',
+			title: 'Pestuj si sám',
+			text: 'Čo sa u nás oplatí pestovať a plánovač pre okno, balkón aj záhradu.',
+			icon: 'sprout',
+			tone: 'var(--leaf-2)'
+		},
+		{
 			href: '/recepty?gf=1',
 			title: 'Bezlepkovo',
 			text: 'Lepok odvodený zo surovín vrátane zámen typu tamari.',

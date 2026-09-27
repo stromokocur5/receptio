@@ -1,0 +1,1231 @@
+# Pestuj si sám – ako dopestovať suroviny na Slovensku (nížiny až podhorie).
+# where: parapet (byt, okno) | balkon (nádoby) | zahrada (záhon, pole)
+# sun: slnko (6+ h priameho slnka) | polotien (3–6 h) | tien (bez priameho slnka)
+# level: 1 ľahké, 2 treba sa starať, 3 pre pokročilých
+# spacing: rozostup rastlín v cm; family: čeľaď na striedanie záhonov
+# indoor: predpestovanie doma, sow: výsev/výsadba von (alebo do nádoby), harvest: zber
+# friends / avoid: dobrí a zlí susedia (id surovín)
+
+plodiny:
+  # ── Odolné a menej známe ──────────────────────────────────────
+  - ingredient: topinambur
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 40
+    family: astrovite
+    recommend: 'Raz zasadíš a máš ho navždy. Bez zálievky, bez postrekov, zber celú zimu.'
+    sow: [3, 4, 10, 11]
+    harvest: [10, 11, 12, 1, 2, 3]
+    perennial: true
+    how: 'Hľuzy zasaď 10 cm hlboko, 40 cm od seba, na okraj záhrady – rastie do 2–3 m a každý rok sa vráti sám. Nezalievaš, nehnojíš. Vykopávaj po prvých mrazoch podľa potreby, v zemi vydrží celú zimu.'
+    tip: 'Z malej hľuzy, ktorá v zemi ostane, vyrastie nová rastlina. Ak ho nechceš všade, zasaď ho do zakopaného vreca.'
+    friends: [bob-suchy, tekvica-hokkaido]
+  - ingredient: amarant
+    name: Amarant
+    where: [zahrada, balkon]
+    sun: [slnko]
+    level: 1
+    spacing: 30
+    family: laskavcovite
+    recommend: 'Zvláda sucho a horúčavu, keď iné plodiny chradnú. Listy aj zrno, veľa železa a vápnika.'
+    indoor: [4]
+    sow: [5, 6]
+    harvest: [7, 8, 9, 10]
+    how: 'Sej až po zamrznutých (polovica mája) priamo do záhona, semienka len pritlač. Znesie sucho a horúčavu. Mladé listy od júla jedz ako špenát, zrno zbieraj, keď sa z metlíc pri potrasení sype – metlice usuš dnu nad plachtou.'
+    friends: [kukurica-klas, cibula]
+  - ingredient: proso
+    name: Proso
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 10
+    family: travy
+    sow: [5]
+    harvest: [8, 9]
+    how: 'Sej v máji do riadkov 25 cm od seba, 2 cm hlboko. Zalievaj len pri klíčení, potom zvládne sucho. Zber, keď zrná zožltnú, a vymláť. Na jedlo sa musí olúpať, čo doma ide ťažko – na malom záhone je to skôr pokus.'
+  - ingredient: cirok
+    name: Cirok
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 20
+    family: travy
+    sow: [5]
+    harvest: [9, 10]
+    how: 'Sej do teplej pôdy v máji, 3 cm hlboko, riadky 50 cm. V lete takmer nezalievaš – znáša sucho lepšie ako kukurica. Klasy zber, keď sú zrná tvrdé, a usuš.'
+    friends: [zelene-fazulky, tekvica-hokkaido]
+  - ingredient: bob-suchy
+    name: Bôb
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 15
+    family: bobovite
+    recommend: 'Najviac bielkovín zo záhrady a zasadíš ho, keď je ešte zima. Pôdu po ňom nechá úrodnejšiu.'
+    sow: [3, 4]
+    harvest: [6, 7, 8]
+    how: 'Sej už v marci, 5 cm hlboko, 15 cm od seba – mráz do -5 °C mu nevadí. Keď nasadí prvé struky, zaštipni vrcholky, vošky potom neprídu. Zelené zrná zbieraj v júni, na suché nechaj struky zčernieť. Korene nechaj v zemi, zúrodnia ju dusíkom.'
+    friends: [zemiaky, spenat, salat]
+    avoid: [cibula, cesnak]
+  - ingredient: pastinak
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 2
+    spacing: 10
+    family: mrkvovite
+    sow: [3, 4, 5]
+    harvest: [10, 11, 12, 1, 2, 3]
+    how: 'Semeno musí byť z minulej sezóny, staré neklíči. Sej 1 cm hlboko do riadkov 30 cm a záhon udržuj vlhký – klíči až 3 týždne. Koreň nechaj v zemi, po mraze zosladne.'
+    friends: [cibula, redkovka]
+  - ingredient: kel
+    name: Kel kučeravý
+    where: [zahrada, balkon]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 45
+    family: kapustovite
+    recommend: 'Zelenina, ktorú zbieraš od septembra do marca – mráz ju len osladí.'
+    indoor: [3, 4]
+    sow: [5, 6]
+    harvest: [9, 10, 11, 12, 1, 2, 3]
+    how: 'Predpestuj v apríli, vysaď v máji 45 cm od seba (na balkóne 1 rastlina do 15 l nádoby). Oberaj spodné listy postupne a vrchol nechaj rásť – z jednej rastliny zbieraš celú zimu.'
+    friends: [kopor, cibula, salat, cvikla]
+    avoid: [paradajky]
+  - ingredient: mangold
+    where: [zahrada, balkon]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 25
+    family: mrlikovite
+    recommend: 'Jedna rastlina oberaná celé leto, znesie horúčavu aj polotieň – ideálna na balkón.'
+    sow: [4, 5, 6, 7]
+    harvest: [6, 7, 8, 9, 10]
+    how: 'Sej od apríla 2 cm hlboko priamo von. Odrezávaj vonkajšie listy, stred dorastie – jedna rastlina dáva celé leto. Do 80 cm truhlíka stačia 3 rastliny.'
+    friends: [cibula, kalerab, fazula-biela]
+  - ingredient: slnecnicove-semienka
+    name: Slnečnica
+    where: [zahrada]
+    sun: [slnko]
+    level: 1
+    spacing: 40
+    family: astrovite
+    sow: [4, 5]
+    harvest: [9]
+    how: 'Sej v apríli–máji 3 cm hlboko. Keď zadná strana kvetu zožltne, odrež ho, zaves hlavou dole a prikry sieťkou alebo vreckom proti vtákom. Semienka vylúp a opraž.'
+    friends: [kukurica-klas, uhorka]
+    avoid: [zemiaky]
+  - ingredient: cierny-koren
+    name: Čierny koreň
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 2
+    spacing: 8
+    family: astrovite
+    sow: [3, 4]
+    harvest: [10, 11, 12, 1, 2, 3]
+    how: 'Sej skoro na jar do hlbokej kyprej pôdy bez kameňov, riadky 30 cm. Korene rastú až 30 cm do hĺbky, vykopávaj ich opatrne, zlomené vytekajú. Znesie mráz.'
+    friends: [por, salat]
+  - ingredient: por
+    where: [zahrada, balkon]
+    sun: [slnko, polotien]
+    level: 2
+    spacing: 15
+    family: cibulovite
+    indoor: [2, 3]
+    sow: [5, 6]
+    harvest: [9, 10, 11, 12, 1, 2, 3]
+    how: 'Predpestuj od februára. Sadenice hrubé ako ceruzka zasaď do jamiek hlbokých 15 cm a len ich zalej – postupne sa zasypú, stonka tak ostane biela. Prezimuje v záhone.'
+    friends: [mrkva, zeler-stonkovy, salat]
+    avoid: [hrasok, fazula-biela]
+  - ingredient: ruzickovy-kel
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 60
+    family: kapustovite
+    indoor: [3, 4]
+    sow: [5]
+    harvest: [10, 11, 12, 1, 2]
+    how: 'Predpestuj v apríli, vysaď 60 cm od seba do výživnej pôdy. Zalievaj pravidelne. Ružičky zberaj zdola nahor, po mraze sú sladšie.'
+    friends: [kopor, salat, cibula]
+  - ingredient: chren
+    name: Chren
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 50
+    family: kapustovite
+    sow: [3, 4]
+    harvest: [10, 11, 3]
+    perennial: true
+    how: 'Zasaď 20 cm odrezok koreňa šikmo do zeme. Rastie ako burina a z každého kúska koreňa vyrastie nový – daj ho do zakopaného vedra bez dna alebo na kraj záhrady.'
+    friends: [zemiaky]
+  - ingredient: pohanka
+    name: Pohánka
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 5
+    family: stavikovite
+    recommend: 'Rastie aj v chudobnej pôde, dozrie za 3 mesiace a včely ju milujú.'
+    sow: [5, 6, 7]
+    harvest: [8, 9]
+    how: 'Sej hustejšie po zamrznutých, dozrieva za 10–12 týždňov. Rastie aj v chudobnej pôde, burinu prerastie a včely ju milujú. Zber, keď zhnedne tri štvrtiny zŕn. Na jedlo treba zrno olúpať.'
+    tip: 'Aj keď ju nezbieraš, ako zelené hnojenie zúrodní pôdu pred zimou.'
+  - ingredient: cicer-suchy
+    name: Cícer
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 15
+    family: bobovite
+    recommend: 'Strukovina do suchších rokov – na juhu Slovenska sa mu darí stále lepšie.'
+    sow: [4]
+    harvest: [7, 8]
+    how: 'Sej v apríli 5 cm hlboko do teplej, suchšej pôdy – najlepšie sa mu darí na juhu Slovenska. Nezalievaj, vlhko mu škodí. Zber, keď rastliny zožltnú a struky štrkocú.'
+    avoid: [cibula, cesnak]
+  - ingredient: sosovica-hneda
+    name: Šošovica
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 5
+    family: bobovite
+    sow: [4]
+    harvest: [7, 8]
+    how: 'Sej v apríli do riadkov 20 cm od seba. Je nízka a poliehavá – pomôže, keď ju zasadíš s ovsom alebo jačmeňom, o ktoré sa opiera. Zber, keď struky zhnednú.'
+  - ingredient: edamame
+    name: Sója (edamame)
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 10
+    family: bobovite
+    sow: [5]
+    harvest: [8, 9]
+    how: 'Sója potrebuje teplo – sej až v máji, 3 cm hlboko. Ako edamame zberaj ešte zelené, plné struky v auguste, na suché zrná nechaj struky zhnednúť.'
+    friends: [kukurica-klas]
+  - ingredient: fazula-biela
+    name: Fazuľa na zrno
+    where: [zahrada]
+    sun: [slnko]
+    level: 1
+    spacing: 10
+    family: bobovite
+    recommend: 'Bielkoviny na celú zimu – suchá fazuľa vydrží roky a v kombinácii „tri sestry“ nepotrebuje takmer nič.'
+    sow: [5, 6]
+    harvest: [8, 9]
+    how: 'Kríčkovú fazuľu na zrno sej po zamrznutých 3 cm hlboko. Struky nechaj na rastline vyschnúť, potom vylúp a zrná dosuš. Popínavá fazuľa potrebuje oporu (kukurica, tyč).'
+    friends: [kukurica-klas, tekvica-hokkaido, zemiaky, mrkva]
+    avoid: [cibula, cesnak, por]
+  - ingredient: mungo
+    name: Mungo
+    where: [zahrada, parapet]
+    sun: [slnko]
+    level: 3
+    spacing: 10
+    family: bobovite
+    sow: [5, 6]
+    harvest: [9]
+    how: 'Na zrno potrebuje dlhé horúce leto – u nás dozreje len v teplom roku na juhu. Omnoho istejšie je klíčiť ho doma v pohári na klíčky.'
+  - ingredient: batat
+    name: Batát
+    where: [zahrada, balkon]
+    sun: [slnko]
+    level: 3
+    spacing: 40
+    family: povojovite
+    indoor: [3, 4]
+    sow: [5, 6]
+    harvest: [9, 10]
+    how: 'Batát z obchodu polož do vody, vyrastú výhonky. Tie odlom, nechaj zakoreniť v pohári a v máji zasaď do teplého miesta alebo 40 l nádoby. Zber pred prvým mrazom, pred jedlom nechaj 2 týždne dozrieť v teple.'
+
+  # ── Zelenina ─────────────────────────────────────────────────
+  - ingredient: cibula
+    where: [zahrada, balkon]
+    sun: [slnko]
+    level: 1
+    spacing: 10
+    family: cibulovite
+    sow: [3, 4]
+    harvest: [7, 8]
+    how: 'Sadzačku (malé cibuľky) zasaď v marci–apríli tak, aby špička trčala zo zeme. Zberaj, keď vňať poľahne a zožltne, usuš na slnku.'
+    friends: [mrkva, cvikla, salat, paradajky]
+    avoid: [hrasok, fazula-biela, zelene-fazulky]
+  - ingredient: cesnak
+    name: Cesnak
+    where: [zahrada, balkon]
+    sun: [slnko]
+    level: 1
+    spacing: 12
+    family: cibulovite
+    recommend: 'Zasadíš na jeseň, zberáš v lete a kúpený stojí najviac na kilogram zo všetkej bežnej zeleniny.'
+    sow: [10, 11]
+    harvest: [6, 7]
+    how: 'Strúčiky zasaď na jeseň 5 cm hlboko špičkou hore. Na jar vyženie listy, v júni odlom kvetné stvoly. Zberaj, keď zožltne tretina listov.'
+    friends: [mrkva, paradajky, cvikla]
+    avoid: [hrasok, fazula-biela, bob-suchy]
+  - ingredient: jarna-cibulka
+    where: [parapet, balkon, zahrada]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 3
+    family: cibulovite
+    sow: [3, 4, 5, 6, 7, 8]
+    harvest: [5, 6, 7, 8, 9, 10]
+    how: 'Najjednoduchšie z kúpenej: biele spodky s korienkami postav do pohára s trochou vody alebo zasaď do kvetináča – za týždeň dorastie zelená vňať, strihaj ju znova a znova.'
+  - ingredient: mrkva
+    where: [zahrada, balkon]
+    sun: [slnko]
+    level: 1
+    spacing: 4
+    family: mrkvovite
+    sow: [3, 4, 5, 6]
+    harvest: [6, 7, 8, 9, 10]
+    how: 'Sej do kyprej pôdy bez hnoja, 1 cm hlboko, riadky 20 cm. Klíči 2–3 týždne – pridaj do riadku pár semienok reďkovky, označia riadok. Pretrhaj na 4 cm. Na balkóne v 30 cm hlbokej nádobe.'
+    friends: [cibula, por, hrasok, salat, paradajky]
+  - ingredient: zemiaky
+    where: [zahrada, balkon]
+    sun: [slnko]
+    level: 1
+    spacing: 35
+    family: lilkovite
+    recommend: 'Najviac jedla z metra štvorcového a pestujú sa aj vo vreci na balkóne.'
+    sow: [4, 5]
+    harvest: [7, 8, 9]
+    how: 'Nakľúčené hľuzy zasaď 10 cm hlboko, 35 cm od seba. Keď vyrastú, prihŕňaj k nim zem. Na balkóne vo veľkom vreci: 3 hľuzy dnu a postupne prisýpaj zeminu, ako rastú.'
+    friends: [bob-suchy, chren, fazula-biela]
+    avoid: [paradajky, uhorka, tekvica-hokkaido]
+  - ingredient: paradajky
+    name: Paradajky
+    where: [balkon, zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 50
+    family: lilkovite
+    indoor: [3]
+    sow: [5]
+    harvest: [7, 8, 9]
+    how: 'Predpestuj v marci na svetlom okne, vysaď po zamrznutých hlbšie, než rástli (zakorenia aj stonky). Vyvýšené kolíky, zálievka ku koreňom, nie na listy. Na balkón vyber cherry odrodu do 20 l nádoby.'
+    friends: [bazalka, mrkva, petrzlenova-vnat, cesnak, salat]
+    avoid: [zemiaky, kel, biela-kapusta, uhorka]
+  - ingredient: paprika-cervena
+    where: [balkon, zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 40
+    family: lilkovite
+    indoor: [2, 3]
+    sow: [5]
+    harvest: [7, 8, 9, 10]
+    how: 'Predpestuj už vo februári, potrebuje teplo. Vysaď po zamrznutých na najteplejšie miesto. Prvý kvet odštipni, rastlina potom zosilnie a dá viac plodov.'
+    friends: [bazalka, mrkva, cibula]
+  - ingredient: cili-papricka
+    name: Čili
+    where: [parapet, balkon, zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 40
+    family: lilkovite
+    indoor: [2, 3]
+    sow: [5]
+    harvest: [7, 8, 9, 10]
+    perennial: true
+    how: 'Ako paprika, ale menšia a otužilejšia – v 5 l kvetináči dá úrodu aj na južnom okne. Na jeseň ju zostrihaj a prezimuj na svetlom chladnejšom mieste, na druhý rok plodí skôr.'
+    friends: [bazalka]
+  - ingredient: baklazan
+    where: [balkon, zahrada]
+    sun: [slnko]
+    level: 3
+    spacing: 50
+    family: lilkovite
+    indoor: [2, 3]
+    sow: [5]
+    harvest: [8, 9]
+    how: 'Najnáročnejší na teplo z lilkovitých – predpestuj vo februári a vysaď k južnej stene alebo do 20 l nádoby na balkóne. Nechaj 4–5 plodov na rastlinu.'
+    friends: [bazalka, zelene-fazulky]
+  - ingredient: uhorka
+    name: Uhorky
+    where: [zahrada, balkon]
+    sun: [slnko]
+    level: 2
+    spacing: 40
+    family: tekvicovite
+    indoor: [4]
+    sow: [5, 6]
+    harvest: [7, 8, 9]
+    how: 'Sej po zamrznutých do teplej pôdy alebo vysaď predpestované. Hadovky nechaj ťahať po mriežke – šetria miesto. Zalievaj vlažnou vodou, zberaj často, aby rastlina dávala ďalej.'
+    friends: [kopor, kukurica-klas, zelene-fazulky, salat]
+    avoid: [zemiaky, paradajky]
+  - ingredient: cuketa
+    where: [zahrada, balkon]
+    sun: [slnko]
+    level: 1
+    spacing: 90
+    family: tekvicovite
+    recommend: 'Pre začiatočníka najvďačnejšia – dve rastliny zásobia rodinu celé leto.'
+    indoor: [4]
+    sow: [5, 6]
+    harvest: [6, 7, 8, 9]
+    how: 'Jedna rastlina potrebuje takmer 1 m² – dve stačia pre rodinu. Zberaj malé, do 20 cm, a často. Na balkóne vyber kríčkovú odrodu do 40 l nádoby.'
+    friends: [zelene-fazulky, kukurica-klas, kopor]
+  - ingredient: tekvica-hokkaido
+    where: [zahrada]
+    sun: [slnko]
+    level: 1
+    spacing: 120
+    family: tekvicovite
+    recommend: 'Jedna rastlina dá 5–10 tekvíc, ktoré vydržia v špajzi do jari.'
+    indoor: [4]
+    sow: [5, 6]
+    harvest: [9, 10]
+    how: 'Zasaď do kompostu alebo pôdy s kopou hnoja – je nenásytná. Pustí sa do šírky 2 m. Zber, keď stopka zdrevnatie, a nechaj 2 týždne dozrieť na slnku. Vydrží do jari.'
+    friends: [kukurica-klas, fazula-biela, zelene-fazulky]
+    avoid: [zemiaky]
+  - ingredient: zelene-fazulky
+    name: Fazuľka zelená
+    where: [zahrada, balkon]
+    sun: [slnko]
+    level: 1
+    spacing: 10
+    family: bobovite
+    sow: [5, 6, 7]
+    harvest: [7, 8, 9]
+    how: 'Sej po zamrznutých 3 cm hlboko. Kríčkové netreba podopierať, popínavé potrebujú 2 m oporu – aj kukuricu. Zberaj mladé struky každé 2–3 dni.'
+    friends: [kukurica-klas, uhorka, mrkva, cuketa]
+    avoid: [cibula, cesnak, por]
+  - ingredient: hrasok
+    name: Hrach
+    where: [zahrada, balkon]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 5
+    family: bobovite
+    recommend: 'Prvá úroda v júni a potom na tom istom mieste ešte jedna. Zlepšuje pôdu.'
+    sow: [3, 4]
+    harvest: [6, 7]
+    how: 'Sej hneď, ako sa dá robiť v pôde, 4 cm hlboko. Mráz mu nevadí, horúčava áno. Daj mu mriežku alebo konáre na opieranie. Po zbere na jeho miesto zasaď kaleráb alebo čínsku kapustu.'
+    friends: [mrkva, salat, redkovka, spenat]
+    avoid: [cibula, cesnak]
+  - ingredient: spenat
+    name: Špenát
+    where: [zahrada, balkon]
+    sun: [polotien, slnko]
+    level: 1
+    spacing: 8
+    family: mrlikovite
+    sow: [3, 4, 8, 9]
+    harvest: [4, 5, 6, 10, 11]
+    how: 'Jarná a jesenná plodina – v lete vybehne do kvetu. Sej na jar alebo koncom augusta, riadky 20 cm. Rastie aj v polotieni.'
+    friends: [salat, redkovka, hrasok, kalerab]
+  - ingredient: salat
+    name: Šalát
+    where: [parapet, balkon, zahrada]
+    sun: [polotien, slnko]
+    level: 1
+    spacing: 25
+    family: astrovite
+    indoor: [2, 3]
+    sow: [3, 4, 5, 6, 7, 8]
+    harvest: [5, 6, 7, 8, 9, 10]
+    how: 'Sej po troškách každé 3 týždne, nech nemáš všetko naraz. Listový šalát trhaj po listoch, dorastá. V lete ho daj do polotieňa, inak zhorkne.'
+    friends: [mrkva, redkovka, cibula, uhorka, paradajky]
+  - ingredient: redkovka
+    where: [parapet, balkon, zahrada]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 4
+    family: kapustovite
+    sow: [3, 4, 5, 8, 9]
+    harvest: [4, 5, 6, 9, 10]
+    how: 'Najrýchlejšia zelenina – od výsevu po tanier 4 týždne. Sej 1 cm hlboko, pravidelne zalievaj, inak budú duté a ostré. Na parapete v 15 cm hlbokom truhlíku.'
+    friends: [salat, hrasok, spenat, mrkva]
+  - ingredient: biela-redkev
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 20
+    family: kapustovite
+    sow: [7, 8]
+    harvest: [9, 10, 11]
+    how: 'Sej v júli–auguste na miesto po cesnaku alebo hrachu. Pôda má byť hlboko prekyprená, korene rastú 30 cm. Pred mrazom vykop.'
+  - ingredient: kalerab
+    where: [zahrada, balkon]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 25
+    family: kapustovite
+    indoor: [3]
+    sow: [4, 5, 6, 7]
+    harvest: [5, 6, 7, 8, 9, 10]
+    how: 'Predpestuj alebo sej von od apríla. Rastie rýchlo (8 týždňov), zbieraj, keď je hľuza veľká ako tenisová loptička – väčšia drevnatie.'
+    friends: [salat, cvikla, zeler-stonkovy, spenat]
+  - ingredient: brokolica
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 45
+    family: kapustovite
+    indoor: [3, 4]
+    sow: [5, 8]
+    harvest: [7, 8, 9, 10]
+    how: 'Predpestuj, vysaď 45 cm od seba do výživnej pôdy a zalievaj. Hlavnú ružicu zrež, keď sú púčiky ešte zelené – z bokov narastú ďalšie menšie.'
+    friends: [kopor, cibula, salat]
+  - ingredient: karfiol
+    where: [zahrada]
+    sun: [slnko]
+    level: 3
+    spacing: 50
+    family: kapustovite
+    indoor: [3, 4]
+    sow: [5]
+    harvest: [7, 8, 9, 10]
+    how: 'Najnáročnejšia kapustovina – potrebuje stále vlhko a výživu, inak narastie malá ružica. Keď sa ružica objaví, prikry ju listami, aby ostala biela.'
+    friends: [kopor, zeler-stonkovy]
+  - ingredient: biela-kapusta
+    name: Kapusta
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 50
+    family: kapustovite
+    indoor: [3, 4]
+    sow: [5]
+    harvest: [8, 9, 10, 11]
+    how: 'Predpestuj a vysaď 50 cm od seba. Chce veľa vody a kompostu. Mlynárika odháňa kôpor a paradajky v susedstve – alebo sieťka.'
+    friends: [kopor, zeler-stonkovy, cibula]
+    avoid: [paradajky]
+  - ingredient: cinska-kapusta
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 2
+    spacing: 35
+    family: kapustovite
+    sow: [7, 8]
+    harvest: [9, 10, 11]
+    how: 'Sej až v júli – na jar a v horúčave vybehne do kvetu. Ideálna po cesnaku alebo hrachu. Znesie ľahký mráz.'
+  - ingredient: pak-choi
+    where: [balkon, zahrada]
+    sun: [polotien, slnko]
+    level: 1
+    spacing: 20
+    family: kapustovite
+    sow: [4, 5, 8, 9]
+    harvest: [5, 6, 9, 10]
+    how: 'Rastie za 6 týždňov. Sej na jar alebo koncom leta – v horúčave kvitne. V truhlíku zbieraj mladé listy.'
+  - ingredient: cvikla
+    name: Cvikla
+    where: [zahrada, balkon]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 10
+    family: mrlikovite
+    sow: [4, 5, 6]
+    harvest: [7, 8, 9, 10]
+    how: 'Semeno je vlastne klbko niekoľkých – vyrastie z neho viac rastlín, pretrhaj ich na 10 cm. Mladé listy sa jedia ako mangold.'
+    friends: [cibula, kalerab, salat, cesnak]
+  - ingredient: kukurica-klas
+    name: Kukurica
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 30
+    family: travy
+    sow: [5]
+    harvest: [8, 9]
+    how: 'Sej do bloku (napr. 4 × 4 rastliny), nie do jedného riadku – opeľuje sa vetrom. Zberaj, keď je bradka hnedá a zrno pri stlačení pustí mliečnu šťavu.'
+    friends: [zelene-fazulky, fazula-biela, tekvica-hokkaido, uhorka]
+  - ingredient: okra
+    where: [balkon, zahrada]
+    sun: [slnko]
+    level: 3
+    spacing: 40
+    family: slezovite
+    indoor: [4]
+    sow: [5, 6]
+    harvest: [8, 9]
+    how: 'Potrebuje veľa tepla – najistejšie v nádobe pri južnej stene. Struky zberaj malé (8 cm), väčšie sú vláknité. Kvitne krásne ako ibištek.'
+  - ingredient: petrzlen-koren
+    name: Petržlen
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 2
+    spacing: 8
+    family: mrkvovite
+    sow: [3, 4]
+    harvest: [9, 10, 11]
+    how: 'Klíči pomaly (až 4 týždne) – semeno namoč cez noc. Sej do hlbokej kyprej pôdy, riadky 25 cm.'
+    friends: [paradajky, cibula]
+  - ingredient: zeler-stonkovy
+    name: Zeler
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 3
+    spacing: 30
+    family: mrkvovite
+    indoor: [2, 3]
+    sow: [5]
+    harvest: [8, 9, 10]
+    how: 'Dlho sa predpestúva a potrebuje stále vlhko. Kúpené sadenice sú istejšie. Pred zberom stonky obviaž, aby zbeleli.'
+    friends: [por, kalerab, biela-kapusta]
+
+  # ── Bylinky ──────────────────────────────────────────────────
+  - ingredient: petrzlenova-vnat
+    name: Petržlen vňaťový
+    where: [parapet, balkon, zahrada]
+    sun: [polotien, slnko]
+    level: 1
+    spacing: 10
+    family: mrkvovite
+    sow: [3, 4, 5, 6, 7, 8]
+    harvest: [5, 6, 7, 8, 9, 10, 11]
+    how: 'Semeno namoč cez noc, klíči pomaly. V kvetináči na okne rastie celú jeseň. Strihaj vonkajšie stonky, stred nechaj rásť.'
+    friends: [paradajky]
+  - ingredient: kopor
+    name: Kôpor
+    where: [balkon, zahrada]
+    sun: [slnko]
+    level: 1
+    spacing: 20
+    family: mrkvovite
+    sow: [4, 5, 6, 7]
+    harvest: [6, 7, 8, 9]
+    how: 'Sej priamo von, presádzanie nemá rád. Sej po troškách každé 3 týždne. Ak ho necháš vykvitnúť, na budúci rok sa vysemení sám.'
+    friends: [uhorka, kel, biela-kapusta, brokolica]
+    avoid: [mrkva]
+  - ingredient: bazalka
+    name: Bazalka
+    where: [parapet, balkon]
+    sun: [slnko]
+    level: 1
+    spacing: 20
+    family: hluchavkovite
+    indoor: [3, 4]
+    sow: [5]
+    harvest: [6, 7, 8, 9]
+    how: 'Potrebuje teplo a slnko – južné okno alebo balkón. Kvety odštipuj a trhaj vrcholky nad párom listov, rozkošatí sa. Kúpenú z obchodu rozdeľ na 3–4 trsy a presaď, vydrží celé leto.'
+    friends: [paradajky, paprika-cervena, cili-papricka]
+  - ingredient: bylinky-koriander
+    name: Koriander
+    where: [parapet, balkon, zahrada]
+    sun: [polotien]
+    level: 2
+    spacing: 5
+    family: mrkvovite
+    sow: [4, 5, 8, 9]
+    harvest: [5, 6, 7, 9, 10]
+    how: 'V horúčave hneď vybehne do kvetu – sej na jar a koncom leta do polotieňa, po troškách každé 3 týždne. Semienka, čo dozrejú, sú mletý koriander.'
+  - ingredient: bylinky-mata
+    name: Mäta
+    where: [parapet, balkon, zahrada]
+    sun: [polotien, slnko]
+    level: 1
+    spacing: 30
+    family: hluchavkovite
+    recommend: 'Trvalka, ktorá sa nedá zabiť – čaj, tabbouleh aj limonáda na roky.'
+    sow: [4, 5]
+    harvest: [5, 6, 7, 8, 9, 10]
+    perennial: true
+    how: 'Vždy do samostatnej nádoby – v záhone sa rozrastie všade. Odrezok z kúpenej mäty zakorení v pohári vody za týždeň. Vracia sa každý rok.'
+  - ingredient: pazitka
+    where: [parapet, balkon, zahrada]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 20
+    family: cibulovite
+    sow: [3, 4]
+    harvest: [4, 5, 6, 7, 8, 9, 10]
+    perennial: true
+    how: 'Trvalka – raz zasadená sa vracia roky. Strihaj nízko nad zemou, dorastá. Fialové kvety sú jedlé.'
+    friends: [mrkva, paradajky]
+  - ingredient: tymian
+    name: Tymian
+    where: [parapet, balkon, zahrada]
+    sun: [slnko]
+    level: 1
+    spacing: 25
+    family: hluchavkovite
+    sow: [4, 5]
+    harvest: [5, 6, 7, 8, 9, 10]
+    perennial: true
+    how: 'Chce slnko a chudobnú, suchú pôdu – nezalievaj veľa. Kúp sadenicu, zo semena rastie pomaly. Prezimuje vonku.'
+    friends: [biela-kapusta, paradajky]
+  - ingredient: rozmarin
+    name: Rozmarín
+    where: [balkon, parapet]
+    sun: [slnko]
+    level: 2
+    spacing: 40
+    family: hluchavkovite
+    sow: [5]
+    harvest: [5, 6, 7, 8, 9, 10]
+    perennial: true
+    how: 'V nádobe na slnku, zalievaj málo. Silný mráz nevydrží – na zimu ho daj na svetlé chladné miesto (schodisko, nevykúrená izba).'
+  - ingredient: oregano
+    name: Oregano
+    where: [balkon, zahrada, parapet]
+    sun: [slnko]
+    level: 1
+    spacing: 25
+    family: hluchavkovite
+    sow: [4, 5]
+    harvest: [6, 7, 8, 9]
+    perennial: true
+    how: 'Nenáročná trvalka na slnko. Najvoňavejšie je tesne pred kvitnutím – vtedy nastrihaj a usuš.'
+  - ingredient: majoranka
+    name: Majoránka
+    where: [balkon, zahrada]
+    sun: [slnko]
+    level: 1
+    spacing: 20
+    family: hluchavkovite
+    indoor: [3, 4]
+    sow: [5]
+    harvest: [7, 8, 9]
+    how: 'U nás jednoročná, zimu nevydrží. Semienka sú drobné – len pritlač, nezasypávaj. Pred kvitnutím zostrihaj a usuš.'
+
+  # ── Dnu, v byte ──────────────────────────────────────────────
+  - ingredient: klicky
+    name: Klíčky
+    where: [parapet]
+    sun: [tien, polotien]
+    level: 1
+    spacing: 0
+    family: klicky
+    recommend: 'Čerstvá zelenina v každom byte, celý rok a za pár centov.'
+    sow: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    harvest: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    how: 'Mungo, šošovicu alebo reďkovku namoč cez noc do pohára, sceď a 2× denne prepláchni. Za 3–4 dni máš klíčky – aj v zime a bez slnka.'
+    tip: 'Mikrozelenina (reďkovka, hrach, slnečnica) rastie na vlhkej utierke alebo tenkej vrstve hliny na okne – strihaj po 10 dňoch.'
+  - ingredient: hliva
+    name: Hliva
+    where: [parapet]
+    sun: [tien]
+    level: 2
+    spacing: 0
+    family: huby
+    sow: [1, 2, 3, 4, 5, 9, 10, 11, 12]
+    harvest: [1, 2, 3, 4, 5, 6, 9, 10, 11, 12]
+    how: 'Kúp hotový substrát s podhubím (balík z hubárne) alebo zmiešaj podhubie s vlhkou kávovou usadeninou. Nechaj v tme 2–3 týždne, potom v prievane a rozptýlenom svetle 2× denne rosi – huby vyrastú za pár dní.'
+  - ingredient: zazvor
+    name: Zázvor
+    where: [parapet, balkon]
+    sun: [polotien]
+    level: 3
+    spacing: 20
+    family: zazvorovite
+    indoor: [3, 4]
+    sow: [5]
+    harvest: [10, 11]
+    how: 'Kúp čerstvý zázvor s „očkami“, namoč cez noc a zasaď plytko do široké­ho kvetináča. Chce teplo, vlhko a polotieň, v lete ho vylož na balkón. Na jeseň, keď listy zožltnú, vyber mladé hľuzy.'
+  - ingredient: citronova-trava
+    where: [parapet, balkon]
+    sun: [slnko]
+    level: 2
+    spacing: 30
+    family: travy
+    indoor: [3, 4, 5]
+    sow: [5]
+    harvest: [7, 8, 9, 10]
+    perennial: true
+    how: 'Kúpené stonky daj do pohára s vodou – za 2 týždne vyženú korene. Zasaď do kvetináča, v lete von na slnko. Prezimuj na svetle v byte.'
+
+  # ── Ovocie ───────────────────────────────────────────────────
+  - ingredient: maliny
+    name: Maliny
+    where: [zahrada, balkon]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 50
+    family: ruzovite
+    sow: [3, 4, 10, 11]
+    harvest: [6, 7, 8, 9]
+    perennial: true
+    how: 'Kúp sadenice (jesenné odrody sú najjednoduchšie – na jar zrežeš všetko k zemi a v auguste plodia). Rozrastajú sa výbežkami, daj im okraj záhrady.'
+  - ingredient: cucoriedky
+    name: Čučoriedky
+    where: [balkon, zahrada]
+    sun: [slnko, polotien]
+    level: 2
+    spacing: 100
+    family: vresovcovite
+    sow: [4, 10]
+    harvest: [7, 8]
+    perennial: true
+    how: 'Kultúrne čučoriedky potrebujú kyslú rašelinovú pôdu – najľahšie v 30 l nádobe so substrátom pre rododendróny. Zalievaj dažďovou vodou, vápnitá z vodovodu im škodí. Zasaď dve odrody, lepšie sa opeľujú.'
+  - ingredient: jablko
+    name: Jabloň
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 400
+    family: ruzovite
+    sow: [3, 4, 10, 11]
+    harvest: [8, 9, 10]
+    perennial: true
+    how: 'Na malú záhradu vyber stromček na slabo rastúcej podpnoke (do 3 m) alebo stĺpovitú odrodu do nádoby. Staré odrody (Panenské, Bohemia) bývajú odolnejšie voči chorobám. Prvá úroda o 3 roky.'
+  - ingredient: slivky
+    name: Slivka
+    where: [zahrada]
+    sun: [slnko]
+    level: 1
+    spacing: 400
+    family: ruzovite
+    sow: [3, 4, 10, 11]
+    harvest: [8, 9]
+    perennial: true
+    how: 'Odolná a nenáročná – slivka rastie takmer všade. Zasaď na jeseň, prvé roky zalievaj. Samoopelivé odrody (Čačanská) plodia aj samy.'
+
+kombinacie:
+  # ── Záhrada ─────────────────────────────────────────────────
+  - id: tri-sestry
+    name: Tri sestry
+    where: [zahrada]
+    sun: [slnko]
+    level: 1
+    area: 3
+    gear:
+      - 'mulč (slama) okolo tekvice'
+    members: { kukurica-klas: 9, fazula-biela: 12, tekvica-hokkaido: 1 }
+    how: 'V máji zasaď kukuricu do štvorca 3 × 3 (40 cm od seba). Keď má 15 cm, ku každej zasaď 2–3 popínavé fazule, ktoré sa po nej vyšplhajú. Na kraj štvorca daj tekvicu, ktorá zakryje zem.'
+    why: 'Stará indiánska polykultúra: kukurica je opora pre fazuľu, fazuľa hnojí pôdu dusíkom a veľké listy tekvice tienia zem, držia vlahu a dusia burinu.'
+  - id: paradajkovy-kut
+    name: Paradajky s bazalkou a mrkvou
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    area: 1
+    gear:
+      - '2 kolíky 1,5 m a motúz na priväzovanie'
+    members: { paradajky: 2, bazalka: 4, mrkva: 20, petrzlenova-vnat: 3 }
+    how: 'Dve paradajky zasaď do stredu záhona 50 cm od seba ku kolíkom. Medzi ne bazalku, okolo nich riadok mrkvy a na kraj petržlen.'
+    why: 'Bazalka a petržlen odpudzujú škodcov a paradajky ich tienia v najväčšej horúčave. Mrkva kyprí pôdu pod nimi a zaberá miesto, kam paradajky nesiahajú.'
+  - id: kapustovy-zahon
+    name: Kel a kaleráb s kôprom a cibuľou
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 1
+    area: 1
+    gear:
+      - 'netkaná textília alebo sieťka proti mlynárikovi'
+    members: { kel: 2, kalerab: 4, kopor: 3, cibula: 12, salat: 4 }
+    how: 'Kel zasaď do stredu, kaleráb po stranách. Medzery vyplň cibuľou a šalátom, na kraj kôpor.'
+    why: 'Vôňa kôpru a cibule mätie mlynárika a skočky, ktoré kapustoviny zožierajú. Rýchly šalát a kaleráb zoberieš skôr, než kel doširoka narastie.'
+  - id: korenovy-zahon
+    name: Mrkva a pór
+    where: [zahrada]
+    sun: [slnko]
+    level: 1
+    area: 1
+    members: { mrkva: 40, por: 10, redkovka: 30, salat: 4 }
+    how: 'Striedaj riadky mrkvy a póru (20 cm od seba). Do riadku mrkvy primiešaj semienka reďkoviek, na kraj šalát.'
+    why: 'Pór odháňa mrkvovú muchu, mrkva zase pórovú mušku. Reďkovky vyklíčia za pár dní, označia riadok a zoberieš ich skôr, než mrkva potrebuje miesto.'
+  - id: jarny-zahon
+    name: Jarný záhon – hrach, špenát, reďkovky
+    where: [zahrada, balkon]
+    sun: [slnko, polotien]
+    level: 1
+    area: 1
+    gear:
+      - 'mriežka alebo konáre 1 m pre hrach'
+      - 'netkaná textília na mrazivé noci'
+    members: { hrasok: 30, spenat: 20, redkovka: 30, salat: 4 }
+    how: 'Hneď v marci zasaď hrach k mriežke na severný okraj záhona. Pred neho riadky špenátu, reďkoviek a šalátu. V júni po zbere zasaď na to miesto uhorky alebo čínsku kapustu.'
+    why: 'Všetko znesie chlad a do leta je zozbierané. Hrach nechá v pôde dusík pre ďalšiu plodinu, takže z jedného metra máš dve úrody za rok.'
+  - id: cuketa-fazulky
+    name: Cuketa, fazuľky a kôpor
+    where: [zahrada]
+    sun: [slnko]
+    level: 1
+    area: 2
+    gear:
+      - 'mulč (slama) pod cuketu'
+    members: { cuketa: 1, zelene-fazulky: 16, kopor: 3, bylinky-koriander: 5 }
+    how: 'Cuketu zasaď na jeden koniec, kríčkovú fazuľku v dvoch riadkoch vedľa nej a medzi ne kôpor a koriander.'
+    why: 'Fazuľa hnojí cuketu dusíkom, kvitnúci kôpor a koriander lákajú opeľovače aj pestrice, ktoré zožerú vošky.'
+  - id: zemiaky-bob
+    name: Zemiaky s bôbom a chrenom
+    where: [zahrada]
+    sun: [slnko]
+    level: 1
+    area: 3
+    gear:
+      - 'motyka na prihŕňanie'
+      - 'zakopané vedro bez dna pre chren'
+    members: { zemiaky: 12, bob-suchy: 12, chren: 1 }
+    how: 'V marci zasaď bôb do dvoch riadkov, v apríli medzi ne zemiaky. Chren zasaď na roh do zakopaného vedra.'
+    why: 'Stará slovenská kombinácia: bôb odpudzuje pásavku a obohacuje pôdu, chren chráni zemiaky pred chorobami. Bôb zoberieš skôr, keď zemiaky potrebujú miesto.'
+  - id: uhorky-kukurica
+    name: Uhorky na kukurici
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    area: 2
+    members: { kukurica-klas: 8, uhorka: 4, kopor: 3, slnecnicove-semienka: 2 }
+    how: 'Kukuricu zasaď do dvoch riadkov, uhorky pod ňu – popnú sa po stonkách. Na severný okraj slnečnice, medzi uhorky kôpor.'
+    why: 'Kukurica a slnečnica dajú uhorkám oporu a jemný tieň v horúčave, kôpor zlepšuje ich rast a láka opeľovače.'
+  - id: suchy-kut
+    name: Suchý kút – amarant, cícer a slnečnica
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    area: 2
+    members: { amarant: 6, cicer-suchy: 30, slnecnicove-semienka: 3, cirok: 6 }
+    how: 'Na najsuchšie a najslnečnejšie miesto: slnečnice a cirok dozadu, amarant do stredu a cícer dopredu.'
+    why: 'Plodiny, ktoré prežijú horúce leto bez zálievky – odpoveď na suchšie roky. Cícer ako strukovina hnojí ostatné dusíkom.'
+  - id: zimny-zahon
+    name: Zimný záhon – kel, pór, paštrnák
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 2
+    area: 2
+    gear:
+      - 'netkaná textília na silné mrazy'
+    members: { kel: 3, por: 15, pastinak: 20, ruzickovy-kel: 2 }
+    how: 'Na jar zasaď paštrnák, v máji vysaď kel, ružičkový kel a pór. Záhon nechaj cez zimu – zberáš ho od októbra do marca.'
+    why: 'Mráz týmto plodinám nevadí, naopak ich osladí. Zelenina zo záhrady aj v januári, keď je v obchode najdrahšia.'
+  - id: cesnak-kapusta
+    name: Cesnak a po ňom čínska kapusta
+    where: [zahrada]
+    sun: [slnko]
+    level: 1
+    area: 1
+    gear:
+      - 'sieťka proti mlynárikovi na kapustu'
+    members: { cesnak: 40, cinska-kapusta: 6, biela-redkev: 8 }
+    how: 'V októbri zasaď cesnak. Po zbere v júli zasaď na to isté miesto čínsku kapustu a bielu reďkev.'
+    why: 'Dve úrody z jedného miesta: cesnak prezimuje a uvoľní miesto presne vtedy, keď sa sejú jesenné kapustoviny – materiál na kimchi.'
+  - id: trvalkovy-okraj
+    name: Trvalkový okraj
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 1
+    area: 3
+    max: 1
+    gear:
+      - 'zakopané vedro alebo nádoba pre mätu a chren'
+    members: { topinambur: 5, maliny: 3, pazitka: 3, bylinky-mata: 1, chren: 1 }
+    how: 'Na okraj záhrady alebo k plotu: topinambur a maliny dozadu, pažítku a mätu (v zakopanej nádobe) dopredu.'
+    why: 'Raz zasadíš a roky zbieraš. Topinambur je živý plot a úkryt pre užitočný hmyz, kvety pažítky lákajú včely.'
+  - id: bylinkova-spiral
+    name: Bylinková špirála
+    where: [zahrada]
+    sun: [slnko]
+    level: 1
+    area: 2
+    max: 1
+    gear:
+      - 'kamene alebo tehly (asi 0,5 m³)'
+      - 'štrk na drenáž'
+    members:
+      {
+        rozmarin: 1,
+        tymian: 2,
+        oregano: 2,
+        majoranka: 2,
+        pazitka: 2,
+        petrzlenova-vnat: 3,
+        bylinky-mata: 1
+      }
+    how: 'Z kameňov postav špirálu vysokú 80 cm. Hore na suchý vrchol rozmarín a tymian, v strede oregano a majoránku, dole pri zemi pažítku, petržlen a mätu.'
+    why: 'Na malom mieste vznikne sucho aj vlhko, slnko aj tieň – každá bylinka nájde svoje. Kamene cez deň nasajú teplo.'
+
+  # ── Balkón ──────────────────────────────────────────────────
+  - id: balkonova-paradajka
+    name: Balkónová paradajka s bazalkou
+    where: [balkon]
+    sun: [slnko]
+    level: 1
+    area: 0.5
+    gear:
+      - 'nádoba 20 l s dierami a podmiskou'
+      - 'kvetináč 3 l na petržlen'
+      - 'kolík 1,2 m'
+    members: { paradajky: 1, bazalka: 2, petrzlenova-vnat: 2 }
+    how: 'Cherry paradajku zasaď do 20 l nádoby ku kolíku, do toho istého kvetináča okolo nej bazalku. Petržlen do menšieho kvetináča vedľa.'
+    why: 'Bazalka rastie v tieni paradajky a odpudzuje mušky. Jedna nádoba dá celé leto paradajky aj bylinky na pestovanie pesta.'
+  - id: salatovy-truhlik
+    name: Šalátový truhlík
+    where: [balkon, parapet]
+    sun: [polotien, slnko]
+    level: 1
+    area: 0.3
+    gear:
+      - 'truhlík 80 cm (asi 15 l) s dierami'
+    members: { salat: 4, redkovka: 15, jarna-cibulka: 10 }
+    how: 'Do 80 cm truhlíka zasaď 4 listové šaláty, medzi ne reďkovky a na kraj jarnú cibuľku. Každé 3 týždne dosej, čo si zjedol.'
+    why: 'Rastie aj v polotieni a do 4 týždňov máš prvú úrodu. Cibuľka chráni šalát pred voškami.'
+  - id: palivy-kut
+    name: Pálivý kút
+    where: [balkon]
+    sun: [slnko]
+    level: 2
+    area: 0.5
+    gear:
+      - '3 nádoby 10 l'
+      - 'truhlík na bazalku'
+    members: { cili-papricka: 2, paprika-cervena: 1, bazalka: 2 }
+    how: 'Každú papriku do vlastnej 10 l nádoby na najslnečnejšie miesto, bazalku do spoločného truhlíka pred ne.'
+    why: 'Papriky milujú teplo, ktoré sála zo steny balkóna. Čili sa dá prezimovať v byte a na druhý rok plodí skôr.'
+  - id: zemiaky-vo-vreci
+    name: Zemiaky vo vreci
+    where: [balkon]
+    sun: [slnko]
+    level: 1
+    area: 0.3
+    gear:
+      - 'pestovacie vrece 40 l (alebo pevné vrece od zeminy s dierami)'
+    members: { zemiaky: 3 }
+    how: 'Do 40 l vreca daj 15 cm zeminy a 3 nakľúčené hľuzy. Keď vyrastú o 20 cm, prisyp zem a opakuj, kým nie je vrece plné. V júli vrece vysyp.'
+    why: 'Na 0,3 m² balkóna dopestuješ 3–5 kg zemiakov. Mladé zemiaky z vreca sú zážitok aj pre deti.'
+  - id: balkonove-bylinky
+    name: Stredomorské bylinky
+    where: [balkon, parapet]
+    sun: [slnko]
+    level: 1
+    area: 0.3
+    max: 1
+    gear:
+      - 'truhlík 60 cm'
+      - 'kvetináč 5 l na rozmarín'
+      - 'štrk na drenáž'
+    members: { tymian: 1, oregano: 1, rozmarin: 1, pazitka: 1 }
+    how: 'Do spoločného truhlíka so štrkom na dne zasaď tymian, oregano a pažítku, rozmarín do vlastného kvetináča (na zimu ho berieš dnu).'
+    why: 'Všetky chcú slnko a málo vody, takže sa zalievajú spolu. Trvalky – kúpiš raz, strihaš roky.'
+  - id: zimna-zelen-balkon
+    name: Kel a mangold v nádobe
+    where: [balkon]
+    sun: [slnko, polotien]
+    level: 1
+    area: 0.5
+    gear:
+      - 'nádoba 30 l s dierami'
+    members: { kel: 1, mangold: 2, pak-choi: 3 }
+    how: 'Do 30 l nádoby zasaď v máji kel do stredu a mangold po stranách. Pak choi dosej v auguste, keď uvoľníš miesto.'
+    why: 'Zelenina, ktorú oberáš po listoch od leta do zimy – kel vydrží aj mráz na balkóne.'
+  - id: popinave-strukoviny
+    name: Popínavá fazuľa a hrach na zábradlí
+    where: [balkon]
+    sun: [slnko]
+    level: 1
+    area: 0.3
+    gear:
+      - 'dlhý truhlík 100 cm'
+      - 'mriežka alebo motúzy na zábradlie'
+    members: { hrasok: 15, zelene-fazulky: 8 }
+    how: 'Do dlhého truhlíka pri zábradlí zasaď v marci hrach. V máji, keď dokvitne, zasaď medzi neho popínavú fazuľu, ktorá ho vystrieda.'
+    why: 'Využiješ výšku namiesto plochy a vznikne zelený tieň. Strukoviny si dusík zoberú zo vzduchu, netreba ich hnojiť.'
+
+  # ── Byt ─────────────────────────────────────────────────────
+  - id: klicky-mikrozelen
+    name: Klíčky a mikrozelenina
+    where: [parapet]
+    sun: [tien, polotien]
+    level: 1
+    area: 0.1
+    max: 1
+    gear:
+      - '2 poháre so sitkom na klíčky (alebo gázu s gumičkou)'
+      - 'plytká miska na mikrozeleninu'
+    members: { klicky: 1 }
+    how: 'Dva poháre na klíčky (mungo, šošovica) a jedna miska s mikrozeleninou (reďkovka, hrach). Nový pohár nasaď každé 2 dni, nech ich máš stále čerstvé.'
+    why: 'Funguje v každom byte, celý rok a aj bez slnka. Najlacnejšia čerstvá zelenina v zime.'
+  - id: bylinky-okno
+    name: Bylinky na okne
+    where: [parapet]
+    sun: [slnko, polotien]
+    level: 1
+    area: 0.2
+    max: 1
+    gear:
+      - '4 kvetináče 15 cm s podmiskami'
+    members: { bazalka: 1, petrzlenova-vnat: 1, pazitka: 1, bylinky-koriander: 1 }
+    how: 'Každú bylinku do vlastného 15 cm kvetináča na čo najsvetlejšie okno (juh, západ). Bazalka potrebuje najviac slnka, koriander najmenej.'
+    why: 'Čerstvé bylinky pri varení a kúpené v obchode vydržia týždeň – vlastné mesiace.'
+  - id: zo-zvyskov
+    name: Zo zvyškov z kuchyne
+    where: [parapet]
+    sun: [polotien, slnko]
+    level: 2
+    area: 0.2
+    max: 1
+    gear:
+      - 'poháre na zakorenenie'
+      - '2 kvetináče 20 cm a jedna široká misa'
+    members: { jarna-cibulka: 5, citronova-trava: 3, zazvor: 1 }
+    how: 'Spodky jarnej cibuľky a stonky citrónovej trávy daj do pohára s vodou, kým nevyženú korene. Potom do kvetináča. Zázvor s očkami zasaď do širokej misy.'
+    why: 'Z toho, čo by skončilo v koši, vyrastú nové rastliny. Citrónová tráva a zázvor sú v obchode drahé.'
+  - id: hliva-v-krabici
+    name: Hliva v krabici
+    where: [parapet]
+    sun: [tien]
+    level: 2
+    area: 0.1
+    max: 1
+    gear:
+      - 'hotový balík substrátu s podhubím'
+      - 'rozprašovač'
+    members: { hliva: 1 }
+    how: 'Balík substrátu s podhubím daj do kúpeľne alebo na chodbu – do tepla (18–22 °C) a rozptýleného svetla. Keď narastú bielke, 2× denne rosi.'
+    why: 'Bielkoviny z tmavého kúta bytu. Jeden balík dá 2–3 vlny húb, spolu asi kilogram.'
+  - id: cili-okno
+    name: Čili na okne
+    where: [parapet]
+    sun: [slnko]
+    level: 2
+    area: 0.1
+    max: 1
+    gear:
+      - 'kvetináč 5 l s podmiskou'
+      - 'štetec na opelenie'
+    members: { cili-papricka: 1 }
+    how: 'Jednu rastlinu do 5 l kvetináča na južné okno. Kvety opeľ štetcom – dnu nie je hmyz.'
+    why: 'Okrasná a užitočná – jedna rastlina dá desiatky papričiek, ktoré sa dajú usušiť na celý rok.'
+
+nepestovatelne:
+  # ── Nedá sa ──────────────────────────────────────────────────
+  - {
+      ingredient: avokado,
+      status: nie,
+      origin: 'Mexiko, Peru, Kolumbia, Španielsko',
+      note: 'Z kôstky vyrastie pekná izbová rastlina, plody u nás ale nedá. Pestovanie spotrebuje veľa vody.'
+    }
+  - { ingredient: banan, status: nie, origin: 'Ekvádor, Kolumbia, Kostarika' }
+  - { ingredient: plantain, status: nie, origin: 'Západná Afrika, Karibik, Latinská Amerika' }
+  - {
+      ingredient: pomaranc,
+      status: nie,
+      origin: 'Španielsko, Egypt, Maroko',
+      note: 'Citrusy sa dajú chovať v nádobe a zimovať v chlade, úroda je však skôr symbolická.'
+    }
+  - {
+      ingredient: citron,
+      status: tazko,
+      origin: 'Španielsko, Taliansko, Turecko',
+      note: 'Citrónovník v nádobe (na leto von, na zimu do svetlej chladnej miestnosti) dá pár plodov ročne.'
+    }
+  - { ingredient: limetka, status: nie, origin: 'Mexiko, Brazília' }
+  - { ingredient: mango, status: nie, origin: 'India, Pakistan, Peru' }
+  - { ingredient: kokos-struhany, status: nie, origin: 'Filipíny, Indonézia, Srí Lanka' }
+  - { ingredient: kokosove-mlieko, status: nie, origin: 'Filipíny, Indonézia, Srí Lanka' }
+  - { ingredient: kokosovy-olej, status: nie, origin: 'Filipíny, Indonézia' }
+  - { ingredient: kesu, status: nie, origin: 'Pobrežie Slonoviny, Vietnam, India' }
+  - { ingredient: datle, status: nie, origin: 'Tunisko, Egypt, Irán' }
+  - { ingredient: kakao, status: nie, origin: 'Pobrežie Slonoviny, Ghana, Ekvádor' }
+  - {
+      ingredient: horka-cokolada,
+      status: nie,
+      origin: 'Kakao z Pobrežia Slonoviny, Ghany a Ekvádoru'
+    }
+  - { ingredient: acai, status: nie, origin: 'Brazília (Amazónia)' }
+  - { ingredient: jackfruit, status: nie, origin: 'India, Bangladéš, Thajsko' }
+  - { ingredient: tapiokovy-skrob, status: nie, origin: 'Maniok z Thajska, Brazílie a Nigérie' }
+  - { ingredient: maniokova-muka, status: nie, origin: 'Brazília, Nigéria' }
+  - { ingredient: tamarind, status: nie, origin: 'India, Thajsko' }
+  - { ingredient: cierne-korenie, status: nie, origin: 'Vietnam, India, Brazília' }
+  - { ingredient: skorica, status: nie, origin: 'Srí Lanka, Indonézia' }
+  - { ingredient: kardamom, status: nie, origin: 'Guatemala, India' }
+  - { ingredient: klincek, status: nie, origin: 'Madagaskar, Zanzibar' }
+  - { ingredient: muskatovy-orech, status: nie, origin: 'Indonézia, Grenada' }
+  - { ingredient: badian, status: nie, origin: 'Čína, Vietnam' }
+  - { ingredient: vanilka, status: nie, origin: 'Madagaskar, Mexiko' }
+  - { ingredient: nove-korenie, status: nie, origin: 'Jamajka, Mexiko' }
+  - {
+      ingredient: kari-listy,
+      status: tazko,
+      origin: 'India, Srí Lanka',
+      note: 'Strom murraya sa dá chovať ako izbová rastlina na svetlom okne a listy oberať.'
+    }
+  - {
+      ingredient: kurkuma,
+      status: tazko,
+      origin: 'India',
+      note: 'Ako zázvor – čerstvú hľuzu s očkami zasaď do kvetináča, v teple a vlhku vyrastie. Úroda malá.'
+    }
+  - {
+      ingredient: olivy,
+      status: nie,
+      origin: 'Grécko, Španielsko, Taliansko',
+      note: 'Olivovník v nádobe prežije pri zimovaní v chlade, plody u nás takmer nedozrejú.'
+    }
+  - { ingredient: olivovy-olej, status: nie, origin: 'Španielsko, Grécko, Taliansko' }
+  - { ingredient: ryza-basmati, status: nie, origin: 'India, Pakistan' }
+  - { ingredient: ryza-jazminova, status: nie, origin: 'Thajsko, Kambodža' }
+  - {
+      ingredient: ryza-sushi,
+      status: tazko,
+      origin: 'Taliansko, Japonsko, Kalifornia',
+      note: 'V 50. rokoch sa ryža skúšala pestovať na východe Slovenska, dnes sa už u nás nepestuje.'
+    }
+  - { ingredient: lepkava-ryza, status: nie, origin: 'Thajsko, Laos' }
+  - { ingredient: ryza-arborio, status: tazko, origin: 'Taliansko (Pádska nížina)' }
+  - {
+      ingredient: quinoa,
+      status: tazko,
+      origin: 'Peru, Bolívia; v Európe Holandsko, Francúzsko',
+      note: 'Dá sa vysiať ako amarant, v horúčave ale zle opeľuje. Pokus sa oplatí v chladnejšom podhorí.'
+    }
+  - {
+      ingredient: teff,
+      status: tazko,
+      origin: 'Etiópia; skúša sa v Holandsku a Česku',
+      note: 'Rastie ako tráva, zrná sú však také drobné, že zber a čistenie doma sú skoro nemožné.'
+    }
+  - { ingredient: urad-dal, status: nie, origin: 'India, Mjanmarsko' }
+  - {
+      ingredient: fazula-cierne-oko,
+      status: tazko,
+      origin: 'Nigéria, Niger, USA',
+      note: 'Potrebuje dlhé horúce leto, v teplom roku na juhu dozrie.'
+    }
+  - {
+      ingredient: arasidy,
+      status: tazko,
+      origin: 'Čína, India, USA',
+      note: 'V teplých rokoch dozrejú aj na južnom Slovensku v piesočnatej pôde – pekný pokus s deťmi.'
+    }
+  - {
+      ingredient: mandle,
+      status: tazko,
+      origin: 'USA (Kalifornia), Španielsko',
+      note: 'Mandľa rastie aj na južnom Slovensku, kvitne ale skoro a jarné mrazy často zničia úrodu.'
+    }
+  - {
+      ingredient: sezam,
+      status: tazko,
+      origin: 'Sudán, Mjanmarsko, India',
+      note: 'V horúcom lete na juhu dozrie, struky sa ale ľahko otvárajú a semienka sa vysypú.'
+    }
+  - {
+      ingredient: chia,
+      status: tazko,
+      origin: 'Mexiko, Bolívia, Paraguaj',
+      note: 'Kvitne až na jeseň pri krátkom dni, semená u nás väčšinou nestihnú dozrieť.'
+    }
+  - {
+      ingredient: granatove-jablko,
+      status: tazko,
+      origin: 'Irán, Turecko, Španielsko',
+      note: 'Otužilejšie odrody v nádobe alebo pri teplej stene dajú pár plodov.'
+    }
+  - {
+      ingredient: hrozienka,
+      status: tazko,
+      origin: 'Turecko, USA, Irán',
+      note: 'Hrozno sa u nás pestuje výborne, na hrozienka ho však treba sušiť – bez slnka ako v Turecku to trvá dlho.'
+    }
+  - {
+      ingredient: susene-marhule,
+      status: tazko,
+      origin: 'Turecko',
+      note: 'Marhule rastú na južnom Slovensku, sušiť ich môžeš doma v sušičke.'
+    }
+  - {
+      ingredient: cukor,
+      status: tazko,
+      origin: 'Cukrová repa zo Slovenska, trstina z Brazílie',
+      note: 'Cukrová repa sa u nás pestuje vo veľkom, doma z nej cukor spravíš len ako sirup.'
+    }
+  - { ingredient: sumak, status: nie, origin: 'Turecko, Sýria, Irán' }
+  - { ingredient: kala-namak, status: nie, origin: 'Soľ z Pakistanu a Indie' }

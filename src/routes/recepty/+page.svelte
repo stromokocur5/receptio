@@ -6,11 +6,17 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import { MEAL_LABELS, normalizeSearch, searchMatcher, pluralRecipes } from '$lib/labels';
-	import { ALLERGEN_LABELS, COMPUTED_TAG_LABELS, computedTags, cookingStyle } from '$lib/nutrition';
+	import {
+		ALLERGEN_LABELS,
+		COMPUTED_TAG_LABELS,
+		SALT_HIGH_G,
+		computedTags,
+		cookingStyle
+	} from '$lib/nutrition';
 	import { recipeSeason } from '$lib/season';
 	import { rankByPantry, type PantryMatch } from '$lib/pantry';
 	import { likes, pantry, ui } from '$lib/state.svelte';
-	import { MEALS, type Allergen, type Meal } from '$lib/types';
+	import { MEALS, type Allergen, type Meal, type RecipeSummary } from '$lib/types';
 
 	const catalog = useCatalog();
 
@@ -43,16 +49,28 @@
 	let excluded = $state<Allergen[]>([]);
 	let missingTools = $state<string[]>([]);
 	/** Quick picks: one pot, no cooking, oven only, mild (kids), in season now. */
-	const QUICK = ['jeden-hrniec', 'bez-varenia', 'len-rura', 'jemne', 'sezonne'] as const;
+	const QUICK = [
+		'jeden-hrniec',
+		'bez-varenia',
+		'len-rura',
+		'jemne',
+		'sezonne',
+		'menej-soli'
+	] as const;
 	type Quick = (typeof QUICK)[number];
 	const QUICK_LABELS: Record<Quick, string> = {
 		'jeden-hrniec': COMPUTED_TAG_LABELS['jeden-hrniec'],
 		'bez-varenia': COMPUTED_TAG_LABELS['bez-varenia'],
 		'len-rura': COMPUTED_TAG_LABELS['len-rura'],
 		jemne: 'Nepálivé, pre deti',
-		sezonne: 'Z toho, čo je v sezóne'
+		sezonne: 'Z toho, čo je v sezóne',
+		'menej-soli': 'Menej soli'
 	};
 	let quick = $state<Quick[]>([]);
+	/** Salty recipes still count when their automatic "Menej soli" version gets under the line. */
+	const lowSalt = (r: RecipeSummary) =>
+		r.perServing.salt <= SALT_HIGH_G ||
+		r.variants.some((v) => v.name === 'Menej soli' && v.perServing.salt <= SALT_HIGH_G);
 	const month = new Date().getMonth() + 1;
 	/** all | bez = works without vegan substitutes | s = uses them (base or a variant) */
 	let subs = $state<'all' | 'bez' | 's'>('all');
@@ -110,7 +128,15 @@
 				if (q === 'sezonne' && !recipeSeason(r, catalog.ingredientsById, month).inSeason) {
 					return false;
 				}
-				if (q !== 'jemne' && q !== 'sezonne' && cookingStyle(r.equipment) !== q) return false;
+				if (q === 'menej-soli' && !lowSalt(r)) return false;
+				if (
+					q !== 'jemne' &&
+					q !== 'sezonne' &&
+					q !== 'menej-soli' &&
+					cookingStyle(r.equipment) !== q
+				) {
+					return false;
+				}
 			}
 			if (subs === 'bez' && r.substitutes === 'required') return false;
 			if (subs === 's' && !r.usesSubstitutes && !r.variants.some((v) => v.usesSubstitutes)) {

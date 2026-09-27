@@ -133,6 +133,9 @@ export function cookingStyle(equipment: string[]): ComputedTag | null {
 	return null;
 }
 
+/** Salt per serving (g) above which a recipe is flagged and gets a "Menej soli" version. */
+export const SALT_HIGH_G = 2.5;
+
 export const COMPUTED_TAG_LABELS: Record<ComputedTag, string> = {
 	bezlepkove: 'Bezlepkové',
 	'vela-bielkovin': 'Veľa bielkovín',
@@ -196,7 +199,7 @@ export function recipeWarnings(
 
 	for (const i of ingredients) if (i.warn) warnings.push({ level: 'warn', text: i.warn });
 
-	if (perServing.salt > 2.5) {
+	if (perServing.salt > SALT_HIGH_G) {
 		warnings.push({
 			level: 'info',
 			text: `Porcia má ${perServing.salt.toFixed(1)} g soli (polovica denného limitu) – dosoľuj opatrne.`

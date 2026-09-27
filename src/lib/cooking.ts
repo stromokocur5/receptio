@@ -1,5 +1,6 @@
+import { formatAmount } from './amounts';
 import { normalizeSearch } from './labels';
-import type { Ingredient, RecipeLine } from './types';
+import type { Ingredient, RecipeLine, Unit } from './types';
 
 export interface StepTimer {
 	/** As written in the step, e.g. "8–10 minút". */
@@ -43,6 +44,64 @@ export function splitStep(step: string): StepSegment[] {
 	}
 	if (last < step.length) segments.push({ text: step.slice(last) });
 	return segments;
+}
+
+const GLYPHS: Record<string, number> = { '½': 0.5, '¼': 0.25, '¾': 0.75, '⅓': 1 / 3, '⅔': 2 / 3 };
+const NUMBER = String.raw`\d+(?:[.,]\d+)?(?:\/\d+)?|[½¼¾⅓⅔]|pol`;
+/** Amounts written in steps ("2 PL oleja", "½ ČL soli", "v 500 ml vody"); times and °C don't match. */
+const STEP_AMOUNT_RE = new RegExp(
+	String.raw`(?<![\p{L}\d,.])(${NUMBER})(?:\s*[–-]\s*(${NUMBER}))?\s*(kg|g|ml|l|PL|ČL|hrnček(?:och|mi|a|y|ov|u)?)(?![\p{L}])`,
+	'gu'
+);
+const STEP_UNITS: Record<string, Unit> = { kg: 'kg', g: 'g', ml: 'ml', l: 'l', PL: 'pl', ČL: 'čl' };
+
+function stepNumber(text: string): number {
+	if (text === 'pol') return 0.5;
+	if (text in GLYPHS) return GLYPHS[text];
+	if (text.includes('/')) {
+		const [a, b] = text.split('/').map(Number);
+		return a / b;
+	}
+	return Number(text.replace(',', '.'));
+}
+
+/** "1,5 hrnčeka", "3 hrnčeky", "5 hrnčekov". */
+function cupWord(amount: number): string {
+	if (!Number.isInteger(Math.round(amount * 100) / 100)) return 'hrnčeka';
+	if (amount === 1) return 'hrnček';
+	return amount < 5 ? 'hrnčeky' : 'hrnčekov';
+}
+
+/** The number part only: "1½", "250", "0,3". */
+function scaledNumber(amount: number, unit: string): string {
+	const formatted = formatAmount(amount, unit.startsWith('hrnček') ? 'hrnček' : STEP_UNITS[unit]);
+	return formatted.slice(0, formatted.lastIndexOf(' '));
+}
+
+/**
+ * Rescales amounts in a step's text for a different number of servings, so "na 2 PL oleja"
+ * reads "na 1 PL oleja" when cooking half. Times, temperatures and counts stay as written.
+ */
+export function scaleStep(step: string, factor: number): string {
+	if (factor === 1) return step;
+	return step.replace(
+		STEP_AMOUNT_RE,
+		(match, from: string, to: string | undefined, unit: string) => {
+			const low = stepNumber(from) * factor;
+			const high = to === undefined ? low : stepNumber(to) * factor;
+			if (!(low > 0) || !(high > 0)) return match;
+			const number =
+				to === undefined
+					? scaledNumber(low, unit)
+					: `${scaledNumber(low, unit)}–${scaledNumber(high, unit)}`;
+			// Nominative-like forms follow the number; "v 2 hrnčekoch" / "v 1 hrnčeku" keep their case.
+			let word = unit;
+			if (/^hrnček(a|y|ov)?$/.test(unit)) word = cupWord(high);
+			else if (unit === 'hrnčekoch' || unit === 'hrnčeku')
+				word = high === 1 ? 'hrnčeku' : 'hrnčekoch';
+			return `${number} ${word}`;
+		}
+	);
 }
 
 /**

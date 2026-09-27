@@ -2,6 +2,7 @@
 	import { pushState } from '$app/navigation';
 	import { page } from '$app/state';
 	import { formatAmount, formatEur, formatNumber } from '$lib/amounts';
+	import { scaleStep } from '$lib/cooking';
 	import CookMode from '$lib/components/CookMode.svelte';
 	import { useCatalog } from '$lib/catalog';
 	import GlutenBadge from '$lib/components/GlutenBadge.svelte';
@@ -16,6 +17,7 @@
 		ALLERGEN_LABELS,
 		COMPUTED_TAG_LABELS,
 		DAILY_REFERENCE,
+		SALT_HIGH_G,
 		VEGAN_PROTEIN_G_PER_KG,
 		computedTags,
 		scaleNutrients
@@ -250,6 +252,14 @@
 				{#each recipe.allergens as a (a)}
 					<span class="badge turmeric">{ALLERGEN_LABELS[a]}</span>
 				{/each}
+				{#if recipe.showNutrition && recipe.perServing.salt > SALT_HIGH_G}
+					<span
+						class="badge tomato"
+						title="{formatNumber(
+							recipe.perServing.salt
+						)} g soli na porciu – aspoň polovica denného limitu">Veľa soli</span
+					>
+				{/if}
 				{#if season.inSeason}
 					<span class="badge leaf" title={season.produce.map((i) => i.name).join(', ')}
 						>Sezónne {IN_MONTH[month - 1]}</span
@@ -535,11 +545,17 @@
 							aria-pressed={doneSteps.includes(i)}
 						>
 							<span class="num">{i + 1}</span>
-							<span class="text">{step}</span>
+							<span class="text">{scaleStep(step, factor)}</span>
 						</button>
 					</li>
 				{/each}
 			</ol>
+			{#if factor !== 1}
+				<p class="muted tap-hint">
+					Množstvá v postupe sú prepočítané na {servings}
+					{servings === 1 ? 'porciu' : servings < 5 ? 'porcie' : 'porcií'}.
+				</p>
+			{/if}
 			<p class="muted tap-hint" data-noprint>
 				Ťukni na krok, keď ho máš hotový, alebo
 				<button class="linkish" onclick={startCooking}>zapni režim varenia</button> s časovačmi.

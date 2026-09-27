@@ -33,7 +33,7 @@
 		<p class="lede">
 			Zelenina v sezóne je chutnejšia a lacnejšia. Kalendár ukazuje, kedy sa čo zbiera na Slovensku,
 			aj s tým, čo vydrží v pivnici. Zelenina, ktorá je v obchode stále (cibuľa, zemiaky, cesnak),
-			tu nie je.
+			tu nie je. Chceš si ju dopestovať? <a href="/pestuj">Pestuj si sám</a>.
 		</p>
 	</header>
 

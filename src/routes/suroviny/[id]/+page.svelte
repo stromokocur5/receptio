@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import { formatEur, parseAmount } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
+	import GrowMonths from '$lib/components/GrowMonths.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
@@ -93,6 +94,8 @@
 					<span class="badge turmeric">{ALLERGEN_LABELS[a]}</span>
 				{/each}
 				{#if ingredient.season.includes(month)}<span class="badge leaf">Práve v sezóne</span>{/if}
+				{#if data.grow}<a class="badge leaf" href="#pestuj">Dá sa pestovať doma</a>{/if}
+				{#if data.notGrown?.status === 'nie'}<span class="badge sky">U nás nerastie</span>{/if}
 			</div>
 			<div class="actions" data-noprint>
 				<button class="btn {atHome ? 'leaf' : 'ghost'} small" onclick={toggleHome}>
@@ -139,6 +142,45 @@
 						</a>
 					{/if}
 					{#if info.homemade.note}<p class="muted">{info.homemade.note}</p>{/if}
+				</section>
+			{/if}
+			{#if data.grow}
+				<section class="grow" id="pestuj">
+					<h2><Icon name="sprout" size={20} /> Pestuj si sám</h2>
+					<p class="grow-where">
+						{data.grow.where
+							.map(
+								(w) =>
+									({ parapet: 'v byte na okne', balkon: 'na balkóne', zahrada: 'v záhrade' })[w]
+							)
+							.join(', ')}
+						· {['', 'ľahké', 'treba sa starať', 'pre pokročilých'][data.grow.level]}
+						{#if data.grow.perennial}· trvalka{/if}
+					</p>
+					<GrowMonths
+						indoor={data.grow.indoor}
+						sow={data.grow.sow}
+						harvest={data.grow.harvest}
+						legend
+					/>
+					<p>{data.grow.how}</p>
+					{#if data.grow.tip}<p class="muted">{data.grow.tip}</p>{/if}
+					<a class="btn ghost small" href="/pestuj#p-{ingredient.id}">
+						<Icon name="arrow-right" size={16} /> Naplánuj si záhradku
+					</a>
+				</section>
+			{:else if data.notGrown}
+				<section class="grow">
+					<h2><Icon name="globe" size={20} /> Odkiaľ to je</h2>
+					<p>
+						<strong
+							>{data.notGrown.status === 'nie'
+								? 'U nás sa pestovať nedá.'
+								: 'U nás sa dá pestovať len ťažko.'}</strong
+						>
+						Pestuje sa hlavne: {data.notGrown.origin}.
+					</p>
+					{#if data.notGrown.note}<p class="muted">{data.notGrown.note}</p>{/if}
 				</section>
 			{/if}
 			{#if info.choose}
@@ -278,6 +320,13 @@
 </article>
 
 <style>
+	.grow {
+		scroll-margin-top: 90px;
+	}
+	.grow-where {
+		color: var(--ink-2);
+		font-weight: 600;
+	}
 	.page {
 		padding-top: 18px;
 	}

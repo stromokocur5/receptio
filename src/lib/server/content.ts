@@ -2,12 +2,20 @@ import { marked } from 'marked';
 import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
 import { parseAmount, toGrams } from '$lib/amounts';
-import { recipeAllergens, recipeGluten, recipeNutrients, recipeWarnings } from '$lib/nutrition';
+import {
+	SALT_HIGH_G,
+	recipeAllergens,
+	recipeGluten,
+	recipeNutrients,
+	recipeWarnings
+} from '$lib/nutrition';
 import { normalizeSearch } from '$lib/labels';
 import { bestPrice } from '$lib/pricing';
 import {
 	ALLERGENS,
 	EQUIPMENT_LEVELS,
+	GROW_PLACES,
+	GROW_SUN,
 	INGREDIENT_CATEGORIES,
 	MEALS,
 	UNITS,
@@ -15,6 +23,9 @@ import {
 	type Catalog,
 	type Cuisine,
 	type Equipment,
+	type GrowCombo,
+	type GrowGuide,
+	type NotGrown,
 	type EquipmentFull,
 	type Ingredient,
 	type Homemade,
@@ -192,6 +203,63 @@ const recipeSchema = z
 	})
 	.strict();
 
+const monthsSchema = z.array(z.number().int().min(1).max(12)).default([]);
+const growLevel = z.union([z.literal(1), z.literal(2), z.literal(3)]);
+const growFileSchema = z
+	.object({
+		plodiny: z.array(
+			z
+				.object({
+					ingredient: slug,
+					/** Plant name when the ingredient's is a shop product ("Hrášok mrazený" → "Hrach"). */
+					name: z.string().min(1).optional(),
+					where: z.array(z.enum(GROW_PLACES)).min(1),
+					sun: z.array(z.enum(GROW_SUN)).min(1),
+					level: growLevel,
+					spacing: z.number().int().min(0).max(800),
+					family: z.string().min(1),
+					indoor: monthsSchema,
+					sow: monthsSchema.refine((m) => m.length > 0, 'sow potrebuje aspoň jeden mesiac'),
+					harvest: monthsSchema.refine((m) => m.length > 0, 'harvest potrebuje aspoň jeden mesiac'),
+					perennial: z.boolean().default(false),
+					how: z.string().min(1),
+					tip: z.string().min(1).optional(),
+					recommend: z.string().min(1).optional(),
+					friends: z.array(slug).default([]),
+					avoid: z.array(slug).default([])
+				})
+				.strict()
+		),
+		kombinacie: z.array(
+			z
+				.object({
+					id: slug,
+					name: z.string().min(1),
+					where: z.array(z.enum(GROW_PLACES)).min(1),
+					sun: z.array(z.enum(GROW_SUN)).min(1),
+					level: growLevel,
+					area: z.number().positive(),
+					max: z.number().int().positive().optional(),
+					members: z.record(slug, z.number().int().positive()),
+					how: z.string().min(1),
+					why: z.string().min(1),
+					gear: z.array(z.string().min(1)).default([])
+				})
+				.strict()
+		),
+		nepestovatelne: z.array(
+			z
+				.object({
+					ingredient: slug,
+					status: z.enum(['nie', 'tazko']),
+					origin: z.string().min(1),
+					note: z.string().min(1).optional()
+				})
+				.strict()
+		)
+	})
+	.strict();
+
 const pattern = z.string().transform((source, ctx) => {
 	try {
 		return new RegExp(source, 'u');
@@ -221,6 +289,9 @@ const equipmentSchema = z
 	.strict();
 
 const GF_VARIANT_NAME = 'Bezlepková verzia';
+const LOW_SALT_VARIANT_NAME = 'Menej soli';
+/** Seasonings halved in the low-salt version: salt itself and salty sauces and pastes (g salt / 100 g). */
+const SALTY_SEASONING_MIN = 1.5;
 
 const cuisineSchema = z
 	.object({
@@ -290,6 +361,10 @@ export interface Content extends Catalog {
 	/** Substitutes of every ingredient, for ingredient pages. */
 	ingredientSwaps: Map<string, Substitute[]>;
 	wiki: WikiPage[];
+	/** Growing guides, alphabetical. */
+	grow: GrowGuide[];
+	growCombos: GrowCombo[];
+	notGrown: NotGrown[];
 }
 
 export interface RawContent {
@@ -301,6 +376,7 @@ export interface RawContent {
 	pricesSynced: string;
 	recipes: Record<string, string>;
 	wiki: Record<string, string>;
+	grow: string;
 }
 
 export function compileContent(raw: RawContent, today: Date): Content {
@@ -604,6 +680,48 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			});
 		}
 
+		if (
+			r.nutrition &&
+			base.perServing.salt > SALT_HIGH_G &&
+			!variants.some((v) => v.name === LOW_SALT_VARIANT_NAME)
+		) {
+			const halved = new Set<string>();
+			let broth = false;
+			const lowLines = lines.flatMap((l): RecipeLine[] => {
+				const ingredient = byId.get(l.ingredientId)!;
+				if (l.notEaten || l.amount === null) return [l];
+				const half = { ...l, amount: l.amount / 2, grams: l.grams / 2 };
+				if (l.ingredientId === 'zeleninovy-vyvar') {
+					broth = true;
+					return [half, swapLine(half, 'voda', where)];
+				}
+				const seasoning =
+					ingredient.id === 'sol' ||
+					(ingredient.category === 'omacky-pasty' &&
+						ingredient.per100g.salt >= SALTY_SEASONING_MIN);
+				if (!seasoning) return [l];
+				// "Soľ jódovaná" → "soľ", "Tamari (bezlepková sójová omáčka)" → "tamari".
+				halved.add(
+					ingredient.id === 'sol' ? 'soľ' : ingredient.name.replace(/\s*\(.*\)/, '').toLowerCase()
+				);
+				return [half];
+			});
+			const low = compute(mergeLines(lowLines), r.servings);
+			// Only worth offering when the salt comes from what we can halve, not from olives or pickles.
+			if (low.perServing.salt <= base.perServing.salt * 0.8) {
+				const parts = [
+					halved.size ? `Daj len polovicu: ${[...halved].join(', ')}.` : '',
+					broth ? 'Polovicu vývaru nahraď vodou.' : '',
+					'Na konci ochutnaj a dochuť citrónom, octom alebo bylinkami – kyslosť a vôňa nahradia časť slanosti.'
+				];
+				variants.push({
+					name: LOW_SALT_VARIANT_NAME,
+					description: parts.filter(Boolean).join(' '),
+					...low
+				});
+			}
+		}
+
 		for (const toolId of [...r.equipment, ...r.no_equipment]) {
 			if (!equipmentById.has(toolId)) throw new Error(`${where}: neznáme vybavenie "${toolId}"`);
 		}
@@ -717,6 +835,74 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		])
 	);
 
+	const growFile = parseWith(growFileSchema, parseYaml(raw.grow), 'content/pestovanie.yaml');
+	const growWhere = 'content/pestovanie.yaml';
+	const growName = (id: string, what: string) => {
+		const ingredient = byId.get(id);
+		if (!ingredient) throw new Error(`${growWhere}: ${what}: neznáma surovina "${id}"`);
+		return ingredient.name;
+	};
+	const grownIds = new Set<string>();
+	for (const id of [
+		...growFile.plodiny.map((g) => g.ingredient),
+		...growFile.nepestovatelne.map((n) => n.ingredient)
+	]) {
+		if (grownIds.has(id)) throw new Error(`${growWhere}: "${id}" je tam dvakrát`);
+		grownIds.add(id);
+	}
+	const grow: GrowGuide[] = growFile.plodiny
+		.map((g) => {
+			for (const id of [...g.friends, ...g.avoid]) growName(id, `${g.ingredient} susedia`);
+			return {
+				ingredientId: g.ingredient,
+				name: g.name ?? growName(g.ingredient, 'plodiny'),
+				where: g.where,
+				sun: g.sun,
+				level: g.level,
+				spacing: g.spacing,
+				family: g.family,
+				indoor: g.indoor,
+				sow: g.sow,
+				harvest: g.harvest,
+				perennial: g.perennial,
+				how: g.how,
+				...(g.tip && { tip: g.tip }),
+				...(g.recommend && { recommend: g.recommend }),
+				friends: g.friends,
+				avoid: g.avoid
+			};
+		})
+		.sort((a, b) => a.name.localeCompare(b.name, 'sk'));
+	const growable = new Set(grow.map((g) => g.ingredientId));
+	const plantNames = new Map(grow.map((g) => [g.ingredientId, g.name]));
+	const growCombos: GrowCombo[] = growFile.kombinacie.map((c) => ({
+		id: c.id,
+		name: c.name,
+		where: c.where,
+		sun: c.sun,
+		level: c.level,
+		area: c.area,
+		...(c.max && { max: c.max }),
+		members: Object.entries(c.members).map(([id, count]) => {
+			if (!growable.has(id)) {
+				throw new Error(`${growWhere}: kombinácia ${c.id}: "${id}" nemá návod v plodinách`);
+			}
+			return { ingredientId: id, name: plantNames.get(id)!, count };
+		}),
+		how: c.how,
+		why: c.why,
+		gear: c.gear
+	}));
+	const notGrown: NotGrown[] = growFile.nepestovatelne
+		.map((n) => ({
+			ingredientId: n.ingredient,
+			name: growName(n.ingredient, 'nepestovatelne'),
+			status: n.status,
+			origin: n.origin,
+			...(n.note && { note: n.note })
+		}))
+		.sort((a, b) => a.name.localeCompare(b.name, 'sk'));
+
 	return {
 		ingredients,
 		recipes,
@@ -727,7 +913,10 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		wiki,
 		equipment,
 		ingredientInfo,
-		ingredientSwaps: substitutesById
+		ingredientSwaps: substitutesById,
+		grow,
+		growCombos,
+		notGrown
 	};
 }
 
@@ -770,7 +959,12 @@ export function getContent(): Content {
 				query: '?raw',
 				import: 'default',
 				eager: true
-			})
+			}),
+			grow: import.meta.glob('/content/pestovanie.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/pestovanie.yaml'] as string
 		},
 		new Date()
 	);
