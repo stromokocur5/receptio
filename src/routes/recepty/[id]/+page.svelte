@@ -151,6 +151,55 @@
 		pushState('', { cooking: true });
 	}
 
+	let shared = $state(false);
+	async function share() {
+		const url = `${SITE_ORIGIN}/recepty/${base.id}`;
+		try {
+			if (navigator.share) {
+				await navigator.share({ title: base.title, text: base.description, url });
+				return;
+			}
+			await navigator.clipboard.writeText(url);
+			shared = true;
+			setTimeout(() => (shared = false), 2000);
+		} catch {
+			// Share sheet closed or clipboard blocked; nothing to do.
+		}
+	}
+
+	/** Ingredients ticked off while preparing; only for this visit. */
+	let ready = $state<Record<number, boolean>>({});
+
+	/** Phones: the quick bar appears once the main buttons scroll out of view. */
+	let actionsEl = $state<HTMLElement>();
+	let actionsGone = $state(false);
+	$effect(() => {
+		if (!actionsEl) return;
+		const observer = new IntersectionObserver(([entry]) => {
+			actionsGone = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+		});
+		observer.observe(actionsEl);
+		return () => observer.disconnect();
+	});
+
+	const SECTIONS = [
+		{ id: 'suroviny', label: 'Suroviny' },
+		{ id: 'postup', label: 'Postup' },
+		{ id: 'ziviny', label: 'Živiny' }
+	] as const;
+	let currentSection = $state<string>('suroviny');
+	$effect(() => {
+		const els = SECTIONS.map((s) => document.getElementById(s.id)).filter((e) => !!e);
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) if (entry.isIntersecting) currentSection = entry.target.id;
+			},
+			{ rootMargin: '-40% 0px -55% 0px' }
+		);
+		for (const el of els) observer.observe(el);
+		return () => observer.disconnect();
+	});
+
 	const isFavorite = $derived(ui.loaded && !!favorites.current[base.id]);
 	const cookedTimes = $derived(
 		ui.loaded ? history.current.filter((h) => h.recipeId === base.id) : []
@@ -335,7 +384,7 @@
 				<p class="ahead"><Icon name="clock" size={18} /> <strong>Vopred:</strong> {base.ahead}</p>
 			{/if}
 
-			<div class="actions" data-noprint>
+			<div class="actions" data-noprint bind:this={actionsEl}>
 				<button class="btn leaf" onclick={plan}>
 					{#if justAdded}
 						<Icon name="check" size={18} draw /> Pridané
@@ -358,6 +407,14 @@
 					<Icon name="bookmark" size={19} />
 				</button>
 				<LikeButton recipeId={recipe.id} />
+				<button
+					class="icon-btn"
+					onclick={share}
+					aria-label="Zdieľať recept"
+					title={shared ? 'Odkaz skopírovaný' : 'Zdieľať'}
+				>
+					<Icon name={shared ? 'check' : 'share'} size={19} />
+				</button>
 				<button
 					class="icon-btn print-btn"
 					onclick={() => window.print()}
@@ -406,8 +463,16 @@
 		</section>
 	{/if}
 
+	<nav class="jump-bar" class:shown={actionsGone} aria-label="Časti receptu" data-noprint>
+		{#each SECTIONS as s (s.id)}
+			{#if s.id !== 'ziviny' || recipe.showNutrition}
+				<a href="#{s.id}" class:active={currentSection === s.id}>{s.label}</a>
+			{/if}
+		{/each}
+	</nav>
+
 	<div class="main">
-		<section class="ingredients card">
+		<section class="ingredients card" id="suroviny">
 			<div class="ing-head">
 				<h2>Suroviny</h2>
 				<div class="stepper" role="group" aria-label="Počet porcií">
@@ -435,9 +500,15 @@
 					{@const ingredient = catalog.ingredientsById.get(line.ingredientId)!}
 					{@const home = hasPantry && isHome(line.ingredientId)}
 					{@const swaps = base.swaps[line.ingredientId] ?? []}
-					<li class:home>
-						<span class="amount"
-							>{formatAmount(line.amount === null ? null : line.amount * factor, line.unit)}</span
+					<li class:home class:ready={ready[i]}>
+						<button
+							class="amount"
+							aria-pressed={!!ready[i]}
+							title="Odškrtni, keď to máš pripravené"
+							onclick={() => (ready[i] = !ready[i])}
+							><span class="tick" aria-hidden="true"
+								><Icon name="check" size={12} stroke={3} /></span
+							>{formatAmount(line.amount === null ? null : line.amount * factor, line.unit)}</button
 						>
 						<span class="name" class:not-eaten={line.notEaten}>
 							<a class="ing-link" href="/suroviny/{ingredient.id}">{ingredient.name}</a>
@@ -527,7 +598,7 @@
 			{/if}
 		</section>
 
-		<section class="steps">
+		<section class="steps" id="postup">
 			<h2>Postup</h2>
 			{#if recipe.howto.length}
 				<p class="steps-sub" data-noprint>
@@ -634,7 +705,7 @@
 	{/if}
 
 	{#if recipe.showNutrition}
-		<section class="nutrition card">
+		<section class="nutrition card" id="ziviny">
 			<div class="nut-head">
 				<h2>Živiny na porciu</h2>
 				<p class="muted">
@@ -674,6 +745,14 @@
 		</section>
 	{/if}
 </article>
+
+<div class="quick-bar" class:shown={actionsGone && !page.state.cooking} data-noprint>
+	<button class="btn ghost" onclick={plan}>
+		<Icon name={justAdded ? 'check' : 'calendar'} size={18} />
+		{justAdded ? 'Pridané' : 'Do plánu'}
+	</button>
+	<button class="btn leaf" onclick={startCooking}><Icon name="pot" size={18} /> Variť</button>
+</div>
 
 {#if page.state.cooking}
 	<CookMode
@@ -1107,7 +1186,7 @@
 	}
 	.ingredients li {
 		display: grid;
-		grid-template-columns: 5.2em 1fr auto;
+		grid-template-columns: 6.6em 1fr auto;
 		gap: 10px;
 		padding: 9px 0;
 		border-bottom: 1px dashed var(--line);
@@ -1117,10 +1196,135 @@
 		border-bottom: 0;
 	}
 	.amount {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 6px;
+		padding: 0;
+		border: 0;
+		background: none;
+		font: inherit;
 		font-weight: 700;
 		font-variant-numeric: tabular-nums;
 		color: var(--leaf);
 		white-space: nowrap;
+		text-align: left;
+		cursor: pointer;
+	}
+	.tick {
+		display: inline-grid;
+		place-items: center;
+		flex: none;
+		width: 16px;
+		height: 16px;
+		border-radius: 50%;
+		border: 1.5px solid var(--line);
+		color: transparent;
+		transform: translateY(2px);
+		transition:
+			background 0.2s,
+			border-color 0.2s,
+			color 0.2s;
+	}
+	.ready .tick {
+		background: var(--leaf);
+		border-color: var(--leaf);
+		color: var(--paper);
+		animation: tick-pop 0.3s var(--ease-spring);
+	}
+	@keyframes tick-pop {
+		50% {
+			transform: translateY(2px) scale(1.3);
+		}
+	}
+	.ingredients li.ready > :not(.swaps) {
+		opacity: 0.5;
+	}
+	.ingredients li.ready .name {
+		text-decoration: line-through;
+	}
+	.ingredients li.ready .amount {
+		opacity: 1;
+	}
+
+	/* Section tabs and quick buttons exist for phones, where the page is long. */
+	.jump-bar {
+		position: sticky;
+		top: 64px;
+		z-index: 6;
+		display: flex;
+		gap: 4px;
+		margin: 16px -16px 0;
+		padding: 6px 16px;
+		background: color-mix(in srgb, var(--paper) 90%, transparent);
+		backdrop-filter: blur(10px);
+		border-bottom: 1px solid transparent;
+		transition: border-color 0.2s;
+	}
+	.jump-bar.shown {
+		border-bottom-color: var(--line);
+	}
+	.jump-bar a {
+		flex: 1;
+		padding: 7px 10px;
+		border-radius: 999px;
+		text-align: center;
+		color: var(--ink-2);
+		font-weight: 650;
+		font-size: 0.9rem;
+		text-decoration: none;
+		transition:
+			background 0.2s,
+			color 0.2s;
+	}
+	.jump-bar a.active {
+		background: var(--ink);
+		color: var(--paper);
+	}
+	#suroviny,
+	#postup,
+	#ziviny {
+		scroll-margin-top: 120px;
+	}
+	.quick-bar {
+		position: fixed;
+		left: 16px;
+		right: 16px;
+		bottom: calc(92px + env(safe-area-inset-bottom));
+		z-index: 45;
+		display: grid;
+		grid-template-columns: 1fr 1.4fr;
+		gap: 8px;
+		padding: 8px;
+		border-radius: 20px;
+		background: color-mix(in srgb, var(--card) 92%, transparent);
+		backdrop-filter: blur(12px);
+		border: 1px solid var(--line);
+		box-shadow: var(--shadow-lift);
+		opacity: 0;
+		transform: translateY(20px);
+		pointer-events: none;
+		transition:
+			opacity 0.25s,
+			transform 0.35s var(--ease-spring);
+	}
+	.quick-bar.shown {
+		opacity: 1;
+		transform: none;
+		pointer-events: auto;
+	}
+	.quick-bar .btn {
+		justify-content: center;
+	}
+	@media (max-width: 899px) {
+		.page {
+			padding-bottom: 80px;
+		}
+	}
+	@media (min-width: 900px) {
+		.jump-bar,
+		.quick-bar {
+			display: none;
+		}
 	}
 	.note {
 		display: block;

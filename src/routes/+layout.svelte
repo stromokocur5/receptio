@@ -12,6 +12,7 @@
 	import { changes, loadLikes, loadPersisted, plan, settings } from '$lib/state.svelte';
 	import { initSync, noteChange, syncState } from '$lib/sync.svelte';
 	import { onboarding, shouldOnboard } from '$lib/onboarding.svelte';
+	import { initInstall } from '$lib/install.svelte';
 	import { loadTimers } from '$lib/timers.svelte';
 
 	let { data, children } = $props();
@@ -39,6 +40,7 @@
 		loadTimers();
 		void loadLikes();
 		initSync();
+		initInstall();
 		if (shouldOnboard(page.url)) onboarding.open = true;
 	});
 

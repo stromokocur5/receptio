@@ -15,9 +15,11 @@
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
 		"gen": "wrangler types",
-		"prices:sync": "node scripts/sync-prices.ts"
+		"prices:sync": "node scripts/sync-prices.ts",
+		"test:e2e": "playwright test"
 	},
 	"devDependencies": {
+		"@playwright/test": "^1.63.0",
 		"@resvg/resvg-js": "^2.6.2",
 		"@sveltejs/adapter-cloudflare": "^7.2.8",
 		"@sveltejs/kit": "^2.63.0",

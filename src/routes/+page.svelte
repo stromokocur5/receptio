@@ -9,6 +9,7 @@
 	import { pluralRecipes } from '$lib/labels';
 	import { IN_MONTH, recipeSeason } from '$lib/season';
 	import { bedPlants, localizeGuide, monthTasks, seasonDelayWeeks } from '$lib/garden';
+	import { acceptInstall, dismissInstall, install } from '$lib/install.svelte';
 	import { onboarding } from '$lib/onboarding.svelte';
 	import { favorites, garden, likes, pantry, plan, settings, ui } from '$lib/state.svelte';
 	import type { GrowGuide } from '$lib/types';
@@ -294,6 +295,28 @@
 				<span><strong>Obľúbené</strong><small>{favCount} {pluralRecipes(favCount)}</small></span>
 			</a>
 		{/if}
+	</section>
+{/if}
+
+{#if install.offer}
+	<section class="wrap install-wrap">
+		<div class="card install">
+			<span class="i-icon"><Icon name="download" size={24} /></span>
+			<div>
+				<strong>Pridaj si Receptio na plochu</strong>
+				<p>
+					{install.prompt
+						? 'Otvorí sa ako appka, bez panela prehliadača, a recepty aj plán máš aj offline.'
+						: 'V Safari ťukni na Zdieľať a potom na „Pridať na plochu“. Recepty aj plán máš potom aj offline.'}
+				</p>
+			</div>
+			<div class="i-actions">
+				{#if install.prompt}
+					<button class="btn leaf small" onclick={acceptInstall}>Pridať</button>
+				{/if}
+				<button class="btn ghost small" onclick={dismissInstall}>Nie, ďakujem</button>
+			</div>
+		</div>
 	</section>
 {/if}
 
@@ -636,6 +659,39 @@
 		text-underline-offset: 3px;
 	}
 
+	.install-wrap {
+		margin-top: 12px;
+	}
+	.install {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 12px 16px;
+		padding: 14px 16px;
+		border-left: 4px solid var(--leaf);
+		animation: rise 0.5s var(--ease-out) both;
+	}
+	.install > div:first-of-type {
+		flex: 1 1 220px;
+	}
+	.install p {
+		margin: 2px 0 0;
+		font-size: 0.9rem;
+		color: var(--ink-2);
+	}
+	.i-icon {
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		border-radius: 14px;
+		background: var(--leaf-soft);
+		color: var(--leaf);
+	}
+	.i-actions {
+		display: flex;
+		gap: 8px;
+	}
 	.continue {
 		display: flex;
 		gap: 10px;

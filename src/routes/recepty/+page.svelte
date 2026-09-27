@@ -5,7 +5,13 @@
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
-	import { MEAL_LABELS, normalizeSearch, searchMatcher, pluralRecipes } from '$lib/labels';
+	import {
+		CATEGORY_LABELS,
+		MEAL_LABELS,
+		normalizeSearch,
+		searchMatcher,
+		pluralRecipes
+	} from '$lib/labels';
 	import {
 		ALLERGEN_LABELS,
 		COMPUTED_TAG_LABELS,
@@ -16,7 +22,13 @@
 	import { recipeSeason } from '$lib/season';
 	import { rankByPantry, type PantryMatch } from '$lib/pantry';
 	import { likes, pantry, ui } from '$lib/state.svelte';
-	import { MEALS, type Allergen, type Meal, type RecipeSummary } from '$lib/types';
+	import {
+		MEALS,
+		type Allergen,
+		type IngredientCategory,
+		type Meal,
+		type RecipeSummary
+	} from '$lib/types';
 
 	const catalog = useCatalog();
 
@@ -84,6 +96,8 @@
 
 	const maxTime = $derived(TIME_STEPS[maxTimeIndex]);
 
+	/** Categories almost every recipe has; searching them would match everything. */
+	const UNSEARCHED_CATEGORIES = new Set<IngredientCategory>(['koreniny', 'oleje', 'ine']);
 	const searchIndex = $derived(
 		new Map(
 			catalog.recipes.map((r) => [
@@ -93,7 +107,15 @@
 						r.title,
 						r.description,
 						catalog.cuisinesById.get(r.cuisine)?.name ?? '',
-						...r.lines.map((l) => catalog.ingredientsById.get(l.ingredientId)?.name ?? '')
+						...r.meals.map((m) => MEAL_LABELS[m]),
+						...r.lines.map((l) => catalog.ingredientsById.get(l.ingredientId)?.name ?? ''),
+						// "strukoviny", "orechy" or "ovocie" find recipes by what's in them.
+						...new Set(
+							r.lines
+								.map((l) => catalog.ingredientsById.get(l.ingredientId)?.category)
+								.filter((c) => c && !UNSEARCHED_CATEGORIES.has(c))
+								.map((c) => CATEGORY_LABELS[c!])
+						)
 					].join(' ')
 				)
 			])

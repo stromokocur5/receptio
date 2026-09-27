@@ -11,12 +11,13 @@ pnpm exec wrangler d1 migrations apply receptio --local   # lokálna DB pre lajk
 pnpm dev                                                  # http://localhost:5173
 ```
 
-| Príkaz         | Čo robí                                                             |
-| -------------- | ------------------------------------------------------------------- |
-| `pnpm test`    | unit testy + validácia celého obsahu (neznáme suroviny, jednotky …) |
-| `pnpm check`   | typecheck                                                           |
-| `pnpm build`   | produkčný build (všetky stránky sa prerenderujú)                    |
-| `pnpm preview` | build v reálnom Workers runtime (`wrangler dev`)                    |
+| Príkaz          | Čo robí                                                             |
+| --------------- | ------------------------------------------------------------------- |
+| `pnpm test`     | unit testy + validácia celého obsahu (neznáme suroviny, jednotky …) |
+| `pnpm check`    | typecheck                                                           |
+| `pnpm build`    | produkčný build (všetky stránky sa prerenderujú)                    |
+| `pnpm preview`  | build v reálnom Workers runtime (`wrangler dev`)                    |
+| `pnpm test:e2e` | testy v prehliadači (Playwright): sprievodca, plán, záhradka, sync  |
 
 ## Ako to funguje
 
