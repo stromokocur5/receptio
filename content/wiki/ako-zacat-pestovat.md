@@ -3,7 +3,7 @@ title: Ako začať pestovať
 summary: Nádoby, zemina, zálievka a zmiešané výsadby – všetko, čo treba vedieť pred prvým semienkom. Na okne, balkóne aj v záhrade.
 section: pestovanie
 icon: sprout
-order: 5
+order: 0
 ---
 
 Nemusíš mať záhradu. Bylinky a klíčky vyrastú na okne v byte, na balkóne sa dajú dopestovať paradajky aj zemiaky. **[Plánovač na stránke Pestuj si sám](/pestuj#planovac)** ti podľa miesta navrhne, čo a koľko zasadiť.

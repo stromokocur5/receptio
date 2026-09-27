@@ -1036,6 +1036,7 @@ plodiny:
     level: 2
     spacing: 0
     family: huby
+    form: huba
     yield: 1
     problems:
       - 'Suchý vzduch – huby nerastú, rosi'
@@ -1086,6 +1087,9 @@ plodiny:
     level: 1
     spacing: 50
     family: ruzovite
+    form: ker
+    height: 1.5
+    years: 1
     yield: 1.5
     problems:
       - 'Maliník – červík v plodoch, zbieraj včas'
@@ -1103,6 +1107,10 @@ plodiny:
     level: 2
     spacing: 100
     family: vresovcovite
+    form: ker
+    height: 1.5
+    years: 2
+    pollination: 'Dve odrody vedľa seba dajú väčšie plody.'
     yield: 2
     problems:
       - 'Vápnitá voda – žltnú listy'
@@ -1120,6 +1128,10 @@ plodiny:
     level: 2
     spacing: 400
     family: ruzovite
+    form: strom
+    height: 3
+    years: 3
+    pollination: 'Väčšina odrôd potrebuje v okolí inú jabloň (stačí susedova), ktorá kvitne v rovnakom čase.'
     yield: 30
     problems:
       - 'Chrastavitosť a obaľovač – staré odolné odrody'
@@ -1137,6 +1149,10 @@ plodiny:
     level: 1
     spacing: 400
     family: ruzovite
+    form: strom
+    height: 4
+    years: 3
+    pollination: 'Bystrická a Domáca slivka sa opelia samy, iné odrody potrebujú suseda.'
     yield: 30
     problems:
       - 'Šarka (škvrny na plodoch) – odolné odrody'
@@ -1147,6 +1163,449 @@ plodiny:
     harvest: [8, 9]
     perennial: true
     how: 'Odolná a nenáročná – slivka rastie takmer všade. Zasaď na jeseň, prvé roky zalievaj. Samoopelivé odrody (Čačanská) plodia aj samy.'
+
+  # ── Ovocné stromy ───────────────────────────────────────────
+  - ingredient: hruska
+    name: Hruška
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 400
+    family: ruzovite
+    form: strom
+    height: 4
+    years: 4
+    pollination: 'Potrebuje inú hrušku v okolí (stačí susedova), ktorá kvitne v rovnakom čase.'
+    yield: 30
+    problems:
+      - 'Hrdza hruškova – oranžové škvrny na listoch; neplánuj ju blízko borievok'
+      - 'Hrušková plošica – lepkavé listy, zmy vodou, prilákaj lienky'
+    seeds: 'Zo semena vyrastie divoká hruška – ovocie sa množí štepením, kúp stromček.'
+    preserve: 'Letné hrušky zjedz do týždňa, zimné (Konferencia, Alexander Lucas) dozrievajú v pivnici do Vianoc. Sušené krúžky, kompót.'
+    sow: [3, 4, 10, 11]
+    harvest: [8, 9, 10]
+    perennial: true
+    how: 'Na malú záhradu vyber hrušku na dule (podpnoka do 4 m). Sadí sa od októbra do apríla, keď nemá listy. Jamu vykop dvakrát širšiu ako korene, zatĺc kôl, strom zasaď do rovnakej hĺbky, ako rástol v škôlke (miesto štepenia nad zemou), a poriadne zalej. Prvé dva roky zalievaj v suchu raz týždenne vedrom vody.'
+    tip: 'Hruška kvitne skôr ako jabloň – do mrazových kotlín ju nesaď, jarné mrazy jej zničia kvety.'
+    friends: [pazitka, cesnak, ribezle-cervene, jahody]
+  - ingredient: ceresne
+    name: Čerešňa
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 600
+    family: ruzovite
+    form: strom
+    height: 6
+    years: 4
+    pollination: 'Väčšina odrôd potrebuje opeľovača – inú čerešňu vhodnej odrody. Samoopelivé sú napr. Lapins a Sunburst.'
+    yield: 30
+    problems:
+      - 'Vrtivka čerešňová – červíky v plodoch, zbieraj včas a vešaj žlté lepové dosky'
+      - 'Vtáky – sieť cez korunu, keď sa plody farbia'
+    seeds: 'Kúpiš štepený stromček. Z kôstky vyrastie strom s neistými plodmi – dobrá podpnoka na štepenie.'
+    preserve: 'Čerstvé 3–4 dni v chladničke. Vykôstkované zamraz, kompót, sušené.'
+    sow: [3, 4, 10, 11]
+    harvest: [6, 7]
+    perennial: true
+    how: 'Čerešňa je veľký strom – na malú záhradu vyber slabo rastúcu podpnoku (Gisela 5, do 3–4 m). Chce slnečné, vzdušné miesto a priepustnú pôdu, v mokrej hnije. Rež v lete po zbere, nie v zime – rany sa lepšie hoja.'
+    friends: [pazitka, cesnak]
+  - ingredient: visne
+    name: Višňa
+    where: [zahrada, balkon]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 300
+    family: ruzovite
+    form: strom
+    height: 3
+    years: 3
+    pollination: 'Väčšina višní (Morela, Érdi bőtermő) sa opelí sama – stačí jeden strom.'
+    yield: 15
+    problems:
+      - 'Monilióza – usychajú konce konárov po kvitnutí; zrež ich do zdravého dreva a spáľ'
+    seeds: 'Kúp štepený stromček alebo odnož z koreňov starej višne.'
+    preserve: 'Vykôstkované zamraz, kompót, džem, sušené višne do müsli.'
+    sow: [3, 4, 10, 11]
+    harvest: [7]
+    perennial: true
+    how: 'Višňa je najmenej náročný kôstkovinový strom – zvládne aj polotieň a chudobnejšiu pôdu. Zmestí sa do malej záhrady aj do veľkej nádoby (60 l) na balkóne. Rež po zbere: vystrihni staré konáre, ktoré plodili, nech rastú nové.'
+    recommend: 'Samoopelivá, malá a odolná – najjednoduchší ovocný strom na začiatok.'
+    friends: [pazitka, jahody, ribezle-cierne]
+  - ingredient: marhule
+    name: Marhuľa
+    where: [zahrada]
+    sun: [slnko]
+    level: 3
+    spacing: 500
+    family: ruzovite
+    form: strom
+    height: 4
+    years: 3
+    pollination: 'Väčšina odrôd je samoopelivá.'
+    yield: 30
+    problems:
+      - 'Jarné mrazy zničia kvety – kvitne už v marci'
+      - 'Apoplexia – strom náhle uschne; nesaď do ťažkej mokrej pôdy'
+    seeds: 'Kupuje sa štepená. Kôstka vyklíči po zimovaní v zemi, ale plody sú neisté.'
+    preserve: 'Džem, lekvár, kompót, sušené. Mrazené polovičky na knedle.'
+    sow: [3, 4, 10, 11]
+    harvest: [7]
+    perennial: true
+    how: 'Marhuľa patrí na najteplejšie miesto – k južnej stene, do vyššej polohy, kam nestekajú mrazy. Na južnom Slovensku sa jej darí, v horských oblastiach skôr nie. Rež v lete, nikdy v zime.'
+    tip: 'Keď v čase kvitnutia hlásia mráz, prikry korunu na noc netkanou textíliou.'
+  - ingredient: broskyne
+    name: Broskyňa
+    where: [zahrada]
+    sun: [slnko]
+    level: 3
+    spacing: 400
+    family: ruzovite
+    form: strom
+    height: 3
+    years: 2
+    pollination: 'Samoopelivá.'
+    yield: 20
+    problems:
+      - 'Kučeravosť listov – na jar postrek meďnatým prípravkom tesne pred pučaním, alebo odolná odroda'
+      - 'Krátky život stromu – 15–20 rokov'
+    seeds: 'Vinohradnícke broskyne sa dajú vypestovať z kôstky – plodia už po 3–4 rokoch.'
+    preserve: 'Kompót, džem, mrazené plátky do smoothie.'
+    sow: [3, 4]
+    harvest: [7, 8, 9]
+    perennial: true
+    how: 'Chce teplo, slnko a vzdušné miesto. Sadí sa na jar. Plodí na jednoročných výhonoch, preto ju každý rok zrež – odstráň konáre, ktoré plodili, a nechaj mladé.'
+    tip: 'Vinohradnícka broskyňa z kôstky je odolnejšia ako šľachtené odrody a na Slovensku ju nájdeš v starých vinohradoch.'
+  - ingredient: moruse
+    name: Moruša
+    where: [zahrada]
+    sun: [slnko]
+    level: 1
+    spacing: 600
+    family: morusovite
+    form: strom
+    height: 6
+    years: 3
+    yield: 20
+    problems:
+      - 'Plody padajú a farbia chodník – nesaď ju nad terasu'
+    seeds: 'Zakoreňuje z odrezkov zapichnutých v jeseni do zeme.'
+    preserve: 'Veľmi krehké – zjedz hneď, zamraz alebo uvar džem.'
+    sow: [3, 4, 10, 11]
+    harvest: [6, 7]
+    perennial: true
+    how: 'Moruša je nenáročná – zvládne sucho, mestské prostredie aj chudobnú pôdu. Na zber rozprestri pod strom plachtu a zatras konármi. Čierna moruša je chutnejšia, biela odolnejšia.'
+    recommend: 'Znesie sucho a horúčavu, nepotrebuje postreky ani rez. Ovocie, ktoré v obchode nekúpiš.'
+  - ingredient: vlasske-orechy
+    name: Orech vlašský
+    where: [zahrada]
+    sun: [slnko]
+    level: 1
+    spacing: 800
+    family: orechovite
+    form: strom
+    height: 15
+    years: 6
+    pollination: 'Samoopelivý, ale s druhým orechom v okolí rodí lepšie.'
+    yield: 20
+    problems:
+      - 'Bakteriálna škvrnitosť – čierne škvrny na plodoch v daždivom roku'
+      - 'Veľký tieň a látka juglon v lístí – pod ním sa nedarí veľa rastlinám'
+    seeds: 'Orech vyrastie z orecha zasadeného na jeseň 5 cm hlboko. Plody bývajú dobré, ale plodí až po 10 rokoch – štepený skôr.'
+    preserve: 'Orechy vylúp zo zelenej šupky, umy a suš 2–3 týždne v tieni. V škrupine vydržia rok.'
+    sow: [3, 4, 10, 11]
+    harvest: [9, 10]
+    perennial: true
+    how: 'Orech je strom na generácie – sadí sa na okraj pozemku, 10 m od domu a záhonov. Potrebuje hlbokú pôdu a nerežeš ho (krváca). Zbieraj orechy, ktoré samy spadnú, a denne, aby ich nezobrali vtáky.'
+    tip: 'Lístie orecha obsahuje juglon, ktorý brzdí iné rastliny – nekompostuj ho so zvyškom, daj ho do samostatnej kopy.'
+    avoid: [jablko, paradajky, zemiaky, cucoriedky]
+  - ingredient: gastany
+    name: Gaštan jedlý
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 2
+    spacing: 800
+    family: bukovite
+    form: strom
+    height: 12
+    years: 5
+    pollination: 'Potrebuje aspoň dva stromy rôznych odrôd.'
+    yield: 20
+    problems:
+      - 'V zásaditej vápenatej pôde chradne – chce kyslejšiu'
+    seeds: 'Zo zdravého gaštana zasadeného na jeseň vyrastie strom, ktorý plodí po 8–10 rokoch.'
+    preserve: 'Čerstvé v chladničke 2 týždne. Uvarené a olúpané zamraz, alebo usuš a zomeľ na múku.'
+    sow: [3, 4, 10, 11]
+    harvest: [10, 11]
+    perennial: true
+    how: 'Veľký strom na kyslú, priepustnú pôdu (okolie Modry, Bojníc či Nitry má staré gaštanice). Saď dva rôzne stromy aspoň 10 m od seba. Zbieraj plody, ktoré spadnú aj s ostnatou šupkou.'
+  # ── Kry a bobuľoviny ────────────────────────────────────────
+  - ingredient: lieskove-orechy
+    name: Lieska
+    where: [zahrada]
+    sun: [slnko, polotien, tien]
+    level: 1
+    spacing: 400
+    family: brezovite
+    form: ker
+    height: 4
+    years: 3
+    pollination: 'Potrebuje druhú liesku inej odrody (alebo divokú v okolí).'
+    yield: 3
+    problems:
+      - 'Vrtivec lieskový – červivé orechy; zbieraj a spáľ spadnuté včas'
+      - 'Veveričky a sojky – vyzbierajú všetko, čo nestihneš'
+    seeds: 'Zasaď orech na jeseň, alebo odober odnož z koreňov starej liesky.'
+    preserve: 'Suš v škrupine 2 týždne, potom vydržia rok v suchu.'
+    sow: [3, 4, 10, 11]
+    harvest: [8, 9]
+    perennial: true
+    how: 'Lieska je nenáročný ker na okraj záhrady – zvládne aj polotieň pod vysokými stromami. Vyrastie do 4–5 m. Každých pár rokov vyrež najstaršie kmienky pri zemi, ker sa omladí a lepšie rodí.'
+    recommend: 'Rastie aj v tieni, kde iné ovocie nerodí, a dáva orechy plné bielkovín.'
+  - ingredient: ribezle-cierne
+    name: Čierne ríbezle
+    where: [zahrada, balkon]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 150
+    family: egresovite
+    form: ker
+    height: 1.5
+    years: 2
+    yield: 4
+    problems:
+      - 'Vijačka ríbezľová – napuchnuté púčiky v zime, odtrhni a spáľ'
+      - 'Múčnatka – biely povlak; odolné odrody, vzdušný ker'
+    seeds: 'Rozmnožíš odrezkami: v jeseni zapichni 20 cm dlhé konáriky do zeme, na jar zakorenia.'
+    preserve: 'Mraz celé bobule, džem, sirup, sušené.'
+    sow: [3, 4, 10, 11]
+    harvest: [7]
+    perennial: true
+    how: 'Ker zasaď o pár centimetrov hlbšie, ako rástol v kvetináči – vyženie viac výhonov. Plodí na jedno- až trojročnom dreve: každú zimu vyrež pri zemi 2–3 najstaršie, tmavé konáre.'
+    recommend: 'Najviac vitamínu C z nášho ovocia, ker zvládne polotieň a hneď druhý rok rodí.'
+    friends: [pazitka, jahody]
+  - ingredient: ribezle-cervene
+    name: Červené ríbezle
+    where: [zahrada, balkon]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 150
+    family: egresovite
+    form: ker
+    height: 1.5
+    years: 2
+    yield: 5
+    problems:
+      - 'Vtáky – sieťka, keď sa strapce farbia'
+    seeds: 'Odrezky zapichnuté na jeseň do zeme zakorenia do jari.'
+    preserve: 'Celé strapce mraz, džem, sirup.'
+    sow: [3, 4, 10, 11]
+    harvest: [6, 7]
+    perennial: true
+    how: 'Rovnako ako čierne ríbezle, ale plodí na starších konároch – vyrezávaj len tie, ktoré majú viac ako 4 roky. Dá sa pestovať aj ako stromček na kmienku alebo pri plote do tvaru vejára.'
+    friends: [pazitka, jahody]
+  - ingredient: egres
+    name: Egreš
+    where: [zahrada, balkon]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 150
+    family: egresovite
+    form: ker
+    height: 1.2
+    years: 2
+    yield: 4
+    problems:
+      - 'Americká múčnatka – biely povlak na plodoch; vyber odolnú odrodu (Invicta)'
+      - 'Pílovka egrešová – húsenice ožerú listy za pár dní, oberaj ich'
+    seeds: 'Konár pripichni k zemi a prisyp – zakorení a na jeseň ho odrež.'
+    preserve: 'Zelený na kompót, zrelý čerstvý alebo džem. Mrazí sa dobre.'
+    sow: [3, 4, 10, 11]
+    harvest: [6, 7]
+    perennial: true
+    how: 'Tŕnitý ker, ktorý znesie aj polotieň. Udržuj ho riedky, aby prúdil vzduch – každú zimu vyrež staré a kríženie sa konáre. Zbieraj v rukaviciach.'
+  - ingredient: cernice
+    name: Černice
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 200
+    family: ruzovite
+    form: ker
+    height: 2
+    years: 1
+    yield: 5
+    problems:
+      - 'Rozrastajú sa – beztŕňové odrody sú krotšie'
+    seeds: 'Koniec výhonu zapichni do zeme – zakorení a na jar ho odrež.'
+    preserve: 'Na tácke zamraz, potom do vrecka. Džem, sirup.'
+    sow: [3, 4, 10, 11]
+    harvest: [7, 8, 9]
+    perennial: true
+    how: 'Beztŕňové černice (Thornless Evergreen, Loch Ness) veď po drôtoch alebo plote. Plodia na dvojročných výhonoch – po zbere ich vyrež pri zemi a priviaž nové.'
+    friends: [pazitka]
+  - ingredient: aronia
+    name: Arónia
+    where: [zahrada, balkon]
+    sun: [slnko, polotien]
+    level: 1
+    spacing: 150
+    family: ruzovite
+    form: ker
+    height: 2
+    years: 2
+    yield: 5
+    problems:
+      - 'Takmer žiadne – choroby a škodcovia sa jej vyhýbajú'
+    seeds: 'Odnože pri zemi sa dajú odrýpnuť a presadiť.'
+    preserve: 'Sušená do müsli, džem s jablkom, sirup. Zamrazená stratí trpkosť.'
+    sow: [3, 4, 10, 11]
+    harvest: [8, 9]
+    perennial: true
+    how: 'Najnenáročnejší ovocný ker – mrazuvzdorný, bez postrekov, rodí každý rok. Stačí raz za pár rokov vyrezať najstaršie konáre. Na jeseň sa krásne sfarbí do červena.'
+    recommend: 'Bez chorôb, bez rezu a bez starostí. Úrodu máš istú každý rok.'
+  - ingredient: rakytnik
+    name: Rakytník
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    spacing: 250
+    family: hlosinovite
+    form: ker
+    height: 3
+    years: 3
+    pollination: 'Dvojdomý – potrebuješ samičie kry a aspoň jeden samčí (1 samec na 5–8 samíc).'
+    yield: 5
+    problems:
+      - 'Rozrastá sa koreňovými odnožami'
+      - 'Tŕne – zber je pracný'
+    seeds: 'Odnože z koreňov; pri kúpe si daj pozor na pohlavie.'
+    preserve: 'Konáriky s bobuľami zamraz a otras – bobule odpadnú. Šťava s jablkom, sirup.'
+    sow: [3, 4, 10, 11]
+    harvest: [8, 9, 10]
+    perennial: true
+    how: 'Zvládne sucho, vietor aj chudobnú piesočnatú pôdu – sám si viaže dusík. Chce plné slnko. Zber: odstrihni konáriky s bobuľami (aj to je rez), zamraz ich a bobule sa oddelia samy.'
+    recommend: 'Rastie aj tam, kde nič iné – na suchom svahu. Vitamín C na celú zimu.'
+  - ingredient: baza
+    name: Baza čierna
+    where: [zahrada]
+    sun: [slnko, polotien, tien]
+    level: 1
+    spacing: 300
+    family: pizmovkovite
+    form: ker
+    height: 4
+    years: 2
+    yield: 5
+    problems:
+      - 'Vošky na mladých výhonoch – zmy ich vodou, prídu lienky'
+    seeds: 'Odrezky zapichnuté na jeseň do zeme zakorenia takmer vždy.'
+    preserve: 'Kvety na sirup v máji, plody vždy povar – džem, sirup, polievka.'
+    sow: [3, 4, 10, 11]
+    harvest: [5, 6, 8, 9]
+    perennial: true
+    how: 'Divoký ker, ktorý rastie sám pri každom plote. Rastie aj v tieni. V máji zbieraj rozkvitnuté kvety na sirup (ostatné nechaj na plody), v auguste tmavé strapce. Plody sa jedia len uvarené.'
+    tip: 'Surové bobule, listy a konáre bazy sú mierne jedovaté – spôsobujú nevoľnosť. Varením sa látka rozloží.'
+  - ingredient: jahody
+    name: Jahody
+    where: [zahrada, balkon, parapet]
+    sun: [slnko]
+    level: 1
+    spacing: 30
+    family: ruzovite
+    years: 1
+    yield: 0.3
+    problems:
+      - 'Plesnivé plody – podlož slamu, nech ležia v suchu'
+      - 'Slimáky – slama a večerný zber'
+    seeds: 'Rastlina púšťa odnože (šľahúne) – zakorenené odstrihni a presaď. Po 3 rokoch obnov záhon mladými.'
+    preserve: 'Čerstvé hneď, mrazené na smoothie a koláče, džem.'
+    sow: [4, 8, 9]
+    harvest: [5, 6, 7, 8, 9]
+    perennial: true
+    how: 'Saď v auguste (plodia už na jar) alebo na jar. Srdiečko rastliny musí byť nad zemou. Pod plody daj slamu. Mesačné odrody plodia od júna do mrazov a zmestia sa aj do truhlíka.'
+    recommend: 'Prvá úroda už v máji a mesačné odrody rodia až do mrazov – aj v truhlíku na balkóne.'
+    friends: [cesnak, pazitka, spenat, salat]
+  # ── Popínavé ────────────────────────────────────────────────
+  - ingredient: hrozno
+    name: Vinič (stolové hrozno)
+    where: [zahrada, balkon]
+    sun: [slnko]
+    level: 2
+    spacing: 150
+    family: vinicovite
+    form: popinava
+    height: 3
+    years: 3
+    yield: 5
+    problems:
+      - 'Múčnatka a peronospóra – vyber odolné odrody (Vostok, Nero, Muscat Bleu)'
+      - 'Osy a vtáky – vrecúška na strapce'
+    seeds: 'Jednoročné výhony zapichnuté na jeseň do zeme zakorenia.'
+    preserve: 'Strapce v chladničke týždeň, hrozienka, šťava.'
+    sow: [3, 4, 10, 11]
+    harvest: [8, 9, 10]
+    perennial: true
+    how: 'Odolné stolové odrody pestuj pri južnej stene, na pergole alebo plote. V zime zrež minuloročné výhony na 2 očká – vinič rodí na nových. Nehnoj dusíkom, inak rastie do listov.'
+  - ingredient: kiwi
+    name: Kiwi (mini, Actinidia arguta)
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 2
+    spacing: 300
+    family: aktinidiovite
+    form: popinava
+    height: 5
+    years: 4
+    pollination: 'Dvojdomé – k samičím rastlinám treba samčiu (výnimka je samoopelivá Issai).'
+    yield: 10
+    problems:
+      - 'Jarné mrazy spália mladé výhony – saď na chránené miesto'
+    seeds: 'Letné odrezky zakorenia v kvetináči pod fľašou.'
+    preserve: 'Tvrdé dozrejú v izbe, potom 2 týždne v chladničke.'
+    sow: [4, 5]
+    harvest: [9, 10]
+    perennial: true
+    how: 'Mini kiwi znesie mráz do -30 °C. Potrebuje silnú oporu – pergolu alebo plot. Plodia po 3–5 rokoch, potom desiatky kíl ročne. Plody sa jedia celé aj so šupkou.'
+  # ── Huby ────────────────────────────────────────────────────
+  - ingredient: shiitake
+    name: Shiitake
+    where: [zahrada]
+    sun: [tien]
+    level: 2
+    spacing: 0
+    family: huby
+    form: huba
+    years: 1
+    yield: 1
+    problems:
+      - 'Vyschnutý kmeň – v suchu ho namoč na deň do vody'
+      - 'Slimáky – zbieraj huby mladé'
+    seeds: 'Kúp očkovacie kolíky s podhubím. Starý porastený kmeň sa dá použiť na naočkovanie nového.'
+    preserve: 'Čerstvé týždeň v papierovom vrecku, sušené rok.'
+    sow: [3, 4, 5]
+    harvest: [5, 6, 9, 10]
+    perennial: true
+    how: 'Na jar zotni čerstvé dubové alebo bukové polená (10–15 cm hrubé, 1 m dlhé), navŕtaj do nich diery a zatĺc očkovacie kolíky. Diery zalep voskom. Polená opri v tieni pod stromy. Po 6–12 mesiacoch začnú rodiť a vydržia 4–5 rokov.'
+    tip: 'Keď chceš úrodu hneď, ponor porastené poleno na deň do studenej vody – o týždeň vyrastú huby.'
+    recommend: 'Kmeň v tieni pod stromom, kde nič iné nerastie, ti dá huby na 5 rokov.'
+  - ingredient: sampinony
+    name: Šampiňóny
+    where: [parapet]
+    sun: [tien]
+    level: 2
+    spacing: 0
+    family: huby
+    form: huba
+    years: 0
+    yield: 2
+    problems:
+      - 'Príliš teplo (nad 20 °C) – rastú dlhé a tenké, daj ich do chladnejšej miestnosti'
+    seeds: 'Kúp hotový pestovateľský box (substrát s podhubím a krycou zeminou).'
+    preserve: 'Čerstvé 3–4 dni v chladničke, orestované a zamrazené mesiace.'
+    sow: [1, 2, 3, 9, 10, 11, 12]
+    harvest: [1, 2, 3, 4, 10, 11, 12]
+    how: 'Najľahšie z hotového boxu: postav ho do tmavšej miestnosti s 15–18 °C (pivnica, komora), udržuj krycí substrát vlhký rosením. Prvé huby o 3–4 týždne, potom ešte 2–3 vlny.'
 
 kombinacie:
   # ── Záhrada ─────────────────────────────────────────────────
@@ -1458,6 +1917,90 @@ kombinacie:
     how: 'Jednu rastlinu do 5 l kvetináča na južné okno. Kvety opeľ štetcom – dnu nie je hmyz.'
     why: 'Okrasná a užitočná – jedna rastlina dá desiatky papričiek, ktoré sa dajú usušiť na celý rok.'
 
+  # ── Stromy a kry spolu so zeleninou ─────────────────────────
+  - id: ovocny-cech
+    name: Ovocný cech pod jabloňou
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    area: 16
+    depth: 4
+    max: 3
+    layout: kruh
+    gear:
+      - 'kôl a úväzok k stromčeku'
+      - 'mulč – štiepka alebo slama, 10 cm hrubo'
+      - 'pletivo okolo kmeňa proti zajacom'
+    members: { jablko: 1, ribezle-cierne: 2, egres: 1, jahody: 12, pazitka: 8, cesnak: 16 }
+    how: 'Jabloň zasaď do stredu kruhu so 4 m priemerom. Na okraj koruny (1,5–2 m od kmeňa) daj ríbezle a egreš – znesú polotieň. Pod ne jahody ako živý mulč a okolo kmeňa prstenec pažítky a cesnaku. Celé to prikry mulčom.'
+    why: 'Takzvaný cech: rastliny okolo stromu mu pomáhajú namiesto toho, aby mu konkurovali. Cesnak a pažítka odpudzujú hraboše a vošky, kvitnúce jahody a pažítka lákajú opeľovače a mulč s jahodami drží vlahu. Na jednom mieste zbieraš jahody v máji, ríbezle v júli a jablká na jeseň.'
+  - id: lesna-zahrada
+    name: Lesná záhrada v malom
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 2
+    area: 25
+    depth: 5
+    max: 2
+    layout: kruh
+    gear:
+      - 'hrubý mulč zo štiepky na celú plochu'
+      - 'kôl k stromčeku'
+    members:
+      {
+        visne: 1,
+        lieskove-orechy: 1,
+        aronia: 1,
+        ribezle-cervene: 2,
+        cernice: 1,
+        jahody: 16,
+        bylinky-mata: 3,
+        pazitka: 6
+      }
+    how: 'Do stredu višňu, okolo nej v kruhu kry: liesku na sever (najvyššia, neurobí tieň), arónia, ríbezle a černice po stranách. Zem pod krami zakry jahodami, mätou a pažítkou. Prvé roky mulčuj a zalievaj, potom sa systém stará sám.'
+    why: 'Napodobňuje okraj lesa vo vrstvách: strom, kry, byliny a pôdopokryvné rastliny. Každá vrstva berie svetlo a vodu inde, zem je stále zakrytá, nemusíš ju ryť ani pleť a každý rok je čo zbierať – od jahôd v máji po orechy v septembri.'
+  - id: agrolesnicky-pas
+    name: Stromy a pole – agrolesnícky pás
+    where: [zahrada]
+    sun: [slnko]
+    level: 2
+    area: 40
+    depth: 4
+    max: 5
+    layout: rows
+    gear:
+      - 'pletivo ku kmeňom proti zajacom'
+      - 'mulč pod rad stromov a kríkov'
+    members:
+      { lieskove-orechy: 2, ribezle-cierne: 5, zemiaky: 40, fazula-biela: 60, tekvica-hokkaido: 2 }
+    how: 'Na severný okraj políčka zasaď rad liesok (alebo iných ovocných stromov) 4–5 m od seba, medzi ne ríbezle. Pás pred nimi obrábaj ako pole: zemiaky, fazuľu a tekvicu. Každý rok ich na poli striedaj, stromy a kry ostávajú.'
+    why: 'Agrolesníctvo spája stromy a pole na jednej ploche. Rad drevín láme vietor, tieni v najhorúcejších dňoch, drží vodu v pôde a láka vtáky a užitočný hmyz, ktoré zožerú škodcov. Pole dáva úrodu hneď a stromy s krami postupne pridávajú orechy a ovocie.'
+  - id: bobulovy-plot
+    name: Bobuľový plot
+    where: [zahrada]
+    sun: [slnko, polotien]
+    level: 1
+    area: 6
+    depth: 1
+    layout: rows
+    gear:
+      - 'drôt alebo plot na černice'
+    members: { cernice: 1, ribezle-cervene: 1, ribezle-cierne: 1, egres: 1, aronia: 1, jahody: 12 }
+    how: 'Namiesto tuje zasaď pozdĺž plotu rad kríkov 1–1,5 m od seba, černice veď po plote. Pred ne jahody. Kry každú zimu len preriedíš.'
+    why: 'Živý plot, ktorý dáva ovocie od júna do septembra, poskytne tieň, súkromie a domov vtákom a opeľovačom. Kry sú trvalky – raz zasadíš a rodia 15–20 rokov.'
+  - id: hubovy-kut
+    name: Hubový kút pod stromom
+    where: [zahrada]
+    sun: [tien]
+    level: 2
+    area: 1
+    layout: mix
+    gear:
+      - '4–6 dubových alebo bukových polien'
+      - 'očkovacie kolíky shiitake, vŕtačka a vosk'
+    members: { shiitake: 5 }
+    how: 'Naočkované polená opri o seba do tieňa pod stromy alebo na sever domu. V suchu ich raz za pár týždňov namoč. Rodia na jar a na jeseň 4–5 rokov.'
+    why: 'Tienisté miesto pod stromom, kde zelenina nerastie, ti dá huby. Polená postupne strávia huby a nakoniec z nich je kompost.'
 nepestovatelne:
   # ── Nedá sa ──────────────────────────────────────────────────
   - {

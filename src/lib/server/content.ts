@@ -14,6 +14,7 @@ import { bestPrice } from '$lib/pricing';
 import {
 	ALLERGENS,
 	EQUIPMENT_LEVELS,
+	GROW_FORMS,
 	GROW_PLACES,
 	GROW_SUN,
 	INGREDIENT_CATEGORIES,
@@ -227,6 +228,10 @@ const growFileSchema = z
 					sow: monthsSchema.refine((m) => m.length > 0, 'sow potrebuje aspoň jeden mesiac'),
 					harvest: monthsSchema.refine((m) => m.length > 0, 'harvest potrebuje aspoň jeden mesiac'),
 					perennial: z.boolean().default(false),
+					form: z.enum(GROW_FORMS).optional(),
+					height: z.number().positive().max(40).optional(),
+					years: z.number().int().min(0).max(30).optional(),
+					pollination: z.string().min(1).optional(),
 					how: z.string().min(1),
 					tip: z.string().min(1).optional(),
 					recommend: z.string().min(1).optional(),
@@ -245,7 +250,8 @@ const growFileSchema = z
 					level: growLevel,
 					area: z.number().positive(),
 					max: z.number().int().positive().optional(),
-					layout: z.enum(['rows', 'mix']).default('rows'),
+					layout: z.enum(['rows', 'mix', 'kruh']).default('rows'),
+					depth: z.number().positive().optional(),
 					members: z.record(slug, z.number().int().positive()),
 					how: z.string().min(1),
 					why: z.string().min(1),
@@ -876,6 +882,10 @@ export function compileContent(raw: RawContent, today: Date): Content {
 				sow: g.sow,
 				harvest: g.harvest,
 				perennial: g.perennial,
+				...(g.form && { form: g.form }),
+				...(g.height && { heightM: g.height }),
+				...(g.years !== undefined && { yearsToHarvest: g.years }),
+				...(g.pollination && { pollination: g.pollination }),
 				how: g.how,
 				...(g.tip && { tip: g.tip }),
 				...(g.recommend && { recommend: g.recommend }),
@@ -895,6 +905,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		area: c.area,
 		...(c.max && { max: c.max }),
 		layout: c.layout,
+		...(c.depth && { depth: c.depth }),
 		members: Object.entries(c.members).map(([id, count]) => {
 			if (!growable.has(id)) {
 				throw new Error(`${growWhere}: kombinácia ${c.id}: "${id}" nemá návod v plodinách`);

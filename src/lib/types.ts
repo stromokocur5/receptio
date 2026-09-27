@@ -254,6 +254,9 @@ export const GROW_PLACES = ['parapet', 'balkon', 'zahrada'] as const;
 export type GrowPlace = (typeof GROW_PLACES)[number];
 export const GROW_SUN = ['slnko', 'polotien', 'tien'] as const;
 export type GrowSun = (typeof GROW_SUN)[number];
+/** What kind of plant it is; herbs and vegetables leave it out. */
+export const GROW_FORMS = ['strom', 'ker', 'popinava', 'huba'] as const;
+export type GrowForm = (typeof GROW_FORMS)[number];
 
 /** How to grow an ingredient yourself (content/pestovanie.yaml). */
 export interface GrowGuide {
@@ -283,6 +286,13 @@ export interface GrowGuide {
 	harvest: number[];
 	/** Perennials stay in place for years. */
 	perennial: boolean;
+	form?: GrowForm;
+	/** Grown height in metres, for trees and shrubs. */
+	heightM?: number;
+	/** Years from planting to the first real harvest. */
+	yearsToHarvest?: number;
+	/** Whether it needs a second variety nearby to set fruit. */
+	pollination?: string;
 	how: string;
 	tip?: string;
 	/** Why it's one of the crops worth growing here; featured on /pestuj. */
@@ -310,8 +320,13 @@ export interface GrowCombo {
 	sun: GrowSun[];
 	level: 1 | 2 | 3;
 	area: number;
-	/** `rows`: crops in bands, tall ones north; `mix`: interplanted (three sisters). */
-	layout: 'rows' | 'mix';
+	/**
+	 * `rows`: crops in bands, tall ones north; `mix`: interplanted (three sisters); `kruh`: the
+	 * first member (a tree) in the middle, the rest in rings around it (a fruit tree guild).
+	 */
+	layout: 'rows' | 'mix' | 'kruh';
+	/** Depth of the plot in metres; beds are 1 m deep unless set. */
+	depth?: number;
 	/** Most modules worth planting (perennial borders, herb spirals); unlimited when absent. */
 	max?: number;
 	/** Plants per module, by ingredient id. */

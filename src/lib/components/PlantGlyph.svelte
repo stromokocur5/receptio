@@ -13,7 +13,9 @@
 		| 'herb'
 		| 'grass'
 		| 'chard'
-		| 'mushroom';
+		| 'mushroom'
+		| 'tree'
+		| 'shrub';
 
 	const SHAPE_BY_FAMILY: Record<string, Shape> = {
 		astrovite: 'rosette',
@@ -33,9 +35,32 @@
 		slezovite: 'fruiting'
 	};
 
-	export function plantShape(family: string | undefined): Shape {
+	/** Trees, shrubs and mushrooms look alike whatever their family; the rest go by family. */
+	export function plantShape(family: string | undefined, form?: string): Shape {
+		if (form === 'strom') return 'tree';
+		if (form === 'ker') return 'shrub';
+		if (form === 'huba') return 'mushroom';
+		if (form === 'popinava') return 'legume';
 		return (family && SHAPE_BY_FAMILY[family]) || 'rosette';
 	}
+
+	/** Leafy lumps that make a canopy look round but not stamped. */
+	const CANOPY = [
+		[0, -5.2, 4.6],
+		[4.6, -2.4, 4.4],
+		[4.4, 3, 4.5],
+		[0, 5.4, 4.4],
+		[-4.5, 3, 4.5],
+		[-4.7, -2.5, 4.3],
+		[0, 0, 5.2]
+	];
+	const BUSH = [
+		[-3.2, -3, 3.6],
+		[3.4, -2.6, 3.4],
+		[3, 3.4, 3.5],
+		[-3.2, 3.2, 3.4],
+		[0, 0, 3.8]
+	];
 
 	const turn = (n: number, i: number, offset = 0) => (360 / n) * i + offset;
 </script>
@@ -47,9 +72,12 @@
 		x = 0,
 		y = 0,
 		r = 10,
-		seed = 0
+		seed = 0,
+		form
 	}: {
 		family: string | undefined;
+		/** strom / ker / huba / popinava from the grow guide. */
+		form?: string;
 		/** The crop's own colour: fruit, root top, bulb or head. */
 		color: string;
 		x?: number;
@@ -60,13 +88,41 @@
 		seed?: number;
 	} = $props();
 
-	const shape = $derived(plantShape(family));
+	const shape = $derived(plantShape(family, form));
 	const rotation = $derived((seed * 47) % 360);
 </script>
 
 <g class="plant-glyph" transform="translate({x} {y}) scale({r / 10})">
 	<g transform="rotate({rotation})">
-		{#if shape === 'rosette'}
+		{#if shape === 'tree'}
+			<circle r="10" fill="rgba(20, 40, 15, 0.22)" transform="translate(1.2 1.6)" />
+			{#each CANOPY as [cx, cy, cr], i (i)}
+				<circle {cx} {cy} r={cr} fill={i % 2 ? '#3d7336' : '#467f3b'} class="edge" />
+			{/each}
+			{#each CANOPY as [cx, cy, cr], i (i)}
+				<circle cx={cx - cr * 0.3} cy={cy - cr * 0.3} r={cr * 0.45} fill="#6ea653" opacity="0.55" />
+			{/each}
+			{#each [[3.6, -3.4], [-4.2, 1.4], [1.8, 4.6], [-1.4, -5.2], [5.2, 2.2]] as [fx, fy], i (i)}
+				<circle cx={fx} cy={fy} r="1.3" fill={color} class="edge" />
+			{/each}
+		{:else if shape === 'shrub'}
+			{#each BUSH as [cx, cy, cr], i (i)}
+				<circle {cx} {cy} r={cr} fill={i % 2 ? '#4a8a3e' : '#5a9a48'} class="edge" />
+				<path
+					d="M{cx} {cy - cr * 0.7} V{cy + cr * 0.7} M{cx - cr * 0.6} {cy} H{cx + cr * 0.6}"
+					class="vein"
+				/>
+			{/each}
+			{#each [[-2, -1], [-1.2, -0.2], [2.4, 1.4], [3.2, 0.6], [0.4, 4.4], [-3.4, 4], [1.2, -4.6]] as [fx, fy], i (i)}
+				<circle cx={fx} cy={fy} r="1.05" fill={color} class="edge" />
+			{/each}
+		{:else if shape === 'mushroom'}
+			{#each [[-3.2, -2.4, 4.2], [3.6, -0.6, 3.6], [-0.6, 4.2, 3.2]] as [cx, cy, cr], i (i)}
+				<circle {cx} {cy} r={cr} fill="color-mix(in srgb, {color} 85%, #6b4a33)" class="edge" />
+				<circle {cx} {cy} r={cr * 0.62} fill="none" class="gills" />
+				<circle cx={cx - cr * 0.35} cy={cy - cr * 0.35} r={cr * 0.28} fill="#fff" opacity="0.3" />
+			{/each}
+		{:else if shape === 'rosette'}
 			{#each Array.from({ length: 7 }, (_, i) => i) as i (i)}
 				<ellipse
 					cx="0"
@@ -247,6 +303,11 @@
 		stroke: #5f9a4a;
 		stroke-width: 1.6;
 		stroke-linecap: round;
+	}
+	.gills {
+		stroke: rgba(60, 40, 25, 0.35);
+		stroke-width: 0.4;
+		stroke-dasharray: 0.6 0.8;
 	}
 	.tendril,
 	.stem {

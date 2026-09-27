@@ -1,4 +1,4 @@
-import type { GrowCombo, GrowGuide, GrowPlace, GrowSun } from './types';
+import type { GrowCombo, GrowForm, GrowGuide, GrowPlace, GrowSun } from './types';
 
 export interface GardenInput {
 	place: GrowPlace;
@@ -42,6 +42,19 @@ export const SUN_LABELS: Record<GrowSun, string> = {
 	polotien: 'polotieň',
 	tien: 'tieň'
 };
+export const FORM_LABELS: Record<GrowForm, string> = {
+	strom: 'strom',
+	ker: 'ker',
+	popinava: 'popínavá',
+	huba: 'huba'
+};
+
+/** "o rok", "o 3 roky", "o 6 rokov" – when a tree or shrub first bears fruit. */
+export function yearsPhrase(years: number): string {
+	if (years <= 1) return 'o rok';
+	return `o ${years} ${years < 5 ? 'roky' : 'rokov'}`;
+}
+
 /** Indexed by `GrowGuide.level`. */
 export const LEVEL_LABELS = ['', 'ľahké', 'treba sa starať', 'pre pokročilých'];
 
@@ -304,8 +317,8 @@ export function comboLayout(
 	combo: GrowCombo,
 	guides: GrowGuide[]
 ): { width: number; depth: number; dots: LayoutDot[] } {
-	const width = combo.area >= 1 ? combo.area : 1;
-	const depth = combo.area >= 1 ? 1 : combo.area;
+	const depth = combo.depth ?? (combo.area >= 1 ? 1 : combo.area);
+	const width = combo.area / depth;
 	const spacing = new Map(guides.map((g) => [g.ingredientId, Math.max(g.spacing, 5) / 100]));
 	const members = [...combo.members].sort(
 		(a, b) => Number(TALL.has(b.ingredientId)) - Number(TALL.has(a.ingredientId))
@@ -319,6 +332,42 @@ export function comboLayout(
 			y: y0 + (Math.floor(i / cols) + 0.5) * (h / rows)
 		}));
 	};
+
+	if (combo.layout === 'kruh') {
+		// The tree in the centre; everything else interleaved on rings, more on the outer ones.
+		const [center, ...rest] = combo.members;
+		const cx = width / 2;
+		const cy = depth / 2;
+		const reach = Math.min(width, depth) / 2;
+		const order: string[] = [];
+		const left = new Map(rest.map((m) => [m.ingredientId, m.count]));
+		while (order.length < rest.reduce((n, m) => n + m.count, 0)) {
+			for (const m of rest) {
+				if ((left.get(m.ingredientId) ?? 0) > 0) {
+					order.push(m.ingredientId);
+					left.set(m.ingredientId, left.get(m.ingredientId)! - 1);
+				}
+			}
+		}
+		const radii = [0.45, 0.68, 0.88].map((f) => f * reach);
+		const weight = radii.reduce((a, b) => a + b, 0);
+		const dots: LayoutDot[] = [{ x: cx, y: cy, ingredientId: center.ingredientId }];
+		let placed = 0;
+		radii.forEach((r, ring) => {
+			const n =
+				ring === radii.length - 1 ? order.length - placed : Math.round((order.length * r) / weight);
+			for (let i = 0; i < n; i++) {
+				const angle = (2 * Math.PI * i) / n + ring * 0.4;
+				dots.push({
+					x: cx + r * Math.cos(angle),
+					y: cy + r * Math.sin(angle),
+					ingredientId: order[placed + i]
+				});
+			}
+			placed += n;
+		});
+		return { width, depth, dots };
+	}
 
 	if (combo.layout === 'mix') {
 		const total = members.reduce((n, m) => n + m.count, 0);

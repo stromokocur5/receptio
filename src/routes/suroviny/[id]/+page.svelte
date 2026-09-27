@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { yearsPhrase } from '$lib/garden';
 	import { page } from '$app/state';
 	import { formatEur, parseAmount } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
@@ -157,7 +158,25 @@
 			{/if}
 			{#if data.grow}
 				<section class="grow" id="pestuj">
-					<h2><Icon name="sprout" size={20} /> Pestuj si sám</h2>
+					<h2>
+						<Icon
+							name={data.grow.form === 'strom' || data.grow.form === 'ker'
+								? 'tree'
+								: data.grow.form === 'huba'
+									? 'mushroom'
+									: 'sprout'}
+							size={20}
+						/>
+						{data.grow.form === 'strom'
+							? `Rastie na strome – ${data.grow.name.toLowerCase()}`
+							: data.grow.form === 'ker'
+								? `Rastie na kri – ${data.grow.name.toLowerCase()}`
+								: data.grow.form === 'popinava'
+									? `Popínavá rastlina – ${data.grow.name.toLowerCase()}`
+									: data.grow.form === 'huba'
+										? 'Pestuj si huby'
+										: 'Pestuj si sám'}
+					</h2>
 					<p class="grow-where">
 						{data.grow.where
 							.map(
@@ -166,8 +185,11 @@
 							)
 							.join(', ')}
 						· {['', 'ľahké', 'treba sa starať', 'pre pokročilých'][data.grow.level]}
-						{#if data.grow.perennial}· trvalka{/if}
+						{#if data.grow.perennial && !data.grow.form}· trvalka{/if}
+						{#if data.grow.heightM}· do {data.grow.heightM} m{/if}
+						{#if data.grow.yearsToHarvest}· prvá úroda {yearsPhrase(data.grow.yearsToHarvest)}{/if}
 					</p>
+					{#if data.grow.pollination}<p class="muted">{data.grow.pollination}</p>{/if}
 					<GrowMonths
 						indoor={data.grow.indoor}
 						sow={data.grow.sow}
@@ -181,9 +203,23 @@
 					{/if}
 					<p><strong>Čo s úrodou:</strong> {data.grow.preserve}</p>
 					<p class="muted"><strong>Vlastné semená:</strong> {data.grow.seeds}</p>
-					<a class="btn ghost small" href="/pestuj#p-{ingredient.id}">
-						<Icon name="arrow-right" size={16} /> Naplánuj si záhradku
-					</a>
+					<p class="grow-links">
+						<a class="btn ghost small" href="/pestuj#p-{ingredient.id}">
+							<Icon name="arrow-right" size={16} /> Celý návod a susedia
+						</a>
+						{#if data.grow.form === 'strom' || data.grow.form === 'ker'}
+							<a class="btn ghost small" href="/wiki/ovocne-stromy">
+								<Icon name="tree" size={16} /> Výsadba a rez
+							</a>
+						{:else if data.grow.form === 'huba'}
+							<a class="btn ghost small" href="/wiki/huby">
+								<Icon name="mushroom" size={16} /> Pestovanie húb
+							</a>
+						{/if}
+						<a class="btn ghost small" href="/wiki/semena">
+							<Icon name="seed" size={16} /> Semená
+						</a>
+					</p>
 				</section>
 			{:else if data.notGrown}
 				<section class="grow">
@@ -336,6 +372,11 @@
 </article>
 
 <style>
+	.grow-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
 	.grow {
 		scroll-margin-top: 90px;
 	}

@@ -12,10 +12,13 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import LocationPicker from '$lib/components/LocationPicker.svelte';
 	import PlaceArt from '$lib/components/PlaceArt.svelte';
+	import PlantGlyph from '$lib/components/PlantGlyph.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import WeatherPanel from '$lib/components/WeatherPanel.svelte';
 	import {
+		FORM_LABELS,
 		LEVEL_LABELS,
+		yearsPhrase,
 		PLACE_LABELS,
 		decodeShared,
 		localizeGuide,
@@ -30,7 +33,7 @@
 	import { bestPrice } from '$lib/pricing';
 	import { IN_MONTH, MONTH_NAMES } from '$lib/season';
 	import { favorites, garden, plan as mealPlan, settings, ui } from '$lib/state.svelte';
-	import type { GrowPlace, GrowSun } from '$lib/types';
+	import type { GrowGuide, GrowPlace, GrowSun } from '$lib/types';
 
 	let { data } = $props();
 	const catalog = useCatalog();
@@ -287,6 +290,10 @@
 	let placeFilter = $state<GrowPlace | ''>('');
 	let onlyNow = $state(false);
 	let onlyEasy = $state(false);
+	/** Vegetables and herbs, trees and shrubs, or mushrooms. */
+	let kind = $state<'' | 'zelenina' | 'drevina' | 'huba'>('');
+	const kindOf = (g: GrowGuide) =>
+		g.form === 'strom' || g.form === 'ker' ? 'drevina' : g.form === 'huba' ? 'huba' : 'zelenina';
 	let cropQuery = $state('');
 	const nowIds = $derived(new Set(sowNow(guides, month).map((g) => g.ingredientId)));
 	const crops = $derived.by(() => {
@@ -296,7 +303,8 @@
 				(!q || normalizeSearch(g.name).includes(q)) &&
 				(!placeFilter || g.where.includes(placeFilter)) &&
 				(!onlyNow || nowIds.has(g.ingredientId)) &&
-				(!onlyEasy || g.level === 1)
+				(!onlyEasy || g.level === 1) &&
+				(!kind || kindOf(g) === kind)
 		);
 	});
 
@@ -820,6 +828,13 @@
 					>Len ľahké</button
 				>
 			</div>
+			<div class="chips kinds" role="group" aria-label="Druh">
+				{#each [['', 'Všetko', 'sparkle'], ['zelenina', 'Zelenina a bylinky', 'sprout'], ['drevina', 'Stromy a kry', 'tree'], ['huba', 'Huby', 'mushroom']] as const as [id, label, icon] (id)}
+					<button class="chip" aria-pressed={kind === id} onclick={() => (kind = id)}
+						><Icon name={icon} size={15} /> {label}</button
+					>
+				{/each}
+			</div>
 			<div class="legend-row">
 				<div class="legend-wrap"><GrowMonths sow={[]} harvest={[]} legend /></div>
 				<span class="muted small" aria-live="polite">{crops.length} z {guides.length}</span>
@@ -829,15 +844,19 @@
 			{#each crops as g (g.ingredientId)}
 				<article class="card crop" id="p-{g.ingredientId}">
 					<h3>
-						<i class="crop-dot" style:background={color(g.ingredientId)}></i>
+						<svg class="crop-glyph" viewBox="-11 -11 22 22" aria-hidden="true"
+							><PlantGlyph family={g.family} form={g.form} color={color(g.ingredientId)} /></svg
+						>
 						<button class="stretch" onclick={() => openCrop(g.ingredientId)}>{g.name}</button>
 						{#if nowIds.has(g.ingredientId)}<span class="badge leaf now-badge">teraz</span>{/if}
 					</h3>
 					<GrowMonths indoor={g.indoor} sow={g.sow} harvest={g.harvest} />
 					<p class="how">{g.how}</p>
 					<p class="meta">
-						{LEVEL_LABELS[g.level]} · {g.where.map((w) => PLACE_LABELS[w]).join(', ')}{g.perennial
-							? ' · trvalka'
+						{g.form ? `${FORM_LABELS[g.form]} · ` : ''}{LEVEL_LABELS[g.level]} · {g.where
+							.map((w) => PLACE_LABELS[w])
+							.join(', ')}{g.perennial && !g.form ? ' · trvalka' : ''}{g.yearsToHarvest
+							? ` · úroda ${yearsPhrase(g.yearsToHarvest)}`
 							: ''}
 					</p>
 				</article>
@@ -1315,8 +1334,24 @@
 	.member:hover {
 		transform: translateY(-2px);
 	}
+	.crop-glyph {
+		flex: none;
+		width: 30px;
+		height: 30px;
+		border-radius: 50%;
+		background: #6b4a33;
+		transition: transform 0.35s var(--ease-spring);
+	}
+	.crop:hover .crop-glyph {
+		transform: rotate(-15deg) scale(1.1);
+	}
+	.kinds {
+		margin-top: 2px;
+	}
+	.kinds :global(svg) {
+		color: var(--leaf);
+	}
 	.member i,
-	.crop-dot,
 	.rec-dot {
 		box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 25%, transparent);
 		display: inline-block;

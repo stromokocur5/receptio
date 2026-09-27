@@ -19,7 +19,8 @@ import {
 	harvestTotals,
 	monthTasks,
 	planGarden,
-	sowNow
+	sowNow,
+	yearsPhrase
 } from './garden';
 import type { GrowCombo, GrowGuide } from './types';
 
@@ -172,6 +173,32 @@ describe('comboLayout', () => {
 		const xs = layout.dots.map((d) => d.x);
 		expect(new Set(xs).size).toBe(3);
 		expect(layout.dots.every((d) => Math.abs(d.y - 0.15) < 1e-9)).toBe(true);
+	});
+
+	it('puts a guild tree in the middle and the rest in rings', () => {
+		const layout = comboLayout(
+			combo('cech', 16, [], {
+				layout: 'kruh',
+				depth: 4,
+				members: [
+					{ ingredientId: 'kukurica', name: 'k', count: 1 },
+					{ ingredientId: 'fazula', name: 'f', count: 10 }
+				]
+			}),
+			guides
+		);
+		expect(layout.width).toBe(4);
+		expect(layout.dots[0]).toMatchObject({ x: 2, y: 2, ingredientId: 'kukurica' });
+		expect(layout.dots).toHaveLength(11);
+		expect(
+			layout.dots.slice(1).every((d) => Math.hypot(d.x - 2, d.y - 2) > 0.5 && d.x > 0 && d.x < 4)
+		).toBe(true);
+	});
+
+	it('says when a tree bears fruit in Slovak', () => {
+		expect(yearsPhrase(1)).toBe('o rok');
+		expect(yearsPhrase(3)).toBe('o 3 roky');
+		expect(yearsPhrase(6)).toBe('o 6 rokov');
 	});
 
 	it('interleaves mixed plantings', () => {

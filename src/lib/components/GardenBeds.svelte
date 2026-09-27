@@ -258,7 +258,7 @@
 						aria-pressed={brush === g.ingredientId}
 						onclick={() => (brush = g.ingredientId)}
 						><svg class="glyph" viewBox="-11 -11 22 22" aria-hidden="true"
-							><PlantGlyph family={g.family} color={color(g.ingredientId)} /></svg
+							><PlantGlyph family={g.family} form={g.form} color={color(g.ingredientId)} /></svg
 						>{g.name}</button
 					>
 				{/each}
@@ -378,6 +378,7 @@
 								>{#if id}<svg viewBox="-11 -11 22 22" aria-hidden="true"
 										><PlantGlyph
 											family={guideById.get(id)?.family}
+											form={guideById.get(id)?.form}
 											color={color(id)}
 											seed={c * 7 + r}
 										/></svg

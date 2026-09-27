@@ -62,7 +62,7 @@
 		{
 			id: 'pestovanie',
 			title: 'Pestovanie',
-			text: 'Od okna v byte po záhradu – začiatky, náradie, kompost a uskladnenie.',
+			text: 'Od okna v byte po lesnú záhradu – polykultúry, stromy a kry, semená, huby, kompost.',
 			tone: 'var(--leaf)',
 			icon: 'sprout',
 			extras: [

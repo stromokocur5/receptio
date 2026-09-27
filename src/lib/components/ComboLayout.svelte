@@ -21,11 +21,17 @@
 	const color = (id: string) => catalog.ingredientsById.get(id)?.color ?? '#6fa35a';
 	/** Plants fill most of their spacing, within limits so tiny and huge crops both read. */
 	const radius = (id: string) =>
-		Math.min(26, Math.max(4.5, (guideById.get(id)?.spacing ?? 20) * 0.46)) * scale;
+		Math.min(
+			layout.width * 50,
+			layout.depth * 50,
+			Math.max(4.5, (guideById.get(id)?.spacing ?? 20) * 0.46)
+		) * scale;
 	/** Draw in centimetres, but keep narrow windowsill boxes from turning into a thin line. */
 	const scale = $derived(Math.max(1, 34 / (layout.depth * 100)));
 	const w = $derived(layout.width * 100 * scale);
 	const h = $derived(layout.depth * 100 * scale);
+	/** A guild's tree is drawn small, so what grows under it stays visible. */
+	const guildCanopy = $derived(Math.min(layout.width, layout.depth) * 100 * scale * 0.2);
 	/** Frame thickness of the raised bed. */
 	const FRAME = 7;
 	const patternId = $derived(`soil-${combo.id}${compact ? '-s' : ''}`);
@@ -74,10 +80,11 @@
 			>
 				<PlantGlyph
 					family={guideById.get(d.ingredientId)?.family}
+					form={guideById.get(d.ingredientId)?.form}
 					color={color(d.ingredientId)}
 					x={d.x * 100 * scale}
 					y={d.y * 100 * scale}
-					r={radius(d.ingredientId)}
+					r={combo.layout === 'kruh' && i === 0 ? guildCanopy : radius(d.ingredientId)}
 					seed={i}
 				/>
 			</g>
@@ -95,6 +102,7 @@
 					<svg viewBox="-11 -11 22 22" class="mini" aria-hidden="true">
 						<PlantGlyph
 							family={guideById.get(m.ingredientId)?.family}
+							form={guideById.get(m.ingredientId)?.form}
 							color={color(m.ingredientId)}
 						/>
 					</svg>

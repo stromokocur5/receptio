@@ -2,8 +2,16 @@
 	import { formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import GrowMonths from '$lib/components/GrowMonths.svelte';
+	import PlantGlyph from '$lib/components/PlantGlyph.svelte';
 	import Icon from '$lib/components/Icon.svelte';
-	import { LEVEL_LABELS, PLACE_LABELS, SUN_LABELS, successors } from '$lib/garden';
+	import {
+		FORM_LABELS,
+		LEVEL_LABELS,
+		PLACE_LABELS,
+		SUN_LABELS,
+		successors,
+		yearsPhrase
+	} from '$lib/garden';
 	import type { GrowGuide, GrowPlace } from '$lib/types';
 
 	let {
@@ -64,7 +72,13 @@
 			<header style:--crop={color(guide.ingredientId)}>
 				<span class="grip" aria-hidden="true"></span>
 				<div class="title">
-					<i class="dot" aria-hidden="true"></i>
+					<svg class="glyph" viewBox="-11 -11 22 22" aria-hidden="true"
+						><PlantGlyph
+							family={guide.family}
+							form={guide.form}
+							color={color(guide.ingredientId)}
+						/></svg
+					>
 					<h2 id="crop-sheet-title">{guide.name}</h2>
 					<button class="close" onclick={onclose} aria-label="Zavrieť">
 						<Icon name="x" size={20} />
@@ -74,7 +88,8 @@
 					<span class="badge leaf">{LEVEL_LABELS[guide.level]}</span>
 					<span class="badge sky">{guide.where.map((w) => PLACE_LABELS[w]).join(' · ')}</span>
 					<span class="badge turmeric">{guide.sun.map((s) => SUN_LABELS[s]).join(' · ')}</span>
-					{#if guide.perennial}<span class="badge">trvalka</span>{/if}
+					{#if guide.form}<span class="badge plum">{FORM_LABELS[guide.form]}</span>{/if}
+					{#if guide.perennial && !guide.form}<span class="badge">trvalka</span>{/if}
 				</p>
 			</header>
 
@@ -98,7 +113,26 @@
 					<dt>Čeľaď</dt>
 					<dd>{guide.family}</dd>
 				</div>
+				{#if guide.heightM}
+					<div>
+						<dt>Výška</dt>
+						<dd>do {formatNumber(guide.heightM)} m</dd>
+					</div>
+				{/if}
+				{#if guide.yearsToHarvest !== undefined}
+					<div>
+						<dt>Prvá úroda</dt>
+						<dd>
+							{guide.yearsToHarvest === 0 ? 'v prvom roku' : yearsPhrase(guide.yearsToHarvest)}
+						</dd>
+					</div>
+				{/if}
 			</dl>
+			{#if guide.pollination}
+				<p class="tip pollination">
+					<Icon name="bee" size={16} /> <span>{guide.pollination}</span>
+				</p>
+			{/if}
 
 			{#if guide.friends.length || guide.avoid.length}
 				<section>
@@ -247,13 +281,20 @@
 		margin: 0;
 		font-size: 1.6rem;
 	}
-	.dot {
-		width: 18px;
-		height: 18px;
+	.glyph {
+		flex: none;
+		width: 40px;
+		height: 40px;
 		border-radius: 50%;
-		background: var(--crop);
-		box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.15);
+		background: #6b4a33;
 		animation: grow 0.5s var(--ease-spring) both;
+	}
+	.pollination {
+		background: var(--sky-soft);
+	}
+	:global(.badge.plum) {
+		background: color-mix(in srgb, var(--plum) 16%, transparent);
+		color: var(--plum);
 	}
 	@keyframes grow {
 		from {
