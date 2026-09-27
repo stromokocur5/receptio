@@ -39,7 +39,7 @@
 		toggleFavorite,
 		ui
 	} from '$lib/state.svelte';
-	import { recipeJsonLd, serializeJsonLd } from '$lib/structured-data';
+	import { breadcrumbJsonLd, recipeJsonLd } from '$lib/structured-data';
 
 	let { data } = $props();
 	const catalog = useCatalog();
@@ -61,9 +61,17 @@
 		variantName = null;
 	});
 	const cuisine = $derived(catalog.cuisinesById.get(recipe.cuisine));
-	const jsonLd = $derived(
-		serializeJsonLd(recipeJsonLd(base, catalog.ingredientsById, cuisine?.name, SITE_ORIGIN))
-	);
+	const jsonLd = $derived([
+		recipeJsonLd(base, catalog.ingredientsById, cuisine?.name, SITE_ORIGIN),
+		breadcrumbJsonLd(
+			[
+				{ name: 'Recepty', path: '/recepty' },
+				...(cuisine ? [{ name: cuisine.name, path: `/kuchyne/${cuisine.id}` }] : []),
+				{ name: base.title, path: `/recepty/${base.id}` }
+			],
+			SITE_ORIGIN
+		)
+	]);
 
 	let servings = $state(0);
 	$effect.pre(() => {
@@ -225,11 +233,13 @@
 	}
 </script>
 
-<Seo title={base.title} description={base.description} image="/og/{base.id}.png" type="article" />
-<svelte:head>
-	<!-- eslint-disable-next-line svelte/no-at-html-tags -- JSON escaped by serializeJsonLd -->
-	{@html `<script type="application/ld+json">${jsonLd}</script>`}
-</svelte:head>
+<Seo
+	title="{base.title} – vegánsky recept"
+	description={base.description}
+	image="/og/{base.id}.png"
+	type="article"
+	{jsonLd}
+/>
 
 <article class="wrap page">
 	<a class="back" href="/recepty" data-noprint><Icon name="arrow-left" size={18} /> Recepty</a>

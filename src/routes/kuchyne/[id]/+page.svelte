@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Seo from '$lib/components/Seo.svelte';
+	import { SITE_ORIGIN } from '$lib/site';
+	import { breadcrumbJsonLd } from '$lib/structured-data';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
@@ -11,7 +13,19 @@
 	const recipes = $derived(catalog.recipes.filter((r) => r.cuisine === cuisine.id));
 </script>
 
-<Seo title="{cuisine.name} kuchyňa" description={cuisine.tagline} />
+<Seo
+	title="{cuisine.name} kuchyňa – vegánske recepty"
+	description="{recipes.length} vegánskych receptov: {cuisine.tagline}"
+	jsonLd={[
+		breadcrumbJsonLd(
+			[
+				{ name: 'Kuchyne sveta', path: '/kuchyne' },
+				{ name: cuisine.name, path: `/kuchyne/${cuisine.id}` }
+			],
+			SITE_ORIGIN
+		)
+	]}
+/>
 
 <div class="wrap page" style:--c={cuisine.color}>
 	<a class="back" href="/kuchyne"><Icon name="arrow-left" size={18} /> Kuchyne</a>

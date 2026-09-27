@@ -1,5 +1,7 @@
 <script lang="ts">
 	import Seo from '$lib/components/Seo.svelte';
+	import { SITE_ORIGIN } from '$lib/site';
+	import { articleJsonLd, breadcrumbJsonLd } from '$lib/structured-data';
 	import { useCatalog } from '$lib/catalog';
 	import Icon, { isIconName } from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
@@ -44,7 +46,24 @@
 	);
 </script>
 
-<Seo title={page.title} description={page.summary} type="article" />
+<Seo
+	title={page.title}
+	description={page.summary}
+	type="article"
+	jsonLd={[
+		articleJsonLd(
+			{ title: page.title, summary: page.summary, path: `/wiki/${page.slug}` },
+			SITE_ORIGIN
+		),
+		breadcrumbJsonLd(
+			[
+				{ name: 'Wiki', path: '/wiki' },
+				{ name: page.title, path: `/wiki/${page.slug}` }
+			],
+			SITE_ORIGIN
+		)
+	]}
+/>
 
 <article class="wrap page">
 	<a class="back" href="/wiki"><Icon name="arrow-left" size={18} /> Wiki</a>

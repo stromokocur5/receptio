@@ -1,22 +1,28 @@
 <script lang="ts">
 	import { page } from '$app/state';
 	import { SITE_NAME, SITE_ORIGIN } from '$lib/site';
+	import { serializeJsonLd } from '$lib/structured-data';
 
 	let {
 		title,
 		description = 'Vegánske a bezlepkové recepty so živinami, cenami, špajzou a nákupným zoznamom.',
 		image = '/og/receptio.png',
-		type = 'website'
+		type = 'website',
+		jsonLd = []
 	}: {
 		/** Page title without the site name; omitted on the home page. */
 		title?: string;
 		description?: string;
 		image?: string;
 		type?: 'website' | 'article';
+		/** schema.org objects for this page. */
+		jsonLd?: object[];
 	} = $props();
 
 	const fullTitle = $derived(
-		title ? `${title} · ${SITE_NAME}` : `${SITE_NAME} – rastlinné recepty`
+		title
+			? `${title} · ${SITE_NAME}`
+			: `${SITE_NAME} – vegánske a bezlepkové recepty so živinami a cenou`
 	);
 	const url = $derived(SITE_ORIGIN + page.url.pathname);
 </script>
@@ -35,4 +41,8 @@
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 	<meta name="twitter:card" content="summary_large_image" />
+	{#each jsonLd as data, i (i)}
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -- serialized with < escaped -->
+		{@html `<script type="application/ld+json">${serializeJsonLd(data)}</script>`}
+	{/each}
 </svelte:head>

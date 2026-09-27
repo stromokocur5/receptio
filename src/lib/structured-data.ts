@@ -4,6 +4,68 @@ import type { Ingredient, RecipeDetail } from './types';
 
 const minutes = (m: number) => `PT${Math.round(m)}M`;
 
+/** Who publishes the site; referenced as author and publisher. */
+export function organizationJsonLd(origin: string) {
+	return {
+		'@type': 'Organization',
+		'@id': `${origin}/#organization`,
+		name: 'Receptio',
+		url: `${origin}/`,
+		logo: `${origin}/icon-512.png`
+	};
+}
+
+/** Tells search engines the site's name, so results show "Receptio" instead of the domain. */
+export function websiteJsonLd(origin: string) {
+	return {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'WebSite',
+				'@id': `${origin}/#website`,
+				name: 'Receptio',
+				alternateName: 'Receptio – vegánske a bezlepkové recepty',
+				url: `${origin}/`,
+				inLanguage: 'sk',
+				publisher: { '@id': `${origin}/#organization` }
+			},
+			organizationJsonLd(origin)
+		]
+	};
+}
+
+/** The path above a page (Recepty › Indická › Dal), shown instead of the bare URL in results. */
+export function breadcrumbJsonLd(items: { name: string; path: string }[], origin: string) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: items.map((item, i) => ({
+			'@type': 'ListItem',
+			position: i + 1,
+			name: item.name,
+			item: origin + item.path
+		}))
+	};
+}
+
+/** A wiki guide as an article. */
+export function articleJsonLd(
+	page: { title: string; summary: string; path: string; image?: string },
+	origin: string
+) {
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'Article',
+		headline: page.title,
+		description: page.summary,
+		url: origin + page.path,
+		image: origin + (page.image ?? '/og/receptio.png'),
+		inLanguage: 'sk',
+		author: organizationJsonLd(origin),
+		publisher: organizationJsonLd(origin)
+	};
+}
+
 /** schema.org Recipe, so search engines can show time, calories and ingredients. */
 export function recipeJsonLd(
 	recipe: RecipeDetail,
@@ -23,7 +85,17 @@ export function recipeJsonLd(
 		url: `${origin}/recepty/${recipe.id}`,
 		recipeCuisine: cuisineName,
 		recipeCategory: MEAL_LABELS[recipe.meals[0]],
-		keywords: ['vegánske', ...recipe.tags].join(', '),
+		keywords: [
+			'vegánsky recept',
+			recipe.gluten === 'free' ? 'bezlepkový recept' : '',
+			cuisineName ? `${cuisineName.toLowerCase()} kuchyňa` : '',
+			...recipe.tags
+		]
+			.filter(Boolean)
+			.join(', '),
+		inLanguage: 'sk',
+		author: organizationJsonLd(origin),
+		publisher: organizationJsonLd(origin),
 		suitableForDiet: diets,
 		totalTime: minutes(recipe.time),
 		prepTime: minutes(recipe.activeTime),

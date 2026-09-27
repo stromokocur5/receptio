@@ -5,6 +5,8 @@
 	import PlateArt from '$lib/components/PlateArt.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
+	import { SITE_ORIGIN } from '$lib/site';
+	import { websiteJsonLd } from '$lib/structured-data';
 	import Squiggle from '$lib/components/Squiggle.svelte';
 	import { pluralRecipes } from '$lib/labels';
 	import { IN_MONTH, recipeSeason } from '$lib/season';
@@ -185,7 +187,10 @@
 	}
 </script>
 
-<Seo />
+<Seo
+	description="Vegánske a bezlepkové recepty z celého sveta so živinami a cenou porcie, týždenný plán, nákupný zoznam, špajza a pestovanie. Zadarmo, bez reklám a registrácie."
+	jsonLd={[websiteJsonLd(SITE_ORIGIN)]}
+/>
 
 <section class="hero">
 	<div class="wrap hero-grid">

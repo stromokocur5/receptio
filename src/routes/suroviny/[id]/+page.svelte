@@ -7,6 +7,8 @@
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
+	import { SITE_ORIGIN } from '$lib/site';
+	import { breadcrumbJsonLd } from '$lib/structured-data';
 	import { CATEGORY_ICONS } from '$lib/ingredient-icons';
 	import { CATEGORY_LABELS, pluralRecipes } from '$lib/labels';
 	import { ALLERGEN_LABELS, DAILY_REFERENCE } from '$lib/nutrition';
@@ -73,6 +75,15 @@
 	title={ingredient.name}
 	description={info.about ?? `${ingredient.name} – živiny, náhrady a recepty.`}
 	type="article"
+	jsonLd={[
+		breadcrumbJsonLd(
+			[
+				{ name: 'Suroviny', path: '/suroviny' },
+				{ name: ingredient.name, path: `/suroviny/${ingredient.id}` }
+			],
+			SITE_ORIGIN
+		)
+	]}
 />
 
 <article class="wrap page" style:--c={ingredient.color}>
