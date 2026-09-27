@@ -6,9 +6,11 @@
 	import { indexCatalog, provideCatalog } from '$lib/catalog';
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
 	import Logo from '$lib/components/Logo.svelte';
+	import Onboarding from '$lib/components/Onboarding.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
 	import { changes, loadLikes, loadPersisted, plan, settings } from '$lib/state.svelte';
 	import { initSync, noteChange } from '$lib/sync.svelte';
+	import { onboarding, shouldOnboard } from '$lib/onboarding.svelte';
 	import { loadTimers } from '$lib/timers.svelte';
 
 	let { data, children } = $props();
@@ -34,6 +36,7 @@
 		loadTimers();
 		void loadLikes();
 		initSync();
+		if (shouldOnboard(page.url)) onboarding.open = true;
 	});
 
 	$effect(() => {
@@ -117,6 +120,8 @@
 </footer>
 
 {#if !page.state.cooking}<TimerDock floating />{/if}
+
+<Onboarding />
 
 <nav class="mobile" aria-label="Navigácia" data-noprint>
 	{#each NAV as item (item.href)}

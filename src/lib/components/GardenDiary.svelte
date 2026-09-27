@@ -20,8 +20,21 @@
 	import type { GardenDiary } from '$lib/state.svelte';
 	import type { GrowCombo, GrowGuide } from '$lib/types';
 
-	let { diary, guides, combos }: { diary: GardenDiary; guides: GrowGuide[]; combos: GrowCombo[] } =
-		$props();
+	let {
+		diary,
+		guides,
+		combos,
+		onplan,
+		oncrop
+	}: {
+		diary: GardenDiary;
+		guides: GrowGuide[];
+		combos: GrowCombo[];
+		/** Switches to the planner. */
+		onplan: () => void;
+		/** Opens a crop's guide. */
+		oncrop: (ingredientId: string) => void;
+	} = $props();
 
 	const catalog = useCatalog();
 	const now = new Date();
@@ -55,6 +68,8 @@
 			.map((t) => t.name)
 	);
 	const harvestNow = $derived(tasks.filter((t) => t.kind === 'harvest'));
+	const doneCount = $derived(tasks.filter((t) => diary.done[t.key]).length);
+	const QUICK_GRAMS = [100, 250, 500, 1000];
 	const totals = $derived(harvestTotals(diary.harvests, year));
 	const recipes = $derived(
 		harvestRecipes(
@@ -149,7 +164,7 @@
 	}
 </script>
 
-<section id="moja-zahradka" class="card diary">
+<section class="card diary">
 	<header>
 		<div>
 			<p class="eyebrow"><Icon name="sprout" size={16} /> Moja záhradka</p>
@@ -159,7 +174,9 @@
 			</h2>
 		</div>
 		<div class="head-actions">
-			<a class="btn ghost small" href="#planovac"><Icon name="pencil" size={16} /> Upraviť plán</a>
+			<button class="btn ghost small" onclick={onplan}
+				><Icon name="pencil" size={16} /> Upraviť plán</button
+			>
 			<button class="btn ghost small" onclick={share}
 				><Icon name="share" size={16} /> Zdieľať</button
 			>
@@ -189,6 +206,12 @@
 		<section>
 			<h3>Úlohy {IN_MONTH[month - 1]}</h3>
 			{#if tasks.length}
+				<div class="progress" role="img" aria-label="Hotovo {doneCount} z {tasks.length}">
+					<span class="bar"><span style:width="{(doneCount / tasks.length) * 100}%"></span></span>
+					<small>
+						{doneCount === tasks.length ? 'Všetko hotové' : `${doneCount} / ${tasks.length}`}
+					</small>
+				</div>
 				{#each ['indoor', 'sow', 'harvest'] as const as kind (kind)}
 					{@const list = tasks.filter((t) => t.kind === kind)}
 					{#if list.length}
@@ -202,8 +225,13 @@
 											checked={Boolean(diary.done[t.key])}
 											onchange={() => toggle(t.key)}
 										/>
-										{t.name}
+										<span>{t.name}</span>
 									</label>
+									<button
+										class="info"
+										onclick={() => oncrop(t.ingredientId)}
+										aria-label="Návod: {t.name}"><Icon name="info" size={16} /></button
+									>
 								</li>
 							{/each}
 						</ul>
@@ -237,6 +265,16 @@
 					<Icon name="plus" size={16} /> Zapísať
 				</button>
 			</form>
+			<div class="quick" aria-label="Pridať k hmotnosti">
+				{#each QUICK_GRAMS as grams (grams)}
+					<button
+						class="chip"
+						type="button"
+						onclick={() => (harvestGrams = (harvestGrams ?? 0) + grams)}
+						>+ {formatGrams(grams)}</button
+					>
+				{/each}
+			</div>
 			{#if harvestNote}<p class="note" role="status">
 					<Icon name="check" size={16} />
 					{harvestNote}
@@ -250,7 +288,9 @@
 				</p>
 				<ul class="totals">
 					{#each totals as t (t.ingredientId)}
-						<li><span>{plantName(t.ingredientId)}</span><strong>{formatGrams(t.grams)}</strong></li>
+						<li style:--share="{(t.grams / totals[0].grams) * 100}%">
+							<span>{plantName(t.ingredientId)}</span><strong>{formatGrams(t.grams)}</strong>
+						</li>
 					{/each}
 				</ul>
 			{/if}
@@ -264,14 +304,17 @@
 				{#each followUps as f (f.guide.ingredientId)}
 					<li>
 						<strong>{f.guide.name}:</strong>
-						{f.next.map((g) => g.name).join(', ')}
+						{#each f.next as g, i (g.ingredientId)}{i ? ', ' : ''}<button
+								class="linkish"
+								onclick={() => oncrop(g.ingredientId)}>{g.name}</button
+							>{/each}
 					</li>
 				{/each}
 			</ul>
 		</section>
 	{/if}
 
-	<GardenBeds {diary} {guides} {combos} />
+	<GardenBeds {diary} {guides} {combos} {oncrop} />
 
 	{#if recipes.length}
 		<section class="cook">
@@ -288,9 +331,12 @@
 <style>
 	.diary {
 		padding: 22px;
-		margin-top: 28px;
-		scroll-margin-top: 80px;
 		border: 2px solid var(--leaf-2);
+	}
+	@media (max-width: 520px) {
+		.diary {
+			padding: 16px;
+		}
 	}
 	header {
 		display: flex;
@@ -309,6 +355,7 @@
 	}
 	.head-actions {
 		display: flex;
+		flex-wrap: wrap;
 		gap: 8px;
 		align-items: flex-start;
 	}
@@ -347,20 +394,104 @@
 		display: grid;
 		gap: 4px;
 	}
-	.tasks label {
+	.tasks li {
 		display: flex;
 		align-items: center;
-		gap: 8px;
+		gap: 6px;
+	}
+	.tasks label {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 6px 8px;
+		border-radius: 10px;
 		cursor: pointer;
+		transition: background 0.2s;
+	}
+	.tasks label:hover {
+		background: var(--paper);
 	}
 	.tasks input {
-		width: 18px;
-		height: 18px;
+		width: 20px;
+		height: 20px;
 		accent-color: var(--leaf);
+		flex: none;
 	}
-	.tasks .done {
+	.tasks input:checked {
+		animation: tick 0.35s var(--ease-spring);
+	}
+	@keyframes tick {
+		50% {
+			transform: scale(1.3);
+		}
+	}
+	.tasks label span {
+		background: linear-gradient(currentColor, currentColor) no-repeat 0 55% / 0 1.5px;
+		transition:
+			background-size 0.3s var(--ease-out),
+			color 0.3s;
+	}
+	.tasks .done span {
 		color: var(--muted);
-		text-decoration: line-through;
+		background-size: 100% 1.5px;
+	}
+	.info {
+		display: grid;
+		place-items: center;
+		width: 32px;
+		height: 32px;
+		border: 0;
+		border-radius: 50%;
+		background: none;
+		color: var(--muted);
+		cursor: pointer;
+	}
+	.info:hover {
+		background: var(--paper-2);
+		color: var(--leaf);
+	}
+	.progress {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		margin-bottom: 4px;
+	}
+	.progress .bar {
+		flex: 1;
+		height: 8px;
+		border-radius: 4px;
+		background: var(--paper-2);
+		overflow: hidden;
+	}
+	.progress .bar span {
+		display: block;
+		height: 100%;
+		border-radius: inherit;
+		background: linear-gradient(90deg, var(--leaf-2), var(--leaf));
+		transition: width 0.5s var(--ease-spring);
+	}
+	.progress small {
+		font-weight: 700;
+		color: var(--leaf);
+		font-variant-numeric: tabular-nums;
+	}
+	.quick {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin-top: 8px;
+	}
+	.linkish {
+		border: 0;
+		padding: 0;
+		background: none;
+		color: var(--leaf);
+		font: inherit;
+		font-weight: 600;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+		cursor: pointer;
 	}
 	.harvest {
 		display: flex;
@@ -391,8 +522,23 @@
 	.totals li {
 		display: flex;
 		justify-content: space-between;
-		border-bottom: 1px dashed var(--line);
-		padding: 4px 0;
+		padding: 5px 8px;
+		border-radius: 8px;
+		background: linear-gradient(
+				to right,
+				color-mix(in srgb, var(--turmeric) 28%, transparent) var(--share),
+				transparent var(--share)
+			)
+			no-repeat;
+		animation: grow-bar 0.6s var(--ease-out) both;
+	}
+	@keyframes grow-bar {
+		from {
+			background-size: 0 100%;
+		}
+		to {
+			background-size: 100% 100%;
+		}
 	}
 	.value {
 		font-weight: 500;

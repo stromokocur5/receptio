@@ -9,6 +9,7 @@
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import { DAILY_REFERENCE, VEGAN_PROTEIN_G_PER_KG } from '$lib/nutrition';
 	import { RATING_LABELS, favorites, history, notes, settings, ui } from '$lib/state.svelte';
+	import { onboarding } from '$lib/onboarding.svelte';
 	import { weekSummary } from '$lib/week';
 
 	const catalog = useCatalog();
@@ -182,6 +183,12 @@
 
 	<SyncPanel />
 
+	<p class="guide-again">
+		<button class="btn ghost small" onclick={() => (onboarding.open = true)}>
+			<Icon name="info" size={16} /> Ako Receptio funguje – spustiť sprievodcu
+		</button>
+	</p>
+
 	<section class="card box backup">
 		<h2><Icon name="package" size={24} /> Záloha do súboru</h2>
 		<p>
@@ -209,6 +216,9 @@
 </div>
 
 <style>
+	.guide-again {
+		margin: 16px 0 0;
+	}
 	.page {
 		padding-top: 28px;
 	}

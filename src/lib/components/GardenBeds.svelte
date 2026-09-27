@@ -10,11 +10,21 @@
 		newSeason,
 		type Bed
 	} from '$lib/garden';
+	import { normalizeSearch } from '$lib/labels';
 	import { garden, type GardenDiary } from '$lib/state.svelte';
 	import type { GrowCombo, GrowGuide } from '$lib/types';
 
-	let { diary, guides, combos }: { diary: GardenDiary; guides: GrowGuide[]; combos: GrowCombo[] } =
-		$props();
+	let {
+		diary,
+		guides,
+		combos,
+		oncrop
+	}: {
+		diary: GardenDiary;
+		guides: GrowGuide[];
+		combos: GrowCombo[];
+		oncrop: (ingredientId: string) => void;
+	} = $props();
 
 	const catalog = useCatalog();
 	const guideById = $derived(new Map(guides.map((g) => [g.ingredientId, g])));
@@ -29,6 +39,11 @@
 					a.name.localeCompare(b.name, 'sk')
 			);
 	});
+	let paletteQuery = $state('');
+	const paletteShown = $derived.by(() => {
+		const q = normalizeSearch(paletteQuery.trim());
+		return q ? palette.filter((g) => normalizeSearch(g.name).includes(q)) : palette;
+	});
 	const placeCombos = $derived(combos.filter((c) => c.where.includes(diary.place)));
 
 	let brush = $state<string>('');
@@ -36,13 +51,27 @@
 	let newWidth = $state<number | null>(null);
 	let newDepth = $state<number | null>(null);
 	let confirming = $state<string | null>(null);
-	let painting = false;
+
+	/** Earlier versions of each bed's squares, newest last; lives only until the page reloads. */
+	let undoStack = $state<Record<string, Bed['cells'][]>>({});
+	const UNDO_LIMIT = 30;
 
 	const color = (id: string) => catalog.ingredientsById.get(id)?.color ?? '#6fa35a';
 	const short = (id: string) => (guideById.get(id)?.name ?? id).slice(0, 2);
 
 	function update(bed: Bed) {
 		garden.current = { ...diary, beds: diary.beds.map((b) => (b.id === bed.id ? bed : b)) };
+	}
+
+	function remember(bed: Bed) {
+		undoStack[bed.id] = [...(undoStack[bed.id] ?? []), bed.cells].slice(-UNDO_LIMIT);
+	}
+
+	function undo(bed: Bed) {
+		const stack = undoStack[bed.id];
+		if (!stack?.length) return;
+		undoStack[bed.id] = stack.slice(0, -1);
+		update({ ...bed, cells: stack.at(-1)! });
 	}
 
 	function addBed(event: SubmitEvent) {
@@ -63,17 +92,71 @@
 		newDepth = null;
 	}
 
-	function paint(bed: Bed, key: string) {
+	/**
+	 * One stroke paints (or erases) every square the finger or mouse passes over. What it does is
+	 * decided on the first square: pressing on a square that already has the brush's crop erases.
+	 */
+	let stroke: { bedId: string; value: string | null; last: string } | null = null;
+
+	function apply(bedId: string, key: string) {
+		const bed = diary.beds.find((b) => b.id === bedId);
+		if (!bed || !stroke) return;
+		const cells = { ...bed.cells };
+		if (stroke.value === null) {
+			if (!(key in cells)) return;
+			delete cells[key];
+		} else {
+			if (cells[key] === stroke.value) return;
+			cells[key] = stroke.value;
+		}
+		update({ ...bed, cells });
+	}
+
+	function cellAt(event: PointerEvent): string | null {
+		const el = document.elementFromPoint(event.clientX, event.clientY);
+		return el instanceof HTMLElement && el.dataset.cell ? el.dataset.cell : null;
+	}
+
+	function strokeStart(bed: Bed, event: PointerEvent) {
+		const key = cellAt(event);
+		if (!key || event.button !== 0) return;
+		event.preventDefault();
+		// Touch captures the pointer to the first square; release it so moves hit-test anew.
+		(event.target as Element).releasePointerCapture?.(event.pointerId);
+		remember(bed);
+		stroke = {
+			bedId: bed.id,
+			value: !brush || bed.cells[key] === brush ? null : brush,
+			last: key
+		};
+		apply(bed.id, key);
+	}
+
+	function strokeMove(event: PointerEvent) {
+		if (!stroke) return;
+		const key = cellAt(event);
+		if (!key || key === stroke.last) return;
+		stroke.last = key;
+		apply(stroke.bedId, key);
+	}
+
+	function strokeEnd() {
+		stroke = null;
+	}
+
+	/** Keyboard users toggle one square at a time; pointers are handled by the stroke above. */
+	function keyPaint(bed: Bed, key: string, event: MouseEvent) {
+		if (event.detail !== 0) return;
+		remember(bed);
 		const cells = { ...bed.cells };
 		if (!brush || cells[key] === brush) delete cells[key];
 		else cells[key] = brush;
 		update({ ...bed, cells });
 	}
 
-	function paintOver(bed: Bed, key: string, event: PointerEvent) {
-		// Drag to paint several squares; a plain tap is handled by click.
-		if (!painting || event.buttons === 0 || !brush || bed.cells[key] === brush) return;
-		update({ ...bed, cells: { ...bed.cells, [key]: brush } });
+	function rename(bed: Bed, name: string) {
+		const trimmed = name.trim().slice(0, 60);
+		if (trimmed && trimmed !== bed.name) update({ ...bed, name: trimmed });
 	}
 
 	function confirm(id: string, action: () => void) {
@@ -84,12 +167,14 @@
 	}
 </script>
 
+<svelte:window onpointerup={strokeEnd} onpointercancel={strokeEnd} />
+
 <section class="beds">
 	<h3><Icon name="pencil" size={18} /> Moje záhony</h3>
 	<p class="muted small">
 		Nakresli si skutočné záhony, truhlíky alebo nádoby. Jedno políčko je {CELL_M * 100} × {CELL_M *
-			100} cm – vyber plodinu a klikaj (alebo ťahaj) po políčkach. Upozorním na zlých susedov, veľké rastliny
-		bez miesta a na to, čo tu rástlo minulý rok.
+			100} cm – vyber plodinu a ťahaj prstom alebo myšou po políčkach. Upozorním na zlých susedov, veľké
+		rastliny bez miesta a na to, čo tu rástlo minulý rok.
 	</p>
 
 	<form class="add" onsubmit={addBed}>
@@ -123,18 +208,40 @@
 	</form>
 
 	{#if diary.beds.length}
-		<div class="palette" role="radiogroup" aria-label="Čo sadíš">
-			<button class="chip" aria-pressed={brush === ''} onclick={() => (brush = '')}>
-				<Icon name="x" size={14} /> Guma
-			</button>
-			{#each palette as g (g.ingredientId)}
-				<button
-					class="chip"
-					aria-pressed={brush === g.ingredientId}
-					onclick={() => (brush = g.ingredientId)}
-					><i style:background={color(g.ingredientId)}></i>{g.name}</button
-				>
-			{/each}
+		<div class="toolbox">
+			<div class="brush-now" aria-live="polite">
+				<i
+					class="swatch"
+					class:eraser={!brush}
+					style:background={brush ? color(brush) : undefined}
+					aria-hidden="true"
+				></i>
+				<span>
+					{brush ? `Sadíš: ${guideById.get(brush)?.name}` : 'Guma – ťahaním mažeš'}
+				</span>
+				{#if palette.length > 10}
+					<input
+						class="palette-search"
+						type="search"
+						bind:value={paletteQuery}
+						placeholder="Hľadať plodinu"
+						aria-label="Hľadať plodinu na sadenie"
+					/>
+				{/if}
+			</div>
+			<div class="palette" role="group" aria-label="Čo sadíš">
+				<button class="chip" aria-pressed={brush === ''} onclick={() => (brush = '')}>
+					<Icon name="x" size={14} /> Guma
+				</button>
+				{#each paletteShown as g (g.ingredientId)}
+					<button
+						class="chip"
+						aria-pressed={brush === g.ingredientId}
+						onclick={() => (brush = g.ingredientId)}
+						><i style:background={color(g.ingredientId)}></i>{g.name}</button
+					>
+				{/each}
+			</div>
 		</div>
 	{/if}
 
@@ -143,16 +250,41 @@
 		{@const warnings = bedWarnings(bed, guides)}
 		{@const flagged = new Set(warnings.flatMap((w) => w.cells))}
 		{@const plants = bedPlants(bed, guides)}
+		{@const filled = Object.keys(bed.cells).length}
 		<article class="bed">
 			<header>
-				<h4>{bed.name} <small class="muted">{bed.width} × {bed.depth} m</small></h4>
+				<div class="bed-title">
+					<input
+						class="bed-name"
+						value={bed.name}
+						aria-label="Názov záhonu"
+						maxlength="60"
+						onchange={(e) => rename(bed, e.currentTarget.value)}
+						onkeydown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
+					/>
+					<small class="muted"
+						>{bed.width} × {bed.depth} m · osadené {filled} z {size.cols * size.rows} políčok</small
+					>
+				</div>
 				<div class="bed-actions">
+					<button
+						class="btn ghost small"
+						onclick={() => undo(bed)}
+						disabled={!undoStack[bed.id]?.length}
+						aria-label="Späť"
+						title="Späť"
+					>
+						<Icon name="history" size={16} /> Späť
+					</button>
 					{#if placeCombos.length}
 						<select
 							aria-label="Vložiť kombináciu"
 							onchange={(e) => {
 								const combo = placeCombos.find((c) => c.id === e.currentTarget.value);
-								if (combo) update(fillWithCombo(bed, combo, guides));
+								if (combo) {
+									remember(bed);
+									update(fillWithCombo(bed, combo, guides));
+								}
 								e.currentTarget.value = '';
 							}}
 						>
@@ -163,9 +295,10 @@
 					<button
 						class="btn ghost small"
 						onclick={() =>
-							confirm(`season-${bed.id}`, () =>
-								update(newSeason(bed, guides, new Date().getFullYear()))
-							)}
+							confirm(`season-${bed.id}`, () => {
+								remember(bed);
+								update(newSeason(bed, guides, new Date().getFullYear()));
+							})}
 					>
 						{confirming === `season-${bed.id}` ? 'Naozaj? Vyčistí záhon' : 'Nová sezóna'}
 					</button>
@@ -187,10 +320,10 @@
 				<p class="north muted">sever ↑</p>
 				<div
 					class="grid"
-					style:grid-template-columns="repeat({size.cols}, 30px)"
-					onpointerdown={() => (painting = true)}
-					onpointerup={() => (painting = false)}
-					onpointerleave={() => (painting = false)}
+					class:erasing={!brush}
+					style:grid-template-columns="repeat({size.cols}, var(--cell))"
+					onpointerdown={(e) => strokeStart(bed, e)}
+					onpointermove={strokeMove}
 					role="group"
 					aria-label="Záhon {bed.name}"
 				>
@@ -200,27 +333,36 @@
 							{@const id = bed.cells[key]}
 							<button
 								class="cell"
+								class:planted={!!id}
 								class:flag={flagged.has(key)}
+								data-cell={key}
 								style:background={id ? color(id) : undefined}
+								title={id ? guideById.get(id)?.name : undefined}
 								aria-label="{c + 1}. stĺpec, {r + 1}. rad: {id
 									? guideById.get(id)?.name
 									: 'prázdne'}"
-								onclick={() => paint(bed, key)}
-								onpointerenter={(e) => paintOver(bed, key, e)}>{id ? short(id) : ''}</button
+								onclick={(e) => keyPaint(bed, key, e)}>{id ? short(id) : ''}</button
 							>
 						{/each}
 					{/each}
 				</div>
+				<p class="scale muted">
+					{size.cols * CELL_M * 100 >= 100
+						? `${Math.round(size.cols * CELL_M * 10) / 10} m`
+						: `${Math.round(size.cols * CELL_M * 100)} cm`} ↔
+				</p>
 			</div>
 
 			{#if plants.length}
 				<p class="plants small">
-					{#each plants as p, i (p.ingredientId)}{i ? ' · ' : ''}<span
+					{#each plants as p (p.ingredientId)}<button
+							class="plant"
+							onclick={() => oncrop(p.ingredientId)}
 							><i style:background={color(p.ingredientId)}></i>{guideById.get(p.ingredientId)
 								?.name}:
 							{p.count
 								? `${p.count} ${p.count === 1 ? 'rastlina' : p.count < 5 ? 'rastliny' : 'rastlín'}`
-								: 'málo miesta'}</span
+								: 'málo miesta'}</button
 						>{/each}
 				</p>
 			{/if}
@@ -243,6 +385,12 @@
 <style>
 	.beds {
 		margin-top: 24px;
+		--cell: 30px;
+	}
+	@media (pointer: coarse) {
+		.beds {
+			--cell: 36px;
+		}
 	}
 	h3 {
 		display: flex;
@@ -257,7 +405,8 @@
 		gap: 8px;
 		margin: 12px 0;
 	}
-	.add input {
+	.add input,
+	.palette-search {
 		border: 1.5px solid var(--line);
 		border-radius: var(--radius-sm);
 		background: var(--paper);
@@ -271,16 +420,63 @@
 	.add label input {
 		width: 80px;
 	}
-	.palette {
+	.toolbox {
+		position: sticky;
+		top: 124px;
+		z-index: 2;
+		margin: 10px 0 16px;
+		padding: 10px;
+		border-radius: var(--radius-sm);
+		background: color-mix(in srgb, var(--card) 92%, transparent);
+		backdrop-filter: blur(8px);
+		border: 1px solid var(--line);
+		box-shadow: var(--shadow);
+	}
+	.brush-now {
 		display: flex;
 		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+		margin-bottom: 8px;
+		font-weight: 650;
+		font-size: 0.9rem;
+	}
+	.swatch {
+		width: 22px;
+		height: 22px;
+		border-radius: 6px;
+		border: 1.5px solid color-mix(in srgb, var(--ink) 25%, transparent);
+		transition: background 0.2s;
+	}
+	.swatch.eraser {
+		background: repeating-linear-gradient(
+			45deg,
+			var(--paper),
+			var(--paper) 3px,
+			var(--line) 3px,
+			var(--line) 6px
+		);
+	}
+	.palette-search {
+		margin-left: auto;
+		padding: 5px 10px;
+		width: 160px;
+		font-size: 0.85rem;
+	}
+	/* One scrolling row, so the sticky toolbox covers as little of the beds as possible. */
+	.palette {
+		display: flex;
 		gap: 6px;
-		margin: 10px 0 16px;
-		max-height: 150px;
-		overflow-y: auto;
+		margin: 0 -10px;
+		padding: 2px 10px 4px;
+		overflow-x: auto;
+		scrollbar-width: thin;
+	}
+	.palette .chip {
+		flex: none;
 	}
 	.palette i,
-	.plants i {
+	.plant i {
 		display: inline-block;
 		width: 10px;
 		height: 10px;
@@ -302,8 +498,32 @@
 		gap: 8px;
 		align-items: center;
 	}
-	h4 {
-		margin: 0;
+	.bed-title {
+		display: grid;
+		gap: 2px;
+		min-width: 0;
+	}
+	.bed-name {
+		width: 100%;
+		max-width: 280px;
+		padding: 2px 6px;
+		margin-left: -6px;
+		border: 1.5px solid transparent;
+		border-radius: 8px;
+		background: none;
+		color: var(--ink);
+		font: inherit;
+		font-family: var(--font-display);
+		font-size: 1.15rem;
+		font-weight: 700;
+	}
+	.bed-name:hover {
+		border-color: var(--line);
+	}
+	.bed-name:focus {
+		outline: none;
+		border-color: var(--leaf);
+		background: var(--card);
 	}
 	.bed-actions {
 		display: flex;
@@ -325,9 +545,13 @@
 		margin-top: 8px;
 		padding-bottom: 4px;
 	}
-	.north {
+	.north,
+	.scale {
 		margin: 0 0 4px;
 		font-size: 0.75rem;
+	}
+	.scale {
+		margin: 4px 0 0;
 	}
 	.grid {
 		display: grid;
@@ -337,10 +561,16 @@
 		border-radius: 8px;
 		background: color-mix(in srgb, #8a5a3c 30%, var(--paper));
 		touch-action: none;
+		user-select: none;
+		-webkit-user-select: none;
+		cursor: crosshair;
+	}
+	.grid.erasing {
+		cursor: cell;
 	}
 	.cell {
-		width: 30px;
-		height: 30px;
+		width: var(--cell);
+		height: var(--cell);
 		border: 0;
 		border-radius: 5px;
 		background: color-mix(in srgb, #8a5a3c 18%, var(--paper));
@@ -348,14 +578,44 @@
 		font-weight: 700;
 		color: #1d2e24;
 		padding: 0;
-		cursor: pointer;
+		cursor: inherit;
+		transition:
+			transform 0.15s,
+			box-shadow 0.15s;
+	}
+	.cell:hover {
+		box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ink) 35%, transparent);
+	}
+	.cell.planted {
+		animation: sprout 0.3s var(--ease-spring);
+		box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.14);
+	}
+	@keyframes sprout {
+		from {
+			transform: scale(0.6);
+		}
 	}
 	.cell.flag {
 		outline: 2px solid var(--tomato);
 		outline-offset: -2px;
 	}
 	.plants {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
 		margin: 10px 0 0;
+	}
+	.plant {
+		padding: 3px 9px;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: var(--card);
+		color: var(--ink-2);
+		font: inherit;
+		cursor: pointer;
+	}
+	.plant:hover {
+		border-color: var(--leaf);
 	}
 	.warnings {
 		list-style: none;

@@ -26,9 +26,20 @@ pnpm dev                                                  # http://localhost:517
   a odkazy na návody zo sekcie Základy.
 - **Špajza, plán a nákupný zoznam** sú v `localStorage` prehliadača, žiadne kontá.
 - **Špajza, plán, história varenia, obľúbené a poznámky** sa dajú zálohovať a obnoviť na stránke Moje (JSON súbor).
+- **Synchronizácia bez účtu:** prehliadač vytvorí náhodný kód na obnovenie (20 znakov), odvodí z neho ID
+  záznamu, zapisovací token a AES kľúč a na server (`/api/sync/[id]`, tabuľka `sync`) posiela len šifru.
+  Druhé zariadenie sa pripojí tým istým kódom. Bez kódu dáta neprečíta nikto, ani správca.
+- **Sprievodca pri prvej návšteve** (`Onboarding.svelte`) najprv ponúkne synchronizáciu, potom ukáže, ako appka
+  funguje (recepty → plán → nákup → špajza), a nastaví počet ľudí. Nezobrazí sa tým, kto prišiel cez zdieľaný
+  odkaz; znova sa spúšťa na stránke Moje.
 - **Nákupný zoznam sa zdieľa odkazom** `/zoznam#…` – plán a zoznam sú vo fragmente URL, na server nejdú.
-- **Lajky a návrhy receptov** sú jediné serverové veci (D1). Lajky sú anonymné podľa náhodného ID v httpOnly
-  cookie, obe API majú limit na IP (Workers Rate Limiting).
+- **Serverové veci (D1):** anonymné lajky (náhodné ID v httpOnly cookie), návrhy receptov, spätná väzba
+  a šifrované zálohy synchronizácie. Všetky API majú limit na IP (Workers Rate Limiting).
+- **Pestuj si sám** (`/pestuj`): plodiny a zmiešané výsadby v `content/pestovanie.yaml`, plánovač podľa miesta,
+  plochy, svetla a receptov, kresliaci editor záhonov (políčka 30 × 30 cm, upozornenia na zlých susedov
+  a striedanie plodín), denník s úlohami na mesiac a zápisom úrody (pribudne do špajze). Poloha posúva
+  kalendáre podľa nadmorskej výšky, počasie a mrazy sú z Open-Meteo – z prehliadača odchádzajú len súradnice.
+  Plán záhradky sa zdieľa odkazom `/pestuj#zahradka=…`.
 - Všetky stránky sa prerenderujú, Worker obsluhuje iba `/api/*`. Náhľadové obrázky `/og/*.png` sa kreslia pri
   builde (resvg), do Workera sa nedostanú.
 - **Offline:** service worker drží aplikáciu, plán, špajzu a naposledy otvorené recepty.
@@ -39,10 +50,13 @@ content/
   recipes/*.yaml     recepty (id = názov súboru)
   cuisines.yaml      kuchyne sveta + na čo si dať pozor
   equipment.yaml     kuchynské vybavenie, náhrady a slová, podľa ktorých ho recept rozpozná
+  pestovanie.yaml    plodiny (kalendár, rozostupy, susedia, úroda) a zmiešané výsadby
   prices.yaml        reálne ceny z obchodov (produkt, balenie, cena, dátum, akcia)
   wiki/*.md          základy varenia, suplementy, návody
 src/lib/
   amounts.ts nutrition.ts pricing.ts pantry.ts shopping.ts   čistá doménová logika (testovaná)
+  garden.ts weather.ts season.ts                             pestovanie, záhony, počasie a sezóna
+  sync.svelte.ts                                             šifrovaná synchronizácia bez účtu
   server/content.ts                                          načítanie + validácia + výpočty
   art.ts, components/PlateArt.svelte                         generované ilustrácie tanierov
   components/Icon.svelte                                     vlastná sada SVG ikon

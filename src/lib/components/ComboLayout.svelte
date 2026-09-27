@@ -16,17 +16,20 @@
 	const scale = $derived(Math.max(1, 30 / (layout.depth * 100)));
 	const w = $derived(layout.width * 100 * scale);
 	const h = $derived(layout.depth * 100 * scale);
+
+	/** Tapping a crop in the legend picks out its plants in the drawing. */
+	let highlight = $state<string | null>(null);
 </script>
 
-<figure class="layout">
+<figure class="layout" class:focused={highlight}>
+	<p class="north">sever ↑</p>
 	<svg
-		viewBox="-8 -18 {w + 16} {h + 26}"
+		viewBox="-8 -8 {w + 16} {h + 16}"
 		role="img"
 		aria-label="Schéma rozmiestnenia: {combo.members
 			.map((m) => `${m.count} × ${m.name}`)
 			.join(', ')}"
 	>
-		<text x={w / 2} y="-6" text-anchor="middle" class="north">sever ↑</text>
 		<rect x="0" y="0" width={w} height={h} rx="6" class="bed" />
 		{#each layout.dots as d, i (i)}
 			<circle
@@ -35,12 +38,20 @@
 				r={radius(d.ingredientId)}
 				fill={color(d.ingredientId)}
 				class="plant"
+				class:dim={highlight && highlight !== d.ingredientId}
+				style:animation-delay="{Math.min(i, 40) * 18}ms"
 			/>
 		{/each}
 	</svg>
 	<figcaption>
 		{#each combo.members as m (m.ingredientId)}
-			<span><i style:background={color(m.ingredientId)}></i>{m.name}</span>
+			<button
+				aria-pressed={highlight === m.ingredientId}
+				onclick={() => (highlight = highlight === m.ingredientId ? null : m.ingredientId)}
+				onpointerenter={(e) => e.pointerType === 'mouse' && (highlight = m.ingredientId)}
+				onpointerleave={(e) => e.pointerType === 'mouse' && (highlight = null)}
+				><i style:background={color(m.ingredientId)}></i>{m.name}</button
+			>
 		{/each}
 		<small>
 			{layout.width >= 1
@@ -69,10 +80,24 @@
 	.plant {
 		stroke: color-mix(in srgb, var(--ink) 35%, transparent);
 		stroke-width: 1.2;
+		transform-box: fill-box;
+		transform-origin: center;
+		animation: pop 0.4s var(--ease-spring) both;
+		transition: opacity 0.2s;
+	}
+	.plant.dim {
+		opacity: 0.15;
+	}
+	@keyframes pop {
+		from {
+			transform: scale(0);
+		}
 	}
 	.north {
-		font-size: 11px;
-		fill: var(--muted);
+		margin: 0 0 2px;
+		text-align: center;
+		font-size: 0.72rem;
+		color: var(--muted);
 	}
 	figcaption {
 		display: flex;
@@ -81,6 +106,22 @@
 		margin-top: 6px;
 		font-size: 0.8rem;
 		color: var(--ink-2);
+	}
+	figcaption button {
+		display: inline-flex;
+		align-items: center;
+		padding: 2px 8px;
+		border: 1px solid transparent;
+		border-radius: 999px;
+		background: none;
+		color: inherit;
+		font: inherit;
+		cursor: pointer;
+	}
+	figcaption button:hover,
+	figcaption button[aria-pressed='true'] {
+		border-color: var(--line);
+		background: var(--card);
 	}
 	figcaption i {
 		display: inline-block;
@@ -92,6 +133,7 @@
 		border: 1px solid color-mix(in srgb, var(--ink) 30%, transparent);
 	}
 	figcaption small {
+		align-self: center;
 		color: var(--muted);
 	}
 </style>

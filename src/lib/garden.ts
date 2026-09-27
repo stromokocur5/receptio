@@ -32,6 +32,19 @@ export interface GardenPlan {
 	gear: string[];
 }
 
+export const PLACE_LABELS: Record<GrowPlace, string> = {
+	parapet: 'byt',
+	balkon: 'balkón',
+	zahrada: 'záhrada'
+};
+export const SUN_LABELS: Record<GrowSun, string> = {
+	slnko: 'slnko',
+	polotien: 'polotieň',
+	tien: 'tieň'
+};
+/** Indexed by `GrowGuide.level`. */
+export const LEVEL_LABELS = ['', 'ľahké', 'treba sa starať', 'pre pokročilých'];
+
 /** Tools every grower in that place needs, whatever they plant. */
 export const BASE_GEAR: Record<GrowPlace, string[]> = {
 	parapet: [
