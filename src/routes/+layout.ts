@@ -17,7 +17,10 @@ export const load: LayoutLoad = async ({ fetch }) => {
 	try {
 		const res = await fetch('/catalog.json');
 		if (!res.ok) throw new Error(`catalog.json: ${res.status}`);
-		return { catalog: (await res.json()) as CatalogPayload };
+		// SvelteKit inlines every response read through load's fetch into the HTML – the whole
+		// catalog on every prerendered page. A clone isn't tracked, so pages stay small and the
+		// browser fetches /catalog.json once (then from cache) while hydrating.
+		return { catalog: (await res.clone().json()) as CatalogPayload };
 	} catch (err) {
 		// Only runtime-rendered pages (a 404) can get here; they don't need the catalog.
 		console.error('layout: catalog unavailable', err);
