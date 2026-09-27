@@ -16,6 +16,9 @@ const PAGE_SIZE = 100;
 const PAUSE_MS = 1500;
 /** A price under 40 % of the median across chains is treated as a data error. */
 const SUSPICIOUS_BELOW = 0.4;
+/** The API sometimes doesn't answer for a while; wait 10 s, 30 s, 90 s before giving up. */
+const RETRY_DELAYS_MS = [10_000, 30_000, 90_000];
+const REQUEST_TIMEOUT_MS = 30_000;
 
 const STORE_BY_COMPANY: Record<string, string> = {
 	'31321828': 'tesco',
@@ -69,18 +72,37 @@ const normalize = (text: string) =>
 		.normalize('NFD')
 		.replace(/\p{Diacritic}/gu, '');
 
+/** GET with retries on network errors, timeouts and 5xx/429; other HTTP errors fail at once. */
+async function getJson(url: string): Promise<unknown> {
+	for (let attempt = 0; ; attempt++) {
+		let failure: string;
+		let retryable = true;
+		try {
+			const res = await fetch(url, {
+				headers: {
+					accept: 'application/json',
+					'user-agent': 'receptio-price-sync (+https://receptio.kohut.xyz)'
+				},
+				signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS)
+			});
+			if (res.ok) return await res.json();
+			failure = `HTTP ${res.status}`;
+			retryable = res.status >= 500 || res.status === 429;
+		} catch (err) {
+			failure = err instanceof Error ? `${err.message} ${String(err.cause ?? '')}` : String(err);
+		}
+		const delay = retryable ? RETRY_DELAYS_MS[attempt] : undefined;
+		if (delay === undefined) throw new Error(`${url}: ${failure} (after ${attempt + 1} attempts)`);
+		console.warn(`${url}: ${failure}, retrying in ${delay / 1000} s`);
+		await sleep(delay);
+	}
+}
+
 async function fetchType(typeId: string): Promise<ApiProduct[]> {
 	const products: ApiProduct[] = [];
 	for (let page = 0; ; page++) {
 		const url = `${API}/product-prices/current-day?typeId=${encodeURIComponent(typeId)}&page=${page}&size=${PAGE_SIZE}`;
-		const res = await fetch(url, {
-			headers: {
-				accept: 'application/json',
-				'user-agent': 'receptio-price-sync (+https://receptio.kohut.xyz)'
-			}
-		});
-		if (!res.ok) throw new Error(`${url}: HTTP ${res.status}`);
-		const body = (await res.json()) as { count: number; content: ApiProduct[] };
+		const body = (await getJson(url)) as { count: number; content: ApiProduct[] };
 		products.push(...body.content);
 		await sleep(PAUSE_MS);
 		if (products.length >= body.count || body.content.length === 0) return products;
