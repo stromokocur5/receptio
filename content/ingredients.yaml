@@ -1545,6 +1545,23 @@
       - 'Keď sú úplne suché a lámu sa, pomel ich v mlynčeku. S jadierkami bude čili pálivejšie.'
     note: 'Pri mletí nevdychuj prach a nešúchaj si oči. Na veľmi pálivé papričky si daj rukavice.'
 
+- id: gochugaru
+  name: Gochugaru (kórejské čili vločky)
+  category: koreniny
+  n: { kcal: 290, p: 12, c: 52, f: 11, fib: 35, salt: 0.1, fe: 8, ca: 110, zn: 2.5 }
+  units: { pl: 6, čl: 2 }
+  price: 40
+  color: '#c43a22'
+  substitutes:
+    - { to: cili, note: 'mletého daj len tretinu, je oveľa pálivejšie' }
+    - { to: sladka-paprika, note: 'napoly s trochou čili – farba ostane' }
+  about: 'Hrubé vločky sušenej kórejskej papriky – ovocné, jemne dymové a stredne pálivé. Dáva kimchi farbu aj chuť.'
+  uses:
+    - 'Kimchi'
+    - 'Dubu jorim, polievky, marinády'
+  choose: 'V ázijských obchodoch, sýto červené. Na kimchi hrubšie vločky, na omáčky jemné.'
+  storage: 'V chladničke alebo mrazničke rok, inak stratí farbu.'
+
 - id: udena-paprika
   name: Údená paprika
   howto: [korenie]
@@ -2294,13 +2311,31 @@
   color: '#d9e8b8'
   season: [7, 8, 9, 10, 11, 12]
   substitutes:
-    - { note: 'čínska kapusta' }
+    - { to: cinska-kapusta, note: 'jemnejšia, rýchlejšie mäkne' }
   about: 'Lacná a trvanlivá kapusta na šaláty, dusenie aj kvasenie.'
   uses:
     - 'Coleslaw a šaláty'
     - 'Dusená kapusta, halušky, strapačky'
   choose: 'Ťažká, pevná hlávka s lesklými listami.'
   storage: 'Celá v chladničke 3 týždne.'
+
+- id: cinska-kapusta
+  name: Čínska kapusta
+  category: zelenina
+  n: { kcal: 16, p: 1.2, c: 3.2, f: 0.2, fib: 1.2, salt: 0, fe: 0.3, ca: 77, zn: 0.2 }
+  units: { ks: 1000, hrnček: 75 }
+  price: 2
+  co2: 0.5
+  color: '#e4efc4'
+  season: [9, 10, 11, 12, 1]
+  substitutes:
+    - { to: biela-kapusta, note: 'tuhšia, pri kimchi soľ dlhšie' }
+  about: 'Podlhovastá hlávka s jemnými, šťavnatými listami. Základ kimchi, sladšia a mäkšia ako biela kapusta.'
+  uses:
+    - 'Kimchi'
+    - 'Do polievok, wok a na šaláty'
+  choose: 'Ťažká na svoju veľkosť, listy pevné, bez hnedých fľakov.'
+  storage: 'V chladničke zabalená 2 týždne.'
 
 - id: zelene-fazulky
   name: Zelené fazuľky (aj mrazené)
@@ -2378,6 +2413,25 @@
     - 'Listy ako rukola do pesta'
   choose: 'Pevné, s čerstvými listami. Mäkké sú duté.'
   storage: 'Bez listov v chladničke v nádobe s vodou týždeň.'
+
+- id: biela-redkev
+  name: Biela reďkev (daikon)
+  category: zelenina
+  n: { kcal: 18, p: 0.6, c: 4.1, f: 0.1, fib: 1.6, salt: 0.1, fe: 0.4, ca: 27, zn: 0.2 }
+  units: { ks: 400 }
+  price: 2.5
+  co2: 0.5
+  color: '#f1efe6'
+  season: [9, 10, 11, 12]
+  substitutes:
+    - { to: redkovka, note: 'ostrejšia' }
+    - { to: kalerab }
+  about: 'Veľká biela reďkev, jemnejšia a šťavnatejšia ako reďkovka. Surová chrumká, varená zosladne.'
+  uses:
+    - 'Kimchi a kvasená zelenina'
+    - 'Nakladaná do banh mi, do polievok'
+  choose: 'Pevná, ťažká, s hladkou kožou.'
+  storage: 'V chladničke 2 týždne.'
 
 - id: petrzlen-koren
   name: Petržlen koreň

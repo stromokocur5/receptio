@@ -12,9 +12,14 @@ interface RenderOptions {
 	execution?: 'render' | 'execute';
 	language?: string;
 	theme?: 'auto' | 'light' | 'dark';
+	retry?: 'auto' | 'never';
 	callback?: (token: string) => void;
 	'error-callback'?: () => void;
 	'expired-callback'?: () => void;
+	'timeout-callback'?: () => void;
+	'unsupported-callback'?: () => void;
+	'before-interactive-callback'?: () => void;
+	'after-interactive-callback'?: () => void;
 }
 
 export interface TurnstileApi {
@@ -57,13 +62,30 @@ export function sitekey(): string {
 	return ['localhost', '127.0.0.1'].includes(location.hostname) ? TEST_SITEKEY : SITEKEY;
 }
 
+/** A token that hasn't arrived by then won't; better to tell the person than spin forever. */
+const TOKEN_TIMEOUT_MS = 60_000;
+
+export interface ChallengeOptions {
+	/** Turnstile needs a click (checkbox shown); the page should bring the widget into view. */
+	onInteractive?: () => void;
+	onInteractiveDone?: () => void;
+}
+
 /**
  * An invisible widget in `container` that produces a fresh token on demand. Tokens are
  * single-use, so every `token()` call runs a new challenge.
  */
-export async function createChallenge(container: HTMLElement, action: string) {
+export async function createChallenge(
+	container: HTMLElement,
+	action: string,
+	options: ChallengeOptions = {}
+) {
 	const api = await loadTurnstile();
 	let pending: { resolve: (t: string) => void; reject: (e: Error) => void } | null = null;
+	const fail = (reason: string) => () => {
+		pending?.reject(new Error(reason));
+		pending = null;
+	};
 	const id = api.render(container, {
 		sitekey: sitekey(),
 		action,
@@ -71,25 +93,43 @@ export async function createChallenge(container: HTMLElement, action: string) {
 		execution: 'execute',
 		language: 'sk',
 		theme: 'auto',
+		retry: 'auto',
 		callback: (t) => {
 			pending?.resolve(t);
 			pending = null;
 		},
-		'error-callback': () => {
-			pending?.reject(new Error('turnstile error'));
-			pending = null;
-		},
-		'expired-callback': () => api.reset(id)
+		'error-callback': fail('turnstile error'),
+		'timeout-callback': fail('turnstile interaction timeout'),
+		'unsupported-callback': fail('turnstile unsupported browser'),
+		'expired-callback': () => api.reset(id),
+		'before-interactive-callback': () => options.onInteractive?.(),
+		'after-interactive-callback': () => options.onInteractiveDone?.()
 	});
 	return {
 		token(): Promise<string> {
-			return new Promise((resolve, reject) => {
-				pending = { resolve, reject };
+			pending?.reject(new Error('turnstile superseded'));
+			return new Promise<string>((resolve, reject) => {
+				const timer = setTimeout(() => {
+					if (pending === entry) pending = null;
+					reject(new Error('turnstile timeout'));
+				}, TOKEN_TIMEOUT_MS);
+				const entry = {
+					resolve: (t: string) => {
+						clearTimeout(timer);
+						resolve(t);
+					},
+					reject: (e: Error) => {
+						clearTimeout(timer);
+						reject(e);
+					}
+				};
+				pending = entry;
 				api.reset(id);
 				api.execute(id);
 			});
 		},
 		remove() {
+			fail('turnstile removed')();
 			api.remove(id);
 		}
 	};

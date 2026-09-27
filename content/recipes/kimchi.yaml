@@ -1,0 +1,41 @@
+title: Kimchi
+description: Kórejská kvasená kapusta s cesnakom, zázvorom a čili – vegánska, bez rybacej omáčky. Chrumká, štípe a každým dňom je kyslejšia.
+cuisine: korejska
+meals: [domace]
+time: 60
+active: 40
+servings: 12
+difficulty: 2
+tags: [urob-si-sam, fermentacia]
+spicy: 2
+yields: cca 1,5 l pohár
+ahead: Kapusta sa solí 2 hodiny, potom kimchi kvasí 1–3 dni pri izbovej teplote a dozrieva v chladničke. Najlepšie je po týždni.
+keeps: { fridge: 30 }
+related: [bibimbap, dubu-jorim]
+ingredients:
+  - cinska-kapusta: 1 ks | cca 1 kg
+  - sol: ~60 g | ideálne hrubá nejódovaná – na solenie, potom sa opláchne
+  - ryzova-muka: 2 pl
+  - voda: 1 hrnček
+  - cukor: 1 pl
+  - gochugaru: 4 pl | podľa pálivosti 3–6
+  - cesnak: 6 ks
+  - zazvor: 1 pl | nastrúhaný
+  - sojova-omacka: 2 pl | namiesto rybacej omáčky
+  - biela-redkev: 200 g | na tenké hranolčeky
+  - mrkva: 1 ks | na tenké hranolčeky
+  - jarna-cibulka: 4 ks | na 3 cm kúsky
+equipment: [pohare, miska]
+steps:
+  - Kapustu pozdĺžne rozštvrť, odrež hlúbik a nakrájaj na kúsky 3–4 cm. Umy ju a nechaj mokrú.
+  - Vo veľkej miske ju posyp soľou, premiešaj a nechaj 2 hodiny, každých 30 minút premiešaj. Hotová je, keď sa hrubé biele časti ohnú a nezlomia.
+  - Medzitým rozmiešaj ryžovú múku vo vode a za stáleho miešania var 2–3 minúty, kým nezhustne ako puding. Vmiešaj cukor a nechaj vychladnúť.
+  - Do vychladnutej kaše vmiešaj gochugaru, prelisovaný cesnak, zázvor a sójovú omáčku – vznikne hustá červená pasta.
+  - Kapustu 3× dôkladne opláchni studenou vodou a nechaj 20 minút odkvapkať. Ochutnaj – má byť príjemne slaná, nie ako more.
+  - V rukaviciach premiešaj kapustu, reďkev, mrkvu a cibuľku s pastou, aby bol každý kúsok červený.
+  - Natlač ju do čistého pohára tak, aby nezostali vzduchové bubliny a šťava zeleninu prekryla. Nechaj 3 cm voľného miesta a zatvor voľne.
+  - Nechaj 1–3 dni pri izbovej teplote a každý deň čistou lyžicou pritlač zeleninu pod šťavu. Keď bublinkuje a kyslo vonia, daj ho do chladničky.
+tips:
+  - Na pohár polož tanierik – pri kvasení môže šťava pretiecť.
+  - Biely povlak na hladine je neškodná kvasinka, stačí ho zobrať. Chlpatá pleseň (zelená, čierna, ružová) znamená vyhodiť celý pohár.
+  - Prekysnuté kimchi nevyhadzuj – je najlepšie do smaženej ryže, polievky kimchi jjigae alebo do placiek.

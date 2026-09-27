@@ -7,6 +7,7 @@ import {
 	suggestionsToday
 } from '$lib/server/suggestions';
 import { verifyTurnstile } from '$lib/server/turnstile';
+import { suggestionProblem } from '$lib/suggestion';
 import type { RequestHandler } from './$types';
 
 export const prerender = false;
@@ -31,7 +32,10 @@ export const POST: RequestHandler = async ({ request, platform, getClientAddress
 		error(400, 'Neplatná požiadavka');
 	}
 	const parsed = suggestionSchema.safeParse(raw);
-	if (!parsed.success) error(400, 'Skontroluj, či je vyplnený názov, suroviny aj postup');
+	if (!parsed.success) {
+		const fields = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {};
+		error(400, suggestionProblem(fields) ?? 'Neplatná požiadavka');
+	}
 
 	// Pretend success to bots so they don't retry.
 	if (parsed.data.website) return json({ ok: true });

@@ -3,22 +3,39 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { createChallenge } from '$lib/turnstile';
+	import { SUGGESTION_LIMITS as L, suggestionProblem } from '$lib/suggestion';
 
 	const DRAFT_KEY = 'receptio:suggestion-draft';
 
 	let form = $state({ title: '', ingredients: '', steps: '', note: '', author: '', website: '' });
 	let status = $state<'idle' | 'sending' | 'sent' | 'error'>('idle');
 	let errorText = $state('');
+	let needsClick = $state(false);
 	let challengeBox: HTMLDivElement;
-	let challenge: Awaited<ReturnType<typeof createChallenge>> | null = null;
+	let challenge: Promise<Awaited<ReturnType<typeof createChallenge>>> | null = null;
+
+	/** Starts loading early; a failed load is retried on the next submit. */
+	function loadChallenge() {
+		challenge ??= createChallenge(challengeBox, 'suggest', {
+			onInteractive: () => {
+				needsClick = true;
+				challengeBox.scrollIntoView({ block: 'center', behavior: 'smooth' });
+			},
+			onInteractiveDone: () => (needsClick = false)
+		}).catch((err) => {
+			challenge = null;
+			throw err;
+		});
+		return challenge;
+	}
 
 	onMount(() => {
-		createChallenge(challengeBox, 'suggest')
-			.then((c) => (challenge = c))
-			.catch(() => {
-				// Shown on submit if it's still missing.
-			});
-		return () => challenge?.remove();
+		loadChallenge().catch(() => {
+			// Retried on submit.
+		});
+		return () => {
+			challenge?.then((c) => c.remove()).catch(() => {});
+		};
 	});
 
 	onMount(() => {
@@ -45,15 +62,22 @@
 
 	async function submit(event: SubmitEvent) {
 		event.preventDefault();
+		const problem = suggestionProblem(form);
+		if (problem) {
+			errorText = problem;
+			status = 'error';
+			return;
+		}
 		status = 'sending';
 		let turnstile: string;
 		try {
-			if (!challenge) throw new Error('turnstile not loaded');
-			turnstile = await challenge.token();
+			turnstile = await (await loadChallenge()).token();
 		} catch {
-			errorText = 'Nepodarilo sa overiť, že nie si robot. Obnov stránku a skús to znova.';
+			errorText = 'Nepodarilo sa overiť, že nie si robot. Návrh zostal uložený, skús to znova.';
 			status = 'error';
 			return;
+		} finally {
+			needsClick = false;
 		}
 		try {
 			const res = await fetch('/api/suggestions', {
@@ -108,67 +132,72 @@
 				<button class="btn ghost small" onclick={() => (status = 'idle')}>Poslať ďalší</button>
 			</div>
 		</section>
-	{:else}
-		<form class="card box" onsubmit={submit} oninput={saveDraft}>
-			<label>
-				<span>Názov receptu</span>
-				<input
-					bind:value={form.title}
-					required
-					minlength="3"
-					maxlength="120"
-					placeholder="Babkin lečo s tofu"
-				/>
-			</label>
-			<label>
-				<span>Suroviny <small>jedna na riadok, aj s množstvom</small></span>
-				<textarea
-					bind:value={form.ingredients}
-					required
-					minlength="10"
-					maxlength="4000"
-					rows="7"
-					placeholder={'400 g tofu\n2 cibule\n3 papriky\n1 PL sladkej papriky'}></textarea>
-			</label>
-			<label>
-				<span>Postup</span>
-				<textarea
-					bind:value={form.steps}
-					required
-					minlength="10"
-					maxlength="8000"
-					rows="8"
-					placeholder={'1. Cibuľu nakrájaj a opeč dozlatista.\n2. …'}></textarea>
-			</label>
-			<label>
-				<span>Poznámka <small>nepovinné – pre koľkých, ako dlho, odkiaľ recept je…</small></span>
-				<textarea bind:value={form.note} maxlength="2000" rows="3"></textarea>
-			</label>
-			<label>
-				<span
-					>Tvoje meno alebo prezývka <small>nepovinné, ak ťa máme pri recepte uviesť</small></span
-				>
-				<input bind:value={form.author} maxlength="120" autocomplete="nickname" />
-			</label>
-			<label class="hp" aria-hidden="true">
-				Web
-				<input bind:value={form.website} tabindex="-1" autocomplete="off" />
-			</label>
-
-			{#if status === 'error'}
-				<p class="err" role="alert"><Icon name="alert" size={18} /> {errorText}</p>
-			{/if}
-			<div class="submit">
-				<button class="btn leaf" type="submit" disabled={status === 'sending'}>
-					<Icon name="send" size={18} />
-					{status === 'sending' ? 'Posielam…' : 'Poslať návrh'}
-				</button>
-				<p class="muted small">Rozpísaný návrh sa ukladá v tvojom prehliadači.</p>
-			</div>
-		</form>
 	{/if}
-	<!-- Outside the form so the Turnstile widget survives "Poslať ďalší". -->
-	<div class="challenge" bind:this={challengeBox}></div>
+	<form
+		class="card box"
+		hidden={status === 'sent'}
+		onsubmit={submit}
+		oninput={saveDraft}
+		novalidate
+	>
+		<label>
+			<span>Názov receptu</span>
+			<input
+				bind:value={form.title}
+				required
+				minlength={L.title.min}
+				maxlength={L.title.max}
+				placeholder="Babkin lečo s tofu"
+			/>
+		</label>
+		<label>
+			<span>Suroviny <small>jedna na riadok, aj s množstvom</small></span>
+			<textarea
+				bind:value={form.ingredients}
+				required
+				minlength={L.ingredients.min}
+				maxlength={L.ingredients.max}
+				rows="7"
+				placeholder={'400 g tofu\n2 cibule\n3 papriky\n1 PL sladkej papriky'}></textarea>
+		</label>
+		<label>
+			<span>Postup</span>
+			<textarea
+				bind:value={form.steps}
+				required
+				minlength={L.steps.min}
+				maxlength={L.steps.max}
+				rows="8"
+				placeholder={'1. Cibuľu nakrájaj a opeč dozlatista.\n2. …'}></textarea>
+		</label>
+		<label>
+			<span>Poznámka <small>nepovinné – pre koľkých, ako dlho, odkiaľ recept je…</small></span>
+			<textarea bind:value={form.note} maxlength={L.note.max} rows="3"></textarea>
+		</label>
+		<label>
+			<span>Tvoje meno alebo prezývka <small>nepovinné, ak ťa máme pri recepte uviesť</small></span>
+			<input bind:value={form.author} maxlength={L.author.max} autocomplete="nickname" />
+		</label>
+		<label class="hp" aria-hidden="true">
+			Web
+			<input bind:value={form.website} tabindex="-1" autocomplete="off" />
+		</label>
+
+		<div class="challenge" bind:this={challengeBox}></div>
+		{#if needsClick}
+			<p class="hint" role="status">Ešte klikni na overenie vyššie a návrh sa odošle.</p>
+		{/if}
+		{#if status === 'error'}
+			<p class="err" role="alert"><Icon name="alert" size={18} /> {errorText}</p>
+		{/if}
+		<div class="submit">
+			<button class="btn leaf" type="submit" disabled={status === 'sending'}>
+				<Icon name="send" size={18} />
+				{status === 'sending' ? 'Posielam…' : 'Poslať návrh'}
+			</button>
+			<p class="muted small">Rozpísaný návrh sa ukladá v tvojom prehliadači.</p>
+		</div>
+	</form>
 </div>
 
 <style>
@@ -221,8 +250,16 @@
 		height: 1px;
 		overflow: hidden;
 	}
+	form[hidden] {
+		display: none;
+	}
 	.challenge:empty {
 		display: none;
+	}
+	.hint {
+		margin: 0;
+		color: var(--leaf);
+		font-weight: 600;
 	}
 	.submit {
 		display: flex;

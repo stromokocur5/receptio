@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { SUGGESTION_LIMITS as L } from '$lib/suggestion';
 
 /** Stops a flood even if it comes from many IPs; far above what friends will ever send. */
 export const MAX_SUGGESTIONS_PER_DAY = 50;
@@ -8,11 +9,11 @@ const text = (min: number, max: number) => z.string().trim().min(min).max(max);
 
 export const suggestionSchema = z
 	.object({
-		title: text(3, 120),
-		ingredients: text(10, 4000),
-		steps: text(10, 8000),
-		note: text(0, 2000).optional(),
-		author: text(0, 120).optional(),
+		title: text(L.title.min, L.title.max),
+		ingredients: text(L.ingredients.min, L.ingredients.max),
+		steps: text(L.steps.min, L.steps.max),
+		note: text(L.note.min, L.note.max).optional(),
+		author: text(L.author.min, L.author.max).optional(),
 		/** Turnstile token from the form. */
 		turnstile: z.string().max(2048),
 		/** Honeypot: hidden from people, filled in by naive bots. */
