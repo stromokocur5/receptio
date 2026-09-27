@@ -1,7 +1,8 @@
 ---
 title: Zásoby a nákup vo veľkom
 summary: Základná vegánska špajza, čo sa oplatí kupovať vo veľkom a ako skladovať.
-section: navody
+section: zaklady
+group: organizacia
 icon: jar
 order: 11
 ---

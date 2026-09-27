@@ -17,7 +17,8 @@ const STATIC_PAGES = [
 	'/pestuj',
 	'/zvysky',
 	'/navrhni',
-	'/sukromie'
+	'/sukromie',
+	'/o-projekte'
 ];
 
 export const GET: RequestHandler = () => {

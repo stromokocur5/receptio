@@ -312,7 +312,7 @@ export function comboLayout(
 	);
 
 	const grid = (count: number, x0: number, y0: number, w: number, h: number) => {
-		const cols = Math.max(1, Math.round(Math.sqrt((count * w) / h)));
+		const cols = Math.min(count, Math.max(1, Math.round(Math.sqrt((count * w) / h))));
 		const rows = Math.ceil(count / cols);
 		return Array.from({ length: count }, (_, i) => ({
 			x: x0 + ((i % cols) + 0.5) * (w / cols),
@@ -341,13 +341,21 @@ export function comboLayout(
 
 	const need = members.map((m) => m.count * (spacing.get(m.ingredientId) ?? 0.2) ** 2);
 	const totalNeed = need.reduce((a, b) => a + b, 0);
-	let y = 0;
+	const share = (i: number) => need[i] / totalNeed;
 	const dots: LayoutDot[] = [];
+	// Rows from north to south, unless a row would be shallower than its plants need – then the
+	// crops sit side by side (a narrow windowsill box with one herb of each kind).
+	const rows = members.every(
+		(m, i) => depth * share(i) >= 0.6 * (spacing.get(m.ingredientId) ?? 0.2)
+	);
+	let offset = 0;
 	members.forEach((m, i) => {
-		const h = (depth * need[i]) / totalNeed;
-		for (const p of grid(m.count, 0, y, width, h))
-			dots.push({ ...p, ingredientId: m.ingredientId });
-		y += h;
+		const band = (rows ? depth : width) * share(i);
+		const cells = rows
+			? grid(m.count, 0, offset, width, band)
+			: grid(m.count, offset, 0, band, depth);
+		for (const p of cells) dots.push({ ...p, ingredientId: m.ingredientId });
+		offset += band;
 	});
 	return { width, depth, dots };
 }

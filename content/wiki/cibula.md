@@ -2,6 +2,7 @@
 title: Ako nakrájať a opiecť cibuľu
 summary: Základ skoro každého slaného jedla. Zosklovatenie vs. karamelizácia.
 section: zaklady
+group: techniky
 icon: onion
 order: 25
 ---

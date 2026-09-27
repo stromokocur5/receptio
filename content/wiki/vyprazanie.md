@@ -2,6 +2,7 @@
 title: Ako bezpečne vyprážať
 summary: Falafel, bhaji či nuggety – teplota oleja, hrniec a čo robiť, keď olej horí.
 section: zaklady
+group: techniky
 icon: flame
 order: 29
 ---

@@ -2,6 +2,7 @@
 title: Ako krájať – kocky, plátky, nadrobno
 summary: Ako držať nôž, aby si si neodrezal prst, a čo znamená „nadrobno“, „na kocky“ či „na pásiky“.
 section: zaklady
+group: techniky
 icon: knife
 order: 24
 ---

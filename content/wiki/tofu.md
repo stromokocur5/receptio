@@ -2,6 +2,7 @@
 title: Ako pripraviť tofu, aby chutilo
 summary: Lisovanie, chrumkavé opekanie a marinovanie. Tofu nie je mdlé, len sa s ním musí vedieť.
 section: zaklady
+group: prilohy
 icon: cube
 order: 24
 ---

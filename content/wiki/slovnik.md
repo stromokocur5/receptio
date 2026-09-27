@@ -2,6 +2,7 @@
 title: Slovník receptov
 summary: Speň, podus, orestuj, zredukuj, odstav – čo znamenajú slová, ktoré recepty používajú, akoby ich každý poznal.
 section: zaklady
+group: prve-kroky
 icon: book
 order: 19
 ---

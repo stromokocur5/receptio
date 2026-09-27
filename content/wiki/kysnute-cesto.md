@@ -2,6 +2,7 @@
 title: Ako na kysnuté cesto
 summary: Pizza, chlieb, pagáče – droždie, teplota, miesenie a ako spoznať, že cesto vykyslo.
 section: zaklady
+group: techniky
 icon: bowl
 order: 30
 ---

@@ -19,6 +19,7 @@ import {
 	INGREDIENT_CATEGORIES,
 	MEALS,
 	UNITS,
+	WIKI_GROUPS,
 	WIKI_SECTIONS,
 	type Catalog,
 	type Cuisine,
@@ -341,6 +342,7 @@ const wikiFrontmatterSchema = z
 		title: z.string(),
 		summary: z.string(),
 		section: z.enum(WIKI_SECTIONS),
+		group: z.enum(WIKI_GROUPS).optional(),
 		icon: z.string(),
 		order: z.number()
 	})

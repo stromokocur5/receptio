@@ -101,6 +101,12 @@ describe('content', () => {
 		const ids = new Set(content.cuisines.map((c) => c.id));
 		for (const r of content.recipes) expect(ids.has(r.cuisine), r.id).toBe(true);
 		const sections = new Set(content.wiki.map((w) => w.section));
-		expect([...sections].sort()).toEqual(['navody', 'pohyb', 'suplementy', 'zaklady']);
+		expect([...sections].sort()).toEqual([
+			'navody',
+			'pestovanie',
+			'pohyb',
+			'suplementy',
+			'zaklady'
+		]);
 	});
 });

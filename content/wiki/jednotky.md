@@ -2,6 +2,7 @@
 title: PL, ČL, hrnček – čo to znamená
 summary: Odmerky v receptoch, keď nemáš váhu.
 section: zaklady
+group: prve-kroky
 icon: spoon
 order: 20
 ---

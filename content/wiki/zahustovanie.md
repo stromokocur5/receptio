@@ -2,6 +2,7 @@
 title: Ako zahustiť omáčku a polievku
 summary: Zápražka, škrob, rozmixovanie, šošovica alebo len čas. Kedy ktorý spôsob a ako sa vyhnúť hrudkám.
 section: zaklady
+group: techniky
 icon: spoon
 order: 33
 ---

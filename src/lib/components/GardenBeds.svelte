@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
+	import PlantGlyph from '$lib/components/PlantGlyph.svelte';
 	import {
 		CELL_M,
 		bedPlants,
@@ -57,7 +58,6 @@
 	const UNDO_LIMIT = 30;
 
 	const color = (id: string) => catalog.ingredientsById.get(id)?.color ?? '#6fa35a';
-	const short = (id: string) => (guideById.get(id)?.name ?? id).slice(0, 2);
 
 	function update(bed: Bed) {
 		garden.current = { ...diary, beds: diary.beds.map((b) => (b.id === bed.id ? bed : b)) };
@@ -113,8 +113,8 @@
 	}
 
 	function cellAt(event: PointerEvent): string | null {
-		const el = document.elementFromPoint(event.clientX, event.clientY);
-		return el instanceof HTMLElement && el.dataset.cell ? el.dataset.cell : null;
+		const cell = document.elementFromPoint(event.clientX, event.clientY)?.closest('[data-cell]');
+		return cell instanceof HTMLElement ? (cell.dataset.cell ?? null) : null;
 	}
 
 	function strokeStart(bed: Bed, event: PointerEvent) {
@@ -238,7 +238,9 @@
 						class="chip"
 						aria-pressed={brush === g.ingredientId}
 						onclick={() => (brush = g.ingredientId)}
-						><i style:background={color(g.ingredientId)}></i>{g.name}</button
+						><svg class="glyph" viewBox="-11 -11 22 22" aria-hidden="true"
+							><PlantGlyph family={g.family} color={color(g.ingredientId)} /></svg
+						>{g.name}</button
 					>
 				{/each}
 			</div>
@@ -336,12 +338,18 @@
 								class:planted={!!id}
 								class:flag={flagged.has(key)}
 								data-cell={key}
-								style:background={id ? color(id) : undefined}
 								title={id ? guideById.get(id)?.name : undefined}
 								aria-label="{c + 1}. stĺpec, {r + 1}. rad: {id
 									? guideById.get(id)?.name
 									: 'prázdne'}"
-								onclick={(e) => keyPaint(bed, key, e)}>{id ? short(id) : ''}</button
+								onclick={(e) => keyPaint(bed, key, e)}
+								>{#if id}<svg viewBox="-11 -11 22 22" aria-hidden="true"
+										><PlantGlyph
+											family={guideById.get(id)?.family}
+											color={color(id)}
+											seed={c * 7 + r}
+										/></svg
+									>{/if}</button
 							>
 						{/each}
 					{/each}
@@ -475,7 +483,14 @@
 	.palette .chip {
 		flex: none;
 	}
-	.palette i,
+	.glyph {
+		width: 20px;
+		height: 20px;
+		margin: -2px 4px -2px -6px;
+		border-radius: 50%;
+		background: #6b4a33;
+		flex: none;
+	}
 	.plant i {
 		display: inline-block;
 		width: 10px;
@@ -557,9 +572,12 @@
 		display: grid;
 		gap: 2px;
 		width: max-content;
-		padding: 4px;
-		border-radius: 8px;
-		background: color-mix(in srgb, #8a5a3c 30%, var(--paper));
+		padding: 6px;
+		border-radius: 10px;
+		background: #b98a5a;
+		box-shadow:
+			inset 0 0 0 1.5px #8a6039,
+			0 5px 0 rgba(40, 25, 10, 0.18);
 		touch-action: none;
 		user-select: none;
 		-webkit-user-select: none;
@@ -572,12 +590,9 @@
 		width: var(--cell);
 		height: var(--cell);
 		border: 0;
-		border-radius: 5px;
-		background: color-mix(in srgb, #8a5a3c 18%, var(--paper));
-		font-size: 0.62rem;
-		font-weight: 700;
-		color: #1d2e24;
-		padding: 0;
+		border-radius: 4px;
+		background: radial-gradient(circle at 30% 30%, #7a5640, #62432f);
+		padding: 1px;
 		cursor: inherit;
 		transition:
 			transform 0.15s,
@@ -586,13 +601,18 @@
 	.cell:hover {
 		box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--ink) 35%, transparent);
 	}
-	.cell.planted {
-		animation: sprout 0.3s var(--ease-spring);
-		box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.14);
+	.cell svg {
+		display: block;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
+	.cell.planted svg {
+		animation: sprout 0.35s var(--ease-spring);
 	}
 	@keyframes sprout {
 		from {
-			transform: scale(0.6);
+			transform: scale(0.3) rotate(-60deg);
 		}
 	}
 	.cell.flag {

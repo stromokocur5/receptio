@@ -2,6 +2,7 @@
 title: Bezpečnosť v kuchyni
 summary: Nože, horúci olej, para z mixéra a lepok na doske. Pár návykov, ktoré ušetria prsty aj nemocnicu.
 section: zaklady
+group: prve-kroky
 icon: shield
 order: 37
 ---

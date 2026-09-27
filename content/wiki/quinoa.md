@@ -2,6 +2,7 @@
 title: Ako uvariť quinou
 summary: Preplach, pomer 1:2 a 15 minút.
 section: zaklady
+group: prilohy
 icon: bowl
 order: 22
 ---

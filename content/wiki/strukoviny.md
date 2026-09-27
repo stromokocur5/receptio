@@ -2,6 +2,7 @@
 title: Ako na strukoviny
 summary: Namáčanie, varenie, časy a ako sa vyhnúť nafukovaniu.
 section: zaklady
+group: prilohy
 icon: bean
 order: 23
 ---

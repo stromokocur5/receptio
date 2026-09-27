@@ -2,6 +2,7 @@
 title: Ako dochutiť jedlo
 summary: Keď jedlo „niečomu chýba“. Soľ, kyselina, sladkosť, umami a bylinky – čo pridať a kedy.
 section: zaklady
+group: techniky
 icon: salt
 order: 32
 ---

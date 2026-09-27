@@ -1,7 +1,7 @@
 ---
 title: Ako začať pestovať
 summary: Nádoby, zemina, zálievka a zmiešané výsadby – všetko, čo treba vedieť pred prvým semienkom. Na okne, balkóne aj v záhrade.
-section: navody
+section: pestovanie
 icon: sprout
 order: 5
 ---

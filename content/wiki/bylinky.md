@@ -2,6 +2,7 @@
 title: Čerstvé bylinky
 summary: Ktoré variť, ktoré sypať až navrch, ako ich skladovať, aby nezvädli za dva dni, a čo s tými sušenými.
 section: zaklady
+group: techniky
 icon: leaf
 order: 34
 ---

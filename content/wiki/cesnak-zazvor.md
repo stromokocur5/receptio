@@ -2,6 +2,7 @@
 title: Cesnak a zázvor
 summary: Rýchle lúpanie, strúhanie a prečo ich nepáliť.
 section: zaklady
+group: techniky
 icon: garlic
 order: 26
 ---

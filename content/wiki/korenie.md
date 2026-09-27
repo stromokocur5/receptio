@@ -2,6 +2,7 @@
 title: Ako používať korenie
 summary: Opekanie v oleji (tadka), kedy korenie pridať a čím nahradiť.
 section: zaklady
+group: techniky
 icon: spice
 order: 27
 ---

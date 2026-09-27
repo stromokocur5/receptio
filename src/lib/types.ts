@@ -322,14 +322,18 @@ export interface GrowCombo {
 	gear: string[];
 }
 
-export const WIKI_SECTIONS = ['zaklady', 'suplementy', 'navody', 'pohyb'] as const;
+export const WIKI_SECTIONS = ['zaklady', 'suplementy', 'navody', 'pestovanie', 'pohyb'] as const;
 export type WikiSection = (typeof WIKI_SECTIONS)[number];
+/** Sub-groups of the long "Základy" section. */
+export const WIKI_GROUPS = ['prve-kroky', 'prilohy', 'techniky', 'organizacia'] as const;
+export type WikiGroup = (typeof WIKI_GROUPS)[number];
 
 export interface WikiPage {
 	slug: string;
 	title: string;
 	summary: string;
 	section: WikiSection;
+	group?: WikiGroup;
 	icon: string;
 	order: number;
 	html: string;

@@ -2,6 +2,7 @@
 title: Umývanie a čistenie zeleniny
 summary: Čo umývať pod tečúcou vodou, čo namáčať, prečo huby nemáčať a ako na listový šalát.
 section: zaklady
+group: prve-kroky
 icon: drop
 order: 30
 ---

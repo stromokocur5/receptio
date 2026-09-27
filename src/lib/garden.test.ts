@@ -158,6 +158,22 @@ describe('comboLayout', () => {
 		expect(Math.max(...corn.map((d) => d.y))).toBeLessThan(Math.min(...beans.map((d) => d.y)));
 	});
 
+	it('puts crops side by side when a box is too shallow for rows', () => {
+		const layout = comboLayout(
+			combo('parapet', 0.3, ['fazula', 'kukurica', 'mata'], {
+				members: ['fazula', 'kukurica', 'mata'].map((id) => ({
+					ingredientId: id,
+					name: id,
+					count: 1
+				}))
+			}),
+			guides
+		);
+		const xs = layout.dots.map((d) => d.x);
+		expect(new Set(xs).size).toBe(3);
+		expect(layout.dots.every((d) => Math.abs(d.y - 0.15) < 1e-9)).toBe(true);
+	});
+
 	it('interleaves mixed plantings', () => {
 		const layout = comboLayout(combo('mix', 1, ['fazula', 'kukurica'], { layout: 'mix' }), guides);
 		expect(layout.dots.map((d) => d.ingredientId)).toEqual([

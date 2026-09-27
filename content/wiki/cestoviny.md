@@ -2,6 +2,7 @@
 title: Ako uvariť cestoviny
 summary: Veľa vody, poriadne osoliť a odložiť si hrnček vody z varenia.
 section: zaklady
+group: prilohy
 icon: pasta
 order: 28
 ---

@@ -1,7 +1,7 @@
 ---
 title: Kompost a vermikompost
 summary: Ako zo šupiek a lístia spraviť najlepšie hnojivo – na záhrade, na balkóne aj pod kuchynskou linkou.
-section: navody
+section: pestovanie
 icon: leaf
 order: 8
 ---

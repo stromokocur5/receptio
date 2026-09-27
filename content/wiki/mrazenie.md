@@ -2,6 +2,7 @@
 title: Chladnička, mraznička a zvyšky
 summary: Koľko vydrží uvarené jedlo, čo sa dá zamraziť, ako správne rozmrazovať a prečo s ryžou pozor.
 section: zaklady
+group: organizacia
 icon: snowflake
 order: 35
 ---

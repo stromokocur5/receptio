@@ -2,6 +2,7 @@
 title: Varenie na viac dní (meal prep)
 summary: Uvar v nedeľu raz a jedz celý týždeň. Čo variť vo veľkom, ako to skladovať a ako sa jedlo nezunuje.
 section: zaklady
+group: organizacia
 icon: calendar
 order: 36
 ---

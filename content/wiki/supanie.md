@@ -2,6 +2,7 @@
 title: Ako šúpať a lúpať zeleninu
 summary: Zemiaky, mrkva, cvikla, zázvor, paradajky či cesnak – čo šúpať škrabkou, čo lyžičkou a čo vôbec.
 section: zaklady
+group: techniky
 icon: peeler
 order: 29
 ---

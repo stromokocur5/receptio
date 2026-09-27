@@ -2,6 +2,7 @@
 title: Ako upiecť zeleninu v rúre
 summary: Chrumkavá namiesto rozmoknutej. Teplota, miesto na plechu a ktorá zelenina potrebuje koľko času.
 section: zaklady
+group: techniky
 icon: oven
 order: 31
 ---

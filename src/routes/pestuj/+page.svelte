@@ -640,23 +640,38 @@
 				<ol class="combos">
 					{#each plan.combos as { combo, modules, area }, i (combo.id)}
 						<li class="combo" style:--i={i}>
-							<div class="combo-head">
-								<h3>{combo.name}</h3>
-								<span class="badge leaf">
-									{modules > 1 ? `${modules} × ` : ''}{formatNumber(combo.area)} m² ={' '}
-									{formatNumber(area)} m²
-								</span>
-							</div>
-							<p class="members">
-								{#each combo.members as m (m.ingredientId)}
-									<button class="member" onclick={() => openCrop(m.ingredientId)}
-										><i style:background={color(m.ingredientId)}></i>{m.count * modules} × {m.name}</button
-									>
-								{/each}
-							</p>
-							<ComboLayout {combo} {guides} />
-							<p>{combo.how}</p>
-							<p class="why"><Icon name="heart" size={16} /> {combo.why}</p>
+							<details open={i === 0}>
+								<summary>
+									<span class="thumb"><ComboLayout {combo} {guides} compact /></span>
+									<span class="combo-sum">
+										<strong>{combo.name}</strong>
+										<span class="combo-meta">
+											{modules > 1 ? `${modules} × ` : ''}{formatNumber(combo.area)} m²{modules > 1
+												? ` = ${formatNumber(area)} m²`
+												: ''} · {combo.members.length}
+											{combo.members.length === 1
+												? 'druh'
+												: combo.members.length < 5
+													? 'druhy'
+													: 'druhov'}
+										</span>
+										<span class="why-short">{combo.why}</span>
+									</span>
+									<span class="chev" aria-hidden="true"><Icon name="plus" size={18} /></span>
+								</summary>
+								<div class="combo-body">
+									<ComboLayout {combo} {guides} />
+									<p class="members">
+										{#each combo.members as m (m.ingredientId)}
+											<button class="member" onclick={() => openCrop(m.ingredientId)}
+												><i style:background={color(m.ingredientId)}></i>{m.count * modules} × {m.name}</button
+											>
+										{/each}
+									</p>
+									<p class="how-to"><Icon name="sprout" size={16} /> {combo.how}</p>
+									<p class="why"><Icon name="heart" size={16} /> {combo.why}</p>
+								</div>
+							</details>
 						</li>
 					{/each}
 				</ol>
@@ -1195,22 +1210,86 @@
 		gap: 12px;
 	}
 	.combo {
-		padding: 16px;
 		border-radius: var(--radius-sm);
 		background: var(--paper);
 		border: 1px solid var(--line);
 		animation: rise 0.45s var(--ease-out) both;
 		animation-delay: calc(var(--i) * 70ms);
+		transition:
+			border-color 0.2s,
+			box-shadow 0.2s;
 	}
-	.combo-head {
+	.combo:has(details[open]) {
+		border-color: var(--leaf-2);
+		box-shadow: var(--shadow);
+	}
+	.combo summary {
+		display: grid;
+		grid-template-columns: 110px 1fr auto;
+		gap: 14px;
+		align-items: center;
+		padding: 12px;
+		cursor: pointer;
+		list-style: none;
+	}
+	.combo summary::-webkit-details-marker {
+		display: none;
+	}
+	.thumb {
+		display: block;
+		transition: transform 0.3s var(--ease-spring);
+	}
+	.combo summary:hover .thumb {
+		transform: rotate(-2deg) scale(1.04);
+	}
+	.combo-sum {
+		display: grid;
+		gap: 2px;
+		min-width: 0;
+	}
+	.combo-sum strong {
+		font-family: var(--font-display);
+		font-size: 1.1rem;
+		line-height: 1.2;
+	}
+	.combo-meta {
+		font-size: 0.82rem;
+		font-weight: 650;
+		color: var(--leaf);
+	}
+	.why-short {
+		font-size: 0.85rem;
+		color: var(--ink-2);
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+	details[open] .why-short {
+		display: none;
+	}
+	.chev {
+		display: grid;
+		place-items: center;
+		width: 34px;
+		height: 34px;
+		border-radius: 50%;
+		background: var(--card);
+		border: 1px solid var(--line);
+		transition: transform 0.35s var(--ease-spring);
+	}
+	details[open] .chev {
+		transform: rotate(45deg);
+	}
+	.combo-body {
+		padding: 0 16px 16px;
+		animation: rise 0.35s var(--ease-out);
+	}
+	.how-to {
 		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		align-items: baseline;
 		gap: 8px;
-	}
-	.combo h3 {
-		margin: 0;
+		align-items: flex-start;
 	}
 	.members {
 		display: flex;
@@ -1496,6 +1575,10 @@
 		color: var(--ink-2);
 	}
 	@media (max-width: 520px) {
+		.combo summary {
+			grid-template-columns: 84px 1fr auto;
+			gap: 10px;
+		}
 		.opts {
 			grid-template-columns: 1fr;
 		}

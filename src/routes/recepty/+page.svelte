@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Seo from '$lib/components/Seo.svelte';
 	import { onMount } from 'svelte';
-	import { replaceState } from '$app/navigation';
+	import { goto, replaceState } from '$app/navigation';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
@@ -171,6 +171,13 @@
 	});
 	const results = $derived(filtered.list);
 
+	/** A random recipe from what the current filters allow (or from all, if none match). */
+	function surprise() {
+		const pool = results.length ? results : catalog.recipes;
+		const pick = pool[Math.floor(Math.random() * pool.length)];
+		if (pick) void goto(`/recepty/${pick.id}`);
+	}
+
 	const shown = $derived(results.slice(0, limit));
 	$effect(() => {
 		// Any filter change starts from the first page again.
@@ -275,11 +282,6 @@
 	<header class="page-head rise">
 		<p class="eyebrow">Recepty</p>
 		<h1>Čo dnes uvaríme?</h1>
-		<p class="shortcuts">
-			<a href="/zvysky"><Icon name="jar" size={16} /> Zo zvyškov</a>
-			<a href="/sezona"><Icon name="leaf" size={16} /> Čo je v sezóne</a>
-			<a href="/plan"><Icon name="sparkle" size={16} /> Navrhni mi plán</a>
-		</p>
 	</header>
 
 	<div class="toolbar">
@@ -306,6 +308,25 @@
 			{#if activeFilterCount}<span class="count">{activeFilterCount}</span>{/if}
 		</button>
 	</div>
+
+	<nav class="ideas" aria-label="Nevieš, čo variť?">
+		<span class="ideas-label">Nevieš, čo variť?</span>
+		<a class="idea" href="/spajza" style:--tone="var(--turmeric)"
+			><span class="idea-ico"><Icon name="jar" size={16} /></span> Z toho, čo mám doma</a
+		>
+		<a class="idea" href="/zvysky" style:--tone="var(--leaf-2)"
+			><span class="idea-ico"><Icon name="history" size={16} /></span> Zo zvyškov</a
+		>
+		<a class="idea" href="/sezona" style:--tone="var(--leaf)"
+			><span class="idea-ico"><Icon name="leaf" size={16} /></span> V sezóne</a
+		>
+		<a class="idea" href="/plan#navrh" style:--tone="var(--sky)"
+			><span class="idea-ico"><Icon name="calendar" size={16} /></span> Navrhni mi týždeň</a
+		>
+		<button class="idea" style:--tone="var(--tomato)" onclick={surprise}
+			><span class="idea-ico"><Icon name="sparkle" size={16} /></span> Prekvap ma</button
+		>
+	</nav>
 
 	<div class="layout">
 		<aside id="filters" class="filters card" class:open={filtersOpen}>
@@ -528,18 +549,60 @@
 </div>
 
 <style>
-	.shortcuts {
+	.ideas {
 		display: flex;
-		flex-wrap: wrap;
-		gap: 8px 16px;
-		margin: 6px 0 0;
-		font-size: 0.9rem;
-		font-weight: 650;
+		align-items: center;
+		gap: 8px;
+		margin: 14px -16px 0;
+		padding: 2px 16px 6px;
+		overflow-x: auto;
+		scrollbar-width: none;
 	}
-	.shortcuts a {
+	.ideas::-webkit-scrollbar {
+		display: none;
+	}
+	.ideas-label {
+		flex: none;
+		margin-right: 4px;
+		font-size: 0.85rem;
+		font-weight: 650;
+		color: var(--muted);
+	}
+	.idea {
+		flex: none;
 		display: inline-flex;
 		align-items: center;
-		gap: 5px;
+		gap: 8px;
+		padding: 5px 14px 5px 5px;
+		border: 1.5px solid var(--line);
+		border-radius: 999px;
+		background: var(--card);
+		color: var(--ink);
+		font: inherit;
+		font-size: 0.88rem;
+		font-weight: 650;
+		text-decoration: none;
+		cursor: pointer;
+		transition:
+			transform 0.25s var(--ease-spring),
+			border-color 0.2s;
+	}
+	.idea:hover {
+		transform: translateY(-2px);
+		border-color: var(--tone);
+	}
+	.idea-ico {
+		display: grid;
+		place-items: center;
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		background: color-mix(in srgb, var(--tone) 18%, transparent);
+		color: color-mix(in srgb, var(--tone) 75%, var(--ink));
+		transition: transform 0.3s var(--ease-spring);
+	}
+	.idea:hover .idea-ico {
+		transform: rotate(-12deg) scale(1.08);
 	}
 	.page {
 		padding-top: 28px;

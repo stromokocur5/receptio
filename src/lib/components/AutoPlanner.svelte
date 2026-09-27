@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { formatEur, formatNumber } from '$lib/amounts';
 	import { autoPlan, type AutoPlanOptions, type AutoPlanResult } from '$lib/autoplan';
 	import { useCatalog } from '$lib/catalog';
@@ -15,6 +16,11 @@
 	const month = new Date().getMonth() + 1;
 
 	let open = $state(false);
+
+	// Links like "Navrhni mi týždeň" land here already opened.
+	onMount(() => {
+		if (location.hash === '#navrh') open = true;
+	});
 	let budget = $state<number | null>(null);
 	let minProtein = $state(20);
 	let mild = $state(false);
@@ -83,7 +89,7 @@
 	}
 </script>
 
-<section class="card box auto">
+<section id="navrh" class="card box auto">
 	<button class="head" onclick={() => (open = !open)} aria-expanded={open}>
 		<Icon name="sparkle" size={22} />
 		<span>

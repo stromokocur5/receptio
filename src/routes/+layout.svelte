@@ -6,6 +6,7 @@
 	import { indexCatalog, provideCatalog } from '$lib/catalog';
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
 	import Logo from '$lib/components/Logo.svelte';
+	import MoreMenu, { MORE_MENU_ID, MORE_PATHS } from '$lib/components/MoreMenu.svelte';
 	import Onboarding from '$lib/components/Onboarding.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
 	import { changes, loadLikes, loadPersisted, plan, settings } from '$lib/state.svelte';
@@ -18,13 +19,12 @@
 	const catalog = $derived(indexCatalog(data.catalog));
 	provideCatalog(() => catalog);
 
+	/** The four things people come for; everything else lives under "Viac". */
 	const NAV: { href: string; label: string; icon: IconName }[] = [
 		{ href: '/recepty', label: 'Recepty', icon: 'bowl' },
-		{ href: '/kuchyne', label: 'Kuchyne', icon: 'globe' },
+		{ href: '/plan', label: 'Plán a nákup', icon: 'calendar' },
 		{ href: '/spajza', label: 'Špajza', icon: 'jar' },
-		{ href: '/plan', label: 'Plán', icon: 'calendar' },
-		{ href: '/ceny', label: 'Ceny', icon: 'tag' },
-		{ href: '/wiki', label: 'Wiki', icon: 'book' }
+		{ href: '/pestuj', label: 'Pestuj', icon: 'sprout' }
 	];
 
 	const planCount = $derived(plan.current.length);
@@ -32,6 +32,7 @@
 	const syncTrouble = $derived(syncState.status === 'error' || syncState.status === 'conflict');
 	const isActive = (href: string) =>
 		page.url.pathname === href || page.url.pathname.startsWith(`${href}/`);
+	const moreActive = $derived(MORE_PATHS.some(isActive));
 
 	onMount(() => {
 		loadPersisted();
@@ -89,6 +90,10 @@
 					{#if item.href === '/plan' && planCount > 0}<span class="dot">{planCount}</span>{/if}
 				</a>
 			{/each}
+			<button class="nav-link draw-host" class:active={moreActive} popovertarget={MORE_MENU_ID}>
+				<Icon name="sparkle" size={19} />
+				Viac
+			</button>
 		</nav>
 		<a
 			class="icon-btn mine"
@@ -141,10 +146,19 @@
 				<Icon name={item.icon} size={22} />
 				{#if item.href === '/plan' && planCount > 0}<span class="dot">{planCount}</span>{/if}
 			</span>
-			<span class="lbl">{item.label}</span>
+			<span class="lbl">{item.href === '/plan' ? 'Plán' : item.label}</span>
 		</a>
 	{/each}
+	<button class:active={moreActive} popovertarget={MORE_MENU_ID}>
+		<span class="ico">
+			<Icon name="sparkle" size={22} />
+			{#if syncTrouble}<span class="alert-dot" aria-hidden="true"></span>{/if}
+		</span>
+		<span class="lbl">Viac</span>
+	</button>
 </nav>
+
+<MoreMenu />
 
 <style>
 	.skip {
@@ -185,6 +199,10 @@
 	}
 	.nav-link {
 		position: relative;
+		border: 0;
+		background: none;
+		font: inherit;
+		cursor: pointer;
 		display: inline-flex;
 		align-items: center;
 		gap: 7px;
@@ -290,7 +308,7 @@
 		bottom: calc(10px + env(safe-area-inset-bottom));
 		z-index: 50;
 		display: grid;
-		grid-template-columns: repeat(6, 1fr);
+		grid-template-columns: repeat(5, 1fr);
 		background: color-mix(in srgb, var(--card) 88%, transparent);
 		backdrop-filter: blur(16px) saturate(1.4);
 		border: 1px solid var(--line);
@@ -299,7 +317,8 @@
 		padding: 6px;
 		view-transition-name: mobile-nav;
 	}
-	.mobile a {
+	.mobile a,
+	.mobile button {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -308,21 +327,29 @@
 		border-radius: 16px;
 		color: var(--muted);
 		text-decoration: none;
-		font-size: 0.68rem;
+		border: 0;
+		background: none;
+		font: inherit;
+		font-size: 0.7rem;
 		font-weight: 700;
+		cursor: pointer;
 		transition:
 			color 0.2s,
 			background 0.2s;
 	}
-	.mobile a.active {
+	.mobile .active {
 		color: var(--ink);
 		background: var(--paper-2);
 	}
-	.mobile a.active .ico {
+	.mobile .active .ico {
 		animation: hop 0.5s var(--ease-spring);
 	}
 	.ico {
 		position: relative;
+	}
+	.ico .alert-dot {
+		top: -2px;
+		right: -4px;
 	}
 	.ico .dot {
 		position: absolute;

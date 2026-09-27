@@ -2,6 +2,7 @@
 title: Ako uvariť ryžu
 summary: Sypká ryža bez prilepeného dna. Metóda absorpcie a metóda ako cestoviny.
 section: zaklady
+group: prilohy
 icon: bowl
 order: 21
 ---

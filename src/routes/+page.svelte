@@ -9,7 +9,8 @@
 	import { pluralRecipes } from '$lib/labels';
 	import { IN_MONTH, recipeSeason } from '$lib/season';
 	import { bedPlants, localizeGuide, monthTasks, seasonDelayWeeks } from '$lib/garden';
-	import { garden, likes, settings, ui } from '$lib/state.svelte';
+	import { onboarding } from '$lib/onboarding.svelte';
+	import { favorites, garden, likes, pantry, plan, settings, ui } from '$lib/state.svelte';
 	import type { GrowGuide } from '$lib/types';
 
 	const catalog = useCatalog();
@@ -73,57 +74,109 @@
 		)
 	);
 
-	const QUICK: { href: string; title: string; text: string; icon: IconName; tone: string }[] = [
+	/** The four things Receptio does, each with its main door and a couple of side doors. */
+	const PILLARS: {
+		title: string;
+		text: string;
+		icon: IconName;
+		tone: string;
+		href: string;
+		cta: string;
+		more: { href: string; label: string }[];
+	}[] = [
 		{
-			href: '/spajza',
-			title: 'Čo uvarím z toho, čo mám?',
-			text: 'Nakliknem, čo mám doma, a appka zoradí recepty podľa zhody.',
-			icon: 'jar',
-			tone: 'var(--turmeric)'
+			title: 'Nájdi, čo uvariť',
+			text: 'Recepty z 21 kuchýň sveta so živinami, cenou porcie, lepkom a alergénmi. Filtre podľa času, jedla aj pálivosti.',
+			icon: 'bowl',
+			tone: 'var(--tomato)',
+			href: '/recepty',
+			cta: 'Recepty',
+			more: [
+				{ href: '/recepty?gf=1', label: 'Bezlepkové' },
+				{ href: '/recepty?sort=protein-eur', label: 'Najviac bielkovín za euro' },
+				{ href: '/recepty?jedlo=domace', label: 'Urob si sám' }
+			]
 		},
 		{
-			href: '/zvysky',
-			title: 'Čo uvariť zo zvyškov',
-			text: 'Pol cukety, ryža zo včera? Vyber, čo treba minúť, a nájde sa recept.',
-			icon: 'jar',
-			tone: 'var(--leaf-2)'
-		},
-		{
-			href: '/pestuj',
-			title: 'Pestuj si sám',
-			text: 'Čo sa u nás oplatí pestovať a plánovač pre okno, balkón aj záhradu.',
-			icon: 'sprout',
-			tone: 'var(--leaf-2)'
-		},
-		{
-			href: '/recepty?gf=1',
-			title: 'Bezlepkovo',
-			text: 'Lepok odvodený zo surovín vrátane zámen typu tamari.',
-			icon: 'wheat-off',
-			tone: 'var(--leaf-2)'
-		},
-		{
-			href: '/recepty?sort=protein-eur',
-			title: 'Najviac bielkovín za euro',
-			text: 'Strukoviny a tofu zoradené podľa toho, koľko bielkovín dostaneš za peniaze.',
-			icon: 'bean',
-			tone: 'var(--tomato)'
-		},
-		{
-			href: '/recepty?jedlo=domace',
-			title: 'Urob si sám',
-			text: 'Domáce tofu, tempeh, sójové mlieko, jogurt, tahini či arašidové maslo.',
-			icon: 'cube',
-			tone: 'var(--plum)'
-		},
-		{
+			title: 'Naplánuj týždeň a nakúp',
+			text: 'Vyber recepty alebo si nechaj plán navrhnúť. Dostaneš jeden nákupný zoznam s cenami, bez toho, čo máš doma.',
+			icon: 'calendar',
+			tone: 'var(--sky)',
 			href: '/plan',
-			title: 'Týždenný plán a nákup',
-			text: 'Vyber recepty a dostaneš jeden nákupný zoznam bez vecí, ktoré máš doma.',
-			icon: 'basket',
-			tone: 'var(--sky)'
+			cta: 'Plán a nákup',
+			more: [
+				{ href: '/plan#navrh', label: 'Navrhni mi týždeň' },
+				{ href: '/ceny', label: 'Ceny v obchodoch' }
+			]
+		},
+		{
+			title: 'Var z toho, čo máš',
+			text: 'Naklikaj, čo máš v špajzi, a recepty sa zoradia podľa zhody. Po uvarení sa suroviny samy odpočítajú.',
+			icon: 'jar',
+			tone: 'var(--turmeric)',
+			href: '/spajza',
+			cta: 'Špajza',
+			more: [
+				{ href: '/zvysky', label: 'Zo zvyškov' },
+				{ href: '/sezona', label: 'Čo je v sezóne' }
+			]
+		},
+		{
+			title: 'Dopestuj si to',
+			text: 'Čo sa u nás oplatí pestovať a plánovač pre okno, balkón aj záhradu – s kalendárom prác a zápisom úrody.',
+			icon: 'sprout',
+			tone: 'var(--leaf-2)',
+			href: '/pestuj',
+			cta: 'Pestuj si sám',
+			more: [{ href: '/wiki/ako-zacat-pestovat', label: 'Ako začať' }]
 		}
 	];
+
+	const STEPS: { icon: IconName; title: string; text: string }[] = [
+		{
+			icon: 'heart',
+			title: 'Vyber si recepty',
+			text: 'Tlačidlom + ich pridáš do plánu na týždeň.'
+		},
+		{
+			icon: 'basket',
+			title: 'Nakúp podľa zoznamu',
+			text: 'Suroviny sa spočítajú, vynechá sa, čo máš doma, a uvidíš, kde je to najlacnejšie.'
+		},
+		{
+			icon: 'chef',
+			title: 'Var krok za krokom',
+			text: 'Režim varenia s časovačmi, veľkým písmom a ovládaním hlasom.'
+		}
+	];
+
+	const VALUES: { icon: IconName; title: string; text: string }[] = [
+		{
+			icon: 'shield',
+			title: 'Bez reklám a sledovania',
+			text: 'Žiadne pop-upy, cookies na reklamu ani konto. Tvoje dáta ostávajú v tvojom telefóne.'
+		},
+		{
+			icon: 'scale',
+			title: 'Čísla sa počítajú, nie odhadujú',
+			text: 'Živiny, cena aj lepok vychádzajú zo surovín receptu. Kde je cena len odhad, je to napísané.'
+		},
+		{
+			icon: 'euro',
+			title: 'Lacno a zdravo',
+			text: 'Uvidíš, koľko stojí porcia a či máš dosť bielkovín, B12, železa a vápnika.'
+		},
+		{
+			icon: 'users',
+			title: 'Pre každého, zadarmo',
+			text: 'Nekomerčný projekt. Recept môže navrhnúť ktokoľvek.'
+		}
+	];
+
+	/** Where a returning visitor left off. */
+	const inPlan = $derived(ui.loaded ? plan.current.length : 0);
+	const inPantry = $derived(ui.loaded ? Object.keys(pantry.current).length : 0);
+	const favCount = $derived(ui.loaded ? Object.keys(favorites.current).length : 0);
 
 	function search(event: SubmitEvent) {
 		event.preventDefault();
@@ -157,6 +210,12 @@
 				<span><strong>{catalog.cuisines.length}</strong> kuchýň</span>
 				<span><strong>{catalog.ingredients.length}</strong> surovín</span>
 			</div>
+			<p class="hero-links">
+				<button class="linkish" onclick={() => (onboarding.open = true)}
+					><Icon name="info" size={16} /> Ako to funguje</button
+				>
+				<a href="/o-projekte"><Icon name="heart" size={16} /> Prečo Receptio vzniklo</a>
+			</p>
 		</div>
 		<div class="hero-art plate-host" aria-hidden="true">
 			<div class="blob"></div>
@@ -211,15 +270,73 @@
 	</div>
 </section>
 
-<section class="wrap quick">
-	{#each QUICK as q, i (q.href)}
-		<a class="quick-card card draw-host rise" href={q.href} style:--tone={q.tone} style:--i={i}>
-			<span class="q-icon"><Icon name={q.icon} size={26} /></span>
-			<h3>{q.title}</h3>
-			<p>{q.text}</p>
-			<span class="go"><Icon name="arrow-right" size={18} /></span>
-		</a>
-	{/each}
+{#if inPlan || inPantry || favCount}
+	<section class="wrap continue" aria-label="Pokračuj">
+		{#if inPlan}
+			<a class="card cont" href="/plan" style:--tone="var(--sky)">
+				<Icon name="calendar" size={22} />
+				<span
+					><strong>{inPlan} {pluralRecipes(inPlan)} v pláne</strong><small
+						>Pozri nákupný zoznam</small
+					></span
+				>
+			</a>
+		{/if}
+		{#if inPantry}
+			<a class="card cont" href="/recepty?sort=spajza" style:--tone="var(--turmeric)">
+				<Icon name="jar" size={22} />
+				<span><strong>Čo uvarím zo špajze</strong><small>{inPantry} surovín doma</small></span>
+			</a>
+		{/if}
+		{#if favCount}
+			<a class="card cont" href="/moje" style:--tone="var(--tomato)">
+				<Icon name="heart" size={22} />
+				<span><strong>Obľúbené</strong><small>{favCount} {pluralRecipes(favCount)}</small></span>
+			</a>
+		{/if}
+	</section>
+{/if}
+
+<section class="wrap block pillars-block">
+	<div class="head">
+		<h2>Čo tu môžeš robiť</h2>
+	</div>
+	<div class="pillars">
+		{#each PILLARS as p, i (p.href)}
+			<article class="card pillar rise" style:--tone={p.tone} style:--i={i}>
+				<span class="p-icon"><Icon name={p.icon} size={28} draw /></span>
+				<h3>{p.title}</h3>
+				<p>{p.text}</p>
+				<div class="p-links">
+					<a class="btn small p-main" href={p.href}>{p.cta} <Icon name="arrow-right" size={16} /></a
+					>
+					{#each p.more as m (m.href)}<a class="p-more" href={m.href}>{m.label}</a>{/each}
+				</div>
+			</article>
+		{/each}
+	</div>
+</section>
+
+<section class="wrap block">
+	<div class="how card">
+		<div class="how-copy">
+			<p class="eyebrow">Ako to funguje</p>
+			<h2>Od receptu po tanier v troch krokoch</h2>
+			<button class="btn ghost small" onclick={() => (onboarding.open = true)}>
+				<Icon name="play" size={16} /> Krátky sprievodca
+			</button>
+		</div>
+		<ol class="steps">
+			{#each STEPS as step, i (step.title)}
+				<li style:--i={i}>
+					<span class="s-num">{i + 1}</span>
+					<span class="s-icon"><Icon name={step.icon} size={24} /></span>
+					<strong>{step.title}</strong>
+					<p>{step.text}</p>
+				</li>
+			{/each}
+		</ol>
+	</div>
 </section>
 
 {#if gardenTasks.length}
@@ -321,6 +438,36 @@
 </section>
 
 <section class="wrap block">
+	<div class="story">
+		<div class="story-copy">
+			<p class="eyebrow">Prečo Receptio vzniklo</p>
+			<h2>Z domácej potreby</h2>
+			<p>
+				Receptio vzniklo pre seba a kamarátov. Chýbali dobré rastlinné a bezlepkové recepty po
+				slovensky, pri ktorých by bolo jasné, koľko bielkovín, B12 či železa v nich je a koľko stojí
+				porcia. Weby s receptami boli plné reklám a vyskakovacích okien, čísla na nich chýbali.
+			</p>
+			<p>
+				Tak vznikol nástroj, ktorý to spája: recepty, plán, nákup a špajzu na jednom mieste. Dnes je
+				otvorený pre každého – zadarmo, bez reklám a bez sledovania.
+			</p>
+			<a class="btn ghost small" href="/o-projekte"
+				>Viac o projekte <Icon name="arrow-right" size={16} /></a
+			>
+		</div>
+		<ul class="values">
+			{#each VALUES as v, i (v.title)}
+				<li class="card rise" style:--i={i}>
+					<span class="v-icon"><Icon name={v.icon} size={22} /></span>
+					<strong>{v.title}</strong>
+					<p>{v.text}</p>
+				</li>
+			{/each}
+		</ul>
+	</div>
+</section>
+
+<section class="wrap block">
 	<a class="b12 card draw-host" href="/wiki/b12">
 		<span class="pill-ico"><Icon name="pill" size={30} /></span>
 		<div>
@@ -329,6 +476,16 @@
 		</div>
 		<Icon name="arrow-right" size={20} />
 	</a>
+</section>
+
+<section class="wrap block">
+	<div class="cta-final card">
+		<div>
+			<h2>Máš recept, ktorý tu chýba?</h2>
+			<p>Pošli ho. Skontrolujem ho, dopočítam živiny aj cenu a pridám ho pre všetkých.</p>
+		</div>
+		<a class="btn leaf" href="/navrhni"><Icon name="send" size={18} /> Navrhni recept</a>
+	</div>
 </section>
 
 <style>
@@ -454,56 +611,233 @@
 		}
 	}
 
-	.quick {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-		gap: 14px;
-		margin-top: 18px;
+	.hero-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px 18px;
+		margin: 14px 0 0;
+		font-size: 0.92rem;
+		font-weight: 650;
 	}
-	.quick-card {
-		position: relative;
-		padding: 20px 20px 18px;
+	.hero-links a,
+	.linkish {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		color: var(--leaf);
+	}
+	.linkish {
+		border: 0;
+		padding: 0;
+		background: none;
+		font: inherit;
+		cursor: pointer;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+
+	.continue {
+		display: flex;
+		gap: 10px;
+		margin-top: 8px;
+		overflow-x: auto;
+		scrollbar-width: none;
+	}
+	.cont {
+		flex: 1 0 200px;
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 12px 16px;
+		color: var(--ink);
 		text-decoration: none;
-		color: inherit;
+		border-left: 4px solid var(--tone);
+		transition: transform 0.25s var(--ease-spring);
+	}
+	.cont:hover {
+		transform: translateY(-2px);
+	}
+	.cont :global(svg) {
+		color: var(--tone);
+		flex: none;
+	}
+	.cont span {
+		display: grid;
+	}
+	.cont small {
+		color: var(--muted);
+	}
+
+	.pillars {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		gap: 14px;
+	}
+	.pillar {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 20px;
+		animation-delay: calc(var(--i) * 80ms + 150ms);
+		border-top: 4px solid var(--tone);
 		transition:
 			transform 0.3s var(--ease-spring),
 			box-shadow 0.3s;
-		animation-delay: calc(var(--i) * 70ms + 200ms);
 	}
-	.quick-card:hover {
+	.pillar:hover {
 		transform: translateY(-4px);
 		box-shadow: var(--shadow-lift);
 	}
-	.q-icon {
-		display: inline-grid;
+	.p-icon {
+		display: grid;
 		place-items: center;
-		width: 48px;
-		height: 48px;
-		border-radius: 16px;
+		width: 52px;
+		height: 52px;
+		border-radius: 17px;
 		background: color-mix(in srgb, var(--tone) 18%, transparent);
-		color: var(--tone);
-		margin-bottom: 12px;
+		color: color-mix(in srgb, var(--tone) 80%, var(--ink));
 		transform: rotate(-4deg);
+		transition: transform 0.35s var(--ease-spring);
 	}
-	.quick-card h3 {
-		font-size: 1.12rem;
-		margin-bottom: 0.3em;
+	.pillar:hover .p-icon {
+		transform: rotate(4deg) scale(1.06);
 	}
-	.quick-card p {
+	.pillar h3 {
+		margin: 4px 0 0;
+		font-size: 1.2rem;
+	}
+	.pillar p {
+		margin: 0;
+		color: var(--ink-2);
+		font-size: 0.93rem;
+	}
+	.p-links {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px 12px;
+		margin-top: auto;
+		padding-top: 8px;
+	}
+	.p-main {
+		background: color-mix(in srgb, var(--tone) 20%, var(--card));
+		color: var(--ink);
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.p-more {
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--ink-2);
+	}
+
+	.how {
+		display: grid;
+		gap: 20px;
+		padding: 24px;
+	}
+	.how-copy h2 {
+		margin: 4px 0 12px;
+	}
+	.steps {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 14px;
+	}
+	.steps li {
+		position: relative;
+		display: grid;
+		grid-template-columns: auto 1fr;
+		grid-template-rows: auto auto;
+		column-gap: 14px;
+		align-items: center;
+		animation: rise 0.5s var(--ease-out) both;
+		animation-delay: calc(var(--i) * 120ms + 200ms);
+	}
+	.s-num {
+		display: none;
+	}
+	.s-icon {
+		grid-row: span 2;
+		display: grid;
+		place-items: center;
+		width: 52px;
+		height: 52px;
+		border-radius: 50%;
+		background: var(--leaf-soft);
+		color: var(--leaf);
+		border: 2px dashed color-mix(in srgb, var(--leaf-2) 60%, transparent);
+	}
+	.steps strong {
+		font-family: var(--font-display);
+		font-size: 1.08rem;
+	}
+	.steps p {
 		margin: 0;
 		color: var(--ink-2);
 		font-size: 0.92rem;
 	}
-	.go {
-		position: absolute;
-		top: 20px;
-		right: 18px;
-		color: var(--muted);
-		transition: transform 0.3s var(--ease-spring);
+
+	.story {
+		display: grid;
+		gap: 22px;
 	}
-	.quick-card:hover .go {
-		transform: translateX(4px);
-		color: var(--ink);
+	.story-copy h2 {
+		margin: 4px 0 10px;
+	}
+	.story-copy p {
+		color: var(--ink-2);
+		max-width: 60ch;
+	}
+	.values {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+		gap: 12px;
+	}
+	.values li {
+		display: grid;
+		gap: 6px;
+		align-content: start;
+		padding: 16px;
+		animation-delay: calc(var(--i) * 80ms + 100ms);
+	}
+	.v-icon {
+		display: grid;
+		place-items: center;
+		width: 40px;
+		height: 40px;
+		border-radius: 13px;
+		background: var(--leaf-soft);
+		color: var(--leaf);
+	}
+	.values p {
+		margin: 0;
+		font-size: 0.88rem;
+		color: var(--ink-2);
+	}
+
+	.cta-final {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		padding: 24px;
+		background:
+			radial-gradient(circle at 90% 20%, var(--turmeric-soft), transparent 50%), var(--leaf-soft);
+	}
+	.cta-final h2 {
+		margin: 0 0 4px;
+	}
+	.cta-final p {
+		margin: 0;
+		color: var(--ink-2);
 	}
 
 	.block {
@@ -635,38 +969,41 @@
 		}
 	}
 	@media (max-width: 600px) {
-		.quick {
-			grid-template-columns: 1fr 1fr;
-			gap: 10px;
-		}
-		.quick-card {
-			padding: 14px;
-		}
-		.q-icon {
-			width: 40px;
-			height: 40px;
-			border-radius: 13px;
-			margin-bottom: 8px;
-		}
-		.quick-card h3 {
-			font-size: 0.98rem;
-		}
-		.quick-card p {
-			font-size: 0.8rem;
-			display: -webkit-box;
-			-webkit-line-clamp: 3;
-			line-clamp: 3;
-			-webkit-box-orient: vertical;
-			overflow: hidden;
-		}
-		.go {
-			display: none;
-		}
 		.block {
 			margin-top: 40px;
 		}
 	}
 	@media (min-width: 860px) {
+		.how {
+			grid-template-columns: 0.8fr 2fr;
+			align-items: center;
+			padding: 32px;
+		}
+		.steps {
+			grid-template-columns: repeat(3, 1fr);
+			gap: 20px;
+		}
+		.steps li {
+			grid-template-columns: 1fr;
+			justify-items: start;
+			row-gap: 8px;
+		}
+		.s-icon {
+			grid-row: auto;
+		}
+		/* Dashed arrow between steps on wide screens. */
+		.steps li:not(:last-child)::after {
+			content: '';
+			position: absolute;
+			top: 26px;
+			left: 64px;
+			right: -8px;
+			border-top: 2px dashed var(--line);
+		}
+		.story {
+			grid-template-columns: 1fr 1.2fr;
+			align-items: center;
+		}
 		.hero {
 			padding: 56px 0 30px;
 		}
