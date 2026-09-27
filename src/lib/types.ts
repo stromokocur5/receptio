@@ -302,6 +302,8 @@ export interface GrowCombo {
 	sun: GrowSun[];
 	level: 1 | 2 | 3;
 	area: number;
+	/** `rows`: crops in bands, tall ones north; `mix`: interplanted (three sisters). */
+	layout: 'rows' | 'mix';
 	/** Most modules worth planting (perennial borders, herb spirals); unlimited when absent. */
 	max?: number;
 	/** Plants per module, by ingredient id. */

@@ -1,9 +1,12 @@
 import { browser } from '$app/environment';
 import { consumeFromPantry, type Pantry, type PantryUse } from './pantry';
 import type { PlanEntry } from './shopping';
-import type { Ingredient, RecipeLine } from './types';
+import type { GrowPlace, GrowSun, Ingredient, RecipeLine } from './types';
 
 const PREFIX = 'receptio:';
+
+/** Bumped on every saved change, so sync knows when there's something new to upload. */
+export const changes = $state({ count: 0 });
 
 /**
  * A value mirrored to localStorage. Starts with `initial` on the server and during hydration,
@@ -28,6 +31,7 @@ class Persisted<T> {
 	set current(value: T) {
 		this.#value = value;
 		if (!browser) return;
+		changes.count++;
 		try {
 			localStorage.setItem(this.#key, JSON.stringify(value));
 		} catch {
@@ -182,6 +186,72 @@ export const favorites = new Persisted<Record<string, boolean>>('favorites', {},
 /** Personal notes per recipe ("next time less salt"). */
 export const notes = new Persisted<Record<string, string>>('notes', {}, validateNotes);
 
+/** A saved garden plan and its diary. */
+export interface GardenDiary {
+	place: GrowPlace;
+	area: number;
+	sun: GrowSun;
+	level: 1 | 2 | 3;
+	/** Polycultures chosen by the planner and how many modules of each. */
+	combos: { id: string; modules: number }[];
+	plants: { ingredientId: string; count: number }[];
+	/** Finished tasks: `2026-5-sow-mrkva` → date done. */
+	done: Record<string, string>;
+	harvests: { ingredientId: string; grams: number; date: string }[];
+	savedAt: string;
+}
+
+const PLACES = ['parapet', 'balkon', 'zahrada'];
+const SUNS = ['slnko', 'polotien', 'tien'];
+const MAX_HARVESTS = 1000;
+const isDate = (v: unknown): v is string => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v);
+
+function validateGarden(raw: unknown): GardenDiary | null | undefined {
+	if (raw === null) return null;
+	if (!isRecord(raw)) return undefined;
+	const { place, area, sun, level, combos, plants, done, harvests, savedAt } = raw;
+	if (typeof place !== 'string' || !PLACES.includes(place)) return undefined;
+	if (typeof sun !== 'string' || !SUNS.includes(sun)) return undefined;
+	if (typeof area !== 'number' || !(area > 0) || area > 100_000) return undefined;
+	if (level !== 1 && level !== 2 && level !== 3) return undefined;
+	if (!Array.isArray(combos) || !Array.isArray(plants) || !Array.isArray(harvests))
+		return undefined;
+	return {
+		place: place as GrowPlace,
+		area,
+		sun: sun as GrowSun,
+		level,
+		combos: combos.filter(
+			(c): c is { id: string; modules: number } =>
+				isRecord(c) && typeof c.id === 'string' && inRange(c.modules, 1, 10_000)
+		),
+		plants: plants.filter(
+			(p): p is { ingredientId: string; count: number } =>
+				isRecord(p) && typeof p.ingredientId === 'string' && inRange(p.count, 1, 1_000_000)
+		),
+		done: isRecord(done)
+			? (Object.fromEntries(Object.entries(done).filter(([, v]) => isDate(v))) as Record<
+					string,
+					string
+				>)
+			: {},
+		harvests: harvests
+			.filter(
+				(h): h is GardenDiary['harvests'][number] =>
+					isRecord(h) &&
+					typeof h.ingredientId === 'string' &&
+					typeof h.grams === 'number' &&
+					h.grams > 0 &&
+					h.grams <= 1_000_000 &&
+					isDate(h.date)
+			)
+			.slice(-MAX_HARVESTS),
+		savedAt: isDate(savedAt) ? savedAt : new Date().toISOString().slice(0, 10)
+	};
+}
+
+export const garden = new Persisted<GardenDiary | null>('garden', null, validateGarden);
+
 /** Everything kept on this device, for backup/restore. */
 export const ALL_PERSISTED = {
 	pantry,
@@ -191,7 +261,8 @@ export const ALL_PERSISTED = {
 	settings,
 	history,
 	favorites,
-	notes
+	notes,
+	garden
 };
 
 export const ui = $state({ loaded: false });

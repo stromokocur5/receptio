@@ -7,7 +7,8 @@
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
 	import Logo from '$lib/components/Logo.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
-	import { loadLikes, loadPersisted, plan, settings } from '$lib/state.svelte';
+	import { changes, loadLikes, loadPersisted, plan, settings } from '$lib/state.svelte';
+	import { initSync, noteChange } from '$lib/sync.svelte';
 	import { loadTimers } from '$lib/timers.svelte';
 
 	let { data, children } = $props();
@@ -32,6 +33,11 @@
 		loadPersisted();
 		loadTimers();
 		void loadLikes();
+		initSync();
+	});
+
+	$effect(() => {
+		if (changes.count > 0) noteChange();
 	});
 
 	$effect(() => {

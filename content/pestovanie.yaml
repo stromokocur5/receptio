@@ -785,6 +785,7 @@ kombinacie:
     sun: [slnko]
     level: 1
     area: 3
+    layout: mix
     gear:
       - 'mulč (slama) okolo tekvice'
     members: { kukurica-klas: 9, fazula-biela: 12, tekvica-hokkaido: 1 }
@@ -850,6 +851,7 @@ kombinacie:
     sun: [slnko]
     level: 1
     area: 3
+    layout: mix
     gear:
       - 'motyka na prihŕňanie'
       - 'zakopané vedro bez dna pre chren'
@@ -862,6 +864,7 @@ kombinacie:
     sun: [slnko]
     level: 2
     area: 2
+    layout: mix
     members: { kukurica-klas: 8, uhorka: 4, kopor: 3, slnecnicove-semienka: 2 }
     how: 'Kukuricu zasaď do dvoch riadkov, uhorky pod ňu – popnú sa po stonkách. Na severný okraj slnečnice, medzi uhorky kôpor.'
     why: 'Kukurica a slnečnica dajú uhorkám oporu a jemný tieň v horúčave, kôpor zlepšuje ich rast a láka opeľovače.'
@@ -914,6 +917,7 @@ kombinacie:
     sun: [slnko]
     level: 1
     area: 2
+    layout: mix
     max: 1
     gear:
       - 'kamene alebo tehly (asi 0,5 m³)'

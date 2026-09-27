@@ -8,7 +8,9 @@
 	import Squiggle from '$lib/components/Squiggle.svelte';
 	import { pluralRecipes } from '$lib/labels';
 	import { IN_MONTH, recipeSeason } from '$lib/season';
-	import { likes } from '$lib/state.svelte';
+	import { monthTasks } from '$lib/garden';
+	import { garden, likes, ui } from '$lib/state.svelte';
+	import type { GrowGuide } from '$lib/types';
 
 	const catalog = useCatalog();
 
@@ -25,6 +27,27 @@
 			.slice(0, 8)
 	);
 	const month = new Date().getMonth() + 1;
+
+	/** Reminder for people with a saved garden; calendars load only then. */
+	let growGuides = $state<GrowGuide[]>([]);
+	$effect(() => {
+		if (!ui.loaded || !garden.current || growGuides.length) return;
+		fetch('/pestuj/plodiny.json')
+			.then((r) => (r.ok ? (r.json() as Promise<GrowGuide[]>) : []))
+			.then((g: GrowGuide[]) => (growGuides = g))
+			.catch(() => {});
+	});
+	const gardenTasks = $derived(
+		garden.current && growGuides.length
+			? monthTasks(
+					garden.current.plants,
+					growGuides,
+					garden.current.done,
+					new Date().getFullYear(),
+					month
+				).filter((t) => !garden.current!.done[t.key])
+			: []
+	);
 	const seasonal = $derived(
 		catalog.recipes
 			.map((r) => ({ r, season: recipeSeason(r, catalog.ingredientsById, month) }))
@@ -189,6 +212,34 @@
 	{/each}
 </section>
 
+{#if gardenTasks.length}
+	<section class="wrap block">
+		<a class="card garden-note" href="/pestuj#moja-zahradka">
+			<Icon name="sprout" size={26} />
+			<span>
+				<strong>Záhradka {IN_MONTH[month - 1]}</strong>
+				<span>
+					{#each ['indoor', 'sow', 'harvest'] as const as kind (kind)}
+						{@const names = gardenTasks.filter((t) => t.kind === kind).map((t) => t.name)}
+						{#if names.length}
+							<span class="gn-line"
+								>{kind === 'indoor'
+									? 'Predpestuj doma'
+									: kind === 'sow'
+										? 'Zasej alebo vysaď von'
+										: 'Zbieraj'}: {names.slice(0, 8).join(', ')}{names.length > 8
+									? ` a ďalšie (${names.length - 8})`
+									: ''}</span
+							>
+						{/if}
+					{/each}
+				</span>
+			</span>
+			<Icon name="arrow-right" size={18} />
+		</a>
+	</section>
+{/if}
+
 {#if seasonal.length}
 	<section class="wrap block">
 		<div class="head">
@@ -271,6 +322,26 @@
 </section>
 
 <style>
+	.garden-note {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		gap: 14px;
+		align-items: center;
+		padding: 16px 18px;
+		color: var(--ink);
+		text-decoration: none;
+		border-left: 4px solid var(--leaf-2);
+	}
+	.garden-note strong {
+		display: block;
+		font-family: var(--font-display);
+		font-size: 1.1rem;
+	}
+	.gn-line {
+		display: block;
+		color: var(--ink-2);
+		font-size: 0.92rem;
+	}
 	.hero {
 		padding: 36px 0 20px;
 		overflow: hidden;

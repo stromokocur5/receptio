@@ -3,6 +3,7 @@
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
+	import SyncPanel from '$lib/components/SyncPanel.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { formatEur, formatNumber } from '$lib/amounts';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
@@ -179,12 +180,14 @@
 		</section>
 	</div>
 
+	<SyncPanel />
+
 	<section class="card box backup">
-		<h2><Icon name="package" size={24} /> Záloha a presun do iného zariadenia</h2>
+		<h2><Icon name="package" size={24} /> Záloha do súboru</h2>
 		<p>
-			Špajza, plán, história, obľúbené a poznámky žijú len v tomto prehliadači. Keď ho vymažeš alebo
-			prejdeš na nový telefón, stratia sa. Stiahni si zálohu a na druhom zariadení ju obnov (pošli
-			si súbor napríklad mailom).
+			Špajza, plán, záhradka, história, obľúbené a poznámky žijú v tomto prehliadači. Ak nechceš
+			synchronizáciu, stiahni si zálohu ako súbor a na druhom zariadení ju obnov (pošli si ho
+			napríklad mailom).
 		</p>
 		<div class="backup-actions">
 			<button class="btn leaf" onclick={download}>

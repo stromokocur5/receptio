@@ -24,7 +24,8 @@
 			"namespace_id": "1002",
 			"simple": { "limit": 3, "period": 60 }
 		},
-		{ "name": "SUGGEST_LIMITER", "namespace_id": "1003", "simple": { "limit": 2, "period": 60 } }
+		{ "name": "SUGGEST_LIMITER", "namespace_id": "1003", "simple": { "limit": 2, "period": 60 } },
+		{ "name": "SYNC_LIMITER", "namespace_id": "1004", "simple": { "limit": 30, "period": 60 } }
 	],
 	// Admin panel (/admin) sits behind Cloudflare Access; the Worker verifies its token too.
 	"vars": {

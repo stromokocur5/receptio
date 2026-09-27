@@ -240,6 +240,7 @@ const growFileSchema = z
 					level: growLevel,
 					area: z.number().positive(),
 					max: z.number().int().positive().optional(),
+					layout: z.enum(['rows', 'mix']).default('rows'),
 					members: z.record(slug, z.number().int().positive()),
 					how: z.string().min(1),
 					why: z.string().min(1),
@@ -883,6 +884,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		level: c.level,
 		area: c.area,
 		...(c.max && { max: c.max }),
+		layout: c.layout,
 		members: Object.entries(c.members).map(([id, count]) => {
 			if (!growable.has(id)) {
 				throw new Error(`${growWhere}: kombinácia ${c.id}: "${id}" nemá návod v plodinách`);

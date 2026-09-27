@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { formatNumber } from '$lib/amounts';
+	import ComboLayout from '$lib/components/ComboLayout.svelte';
+	import GardenDiary from '$lib/components/GardenDiary.svelte';
 	import GrowMonths from '$lib/components/GrowMonths.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { planGarden, sowNow, type GardenInput } from '$lib/garden';
 	import { IN_MONTH, MONTH_NAMES } from '$lib/season';
+	import { garden, ui } from '$lib/state.svelte';
 	import type { GrowGuide, GrowPlace, GrowSun } from '$lib/types';
 
 	let { data } = $props();
@@ -43,6 +46,11 @@
 
 	onMount(() => {
 		month = new Date().getMonth() + 1;
+		const diary = garden.current;
+		if (diary) {
+			input = { place: diary.place, area: diary.area, sun: diary.sun, level: diary.level };
+			return;
+		}
 		try {
 			const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');
 			if (saved && PLACES.some((p) => p.id === saved.place)) input = { ...input, ...saved };
@@ -91,6 +99,26 @@
 	const notHere = $derived(data.notGrown.filter((n) => n.status === 'nie'));
 	const hardHere = $derived(data.notGrown.filter((n) => n.status === 'tazko'));
 
+	let savedNote = $state(false);
+
+	/** Keeps the plan (and the diary already written for it) as "my garden". */
+	function saveGarden() {
+		const previous = garden.current;
+		garden.current = {
+			...input,
+			combos: plan.combos.map((c) => ({ id: c.combo.id, modules: c.modules })),
+			plants: plan.plants.map((p) => ({ ingredientId: p.ingredientId, count: p.count })),
+			done: previous?.done ?? {},
+			harvests: previous?.harvests ?? [],
+			savedAt: new Date().toISOString().slice(0, 10)
+		};
+		savedNote = true;
+		setTimeout(
+			() => document.getElementById('moja-zahradka')?.scrollIntoView({ behavior: 'smooth' }),
+			50
+		);
+	}
+
 	function names(ids: string[]): string {
 		return ids.map((id) => nameById.get(id) ?? id).join(', ');
 	}
@@ -126,6 +154,10 @@
 			<a class="chip" href="/wiki/naradie-na-pestovanie">Náradie a nádoby</a>
 		</nav>
 	</header>
+
+	{#if ui.loaded && garden.current}
+		<GardenDiary diary={garden.current} guides={data.grow} />
+	{/if}
 
 	<section id="oplati-sa" class="block">
 		<h2>Čo sa u nás oplatí pestovať</h2>
@@ -172,7 +204,7 @@
 						type="number"
 						min="0.1"
 						max="10000"
-						step={input.place === 'zahrada' ? 1 : 0.1}
+						step="any"
 						bind:value={input.area}
 						oninput={save}
 					/>
@@ -227,6 +259,17 @@
 					? `, ${formatNumber(plan.paths)} m² ostane na chodníky`
 					: ''}{plan.free >= 0.1 ? ` a ${formatNumber(plan.free)} m² máš voľných` : ''}.
 			</p>
+			<div class="save-row">
+				<button class="btn leaf" onclick={saveGarden}>
+					<Icon name="bookmark" size={18} />
+					{garden.current ? 'Aktualizovať moju záhradku' : 'Uložiť ako moju záhradku'}
+				</button>
+				<span class="muted small">
+					{savedNote
+						? 'Uložené – hore nájdeš úlohy na tento mesiac a zápis úrody.'
+						: 'Dostaneš úlohy na každý mesiac, zápis úrody a recepty z nej.'}
+				</span>
+			</div>
 			<ol class="combos">
 				{#each plan.combos as { combo, modules, area } (combo.id)}
 					<li class="combo">
@@ -242,6 +285,7 @@
 									href="#p-{m.ingredientId}">{m.count * modules} × {m.name}</a
 								>{/each}
 						</p>
+						<ComboLayout {combo} guides={data.grow} />
 						<p>{combo.how}</p>
 						<p class="why"><Icon name="heart" size={16} /> {combo.why}</p>
 					</li>
@@ -275,9 +319,10 @@
 							<li class:now={c.month === month}>
 								<strong>{MONTH_NAMES[c.month - 1]}</strong>
 								{#if c.indoor.length}<span
-										><i class="t-indoor"></i> predpestuj: {c.indoor.join(', ')}</span
+										><i class="t-indoor"></i> predpestuj doma: {c.indoor.join(', ')}</span
 									>{/if}
-								{#if c.sow.length}<span><i class="t-sow"></i> sej / sadni: {c.sow.join(', ')}</span
+								{#if c.sow.length}<span
+										><i class="t-sow"></i> zasej alebo vysaď von: {c.sow.join(', ')}</span
 									>{/if}
 								{#if c.harvest.length}<span
 										><i class="t-harvest"></i> zbieraj: {c.harvest.join(', ')}</span
@@ -508,6 +553,13 @@
 	}
 	.summary {
 		font-size: 1.05rem;
+	}
+	.save-row {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 12px;
+		margin: 12px 0 18px;
 	}
 	.combos {
 		list-style: none;

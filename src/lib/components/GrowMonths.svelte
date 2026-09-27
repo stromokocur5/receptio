@@ -13,7 +13,7 @@
 	function label(m: number): string {
 		const parts = [
 			indoor.includes(m) && 'predpestovanie',
-			sow.includes(m) && 'výsev / výsadba',
+			sow.includes(m) && 'siatie alebo výsadba von',
 			harvest.includes(m) && 'zber'
 		].filter(Boolean);
 		return `${MONTH_NAMES[m - 1]}: ${parts.length ? parts.join(', ') : 'nič'}`;
@@ -35,7 +35,7 @@
 	{#if legend}
 		<p class="legend">
 			<span><i class="indoor"></i> predpestovanie doma</span>
-			<span><i class="sow"></i> výsev / výsadba</span>
+			<span><i class="sow"></i> siatie alebo výsadba von</span>
 			<span><i class="harvest"></i> zber</span>
 		</p>
 	{/if}
