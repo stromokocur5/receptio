@@ -260,6 +260,29 @@
 		checkedItems.current = {};
 		confirmClear = false;
 	}
+
+	/** Phones stack everything; these tabs jump straight to the shopping list in the shop. */
+	const PLAN_SECTIONS = [
+		{ id: 'recepty-v-plane', label: 'Plán' },
+		{ id: 'rozpis', label: 'Dni' },
+		{ id: 'ziviny', label: 'Živiny' },
+		{ id: 'nakup', label: 'Nákup' }
+	] as const;
+	let currentSection = $state<string>('recepty-v-plane');
+	$effect(() => {
+		if (!entries.length) return;
+		const observer = new IntersectionObserver(
+			(seen) => {
+				for (const entry of seen) if (entry.isIntersecting) currentSection = entry.target.id;
+			},
+			{ rootMargin: '-35% 0px -60% 0px' }
+		);
+		for (const s of PLAN_SECTIONS) {
+			const el = document.getElementById(s.id);
+			if (el) observer.observe(el);
+		}
+		return () => observer.disconnect();
+	});
 </script>
 
 <Seo
@@ -277,10 +300,22 @@
 		</p>
 	</header>
 
+	{#if entries.length}
+		<nav class="jump-bar" aria-label="Časti plánu" data-noprint>
+			{#each PLAN_SECTIONS as s (s.id)}
+				<a href="#{s.id}" class:active={currentSection === s.id}
+					>{s.label}{#if s.id === 'nakup' && allItems.length > checkedCount}<span class="n"
+							>{allItems.length - checkedCount}</span
+						>{/if}</a
+				>
+			{/each}
+		</nav>
+	{/if}
+
 	<div class="layout">
 		<div class="left">
 			<AutoPlanner />
-			<section class="card box">
+			<section class="card box" id="recepty-v-plane">
 				<div class="box-head">
 					<h2><Icon name="calendar" size={24} /> Recepty v pláne</h2>
 					{#if entries.length}
@@ -370,7 +405,7 @@
 			</section>
 
 			{#if entries.length}
-				<section class="card box">
+				<section class="card box" id="rozpis">
 					<h2><Icon name="clock" size={24} /> Rozpis dní</h2>
 					<PlanSettings />
 					<ol class="days">
@@ -419,7 +454,7 @@
 					</p>
 				</section>
 
-				<section class="card box">
+				<section class="card box" id="ziviny">
 					<h2><Icon name="bean" size={24} /> Živiny na deň</h2>
 					<div class="settings">
 						<label>
@@ -456,7 +491,7 @@
 			{/if}
 		</div>
 
-		<section class="card box shop">
+		<section class="card box shop" id="nakup">
 			<div class="box-head">
 				<h2><Icon name="basket" size={24} /> Nákupný zoznam</h2>
 				{#if allItems.length}
@@ -675,6 +710,50 @@
 		display: grid;
 		grid-template-columns: minmax(0, 1fr);
 		gap: 20px;
+	}
+	.jump-bar {
+		position: sticky;
+		top: 64px;
+		z-index: 6;
+		display: flex;
+		gap: 4px;
+		margin: 0 -16px 12px;
+		padding: 6px 16px;
+		background: color-mix(in srgb, var(--paper) 90%, transparent);
+		backdrop-filter: blur(10px);
+	}
+	.jump-bar a {
+		flex: 1;
+		display: inline-flex;
+		justify-content: center;
+		align-items: center;
+		gap: 5px;
+		padding: 7px 8px;
+		border-radius: 999px;
+		color: var(--ink-2);
+		font-weight: 650;
+		font-size: 0.9rem;
+		text-decoration: none;
+		transition:
+			background 0.2s,
+			color 0.2s;
+	}
+	.jump-bar a.active {
+		background: var(--ink);
+		color: var(--paper);
+	}
+	.jump-bar .n {
+		padding: 0 6px;
+		border-radius: 999px;
+		background: var(--tomato);
+		color: #fff;
+		font-size: 0.72rem;
+	}
+	#recepty-v-plane,
+	#rozpis,
+	#ziviny,
+	#nakup {
+		scroll-margin-top: 120px;
 	}
 	.left {
 		display: grid;
@@ -1067,6 +1146,9 @@
 		margin-top: 18px;
 	}
 	@media (min-width: 960px) {
+		.jump-bar {
+			display: none;
+		}
 		.layout {
 			grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
 			align-items: start;

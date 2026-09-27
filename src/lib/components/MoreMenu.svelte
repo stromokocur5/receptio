@@ -73,7 +73,18 @@
 	}
 </script>
 
-<div class="more" id={MORE_MENU_ID} popover bind:this={menu} aria-label="Ďalšie stránky">
+<div
+	class="more"
+	id={MORE_MENU_ID}
+	popover
+	bind:this={menu}
+	ontoggle={(e) => {
+		// Keyboard users land in the menu instead of far down the page where it sits in the DOM.
+		if ((e as ToggleEvent).newState === 'open')
+			menu.querySelector<HTMLElement>('a, button')?.focus();
+	}}
+	aria-label="Ďalšie stránky"
+>
 	<div class="groups">
 		{#each MORE_GROUPS as group (group.title)}
 			<section>

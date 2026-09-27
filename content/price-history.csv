@@ -132,12 +132,12 @@ date,ingredient,store,price,pack,sale_until,product
 2026-09-27,zemiaky,kaufland,1.19,1 kg,,Zemiaky konzumné varný typ B
 2026-09-27,zemiaky,lidl,0.89,1 kg,,Zemiaky konzumné neskoré B
 2026-09-27,zemiaky,terno,1.19,1 kg,,Zemiaky Colomba/Riviera konzumné skoré voľné
-2026-09-27,zemiaky,tesco,1.19,1 kg,,Zemiaky volne konzumne neskore
+2026-09-27,zemiaky,tesco,1.19,1 kg,,Zemiaky červené konzumné
 2026-09-27,cibula,billa,0.79,1 kg,,CLEVER cibuľa
 2026-09-27,cibula,fresh,0.75,1 kg,,CIBUĽA ŽLTÁ 1kg BALENÁ FRESH
 2026-09-27,cibula,kaufland,4.29,5 kg,,ZLT Cibuľa žltá 5kg
 2026-09-27,cibula,lidl,2.29,5 kg,,Cibuľa 5kg
-2026-09-27,cibula,terno,0.99,1 kg,,Cibuľa žltá voľná
+2026-09-27,cibula,terno,0.99,1 kg,,Cibuľa žltá sieť 1kg
 2026-09-27,cibula,tesco,0.79,1 kg,,GH Cibuľa balená 1 kg
 2026-09-27,cibula,tesco,0.48,1 kg,2026-09-29,GH Cibuľa balená 1 kg
 2026-09-27,cibula-cervena,billa,1.49,1 kg,,Cibuľa červená
@@ -147,14 +147,14 @@ date,ingredient,store,price,pack,sale_until,product
 2026-09-27,cibula-cervena,lidl,0.69,500 g,,Červená cibuľa 500g
 2026-09-27,cibula-cervena,terno,1.49,1 kg,,Cibuľa červená voľná
 2026-09-27,cibula-cervena,tesco,1.39,1 kg,,Cibuľa červená voľná
-2026-09-27,mrkva,billa,1.29,1 kg,,CHUTE SLOVENSKA Karotka skorá praná
+2026-09-27,mrkva,billa,1.29,1 kg,,Karotka skorá praná
 2026-09-27,mrkva,fresh,1.35,1 kg,,MRKVA VOĽNÁ
 2026-09-27,mrkva,fresh,0.69,1 kg,2026-10-07,MRKVA VOĽNÁ
 2026-09-27,mrkva,kaufland,1.29,1 kg,,Mrkva
 2026-09-27,mrkva,lidl,1.89,3 kg,,Mrkva 3kg
 2026-09-27,mrkva,terno,1.39,1 kg,,Mrkva voľná
-2026-09-27,mrkva,tesco,1.29,1 kg,,EX Mrkva voľná
-2026-09-27,petrzlen-koren,billa,2.99,1 kg,,Petržlen praný
+2026-09-27,mrkva,tesco,1.29,1 kg,,Mrkva voľná
+2026-09-27,petrzlen-koren,billa,2.99,1 kg,,CHUTE SLOVENSKA Petržlen praný
 2026-09-27,petrzlen-koren,fresh,2.65,1 kg,,PETRŽLEN VOĽNÝ
 2026-09-27,petrzlen-koren,kaufland,2.69,1 kg,,Petržlen praný
 2026-09-27,petrzlen-koren,lidl,2.69,1 kg,,Petržlen
@@ -236,7 +236,7 @@ date,ingredient,store,price,pack,sale_until,product
 2026-09-27,chlieb,billa,1.55,1 kg,,"CHLIEB PŠENIČNO-RAŽNÝ 1000g chlieb voľný, LZ TRADEMARK"
 2026-09-27,chlieb,fresh,1.75,1 kg,,CHLIEB TMAVÝ 1kg ZEMIAK. PŠEN. RAŽ.
 2026-09-27,chlieb,fresh,1.58,1 kg,2026-12-31,CHLIEB TMAVÝ 1kg ZEMIAK. PŠEN. RAŽ.
-2026-09-27,chlieb,kaufland,1.59,1 kg,,"Chlieb konzumný 1000 g, Jozef Oremus PEKÁREŇ BÁNOV"
+2026-09-27,chlieb,kaufland,1.59,1 kg,,"Chlieb konzumný 1000 g, VAMEX, a.s., Košice"
 2026-09-27,chlieb,lidl,1.59,1 kg,,Chlieb konzumný bez E
 2026-09-27,chlieb,terno,1.79,1 kg,,Chlieb pšenično-ražný 1000g PENAM
 2026-09-27,chlieb,tesco,1.59,1 kg,,Chlieb pšenično - ražný konzumný 1kg
@@ -244,12 +244,12 @@ date,ingredient,store,price,pack,sale_until,product
 2026-09-27,chlieb-bezlepkovy,fresh,1.69,300 g,,CHLIEB BOSNIAK BEZLEP. 300g
 2026-09-27,chlieb-bezlepkovy,fresh,0.59,210 g,2027-01-04,CHLIEB BEZLEP. 210g
 2026-09-27,chlieb-bezlepkovy,kaufland,2.49,350 g,,K free Bezgluténový kukurično-ryžový chlieb svetlý krájaný 350 g
-2026-09-27,chlieb-bezlepkovy,lidl,1.75,250 g,,"Tastino Bezgluténový chlieb krájaný, viaczrnný"
+2026-09-27,chlieb-bezlepkovy,lidl,1.75,250 g,,"Tastino Bezgluténový chlieb krájaný, biely"
 2026-09-27,chlieb-bezlepkovy,tesco,1.55,250 g,,TS Free From bezgluten.chl. svetly 250 g
 2026-09-27,sojove-mlieko,billa,1.59,1 l,,Billa Bio sojóvý nápoj natural
 2026-09-27,sojove-mlieko,billa,1.39,1 l,2026-10-06,Billa Bio sojóvý nápoj natural
 2026-09-27,sojove-mlieko,lidl,1.39,1 l,,Vemondo Bio Sójový nápoj
-2026-09-27,sojove-mlieko,tesco,1.39,1 l,,TS Sojovy napoj nesladeny 1 l
+2026-09-27,sojove-mlieko,tesco,1.39,1 l,,TS Sójový nápoj sladeny 1 l
 2026-09-27,sojovy-jogurt,fresh,2.89,400 g,,JOG. SÓJ. VÝROBOK 400g BIELY BEZ CUKRU ALPRO
 2026-09-27,sojovy-jogurt,kaufland,1.68,500 g,,K Veggie Sojagurt natur 500 g
 2026-09-27,rastlinna-smotana,billa,1.79,250 ml,,Rajo Vegan krém na varenie 15%

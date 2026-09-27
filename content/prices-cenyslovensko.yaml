@@ -41,10 +41,10 @@ entries:
     price: 1.19
   - ingredient: zemiaky
     store: tesco
-    product: Zemiaky volne konzumne neskore
+    product: Zemiaky červené konzumné
     pack: 1 kg
     date: 2026-09-27
-    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002006711681
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002020194681
     price: 1.19
   - ingredient: cibula
     store: billa
@@ -73,7 +73,7 @@ entries:
     price: 2.29
   - ingredient: cibula
     store: terno
-    product: Cibuľa žltá voľná
+    product: Cibuľa žltá sieť 1kg
     pack: 1 kg
     date: 2026-09-27
     price: 0.99
@@ -139,7 +139,7 @@ entries:
     price: 1.39
   - ingredient: mrkva
     store: billa
-    product: CHUTE SLOVENSKA Karotka skorá praná
+    product: Karotka skorá praná
     pack: 1 kg
     date: 2026-09-27
     price: 1.29
@@ -177,14 +177,14 @@ entries:
     price: 1.39
   - ingredient: mrkva
     store: tesco
-    product: EX Mrkva voľná
+    product: Mrkva voľná
     pack: 1 kg
     date: 2026-09-27
-    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121135549
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002006558378
     price: 1.29
   - ingredient: petrzlen-koren
     store: billa
-    product: Petržlen praný
+    product: CHUTE SLOVENSKA Petržlen praný
     pack: 1 kg
     date: 2026-09-27
     price: 2.99
@@ -713,7 +713,7 @@ entries:
     sale_until: 2026-12-31
   - ingredient: chlieb
     store: kaufland
-    product: Chlieb konzumný 1000 g, Jozef Oremus PEKÁREŇ BÁNOV
+    product: Chlieb konzumný 1000 g, VAMEX, a.s., Košice
     pack: 1 kg
     date: 2026-09-27
     price: 1.59
@@ -764,7 +764,7 @@ entries:
     price: 2.49
   - ingredient: chlieb-bezlepkovy
     store: lidl
-    product: Tastino Bezgluténový chlieb krájaný, viaczrnný
+    product: Tastino Bezgluténový chlieb krájaný, biely
     pack: 250 g
     date: 2026-09-27
     url: https://www.lidl.sk
@@ -798,10 +798,10 @@ entries:
     price: 1.39
   - ingredient: sojove-mlieko
     store: tesco
-    product: TS Sojovy napoj nesladeny 1 l
+    product: TS Sójový nápoj sladeny 1 l
     pack: 1 l
     date: 2026-09-27
-    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005100766339
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005100766337
     price: 1.39
   - ingredient: sojovy-jogurt
     store: fresh
