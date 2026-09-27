@@ -9,6 +9,7 @@
 	type Step = (typeof STEPS)[number];
 
 	let dialog: HTMLDialogElement;
+	let stage: HTMLElement;
 	let step = $state<Step>('vitaj');
 	let direction = $state(1);
 	const index = $derived(STEPS.indexOf(step));
@@ -38,6 +39,8 @@
 	function go(to: Step) {
 		direction = STEPS.indexOf(to) >= index ? 1 : -1;
 		step = to;
+		// Each step starts at its top, not where the previous one was scrolled to.
+		stage.scrollTop = 0;
 	}
 	const next = () => go(STEPS[Math.min(index + 1, STEPS.length - 1)]);
 	const back = () => go(STEPS[Math.max(index - 1, 0)]);
@@ -186,26 +189,26 @@
 		</button>
 	</div>
 
-	<div class="stage">
+	<div class="stage" bind:this={stage}>
 		{#key step}
 			<div
 				class="step"
-				in:fly={{ x: 60 * direction, duration: reduceMotion ? 0 : 350, opacity: 0 }}
+				in:fly={{ x: 24 * direction, duration: reduceMotion ? 0 : 260, opacity: 0 }}
 			>
 				{#if step === 'vitaj'}
-					<div class="hello"><Icon name="bowl" size={40} /></div>
-					<h2>Vitaj v Receptiu</h2>
-					<p class="lede">
-						Vegánske a bezlepkové recepty so živinami a cenou, týždenný plán, nákupný zoznam a
-						špajza. Zadarmo, bez reklám a bez registrácie.
-					</p>
+					<div class="welcome">
+						<div class="hello"><Icon name="bowl" size={32} /></div>
+						<div>
+							<h2>Vitaj v Receptiu</h2>
+							<p class="lede">Rastlinné recepty, plán, nákup a špajza. Zadarmo a bez reklám.</p>
+						</div>
+					</div>
 
 					<section class="sync-box">
 						<h3><Icon name="shield" size={20} /> Najprv si ulož dáta</h3>
-						<p>
-							Plán, špajza a obľúbené sa ukladajú len v tomto prehliadači. Zapni synchronizáciu a
-							dostaneš <strong>kód na obnovenie</strong> – s ním máš dáta aj na ďalšom telefóne a neprídeš
-							o ne ani po vymazaní prehliadača. Bez e-mailu a hesla.
+						<p class="sync-text">
+							Tvoje dáta sú len v tomto prehliadači. S <strong>kódom na obnovenie</strong> ich máš aj
+							na ďalšom telefóne a neprídeš o ne. Bez e-mailu a hesla.
 						</p>
 
 						{#if syncedBefore}
@@ -395,8 +398,9 @@
 		{#if step === 'hotovo'}
 			<button class="btn leaf" onclick={finish}>Hotovo</button>
 		{:else}
-			<button class="btn leaf" onclick={next} disabled={busy}>
-				{step === 'vitaj' && !syncState.code && !restored ? 'Teraz nie, ďalej' : 'Ďalej'}
+			{@const skipping = step === 'vitaj' && !syncState.code && !restored}
+			<button class="btn {skipping ? 'ghost' : 'leaf'}" onclick={next} disabled={busy}>
+				{skipping ? 'Teraz nie' : 'Ďalej'}
 				<Icon name="arrow-right" size={18} />
 			</button>
 		{/if}
@@ -517,12 +521,21 @@
 		letter-spacing: 0.08em;
 		color: var(--leaf);
 	}
+	.welcome {
+		display: flex;
+		gap: 14px;
+		align-items: center;
+	}
+	.welcome .lede {
+		margin-top: 4px;
+	}
 	.hello {
+		flex: none;
 		display: grid;
 		place-items: center;
-		width: 76px;
-		height: 76px;
-		border-radius: 24px;
+		width: 64px;
+		height: 64px;
+		border-radius: 20px;
 		background: var(--leaf-soft);
 		color: var(--leaf);
 		animation: bob 3s ease-in-out infinite;
@@ -811,5 +824,72 @@
 	}
 	.small {
 		font-size: 0.85rem;
+	}
+
+	/* On a phone every step should fit one screen: tighter spacing and shorter lines. */
+	@media (max-width: 600px) {
+		.step {
+			gap: 10px;
+			padding: 12px 18px 16px;
+		}
+		.step h2 {
+			font-size: 1.4rem;
+		}
+		.lede {
+			font-size: 0.95rem;
+		}
+		.hello {
+			width: 52px;
+			height: 52px;
+			border-radius: 16px;
+		}
+		.sync-box {
+			gap: 10px;
+			padding: 14px;
+		}
+		.sync-text {
+			font-size: 0.92rem;
+		}
+		.choices {
+			grid-template-columns: 1fr 1fr;
+		}
+		.choice {
+			padding: 12px;
+		}
+		.points,
+		.flow {
+			gap: 8px;
+		}
+		.points p,
+		.flow p,
+		.tile p {
+			font-size: 0.84rem;
+		}
+		.ico {
+			width: 36px;
+			height: 36px;
+			border-radius: 12px;
+		}
+		.node {
+			width: 38px;
+			height: 38px;
+		}
+		.flow li:not(:last-child)::before {
+			left: 18px;
+			top: 40px;
+		}
+		.more {
+			grid-template-columns: 1fr 1fr;
+			gap: 8px;
+		}
+		.tile {
+			padding: 10px;
+		}
+		.setting {
+			padding: 12px;
+		}
+		.cta {
+			padding: 12px 14px;
+		}
 	}
 </style>

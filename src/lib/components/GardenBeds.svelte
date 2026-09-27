@@ -53,6 +53,24 @@
 	let newDepth = $state<number | null>(null);
 	let confirming = $state<string | null>(null);
 
+	/** Width available for a bed's grid, so squares shrink to fit the phone instead of scrolling. */
+	let gridSpace = $state(0);
+	const coarse = typeof matchMedia === 'function' && matchMedia('(pointer: coarse)').matches;
+	const MIN_CELL = 16;
+	const GAP = 2;
+	/** The bed card's padding and border plus the grid frame, on both sides. */
+	const FRAME_PAD = 30 + 12;
+	function cellSize(cols: number): number {
+		const max = coarse ? 36 : 30;
+		if (!gridSpace) return max;
+		const fit = Math.floor((gridSpace - FRAME_PAD - (cols - 1) * GAP) / cols);
+		return Math.max(MIN_CELL, Math.min(max, fit));
+	}
+	const overflows = (cols: number) =>
+		gridSpace > 0 && cols * (MIN_CELL + GAP) + FRAME_PAD > gridSpace;
+	/** Beds too big for the screen: while on, a finger moves the view instead of painting. */
+	let panning = $state<Record<string, boolean>>({});
+
 	/** Earlier versions of each bed's squares, newest last; lives only until the page reloads. */
 	let undoStack = $state<Record<string, Bed['cells'][]>>({});
 	const UNDO_LIMIT = 30;
@@ -118,6 +136,7 @@
 	}
 
 	function strokeStart(bed: Bed, event: PointerEvent) {
+		if (panning[bed.id]) return;
 		const key = cellAt(event);
 		if (!key || event.button !== 0) return;
 		event.preventDefault();
@@ -169,7 +188,7 @@
 
 <svelte:window onpointerup={strokeEnd} onpointercancel={strokeEnd} />
 
-<section class="beds">
+<section class="beds" bind:clientWidth={gridSpace}>
 	<h3><Icon name="pencil" size={18} /> Moje záhony</h3>
 	<p class="muted small">
 		Nakresli si skutočné záhony, truhlíky alebo nádoby. Jedno políčko je {CELL_M * 100} × {CELL_M *
@@ -318,11 +337,24 @@
 				</div>
 			</header>
 
-			<div class="grid-wrap">
-				<p class="north muted">sever ↑</p>
+			<div class="grid-wrap" class:panning={panning[bed.id]}>
+				<p class="north muted">
+					sever ↑
+					{#if overflows(size.cols)}
+						<button
+							class="pan-toggle"
+							aria-pressed={!!panning[bed.id]}
+							onclick={() => (panning[bed.id] = !panning[bed.id])}
+						>
+							<Icon name={panning[bed.id] ? 'pencil' : 'arrow-right'} size={14} />
+							{panning[bed.id] ? 'Späť na kreslenie' : 'Posúvať záhon'}
+						</button>
+					{/if}
+				</p>
 				<div
 					class="grid"
 					class:erasing={!brush}
+					style:--cell="{cellSize(size.cols)}px"
 					style:grid-template-columns="repeat({size.cols}, var(--cell))"
 					onpointerdown={(e) => strokeStart(bed, e)}
 					onpointermove={strokeMove}
@@ -393,12 +425,6 @@
 <style>
 	.beds {
 		margin-top: 24px;
-		--cell: 30px;
-	}
-	@media (pointer: coarse) {
-		.beds {
-			--cell: 36px;
-		}
 	}
 	h3 {
 		display: flex;
@@ -472,13 +498,29 @@
 		font-size: 0.85rem;
 	}
 	/* One scrolling row, so the sticky toolbox covers as little of the beds as possible. */
+	/* One swipeable row; the faded edges show there is more to the side. */
 	.palette {
 		display: flex;
 		gap: 6px;
 		margin: 0 -10px;
 		padding: 2px 10px 4px;
 		overflow-x: auto;
-		scrollbar-width: thin;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x proximity;
+		scrollbar-width: none;
+		mask-image: linear-gradient(
+			to right,
+			transparent,
+			#000 12px,
+			#000 calc(100% - 28px),
+			transparent
+		);
+	}
+	.palette::-webkit-scrollbar {
+		display: none;
+	}
+	.palette .chip {
+		scroll-snap-align: start;
 	}
 	.palette .chip {
 		flex: none;
@@ -558,7 +600,38 @@
 	.grid-wrap {
 		overflow-x: auto;
 		margin-top: 8px;
-		padding-bottom: 4px;
+		padding-bottom: 8px;
+		overscroll-behavior-x: contain;
+	}
+	.grid-wrap.panning .grid {
+		touch-action: pan-x pan-y;
+		cursor: grab;
+	}
+	.north {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		position: sticky;
+		left: 0;
+	}
+	.pan-toggle {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		padding: 3px 10px;
+		border: 1px solid var(--line);
+		border-radius: 999px;
+		background: var(--card);
+		color: var(--ink-2);
+		font: inherit;
+		font-size: 0.78rem;
+		font-weight: 650;
+		cursor: pointer;
+	}
+	.pan-toggle[aria-pressed='true'] {
+		background: var(--ink);
+		border-color: var(--ink);
+		color: var(--paper);
 	}
 	.north,
 	.scale {

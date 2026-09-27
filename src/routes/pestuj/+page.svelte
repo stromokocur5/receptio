@@ -937,6 +937,7 @@
 		background: var(--paper-2);
 		border: 1px solid var(--line);
 		overflow-x: auto;
+		overscroll-behavior-x: contain;
 		scrollbar-width: none;
 		outline: none;
 	}
