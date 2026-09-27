@@ -33,6 +33,10 @@ interface Meta {
 
 let meta: Meta = { syncedAt: null, dirty: false };
 let pushTimer: ReturnType<typeof setTimeout> | undefined;
+/** Wait before retrying a failed upload; doubles up to RETRY_MAX_MS, resets on success. */
+const RETRY_FIRST_MS = 60_000;
+const RETRY_MAX_MS = 10 * 60_000;
+let retryDelay = RETRY_FIRST_MS;
 /** Changes up to this count came from the server, not from the user – don't upload them back. */
 let appliedUpTo = 0;
 
@@ -143,12 +147,20 @@ async function request(keys: SyncKeys, method: 'GET' | 'PUT' | 'DELETE', body?: 
 	return res.json() as Promise<Record<string, unknown>>;
 }
 
+/** Offline, server trouble or rate limit: worth trying again later; a refused token is not. */
+function isTemporary(err: unknown): boolean {
+	if (!(err instanceof Error) || !('status' in err)) return true;
+	const status = Number(err.status);
+	return status >= 500 || status === 429;
+}
+
 function fail(err: unknown) {
 	syncState.status = 'error';
-	syncState.message =
-		err instanceof Error && 'status' in err
+	syncState.message = isTemporary(err)
+		? 'Zálohu sa teraz nepodarilo uložiť – server alebo pripojenie nefunguje. Kód platí, skúsim to znova sám.'
+		: err instanceof Error
 			? err.message
-			: 'Nepodarilo sa spojiť so serverom. Skúsim znova, keď budeš online.';
+			: 'Synchronizácia zlyhala.';
 }
 
 /** Uploads everything now. */
@@ -168,8 +180,13 @@ export async function pushNow(): Promise<void> {
 		syncState.syncedAt = meta.syncedAt;
 		syncState.status = 'idle';
 		syncState.message = '';
+		retryDelay = RETRY_FIRST_MS;
 	} catch (err) {
 		fail(err);
+		if (isTemporary(err)) {
+			pushTimer = setTimeout(() => void pushNow(), retryDelay);
+			retryDelay = Math.min(retryDelay * 2, RETRY_MAX_MS);
+		}
 	}
 }
 
@@ -322,8 +339,8 @@ export function initSync() {
 	} catch {
 		return;
 	}
-	if (!syncState.code) return;
-	void pullIfNewer();
+	// Listeners go on even without a code: sync can be switched on later in this session.
+	if (syncState.code) void pullIfNewer();
 	document.addEventListener('visibilitychange', () => {
 		if (document.visibilityState === 'visible') void pullIfNewer();
 		else if (pushTimer) void pushNow();

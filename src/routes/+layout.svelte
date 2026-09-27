@@ -9,7 +9,7 @@
 	import Onboarding from '$lib/components/Onboarding.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
 	import { changes, loadLikes, loadPersisted, plan, settings } from '$lib/state.svelte';
-	import { initSync, noteChange } from '$lib/sync.svelte';
+	import { initSync, noteChange, syncState } from '$lib/sync.svelte';
 	import { onboarding, shouldOnboard } from '$lib/onboarding.svelte';
 	import { loadTimers } from '$lib/timers.svelte';
 
@@ -28,6 +28,8 @@
 	];
 
 	const planCount = $derived(plan.current.length);
+	/** Sync needs the user's attention (failed upload or two devices disagree). */
+	const syncTrouble = $derived(syncState.status === 'error' || syncState.status === 'conflict');
 	const isActive = (href: string) =>
 		page.url.pathname === href || page.url.pathname.startsWith(`${href}/`);
 
@@ -92,10 +94,13 @@
 			class="icon-btn mine"
 			class:active={isActive('/moje')}
 			href="/moje"
-			aria-label="Moje: obľúbené, história, záloha"
-			title="Moje"
+			aria-label={syncTrouble
+				? 'Moje: synchronizácia potrebuje pozornosť'
+				: 'Moje: obľúbené, história, záloha'}
+			title={syncTrouble ? 'Synchronizácia potrebuje pozornosť' : 'Moje'}
 		>
 			<Icon name="bookmark" size={19} />
+			{#if syncTrouble}<span class="alert-dot" aria-hidden="true"></span>{/if}
 		</a>
 		<button class="icon-btn theme" onclick={toggleTheme} aria-label="Prepnúť svetlý/tmavý režim">
 			<span class="sun"><Icon name="sun" size={19} /></span>
@@ -112,9 +117,11 @@
 	<div class="wrap">
 		<Logo size={28} />
 		<p>
-			Komunitné, otvorené a zadarmo. Nutričné hodnoty a ceny sú orientačné.
+			Komunitné, otvorené a zadarmo. Živiny, alergény a ceny sú orientačné – pri alergii kontroluj
+			etiketu.
 			<a href="/wiki/o-receptiu">Ako to funguje</a> · <a href="/navrhni">Navrhni recept</a> ·
-			<a href="/moje">Záloha dát</a>
+			<a href="/moje">Záloha dát</a> · <a href="/sukromie">Ochrana súkromia</a> ·
+			<a href="mailto:gabriel@kohut.xyz">Kontakt</a>
 		</p>
 	</div>
 </footer>
@@ -212,7 +219,24 @@
 		font-weight: 800;
 	}
 	.mine {
+		position: relative;
 		margin-right: -8px;
+	}
+	.alert-dot {
+		position: absolute;
+		top: 7px;
+		right: 7px;
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		background: var(--tomato);
+		box-shadow: 0 0 0 2px var(--paper);
+		animation: pulse-dot 2s ease-in-out infinite;
+	}
+	@keyframes pulse-dot {
+		50% {
+			transform: scale(1.3);
+		}
 	}
 	.mine.active {
 		background: var(--leaf-soft);

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { SYNC_IDLE_DAYS } from '$lib/retention';
 
 /** An encrypted backup is a few kB; this leaves room for years of history. */
 export const MAX_SYNC_BYTES = 400_000;
@@ -62,6 +63,7 @@ export async function writeSync(
 			.run();
 		return { result: 'saved', updatedAt };
 	}
+	await pruneIdleSyncs(db, updatedAt);
 	const today = await db
 		.prepare('SELECT COUNT(*) AS n FROM sync WHERE created_at > ?')
 		.bind(updatedAt - 24 * 60 * 60)
@@ -76,6 +78,14 @@ export async function writeSync(
 	// Another device created it a moment ago: go through the token check like any update.
 	if (inserted.meta.changes === 0) return writeSync(db, id, token, data, now);
 	return { result: 'saved', updatedAt };
+}
+
+/** Runs when a new code is created – often enough, and needs no scheduled job. */
+export async function pruneIdleSyncs(db: D1Database, nowSeconds: number): Promise<void> {
+	await db
+		.prepare('DELETE FROM sync WHERE updated_at < ?')
+		.bind(nowSeconds - SYNC_IDLE_DAYS * 24 * 60 * 60)
+		.run();
 }
 
 export async function deleteSync(db: D1Database, id: string, token: string): Promise<boolean> {

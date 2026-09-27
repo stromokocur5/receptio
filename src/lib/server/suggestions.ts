@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { SUGGESTION_LIMITS as L } from '$lib/suggestion';
+import { HANDLED_RETENTION_DAYS } from '$lib/retention';
 
 /** Stops a flood even if it comes from many IPs; far above what friends will ever send. */
 export const MAX_SUGGESTIONS_PER_DAY = 50;
@@ -37,5 +38,10 @@ export async function saveSuggestion(db: D1Database, s: Suggestion): Promise<voi
 			'INSERT INTO suggestions (title, ingredients, steps, note, author) VALUES (?, ?, ?, ?, ?)'
 		)
 		.bind(s.title, s.ingredients, s.steps, s.note || null, s.author || null)
+		.run();
+	// Handled messages are kept a year, then deleted (promised on /sukromie).
+	await db
+		.prepare(`DELETE FROM suggestions WHERE status != 'new' AND created_at < ?`)
+		.bind(Math.floor(Date.now() / 1000) - HANDLED_RETENTION_DAYS * 24 * 60 * 60)
 		.run();
 }

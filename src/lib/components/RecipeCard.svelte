@@ -58,6 +58,7 @@
 		{#if cuisine}<span class="cuisine">{cuisine.name}</span>{/if}
 	</div>
 	<div class="body">
+		{#if cuisine}<span class="cuisine-inline">{cuisine.name}</span>{/if}
 		<h3><a class="stretched" href="/recepty/{recipe.id}">{recipe.title}</a></h3>
 		<div class="meta">
 			<span title="Náročnosť {recipe.difficulty}/3">
@@ -255,5 +256,70 @@
 		flex-wrap: wrap;
 		gap: 6px;
 		margin-top: auto;
+	}
+	.cuisine-inline {
+		display: none;
+	}
+
+	/* On phones a card is a row: a small plate beside the text, so a screen shows several recipes. */
+	@media (max-width: 560px) {
+		.recipe-card {
+			flex-direction: row;
+		}
+		.recipe-card:hover {
+			transform: none;
+		}
+		.art {
+			position: static;
+			flex: none;
+			display: grid;
+			place-items: center;
+			width: 108px;
+			padding: 10px 8px;
+		}
+		.plate-wrap {
+			width: 92px;
+		}
+		.art > .cuisine {
+			display: none;
+		}
+		.actions {
+			top: 8px;
+			right: 8px;
+		}
+		.body {
+			min-width: 0;
+			padding: 10px 12px 12px;
+			gap: 6px;
+		}
+		.cuisine-inline {
+			display: block;
+			padding-right: 84px;
+			font-size: 0.68rem;
+			font-weight: 700;
+			letter-spacing: 0.06em;
+			text-transform: uppercase;
+			color: color-mix(in srgb, var(--accent, var(--ink)) 60%, var(--ink));
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+		h3 {
+			font-size: 1.02rem;
+			line-height: 1.25;
+		}
+		.cuisine-inline + h3 {
+			margin-top: -2px;
+		}
+		h3:first-child {
+			padding-right: 84px;
+		}
+		.meta {
+			gap: 2px 10px;
+			font-size: 0.78rem;
+		}
+		.badges :global(.badge) {
+			font-size: 0.7rem;
+		}
 	}
 </style>

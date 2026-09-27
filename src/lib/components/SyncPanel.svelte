@@ -81,7 +81,7 @@
 		</p>
 		<p class="muted small">
 			Dáta sa zašifrujú priamo v tvojom prehliadači – na server ide len šifra, ktorú bez kódu nikto
-			neprečíta, ani my.
+			neprečíta, ani my. <a href="/sukromie">Viac o súkromí</a>
 		</p>
 		<div class="actions">
 			<button class="btn leaf" disabled={busy} onclick={() => run(enableSync)}>

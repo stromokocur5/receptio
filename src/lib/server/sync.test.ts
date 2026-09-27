@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { SYNC_IDLE_DAYS } from '$lib/retention';
 import { deleteSync, readSync, writeSync } from './sync';
 
 /** Just enough of D1 for the sync table. */
@@ -32,6 +33,17 @@ function fakeDb() {
 				Object.assign(row, { data, updated_at });
 				return { meta: { changes: 1 } };
 			}
+			if (sql.startsWith('DELETE FROM sync WHERE updated_at')) {
+				const [before] = args as [number];
+				let changes = 0;
+				for (const [id, row] of rows) {
+					if (row.updated_at < before) {
+						rows.delete(id);
+						changes++;
+					}
+				}
+				return { meta: { changes } };
+			}
 			if (sql.startsWith('DELETE')) {
 				const [id, hash] = args as [string, string];
 				const ok = rows.get(id)?.write_hash === hash;
@@ -62,5 +74,14 @@ describe('sync storage', () => {
 		expect(await deleteSync(db, ID, 'c'.repeat(64))).toBe(false);
 		expect(await deleteSync(db, ID, TOKEN)).toBe(true);
 		expect(await readSync(db, ID)).toBeNull();
+	});
+
+	it('deletes backups idle for longer than the retention period when a new code is made', async () => {
+		const db = fakeDb();
+		const day = 24 * 60 * 60 * 1000;
+		await writeSync(db, ID, TOKEN, 'iv.old', 1_000_000);
+		await writeSync(db, 'c'.repeat(64), TOKEN, 'iv.new', 1_000_000 + (SYNC_IDLE_DAYS + 1) * day);
+		expect(await readSync(db, ID)).toBeNull();
+		expect(await readSync(db, 'c'.repeat(64))).not.toBeNull();
 	});
 });

@@ -718,7 +718,7 @@
 	}
 	.art {
 		position: relative;
-		width: min(100%, 380px);
+		width: min(64%, 380px);
 		justify-self: center;
 		padding: 6%;
 	}
@@ -1423,6 +1423,9 @@
 		.hero {
 			grid-template-columns: minmax(300px, 0.8fr) 1.2fr;
 			gap: 40px;
+		}
+		.art {
+			width: min(100%, 380px);
 		}
 		.main {
 			grid-template-columns: minmax(320px, 0.85fr) 1.15fr;

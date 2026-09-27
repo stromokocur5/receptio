@@ -31,4 +31,4 @@ Hodnoty surovín sú orientačné (podľa databázy USDA FoodData Central) a po�
 
 ## Tvoje dáta
 
-Špajza, plán, história varenia, obľúbené a poznámky sú uložené **len v tvojom prehliadači** – zálohu si stiahneš na stránke [Moje](/moje). Žiadne konto ani sledovanie. Lajky sa počítajú anonymne. Na server ide len to, čo sám pošleš cez formulár [Navrhni recept](/navrhni).
+Špajza, plán, história varenia, obľúbené, poznámky a záhradka sú uložené **len v tvojom prehliadači** – zálohu si stiahneš na stránke [Moje](/moje). Žiadne konto ani sledovanie. Ak zapneš synchronizáciu, na server ide len zašifrovaná záloha, ktorú bez tvojho kódu nikto neprečíta. Lajky sa počítajú anonymne a na server ide ešte to, čo sám pošleš cez formulár. Podrobne na stránke [Ochrana súkromia](/sukromie).

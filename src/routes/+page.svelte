@@ -629,6 +629,43 @@
 		flex: 1;
 	}
 
+	@media (max-width: 859px) {
+		.hero-art {
+			width: min(72%, 320px);
+		}
+	}
+	@media (max-width: 600px) {
+		.quick {
+			grid-template-columns: 1fr 1fr;
+			gap: 10px;
+		}
+		.quick-card {
+			padding: 14px;
+		}
+		.q-icon {
+			width: 40px;
+			height: 40px;
+			border-radius: 13px;
+			margin-bottom: 8px;
+		}
+		.quick-card h3 {
+			font-size: 0.98rem;
+		}
+		.quick-card p {
+			font-size: 0.8rem;
+			display: -webkit-box;
+			-webkit-line-clamp: 3;
+			line-clamp: 3;
+			-webkit-box-orient: vertical;
+			overflow: hidden;
+		}
+		.go {
+			display: none;
+		}
+		.block {
+			margin-top: 40px;
+		}
+	}
 	@media (min-width: 860px) {
 		.hero {
 			padding: 56px 0 30px;

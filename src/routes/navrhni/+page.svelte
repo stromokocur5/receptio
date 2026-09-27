@@ -195,7 +195,10 @@
 				<Icon name="send" size={18} />
 				{status === 'sending' ? 'Posielam…' : 'Poslať návrh'}
 			</button>
-			<p class="muted small">Rozpísaný návrh sa ukladá v tvojom prehliadači.</p>
+			<p class="muted small">
+				Rozpísaný návrh sa ukladá v tvojom prehliadači. Čo sa stane s odoslaným, nájdeš v
+				<a href="/sukromie">ochrane súkromia</a>.
+			</p>
 		</div>
 	</form>
 </div>

@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { HANDLED_RETENTION_DAYS } from '$lib/retention';
 
 /** Far above what friends will send; stops a flood from many IPs. */
 export const MAX_FEEDBACK_PER_DAY = 200;
@@ -33,5 +34,10 @@ export async function saveFeedback(db: D1Database, f: Feedback): Promise<void> {
 	await db
 		.prepare('INSERT INTO feedback (recipe_id, kind, message) VALUES (?, ?, ?)')
 		.bind(f.recipeId, f.kind, f.message || null)
+		.run();
+	// Handled messages are kept a year, then deleted (promised on /sukromie).
+	await db
+		.prepare(`DELETE FROM feedback WHERE status != 'new' AND created_at < ?`)
+		.bind(Math.floor(Date.now() / 1000) - HANDLED_RETENTION_DAYS * 24 * 60 * 60)
 		.run();
 }

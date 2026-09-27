@@ -60,6 +60,15 @@
 		<div class="prose">
 			<!-- eslint-disable-next-line svelte/no-at-html-tags -- markdown from the repo's own content/ -->
 			{@html page.html}
+			{#if page.section === 'suplementy' || page.section === 'pohyb'}
+				<p class="health-note">
+					<Icon name="info" size={18} />
+					<span
+						>Všeobecné informácie, nie lekárska rada. Pri zdravotných problémoch, tehotenstve alebo
+						liekoch sa pred zmenou poraď s lekárom.</span
+					>
+				</p>
+			{/if}
 		</div>
 		{#if siblings.length}
 			<aside class="side">
@@ -86,6 +95,17 @@
 <style>
 	.page {
 		padding-top: 18px;
+	}
+	.health-note {
+		display: flex;
+		gap: 8px;
+		align-items: flex-start;
+		margin-top: 28px;
+		padding: 12px 14px;
+		border-radius: var(--radius-sm);
+		background: var(--paper-2);
+		color: var(--ink-2);
+		font-size: 0.92rem;
 	}
 	.back {
 		display: inline-flex;

@@ -267,7 +267,7 @@
 						{/if}
 						<p class="muted small">
 							Dáta sa šifrujú priamo v prehliadači, na server ide len šifra, ktorú bez kódu nikto
-							neprečíta – ani my.
+							neprečíta – ani my. <a href="/sukromie" onclick={finish}>Ochrana súkromia</a>
 						</p>
 					</section>
 				{:else if step === 'recepty'}
