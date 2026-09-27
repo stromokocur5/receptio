@@ -1,15 +1,27 @@
 <script lang="ts">
-	import { formatGrams, formatNumber } from '$lib/amounts';
+	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
+	import GardenBeds from '$lib/components/GardenBeds.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
-	import { harvestRecipes, harvestTotals, monthTasks, type TaskKind } from '$lib/garden';
+	import WeatherPanel from '$lib/components/WeatherPanel.svelte';
+	import {
+		bedPlants,
+		encodeShared,
+		harvestRecipes,
+		harvestTotals,
+		monthTasks,
+		successors,
+		type TaskKind
+	} from '$lib/garden';
+	import { bestPrice } from '$lib/pricing';
 	import { IN_MONTH } from '$lib/season';
-	import { garden, pantry, setPantryItem } from '$lib/state.svelte';
+	import { garden, pantry, setPantryItem, settings } from '$lib/state.svelte';
 	import type { GardenDiary } from '$lib/state.svelte';
-	import type { GrowGuide } from '$lib/types';
+	import type { GrowCombo, GrowGuide } from '$lib/types';
 
-	let { diary, guides }: { diary: GardenDiary; guides: GrowGuide[] } = $props();
+	let { diary, guides, combos }: { diary: GardenDiary; guides: GrowGuide[]; combos: GrowCombo[] } =
+		$props();
 
 	const catalog = useCatalog();
 	const now = new Date();
@@ -26,9 +38,19 @@
 	};
 
 	const guideById = $derived(new Map(guides.map((g) => [g.ingredientId, g])));
-	const tasks = $derived(monthTasks(diary.plants, guides, diary.done, year, month));
+	/** The planner's plants plus whatever is drawn in the beds. */
+	const plants = $derived.by(() => {
+		const counts = new Map(diary.plants.map((p) => [p.ingredientId, p.count]));
+		for (const bed of diary.beds) {
+			for (const p of bedPlants(bed, guides)) {
+				counts.set(p.ingredientId, Math.max(counts.get(p.ingredientId) ?? 0, p.count || 1));
+			}
+		}
+		return [...counts].map(([ingredientId, count]) => ({ ingredientId, count }));
+	});
+	const tasks = $derived(monthTasks(plants, guides, diary.done, year, month));
 	const upcoming = $derived(
-		monthTasks(diary.plants, guides, diary.done, nextMonth === 1 ? year + 1 : year, nextMonth)
+		monthTasks(plants, guides, diary.done, nextMonth === 1 ? year + 1 : year, nextMonth)
 			.filter((t) => t.kind !== 'harvest')
 			.map((t) => t.name)
 	);
@@ -40,6 +62,63 @@
 			harvestNow.map((t) => t.ingredientId)
 		)
 	);
+
+	const priceToday = new Date(catalog.builtAt);
+	const perKg = (id: string) => {
+		const ingredient = catalog.ingredientsById.get(id);
+		return ingredient ? bestPrice(ingredient, catalog.prices, priceToday).perKg : 0;
+	};
+	const harvestValue = $derived(
+		totals.reduce((sum, t) => sum + (t.grams / 1000) * perKg(t.ingredientId), 0)
+	);
+
+	/** Frost matters while tender crops are out, or about to go out. */
+	const tender = (g: GrowGuide | undefined) => !!g && Math.min(...g.sow) >= 5;
+	const outNow = $derived(
+		plants.some((p) => {
+			const g = guideById.get(p.ingredientId);
+			return tender(g) && g!.harvest.some((m) => m >= month) && Math.min(...g!.sow) <= month;
+		})
+	);
+	const plantingNow = $derived(
+		plants.some(
+			(p) =>
+				tender(guideById.get(p.ingredientId)) && guideById.get(p.ingredientId)!.sow.includes(month)
+		)
+	);
+
+	/** What can follow crops that finish this month or next, on the same spot. */
+	const followUps = $derived(
+		plants
+			.map((p) => guideById.get(p.ingredientId))
+			.filter((g): g is GrowGuide => !!g)
+			.filter((g) => {
+				const last = Math.max(...g.harvest.filter((m) => m <= 8));
+				return last === month || last === nextMonth;
+			})
+			.map((g) => ({ guide: g, next: successors(g, guides, diary.place).slice(0, 4) }))
+			.filter((f) => f.next.length)
+	);
+
+	let shareNote = $state('');
+	async function share() {
+		const url = `${location.origin}/pestuj#zahradka=${encodeShared({
+			place: diary.place,
+			area: diary.area,
+			sun: diary.sun,
+			level: diary.level,
+			beds: diary.beds.map(({ name, width, depth, cells }) => ({ name, width, depth, cells }))
+		})}`;
+		try {
+			if (navigator.share) await navigator.share({ title: 'Moja záhradka', url });
+			else {
+				await navigator.clipboard.writeText(url);
+				shareNote = 'Odkaz je skopírovaný.';
+			}
+		} catch {
+			// Share sheet closed.
+		}
+	}
 
 	let harvestId = $state('');
 	let harvestGrams = $state<number | null>(null);
@@ -55,7 +134,7 @@
 
 	function logHarvest(event: SubmitEvent) {
 		event.preventDefault();
-		const id = harvestId || harvestNow[0]?.ingredientId || diary.plants[0]?.ingredientId;
+		const id = harvestId || harvestNow[0]?.ingredientId || plants[0]?.ingredientId;
 		if (!id || !harvestGrams || harvestGrams <= 0) return;
 		const grams = Math.round(harvestGrams);
 		garden.current = {
@@ -64,7 +143,8 @@
 		};
 		const had = pantry.current[id];
 		setPantryItem(id, (typeof had === 'number' ? had : 0) + grams);
-		harvestNote = `${formatGrams(grams)} ${plantName(id).toLowerCase()} je v špajzi.`;
+		const tip = guideById.get(id)?.preserve;
+		harvestNote = `${formatGrams(grams)} ${plantName(id).toLowerCase()} je v špajzi.${tip ? ` Čo s nadbytkom: ${tip}` : ''}`;
 		harvestGrams = null;
 	}
 </script>
@@ -74,12 +154,15 @@
 		<div>
 			<p class="eyebrow"><Icon name="sprout" size={16} /> Moja záhradka</p>
 			<h2>
-				{formatNumber(diary.area)} m² {PLACE[diary.place]}, {diary.plants.length}
-				{diary.plants.length === 1 ? 'druh' : diary.plants.length < 5 ? 'druhy' : 'druhov'} rastlín
+				{formatNumber(diary.area)} m² {PLACE[diary.place]}, {plants.length}
+				{plants.length === 1 ? 'druh' : plants.length < 5 ? 'druhy' : 'druhov'} rastlín
 			</h2>
 		</div>
 		<div class="head-actions">
 			<a class="btn ghost small" href="#planovac"><Icon name="pencil" size={16} /> Upraviť plán</a>
+			<button class="btn ghost small" onclick={share}
+				><Icon name="share" size={16} /> Zdieľať</button
+			>
 			<button
 				class="btn ghost small"
 				onclick={() => {
@@ -92,6 +175,15 @@
 			</button>
 		</div>
 	</header>
+	{#if shareNote}<p class="note" role="status"><Icon name="check" size={16} /> {shareNote}</p>{/if}
+
+	{#if settings.current.location}
+		<WeatherPanel
+			location={settings.current.location}
+			tender={outNow}
+			plantingTender={plantingNow}
+		/>
+	{/if}
 
 	<div class="cols">
 		<section>
@@ -129,7 +221,7 @@
 			<h3>Zapíš úrodu</h3>
 			<form class="harvest" onsubmit={logHarvest}>
 				<select bind:value={harvestId} aria-label="Plodina">
-					{#each harvestNow.length ? harvestNow : diary.plants.map( (p) => ({ ingredientId: p.ingredientId, name: plantName(p.ingredientId) }) ) as p (p.ingredientId)}
+					{#each harvestNow.length ? harvestNow : plants.map( (p) => ({ ingredientId: p.ingredientId, name: plantName(p.ingredientId) }) ) as p (p.ingredientId)}
 						<option value={p.ingredientId}>{p.name}</option>
 					{/each}
 				</select>
@@ -150,7 +242,12 @@
 					{harvestNote}
 				</p>{/if}
 			{#if totals.length}
-				<p class="kind">Úroda {year}</p>
+				<p class="kind">
+					Úroda {year}
+					{#if harvestValue >= 1}<span class="value"
+							>· v obchode by stála asi {formatEur(harvestValue)}</span
+						>{/if}
+				</p>
 				<ul class="totals">
 					{#each totals as t (t.ingredientId)}
 						<li><span>{plantName(t.ingredientId)}</span><strong>{formatGrams(t.grams)}</strong></li>
@@ -159,6 +256,22 @@
 			{/if}
 		</section>
 	</div>
+
+	{#if followUps.length}
+		<section class="follow">
+			<h3>Po zbere zasaď na to isté miesto</h3>
+			<ul>
+				{#each followUps as f (f.guide.ingredientId)}
+					<li>
+						<strong>{f.guide.name}:</strong>
+						{f.next.map((g) => g.name).join(', ')}
+					</li>
+				{/each}
+			</ul>
+		</section>
+	{/if}
+
+	<GardenBeds {diary} {guides} {combos} />
 
 	{#if recipes.length}
 		<section class="cook">
@@ -280,6 +393,17 @@
 		justify-content: space-between;
 		border-bottom: 1px dashed var(--line);
 		padding: 4px 0;
+	}
+	.value {
+		font-weight: 500;
+		color: var(--muted);
+	}
+	.follow {
+		margin-top: 18px;
+	}
+	.follow ul {
+		margin: 0;
+		padding-left: 1.2em;
 	}
 	.cook {
 		margin-top: 20px;

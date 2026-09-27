@@ -1,7 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import {
+	bedPlants,
+	bedSize,
+	bedWarnings,
+	fillWithCombo,
+	newSeason,
+	plantsPerCell,
+	type Bed,
 	comboLayout,
+	decodeShared,
+	encodeShared,
+	yieldEstimate,
+	frostDates,
 	harvestRecipes,
+	localizeGuide,
+	seasonDelayWeeks,
+	successors,
 	harvestTotals,
 	monthTasks,
 	planGarden,
@@ -18,6 +32,7 @@ const guide = (ingredientId: string, family: string, sow: number[], perennial = 
 		indoor: [],
 		harvest: [8],
 		spacing: 20,
+		yieldKg: 1,
 		perennial
 	}) as unknown as GrowGuide;
 
@@ -150,6 +165,159 @@ describe('comboLayout', () => {
 			'kukurica',
 			'fazula',
 			'kukurica'
+		]);
+	});
+});
+
+describe('local season', () => {
+	it('delays the season with altitude', () => {
+		expect(seasonDelayWeeks(120)).toBe(0);
+		expect(seasonDelayWeeks(500)).toBe(2);
+		expect(seasonDelayWeeks(1200)).toBe(5);
+		const { lastSpring, firstAutumn } = frostDates(650, 2026);
+		expect(lastSpring.toISOString().slice(0, 10)).toBe('2026-05-11');
+		expect(firstAutumn.toISOString().slice(0, 10)).toBe('2026-09-29');
+	});
+
+	it('moves spring work and summer harvest later, autumn sowing earlier', () => {
+		const g = { ...guide('cesnak', 'x', [4, 10]), indoor: [3], harvest: [7, 12] };
+		const local = localizeGuide(g, 5);
+		expect(local.sow).toEqual([5, 9]);
+		expect(local.indoor).toEqual([4]);
+		expect(local.harvest).toEqual([8, 12]);
+		expect(localizeGuide(g, 1)).toBe(g);
+	});
+
+	it('suggests a second crop of another family after an early harvest', () => {
+		const peas = { ...guide('hrach', 'bobovite', [3]), harvest: [6, 7], where: ['zahrada'] };
+		const chinese = { ...guide('kapusta', 'kapustovite', [7, 8]), where: ['zahrada'] };
+		const beans = { ...guide('fazula2', 'bobovite', [8]), where: ['zahrada'] };
+		const all = [peas, chinese, beans] as unknown as GrowGuide[];
+		expect(
+			successors(peas as unknown as GrowGuide, all, 'zahrada').map((g) => g.ingredientId)
+		).toEqual(['kapusta']);
+	});
+});
+
+describe('wanted crops, yield and sharing', () => {
+	it('puts combinations with wanted crops first', () => {
+		const plan = planGarden(
+			{ place: 'zahrada', area: 4, sun: 'slnko', level: 1 },
+			[combo('a', 3, ['kukurica']), combo('b', 3, ['fazula'])],
+			guides,
+			new Set(['fazula'])
+		);
+		expect(plan.combos.map((c) => c.combo.id)).toEqual(['b']);
+	});
+
+	it('plants wanted crops on their own when no combination has them', () => {
+		const tomato = {
+			...guide('paradajky', 'lilkovite', [5]),
+			spacing: 50,
+			where: ['zahrada'],
+			sun: ['slnko'],
+			level: 2
+		} as unknown as GrowGuide;
+		const plan = planGarden(
+			{ place: 'zahrada', area: 4, sun: 'slnko', level: 1 },
+			[combo('a', 3, ['kukurica'])],
+			[...guides, tomato],
+			new Set(['paradajky'])
+		);
+		expect(plan.extras).toEqual([
+			{ ingredientId: 'paradajky', name: 'paradajky', count: 2, area: 0.5, level: 2 }
+		]);
+		expect(plan.plants.find((p) => p.ingredientId === 'paradajky')?.count).toBe(2);
+	});
+
+	it('estimates harvest and its shop value', () => {
+		const est = yieldEstimate([{ ingredientId: 'fazula', count: 3 }], guides, () => 4);
+		expect(est).toEqual({ kg: 3, eur: 12, perCrop: [{ ingredientId: 'fazula', kg: 3, eur: 12 }] });
+	});
+
+	it('round-trips a plan through a link and rejects junk', () => {
+		const shared = {
+			place: 'zahrada' as const,
+			area: 12.5,
+			sun: 'slnko' as const,
+			level: 2 as const,
+			beds: [
+				{
+					name: 'Záhon pri plote',
+					width: 3,
+					depth: 1.2,
+					cells: { '0,0': 'mrkva', '2,1': 'cesnak' }
+				}
+			]
+		};
+		expect(decodeShared(encodeShared(shared))).toEqual(shared);
+		expect(decodeShared('nie-je-to-plan')).toBeNull();
+		expect(decodeShared(encodeShared({ ...shared, area: -1 }))).toBeNull();
+	});
+});
+
+describe('bed editor', () => {
+	const g = (
+		id: string,
+		spacing: number,
+		family: string,
+		avoid: string[] = [],
+		perennial = false
+	) => ({ ingredientId: id, name: id, spacing, family, avoid, perennial }) as unknown as GrowGuide;
+	const crops = [
+		g('mrkva', 4, 'mrkvovite'),
+		g('cibula', 10, 'cibulovite', ['hrach']),
+		g('hrach', 5, 'bobovite'),
+		g('cuketa', 90, 'tekvicovite'),
+		g('mata', 30, 'x', [], true)
+	];
+	const bed = (cells: Record<string, string>, past: Bed['past'] = []): Bed => ({
+		id: 'b',
+		name: 'b',
+		width: 1.2,
+		depth: 0.9,
+		cells,
+		past
+	});
+
+	it('sizes the grid and counts plants per square', () => {
+		expect(bedSize({ width: 1.2, depth: 0.9 })).toEqual({ cols: 4, rows: 3 });
+		expect(plantsPerCell(10)).toBe(9);
+		expect(plantsPerCell(4)).toBe(16);
+		expect(bedPlants(bed({ '0,0': 'cibula', '1,0': 'cibula', '2,0': 'cuketa' }), crops)).toEqual([
+			{ ingredientId: 'cibula', cells: 2, count: 18, cellsPerPlant: 1 },
+			{ ingredientId: 'cuketa', cells: 1, count: 0, cellsPerPlant: 9 }
+		]);
+	});
+
+	it('warns about bad neighbours, repeated families and cramped plants', () => {
+		const warnings = bedWarnings(
+			bed({ '0,0': 'cibula', '1,0': 'hrach', '3,2': 'cuketa' }, [
+				{ year: 2025, families: ['bobovite'] }
+			]),
+			crops
+		);
+		expect(warnings.map((w) => w.kind)).toEqual(['neighbours', 'rotation', 'space']);
+		expect(warnings[0].cells.sort()).toEqual(['0,0', '1,0']);
+	});
+
+	it('fills free squares from a combination and starts a new season', () => {
+		const filled = fillWithCombo(
+			bed({ '0,0': 'mata' }),
+			{
+				members: [
+					{ ingredientId: 'cibula', name: 'c', count: 10 },
+					{ ingredientId: 'mrkva', name: 'm', count: 16 }
+				]
+			} as GrowCombo,
+			crops
+		);
+		expect(Object.values(filled.cells).filter((id) => id === 'cibula')).toHaveLength(2);
+		expect(Object.values(filled.cells).filter((id) => id === 'mrkva')).toHaveLength(1);
+		const next = newSeason(filled, crops, 2026);
+		expect(next.cells).toEqual({ '0,0': 'mata' });
+		expect(next.past).toEqual([
+			{ year: 2026, families: expect.arrayContaining(['x', 'cibulovite', 'mrkvovite']) }
 		]);
 	});
 });

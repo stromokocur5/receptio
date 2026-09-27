@@ -14,6 +14,11 @@ plodiny:
     level: 1
     spacing: 40
     family: astrovite
+    yield: 1.5
+    problems:
+      - 'Hraboše a myši žerú hľuzy – zasaď do pletiva alebo vreca'
+    seeds: 'Semená netreba – odlož pár hľúz v zemi alebo v piesku v pivnici.'
+    preserve: 'V zemi celú zimu, vykopávaj podľa potreby. Vykopané v chladničke 2 týždne, v pivnici v piesku do jari.'
     recommend: 'Raz zasadíš a máš ho navždy. Bez zálievky, bez postrekov, zber celú zimu.'
     sow: [3, 4, 10, 11]
     harvest: [10, 11, 12, 1, 2, 3]
@@ -28,6 +33,12 @@ plodiny:
     level: 1
     spacing: 30
     family: laskavcovite
+    yield: 0.1
+    problems:
+      - 'Vošky na mladých listoch – zmy ich prúdom vody'
+      - 'Burina na začiatku – rastie pomaly, prvé týždne pleť'
+    seeds: 'Metlicu, z ktorej sa pri potrasení sype zrno, usuš nad plachtou – zrno je zároveň osivo.'
+    preserve: 'Zrno dosuš a skladuj v tesnom pohári rok. Listy mraz ako špenát.'
     recommend: 'Zvláda sucho a horúčavu, keď iné plodiny chradnú. Listy aj zrno, veľa železa a vápnika.'
     indoor: [4]
     sow: [5, 6]
@@ -41,6 +52,11 @@ plodiny:
     level: 2
     spacing: 10
     family: travy
+    yield: 0.02
+    problems:
+      - 'Vtáky zobú zrno – prikry sieťkou, keď dozrieva'
+    seeds: 'Zrno z vlastnej úrody je zároveň osivo, uschovaj hrsť nelúpaného.'
+    preserve: 'Nelúpané vydrží rok v suchu. Olúpané rýchlo horkne, lúp po menších dávkach.'
     sow: [5]
     harvest: [8, 9]
     how: 'Sej v máji do riadkov 25 cm od seba, 2 cm hlboko. Zalievaj len pri klíčení, potom zvládne sucho. Zber, keď zrná zožltnú, a vymláť. Na jedlo sa musí olúpať, čo doma ide ťažko – na malom záhone je to skôr pokus.'
@@ -51,6 +67,11 @@ plodiny:
     level: 2
     spacing: 20
     family: travy
+    yield: 0.1
+    problems:
+      - 'Vtáky a vrabce – sieťka na klasy'
+    seeds: 'Nechaj pár klasov dozrieť do tvrda a usuš.'
+    preserve: 'Suché zrno v tesnej nádobe rok.'
     sow: [5]
     harvest: [9, 10]
     how: 'Sej do teplej pôdy v máji, 3 cm hlboko, riadky 50 cm. V lete takmer nezalievaš – znáša sucho lepšie ako kukurica. Klasy zber, keď sú zrná tvrdé, a usuš.'
@@ -62,6 +83,12 @@ plodiny:
     level: 1
     spacing: 15
     family: bobovite
+    yield: 0.1
+    problems:
+      - 'Vošky na vrcholkoch – zaštipni ich po nasadení strukov'
+      - 'Hrdza na listoch v lete – nevadí, ak sú struky už nasadené'
+    seeds: 'Nechaj struky na rastline zčernieť, vylúp a dosuš. Osivo vydrží 5 rokov.'
+    preserve: 'Zelené zrná blanšíruj a zamraz. Suché skladuj v pohári roky.'
     recommend: 'Najviac bielkovín zo záhrady a zasadíš ho, keď je ešte zima. Pôdu po ňom nechá úrodnejšiu.'
     sow: [3, 4]
     harvest: [6, 7, 8]
@@ -74,6 +101,11 @@ plodiny:
     level: 2
     spacing: 10
     family: mrkvovite
+    yield: 0.25
+    problems:
+      - 'Mrkvová muchka – sieťka alebo zmiešaný záhon s cibuľou'
+    seeds: 'Nechaj jednu rastlinu prezimovať, na druhý rok vykvitne a dá semeno. Klíči len jeden rok.'
+    preserve: 'V zemi celú zimu, po mraze je sladší. Vykopaný v pivnici v piesku.'
     sow: [3, 4, 5]
     harvest: [10, 11, 12, 1, 2, 3]
     how: 'Semeno musí byť z minulej sezóny, staré neklíči. Sej 1 cm hlboko do riadkov 30 cm a záhon udržuj vlhký – klíči až 3 týždne. Koreň nechaj v zemi, po mraze zosladne.'
@@ -85,6 +117,12 @@ plodiny:
     level: 1
     spacing: 45
     family: kapustovite
+    yield: 1
+    problems:
+      - 'Mlynárik a jeho húsenice – sieťka proti hmyzu'
+      - 'Skočky dierkujú mladé listy – polievaj a mulčuj'
+    seeds: 'Kapustoviny sa krížia, semená sú skôr pre pokročilých – nechaj jednu rastlinu vykvitnúť na jar.'
+    preserve: 'Oberaj celú zimu priamo zo záhona. Nadbytok blanšíruj a zamraz, alebo sprav chipsy.'
     recommend: 'Zelenina, ktorú zbieraš od septembra do marca – mráz ju len osladí.'
     indoor: [3, 4]
     sow: [5, 6]
@@ -98,6 +136,11 @@ plodiny:
     level: 1
     spacing: 25
     family: mrlikovite
+    yield: 1.5
+    problems:
+      - 'Slimáky na mladých rastlinách – zbieraj ich večer'
+    seeds: 'Na druhý rok vykvitne a dá semeno (klbká ako cvikla).'
+    preserve: 'Listy blanšíruj a zamraz, stonky zaváraj ako nakladanú zeleninu.'
     recommend: 'Jedna rastlina oberaná celé leto, znesie horúčavu aj polotieň – ideálna na balkón.'
     sow: [4, 5, 6, 7]
     harvest: [6, 7, 8, 9, 10]
@@ -110,6 +153,12 @@ plodiny:
     level: 1
     spacing: 40
     family: astrovite
+    yield: 0.1
+    problems:
+      - 'Vtáky – vrecko alebo sieťka na kvet'
+      - 'Pleseň v daždivom lete – odrež kvet skôr a dosuš dnu'
+    seeds: 'Semienka z úrody sú zároveň osivo (ak nejde o F1 hybrid).'
+    preserve: 'Dosuš a skladuj v chlade – olej v nich žltne, preto najlepšie do pol roka.'
     sow: [4, 5]
     harvest: [9]
     how: 'Sej v apríli–máji 3 cm hlboko. Keď zadná strana kvetu zožltne, odrež ho, zaves hlavou dole a prikry sieťkou alebo vreckom proti vtákom. Semienka vylúp a opraž.'
@@ -122,6 +171,11 @@ plodiny:
     level: 2
     spacing: 8
     family: astrovite
+    yield: 0.1
+    problems:
+      - 'Hlodavce v zime'
+    seeds: 'Na druhý rok vykvitne ako púpava – semená pozbieraj z páperia.'
+    preserve: 'V zemi celú zimu alebo v pivnici v piesku.'
     sow: [3, 4]
     harvest: [10, 11, 12, 1, 2, 3]
     how: 'Sej skoro na jar do hlbokej kyprej pôdy bez kameňov, riadky 30 cm. Korene rastú až 30 cm do hĺbky, vykopávaj ich opatrne, zlomené vytekajú. Znesie mráz.'
@@ -132,6 +186,12 @@ plodiny:
     level: 2
     spacing: 15
     family: cibulovite
+    yield: 0.3
+    problems:
+      - 'Pórová muška – sieťka alebo zmiešaný záhon s mrkvou'
+      - 'Hrdza na listoch – nevadí, jedlá časť je v poriadku'
+    seeds: 'Nechaj jednu rastlinu prezimovať, v lete dá krásny guľatý kvet a semená.'
+    preserve: 'V zemi do marca. Nadbytok nakrájaj a zamraz surový.'
     indoor: [2, 3]
     sow: [5, 6]
     harvest: [9, 10, 11, 12, 1, 2, 3]
@@ -144,6 +204,12 @@ plodiny:
     level: 2
     spacing: 60
     family: kapustovite
+    yield: 0.8
+    problems:
+      - 'Vošky v ružičkách – zmy prúdom vody'
+      - 'Mlynárik – sieťka'
+    seeds: 'Pre pokročilých, kríži sa s ostatnými kapustovinami.'
+    preserve: 'Oberaj zo záhona celú zimu, nadbytok blanšíruj a zamraz.'
     indoor: [3, 4]
     sow: [5]
     harvest: [10, 11, 12, 1, 2]
@@ -156,6 +222,11 @@ plodiny:
     level: 1
     spacing: 50
     family: kapustovite
+    yield: 0.5
+    problems:
+      - 'Takmer žiadne – skôr sa stáva, že ho je priveľa'
+    seeds: 'Množí sa odrezkami koreňa, semená netreba.'
+    preserve: 'Korene v piesku v pivnici. Strúhaný s octom a soľou v pohári v chladničke mesiace.'
     sow: [3, 4]
     harvest: [10, 11, 3]
     perennial: true
@@ -168,6 +239,11 @@ plodiny:
     level: 1
     spacing: 5
     family: stavikovite
+    yield: 0.005
+    problems:
+      - 'Vtáky na dozrievajúcom zrne'
+    seeds: 'Zrno z úrody je osivo.'
+    preserve: 'Nelúpaná v suchu rok.'
     recommend: 'Rastie aj v chudobnej pôde, dozrie za 3 mesiace a včely ju milujú.'
     sow: [5, 6, 7]
     harvest: [8, 9]
@@ -180,6 +256,11 @@ plodiny:
     level: 2
     spacing: 15
     family: bobovite
+    yield: 0.02
+    problems:
+      - 'Plesne vo vlhkom lete – seje sa na suché miesto'
+    seeds: 'Nechaj struky dozrieť na rastline, zrná sú osivo.'
+    preserve: 'Suchý v tesnom pohári roky.'
     recommend: 'Strukovina do suchších rokov – na juhu Slovenska sa mu darí stále lepšie.'
     sow: [4]
     harvest: [7, 8]
@@ -192,6 +273,11 @@ plodiny:
     level: 2
     spacing: 5
     family: bobovite
+    yield: 0.005
+    problems:
+      - 'Poliehanie a burina – opora z ovsa pomôže'
+    seeds: 'Zrno z úrody je osivo.'
+    preserve: 'Suchá v tesnom pohári roky.'
     sow: [4]
     harvest: [7, 8]
     how: 'Sej v apríli do riadkov 20 cm od seba. Je nízka a poliehavá – pomôže, keď ju zasadíš s ovsom alebo jačmeňom, o ktoré sa opiera. Zber, keď struky zhnednú.'
@@ -202,6 +288,12 @@ plodiny:
     level: 2
     spacing: 10
     family: bobovite
+    yield: 0.1
+    problems:
+      - 'Zajace a srnky – ohrada'
+      - 'Vošky'
+    seeds: 'Nechaj pár rastlín dozrieť na suché zrno – to je osivo.'
+    preserve: 'Zelené struky blanšíruj 3 minúty a zamraz. Suché zrná roky.'
     sow: [5]
     harvest: [8, 9]
     how: 'Sója potrebuje teplo – sej až v máji, 3 cm hlboko. Ako edamame zberaj ešte zelené, plné struky v auguste, na suché zrná nechaj struky zhnednúť.'
@@ -213,6 +305,12 @@ plodiny:
     level: 1
     spacing: 10
     family: bobovite
+    yield: 0.03
+    problems:
+      - 'Fazuľový zrniak v skladovaných zrnách – daj ich po zbere na 3 dni do mrazničky'
+      - 'Slimáky na klíčiacich rastlinách'
+    seeds: 'Najľahšie osivo zo všetkých – odlož si najkrajšie zrná, vydržia 3–4 roky.'
+    preserve: 'Po zbere 3 dni v mrazničke (zničí zrniaky), potom v tesnom pohári roky.'
     recommend: 'Bielkoviny na celú zimu – suchá fazuľa vydrží roky a v kombinácii „tri sestry“ nepotrebuje takmer nič.'
     sow: [5, 6]
     harvest: [8, 9]
@@ -226,6 +324,11 @@ plodiny:
     level: 3
     spacing: 10
     family: bobovite
+    yield: 0.01
+    problems:
+      - 'Nedozrie v chladnom roku'
+    seeds: 'Zrno je osivo aj materiál na klíčky.'
+    preserve: 'Suché roky.'
     sow: [5, 6]
     harvest: [9]
     how: 'Na zrno potrebuje dlhé horúce leto – u nás dozreje len v teplom roku na juhu. Omnoho istejšie je klíčiť ho doma v pohári na klíčky.'
@@ -236,6 +339,12 @@ plodiny:
     level: 3
     spacing: 40
     family: povojovite
+    yield: 1
+    problems:
+      - 'Hraboše'
+      - 'Chlad – pod 10 °C prestane rásť'
+    seeds: 'Množí sa výhonkami z hľúz, odlož jednu hľuzu na jar.'
+    preserve: 'Nechaj 2 týždne dozrieť v teple (25 °C), potom pri 13–15 °C, nie v chladničke. Vydrží mesiace.'
     indoor: [3, 4]
     sow: [5, 6]
     harvest: [9, 10]
@@ -248,6 +357,12 @@ plodiny:
     level: 1
     spacing: 10
     family: cibulovite
+    yield: 0.1
+    problems:
+      - 'Cibuľová muška – zmiešaj s mrkvou'
+      - 'Pleseň v daždivom lete – nezalievaj na listy'
+    seeds: 'Nechaj pár cibúľ prezimovať a na druhý rok zasaď – vykvitnú a dajú semeno.'
+    preserve: 'Po zbere usuš 2 týždne na slnku, zapleť do vrkoča alebo daj do sieťky. V suchu a chlade do jari.'
     sow: [3, 4]
     harvest: [7, 8]
     how: 'Sadzačku (malé cibuľky) zasaď v marci–apríli tak, aby špička trčala zo zeme. Zberaj, keď vňať poľahne a zožltne, usuš na slnku.'
@@ -260,6 +375,12 @@ plodiny:
     level: 1
     spacing: 12
     family: cibulovite
+    yield: 0.05
+    problems:
+      - 'Hrdza na listoch – zberaj včas'
+      - 'Háďatko – striedaj záhony'
+    seeds: 'Množí sa strúčikmi – odlož najväčšie hlavy na výsadbu.'
+    preserve: 'Usuš s vňaťou, zapleť do vrkoča, v suchu a chlade do jari. Nadbytok nasekaj do oleja alebo usuš na prášok.'
     recommend: 'Zasadíš na jeseň, zberáš v lete a kúpený stojí najviac na kilogram zo všetkej bežnej zeleniny.'
     sow: [10, 11]
     harvest: [6, 7]
@@ -272,6 +393,11 @@ plodiny:
     level: 1
     spacing: 3
     family: cibulovite
+    yield: 0.05
+    problems:
+      - 'Takmer žiadne'
+    seeds: 'Nechaj pár rastlín vykvitnúť.'
+    preserve: 'Nakrájanú zamraz – do polievok stačí rovno z mrazu.'
     sow: [3, 4, 5, 6, 7, 8]
     harvest: [5, 6, 7, 8, 9, 10]
     how: 'Najjednoduchšie z kúpenej: biele spodky s korienkami postav do pohára s trochou vody alebo zasaď do kvetináča – za týždeň dorastie zelená vňať, strihaj ju znova a znova.'
@@ -281,6 +407,12 @@ plodiny:
     level: 1
     spacing: 4
     family: mrkvovite
+    yield: 0.08
+    problems:
+      - 'Mrkvová muška – sieťka, zmiešaný záhon s pórom'
+      - 'Rozvetvené korene v kamenistej alebo čerstvo hnojenej pôde'
+    seeds: 'Dvojročná – prezimuj pár koreňov v piesku a na jar zasaď, v lete dajú semeno.'
+    preserve: 'Bez vňate v pivnici v mokrom piesku do jari, alebo v zemi prikrytá slamou. Nadbytok blanšíruj a zamraz.'
     sow: [3, 4, 5, 6]
     harvest: [6, 7, 8, 9, 10]
     how: 'Sej do kyprej pôdy bez hnoja, 1 cm hlboko, riadky 20 cm. Klíči 2–3 týždne – pridaj do riadku pár semienok reďkovky, označia riadok. Pretrhaj na 4 cm. Na balkóne v 30 cm hlbokej nádobe.'
@@ -291,6 +423,12 @@ plodiny:
     level: 1
     spacing: 35
     family: lilkovite
+    yield: 1
+    problems:
+      - 'Pásavka zemiaková – zbieraj chrobáky a vajíčka zo spodu listov'
+      - 'Pleseň zemiaková v mokrom lete – vyber odolnú odrodu, zemiaky nesaď vedľa paradajok'
+    seeds: 'Odlož zdravé stredne veľké hľuzy – na jar ich nakľúč a zasaď.'
+    preserve: 'Po zbere nechaj oschnúť v tieni, potom v tme pri 4–6 °C (pivnica) do jari. Na svetle zelenajú – zelené nejedz.'
     recommend: 'Najviac jedla z metra štvorcového a pestujú sa aj vo vreci na balkóne.'
     sow: [4, 5]
     harvest: [7, 8, 9]
@@ -304,6 +442,12 @@ plodiny:
     level: 2
     spacing: 50
     family: lilkovite
+    yield: 4
+    problems:
+      - 'Pleseň – zalievaj ku koreňom, odstráň spodné listy, strecha nad paradajkami'
+      - 'Suchá hniloba špičky plodov – nepravidelná zálievka, zalievaj pravidelne'
+    seeds: 'Zo zrelej paradajky nechaj semená 3 dni vo vode kvasiť, prepláchni a usuš. Funguje pri nehybridných odrodách.'
+    preserve: 'Nezrelé na jeseň dozrejú dnu v papierovej škatuli. Nadbytok spracuj na passatu, sušené paradajky alebo zamraz celé.'
     indoor: [3]
     sow: [5]
     harvest: [7, 8, 9]
@@ -316,6 +460,12 @@ plodiny:
     level: 2
     spacing: 40
     family: lilkovite
+    yield: 1.5
+    problems:
+      - 'Vošky – zmy vodou, lienky'
+      - 'Chlad – pod 12 °C prestane rásť'
+    seeds: 'Semená z červenej zrelej papriky usuš (pri nehybridoch).'
+    preserve: 'Pečené a olúpané zamraz, plnené zaváraj, sladkú papriku usuš a pomeľ na mletú.'
     indoor: [2, 3]
     sow: [5]
     harvest: [7, 8, 9, 10]
@@ -328,6 +478,11 @@ plodiny:
     level: 2
     spacing: 40
     family: lilkovite
+    yield: 0.5
+    problems:
+      - 'Vošky a molice pri prezimovaní dnu'
+    seeds: 'Semená z dozretých papričiek usuš.'
+    preserve: 'Usuš na šnúrke (girlanda), rozmixuj na pastu so soľou alebo zamraz celé.'
     indoor: [2, 3]
     sow: [5]
     harvest: [7, 8, 9, 10]
@@ -340,6 +495,12 @@ plodiny:
     level: 3
     spacing: 50
     family: lilkovite
+    yield: 2
+    problems:
+      - 'Pásavka a vošky'
+      - 'Chlad – plody nenasadí'
+    seeds: 'Nechaj plod prezrieť do žlta, semená vyber a usuš.'
+    preserve: 'Pečený a rozmixovaný (baba ganoush) zamraz, alebo sprav ajvar do pohárov.'
     indoor: [2, 3]
     sow: [5]
     harvest: [8, 9]
@@ -352,6 +513,12 @@ plodiny:
     level: 2
     spacing: 40
     family: tekvicovite
+    yield: 3
+    problems:
+      - 'Múčnatka na listoch – odolné odrody, zalievaj ku koreňom'
+      - 'Horké plody pri suchu'
+    seeds: 'Nechaj jednu uhorku prezrieť do žlta, semená vyber a usuš.'
+    preserve: 'Nakladané (sterilizované alebo kvasené sterilizované) do zimy.'
     indoor: [4]
     sow: [5, 6]
     harvest: [7, 8, 9]
@@ -364,6 +531,12 @@ plodiny:
     level: 1
     spacing: 90
     family: tekvicovite
+    yield: 5
+    problems:
+      - 'Múčnatka koncom leta – odstráň choré listy'
+      - 'Slimáky na mladých rastlinách'
+    seeds: 'Kríži sa s tekvicami, semená sú neisté.'
+    preserve: 'Nastrúhaná a vytlačená sa dá zamraziť (placky, koláče), inak zaváraj ako šalát alebo lečo.'
     recommend: 'Pre začiatočníka najvďačnejšia – dve rastliny zásobia rodinu celé leto.'
     indoor: [4]
     sow: [5, 6]
@@ -376,6 +549,12 @@ plodiny:
     level: 1
     spacing: 120
     family: tekvicovite
+    yield: 5
+    problems:
+      - 'Múčnatka – zbieraj, keď listy odumierajú'
+      - 'Slimáky na sadeniciach'
+    seeds: 'Semená zo zrelej tekvice umy a usuš – ak rástla ďaleko od cukiet.'
+    preserve: 'Nechaj 2 týždne dozrieť na slnku, potom v izbe alebo chladnejšej komore do jari. V pivnici hnije.'
     recommend: 'Jedna rastlina dá 5–10 tekvíc, ktoré vydržia v špajzi do jari.'
     indoor: [4]
     sow: [5, 6]
@@ -390,6 +569,12 @@ plodiny:
     level: 1
     spacing: 10
     family: bobovite
+    yield: 0.15
+    problems:
+      - 'Vošky'
+      - 'Slimáky na klíčkoch'
+    seeds: 'Nechaj niekoľko strukov vyschnúť na rastline, zrná sú osivo.'
+    preserve: 'Blanšíruj 3 minúty a zamraz, alebo zaváraj s kôprom.'
     sow: [5, 6, 7]
     harvest: [7, 8, 9]
     how: 'Sej po zamrznutých 3 cm hlboko. Kríčkové netreba podopierať, popínavé potrebujú 2 m oporu – aj kukuricu. Zberaj mladé struky každé 2–3 dni.'
@@ -402,6 +587,12 @@ plodiny:
     level: 1
     spacing: 5
     family: bobovite
+    yield: 0.03
+    problems:
+      - 'Obaľovač hrachový (červík v strukoch) – skorý výsev'
+      - 'Múčnatka v horúčave'
+    seeds: 'Nechaj struky dozrieť do sucha, zrná sú osivo na roky.'
+    preserve: 'Vylúpaný blanšíruj minútu a zamraz – je sladší ako kupovaný.'
     recommend: 'Prvá úroda v júni a potom na tom istom mieste ešte jedna. Zlepšuje pôdu.'
     sow: [3, 4]
     harvest: [6, 7]
@@ -415,6 +606,11 @@ plodiny:
     level: 1
     spacing: 8
     family: mrlikovite
+    yield: 0.03
+    problems:
+      - 'V lete vybehne do kvetu – sej na jar a na jeseň'
+    seeds: 'Nechaj pár rastlín vykvitnúť, semená dozrejú v lete.'
+    preserve: 'Blanšíruj, vytlač a zamraz v guľkách.'
     sow: [3, 4, 8, 9]
     harvest: [4, 5, 6, 10, 11]
     how: 'Jarná a jesenná plodina – v lete vybehne do kvetu. Sej na jar alebo koncom augusta, riadky 20 cm. Rastie aj v polotieni.'
@@ -426,6 +622,12 @@ plodiny:
     level: 1
     spacing: 25
     family: astrovite
+    yield: 0.3
+    problems:
+      - 'Slimáky – zbieraj večer, pivná pasca'
+      - 'V horúčave vybehne a zhorkne'
+    seeds: 'Nechaj jednu rastlinu vykvitnúť, semená s páperím pozbieraj.'
+    preserve: 'Neskladuje sa – sej po troškách, nech ho máš priebežne.'
     indoor: [2, 3]
     sow: [3, 4, 5, 6, 7, 8]
     harvest: [5, 6, 7, 8, 9, 10]
@@ -437,6 +639,12 @@ plodiny:
     level: 1
     spacing: 4
     family: kapustovite
+    yield: 0.02
+    problems:
+      - 'Skočky – dierky v listoch, polievaj a prikry textíliou'
+      - 'Duté a pálivé pri suchu'
+    seeds: 'Nechaj pár rastlín vykvitnúť, mladé struky sú jedlé a semená z nich osivo.'
+    preserve: 'Bez vňate v chladničke týždeň. Nadbytok nakladaj (rýchlo nakladané reďkovky).'
     sow: [3, 4, 5, 8, 9]
     harvest: [4, 5, 6, 9, 10]
     how: 'Najrýchlejšia zelenina – od výsevu po tanier 4 týždne. Sej 1 cm hlboko, pravidelne zalievaj, inak budú duté a ostré. Na parapete v 15 cm hlbokom truhlíku.'
@@ -447,6 +655,11 @@ plodiny:
     level: 1
     spacing: 20
     family: kapustovite
+    yield: 0.5
+    problems:
+      - 'Skočky na mladých rastlinách'
+    seeds: 'Pre pokročilých – prezimuj koreň a zasaď na jar.'
+    preserve: 'V pivnici v piesku do januára, alebo na kimchi a nakladanú zeleninu.'
     sow: [7, 8]
     harvest: [9, 10, 11]
     how: 'Sej v júli–auguste na miesto po cesnaku alebo hrachu. Pôda má byť hlboko prekyprená, korene rastú 30 cm. Pred mrazom vykop.'
@@ -456,6 +669,12 @@ plodiny:
     level: 1
     spacing: 25
     family: kapustovite
+    yield: 0.3
+    problems:
+      - 'Drevnatie, ak je prerastený – zbieraj menší'
+      - 'Skočky'
+    seeds: 'Pre pokročilých, kríži sa s kapustovinami.'
+    preserve: 'V chladničke 3 týždne. Nakrájaný blanšíruj a zamraz.'
     indoor: [3]
     sow: [4, 5, 6, 7]
     harvest: [5, 6, 7, 8, 9, 10]
@@ -467,6 +686,12 @@ plodiny:
     level: 2
     spacing: 45
     family: kapustovite
+    yield: 0.5
+    problems:
+      - 'Mlynárik a vošky – sieťka'
+      - 'Kvitne v horúčave – zber skôr'
+    seeds: 'Pre pokročilých.'
+    preserve: 'Ružičky blanšíruj 2 minúty a zamraz.'
     indoor: [3, 4]
     sow: [5, 8]
     harvest: [7, 8, 9, 10]
@@ -478,6 +703,12 @@ plodiny:
     level: 3
     spacing: 50
     family: kapustovite
+    yield: 0.7
+    problems:
+      - 'Mlynárik'
+      - 'Malá ružica pri suchu a hlade'
+    seeds: 'Pre pokročilých.'
+    preserve: 'Ružičky blanšíruj a zamraz, alebo nakladaj do octu.'
     indoor: [3, 4]
     sow: [5]
     harvest: [7, 8, 9, 10]
@@ -490,6 +721,12 @@ plodiny:
     level: 2
     spacing: 50
     family: kapustovite
+    yield: 2
+    problems:
+      - 'Mlynárik a húsenice – sieťka'
+      - 'Praskanie hlávok po daždi – zber včas'
+    seeds: 'Pre pokročilých.'
+    preserve: 'Kvas kyslú kapustu – vydrží celú zimu. Celé hlávky v pivnici do februára.'
     indoor: [3, 4]
     sow: [5]
     harvest: [8, 9, 10, 11]
@@ -502,6 +739,12 @@ plodiny:
     level: 2
     spacing: 35
     family: kapustovite
+    yield: 1
+    problems:
+      - 'Skočky a slimáky'
+      - 'Vybehne pri jarnom výseve'
+    seeds: 'Pre pokročilých.'
+    preserve: 'Kimchi! Celé hlávky v chladničke 3–4 týždne.'
     sow: [7, 8]
     harvest: [9, 10, 11]
     how: 'Sej až v júli – na jar a v horúčave vybehne do kvetu. Ideálna po cesnaku alebo hrachu. Znesie ľahký mráz.'
@@ -511,6 +754,11 @@ plodiny:
     level: 1
     spacing: 20
     family: kapustovite
+    yield: 0.3
+    problems:
+      - 'Skočky – prikry textíliou'
+    seeds: 'Nechaj rastlinu vykvitnúť, semená dozrejú v strukoch.'
+    preserve: 'Neskladuje sa, jedz čerstvý.'
     sow: [4, 5, 8, 9]
     harvest: [5, 6, 9, 10]
     how: 'Rastie za 6 týždňov. Sej na jar alebo koncom leta – v horúčave kvitne. V truhlíku zbieraj mladé listy.'
@@ -521,6 +769,11 @@ plodiny:
     level: 1
     spacing: 10
     family: mrlikovite
+    yield: 0.2
+    problems:
+      - 'Mínovanie listov – nevadí koreňom'
+    seeds: 'Dvojročná – prezimuj koreň a zasaď, na druhý rok dá semeno.'
+    preserve: 'V pivnici v piesku do jari. Nakladaná (sterilizovaná) na šalát.'
     sow: [4, 5, 6]
     harvest: [7, 8, 9, 10]
     how: 'Semeno je vlastne klbko niekoľkých – vyrastie z neho viac rastlín, pretrhaj ich na 10 cm. Mladé listy sa jedia ako mangold.'
@@ -532,6 +785,12 @@ plodiny:
     level: 2
     spacing: 30
     family: travy
+    yield: 0.4
+    problems:
+      - 'Vijačka kukuričná a vtáky'
+      - 'Jazvece a diviaky, ak ste pri lese'
+    seeds: 'Nechaj pár klasov úplne dozrieť a usuš. Kríži sa s inými odrodami v okolí.'
+    preserve: 'Klasy blanšíruj a zamraz, zrná odrež a zamraz alebo zaváraj.'
     sow: [5]
     harvest: [8, 9]
     how: 'Sej do bloku (napr. 4 × 4 rastliny), nie do jedného riadku – opeľuje sa vetrom. Zberaj, keď je bradka hnedá a zrno pri stlačení pustí mliečnu šťavu.'
@@ -542,6 +801,11 @@ plodiny:
     level: 3
     spacing: 40
     family: slezovite
+    yield: 0.5
+    problems:
+      - 'Chlad – pod 15 °C nerastie'
+    seeds: 'Nechaj pár strukov vyschnúť na rastline.'
+    preserve: 'Nakrájaná sa dá zamraziť, alebo nakladať do octu.'
     indoor: [4]
     sow: [5, 6]
     harvest: [8, 9]
@@ -553,6 +817,11 @@ plodiny:
     level: 2
     spacing: 8
     family: mrkvovite
+    yield: 0.1
+    problems:
+      - 'Mrkvová muška'
+    seeds: 'Dvojročný – nechaj jeden koreň prezimovať.'
+    preserve: 'V zemi alebo v pivnici v piesku do jari.'
     sow: [3, 4]
     harvest: [9, 10, 11]
     how: 'Klíči pomaly (až 4 týždne) – semeno namoč cez noc. Sej do hlbokej kyprej pôdy, riadky 25 cm.'
@@ -564,6 +833,11 @@ plodiny:
     level: 3
     spacing: 30
     family: mrkvovite
+    yield: 0.5
+    problems:
+      - 'Septorióza listov – zalievaj ku koreňom'
+    seeds: 'Pre pokročilých, dvojročný.'
+    preserve: 'Nakrájaný zamraz do polievok a vývaru.'
     indoor: [2, 3]
     sow: [5]
     harvest: [8, 9, 10]
@@ -578,6 +852,11 @@ plodiny:
     level: 1
     spacing: 10
     family: mrkvovite
+    yield: 0.2
+    problems:
+      - 'Takmer žiadne'
+    seeds: 'Nechaj pár rastlín na druhý rok vykvitnúť.'
+    preserve: 'Nasekaná zamrazená v kocke ľadu s olejom alebo usušená.'
     sow: [3, 4, 5, 6, 7, 8]
     harvest: [5, 6, 7, 8, 9, 10, 11]
     how: 'Semeno namoč cez noc, klíči pomaly. V kvetináči na okne rastie celú jeseň. Strihaj vonkajšie stonky, stred nechaj rásť.'
@@ -589,6 +868,11 @@ plodiny:
     level: 1
     spacing: 20
     family: mrkvovite
+    yield: 0.1
+    problems:
+      - 'Vošky'
+    seeds: 'Nechaj vykvitnúť – semená pozbieraj, alebo sa vysemení sám.'
+    preserve: 'Nasekaný zamraz, semená a kvety do nakladaných uhoriek.'
     sow: [4, 5, 6, 7]
     harvest: [6, 7, 8, 9]
     how: 'Sej priamo von, presádzanie nemá rád. Sej po troškách každé 3 týždne. Ak ho necháš vykvitnúť, na budúci rok sa vysemení sám.'
@@ -601,6 +885,12 @@ plodiny:
     level: 1
     spacing: 20
     family: hluchavkovite
+    yield: 0.3
+    problems:
+      - 'Chlad a mokro – hnije pod 10 °C'
+      - 'Slimáky'
+    seeds: 'Nechaj jednu rastlinu odkvitnúť, semená sú v suchých kalichoch.'
+    preserve: 'Pesto zamraz vo formičkách na ľad. Sušená stráca vôňu.'
     indoor: [3, 4]
     sow: [5]
     harvest: [6, 7, 8, 9]
@@ -613,6 +903,11 @@ plodiny:
     level: 2
     spacing: 5
     family: mrkvovite
+    yield: 0.03
+    problems:
+      - 'Vybehne v horúčave – sej na jar a jeseň'
+    seeds: 'Semená, ktoré dozrejú, sú mletý koriander aj osivo.'
+    preserve: 'Vňať nasekaná v oleji zamrazená. Semená usuš.'
     sow: [4, 5, 8, 9]
     harvest: [5, 6, 7, 9, 10]
     how: 'V horúčave hneď vybehne do kvetu – sej na jar a koncom leta do polotieňa, po troškách každé 3 týždne. Semienka, čo dozrejú, sú mletý koriander.'
@@ -623,6 +918,11 @@ plodiny:
     level: 1
     spacing: 30
     family: hluchavkovite
+    yield: 0.5
+    problems:
+      - 'Hrdza mäty – zostrihaj k zemi, dorastie'
+    seeds: 'Množí sa odrezkami a delením trsu.'
+    preserve: 'Usuš na čaj, alebo nasekanú zamraz v kockách ľadu.'
     recommend: 'Trvalka, ktorá sa nedá zabiť – čaj, tabbouleh aj limonáda na roky.'
     sow: [4, 5]
     harvest: [5, 6, 7, 8, 9, 10]
@@ -634,6 +934,11 @@ plodiny:
     level: 1
     spacing: 20
     family: cibulovite
+    yield: 0.3
+    problems:
+      - 'Takmer žiadne'
+    seeds: 'Delením trsu na jar.'
+    preserve: 'Nasekanú zamraz – sušená nechutí.'
     sow: [3, 4]
     harvest: [4, 5, 6, 7, 8, 9, 10]
     perennial: true
@@ -646,6 +951,11 @@ plodiny:
     level: 1
     spacing: 25
     family: hluchavkovite
+    yield: 0.1
+    problems:
+      - 'Vlhká zima – daj do dobre priepustnej pôdy'
+    seeds: 'Odrezky alebo delenie trsu.'
+    preserve: 'Usuš vo zväzkoch, vôňu drží rok.'
     sow: [4, 5]
     harvest: [5, 6, 7, 8, 9, 10]
     perennial: true
@@ -658,6 +968,12 @@ plodiny:
     level: 2
     spacing: 40
     family: hluchavkovite
+    yield: 0.2
+    problems:
+      - 'Mráz pod -10 °C'
+      - 'Premokrenie v nádobe'
+    seeds: 'Odrezky v lete zakorenia v piesku.'
+    preserve: 'Usuš, alebo ber čerstvý z nádoby celý rok.'
     sow: [5]
     harvest: [5, 6, 7, 8, 9, 10]
     perennial: true
@@ -669,6 +985,11 @@ plodiny:
     level: 1
     spacing: 25
     family: hluchavkovite
+    yield: 0.1
+    problems:
+      - 'Takmer žiadne'
+    seeds: 'Delenie trsu, semienka sa vysejú sami.'
+    preserve: 'Usuš pred kvitnutím vo zväzkoch.'
     sow: [4, 5]
     harvest: [6, 7, 8, 9]
     perennial: true
@@ -680,6 +1001,11 @@ plodiny:
     level: 1
     spacing: 20
     family: hluchavkovite
+    yield: 0.05
+    problems:
+      - 'Chlad'
+    seeds: 'Pre pokročilých – semená dozrievajú neskoro.'
+    preserve: 'Usuš vo zväzkoch.'
     indoor: [3, 4]
     sow: [5]
     harvest: [7, 8, 9]
@@ -693,6 +1019,11 @@ plodiny:
     level: 1
     spacing: 0
     family: klicky
+    yield: 10
+    problems:
+      - 'Pleseň – prepláchni 2× denne a nechaj odkvapkať'
+    seeds: 'Klíči sa z bežných suchých strukovín z obchodu.'
+    preserve: 'Hotové klíčky v chladničke 3 dni.'
     recommend: 'Čerstvá zelenina v každom byte, celý rok a za pár centov.'
     sow: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
     harvest: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -705,6 +1036,12 @@ plodiny:
     level: 2
     spacing: 0
     family: huby
+    yield: 1
+    problems:
+      - 'Suchý vzduch – huby nerastú, rosi'
+      - 'Zelená pleseň v substráte – vyhoď a začni znova'
+    seeds: 'Nový substrát sa dá naočkovať kúskom starého, ale čistejšie je kúpiť podhubie.'
+    preserve: 'Čerstvá 4 dni v chladničke. Nadbytok orestuj a zamraz alebo usuš.'
     sow: [1, 2, 3, 4, 5, 9, 10, 11, 12]
     harvest: [1, 2, 3, 4, 5, 6, 9, 10, 11, 12]
     how: 'Kúp hotový substrát s podhubím (balík z hubárne) alebo zmiešaj podhubie s vlhkou kávovou usadeninou. Nechaj v tme 2–3 týždne, potom v prievane a rozptýlenom svetle 2× denne rosi – huby vyrastú za pár dní.'
@@ -715,6 +1052,11 @@ plodiny:
     level: 3
     spacing: 20
     family: zazvorovite
+    yield: 0.3
+    problems:
+      - 'Chlad a premokrenie'
+    seeds: 'Odlož kúsok hľuzy s očkami na jar.'
+    preserve: 'Nastrúhaný zamraz, celý v chladničke mesiac.'
     indoor: [3, 4]
     sow: [5]
     harvest: [10, 11]
@@ -725,6 +1067,11 @@ plodiny:
     level: 2
     spacing: 30
     family: travy
+    yield: 0.2
+    problems:
+      - 'Chlad pod 5 °C'
+    seeds: 'Delením trsu.'
+    preserve: 'Nakrájanú zamraz alebo usuš na čaj.'
     indoor: [3, 4, 5]
     sow: [5]
     harvest: [7, 8, 9, 10]
@@ -739,6 +1086,12 @@ plodiny:
     level: 1
     spacing: 50
     family: ruzovite
+    yield: 1.5
+    problems:
+      - 'Maliník – červík v plodoch, zbieraj včas'
+      - 'Plesnivenie plodov v daždi'
+    seeds: 'Množí sa odnožami, ktoré vyháňa sama.'
+    preserve: 'Rozlož na tácku, zamraz a potom nasyp do vrecka – neslepia sa. Džem, sirup.'
     sow: [3, 4, 10, 11]
     harvest: [6, 7, 8, 9]
     perennial: true
@@ -750,6 +1103,12 @@ plodiny:
     level: 2
     spacing: 100
     family: vresovcovite
+    yield: 2
+    problems:
+      - 'Vápnitá voda – žltnú listy'
+      - 'Vtáky – sieťka'
+    seeds: 'Odrezky alebo kúp sadenicu.'
+    preserve: 'Zamraz na tácke, sušené ako hrozienka.'
     sow: [4, 10]
     harvest: [7, 8]
     perennial: true
@@ -761,6 +1120,12 @@ plodiny:
     level: 2
     spacing: 400
     family: ruzovite
+    yield: 30
+    problems:
+      - 'Chrastavitosť a obaľovač – staré odolné odrody'
+      - 'Vošky na mladých výhonkoch'
+    seeds: 'Ovocie sa množí štepením – kúp stromček.'
+    preserve: 'Zdravé jablká v pivnici pri 2–4 °C do jari. Mušt, sušené krúžky, pečené.'
     sow: [3, 4, 10, 11]
     harvest: [8, 9, 10]
     perennial: true
@@ -772,6 +1137,12 @@ plodiny:
     level: 1
     spacing: 400
     family: ruzovite
+    yield: 30
+    problems:
+      - 'Šarka (škvrny na plodoch) – odolné odrody'
+      - 'Obaľovač'
+    seeds: 'Množí sa štepením alebo odrastkami.'
+    preserve: 'Lekvár, sušené slivky, kompót, zamrazené polovičky na koláč.'
     sow: [3, 4, 10, 11]
     harvest: [8, 9]
     perennial: true

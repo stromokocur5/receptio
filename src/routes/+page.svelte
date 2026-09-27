@@ -8,8 +8,8 @@
 	import Squiggle from '$lib/components/Squiggle.svelte';
 	import { pluralRecipes } from '$lib/labels';
 	import { IN_MONTH, recipeSeason } from '$lib/season';
-	import { monthTasks } from '$lib/garden';
-	import { garden, likes, ui } from '$lib/state.svelte';
+	import { bedPlants, localizeGuide, monthTasks, seasonDelayWeeks } from '$lib/garden';
+	import { garden, likes, settings, ui } from '$lib/state.svelte';
 	import type { GrowGuide } from '$lib/types';
 
 	const catalog = useCatalog();
@@ -37,11 +37,21 @@
 			.then((g: GrowGuide[]) => (growGuides = g))
 			.catch(() => {});
 	});
+	const localGuides = $derived(
+		growGuides.map((g) =>
+			localizeGuide(g, seasonDelayWeeks(settings.current.location?.elevation ?? 150))
+		)
+	);
+	const gardenPlants = $derived(
+		garden.current
+			? [...garden.current.plants, ...garden.current.beds.flatMap((b) => bedPlants(b, localGuides))]
+			: []
+	);
 	const gardenTasks = $derived(
 		garden.current && growGuides.length
 			? monthTasks(
-					garden.current.plants,
-					growGuides,
+					[...new Map(gardenPlants.map((p) => [p.ingredientId, p])).values()],
+					localGuides,
 					garden.current.done,
 					new Date().getFullYear(),
 					month

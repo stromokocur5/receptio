@@ -268,6 +268,14 @@ export interface GrowGuide {
 	spacing: number;
 	/** Plant family, for rotating beds year to year. */
 	family: string;
+	/** Rough harvest per plant in kg (a jar of sprouts a week counts as one plant). */
+	yieldKg: number;
+	/** Common troubles and what to do about them. */
+	problems: string[];
+	/** How to keep your own seed. */
+	seeds: string;
+	/** What to do with a glut: storing, freezing, drying, preserving. */
+	preserve: string;
 	/** Months (1–12) to start seedlings indoors. */
 	indoor: number[];
 	/** Months to sow or plant outside (or into the pot). */

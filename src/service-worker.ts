@@ -3,6 +3,7 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 import { build, files, prerendered, version } from '$service-worker';
+import { FROST_SYNC_TAG, FROST_WATCH_KEY, kvGet, type FrostWatch } from '$lib/kv';
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
@@ -117,8 +118,50 @@ sw.addEventListener('notificationclick', (event) => {
 		(async () => {
 			const windows = await sw.clients.matchAll({ type: 'window', includeUncontrolled: true });
 			const client = windows[0];
-			if (client) await client.focus();
-			else await sw.clients.openWindow('/');
+			const url = (event.notification.data as { url?: string } | null)?.url;
+			if (client) {
+				await client.focus();
+				if (url && 'navigate' in client) await (client as WindowClient).navigate(url);
+			} else await sw.clients.openWindow(url ?? '/');
 		})()
 	);
+});
+
+/**
+ * Background frost check (Chrome and Edge for an installed app wake us about twice a day). Warns
+ * when the coming night drops to about zero between March and October.
+ */
+async function checkFrost() {
+	const watch = await kvGet<FrostWatch>(FROST_WATCH_KEY).catch(() => undefined);
+	const month = new Date().getMonth() + 1;
+	if (!watch || month < 3 || month > 10) return;
+	const params = new URLSearchParams({
+		latitude: String(watch.lat),
+		longitude: String(watch.lon),
+		daily: 'temperature_2m_min',
+		timezone: 'Europe/Bratislava',
+		forecast_days: '2'
+	});
+	const res = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
+	if (!res.ok) return;
+	const { daily } = (await res.json()) as {
+		daily: { time: string[]; temperature_2m_min: number[] };
+	};
+	const i = daily.temperature_2m_min.findIndex((t) => t <= 1);
+	if (i === -1) return;
+	await sw.registration.showNotification(
+		`Mráz ${i === 0 ? 'dnes' : 'zajtra'} v noci – ${Math.round(daily.temperature_2m_min[i])} °C`,
+		{
+			body: `${watch.name}: prikry priesady a mladé rastliny, nádoby daj k stene alebo dnu.`,
+			// One notification per night, even if we're woken twice.
+			tag: `frost-${daily.time[i]}`,
+			icon: '/icon-192.png',
+			data: { url: '/pestuj#moja-zahradka' }
+		}
+	);
+}
+
+sw.addEventListener('periodicsync', (event) => {
+	const e = event as ExtendableEvent & { tag: string };
+	if (e.tag === FROST_SYNC_TAG) e.waitUntil(checkFrost());
 });

@@ -147,6 +147,8 @@ export interface Settings {
 	/** Planned (cooked) meals per day: lunch only, or lunch and dinner. */
 	mealsPerDay: 1 | 2;
 	theme: 'auto' | 'light' | 'dark';
+	/** Where the garden is, for local sowing dates and weather. Stays on the device. */
+	location: { name: string; lat: number; lon: number; elevation: number } | null;
 }
 
 const DEFAULT_SETTINGS: Settings = {
@@ -154,11 +156,22 @@ const DEFAULT_SETTINGS: Settings = {
 	planDays: 7,
 	people: 1,
 	mealsPerDay: 1,
-	theme: 'auto'
+	theme: 'auto',
+	location: null
 };
 
 const inRange = (v: unknown, min: number, max: number): v is number =>
 	typeof v === 'number' && Number.isInteger(v) && v >= min && v <= max;
+
+function validateLocation(raw: unknown): Settings['location'] {
+	if (!isRecord(raw)) return null;
+	const { name, lat, lon, elevation } = raw;
+	const num = (v: unknown, min: number, max: number): v is number =>
+		typeof v === 'number' && Number.isFinite(v) && v >= min && v <= max;
+	if (typeof name !== 'string' || !num(lat, -90, 90) || !num(lon, -180, 180)) return null;
+	if (!num(elevation, -100, 5000)) return null;
+	return { name: name.slice(0, 80), lat, lon, elevation };
+}
 
 function validateSettings(raw: unknown): Settings | undefined {
 	if (!isRecord(raw)) return undefined;
@@ -169,7 +182,8 @@ function validateSettings(raw: unknown): Settings | undefined {
 		planDays: inRange(raw.planDays, 1, 14) ? raw.planDays : DEFAULT_SETTINGS.planDays,
 		people: inRange(raw.people, 1, 12) ? raw.people : DEFAULT_SETTINGS.people,
 		mealsPerDay: raw.mealsPerDay === 2 ? 2 : 1,
-		theme: theme === 'light' || theme === 'dark' ? theme : 'auto'
+		theme: theme === 'light' || theme === 'dark' ? theme : 'auto',
+		location: validateLocation(raw.location)
 	};
 }
 
@@ -198,6 +212,15 @@ export interface GardenDiary {
 	/** Finished tasks: `2026-5-sow-mrkva` → date done. */
 	done: Record<string, string>;
 	harvests: { ingredientId: string; grams: number; date: string }[];
+	/** Hand-drawn beds from the garden editor. */
+	beds: {
+		id: string;
+		name: string;
+		width: number;
+		depth: number;
+		cells: Record<string, string>;
+		past: { year: number; families: string[] }[];
+	}[];
 	savedAt: string;
 }
 
@@ -209,7 +232,7 @@ const isDate = (v: unknown): v is string => typeof v === 'string' && /^\d{4}-\d{
 function validateGarden(raw: unknown): GardenDiary | null | undefined {
 	if (raw === null) return null;
 	if (!isRecord(raw)) return undefined;
-	const { place, area, sun, level, combos, plants, done, harvests, savedAt } = raw;
+	const { place, area, sun, level, combos, plants, done, harvests, beds, savedAt } = raw;
 	if (typeof place !== 'string' || !PLACES.includes(place)) return undefined;
 	if (typeof sun !== 'string' || !SUNS.includes(sun)) return undefined;
 	if (typeof area !== 'number' || !(area > 0) || area > 100_000) return undefined;
@@ -246,8 +269,53 @@ function validateGarden(raw: unknown): GardenDiary | null | undefined {
 					isDate(h.date)
 			)
 			.slice(-MAX_HARVESTS),
+		beds: validateBeds(beds),
 		savedAt: isDate(savedAt) ? savedAt : new Date().toISOString().slice(0, 10)
 	};
+}
+
+const MAX_BEDS = 30;
+const MAX_BED_M = 50;
+
+function validateBeds(raw: unknown): GardenDiary['beds'] {
+	if (!Array.isArray(raw)) return [];
+	return raw
+		.filter(
+			(b): b is Record<string, unknown> =>
+				isRecord(b) &&
+				typeof b.id === 'string' &&
+				typeof b.name === 'string' &&
+				typeof b.width === 'number' &&
+				typeof b.depth === 'number' &&
+				b.width > 0 &&
+				b.width <= MAX_BED_M &&
+				b.depth > 0 &&
+				b.depth <= MAX_BED_M &&
+				isRecord(b.cells)
+		)
+		.slice(0, MAX_BEDS)
+		.map((b) => ({
+			id: (b.id as string).slice(0, 40),
+			name: (b.name as string).slice(0, 60),
+			width: b.width as number,
+			depth: b.depth as number,
+			cells: Object.fromEntries(
+				Object.entries(b.cells as Record<string, unknown>).filter(
+					([k, v]) => /^\d+,\d+$/.test(k) && typeof v === 'string' && /^[a-z0-9-]{1,60}$/.test(v)
+				)
+			) as Record<string, string>,
+			past: Array.isArray(b.past)
+				? b.past
+						.filter(
+							(p): p is { year: number; families: string[] } =>
+								isRecord(p) &&
+								inRange(p.year, 2000, 2200) &&
+								Array.isArray(p.families) &&
+								p.families.every((f) => typeof f === 'string')
+						)
+						.slice(-5)
+				: []
+		}));
 }
 
 export const garden = new Persisted<GardenDiary | null>('garden', null, validateGarden);

@@ -35,7 +35,12 @@ export default defineConfig({
 					'style-src': ['self', 'unsafe-inline'],
 					'img-src': ['self', 'data:'],
 					'font-src': ['self'],
-					'connect-src': ['self'],
+					// Weather, place search and elevation for the garden come from Open-Meteo (no key, no cookies).
+					'connect-src': [
+						'self',
+						'https://api.open-meteo.com',
+						'https://geocoding-api.open-meteo.com'
+					],
 					'manifest-src': ['self'],
 					'worker-src': ['self'],
 					'object-src': ['none'],

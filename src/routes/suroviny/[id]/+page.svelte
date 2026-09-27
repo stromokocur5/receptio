@@ -165,6 +165,11 @@
 					/>
 					<p>{data.grow.how}</p>
 					{#if data.grow.tip}<p class="muted">{data.grow.tip}</p>{/if}
+					{#if data.grow.problems.length}
+						<p><strong>Na čo si dať pozor:</strong> {data.grow.problems.join(' ')}</p>
+					{/if}
+					<p><strong>Čo s úrodou:</strong> {data.grow.preserve}</p>
+					<p class="muted"><strong>Vlastné semená:</strong> {data.grow.seeds}</p>
 					<a class="btn ghost small" href="/pestuj#p-{ingredient.id}">
 						<Icon name="arrow-right" size={16} /> Naplánuj si záhradku
 					</a>

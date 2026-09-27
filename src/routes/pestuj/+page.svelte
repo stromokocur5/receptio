@@ -1,17 +1,37 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { formatNumber } from '$lib/amounts';
+	import { formatEur, formatNumber } from '$lib/amounts';
+	import { useCatalog } from '$lib/catalog';
 	import ComboLayout from '$lib/components/ComboLayout.svelte';
 	import GardenDiary from '$lib/components/GardenDiary.svelte';
 	import GrowMonths from '$lib/components/GrowMonths.svelte';
 	import Icon from '$lib/components/Icon.svelte';
+	import LocationPicker from '$lib/components/LocationPicker.svelte';
 	import Seo from '$lib/components/Seo.svelte';
-	import { planGarden, sowNow, type GardenInput } from '$lib/garden';
+	import WeatherPanel from '$lib/components/WeatherPanel.svelte';
+	import {
+		decodeShared,
+		localizeGuide,
+		planGarden,
+		seasonDelayWeeks,
+		sowNow,
+		successors,
+		yieldEstimate,
+		type GardenInput,
+		type SharedGarden
+	} from '$lib/garden';
+	import { normalizeSearch } from '$lib/labels';
+	import { bestPrice } from '$lib/pricing';
 	import { IN_MONTH, MONTH_NAMES } from '$lib/season';
-	import { garden, ui } from '$lib/state.svelte';
+	import { favorites, garden, plan as mealPlan, settings, ui } from '$lib/state.svelte';
 	import type { GrowGuide, GrowPlace, GrowSun } from '$lib/types';
 
 	let { data } = $props();
+	const catalog = useCatalog();
+
+	/** Calendars moved to the grower's altitude (lowlands when no place is set). */
+	const delay = $derived(seasonDelayWeeks(settings.current.location?.elevation ?? 150));
+	const guides = $derived(data.grow.map((g) => localizeGuide(g, delay)));
 
 	const PLACES: { id: GrowPlace; label: string; hint: string; area: number }[] = [
 		{ id: 'parapet', label: 'Byt, okno', hint: 'parapet, kuchynská linka', area: 0.3 },
@@ -46,6 +66,14 @@
 
 	onMount(() => {
 		month = new Date().getMonth() + 1;
+		const shared = location.hash.startsWith('#zahradka=')
+			? decodeShared(location.hash.slice('#zahradka='.length))
+			: null;
+		if (shared) {
+			sharedPlan = shared;
+			input = { place: shared.place, area: shared.area, sun: shared.sun, level: shared.level };
+			return;
+		}
 		const diary = garden.current;
 		if (diary) {
 			input = { place: diary.place, area: diary.area, sun: diary.sun, level: diary.level };
@@ -73,12 +101,69 @@
 		save();
 	}
 
-	const plan = $derived(planGarden(input, data.growCombos, data.grow));
-	const guideById = $derived(new Map(data.grow.map((g) => [g.ingredientId, g])));
+	/** Recipes the garden should feed; their growable ingredients steer the planner. */
+	let goalRecipes = $state<string[]>([]);
+	let goalQuery = $state('');
+	const growableIds = $derived(new Set(data.grow.map((g) => g.ingredientId)));
+	const wanted = $derived(
+		new Set(
+			goalRecipes.flatMap(
+				(id) =>
+					catalog.recipesById
+						.get(id)
+						?.lines.map((l) => l.ingredientId)
+						.filter((i) => growableIds.has(i)) ?? []
+			)
+		)
+	);
+	const goalMatches = $derived.by(() => {
+		const q = normalizeSearch(goalQuery.trim());
+		if (q.length < 2) return [];
+		return catalog.recipes
+			.filter((r) => !goalRecipes.includes(r.id) && normalizeSearch(r.title).includes(q))
+			.slice(0, 6);
+	});
+	function addGoals(ids: string[]) {
+		goalRecipes = [
+			...new Set([...goalRecipes, ...ids.filter((id) => catalog.recipesById.has(id))])
+		];
+		goalQuery = '';
+	}
+
+	const plan = $derived(planGarden(input, data.growCombos, guides, wanted));
+	const covered = $derived(
+		[...wanted].filter((id) => plan.plants.some((p) => p.ingredientId === id))
+	);
+	const uncovered = $derived([...wanted].filter((id) => !covered.includes(id)));
+
+	const priceToday = $derived(new Date(catalog.builtAt));
+	const estimate = $derived(
+		yieldEstimate(plan.plants, guides, (id) => {
+			const ingredient = catalog.ingredientsById.get(id);
+			return ingredient ? bestPrice(ingredient, catalog.prices, priceToday).perKg : null;
+		})
+	);
+	const kgById = $derived(new Map(estimate.perCrop.map((c) => [c.ingredientId, c.kg])));
+
+	let sharedPlan = $state<SharedGarden | null>(null);
+	function adoptShared() {
+		if (!sharedPlan) return;
+		const shared = sharedPlan;
+		const beds = (shared.beds ?? []).map((b) => ({
+			...b,
+			id: crypto.randomUUID().slice(0, 8),
+			past: []
+		}));
+		sharedPlan = null;
+		history.replaceState(null, '', location.pathname);
+		saveGarden(beds);
+	}
+
+	const guideById = $derived(new Map(guides.map((g) => [g.ingredientId, g])));
 	const nameById = $derived(
 		new Map([...data.grow, ...data.notGrown].map((g) => [g.ingredientId, g.name]))
 	);
-	const recommended = $derived(data.grow.filter((g) => g.recommend));
+	const recommended = $derived(guides.filter((g) => g.recommend));
 	const planMonths = $derived(
 		plan.calendar.filter((c) => c.indoor.length || c.sow.length || c.harvest.length)
 	);
@@ -86,9 +171,9 @@
 	let placeFilter = $state<GrowPlace | ''>('');
 	let onlyNow = $state(false);
 	let onlyEasy = $state(false);
-	const nowIds = $derived(new Set(sowNow(data.grow, month).map((g) => g.ingredientId)));
+	const nowIds = $derived(new Set(sowNow(guides, month).map((g) => g.ingredientId)));
 	const crops = $derived(
-		data.grow.filter(
+		guides.filter(
 			(g) =>
 				(!placeFilter || g.where.includes(placeFilter)) &&
 				(!onlyNow || nowIds.has(g.ingredientId)) &&
@@ -102,14 +187,17 @@
 	let savedNote = $state(false);
 
 	/** Keeps the plan (and the diary already written for it) as "my garden". */
-	function saveGarden() {
+	function saveGarden(beds?: NonNullable<typeof garden.current>['beds'], empty = false) {
 		const previous = garden.current;
 		garden.current = {
 			...input,
-			combos: plan.combos.map((c) => ({ id: c.combo.id, modules: c.modules })),
-			plants: plan.plants.map((p) => ({ ingredientId: p.ingredientId, count: p.count })),
+			combos: empty ? [] : plan.combos.map((c) => ({ id: c.combo.id, modules: c.modules })),
+			plants: empty
+				? []
+				: plan.plants.map((p) => ({ ingredientId: p.ingredientId, count: p.count })),
 			done: previous?.done ?? {},
 			harvests: previous?.harvests ?? [],
+			beds: beds ?? previous?.beds ?? [],
 			savedAt: new Date().toISOString().slice(0, 10)
 		};
 		savedNote = true;
@@ -152,11 +240,38 @@
 			<a class="chip" href="#nepestuje-sa">Čo u nás nerastie</a>
 			<a class="chip" href="/wiki/ako-zacat-pestovat">Ako začať</a>
 			<a class="chip" href="/wiki/naradie-na-pestovanie">Náradie a nádoby</a>
+			<a class="chip" href="/wiki/uskladnenie-urody">Uskladnenie</a>
+			<a class="chip" href="/wiki/kompost">Kompost</a>
 		</nav>
 	</header>
 
+	{#if sharedPlan}
+		<section class="card shared" role="status">
+			<p>
+				<strong>Niekto ti poslal plán záhradky</strong> – {formatNumber(sharedPlan.area)} m²,
+				{PLACE_LABELS[sharedPlan.place]}{sharedPlan.beds?.length
+					? `, ${sharedPlan.beds.length} ${sharedPlan.beds.length === 1 ? 'nakreslený záhon' : sharedPlan.beds.length < 5 ? 'nakreslené záhony' : 'nakreslených záhonov'}`
+					: ''}. Plánovač nižšie ho už ukazuje.
+			</p>
+			<div class="save-row">
+				<button class="btn leaf" onclick={adoptShared}>
+					<Icon name="bookmark" size={18} />
+					{garden.current ? 'Nahradiť moju záhradku' : 'Uložiť ako moju záhradku'}
+				</button>
+				<button class="btn ghost" onclick={() => (sharedPlan = null)}>Len si ho pozriem</button>
+			</div>
+		</section>
+	{/if}
+
+	{#if ui.loaded}
+		<LocationPicker />
+		{#if settings.current.location && !garden.current}
+			<WeatherPanel location={settings.current.location} tender={false} plantingTender={false} />
+		{/if}
+	{/if}
+
 	{#if ui.loaded && garden.current}
-		<GardenDiary diary={garden.current} guides={data.grow} />
+		<GardenDiary diary={garden.current} {guides} combos={data.growCombos} />
 	{/if}
 
 	<section id="oplati-sa" class="block">
@@ -184,6 +299,14 @@
 			Povedz, koľko máš miesta, a plánovač ho zaplní kombináciami rastlín, ktoré si navzájom
 			pomáhajú – namiesto jedného záhonu kapusty, kde sa darí hlavne škodcom.
 		</p>
+		{#if ui.loaded && !garden.current}
+			<p class="muted small">
+				Chceš si záhony nakresliť sám?
+				<button class="linkish" onclick={() => saveGarden([], true)}
+					>Začni s prázdnou záhradkou</button
+				>.
+			</p>
+		{/if}
 
 		<div class="form">
 			<fieldset>
@@ -234,6 +357,48 @@
 				</div>
 			</fieldset>
 			<fieldset>
+				<legend>Na čo chceš pestovať <small class="muted">nepovinné</small></legend>
+				<div class="chips">
+					{#if ui.loaded && mealPlan.current.length}
+						<button class="chip" onclick={() => addGoals(mealPlan.current.map((e) => e.recipeId))}
+							><Icon name="calendar" size={14} /> Na môj plán jedál</button
+						>
+					{/if}
+					{#if ui.loaded && Object.keys(favorites.current).length}
+						<button class="chip" onclick={() => addGoals(Object.keys(favorites.current))}
+							><Icon name="bookmark" size={14} /> Na obľúbené recepty</button
+						>
+					{/if}
+					<input
+						class="goal-search"
+						bind:value={goalQuery}
+						placeholder="Pridaj recept (lečo, hummus…)"
+						aria-label="Hľadať recept"
+					/>
+				</div>
+				{#if goalMatches.length}
+					<div class="chips goal-results">
+						{#each goalMatches as r (r.id)}
+							<button class="chip" onclick={() => addGoals([r.id])}
+								><Icon name="plus" size={14} /> {r.title}</button
+							>
+						{/each}
+					</div>
+				{/if}
+				{#if goalRecipes.length}
+					<div class="chips goal-results">
+						{#each goalRecipes as id (id)}
+							<button
+								class="chip"
+								aria-pressed="true"
+								onclick={() => (goalRecipes = goalRecipes.filter((g) => g !== id))}
+								>{catalog.recipesById.get(id)?.title} <Icon name="x" size={12} /></button
+							>
+						{/each}
+					</div>
+				{/if}
+			</fieldset>
+			<fieldset>
 				<legend>Skúsenosti</legend>
 				<div class="chips">
 					{#each LEVELS as l (l.id)}
@@ -259,8 +424,35 @@
 					? `, ${formatNumber(plan.paths)} m² ostane na chodníky`
 					: ''}{plan.free >= 0.1 ? ` a ${formatNumber(plan.free)} m² máš voľných` : ''}.
 			</p>
+			{#if estimate.kg >= 0.5}
+				<p class="estimate">
+					<Icon name="basket" size={18} />
+					<span>
+						Úroda asi <strong>{formatNumber(Math.round(estimate.kg))} kg</strong> za sezónu – v
+						obchode by stála okolo <strong>{formatEur(estimate.eur)}</strong>
+						<span class="badge turmeric">odhad</span>
+						<small class="muted"
+							>Podľa bežnej úrody na rastlinu a cien z obchodov; počasie a starostlivosť ju môžu
+							zdvojnásobiť aj prepoloviť.</small
+						>
+					</span>
+				</p>
+			{/if}
+			{#if wanted.size}
+				<p class="coverage">
+					{#if covered.length}
+						<Icon name="check" size={16} /> Na tvoje recepty dopestuješ: {names(covered)}.
+					{/if}
+					{#if uncovered.length}
+						<span class="muted"
+							>Nezmestí sa alebo sa sem nehodí: {names(uncovered)} – skús iné miesto alebo si to pridaj
+							v editore záhonov.</span
+						>
+					{/if}
+				</p>
+			{/if}
 			<div class="save-row">
-				<button class="btn leaf" onclick={saveGarden}>
+				<button class="btn leaf" onclick={() => saveGarden()}>
 					<Icon name="bookmark" size={18} />
 					{garden.current ? 'Aktualizovať moju záhradku' : 'Uložiť ako moju záhradku'}
 				</button>
@@ -285,12 +477,30 @@
 									href="#p-{m.ingredientId}">{m.count * modules} × {m.name}</a
 								>{/each}
 						</p>
-						<ComboLayout {combo} guides={data.grow} />
+						<ComboLayout {combo} {guides} />
 						<p>{combo.how}</p>
 						<p class="why"><Icon name="heart" size={16} /> {combo.why}</p>
 					</li>
 				{/each}
 			</ol>
+
+			{#if plan.extras.length}
+				<section class="extras">
+					<h3>Samostatne, na tvoje recepty</h3>
+					<ul>
+						{#each plan.extras as e (e.ingredientId)}
+							<li>
+								<a href="#p-{e.ingredientId}">{e.count} × {e.name}</a>
+								<small class="muted"
+									>{formatNumber(e.area)} m²{e.level > input.level
+										? ` · ${LEVEL_LABELS[e.level]}`
+										: ''}</small
+								>
+							</li>
+						{/each}
+					</ul>
+				</section>
+			{/if}
 
 			<div class="plan-cols">
 				<section>
@@ -301,6 +511,9 @@
 							<li>
 								<strong>{p.count}</strong>
 								{p.name}
+								{#if (kgById.get(p.ingredientId) ?? 0) >= 0.1}<small class="muted"
+										>≈ {formatNumber(Math.round((kgById.get(p.ingredientId) ?? 0) * 10) / 10)} kg</small
+									>{/if}
 								<small class="muted">
 									{g?.perennial
 										? 'sadenica, trvalka'
@@ -398,6 +611,29 @@
 							? ` · nesaď k: ${names(g.avoid)}`
 							: ''}
 					</p>
+					<details class="more">
+						<summary>Choroby, semená, uskladnenie</summary>
+						{#if g.problems.length}
+							<p class="more-h">Problémy</p>
+							<ul>
+								{#each g.problems as pr, i (i)}<li>{pr}</li>{/each}
+							</ul>
+						{/if}
+						<p class="more-h">Vlastné semená</p>
+						<p>{g.seeds}</p>
+						<p class="more-h">Čo s úrodou</p>
+						<p>{g.preserve}</p>
+						{#if successors(g, guides, placeFilter || 'zahrada').length}
+							<p class="more-h">Po zbere zasaď</p>
+							<p>
+								{successors(g, guides, placeFilter || 'zahrada')
+									.slice(0, 5)
+									.map((x) => x.name)
+									.join(', ')}
+							</p>
+						{/if}
+						<p class="small muted">Úroda asi {formatNumber(g.yieldKg)} kg z rastliny.</p>
+					</details>
 				</article>
 			{:else}
 				<p class="muted">Takú plodinu tu nemám – skús iný filter.</p>
@@ -553,6 +789,73 @@
 	}
 	.summary {
 		font-size: 1.05rem;
+	}
+	.shared {
+		margin-top: 20px;
+		padding: 18px;
+		border: 2px solid var(--sky);
+	}
+	.goal-search {
+		flex: 1 1 200px;
+		min-width: 0;
+		border: 1.5px solid var(--line);
+		border-radius: 999px;
+		background: var(--paper);
+		color: var(--ink);
+		padding: 6px 14px;
+		font: inherit;
+	}
+	.goal-results {
+		margin-top: 8px;
+	}
+	.extras {
+		margin-top: 16px;
+	}
+	.extras ul {
+		margin: 0;
+		padding-left: 1.2em;
+	}
+	.estimate {
+		display: flex;
+		gap: 10px;
+		align-items: flex-start;
+		padding: 12px 14px;
+		border-radius: var(--radius-sm);
+		background: var(--leaf-soft);
+	}
+	.estimate small {
+		display: block;
+		margin-top: 4px;
+	}
+	.coverage {
+		font-size: 0.95rem;
+	}
+	.more summary {
+		cursor: pointer;
+		font-weight: 650;
+		color: var(--leaf);
+	}
+	.more ul {
+		margin: 0;
+		padding-left: 1.2em;
+	}
+	.more p {
+		margin: 0 0 6px;
+	}
+	.more-h {
+		margin-top: 8px !important;
+		font-weight: 700;
+		font-size: 0.85rem;
+	}
+	.linkish {
+		border: 0;
+		padding: 0;
+		background: none;
+		color: var(--leaf);
+		font: inherit;
+		font-weight: 650;
+		text-decoration: underline;
+		cursor: pointer;
 	}
 	.save-row {
 		display: flex;
