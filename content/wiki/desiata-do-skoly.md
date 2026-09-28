@@ -74,6 +74,8 @@ Skladaj ju z troch častí:
 
 ## Škôlka a škola
 
+Na výšku, kde je deň dlhší a kuchyňa na internáte: [Deň vysokoškoláka](/wiki/vysokoskolak).
+
 - Mnohé škôlky a školy **nepovoľujú orechy a arašidy** kvôli alergiám spolužiakov. Pýtaj sa vopred – namiesto nich slnečnicové a tekvicové semienka alebo [slnečnicová nátierka](/recepty/slnecnicova-natierka).
 - Malým deťom celé orechy, hrozno a cherry paradajky **krájaj na štvrtiny** – riziko vdýchnutia.
 - Deti na rastlinnej strave potrebujú dosť kalórií, bielkovín, **B12** a jód. Viac v článku [Deti a tehotenstvo na rastlinnej strave](/wiki/deti-a-tehotenstvo).

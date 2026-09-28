@@ -57,6 +57,44 @@ export const LIFE_ART: Record<string, () => string> = {
 		jar(256, 70, 48, 90, 'color-mix(in srgb, var(--turmeric) 45%, var(--tomato) 20%)') +
 		label(280, 182, 'do polievok', 'middle'),
 
+	vysokoskolak: () => {
+		const item = (x: number, y: number, d: number, body: string) =>
+			`<g class="ta-pop-out" style="--d:${d}s;transform-origin:${x}px ${y}px">${body}</g>`;
+		const times: [string, string][] = [
+			['7:30', 'raňajky'],
+			['10:00', 'hrsť orechov'],
+			['12:30', 'obed z krabičky'],
+			['16:00', 'ovocie'],
+			['19:00', 'večera']
+		];
+		return (
+			`<rect class="ta-backpack" x="30" y="70" width="96" height="104" rx="18"/><rect class="ta-backpack-pocket" x="46" y="124" width="64" height="40" rx="8"/><path class="ta-backpack-strap" d="M52 70c0-24 52-24 52 0"/>` +
+			item(52, 70, 0, `<rect class="ta-lunchbox" x="40" y="44" width="40" height="26" rx="5"/>`) +
+			item(
+				84,
+				66,
+				0.4,
+				`<rect class="ta-thermos" x="78" y="22" width="16" height="46" rx="5"/><rect class="ta-lid-knob" x="80" y="16" width="12" height="8" rx="2"/>`
+			) +
+			item(
+				104,
+				70,
+				0.8,
+				`<path class="ta-bottle-glass" d="M100 34h10v8l4 6v24a3 3 0 0 1-3 3h-12a3 3 0 0 1-3-3V48l4-6Z"/>`
+			) +
+			item(124, 76, 1.2, `<circle class="ta-apple" cx="128" cy="62" r="10"/>`) +
+			`<path class="ta-timeline" d="M168 30V170"/>` +
+			times
+				.map(
+					([t, what], i) =>
+						`<circle class="ta-time-dot" style="--d:${i * 0.4}s" cx="168" cy="${34 + i * 34}" r="5"/>` +
+						label(180, 32 + i * 34, t) +
+						label(180, 44 + i * 34, what)
+				)
+				.join('')
+		);
+	},
+
 	'lacne-varenie': () =>
 		`<path class="ta-bag-paper" d="M40 60h110l-8 110H48Z"/><path class="ta-bag-fold" d="M40 60l10-12h90l10 12"/>` +
 		`<g class="ta-float" style="--d:0s">${jar(56, 30, 22, 36, '#c0442a', false)}</g>` +

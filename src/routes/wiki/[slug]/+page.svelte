@@ -32,10 +32,10 @@
 				)
 				.slice(0, 3);
 		}
-		if (page.slug === 'desiata-do-skoly' || page.slug === 'jedlo-na-cesty') {
+		if (['desiata-do-skoly', 'vysokoskolak', 'jedlo-na-cesty'].includes(page.slug)) {
 			return catalog.recipes
 				.filter((r) =>
-					page.slug === 'desiata-do-skoly'
+					page.slug !== 'jedlo-na-cesty'
 						? r.tags.includes('do-krabicky')
 						: r.categories.includes('snacky/na-cesty')
 				)
@@ -122,7 +122,7 @@
 	{#if related.length}
 		<section class="related">
 			<h2>
-				{page.slug === 'desiata-do-skoly'
+				{page.slug === 'desiata-do-skoly' || page.slug === 'vysokoskolak'
 					? 'Do krabičky'
 					: page.slug === 'jedlo-na-cesty'
 						? 'Na cesty'

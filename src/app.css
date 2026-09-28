@@ -2743,6 +2743,37 @@ input[type='range'] {
 :is(.tech-art, .tech-art-svg) .ta-coin-stack {
 	animation: ta-bob 2s ease-in-out infinite alternate;
 }
+:is(.tech-art, .tech-art-svg) .ta-pop-out {
+	animation: ta-pop-out 4s ease-in-out infinite;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-thermos {
+	fill: color-mix(in srgb, var(--leaf) 55%, var(--card));
+	stroke: var(--leaf);
+}
+:is(.tech-art, .tech-art-svg) .ta-timeline {
+	stroke: var(--line);
+	stroke-width: 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-time-dot {
+	fill: var(--turmeric);
+	stroke: var(--card);
+	stroke-width: 2;
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: ta-pop 2s ease-in-out infinite;
+	animation-delay: var(--d, 0s);
+}
+@keyframes ta-pop-out {
+	0%,
+	100% {
+		transform: translateY(8px);
+	}
+	40%,
+	70% {
+		transform: translateY(-4px);
+	}
+}
 @keyframes ta-sway {
 	from {
 		transform: rotate(-2.5deg);
