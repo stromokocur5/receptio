@@ -350,6 +350,7 @@ export const WIKI_GROUPS = [
 	'techniky',
 	'organizacia',
 	'domaca-vyroba',
+	'konzervovanie',
 	'zaciname',
 	'techniky-pestovania',
 	'stromy-huby',

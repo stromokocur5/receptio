@@ -1,0 +1,23 @@
+title: Zelený ľadový čaj s citrónom
+description: Jemný zelený čaj lúhovaný za studena, s citrónom a kapkou sirupu. Nikdy nezhorkne.
+cuisine: japonska
+meals: [snack]
+categories: [napoje/limonady]
+time: 5
+active: 5
+servings: 4
+difficulty: 1
+tags: [bez-varenia, lacne]
+ahead: Lúhuje sa 6–8 hodín v chladničke.
+ingredients:
+  - zeleny-caj: ~4 ks | vrecúška alebo 2 PL sypaného
+  - voda: 1 l | studená
+  - citron: 1 ks
+  - javorovy-sirup: 2 pl | voliteľne
+steps:
+  - Čaj zalej studenou vodou a nechaj cez noc (6–8 hodín) v chladničke.
+  - Vyber vrecúška alebo preceď, pridaj citrónovú šťavu a sirup.
+  - Podávaj s ľadom a plátkami citróna.
+tips:
+  - Za studena lúhovaný čaj má menej horkých trieslovín a kofeínu.
+  - S broskyňou alebo mätou je z neho ďalšia letná limonáda.

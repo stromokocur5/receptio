@@ -11,6 +11,7 @@ import { GARDEN_BASICS_ART } from './garden-basics';
 import { KITCHEN_ART } from './kitchen';
 import { LIFE_ART } from './life';
 import { NUTRITION_ART } from './nutrition';
+import { PRESERVES_ART } from './preserves';
 import { H, W } from './kit';
 
 const ART: Record<string, () => string> = {
@@ -20,7 +21,8 @@ const ART: Record<string, () => string> = {
 	...NUTRITION_ART,
 	...KITCHEN_ART,
 	...DIY_ART,
-	...LIFE_ART
+	...LIFE_ART,
+	...PRESERVES_ART
 };
 
 export const ART_NAMES = Object.keys(ART);

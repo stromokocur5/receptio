@@ -89,6 +89,7 @@
 			{ id: 'prilohy', title: 'Prílohy a bielkoviny' },
 			{ id: 'techniky', title: 'Techniky' },
 			{ id: 'domaca-vyroba', title: 'Kvasenie a domáca výroba' },
+			{ id: 'konzervovanie', title: 'Konzervovanie a zásoby na zimu' },
 			{ id: 'organizacia', title: 'Zásoby a plánovanie' }
 		],
 		pestovanie: [

@@ -1,0 +1,28 @@
+title: Tekvicové latte
+description: Jesenné latte so skutočnou tekvicou, škoricou, zázvorom a muškátom. Pumpkin spice bez sirupov z fľaše.
+cuisine: americka
+meals: [ranajky, snack]
+categories: [napoje/teple]
+time: 10
+active: 10
+servings: 2
+difficulty: 1
+tags: [rychle, zvysky]
+no_equipment: [mixer]
+ingredients:
+  - tekvica-hokkaido: 100 g | upečená alebo uvarená, rozmixovaná
+  - sojove-mlieko: 2 hrnček
+  - javorovy-sirup: 2 pl
+  - skorica: 1/2 čl
+  - zazvor: 1/2 čl | nastrúhaný
+  - muskatovy-orech: 1 štipka
+  - klincek: ~1 ks
+  - kava: ~2 pl | alebo 2 espressá, voliteľne
+  - vanilka: 1/2 čl
+steps:
+  - Tekvicové pyré, mlieko, sirup a korenie zohrievaj v hrnci za stáleho miešania, kým sa nezačne pariť. Nevar.
+  - Klinček vyber a zmes rozmixuj tyčovým mixérom dopenista.
+  - Nalej do hrnčekov a dolej čerstvo uvarenú kávu. Posyp škoricou.
+tips:
+  - Bez kávy je z toho tekvicové mlieko pre deti.
+  - Zvyšok pyré zamraz v kockách ľadu – jedna kocka na hrnček.

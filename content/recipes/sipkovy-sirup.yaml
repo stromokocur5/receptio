@@ -1,0 +1,28 @@
+title: Šípkový sirup
+description: Jesenný sirup zo šípok plný vitamínu C. Do čaju, na palacinky a zriedený ako limonáda.
+cuisine: slovenska
+meals: [domace]
+categories: [napoje/limonady, domace/zavarane]
+time: 60
+active: 40
+servings: 30
+difficulty: 2
+tags: [urob-si-sam, lacne]
+yields: cca 1 l sirupu
+keeps: { fridge: 30 }
+howto: [sirupy-a-stavy]
+no_equipment: [mixer]
+ingredients:
+  - sipky: 1 kg | po prvom mraze, bez stopiek
+  - voda: ~1,5 l
+  - cukor: 700 g
+  - citron: 1 ks
+steps:
+  - Šípky opláchni a daj do hrnca, zalej vodou a var prikryté 20–30 minút, kým nezmäknú.
+  - Rozmixuj tyčovým mixérom a nechaj 30 minút postáť.
+  - Preceď cez hustú utierku alebo plienku – dvakrát, aby neprešli chĺpky zo semien. Utierku vyžmýkaj.
+  - Šťavu s cukrom a citrónovou šťavou zohrievaj, kým sa cukor nerozpustí, a krátko prevar.
+  - 'Horúci nalej do vyparených fliaš a zavri. Riedi sa 1 : 6 až 1 : 8.'
+tips:
+  - Chĺpky zo semien dráždia – precedenie nevynechávaj.
+  - Vitamín C sa varením čiastočne stratí, ale v šípkach ho je toľko, že aj tak zostane veľa.

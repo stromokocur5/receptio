@@ -4776,3 +4776,91 @@
   uses:
     - 'Jablkový punč, smoothie, marinády'
   storage: 'Otvorený v chladničke 5 dní.'
+
+- id: uhorky-nakladacie
+  name: Uhorky nakladačky
+  category: zelenina
+  n: { kcal: 12, p: 0.6, c: 2.2, f: 0.1, fib: 0.7, salt: 0, fe: 0.3, ca: 16, zn: 0.2 }
+  units: { ks: 60 }
+  price: 2
+  co2: 0.4
+  color: '#5f8f3a'
+  season: [7, 8]
+  substitutes:
+    - { to: uhorka, note: 'šalátová je mäkšia, na nakladanie horšia' }
+  about: 'Malé bradavičnaté uhorky s pevnou dužinou – na nakladanie a kvasenie. Šalátové zmäknú.'
+  uses:
+    - 'Nakladané v octe, kvasené v soli, do čalamády'
+  choose: 'Malé (8–10 cm), pevné, najlepšie v deň zberu. Zvädnuté a veľké zmäknú.'
+  storage: 'V chladničke 2–3 dni, nakladaj čo najskôr.'
+
+- id: sipky
+  name: Šípky
+  category: ovocie
+  n: { kcal: 162, p: 1.6, c: 38, f: 0.3, fib: 24, salt: 0, fe: 1.1, ca: 169, zn: 0.3 }
+  units: { hrnček: 110 }
+  price: 6
+  co2: 0.2
+  color: '#c8341e'
+  season: [9, 10, 11]
+  about: 'Plody divej ruže – veľa vitamínu C. Vnútri chĺpky, ktoré dráždia, treba ich precediť.'
+  uses:
+    - 'Sirup, čaj, lekvár (šípkový „cukrovinkový“ lekvár)'
+  choose: 'Zbieraj po prvom mraze, keď zmäknú a zosladnú. Ďaleko od ciest.'
+  storage: 'Čerstvé pár dní, sušené rok.'
+
+- id: kava
+  name: Káva mletá
+  category: ine
+  n: { kcal: 2, p: 0.1, c: 0, f: 0, fib: 0, salt: 0, fe: 0, ca: 2, zn: 0 }
+  units: { pl: 6, čl: 2 }
+  price: 16
+  co2: 28
+  color: '#3a2016'
+  about: 'Pražené a mleté kávové zrná. Nutričné hodnoty sú pre vylúhovaný nápoj – samotný prášok sa nepije.'
+  uses:
+    - 'Latte, café de olla, ľadová káva, do tiramisu'
+  choose: 'Na moka kanvičku a džezvu jemnejšia, na francúzsky lis a filter hrubšia. Mel čerstvo, ak môžeš.'
+  storage: 'Otvorenú v tesnej dóze v tme, spotrebuj do mesiaca.'
+
+- id: zeleny-caj
+  name: Zelený čaj (sypaný alebo vrecúška)
+  category: ine
+  n: { kcal: 1, p: 0, c: 0.2, f: 0, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0 }
+  units: { čl: 2.5, ks: 2 }
+  price: 30
+  co2: 10
+  color: '#9ab45a'
+  about: 'Nefermentovaný čaj – jemný, trávový. Vriaca voda ho robí horkým, lúhuj pri 70–80 °C. 1 ks = vrecúško.'
+  uses:
+    - 'Ľadový čaj za studena, kombucha, teplý čaj'
+  storage: 'V tmavej dóze, spotrebuj do pol roka.'
+
+- id: melon
+  name: Melón vodový (dužina)
+  category: ovocie
+  n: { kcal: 30, p: 0.6, c: 7.6, f: 0.2, fib: 0.4, salt: 0, fe: 0.2, ca: 7, zn: 0.1 }
+  units: { hrnček: 150 }
+  price: 1
+  co2: 0.4
+  color: '#e8445a'
+  season: [7, 8, 9]
+  about: 'Sladký a šťavnatý – z 90 % voda. Na limonády, smoothie a letné šaláty.'
+  uses:
+    - 'Agua de sandía, šalát s mätou a limetkou, zmrazené kocky do nápojov'
+  choose: 'Ťažký na svoju veľkosť, so žltou škvrnou tam, kde ležal, a dutým zvukom pri poklepaní.'
+  storage: 'Celý v chlade týždeň, nakrájaný prikrytý v chladničke 3–4 dni.'
+
+- id: ananas
+  name: Ananás
+  category: ovocie
+  n: { kcal: 50, p: 0.5, c: 13, f: 0.1, fib: 1.4, salt: 0, fe: 0.3, ca: 13, zn: 0.1 }
+  units: { ks: 900 }
+  price: 3
+  co2: 0.6
+  color: '#f2c94a'
+  about: 'Tropické ovocie so sladkokyslou dužinou. Zo šupiek a jadra sa robí mexický tepache.'
+  uses:
+    - 'Smoothie, kari, salsa, tepache zo šupiek'
+  choose: 'Voňavý pri stopke, stredný list sa dá ľahko vytiahnuť.'
+  storage: 'Celý pri izbovej teplote 2–3 dni, nakrájaný v chladničke 3 dni.'

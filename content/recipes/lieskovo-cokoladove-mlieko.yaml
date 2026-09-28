@@ -1,0 +1,29 @@
+title: Lieskovo-čokoládové mlieko
+description: Ako tekutá nutela – opražené lieskové orechy, kakao a datle rozmixované s vodou. Studené aj teplé.
+cuisine: moderna
+meals: [snack, ranajky]
+categories: [napoje/mlieka, napoje/smoothie]
+time: 15
+active: 10
+servings: 4
+difficulty: 1
+tags: [deti]
+ahead: Orechy namoč aspoň na 4 hodiny.
+nutrition: false
+yields: cca 1 l
+keeps: { fridge: 3 }
+no_equipment: [panvica]
+ingredients:
+  - lieskove-orechy: 1 hrnček | opražené, namočené
+  - voda: 1 l
+  - kakao: 2 pl
+  - datle: 4 ks
+  - vanilka: 1/2 čl
+  - sol: 1 štipka
+steps:
+  - Orechy opraž nasucho v rúre (170 °C, 10 minút), v utierke z nich otri šupky a namoč na 4 hodiny.
+  - Sceď a mixuj s vodou, kakaom, datľami, vanilkou a soľou 2 minúty.
+  - Preceď cez jemnú utierku, prelej do fľaše a vychlaď.
+tips:
+  - Horúce s troškou škorice je zimné kakao.
+  - Zvyšnú orechovú drť pridaj do kaše alebo energetických guliek.

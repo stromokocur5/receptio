@@ -2774,6 +2774,123 @@ input[type='range'] {
 		transform: translateY(-4px);
 	}
 }
+:is(.tech-art, .tech-art-svg) .ta-apple-slice {
+	fill: #f5e9c8;
+	stroke: #c9a85a;
+}
+:is(.tech-art, .tech-art-svg) .ta-apple-core {
+	fill: #a8743f;
+	stroke: none;
+}
+:is(.tech-art, .tech-art-svg) .ta-tomato-half {
+	fill: var(--tomato);
+	stroke: #a8341e;
+}
+:is(.tech-art, .tech-art-svg) .ta-shrink {
+	animation: ta-shrink 5s ease-in-out infinite alternate;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-brine {
+	stroke: none;
+	fill: color-mix(in srgb, #e3d68a 30%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-pickle {
+	fill: #5f8f3a;
+	stroke: #3f6a2a;
+}
+:is(.tech-art, .tech-art-svg) .ta-dill {
+	stroke: var(--leaf);
+	stroke-width: 1.4;
+}
+:is(.tech-art, .tech-art-svg) .ta-mustard {
+	fill: #e0b030;
+	stroke: none;
+}
+:is(.tech-art, .tech-art-svg) .ta-pour-brine {
+	stroke: color-mix(in srgb, #e3d68a 70%, var(--sky));
+	stroke-width: 4;
+	stroke-dasharray: 8 6;
+	animation: ta-pour 0.8s linear infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-broc {
+	fill: #4f8f3a;
+	stroke: #2f6a2a;
+}
+:is(.tech-art, .tech-art-svg) .ta-dunk {
+	animation: ta-bob 1.2s ease-in-out infinite alternate;
+}
+:is(.tech-art, .tech-art-svg) .ta-cloth-bag {
+	fill: color-mix(in srgb, #f1ead8 70%, transparent);
+	stroke: #c9b98a;
+}
+:is(.tech-art, .tech-art-svg) .ta-string {
+	stroke: var(--ink-2);
+	stroke-width: 1.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-syrup {
+	stroke: none;
+	fill: color-mix(in srgb, #b3263e 70%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-door-gap {
+	stroke: var(--turmeric);
+	stroke-dasharray: 3 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-finger {
+	stroke: #d9a57a;
+	stroke-width: 8;
+}
+:is(.tech-art, .tech-art-svg) .ta-jam {
+	stroke: none;
+	fill: color-mix(in srgb, #b3263e 75%, var(--tomato));
+}
+:is(.tech-art, .tech-art-svg) .ta-jam-drop {
+	fill: #b3263e;
+	stroke: #8a1a2e;
+}
+:is(.tech-art, .tech-art-svg) .ta-plate-cold {
+	fill: color-mix(in srgb, var(--plate) 70%, #fff);
+	stroke: var(--plate-rim);
+}
+:is(.tech-art, .tech-art-svg) .ta-wrinkle {
+	transform-origin: 222px 116px;
+	animation: ta-squish 2.4s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-wrinkle-line {
+	stroke: #f5c0c0;
+	stroke-width: 1.4;
+}
+:is(.tech-art, .tech-art-svg) .ta-jar-label {
+	fill: #f5f1e8;
+	stroke: none;
+	opacity: 0.85;
+}
+:is(.tech-art, .tech-art-svg) .ta-thermo-fill {
+	stroke: var(--tomato);
+	stroke-width: 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-towel-strip {
+	stroke: var(--sky);
+	stroke-width: 4;
+}
+@keyframes ta-shrink {
+	from {
+		transform: scale(1);
+	}
+	to {
+		transform: scale(0.7);
+	}
+}
+@keyframes ta-squish {
+	0%,
+	40%,
+	100% {
+		transform: scaleX(1);
+	}
+	60%,
+	80% {
+		transform: scaleX(0.85) translateX(-6px);
+	}
+}
 @keyframes ta-sway {
 	from {
 		transform: rotate(-2.5deg);

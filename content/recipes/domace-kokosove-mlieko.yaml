@@ -1,0 +1,25 @@
+title: Domáce kokosové mlieko
+description: Kokosové mlieko zo strúhaného kokosu – do kávy, kaše aj kari, bez plechovky a zahusťovadiel.
+cuisine: moderna
+meals: [domace]
+categories: [domace/mlieka, napoje/mlieka]
+time: 15
+active: 10
+servings: 4
+difficulty: 1
+tags: [urob-si-sam, lacne]
+nutrition: false
+yields: cca 750 ml
+keeps: { fridge: 4 }
+ingredients:
+  - kokos-struhany: 1 hrnček | nesladený
+  - voda: 3 hrnček | horúca, nie vriaca
+  - sol: 1 štipka
+steps:
+  - Kokos zalej horúcou vodou a nechaj 10 minút namočený.
+  - Mixuj 2 minúty najvyšším výkonom.
+  - Preceď cez jemnú utierku a poriadne vyžmýkaj.
+  - Prelej do fľaše a daj do chladničky. Tuk navrchu stuhne – pred použitím pretras alebo zohrej.
+tips:
+  - Hustejšie mlieko na kari – polovica vody.
+  - Zvyšný kokos usuš v rúre pri 80 °C a použi do granoly alebo sušienok.

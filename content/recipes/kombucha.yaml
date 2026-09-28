@@ -1,0 +1,29 @@
+title: Domáca kombucha
+description: Perlivý kyslastý nápoj zo sladkého čaju a kultúry SCOBY. Jedna huba vydrží roky a každá várka dá novú.
+cuisine: moderna
+meals: [snack]
+categories: [napoje/fermentovane, domace/kvasene]
+time: 20
+active: 20
+servings: 8
+difficulty: 2
+tags: [urob-si-sam, fermentacia, lacne]
+ahead: Potrebuješ SCOBY a hrnček kombuchy z minulej várky. Kvasí 7–12 dní, potom 2–3 dni vo fľašiach.
+nutrition: false
+yields: cca 2 l
+keeps: { fridge: 30 }
+howto: [fermentacia]
+ingredients:
+  - voda: 2 l
+  - cierny-caj: ~8 ks | vrecúška, alebo zelený
+  - cukor: 140 g
+steps:
+  - Uvar liter vody, pridaj čaj a lúhuj 10 minút. Vyber vrecúška a rozpusti cukor.
+  - Dolej druhý liter studenej vody a nechaj vychladnúť na izbovú teplotu – horúci čaj kultúru zabije.
+  - Prelej do veľkého pohára, pridaj SCOBY aj s hrnčekom kombuchy, prikry utierkou a gumičkou.
+  - Nechaj 7–12 dní pri izbovej teplote mimo slnka. Od 7. dňa ochutnávaj slamkou – hotová je kyslastá, ešte trochu sladká.
+  - Odlej hrnček s SCOBY na ďalšiu várku, zvyšok nalej do pevných fliaš. Môžeš pridať kúsky ovocia alebo zázvoru.
+  - Zavri a nechaj 2–3 dni pri izbovej teplote, aby sa vytvorili bublinky. Potom do chladničky. Otváraj opatrne.
+tips:
+  - Hnedé nitky pod SCOBY sú kvasinky a sú v poriadku. Chlpatá pleseň navrchu znamená vyhodiť všetko.
+  - Obsahuje trochu alkoholu (zvyčajne pod 1 %).

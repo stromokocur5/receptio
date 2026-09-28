@@ -1,0 +1,23 @@
+title: Horúci rakytníkový nápoj
+description: Oranžový zimný nápoj z rakytníka so zázvorom a pomarančom. Kyslý, voňavý a plný vitamínu C.
+cuisine: slovenska
+meals: [snack]
+categories: [napoje/teple]
+time: 10
+active: 5
+servings: 4
+difficulty: 1
+tags: [rychle]
+ingredients:
+  - rakytnik: 1 hrnček | mrazený alebo čerstvý
+  - zazvor: 1 pl | plátky
+  - pomaranc: 1 ks
+  - javorovy-sirup: 3 pl
+  - voda: 1 l
+  - skorica: 1 štipka
+steps:
+  - Rakytník rozmixuj alebo roztlač so sirupom a šťavou z pomaranča.
+  - Vodu so zázvorom prived do varu, stiahni z ohňa a nechaj 3 minúty.
+  - Vmiešaj rakytníkovú zmes (nevar, aby sa zachoval vitamín C), preceď cez sitko a podávaj horúce so štipkou škorice.
+tips:
+  - 'Na zimu zamraz rakytník s cukrom 1 : 1 v kockách – jedna kocka na hrnček.'

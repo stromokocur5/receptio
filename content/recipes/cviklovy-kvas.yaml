@@ -1,0 +1,28 @@
+title: Cviklový kvas
+description: Rubínový kvasený nápoj z cvikly, soli a vody. Zemitý, slaný, osviežujúci – ako nálev z najlepšej nakladanej cvikly.
+cuisine: moderna
+meals: [snack]
+categories: [napoje/fermentovane, domace/kvasene]
+time: 10
+active: 10
+servings: 6
+difficulty: 1
+tags: [urob-si-sam, fermentacia, lacne]
+ahead: Kvasí 3–7 dní pri izbovej teplote.
+nutrition: false
+yields: cca 1,5 l
+keeps: { fridge: 21 }
+howto: [fermentacia]
+ingredients:
+  - cvikla: 3 ks | surová, ošúpaná, na kocky
+  - sol: 2 čl | nejódovaná
+  - zazvor: 1 pl | plátky, voliteľne
+  - voda: 1,5 l | nechlórovaná
+steps:
+  - Cviklu (a zázvor) daj do 2-litrového pohára.
+  - Soľ rozpusti vo vode a zalej cviklu. Musí byť celá pod hladinou.
+  - Prikry utierkou a nechaj 3–7 dní pri izbovej teplote. Denne premiešaj.
+  - Keď je tmavočervený a kyslastý, preceď do fliaš a daj do chladničky.
+tips:
+  - Z tej istej cvikly urobíš ešte jednu slabšiu várku.
+  - Pi po malých pohárikoch – je slaný a výrazný. Hodí sa aj do boršču a dresingov.

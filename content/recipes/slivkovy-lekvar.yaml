@@ -1,0 +1,25 @@
+title: Slivkový lekvár
+description: Hustý tmavý lekvár zo sliviek bez cukru, varený pomaly celé popoludnie. Na buchty, palacinky a do perníka.
+cuisine: slovenska
+meals: [domace]
+categories: [domace/zavarane, ranajky/kase]
+time: 300
+active: 60
+servings: 60
+difficulty: 2
+tags: [urob-si-sam, klasika]
+yields: cca 2 l lekváru
+keeps: { fridge: 30 }
+howto: [dzemy-a-lekvare, zavaranie]
+ingredients:
+  - slivky: 5 kg | veľmi zrelé, vykôstkované
+  - skorica: 1 čl | voliteľne
+steps:
+  - Slivky vykôstkuj a daj do širokého hrnca s hrubým dnom (alebo do pekáča do rúry na 160 °C).
+  - Prikry a var na miernom ohni 1 hodinu, kým sa nerozpadnú a nepustia šťavu. Občas premiešaj.
+  - Odkry a var ďalšie 3–4 hodiny, miešaj každých 15 minút, ku koncu častejšie – prichytáva sa. V rúre stačí miešať raz za 30–40 minút.
+  - Hotový je, keď je tmavý a hustý a varecha nechá na dne stopu, ktorá sa hneď nezaleje. Kto chce, rozmixuj ho dohladka a pridaj škoricu.
+  - Horúci naplň do horúcich vyparených pohárov, zavri a zaváraj 10 minút pri 90 °C.
+tips:
+  - Na 5 kg sliviek vyjde len asi 2 l lekváru – toľko vody sa odparí.
+  - Najlepší je z neskorých odrôd, ktoré sú sladké samy. Kyslé slivky dosladí lyžica sirupu.

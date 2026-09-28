@@ -1,0 +1,24 @@
+title: Café de olla
+description: Mexická káva varená v hrnci so škoricou, klinčekmi a trstinovým cukrom. Voňavá, jemne sladká, na chladné rána.
+cuisine: mexicka
+meals: [ranajky, snack]
+categories: [napoje/teple]
+time: 10
+active: 5
+servings: 2
+difficulty: 1
+tags: [rychle]
+ingredients:
+  - voda: 2 hrnček
+  - cukor: 2 pl | trstinový alebo panela
+  - skorica: 1/2 čl | alebo kúsok celej
+  - klincek: ~2 ks
+  - pomaranc: 1/4 ks | kôra
+  - kava: ~3 pl | hrubo mletá
+steps:
+  - Vodu s cukrom, škoricou, klinčekmi a kúskom pomarančovej kôry prived do varu a varte 3 minúty.
+  - Stiahni z ohňa, vmiešaj kávu, prikry a nechaj 4 minúty lúhovať.
+  - Preceď cez jemné sitko alebo papierový filter do hrnčekov.
+tips:
+  - S trochou ovseného mlieka je z nej krémová verzia.
+  - Tradične sa varí v hlinenom hrnci, odtiaľ „de olla“.

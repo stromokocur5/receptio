@@ -1,0 +1,26 @@
+title: Konopné mlieko
+description: Rastlinné mlieko za dve minúty bez namáčania a precedenia – lúpané konopné semienka sa rozmixujú celé.
+cuisine: moderna
+meals: [domace, ranajky]
+categories: [domace/mlieka, napoje/mlieka]
+time: 3
+active: 3
+servings: 4
+difficulty: 1
+tags: [urob-si-sam, rychle, vela-bielkovin]
+yields: cca 1 l
+keeps: { fridge: 3 }
+related: [mandlove-mlieko, domace-ovsene-mlieko]
+no_equipment: [sitko]
+ingredients:
+  - konopne-semienka: 60 g | lúpané
+  - voda: 1 l | studená
+  - datle: 2 ks | voliteľne
+  - sol: 1 štipka
+  - vanilka: 1/2 čl | voliteľne
+steps:
+  - Všetko mixuj 1 minútu najvyšším výkonom. Hotovo – netreba precediť.
+  - Prelej do fľaše a vychlaď. Pred použitím pretras.
+tips:
+  - Konopné semienka majú omega-3 a kompletné bielkoviny, mlieko je sýtejšie ako ovsené.
+  - Chuť je orieškovo-trávová. S kakaom a datľami z neho je výborné kakao.

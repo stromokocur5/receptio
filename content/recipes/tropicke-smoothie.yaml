@@ -1,0 +1,21 @@
+title: Tropické smoothie
+description: Mango, banán, pomaranč a kokosové mlieko. Chutí ako dovolenka, aj keď je z mrazených kúskov.
+cuisine: karibska
+meals: [ranajky, snack]
+categories: [napoje/smoothie]
+time: 5
+active: 5
+servings: 2
+difficulty: 1
+tags: [rychle, bez-varenia, deti]
+ingredients:
+  - mango: 1 hrnček | mrazené
+  - banan: 1 ks
+  - pomaranc: 1 ks | šťava
+  - kokosove-mlieko: 1/4 ks
+  - voda: 1/2 hrnček
+  - limetka: 1/2 ks
+steps:
+  - Všetko rozmixuj dohladka. Ak je husté, pridaj vodu.
+tips:
+  - Hrsť špenátu farbu zmení na zelenú, chuť skoro vôbec.

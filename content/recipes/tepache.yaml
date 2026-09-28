@@ -1,0 +1,28 @@
+title: Tepache
+description: Mexický kvasený nápoj z ananásových šupiek, škorice a trstinového cukru. Zero waste – z toho, čo by si vyhodil.
+cuisine: mexicka
+meals: [snack]
+categories: [napoje/fermentovane]
+time: 10
+active: 10
+servings: 6
+difficulty: 1
+tags: [fermentacia, zvysky, lacne, party]
+ahead: Kvasí 2–3 dni.
+nutrition: false
+yields: cca 1,5 l
+keeps: { fridge: 7 }
+ingredients:
+  - ananas: ~1 ks | šupka a jadro (dužinu zjedz)
+  - cukor: 150 g | trstinový alebo panela
+  - skorica: 1 čl | alebo celá tyčinka
+  - klincek: ~3 ks
+  - voda: 1,5 l
+steps:
+  - Ananás umy a odkroj šupku aj s kúskom dužiny, jadro nakrájaj.
+  - Cukor rozpusti v troche teplej vody a dolej studenou.
+  - Šupky, jadro, škoricu a klinčeky daj do pohára, zalej sladkou vodou, prikry utierkou.
+  - Nechaj 2–3 dni pri izbovej teplote. Keď sa na povrchu robí pena a chutí kyslastosladko, preceď do fliaš a daj do chladničky.
+tips:
+  - Nenechávaj kvasiť dlhšie ako 4 dni – začne sa meniť na ocot.
+  - Podávaj s ľadom, štipkou soli a čili na okraji pohára.

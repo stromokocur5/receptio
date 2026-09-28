@@ -1,0 +1,21 @@
+title: Čučoriedkové smoothie s ovsom
+description: Fialové raňajky do pohára – čučoriedky, ovsené vločky, sójový jogurt a ľan. Sýte do obeda.
+cuisine: moderna
+meals: [ranajky, snack]
+categories: [napoje/smoothie, ranajky/kase]
+time: 5
+active: 5
+servings: 2
+difficulty: 1
+tags: [rychle, bez-varenia, ranajky]
+ingredients:
+  - cucoriedky: 1 hrnček | aj mrazené
+  - banan: 1 ks
+  - ovsene-vlocky: 4 pl
+  - sojovy-jogurt: 1/2 hrnček
+  - sojove-mlieko: 1 hrnček
+  - lanove-semienko: 1 pl | mleté
+steps:
+  - Všetko rozmixuj aspoň minútu, aby sa vločky úplne rozdrvili.
+tips:
+  - Vločky namočené cez noc v mlieku urobia smoothie ešte krémovejšie.

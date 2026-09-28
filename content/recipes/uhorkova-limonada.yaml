@@ -1,0 +1,22 @@
+title: Uhorková limonáda s mätou
+description: Najosviežujúcejšia limonáda leta – rozmixovaná uhorka, limetka a mäta. Málo cukru, veľa chladu.
+cuisine: moderna
+meals: [snack]
+categories: [napoje/limonady]
+time: 10
+active: 10
+servings: 4
+difficulty: 1
+tags: [rychle, bez-varenia, lacne]
+ingredients:
+  - uhorka: 1 ks | so šupkou
+  - limetka: 2 ks
+  - bylinky-mata: 2 pl
+  - cukor: 3 pl
+  - voda: 1 l | studená, aj perlivá
+steps:
+  - Uhorku nakrájaj a rozmixuj s mätou, cukrom, limetkovou šťavou a pohárom vody.
+  - Preceď cez sitko (alebo nechaj s dužinou) a dolej zvyškom vody.
+  - Podávaj s ľadom, plátkami uhorky a lístkami mäty.
+tips:
+  - Na sirup do zásoby rozmixuj len uhorku, mätu, limetku a cukor – riedi sa podľa chuti.

@@ -135,6 +135,7 @@ export const RECIPE_CATEGORIES = {
 			mlieka: 'Mlieka a jogurty',
 			syry: 'Syry a maslá',
 			kvasene: 'Kvasené a nakladané',
+			zavarane: 'Zaváraniny, džemy a sušené',
 			zaklady: 'Základy a koreniny'
 		}
 	}

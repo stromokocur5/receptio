@@ -1,0 +1,25 @@
+title: Thajský ľadový čaj
+description: Oranžovkastý pouličný čaj s badiánom a kardamómom, sladený a dolievaný kokosovým mliekom. Cha yen bez mlieka z kravy.
+cuisine: thajska
+meals: [snack]
+categories: [napoje/limonady]
+time: 20
+active: 5
+servings: 4
+difficulty: 1
+tags: [party]
+ahead: Čaj musí vychladnúť.
+ingredients:
+  - voda: 1 l
+  - cierny-caj: ~6 ks | vrecúška alebo 3 PL sypaného
+  - badian: ~2 ks
+  - kardamom: 1/2 čl
+  - vanilka: 1/2 čl
+  - cukor: 5 pl
+  - kokosove-mlieko: 1/2 ks
+steps:
+  - Vodu s badiánom a kardamómom prived do varu, stiahni z ohňa, pridaj čaj a lúhuj 5 minút.
+  - Preceď, rozmiešaj v ňom cukor a vanilku a nechaj vychladnúť.
+  - Poháre naplň ľadom, nalej čaj do troch štvrtín a navrch pomaly dolej kokosové mlieko, aby vznikli vrstvy.
+tips:
+  - Oranžová farba v thajských bistrách je z farbiva – doma bude čaj len tmavší jantárový.

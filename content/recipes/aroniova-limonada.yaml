@@ -1,0 +1,24 @@
+title: Aróniová limonáda
+description: Tmavofialová limonáda z arónie s jablkom a citrónom. Trpká bobuľa sa v sladkom nápoji zmení na hlbokú chuť ako čierne ríbezle.
+cuisine: slovenska
+meals: [snack]
+categories: [napoje/limonady]
+time: 20
+active: 10
+servings: 6
+difficulty: 1
+tags: [lacne, deti]
+keeps: { fridge: 3 }
+ingredients:
+  - aronia: 1 hrnček | čerstvá alebo mrazená
+  - jablko: 2 ks | nakrájané
+  - voda: 1,5 l
+  - cukor: 5 pl
+  - citron: 1 ks
+steps:
+  - Aróniu a jablká povar v pol litri vody 10 minút, kým nepopraskajú.
+  - Roztlač, preceď a v teplej šťave rozpusti cukor.
+  - Dolej studenou vodou, pridaj citrón a vychlaď. Podávaj s ľadom.
+tips:
+  - Arónia po mraze alebo zmrazená je menej trpká.
+  - Na zimu urob zo šťavy s dvojnásobkom cukru sirup – návod v článku Sirupy a šťavy.
