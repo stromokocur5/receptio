@@ -22,14 +22,14 @@ Nakladať sa dá dvoma spôsobmi – a oba sú bezpečné, keď dodržíš pomer
 Základ, ktorý funguje na uhorky, papriku, cviklu, cibuľky, karfiol, mrkvu aj čalamádu:
 
 - **1 l vody**
-- **250 ml octu 8 %** (kvasný alebo jablčný)
+- **500 ml octu 8 %** (kvasný alebo jablčný) – alebo **1 l octu 5 %**. Kyslosť nálevu má byť aspoň okolo 2,5 %, na to je potrebný pomer 1 : 1 s 5 % octom.
 - **100–150 g cukru** (podľa chuti, na cviklu viac)
 - **1 PL soli** (asi 20 g, nejódovaná je lepšia, jódovaná môže zakaliť nálev)
 - korenie: horčičné semienko, čierne a nové korenie, bobkový list
 
-Všetko prevar, zeleninu natlač do pohárov, zalej **horúcim** nálevom, zavri a **zaváraj 15–20 minút pri 80–85 °C**. [Zaváranie](/wiki/zavaranie).
+Všetko prevar, zeleninu natlač do pohárov, zalej **horúcim** nálevom, zavri a **zaváraj 10–15 minút vo vriacej vode**, alebo pre chrumkavejšie uhorky **30 minút pri 82–85 °C** s teplomerom. [Zaváranie](/wiki/zavaranie).
 
-**Nezriedzuj ocot viac,** ako je v recepte, a nepridávaj viac zeleniny do nálevu – kyslosť chráni pred botulizmom.
+**Nezriedzuj ocot viac,** ako je v recepte – kyslosť chráni pred botulizmom. Tradičný slovenský nálev 1 : 4 (250 ml octu na liter vody) je slabší, než sa dnes odporúča na skladovanie mimo chladničky. Príliš kyslé? Pridaj cukor, nie vodu.
 
 ## Kvasené uhorky (na 1 liter vody)
 
@@ -45,7 +45,7 @@ Uhorky natlač do pohára, zalej studeným slaným nálevom, **zaťaž**, aby bo
 2. **Odrež kvetný koniec** (nie stopku) – obsahuje enzýmy, ktoré uhorky zmäkčujú.
 3. **Namoč ich na 2–4 hodiny do ľadovej vody** pred nakladaním.
 4. **Trieslovinové listy** – chren, vinič, višňa, dub, čierny čaj.
-5. **Neprehrievaj** – pri zaváraní drž 80–85 °C, nie var.
+5. **Neprehrievaj** – s teplomerom drž 82–85 °C 30 minút namiesto vriacej vody.
 
 ## Čo nakladať
 

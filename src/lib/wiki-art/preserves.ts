@@ -17,9 +17,9 @@ export const PRESERVES_ART: Record<string, () => string> = {
 		bubbles(115, 100, 150, 5) +
 		flames(115, 182, 0.9) +
 		`<path class="ta-thermo" d="M232 28v96"/><circle class="ta-thermo-bulb" cx="232" cy="130" r="7"/><path class="ta-thermo-fill" d="M232 124V60"/>` +
-		label(244, 60, '80–100 °C') +
-		label(244, 74, 'podľa receptu') +
-		label(244, 152, 'voda do ¾ pohárov'),
+		label(244, 60, 'vriaca voda') +
+		label(244, 74, '100 °C') +
+		label(244, 152, 'voda nad viečka'),
 
 	dzemy: () =>
 		`<path class="ta-hob" d="M20 160h120"/>` +
@@ -54,7 +54,7 @@ export const PRESERVES_ART: Record<string, () => string> = {
 		`<path class="ta-pour-brine" d="M200 30c-10 0-30 6-40 20"/>` +
 		`<path class="ta-kettle" d="M196 20h60v30a8 8 0 0 1-8 8h-44a8 8 0 0 1-8-8Z"/>` +
 		label(226, 80, '1 l vody', 'start') +
-		label(226, 94, '250 ml octu', 'start') +
+		label(226, 94, '500 ml octu 8 %', 'start') +
 		label(226, 108, '100–150 g cukru', 'start') +
 		label(226, 122, '1 PL soli', 'start') +
 		label(115, 186, 'uhorky tesne, nálev po okraj', 'middle'),

@@ -35,6 +35,7 @@ describe('preserves', () => {
 	it('reads the number of jars a recipe makes', () => {
 		expect(jarsFromYield('cca 8 pohárov po 0,5 l')).toBe(8);
 		expect(jarsFromYield('cca 1 l sirupu')).toBe(1);
+		expect(jarsFromYield('cca 8 vreciek po 0,5 l')).toBe(8);
 		expect(jarsFromYield(undefined)).toBe(1);
 	});
 

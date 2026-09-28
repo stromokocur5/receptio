@@ -36,7 +36,7 @@ Grilované alebo povarené baklažány, cukety, papriky a huby naložené v olej
 
 ## Zeer – chladnička bez elektriny (Nigéria, Sahel)
 
-Dva **nepolievané hlinené hrnce**, menší vo väčšom, medzi nimi **mokrý piesok**, navrchu mokrá utierka. Voda sa cez stenu odparuje a odoberá teplo – vnútri je v suchom horúcom počasí aj o **10 °C chladnejšie**. Paradajky a zelenina vydržia namiesto 2 dní aj 2–3 týždne. V Nigérii vďaka zeeru dievčatá namiesto predávania rýchlo sa kaziacej zeleniny na trhu chodili do školy.
+Dva **hlinené hrnce**, menší vo väčšom (vonkajší musí byť nepolievaný, aby cez neho voda presakovala), medzi nimi **mokrý piesok**, navrchu mokrá utierka. Voda sa cez stenu odparuje a odoberá teplo – vnútri je v suchom horúcom počasí o **10 °C aj viac chladnejšie**. Paradajky a papriky vydržia namiesto pár dní aj 3 týždne. Moderný „pot-in-pot“ v 90. rokoch rozšíril nigérijský učiteľ Mohammed Bah Abba.
 
 - Funguje najlepšie v **suchom a teplom vzduchu** a v tieni s prievanom. V daždivom lete menej.
 - Piesok udržuj vlhký – polej ho 1–2× denne.

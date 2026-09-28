@@ -22,7 +22,7 @@ Domáci sirup je leto v zime: riedi sa vodou na limonádu, ide do čaju, na pala
 ## Koľko cukru
 
 - **1 kg cukru na 1 l šťavy** – sirup vydrží v pivnici rok aj bez pasterizácie.
-- **Menej cukru** (0,5 kg/l) je ovocnejšie, ale treba **pasterizovať** (fľaše 20 minút pri 80 °C) alebo mraziť v menších fľašiach.
+- **Menej cukru** (0,5 kg/l) je ovocnejšie, ale treba **zavárať** (fľaše 10 minút vo vriacej vode) alebo mraziť v menších fľašiach.
 - Kyselina citrónová (1 ČL na liter) alebo citrónová šťava zlepší chuť aj trvanlivosť.
 
 ## Recepty v kocke
@@ -46,6 +46,6 @@ Domáci sirup je leto v zime: riedi sa vodou na limonádu, ide do čaju, na pala
 
 ## Mušty a šťavy bez cukru
 
-Jablkový alebo hroznový **mušt** z odšťavovača či lisu naliaty horúci do fliaš a **pasterizovaný 20 minút pri 75–80 °C** vydrží do jari. Bez pasterizácie začne o pár dní kvasiť. Z muštu je [jablkový punč](/recepty/jablkovy-punc).
+Jablkový alebo hroznový **mušt** z odšťavovača či lisu zohriaty na 85–90 °C, naliaty horúci do fliaš a **zavarený 10 minút vo vriacej vode** vydrží do jari. Bez pasterizácie začne o pár dní kvasiť. Z muštu je [jablkový punč](/recepty/jablkovy-punc).
 
 Ďalšie nápoje nájdeš v kategórii [Nápoje](/recepty?kategoria=napoje).

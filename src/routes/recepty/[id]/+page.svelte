@@ -179,7 +179,8 @@
 				name: recipe.title,
 				count: jarsFromYield(recipe.yields),
 				made: new Date().toISOString().slice(0, 10),
-				place: 'pivnica',
+				// Recipes that fill freezer bags (lečo) go to the freezer, jars to the cellar.
+				place: /vrec/.test(recipe.yields ?? '') ? 'mraznicka' : 'pivnica',
 				recipeId: recipe.id
 			}
 		];

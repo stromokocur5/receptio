@@ -17,9 +17,9 @@ Zaváranie je spôsob, ako si leto odložiť na zimu. Horúce jedlo v čistom uz
 | Bezpečné v hrnci s vodou (kyslé a sladké)         | Len v tlakovom hrnci alebo radšej mraziť (nekyslé) |
 | ------------------------------------------------- | -------------------------------------------------- |
 | džemy, lekváre, marmelády, kompóty                | fazuľky, hrach, kukurica                           |
-| nakladaná zelenina v octovom náleve               | zelenina len vo vode alebo slanom náleve           |
-| paradajky a passata **s pridanou kyselinou**      | huby, strukoviny, polievky, hotové jedlá           |
-| lečo, čalamáda, ajvar **s octom alebo kyselinou** | cibuľa, cesnak alebo bylinky v oleji               |
+| nakladaná zelenina v náleve **ocot : voda 1 : 1** | zelenina len vo vode alebo slanom náleve           |
+| paradajky a passata **s pridanou kyselinou**      | huby, strukoviny, polievky, hotové jedlá, lečo     |
+| čalamáda v náleve 1 : 1                           | cibuľa, cesnak alebo bylinky v oleji               |
 | sirupy a šťavy                                    |                                                    |
 
 **Prečo?** V nekyslom prostredí bez vzduchu môže prežiť **Clostridium botulinum**. Jeho spóry znesú aj varenie pri 100 °C a toxín, ktorý vytvára, je smrteľný – a nie je ho cítiť ani vidieť. Kyselina (pH pod 4,6) jeho rast zastaví. Nekyslú zeleninu preto buď **okysli**, **zamraz**, alebo zaváraj v **tlakovom hrnci určenom na zaváranie** (116–121 °C).
@@ -39,25 +39,28 @@ Stará metóda „zaváranie tri dni po sebe“ (frakčná sterilizácia) nie je
 2. **Naplň horúce poháre horúcim** – nikdy studené do horúceho, praskne. Nechaj **1–2 cm voľné** pod okrajom.
 3. **Okraj utri** čistou utierkou – mastnota alebo cukor na okraji zabránia prisatiu.
 4. **Zavri pevne**, ale nie nasilu.
-5. Poháre ulož do hrnca na utierku tak, aby sa nedotýkali. Nalej **teplú** vodu aspoň do troch štvrtín výšky pohárov (lepšie až nad viečka).
+5. Poháre ulož do hrnca na utierku tak, aby sa nedotýkali. Nalej **teplú** vodu tak, aby bola **aspoň 3 cm nad viečkami**.
 6. Zohrej na predpísanú **teplotu a čas** – rátaj od chvíle, keď voda teplotu dosiahne.
 7. Vyber, postav na utierku **dnom dolu** (obracanie hore dnom nie je potrebné) a nechaj vychladnúť bez prievanu.
 8. Po vychladnutí **skontroluj viečko**: má byť prisaté, v strede prehnuté dovnútra a pri stlačení nesmie „cvaknúť“.
 
-## Teploty a časy (poháre do 0,7 l)
+## Teploty a časy (poháre do 0,5 l)
 
-| Čo                                        | Teplota vody | Čas       |
-| ----------------------------------------- | ------------ | --------- |
-| Kompóty (jablká, slivky, hrušky, čerešne) | 80–85 °C     | 20–25 min |
-| Džemy a lekváre (plnené horúce)           | 85–90 °C     | 10–15 min |
-| Nakladaná zelenina v octe                 | 80–85 °C     | 15–20 min |
-| Lečo a čalamáda s octom                   | 90–100 °C    | 30 min    |
-| Paradajky, passata (s kyselinou)          | 100 °C       | 35–45 min |
-| Sirupy a šťavy                            | 80 °C        | 20 min    |
+Podľa odporúčaní amerického národného centra pre domáce konzervovanie (NCHFP), ktoré svoje postupy overuje laboratórne. Tradičné slovenské zaváranie pri 80 °C bývalo kratšie – pri ovocí s cukrom to často vyjde, ale istota je vo vriacej vode.
 
-Väčšie poháre (1 l a viac) o 10–15 minút dlhšie.
+| Čo                                                      | Ako                                    | Čas       |
+| ------------------------------------------------------- | -------------------------------------- | --------- |
+| Džemy, lekváre, marmelády                               | vriaca voda (100 °C)                   | 10 min    |
+| Kompóty (jablká, hrušky, slivky, broskyne)              | vriaca voda                            | 20–25 min |
+| Nakladaná zelenina v náleve **1 : 1** (ocot 5 %)        | vriaca voda                            | 10–15 min |
+| … chrumkavejšia verzia s teplomerom                     | 82–85 °C, stále pod kontrolou          | 30 min    |
+| Paradajky, passata + **1 PL citrónovej šťavy** na pohár | vriaca voda                            | 35–45 min |
+| Sirupy a šťavy                                          | vriaca voda                            | 10 min    |
+| Lečo, zelenina bez octu, strukoviny, huby               | **len tlakový hrniec alebo mraznička** | –         |
 
-**Zaváranie v rúre** je u nás bežné, ale teplota v pohároch býva nerovnomerná a ťažko sa kontroluje. Hrniec s teplomerom je istejší.
+Čas rátaj od chvíle, keď voda znova vrie. Poháre 0,7–1 l o 5–10 minút dlhšie, vo vyšších polohách (nad 300 m) o 5 minút dlhšie.
+
+**Zaváranie v rúre sa neodporúča** – suché teplo sa do pohárov dostáva nerovnomerne, obsah nemusí dosiahnuť potrebnú teplotu a poháre môžu prasknúť.
 
 ## Skladovanie
 
@@ -76,4 +79,4 @@ Väčšie poháre (1 l a viac) o 10–15 minút dlhšie.
 
 Pri príznakoch otravy (dvojité videnie, poklesnuté viečka, ťažkosti s prehĺtaním a dýchaním niekoľko hodín až dní po jedle) volaj **112**.
 
-Recepty: [lečo do pohárov](/recepty/leco-do-poharov), [čalamáda](/recepty/calamada), [nakladané uhorky](/recepty/nakladane-uhorky), [slivkový lekvár](/recepty/slivkovy-lekvar). Ďalšie spôsoby: [nakladaná zelenina](/wiki/nakladana-zelenina), [džemy](/wiki/dzemy-a-lekvare), [sušenie](/wiki/susenie), [mrazenie úrody](/wiki/mrazenie-urody).
+Recepty: [lečo do zásoby](/recepty/leco-do-poharov), [čalamáda](/recepty/calamada), [nakladané uhorky](/recepty/nakladane-uhorky), [slivkový lekvár](/recepty/slivkovy-lekvar). Ďalšie spôsoby: [nakladaná zelenina](/wiki/nakladana-zelenina), [džemy](/wiki/dzemy-a-lekvare), [sušenie](/wiki/susenie), [mrazenie úrody](/wiki/mrazenie-urody).

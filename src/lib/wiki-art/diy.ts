@@ -217,7 +217,7 @@ export const DIY_ART: Record<string, () => string> = {
 		`<path class="ta-tap" d="M100 110V70h24v10"/>` +
 		`<g class="ta-stream"><path d="M124 84v40"/></g>` +
 		`<path class="ta-hand" d="M110 128c-4-12 4-20 16-18 8 2 12 8 10 16l-4 10H114Z"/>` +
-		label(100, 172, '20 min vlažnou vodou', 'middle') +
+		label(100, 172, '20 min studenou vodou', 'middle') +
 		`<path class="ta-no" d="M188 60l24 24M212 60l-24 24"/>` +
 		`<rect class="ta-ice-cube" x="190" y="62" width="20" height="20" rx="3"/>` +
 		label(200, 104, 'nie ľad', 'middle') +

@@ -45,7 +45,7 @@ Bylinky, čili, paradajky, huby, jablká, slivky. **Sušička** alebo rúra na 5
 
 ## Zaváranie
 
-Nakladaná zelenina, lečo, passata, džemy, kompóty. Poháre umy, naplň horúcim a sterilizuj (zelenina 30 minút pri 100 °C). **Kyslé (ocot) a sladké zaváraniny sú bezpečné, nekyslá zelenina (fazuľky, hrach) len v tlakovom hrnci** – inak hrozí botulizmus.
+Nakladaná zelenina, passata s citrónom, džemy, kompóty. Poháre umy, naplň horúcim a zaváraj vo vriacej vode. **Kyslé (ocot v pomere 1 : 1) a sladké zaváraniny sú bezpečné, nekyslá zelenina (fazuľky, hrach, lečo) len v tlakovom hrnci alebo v mrazničke** – inak hrozí botulizmus.
 
 ## Kvasenie
 

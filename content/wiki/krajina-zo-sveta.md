@@ -32,11 +32,11 @@ Na svahovitej záhrade: aj **nízke múriky z kameňa alebo drevené dosky** vyt
 
 **Sloping Agricultural Land Technology**: po vrstevnici svahu sa vysadia husté pásy **dusíkatých kríkov** (gliricídia, leucaena) každých 4–6 m. Medzi nimi sa pestujú plodiny. Kríky sa strihajú a konáre idú ako mulč a hnojivo, korene držia pôdu a za pár rokov sa za plotmi vytvoria prirodzené terasy.
 
-U nás podobne fungujú **rakytník, jelša, agát a drieň** v pásoch po vrstevnici – [agrolesníctvo](/wiki/agrolesnictvo).
+U nás podobne fungujú dusíkaté dreviny **rakytník, jelša a hlošina** v pásoch po vrstevnici – [agrolesníctvo](/wiki/agrolesnictvo).
 
 ## Hnojivé stromy (Afrika)
 
-V Sahele rastie akácia **Faidherbia albida**, ktorá **v období dažďov zhodí listy** – práve keď pod ňou rastie proso a cirok. Opadané listy hnoja, a keď na poli nie je nič, strom dáva tieň zvieratám. Úrody pod ňou sú až o polovicu vyššie. V Malawi a Zambii dnes farmári sadia hnojivé stromy do polí vo veľkom.
+V Sahele rastie akácia **Faidherbia albida**, ktorá **v období dažďov zhodí listy** – práve keď pod ňou rastie proso a cirok. Opadané listy hnoja, a keď na poli nie je nič, strom dáva tieň zvieratám. Farmári v Malawi, Tanzánii a Zambii hlásia pod dospelými stromami **dvoj- až trojnásobné** úrody kukurice – strom však potrebuje 6–8 rokov, kým začne naplno pôsobiť.
 
 Naše „hnojivé“ dreviny: **jelša** (viaže dusík, znesie mokro), **rakytník a hlošina** (dusík, sucho), **agát** (dusík, ale invazívny – len kontrolovane).
 

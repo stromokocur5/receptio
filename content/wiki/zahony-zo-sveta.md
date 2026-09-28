@@ -29,7 +29,7 @@ Inžinier Mel Bartholomew vymyslel v 70. rokoch **Square Foot Gardening**: vyvý
 
 ## Mischkultur – zmiešané rady (Nemecko)
 
-Gertrud Franck v 50. rokoch pestovala zeleninu v **rovnobežných radoch vzdialených 25 cm**, kde sa striedajú **hlavné plodiny** (paradajky, kapusta, zemiaky) s **pomocníkmi** (šalát, špenát, reďkovky, bylinky) a každý tretí rad je **špenát ako živý mulč**. Po zbere sa špenát nechá ležať ako mulč a chodník. Zmiešané rady mätú škodcov a pôda je stále zakrytá. Viac o susedoch: [monokultúry a polykultúry](/wiki/monokultury-polykultury).
+Gertrud Franck v 50. rokoch pestovala zeleninu v **rovnobežných radoch vzdialených 50 cm** (neskôr ich každý rok posunula o 25 cm), kde sa striedajú **hlavné plodiny** (paradajky, kapusta, zemiaky) s **pomocníkmi** (šalát, špenát, reďkovky, bylinky) a každý tretí rad je **špenát ako živý mulč**. Po zbere sa špenát nechá ležať ako mulč a chodník. Zmiešané rady mätú škodcov a pôda je stále zakrytá. Viac o susedoch: [monokultúry a polykultúry](/wiki/monokultury-polykultury).
 
 ## Biointenzívne záhony (USA/Francúzsko)
 
@@ -43,7 +43,7 @@ Neskôr sa už nerýľuje, len mulčuje – ako v [záhone bez rýľovania](/wik
 
 ## Parížske teplé pareniská (Francúzsko, 19. storočie)
 
-Parížski **maraîchers** zásobovali celé mesto zeleninou z plochy menšej ako 1 400 ha – aj v zime. Tajomstvo boli **teplé pareniská z konského hnoja**: 40–60 cm čerstvého hnoja so slamou, navrch 15 cm zeminy a sklenené zvony alebo okná. Hnoj sa rozkladá a hreje pôdu na 20–30 °C už vo februári. Na jeseň z neho bol hotový kompost.
+Parížski **maraîchers** zásobovali Paríž zeleninou zo záhrad, ktoré zaberali asi šestnástinu plochy mesta – aj v zime. Tajomstvo boli **teplé pareniská z konského hnoja**: 40–60 cm čerstvého hnoja so slamou, navrch 15 cm zeminy a sklenené zvony alebo okná. Hnoj sa rozkladá a hreje pôdu na 20–30 °C už vo februári. Na jeseň z neho bol hotový kompost.
 
 Vegánska verzia: namiesto hnoja **čerstvo pokosená tráva, lístie a kávová usadenina** – hreje tiež, len kratšie. Viac o pareniskách: [predĺženie sezóny](/wiki/predlzenie-sezony).
 

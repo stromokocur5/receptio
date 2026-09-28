@@ -22,7 +22,7 @@ art: domacnost-sveta
 
 ## Tiffin a dabbawalas (India)
 
-Indický **tiffin** je poschodová kovová krabička na obed – v každom poschodí iné jedlo (ryža, dal, zelenina, chlieb). V Bombaji ich od roku 1890 roznášajú **dabbawalas** – denne 200 000 obedov z domovov do kancelárií na bicykloch a vlakoch, s chybovosťou jedna na milión. Nerezová krabička vydrží desaťročia a nič sa v nej nepremieša. Viac o obedoch: [deň vysokoškoláka](/wiki/vysokoskolak).
+Indický **tiffin** je poschodová kovová krabička na obed – v každom poschodí iné jedlo (ryža, dal, zelenina, chlieb). V Bombaji ich od roku 1890 roznášajú **dabbawalas** – denne až okolo 200 000 obedov z domovov do kancelárií na bicykloch a vlakoch. Chýb je vraj veľmi málo – často citované „jedna na 16 miliónov“ je však len odhad, nie meranie. Nerezová krabička vydrží desaťročia a nič sa v nej nepremieša. Viac o obedoch: [deň vysokoškoláka](/wiki/vysokoskolak).
 
 ## Lagom (Švédsko)
 

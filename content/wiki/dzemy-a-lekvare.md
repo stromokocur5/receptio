@@ -22,7 +22,7 @@ Rozdiel medzi džemom, lekvárom a marmeládou je v tom, **ako dlho sa varí a �
 ## Cukor – koľko naozaj treba
 
 - **Klasický džem 1 : 1** (kilo ovocia, kilo cukru) vydrží otvorený aj mimo chladničky. Cukor tu konzervuje.
-- **Polovica cukru** (1 : 0,5) je chutnejšia a ovocnejšia. Musí sa **zavárať** (pasterizovať 10–15 min pri 85–90 °C) a otvorený patrí do chladničky.
+- **Polovica cukru** (1 : 0,5) je chutnejšia a ovocnejšia. Musí sa **zavárať** (10 minút vo vriacej vode) a otvorený patrí do chladničky.
 - **Želírovací cukor 2 : 1 alebo 3 : 1** obsahuje pektín a kyselinu citrónovú, džem stuhne za 3–4 minúty varu. Pozri zloženie – niektoré obsahujú palmový tuk.
 - **Bez cukru** stuhne len lekvár (odparením) alebo chia džem. Musia sa zavárať alebo mraziť.
 
@@ -43,7 +43,7 @@ Rozdiel medzi džemom, lekvárom a marmeládou je v tom, **ako dlho sa varí a �
 1. Ovocie umy, vykôstkuj, nakrájaj. Na 1 kg ovocia **500 g cukru** a šťava z 1 citróna.
 2. Nechaj 1–2 hodiny (alebo cez noc) postáť, ovocie pustí šťavu.
 3. Var na strednom ohni za stáleho miešania **15–25 minút**, penu zober lyžicou.
-4. Test tanierikom. Horúce nalej do horúcich pohárov a **zaváraj** 10–15 min pri 85–90 °C. [Zaváranie](/wiki/zavaranie).
+4. Test tanierikom. Horúce nalej do horúcich pohárov a **zaváraj 10 minút vo vriacej vode**. [Zaváranie](/wiki/zavaranie).
 
 ## Slivkový lekvár (bez cukru)
 

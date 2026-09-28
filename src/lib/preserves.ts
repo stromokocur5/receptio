@@ -51,7 +51,7 @@ export function sortPreserves(list: Preserve[]): Preserve[] {
 
 /** "cca 8 pohárov po 0,5 l" → 8; a recipe that doesn't say gets 1. */
 export function jarsFromYield(yields: string | undefined): number {
-	const match = yields?.match(/(\d+)\s*(pohár|fľaš|vreck|porci)/i);
+	const match = yields?.match(/(\d+)\s*(pohár|fľaš|vrec|porci)/i);
 	return match ? Math.min(99, Number(match[1])) : 1;
 }
 

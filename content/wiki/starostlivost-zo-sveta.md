@@ -14,12 +14,12 @@ Keď nie sú peniaze na chémiu, človek vymyslí niečo chytrejšie. Tieto post
 
 ## Push-pull – odpuď a pritiahni (Keňa)
 
-Vedci a farmári v Keni vyvinuli systém proti vijačkám, ktoré ničia kukuricu:
+Výskumné centrum ICIPE s farmármi v Keni vyvinulo systém proti húseniciam, ktoré vŕtajú do stoniek kukurice:
 
 - **Push (odpudiť):** medzi kukuricu sa vysadí strukovina **desmodium** – jej vôňa škodcov odháňa, viaže dusík a potláča parazitickú burinu.
-- **Pull (pritiahnuť):** okolo poľa rastie **tráva, ktorú škodca miluje viac** – nakladie vajíčka do nej, a nie do kukurice.
+- **Pull (pritiahnuť):** okolo poľa rastie **slonia tráva (napier)**, ktorú motýle uprednostnia – nakladú vajíčka do nej, a húsenice v jej lepkavých stonkách zahynú.
 
-Úrody vzrástli o polovicu až dvojnásobok bez jediného postreku. U nás rovnaký princíp: **aksamietnica a cibuľa medzi zeleninou** (odpudzujú), **nasturcia alebo kapusta na okraji** (lákajú mlynárika a vošky preč). [Ochrana bez postrekov](/wiki/ochrana-bez-postrekov).
+Na poliach s push-pull prišli farmári o zlomok úrody, ktorú inde zničili húsenice, a to bez postreku. U nás rovnaký princíp: **aksamietnica a cibuľa medzi zeleninou** (odpudzujú), **nasturcia alebo kapusta na okraji** (lákajú mlynárika a vošky preč). [Ochrana bez postrekov](/wiki/ochrana-bez-postrekov).
 
 ## Nímový olej (India)
 
