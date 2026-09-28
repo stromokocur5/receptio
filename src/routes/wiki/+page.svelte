@@ -88,6 +88,7 @@
 			{ id: 'prve-kroky', title: 'Prvé kroky' },
 			{ id: 'prilohy', title: 'Prílohy a bielkoviny' },
 			{ id: 'techniky', title: 'Techniky' },
+			{ id: 'domaca-vyroba', title: 'Kvasenie a domáca výroba' },
 			{ id: 'organizacia', title: 'Zásoby a plánovanie' }
 		],
 		pestovanie: [

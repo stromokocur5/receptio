@@ -5,6 +5,7 @@
  * `.tech-art`, so the drawings follow the light/dark theme and reduced motion.
  */
 import { BODY_ART } from './body';
+import { DIY_ART } from './diy';
 import { GARDEN_ART } from './garden';
 import { GARDEN_BASICS_ART } from './garden-basics';
 import { KITCHEN_ART } from './kitchen';
@@ -16,7 +17,8 @@ const ART: Record<string, () => string> = {
 	...GARDEN_BASICS_ART,
 	...BODY_ART,
 	...NUTRITION_ART,
-	...KITCHEN_ART
+	...KITCHEN_ART,
+	...DIY_ART
 };
 
 export const ART_NAMES = Object.keys(ART);

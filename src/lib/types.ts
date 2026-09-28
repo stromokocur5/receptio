@@ -349,6 +349,7 @@ export const WIKI_GROUPS = [
 	'prilohy',
 	'techniky',
 	'organizacia',
+	'domaca-vyroba',
 	'zaciname',
 	'techniky-pestovania',
 	'stromy-huby',

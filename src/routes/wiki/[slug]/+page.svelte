@@ -23,6 +23,24 @@
 	};
 
 	const related = $derived.by(() => {
+		if (page.slug === 'lacne-bielkoviny') {
+			return [...catalog.recipes]
+				.filter((r) => r.showNutrition)
+				.sort(
+					(a, b) =>
+						b.perServing.protein / b.costPerServing - a.perServing.protein / a.costPerServing
+				)
+				.slice(0, 3);
+		}
+		if (page.slug === 'desiata-do-skoly' || page.slug === 'jedlo-na-cesty') {
+			return catalog.recipes
+				.filter((r) =>
+					page.slug === 'desiata-do-skoly'
+						? r.tags.includes('do-krabicky')
+						: r.categories.includes('snacky/na-cesty')
+				)
+				.slice(0, 6);
+		}
 		const nutrient = NUTRIENT_FOR[page.slug];
 		if (nutrient) {
 			return [...catalog.recipes]
@@ -103,7 +121,15 @@
 
 	{#if related.length}
 		<section class="related">
-			<h2>{page.section === 'zaklady' ? 'Precvič si to v receptoch' : 'Recepty, ktoré pomôžu'}</h2>
+			<h2>
+				{page.slug === 'desiata-do-skoly'
+					? 'Do krabičky'
+					: page.slug === 'jedlo-na-cesty'
+						? 'Na cesty'
+						: page.section === 'zaklady'
+							? 'Precvič si to v receptoch'
+							: 'Recepty, ktoré pomôžu'}
+			</h2>
 			<div class="grid">
 				{#each related as recipe, i (recipe.id)}<RecipeCard {recipe} index={i} />{/each}
 			</div>

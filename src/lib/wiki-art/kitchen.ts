@@ -1,7 +1,7 @@
 import { arrow, drop, label, snow } from './kit';
 
 /** A pot sitting on (x, y) — the bottom centre — `w` wide and `h` tall, with liquid. */
-function pot(x: number, y: number, w: number, h: number, liquid = 'ta-water', fill = 0.7) {
+export function pot(x: number, y: number, w: number, h: number, liquid = 'ta-water', fill = 0.7) {
 	const l = x - w / 2;
 	const top = y - h;
 	const surface = y - h * fill;
@@ -12,13 +12,13 @@ function pot(x: number, y: number, w: number, h: number, liquid = 'ta-water', fi
 	);
 }
 
-function flames(x: number, y: number, size = 1) {
+export function flames(x: number, y: number, size = 1) {
 	const f = (dx: number, s: number) =>
 		`<path d="M${x + dx} ${y}c-${4 * s}-${6 * s} ${2 * s}-${8 * s} 0-${14 * s} ${6 * s} ${4 * s} ${6 * s} ${10 * s} 0 ${14 * s}Z"/>`;
 	return `<g class="ta-flames">${f(-14 * size, 0.8 * size)}${f(0, size)}${f(14 * size, 0.8 * size)}</g>`;
 }
 
-function bubbles(x: number, y: number, w: number, count = 4) {
+export function bubbles(x: number, y: number, w: number, count = 4) {
 	return Array.from(
 		{ length: count },
 		(_, i) =>
@@ -26,11 +26,11 @@ function bubbles(x: number, y: number, w: number, count = 4) {
 	).join('');
 }
 
-function steam(x: number, y: number) {
+export function steam(x: number, y: number) {
 	return `<g class="ta-steam-lines"><path d="M${x - 14} ${y}c-5-7 5-10 0-18M${x} ${y - 4}c-5-7 5-10 0-18M${x + 14} ${y}c-5-7 5-10 0-18"/></g>`;
 }
 
-function jar(x: number, y: number, w: number, h: number, fill: string, lid = true) {
+export function jar(x: number, y: number, w: number, h: number, fill: string, lid = true) {
 	return (
 		`<rect class="ta-jar" x="${x}" y="${y}" width="${w}" height="${h}" rx="4"/>` +
 		`<rect class="ta-jar-fill" style="fill:${fill}" x="${x + 2}" y="${y + h * 0.3}" width="${w - 4}" height="${h * 0.7 - 2}" rx="3"/>` +
@@ -40,12 +40,12 @@ function jar(x: number, y: number, w: number, h: number, fill: string, lid = tru
 	);
 }
 
-function knife(x: number, y: number, angle = 0, cls = '') {
+export function knife(x: number, y: number, angle = 0, cls = '') {
 	// The animation sits on an outer group: on the rotated one it would replace the rotation.
 	return `<g class="${cls}"><g transform="rotate(${angle} ${x} ${y})"><path class="ta-blade" d="M${x} ${y}h54l-8 12H${x}Z"/><rect class="ta-knife-handle" x="${x - 30}" y="${y}" width="30" height="11" rx="4"/></g></g>`;
 }
 
-const board = (x: number, y: number, w: number) =>
+export const board = (x: number, y: number, w: number) =>
 	`<rect class="ta-board-kitchen" x="${x}" y="${y}" width="${w}" height="12" rx="5"/>`;
 
 export const KITCHEN_ART: Record<string, () => string> = {

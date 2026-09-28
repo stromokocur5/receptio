@@ -171,6 +171,109 @@ export const NUTRITION_ART: Record<string, () => string> = {
 		);
 	},
 
+	'lacne-bielkoviny': () => {
+		const rows: [string, number][] = [
+			['hrach, sója suché', 120],
+			['šošovica', 80],
+			['ovsené vločky', 70],
+			['sójové granule', 60],
+			['fazuľa v plechovke', 28],
+			['tofu', 20],
+			['tempeh', 14]
+		];
+		return (
+			label(10, 18, 'g bielkovín za 1 € (odhad)') +
+			rows
+				.map(
+					([name, g], i) =>
+						label(124, 38 + i * 21, name, 'end') +
+						bar(132, 29 + i * 21, 150, g, 120, i * 0.15, i < 4 ? '' : 'ta-bar-muted') +
+						label(288, 38 + i * 21, `${g} g`)
+				)
+				.join('')
+		);
+	},
+
+	antinutrienty: () => {
+		const step = (x: number, title: string, inner: string, level: number) =>
+			`<rect class="ta-panel" x="${x}" y="30" width="66" height="96" rx="10"/>` +
+			inner +
+			label(x + 33, 144, title, 'middle') +
+			bar(x + 6, 156, 54, level, 100, 0.2, 'ta-bar-warn');
+		return (
+			label(10, 18, 'fytáty a lektíny ubúdajú') +
+			step(6, 'suché', `<ellipse class="ta-bean-dry" cx="39" cy="84" rx="12" ry="8"/>`, 100) +
+			step(
+				86,
+				'namočené',
+				`<path class="ta-water" d="M94 70h50v46h-50Z"/><ellipse class="ta-bean-dry" cx="119" cy="94" rx="15" ry="10"/>`,
+				70
+			) +
+			step(
+				166,
+				'naklíčené',
+				`<ellipse class="ta-bean-dry" cx="199" cy="96" rx="14" ry="9"/><path class="ta-sprout-tail" d="M199 88c-2-10 6-16 2-26"/><path class="ta-leaf" d="M201 62c-8-2-10-8-8-12 6 2 8 6 8 12Z"/>`,
+				45
+			) +
+			step(
+				246,
+				'uvarené',
+				`<path class="ta-bowl" d="M254 90h50a25 20 0 0 1-50 0Z"/><ellipse class="ta-bean-dry" cx="270" cy="92" rx="7" ry="5"/><ellipse class="ta-bean-dry" cx="286" cy="94" rx="7" ry="5"/><path class="ta-steam-mini" d="M270 76c-3-5 3-7 0-12M286 76c-3-5 3-7 0-12"/>`,
+				15
+			) +
+			arrow(74, 78, 84, 78) +
+			arrow(154, 78, 164, 78) +
+			arrow(234, 78, 244, 78)
+		);
+	},
+
+	'deti-tehotenstvo': () => {
+		const nutrient = (x: number, y: number, name: string, d: number) =>
+			`<g class="ta-float" style="--d:${d}s"><circle class="ta-nutrient" cx="${x}" cy="${y}" r="17"/><text class="ta-label ta-strong" x="${x}" y="${y + 3.5}" text-anchor="middle">${name}</text></g>`;
+		return (
+			`<path class="ta-ground" d="M40 170h160"/>` +
+			// A parent and a child holding hands.
+			`<circle class="ta-head-simple" cx="96" cy="62" r="11"/><path class="ta-person" d="M96 73v50M96 123l-10 46M96 123l10 46M96 86l-16 26M96 86l22 28"/>` +
+			`<circle class="ta-head-simple" cx="140" cy="110" r="8"/><path class="ta-person" d="M140 118v26M140 144l-7 25M140 144l7 25M140 126l-22 -12M140 126l12 14"/>` +
+			nutrient(214, 48, 'B12', 0) +
+			nutrient(262, 70, 'jód', 0.5) +
+			nutrient(222, 102, 'DHA', 1) +
+			nutrient(274, 124, 'D', 1.5) +
+			nutrient(226, 150, 'Ca', 2) +
+			label(160, 186, 'spolu s lekárom, nie namiesto neho', 'middle')
+		);
+	},
+
+	etikety: () =>
+		`<rect class="ta-label-card" x="30" y="24" width="190" height="150" rx="8"/>` +
+		`<text class="ta-label ta-strong" x="44" y="46">Zloženie:</text>` +
+		[60, 76, 92, 108, 124, 140, 156]
+			.map(
+				(y, i) =>
+					`<path class="ta-text-line" d="M44 ${y}h${[160, 140, 150, 120, 155, 130, 90][i]}"/>`
+			)
+			.join('') +
+		`<rect class="ta-highlight" x="96" y="86" width="44" height="12" rx="2"/>` +
+		`<text class="ta-label ta-strong ta-allergen" x="98" y="95">MLIEKO</text>` +
+		`<g class="ta-magnifier-move"><circle class="ta-magnifier" cx="118" cy="92" r="24"/><path class="ta-magnifier-handle" d="M135 109l22 22"/></g>` +
+		label(236, 60, 'alergény sú') +
+		label(236, 72, 'vždy tučne') +
+		`<g class="ta-vegan-mark"><circle cx="266" cy="126" r="22"/><path d="M254 124l8 10 16-18"/></g>` +
+		label(266, 166, 'overené vegan', 'middle'),
+
+	'na-cesty': () =>
+		`<path class="ta-mountain" d="M0 150L70 60l40 44 50-70 70 90 40-30 50 56Z"/><path class="ta-snowcap" d="M150 48l10-14 12 16-8 6Z"/>` +
+		`<path class="ta-trail" d="M20 186c40-10 60-30 100-34s80 10 120-6"/>` +
+		sun(290, 26, 9) +
+		`<g class="ta-hike"><rect class="ta-backpack" x="200" y="104" width="52" height="64" rx="12"/><rect class="ta-backpack-pocket" x="210" y="134" width="32" height="24" rx="6"/><path class="ta-backpack-strap" d="M212 104c0-14 28-14 28 0"/></g>` +
+		Array.from(
+			{ length: 10 },
+			(_, i) =>
+				`<ellipse class="ta-${['nut', 'raisin', 'nut', 'choco', 'raisin'][i % 5]}" cx="${40 + (i % 5) * 16}" cy="${160 + Math.floor(i / 5) * 12}" rx="6" ry="4"/>`
+		).join('') +
+		label(72, 140, 'studentská zmes', 'middle') +
+		label(226, 186, 'voda: 0,5 l na hodinu', 'middle'),
+
 	vapnik: () =>
 		`<path class="ta-glass" d="M24 58h36l-4 64H28Z"/><path class="ta-milk" d="M26 72h32l-3 48H29Z"/>` +
 		label(42, 140, 'pohár', 'middle') +
