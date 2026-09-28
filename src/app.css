@@ -2701,6 +2701,48 @@ input[type='range'] {
 		transform: translateX(20px);
 	}
 }
+:is(.tech-art, .tech-art-svg) .ta-step {
+	fill: color-mix(in srgb, var(--leaf-2) 25%, var(--card));
+	stroke: var(--leaf);
+	transform-box: fill-box;
+	transform-origin: bottom;
+	animation: ta-grow-y 0.9s var(--ease-out) both;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-bag-freezer {
+	fill: color-mix(in srgb, var(--sky) 12%, transparent);
+	stroke: var(--sky);
+}
+:is(.tech-art, .tech-art-svg) .ta-zip {
+	stroke: var(--sky);
+	stroke-width: 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-peel-scrap {
+	stroke: #ef8a2d;
+	stroke-width: 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-onion-skin {
+	fill: color-mix(in srgb, #c98a3a 50%, var(--card));
+	stroke: #a8743f;
+}
+:is(.tech-art, .tech-art-svg) .ta-stock {
+	stroke: none;
+	fill: color-mix(in srgb, var(--turmeric) 45%, var(--tomato) 20%);
+}
+:is(.tech-art, .tech-art-svg) .ta-bag-paper {
+	fill: color-mix(in srgb, #c9a06a 45%, var(--card));
+	stroke: #8a6a3a;
+}
+:is(.tech-art, .tech-art-svg) .ta-bag-fold {
+	stroke: #8a6a3a;
+}
+:is(.tech-art, .tech-art-svg) .ta-coin-big {
+	fill: var(--turmeric);
+	stroke: #b99a1c;
+}
+:is(.tech-art, .tech-art-svg) .ta-coin-stack {
+	animation: ta-bob 2s ease-in-out infinite alternate;
+}
 @keyframes ta-sway {
 	from {
 		transform: rotate(-2.5deg);

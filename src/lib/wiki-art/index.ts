@@ -9,6 +9,7 @@ import { DIY_ART } from './diy';
 import { GARDEN_ART } from './garden';
 import { GARDEN_BASICS_ART } from './garden-basics';
 import { KITCHEN_ART } from './kitchen';
+import { LIFE_ART } from './life';
 import { NUTRITION_ART } from './nutrition';
 import { H, W } from './kit';
 
@@ -18,7 +19,8 @@ const ART: Record<string, () => string> = {
 	...BODY_ART,
 	...NUTRITION_ART,
 	...KITCHEN_ART,
-	...DIY_ART
+	...DIY_ART,
+	...LIFE_ART
 };
 
 export const ART_NAMES = Object.keys(ART);
