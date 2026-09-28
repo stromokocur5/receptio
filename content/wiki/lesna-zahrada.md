@@ -2,6 +2,7 @@
 title: Lesná záhrada
 summary: Záhrada vo vrstvách ako okraj lesa – stromy, kry, byliny a pôdopokryvné rastliny. Raz ju založíš a roky zbieraš s minimom práce.
 section: pestovanie
+group: stromy-huby
 icon: tree
 order: 2
 ---

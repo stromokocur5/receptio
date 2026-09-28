@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { CATEGORY_IDS, inCategory } from '$lib/categories';
 import { getContent } from './content';
 
 describe('content', () => {
@@ -108,5 +109,19 @@ describe('content', () => {
 			'suplementy',
 			'zaklady'
 		]);
+	});
+
+	it('fills every recipe category with several recipes', () => {
+		for (const id of CATEGORY_IDS) {
+			const count = content.recipes.filter((r) => inCategory(r.categories, id)).length;
+			expect(count, id).toBeGreaterThanOrEqual(10);
+		}
+	});
+
+	it('draws the growing-technique diagrams into their guides', () => {
+		const guide = content.wiki.find((w) => w.slug === 'vyvysene-zahony')!;
+		expect(guide.art).toBe('hugelkultura');
+		expect(guide.html.match(/<figure class="tech-art">/g)).toHaveLength(2);
+		expect(guide.html).not.toContain('{{art:');
 	});
 });

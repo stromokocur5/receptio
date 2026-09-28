@@ -94,7 +94,7 @@
 		{
 			icon: 'sliders',
 			title: 'Filtre, ktoré dávajú zmysel',
-			text: 'Kuchyňa sveta, čas, jedlo dňa, bezlepkovo, bez náhrad mäsa, pálivosť – aj „čo uvariť zo zvyškov“.'
+			text: 'Kategórie od raňajok po nápoje a snacky, kuchyňa sveta, čas, bezlepkovo, pálivosť – aj „čo uvariť zo zvyškov“.'
 		},
 		{
 			icon: 'scale',

@@ -10,6 +10,7 @@ import {
 	recipeWarnings
 } from '$lib/nutrition';
 import { CATEGORY_PATHS } from '$lib/categories';
+import { TECHNIQUE_ART_NAMES, techniqueFigure } from '$lib/technique-art';
 import { normalizeSearch } from '$lib/labels';
 import { bestPrice } from '$lib/pricing';
 import {
@@ -358,7 +359,9 @@ const wikiFrontmatterSchema = z
 		section: z.enum(WIKI_SECTIONS),
 		group: z.enum(WIKI_GROUPS).optional(),
 		icon: z.string(),
-		order: z.number()
+		order: z.number(),
+		/** Drawing from technique-art.ts shown on the page's card. */
+		art: z.enum(TECHNIQUE_ART_NAMES as [string, ...string[]]).optional()
 	})
 	.strict();
 
@@ -514,7 +517,11 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			const match = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/.exec(text.replace(/\r\n/g, '\n'));
 			if (!match) throw new Error(`${where}: chýba frontmatter`);
 			const meta = parseWith(wikiFrontmatterSchema, parseYaml(match[1]), where);
-			return { slug: fileId(path), ...meta, html: marked.parse(match[2], { async: false }) };
+			// `{{art:name|caption}}` on its own line becomes one of the drawn diagrams.
+			const body = match[2].replace(/^\{\{art:([a-z-]+)(?:\|(.+))?\}\}$/gm, (_m, name, caption) =>
+				techniqueFigure(name, caption)
+			);
+			return { slug: fileId(path), ...meta, html: marked.parse(body, { async: false }) };
 		})
 		.sort((a, b) => a.order - b.order);
 

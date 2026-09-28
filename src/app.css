@@ -475,6 +475,567 @@ input[type='range'] {
 	}
 }
 
+/* ── Growing-technique drawings (src/lib/technique-art.ts) ── */
+.tech-art {
+	margin: 1.6em 0;
+	padding: 14px 14px 10px;
+	border: 1.5px solid var(--line);
+	border-radius: var(--radius-sm);
+	background: color-mix(in srgb, var(--leaf-soft) 45%, var(--card));
+}
+.tech-art svg,
+.tech-art-svg {
+	display: block;
+	width: 100%;
+	height: auto;
+	overflow: visible;
+	fill: none;
+	stroke: var(--ink-2);
+	stroke-width: 1.6;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+/* Card thumbnails are too small to read the labels – the drawing alone says enough. */
+.tech-art-svg :is(text, .ta-leader, .ta-dot) {
+	display: none;
+}
+.tech-art figcaption {
+	margin-top: 8px;
+	font-size: 0.85rem;
+	color: var(--muted);
+	text-align: center;
+}
+.tech-art .ta-label {
+	fill: var(--ink-2);
+	stroke: none;
+	font-family: var(--font-body);
+	font-size: 9.5px;
+	font-weight: 600;
+}
+.tech-art .ta-strong {
+	font-weight: 750;
+	fill: var(--ink);
+}
+.tech-art .ta-small {
+	font-size: 8px;
+	font-weight: 500;
+}
+.tech-art .ta-num-t {
+	fill: var(--card);
+}
+:is(.tech-art, .tech-art-svg) {
+	--soil: #8a5a3c;
+	--wood: #a8743f;
+}
+:is(.tech-art, .tech-art-svg) .ta-soil {
+	stroke: none;
+	fill: color-mix(in srgb, var(--soil) 22%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-ground,
+:is(.tech-art, .tech-art-svg) .ta-soil-line {
+	stroke: var(--soil);
+	stroke-width: 2;
+}
+:is(.tech-art, .tech-art-svg) .ta-crumb {
+	stroke: none;
+	fill: color-mix(in srgb, var(--soil) 55%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-stem {
+	stroke: var(--leaf);
+	stroke-width: 2;
+}
+:is(.tech-art, .tech-art-svg) .ta-leaf {
+	stroke: var(--leaf);
+	fill: color-mix(in srgb, var(--leaf-2) 45%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-fruit {
+	stroke: var(--tomato);
+	fill: color-mix(in srgb, var(--tomato) 60%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-root {
+	stroke: color-mix(in srgb, var(--turmeric) 70%, var(--soil));
+	stroke-width: 1.2;
+}
+:is(.tech-art, .tech-art-svg) .ta-fungi {
+	stroke: color-mix(in srgb, var(--ink-2) 40%, transparent);
+	stroke-width: 0.9;
+	stroke-dasharray: 2 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-worm {
+	stroke: #d98a8a;
+	stroke-width: 2.6;
+	animation: ta-wiggle 2.4s ease-in-out infinite alternate;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-mulch-band {
+	stroke: none;
+	fill: color-mix(in srgb, var(--turmeric) 30%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-mulch,
+:is(.tech-art, .tech-art-svg) .ta-branch {
+	stroke: color-mix(in srgb, var(--turmeric) 70%, var(--wood));
+	stroke-width: 2;
+}
+:is(.tech-art, .tech-art-svg) .ta-wood {
+	stroke: var(--wood);
+	fill: color-mix(in srgb, var(--wood) 35%, var(--card));
+}
+:is(.tech-art, .tech-art-svg) .ta-ring {
+	stroke-width: 0.9;
+	fill: none;
+}
+:is(.tech-art, .tech-art-svg) .ta-layer-wood {
+	stroke: none;
+	fill: color-mix(in srgb, var(--wood) 16%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-layer-sod,
+:is(.tech-art, .tech-art-svg) .ta-fill-leaves {
+	stroke: none;
+	fill: color-mix(in srgb, var(--leaf-2) 32%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-layer-compost,
+:is(.tech-art, .tech-art-svg) .ta-fill-compost {
+	stroke: none;
+	fill: color-mix(in srgb, var(--soil) 45%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-layer-top,
+:is(.tech-art, .tech-art-svg) .ta-fill-top {
+	stroke: none;
+	fill: color-mix(in srgb, var(--soil) 70%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-fill-branch {
+	stroke: none;
+	fill: color-mix(in srgb, var(--wood) 30%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-box,
+:is(.tech-art, .tech-art-svg) .ta-plank,
+:is(.tech-art, .tech-art-svg) .ta-trellis,
+:is(.tech-art, .tech-art-svg) .ta-stake,
+:is(.tech-art, .tech-art-svg) .ta-frame,
+:is(.tech-art, .tech-art-svg) .ta-spade {
+	stroke: var(--wood);
+	stroke-width: 2.2;
+}
+:is(.tech-art, .tech-art-svg) .ta-mesh {
+	stroke: var(--muted);
+	stroke-width: 1;
+}
+:is(.tech-art, .tech-art-svg) .ta-leader {
+	stroke: var(--muted);
+	stroke-width: 0.9;
+	stroke-dasharray: 2 2;
+}
+:is(.tech-art, .tech-art-svg) .ta-dot {
+	stroke: none;
+	fill: var(--muted);
+}
+:is(.tech-art, .tech-art-svg) .ta-arrow {
+	stroke: var(--tomato);
+	stroke-width: 1.8;
+}
+:is(.tech-art, .tech-art-svg) .ta-sun {
+	stroke: var(--turmeric);
+	fill: color-mix(in srgb, var(--turmeric) 30%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-rays {
+	fill: none;
+	animation: ta-spin 24s linear infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-drop {
+	stroke: var(--sky);
+	fill: color-mix(in srgb, var(--sky) 55%, transparent);
+	animation: ta-drop 2.4s ease-in infinite;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-wet {
+	stroke: none;
+	fill: color-mix(in srgb, var(--sky) 30%, transparent);
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: ta-soak 2.4s ease-in-out infinite;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-wet-big {
+	animation-duration: 5s;
+}
+:is(.tech-art, .tech-art-svg) .ta-water,
+:is(.tech-art, .tech-art-svg) .ta-olla-water,
+:is(.tech-art, .tech-art-svg) .ta-barrel-water {
+	stroke: none;
+	fill: color-mix(in srgb, var(--sky) 40%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-olla,
+:is(.tech-art, .tech-art-svg) .ta-pot {
+	stroke: var(--tomato);
+	fill: color-mix(in srgb, var(--tomato) 16%, var(--card));
+}
+:is(.tech-art, .tech-art-svg) .ta-lid,
+:is(.tech-art, .tech-art-svg) .ta-hose {
+	stroke: var(--ink-2);
+	stroke-width: 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-emitter {
+	fill: var(--sky);
+	stroke: none;
+}
+:is(.tech-art, .tech-art-svg) .ta-seed {
+	fill: var(--wood);
+	stroke: none;
+}
+:is(.tech-art, .tech-art-svg) .ta-panel {
+	stroke: var(--line);
+	fill: color-mix(in srgb, var(--card) 70%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-num {
+	stroke: none;
+	fill: var(--leaf);
+}
+:is(.tech-art, .tech-art-svg) .ta-lamp {
+	stroke: var(--ink-2);
+}
+:is(.tech-art, .tech-art-svg) .ta-light {
+	stroke: var(--turmeric);
+	stroke-dasharray: 3 3;
+	animation: ta-glow 1.6s ease-in-out infinite alternate;
+}
+:is(.tech-art, .tech-art-svg) .ta-sector {
+	stroke: var(--card);
+	stroke-width: 2.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-q1 {
+	fill: color-mix(in srgb, var(--leaf-2) 40%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-q2 {
+	fill: color-mix(in srgb, var(--sky) 30%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-q3 {
+	fill: color-mix(in srgb, var(--tomato) 30%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-q4 {
+	fill: color-mix(in srgb, var(--turmeric) 35%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-hub {
+	fill: var(--card);
+	stroke: var(--line);
+}
+:is(.tech-art, .tech-art-svg) .ta-spin {
+	animation: ta-spin 14s linear infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-flower {
+	stroke: var(--plum);
+	fill: color-mix(in srgb, var(--plum) 45%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-marigold {
+	stroke: var(--turmeric);
+	fill: color-mix(in srgb, var(--turmeric) 70%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-flower-c {
+	stroke: none;
+	fill: var(--turmeric);
+}
+:is(.tech-art, .tech-art-svg) .ta-bee {
+	stroke: var(--ink);
+	fill: var(--turmeric);
+	animation: ta-fly 6s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-wing {
+	fill: color-mix(in srgb, var(--sky-soft) 80%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-butterfly {
+	stroke: var(--ink-2);
+	fill: color-mix(in srgb, var(--card) 85%, var(--turmeric));
+	animation: ta-fly 7s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-ladybird {
+	stroke: var(--ink);
+	fill: var(--tomato);
+	animation: ta-crawl 5s ease-in-out infinite alternate;
+}
+:is(.tech-art, .tech-art-svg) .ta-spot {
+	fill: var(--ink);
+	stroke: none;
+}
+:is(.tech-art, .tech-art-svg) .ta-slug {
+	stroke: var(--wood);
+	fill: color-mix(in srgb, var(--wood) 45%, transparent);
+	animation: ta-crawl 4s ease-in-out infinite alternate;
+}
+:is(.tech-art, .tech-art-svg) .ta-slug-eye {
+	stroke: var(--wood);
+	animation: ta-crawl 4s ease-in-out infinite alternate;
+}
+:is(.tech-art, .tech-art-svg) .ta-barrier {
+	stroke: var(--muted);
+	stroke-width: 4;
+	stroke-dasharray: 1 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-net,
+:is(.tech-art, .tech-art-svg) .ta-net-mesh {
+	stroke: var(--muted);
+	stroke-width: 1;
+}
+:is(.tech-art, .tech-art-svg) .ta-net {
+	stroke-width: 1.6;
+}
+:is(.tech-art, .tech-art-svg) .ta-glass,
+:is(.tech-art, .tech-art-svg) .ta-glass-lid,
+:is(.tech-art, .tech-art-svg) .ta-tunnel {
+	stroke: var(--sky);
+	fill: color-mix(in srgb, var(--sky) 10%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-glass-lid {
+	stroke-width: 2.5;
+	transform-origin: 110px 120px;
+	animation: ta-lid 5s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-tunnel-rib {
+	stroke: color-mix(in srgb, var(--sky) 50%, transparent);
+	stroke-width: 1;
+}
+:is(.tech-art, .tech-art-svg) .ta-fleece {
+	stroke: var(--muted);
+	fill: color-mix(in srgb, var(--card) 70%, transparent);
+	stroke-dasharray: 4 2;
+	animation: ta-breathe 4s ease-in-out infinite;
+	transform-origin: 50px 150px;
+}
+:is(.tech-art, .tech-art-svg) .ta-heat {
+	stroke: var(--tomato);
+	animation: ta-rise 2.2s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-snow {
+	stroke: var(--sky);
+	stroke-width: 1.2;
+	animation: ta-snow 5s linear infinite;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-vine {
+	stroke: var(--leaf);
+	stroke-width: 2;
+}
+:is(.tech-art, .tech-art-svg) .ta-draw {
+	stroke-dasharray: 400;
+	animation: ta-draw 4s var(--ease-out) both;
+}
+:is(.tech-art, .tech-art-svg) .ta-pod {
+	stroke: var(--leaf);
+	stroke-width: 2.4;
+}
+:is(.tech-art, .tech-art-svg) .ta-rootball {
+	stroke: var(--soil);
+	fill: color-mix(in srgb, var(--soil) 40%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-split-l {
+	animation: ta-split-l 4s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-split-r {
+	animation: ta-split-r 4s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-grow-root {
+	stroke-dasharray: 400;
+	animation: ta-draw 3s ease-out infinite alternate;
+}
+:is(.tech-art, .tech-art-svg) .ta-roof,
+:is(.tech-art, .tech-art-svg) .ta-gutter,
+:is(.tech-art, .tech-art-svg) .ta-tube,
+:is(.tech-art, .tech-art-svg) .ta-shelf {
+	stroke: var(--ink-2);
+}
+:is(.tech-art, .tech-art-svg) .ta-barrel,
+:is(.tech-art, .tech-art-svg) .ta-timer {
+	stroke: var(--sky);
+	fill: color-mix(in srgb, var(--sky) 10%, var(--card));
+}
+:is(.tech-art, .tech-art-svg) .ta-timer-face {
+	stroke: var(--ink-2);
+	fill: var(--card);
+}
+:is(.tech-art, .tech-art-svg) .ta-timer-hand {
+	stroke: var(--tomato);
+	animation: ta-spin 4s linear infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-sensor {
+	stroke: var(--leaf);
+	stroke-width: 2.4;
+}
+:is(.tech-art, .tech-art-svg) .ta-wick {
+	stroke: var(--wood);
+	stroke-width: 2.4;
+}
+:is(.tech-art, .tech-art-svg) .ta-wick-rise {
+	stroke: var(--sky);
+	stroke-width: 2.4;
+	stroke-dasharray: 5 40;
+	animation: ta-wick 2.6s linear infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-sway {
+	transform-box: view-box;
+	animation: ta-sway 4.5s ease-in-out infinite alternate;
+	animation-delay: var(--d, 0s);
+}
+@keyframes ta-sway {
+	from {
+		transform: rotate(-2.5deg);
+	}
+	to {
+		transform: rotate(2.5deg);
+	}
+}
+@keyframes ta-spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+@keyframes ta-drop {
+	0% {
+		transform: translateY(0);
+		opacity: 0;
+	}
+	15% {
+		opacity: 1;
+	}
+	80% {
+		transform: translateY(var(--fall, 22px));
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(var(--fall, 22px));
+		opacity: 0;
+	}
+}
+@keyframes ta-soak {
+	0%,
+	55% {
+		transform: scale(0.3);
+		opacity: 0;
+	}
+	80% {
+		transform: scale(1);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1.15);
+		opacity: 0;
+	}
+}
+@keyframes ta-wiggle {
+	to {
+		transform: translateX(6px);
+	}
+}
+@keyframes ta-glow {
+	from {
+		opacity: 0.35;
+	}
+	to {
+		opacity: 1;
+	}
+}
+@keyframes ta-fly {
+	0%,
+	100% {
+		transform: translate(0, 0);
+	}
+	25% {
+		transform: translate(18px, -8px);
+	}
+	50% {
+		transform: translate(4px, 6px);
+	}
+	75% {
+		transform: translate(-14px, -4px);
+	}
+}
+@keyframes ta-crawl {
+	to {
+		transform: translateX(-8px);
+	}
+}
+@keyframes ta-lid {
+	0%,
+	40%,
+	100% {
+		transform: rotate(0deg);
+	}
+	60%,
+	80% {
+		transform: rotate(-9deg);
+	}
+}
+@keyframes ta-breathe {
+	0%,
+	100% {
+		transform: scaleY(1);
+	}
+	50% {
+		transform: scaleY(1.05);
+	}
+}
+@keyframes ta-rise {
+	from {
+		transform: translateY(4px);
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	to {
+		transform: translateY(-6px);
+		opacity: 0;
+	}
+}
+@keyframes ta-snow {
+	from {
+		transform: translateY(-10px);
+		opacity: 0;
+	}
+	20% {
+		opacity: 1;
+	}
+	to {
+		transform: translateY(36px);
+		opacity: 0;
+	}
+}
+@keyframes ta-draw {
+	from {
+		stroke-dashoffset: 400;
+	}
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+@keyframes ta-split-l {
+	0%,
+	30%,
+	100% {
+		transform: translateX(0);
+	}
+	55%,
+	85% {
+		transform: translateX(-10px);
+	}
+}
+@keyframes ta-split-r {
+	0%,
+	30%,
+	100% {
+		transform: translateX(0);
+	}
+	55%,
+	85% {
+		transform: translateX(10px);
+	}
+}
+@keyframes ta-wick {
+	from {
+		stroke-dashoffset: 0;
+	}
+	to {
+		stroke-dashoffset: 45;
+	}
+}
+
 /* ── Print ───────────────────────────────────────────── */
 @media print {
 	:root,

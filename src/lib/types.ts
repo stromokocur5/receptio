@@ -343,8 +343,17 @@ export interface GrowCombo {
 
 export const WIKI_SECTIONS = ['zaklady', 'suplementy', 'navody', 'pestovanie', 'pohyb'] as const;
 export type WikiSection = (typeof WIKI_SECTIONS)[number];
-/** Sub-groups of the long "Základy" section. */
-export const WIKI_GROUPS = ['prve-kroky', 'prilohy', 'techniky', 'organizacia'] as const;
+/** Sub-groups of the long sections ("Základy", "Pestovanie"). */
+export const WIKI_GROUPS = [
+	'prve-kroky',
+	'prilohy',
+	'techniky',
+	'organizacia',
+	'zaciname',
+	'techniky-pestovania',
+	'stromy-huby',
+	'uroda'
+] as const;
 export type WikiGroup = (typeof WIKI_GROUPS)[number];
 
 export interface WikiPage {
@@ -355,6 +364,7 @@ export interface WikiPage {
 	group?: WikiGroup;
 	icon: string;
 	order: number;
+	art?: string;
 	html: string;
 }
 

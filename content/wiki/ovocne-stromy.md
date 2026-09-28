@@ -2,6 +2,7 @@
 title: Ovocné stromy a kry
 summary: Ako vybrať strom na malú záhradu, čo je podpnoka a opelenie, ako zasadiť, zalievať a rezať – od jablone po ríbezle.
 section: pestovanie
+group: stromy-huby
 icon: tree
 order: 4
 ---

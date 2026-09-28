@@ -2,6 +2,7 @@
 title: Stromy a pole spolu
 summary: Agrolesníctvo – rady stromov a kríkov medzi poľom. Menej vetra a sucha, viac úrody z tej istej plochy.
 section: pestovanie
+group: stromy-huby
 icon: tree
 order: 3
 ---

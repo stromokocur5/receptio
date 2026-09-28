@@ -83,12 +83,20 @@
 		}
 	];
 
-	const GROUPS: { id: WikiGroup; title: string }[] = [
-		{ id: 'prve-kroky', title: 'Prvé kroky' },
-		{ id: 'prilohy', title: 'Prílohy a bielkoviny' },
-		{ id: 'techniky', title: 'Techniky' },
-		{ id: 'organizacia', title: 'Zásoby a plánovanie' }
-	];
+	const GROUPS: Partial<Record<WikiSection, { id: WikiGroup; title: string }[]>> = {
+		zaklady: [
+			{ id: 'prve-kroky', title: 'Prvé kroky' },
+			{ id: 'prilohy', title: 'Prílohy a bielkoviny' },
+			{ id: 'techniky', title: 'Techniky' },
+			{ id: 'organizacia', title: 'Zásoby a plánovanie' }
+		],
+		pestovanie: [
+			{ id: 'zaciname', title: 'Začíname' },
+			{ id: 'techniky-pestovania', title: 'Techniky pestovania' },
+			{ id: 'stromy-huby', title: 'Stromy, kry a huby' },
+			{ id: 'uroda', title: 'Úroda a semená' }
+		]
+	};
 
 	/** A short path for someone who opens the wiki for the first time. */
 	const START_HERE = ['slovnik', 'jednotky', 'strukoviny', 'b12', 'o-receptiu'];
@@ -195,11 +203,11 @@
 					</div>
 				</div>
 
-				{#if section.id === 'zaklady'}
-					{#each GROUPS as group (group.id)}
+				{#if GROUPS[section.id]}
+					{#each GROUPS[section.id] ?? [] as group (group.id)}
 						<h3 class="group">{group.title}</h3>
 						<div class="grid">
-							{#each inSection('zaklady').filter((w) => w.group === group.id) as page, i (page.slug)}
+							{#each inSection(section.id).filter((w) => w.group === group.id) as page, i (page.slug)}
 								<a class="item card draw-host rise" href="/wiki/{page.slug}" style:--i={i}>
 									<span class="ico"
 										><Icon name={isIconName(page.icon) ? page.icon : 'leaf'} size={24} /></span

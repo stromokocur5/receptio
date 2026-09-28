@@ -2,6 +2,7 @@
 title: Náradie, nádoby a logistika pestovania
 summary: Čo kúpiť a čo netreba, aké nádoby na balkón, ako s vodou, kde zohnať semená a čo robiť, keď ideš na dovolenku.
 section: pestovanie
+group: zaciname
 icon: basket
 order: 6
 ---

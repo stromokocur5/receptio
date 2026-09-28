@@ -2,6 +2,7 @@
 title: Semená
 summary: Vlastné osivo, staré odrody vs. F1 hybridy, ako semená zbierať, sušiť a skladovať – aj semená stromov a kríkov a čo je stratifikácia.
 section: pestovanie
+group: uroda
 icon: seed
 order: 9
 ---

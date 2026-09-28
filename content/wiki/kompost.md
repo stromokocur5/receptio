@@ -2,8 +2,9 @@
 title: Kompost a vermikompost
 summary: Ako zo šupiek a lístia spraviť najlepšie hnojivo – na záhrade, na balkóne aj pod kuchynskou linkou.
 section: pestovanie
+group: techniky-pestovania
 icon: leaf
-order: 8
+order: 22
 ---
 
 Tretina toho, čo vyhodíme, sú zvyšky z kuchyne. V komposte sa za pár mesiacov zmenia na tmavú voňavú zem, ktorá **zadrží vodu a nakŕmi rastliny lepšie ako kupované hnojivo**. A odpadu je o tretinu menej.

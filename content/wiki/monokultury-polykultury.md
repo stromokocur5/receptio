@@ -2,6 +2,7 @@
 title: Monokultúry a polykultúry
 summary: Prečo jedna plodina na veľkej ploche láka škodcov a ako zmiešané výsadby dajú viac úrody z menšieho kúska zeme.
 section: pestovanie
+group: zaciname
 icon: sprout
 order: 1
 ---

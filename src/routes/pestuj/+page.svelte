@@ -30,6 +30,7 @@
 		type SharedGarden
 	} from '$lib/garden';
 	import { normalizeSearch } from '$lib/labels';
+	import { techniqueSvg } from '$lib/technique-art';
 	import { bestPrice } from '$lib/pricing';
 	import { IN_MONTH, MONTH_NAMES } from '$lib/season';
 	import { favorites, garden, plan as mealPlan, settings, ui } from '$lib/state.svelte';
@@ -37,6 +38,7 @@
 
 	let { data } = $props();
 	const catalog = useCatalog();
+	const techniques = $derived(catalog.wiki.filter((w) => w.group === 'techniky-pestovania'));
 
 	/** Calendars moved to the grower's altitude (lowlands when no place is set). */
 	const delay = $derived(seasonDelayWeeks(settings.current.location?.elevation ?? 150));
@@ -74,13 +76,15 @@
 		{ id: 3, label: 'Mám skúsenosti' }
 	];
 
-	type Tab = 'moja-zahradka' | 'planovac' | 'plodiny' | 'nepestuje-sa';
-	const TABS: { id: Tab; label: string; icon: 'sprout' | 'sparkle' | 'leaf' | 'globe' }[] = [
-		{ id: 'moja-zahradka', label: 'Moja záhradka', icon: 'sprout' },
-		{ id: 'planovac', label: 'Plánovač', icon: 'sparkle' },
-		{ id: 'plodiny', label: 'Plodiny', icon: 'leaf' },
-		{ id: 'nepestuje-sa', label: 'Čo u nás nerastie', icon: 'globe' }
-	];
+	type Tab = 'moja-zahradka' | 'planovac' | 'techniky' | 'plodiny' | 'nepestuje-sa';
+	const TABS: { id: Tab; label: string; icon: 'sprout' | 'sparkle' | 'leaf' | 'globe' | 'book' }[] =
+		[
+			{ id: 'moja-zahradka', label: 'Moja záhradka', icon: 'sprout' },
+			{ id: 'planovac', label: 'Plánovač', icon: 'sparkle' },
+			{ id: 'techniky', label: 'Techniky', icon: 'book' },
+			{ id: 'plodiny', label: 'Plodiny', icon: 'leaf' },
+			{ id: 'nepestuje-sa', label: 'Čo u nás nerastie', icon: 'globe' }
+		];
 
 	const STORAGE_KEY = 'receptio:garden';
 	let input = $state<GardenInput>({ place: 'balkon', area: 2, sun: 'slnko', level: 1 });
@@ -356,6 +360,8 @@
 			<a class="chip" href="/wiki/naradie-na-pestovanie">Náradie a nádoby</a>
 			<a class="chip" href="/wiki/uskladnenie-urody">Uskladnenie</a>
 			<a class="chip" href="/wiki/kompost">Kompost</a>
+			<a class="chip" href="/wiki/polievanie">Polievanie</a>
+			<a class="chip" href="/wiki/automatizacia-zahrady">Menej práce</a>
 		</nav>
 	</header>
 
@@ -775,6 +781,35 @@
 	</div>
 
 	<div
+		id="techniky"
+		class="panel"
+		role="tabpanel"
+		aria-labelledby="tab-techniky"
+		hidden={current !== 'techniky'}
+	>
+		<p class="muted tech-intro">
+			Ako si ušetriť prácu, vodu aj peniaze – a mať väčšiu úrodu. Každý návod má postup krok za
+			krokom, tabuľky a nakreslené schémy.
+		</p>
+		<div class="tech-grid">
+			{#each techniques as t, i (t.slug)}
+				<a class="card tech-card" href="/wiki/{t.slug}" style:--i={i}>
+					{#if t.art}
+						<span class="tech-thumb" aria-hidden="true">
+							<!-- eslint-disable-next-line svelte/no-at-html-tags -- static drawing from technique-art.ts -->
+							{@html techniqueSvg(t.art)}
+						</span>
+					{/if}
+					<span class="tech-body">
+						<strong>{t.title}</strong>
+						<span class="muted">{t.summary}</span>
+					</span>
+				</a>
+			{/each}
+		</div>
+	</div>
+
+	<div
 		id="plodiny"
 		class="panel"
 		role="tabpanel"
@@ -1013,6 +1048,49 @@
 	}
 	.panel[hidden] {
 		display: none;
+	}
+	.tech-intro {
+		margin: 4px 0 16px;
+	}
+	.tech-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+		gap: 16px;
+	}
+	.tech-card {
+		display: grid;
+		align-content: start;
+		overflow: hidden;
+		color: var(--ink);
+		text-decoration: none;
+		animation: rise 0.45s var(--ease-out) both;
+		animation-delay: calc(var(--i) * 40ms);
+		transition:
+			transform 0.25s var(--ease-spring),
+			box-shadow 0.25s;
+	}
+	.tech-card:hover {
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-lift);
+	}
+	.tech-thumb {
+		display: block;
+		padding: 10px 10px 4px;
+		background: color-mix(in srgb, var(--leaf-soft) 45%, var(--card));
+		border-bottom: 1px solid var(--line);
+	}
+	.tech-body {
+		display: grid;
+		gap: 4px;
+		padding: 14px 16px 16px;
+	}
+	.tech-body strong {
+		font-family: var(--font-display);
+		font-size: 1.08rem;
+	}
+	.tech-body .muted {
+		font-size: 0.88rem;
+		line-height: 1.4;
 	}
 	.panel:not([hidden]) {
 		animation: rise 0.4s var(--ease-out) both;

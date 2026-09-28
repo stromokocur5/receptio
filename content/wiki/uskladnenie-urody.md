@@ -2,6 +2,7 @@
 title: Uskladnenie úrody
 summary: Pivnica, piesok, mraznička, sušenie, zaváranie a kvasenie – ako neprísť o úrodu, keď dozreje všetko naraz.
 section: pestovanie
+group: uroda
 icon: jar
 order: 7
 ---

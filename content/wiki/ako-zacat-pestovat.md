@@ -2,6 +2,7 @@
 title: Ako začať pestovať
 summary: Nádoby, zemina, zálievka a zmiešané výsadby – všetko, čo treba vedieť pred prvým semienkom. Na okne, balkóne aj v záhrade.
 section: pestovanie
+group: zaciname
 icon: sprout
 order: 0
 ---
@@ -36,6 +37,8 @@ Nemusíš mať záhradu. Bylinky a klíčky vyrastú na okne v byte, na balkóne
 - V nádobách v lete aj dvakrát denne. Test prstom: keď je 2 cm pod povrchom sucho, zalej.
 - **Mulč** (slama, pokosená tráva, lístie) na záhone drží vlahu a dusí burinu. Ušetrí polovicu zálievky.
 
+Podrobne: [Ako správne polievať](/wiki/polievanie) a [Automatizácia a menej práce v záhrade](/wiki/automatizacia-zahrady).
+
 ## Predpestovanie
 
 Paradajky, papriky, baklažán či bazalka potrebujú dlhé leto, preto sa sejú doma na okne **vo februári až apríli** a von sa sadia **po zamrznutých svätých** (polovica mája).
@@ -43,6 +46,8 @@ Paradajky, papriky, baklažán či bazalka potrebujú dlhé leto, preto sa sejú
 1. Sej do malých kvetináčov alebo vaničiek s vlhkým substrátom.
 2. Postav na najsvetlejšie okno. Keď sú rastlinky vytiahnuté a bledé, majú málo svetla.
 3. Týždeň pred výsadbou ich cez deň vynášaj von, aby si zvykli na slnko a vietor.
+
+Krok za krokom v návode [Predpestovanie priesad](/wiki/predpestovanie-priesad).
 
 ## Zmiešané výsadby namiesto jednej plodiny
 
@@ -68,6 +73,8 @@ Tá istá čeľaď by nemala rásť na tom istom mieste skôr ako **o 3–4 roky
 1. **Náročné** – paradajky, tekvice, kapusty (do kompostu)
 2. **Stredne náročné** – mrkva, cibuľa, šalát, cvikla
 3. **Nenáročné a strukoviny** – fazuľa, hrach, bylinky (zlepšia pôdu)
+
+Viac v článku [Striedanie plodín a postupné sianie](/wiki/striedanie-plodin). Ďalšie techniky – mulčovanie, vyvýšené záhony, zelené hnojenie či ochrana bez postrekov – nájdeš na [Pestuj si sám → Techniky](/pestuj#techniky).
 
 ## Kompost
 

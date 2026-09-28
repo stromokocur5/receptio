@@ -2,6 +2,7 @@
 title: Huby
 summary: Ako pestovať hlivu, šampiňóny a shiitake doma a v záhrade, a ako bezpečne zbierať huby v lese.
 section: pestovanie
+group: stromy-huby
 icon: mushroom
 order: 10
 ---
