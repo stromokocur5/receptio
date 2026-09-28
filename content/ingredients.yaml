@@ -1868,6 +1868,8 @@
   uses:
     - 'Pizza, lasagne, zapekanie'
   storage: 'V chladničke podľa obalu.'
+  homemade:
+    recipe: tapiokova-mozzarella
 
 - id: sojovy-jogurt
   name: Sójový jogurt nesladený
@@ -4864,3 +4866,18 @@
     - 'Smoothie, kari, salsa, tepache zo šupiek'
   choose: 'Voňavý pri stopke, stredný list sa dá ľahko vytiahnuť.'
   storage: 'Celý pri izbovej teplote 2–3 dni, nakrájaný v chladničke 3 dni.'
+
+- id: pupava-kvety
+  name: Púpava (kvety)
+  category: zelenina
+  n: { kcal: 45, p: 2.7, c: 9, f: 0.7, fib: 3.5, salt: 0.2, fe: 3.1, ca: 187, zn: 0.4 }
+  units: { hrnček: 30 }
+  price: 1
+  co2: 0.1
+  color: '#f5c518'
+  season: [4, 5]
+  about: 'Jarné žlté kvety púpavy lekárskej. Na sirup („med“), do šalátov a na obaľovanie.'
+  uses:
+    - 'Púpavový „med“, kvety v cestíčku, ozdoba šalátu'
+  choose: 'Plne rozkvitnuté za slnečného dňa, ďaleko od ciest a psích chodníkov.'
+  storage: 'Spracuj v deň zberu, zatvoria sa a zvädnú.'

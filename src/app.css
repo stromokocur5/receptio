@@ -2891,6 +2891,52 @@ input[type='range'] {
 		transform: scaleX(0.85) translateX(-6px);
 	}
 }
+:is(.tech-art, .tech-art-svg) .ta-toss {
+	animation: ta-hop 1.6s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-mortar {
+	fill: color-mix(in srgb, var(--plate) 60%, var(--card));
+	stroke: var(--plate-rim);
+	stroke-width: 2.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-pestle {
+	stroke: var(--wood);
+	stroke-width: 7;
+}
+:is(.tech-art, .tech-art-svg) .ta-grind {
+	animation: ta-balance 0.8s ease-in-out infinite alternate;
+}
+:is(.tech-art, .tech-art-svg) .ta-flax-gel {
+	stroke: none;
+	fill: color-mix(in srgb, #a8743f 45%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-thicken {
+	transform-origin: 64px 116px;
+	animation: ta-swell 3s ease-in-out infinite alternate;
+}
+:is(.tech-art, .tech-art-svg) .ta-cake-top {
+	stroke: #8a5226;
+	stroke-width: 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-stream {
+	stroke: color-mix(in srgb, var(--sky) 70%, #fff);
+	stroke-width: 5;
+	stroke-dasharray: 6 4;
+	animation: ta-pour 0.6s linear infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-kit {
+	fill: color-mix(in srgb, var(--tomato) 15%, var(--card));
+	stroke: var(--tomato);
+	stroke-width: 2.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-kit-cross {
+	stroke: var(--tomato);
+	stroke-width: 6;
+}
+:is(.tech-art, .tech-art-svg) .ta-emergency {
+	fill: var(--tomato);
+	font-size: 20px;
+}
 @keyframes ta-sway {
 	from {
 		transform: rotate(-2.5deg);

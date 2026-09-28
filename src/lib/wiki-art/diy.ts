@@ -1,4 +1,4 @@
-import { bubbles, flames, pot, steam } from './kitchen';
+import { bubbles, flames, jar, pot, steam } from './kitchen';
 import { arrow, drop, label, plant } from './kit';
 
 /** Fermenting, sprouting, kitchen gear and cooking without a stove. */
@@ -175,6 +175,55 @@ export const DIY_ART: Record<string, () => string> = {
 		label(226, 170, 'konvalinka – jedovatá', 'middle') +
 		label(226, 182, '2 listy okolo 1 stonky', 'middle') +
 		label(160, 24, 'rozmrv list: cesnak musí voňať', 'middle'),
+
+	'koreniace-zmesi': () =>
+		`<path class="ta-hob" d="M20 150h120"/>` +
+		`<path class="ta-pan" d="M28 118h96l-8 16H36Z"/><path class="ta-handle-long" d="M124 120l30-8"/>` +
+		`<g class="ta-toss">` +
+		Array.from(
+			{ length: 12 },
+			(_, i) =>
+				`<circle class="ta-spice-dot" style="fill:${['#b5651d', '#e0a030', '#3a2a1a', '#7a9a3a'][i % 4]}" cx="${40 + (i % 6) * 13}" cy="${112 + Math.floor(i / 6) * 4}" r="3"/>`
+		).join('') +
+		`</g>` +
+		flames(76, 164, 0.7) +
+		`<g class="ta-aroma"><path d="M52 100c-6-8 6-12 0-20M78 96c-6-8 6-12 0-20M104 100c-6-8 6-12 0-20"/></g>` +
+		label(76, 184, '1–2 min nasucho', 'middle') +
+		arrow(160, 110, 186, 110) +
+		`<path class="ta-mortar" d="M196 100h60l-6 40h-48Z"/><g class="ta-grind" style="transform-origin:236px 100px"><path class="ta-pestle" d="M236 100l24-40"/></g>` +
+		label(226, 160, 'pomlieť', 'middle') +
+		`<g class="ta-float" style="--d:0.4s">${jar(272, 70, 32, 70, '#c98a3a')}</g>` +
+		label(288, 160, 'do pohára', 'middle'),
+
+	'pecenie-bez-vajec': () =>
+		`<path class="ta-bowl" d="M24 110h80a40 30 0 0 1-80 0Z"/>` +
+		`<g class="ta-thicken"><path class="ta-flax-gel" d="M32 116h64a32 20 0 0 1-64 0Z"/></g>` +
+		Array.from(
+			{ length: 8 },
+			(_, i) =>
+				`<ellipse class="ta-seed-flax" cx="${40 + i * 7}" cy="${122 + (i % 2) * 4}" rx="2.4" ry="1.4"/>`
+		).join('') +
+		label(64, 160, '1 PL ľanu + 3 PL vody', 'middle') +
+		label(64, 172, '= 1 vajce', 'middle') +
+		`<path class="ta-bread" d="M160 150c-6-40 18-60 50-60s56 20 50 60Z"/>` +
+		`<g class="ta-rise-dough" style="transform-origin:210px 150px"><path class="ta-cake-top" d="M166 110c10-20 78-20 88 0"/></g>` +
+		label(210, 172, 'ocot + sóda = nadýchané', 'middle') +
+		`<path class="ta-banana" d="M270 60c6 20 26 24 42 14-18 4-32-2-38-16Z"/>` +
+		label(292, 96, 'banán', 'middle') +
+		label(160, 24, 'vajce spája, kyprí alebo vláčni – nahraď podľa úlohy', 'middle'),
+
+	'prva-pomoc': () =>
+		`<path class="ta-sink" d="M40 110h120v30a10 10 0 0 1-10 10H50a10 10 0 0 1-10-10Z"/>` +
+		`<path class="ta-tap" d="M100 110V70h24v10"/>` +
+		`<g class="ta-stream"><path d="M124 84v40"/></g>` +
+		`<path class="ta-hand" d="M110 128c-4-12 4-20 16-18 8 2 12 8 10 16l-4 10H114Z"/>` +
+		label(100, 172, '20 min vlažnou vodou', 'middle') +
+		`<path class="ta-no" d="M188 60l24 24M212 60l-24 24"/>` +
+		`<rect class="ta-ice-cube" x="190" y="62" width="20" height="20" rx="3"/>` +
+		label(200, 104, 'nie ľad', 'middle') +
+		`<rect class="ta-kit" x="236" y="70" width="70" height="56" rx="8"/><path class="ta-kit-cross" d="M271 84v28M257 98h28"/>` +
+		label(271, 144, 'lekárnička', 'middle') +
+		`<g class="ta-pop-out"><text class="ta-label ta-strong ta-emergency" x="271" y="40" text-anchor="middle">112</text></g>`,
 
 	desiata: () =>
 		`<rect class="ta-lunchbox" x="40" y="60" width="170" height="100" rx="12"/><path class="ta-lunchbox-div" d="M130 60v100M130 110h80"/>` +
