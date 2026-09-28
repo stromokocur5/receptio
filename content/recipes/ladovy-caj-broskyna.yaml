@@ -1,0 +1,25 @@
+title: Ľadový čaj s broskyňou
+description: Domáci ice tea z čierneho čaju a zrelých broskýň. Menej cukru ako z fľaše a chutí po ovocí.
+cuisine: americka
+meals: [snack]
+categories: [napoje/limonady]
+time: 15
+active: 10
+servings: 6
+difficulty: 1
+tags: [lacne, party]
+ahead: Vychladnúť musí aspoň 2 hodiny.
+keeps: { fridge: 3 }
+ingredients:
+  - cierny-caj: ~4 ks | vrecúška
+  - voda: 1,5 l
+  - broskyne: 3 ks | zrelé
+  - cukor: 4 pl
+  - citron: 1 ks
+  - bylinky-mata: 1 pl
+steps:
+  - Pol litra vody prived do varu, stiahni, pridaj čaj a lúhuj presne 4 minúty. Dlhšie lúhovaný zhorkne.
+  - Dve broskyne nakrájaj a povar s cukrom a pohárom vody 5 minút, potom rozmixuj a preceď.
+  - Zmiešaj čaj, broskyňový sirup, zvyšok studenej vody a citrón. Vychlaď a podávaj s plátkami tretej broskyne, mätou a ľadom.
+tips:
+  - Na studeno lúhovaný (vrecúška v studenej vode cez noc v chladničke) je jemnejší a nikdy nezhorkne.

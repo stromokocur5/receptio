@@ -1,0 +1,24 @@
+title: Tortilla chipsy z rúry
+description: Chrumkavé trojuholníky z kukuričných tortíl bez fritovania. K salse, guacamole aj fazuľovému dipu.
+cuisine: mexicka
+meals: [snack]
+categories: [snacky/slane, snacky/party]
+time: 15
+active: 5
+servings: 4
+difficulty: 1
+tags: [rychle, lacne, party, deti]
+related: [guacamole, pico-de-gallo]
+equipment: [rura]
+ingredients:
+  - kukuricne-tortilly: 8 ks
+  - olej: 2 pl
+  - sol: 1/2 čl
+  - limetka: 1/2 ks | kôra, voliteľne
+  - cili: 1 štipka
+steps:
+  - Tortilly potri z oboch strán olejom a nakrájaj na osminy.
+  - Rozlož na plech v jednej vrstve a peč pri 190 °C 8–10 minút, v polovici otoč. Okraje majú byť zlatisté.
+  - Hneď posoľ, posyp čili a kôrou z limetky. Chrumkavé sú až po vychladnutí.
+tips:
+  - Staršie, trochu presušené tortilly sú na chipsy najlepšie.

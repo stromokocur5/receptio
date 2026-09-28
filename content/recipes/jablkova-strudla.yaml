@@ -1,0 +1,31 @@
+title: Jablková štrúdľa
+description: Chrumkavé lístkové cesto, jablká so škoricou, orechmi a hrozienkami. Nedeľa u starej mamy.
+cuisine: slovenska
+meals: [dezert]
+categories: [dezerty/pecene]
+time: 60
+active: 25
+servings: 8
+difficulty: 2
+tags: [pecenie, klasika]
+keeps: { fridge: 3 }
+ingredients:
+  - filo-cesto: 8 ks | pláty
+  - jablko: 6 ks | kyslejšie
+  - cukor: 5 pl
+  - skorica: 2 čl
+  - vlasske-orechy: 1/2 hrnček | nasekané
+  - hrozienka: 3 pl
+  - struhanka: 4 pl | opražená na suchu
+  - citron: 1 pl
+  - olej: 4 pl | alebo roztopené rastlinné maslo
+steps:
+  - Jablká olúp a nastrúhaj nahrubo, pokvapkaj citrónom a nechaj 10 minút. Potom ich rukami vytlač od šťavy (vypi ju).
+  - Zmiešaj jablká s cukrom, škoricou, orechmi a hrozienkami.
+  - Na utierku polož plát filo, potri olejom a daj naň ďalší. Takto urob 4 vrstvy.
+  - Na spodnú tretinu nasyp polovicu strúhanky a na ňu polovicu jabĺk. Bočné okraje prehni dovnútra a pomocou utierky zroluj. Z druhej polovice urob druhú štrúdľu.
+  - Polož spojom dole na plech s papierom, potri olejom a peč pri 190 °C 30–35 minút dozlatista.
+  - Vlažnú pocukruj a krájaj.
+tips:
+  - Strúhanka nasaje šťavu z jabĺk – bez nej by spodok rozmokol.
+  - Filo pod rukami schne, ostatné pláty drž prikryté vlhkou utierkou.

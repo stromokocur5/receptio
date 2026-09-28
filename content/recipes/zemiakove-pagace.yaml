@@ -1,0 +1,31 @@
+title: Zemiakové pagáče
+description: Mäkké slané pagáče z cesta so zemiakmi, posypané rascou a soľou. Na oslavy, výlety aj k polievke.
+cuisine: slovenska
+meals: [snack]
+categories: [prilohy/chlieb, snacky/slane, snacky/party]
+time: 90
+active: 30
+servings: 10
+difficulty: 2
+tags: [pecenie, party, klasika]
+ahead: Cesto kysne hodinu.
+keeps: { fridge: 3, freezer: 3 }
+howto: [kysnute-cesto]
+ingredients:
+  - zemiaky: 3 ks | uvarené v šupke, vychladnuté
+  - hladka-muka: 400 g
+  - drozdie: 1 ks | vrecúško 7 g
+  - sojove-mlieko: 1/2 hrnček | vlažné
+  - rastlinne-maslo: 100 g | mäkké
+  - cukor: 1 čl
+  - sol: 2 čl
+  - olej: 1 pl | na potretie
+  - rasca: 1 čl
+steps:
+  - Zemiaky olúp a nastrúhaj najjemnejšie, ako sa dá.
+  - Zmiešaj múku, droždie, cukor a 1,5 ČL soli. Pridaj zemiaky, maslo a mlieko a mies 8 minút na hladké, mäkké cesto. Prikry a nechaj hodinu kysnúť v teple.
+  - Vyvaľkaj na 2 cm, povrch nareží mriežkou a vykrajuj pagáče pohárom s priemerom 5 cm.
+  - Polož na plech s papierom, potri olejom, posyp rascou a zvyšnou soľou. Nechaj 15 minút podkysnúť.
+  - Peč pri 200 °C 18–20 minút dozlatista.
+tips:
+  - Na „syrové“ pagáče primiešaj do cesta 3 PL výživného droždia a posyp vegánskym syrom.

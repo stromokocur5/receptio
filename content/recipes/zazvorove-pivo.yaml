@@ -1,0 +1,29 @@
+title: Zázvorové pivo (ginger beer)
+description: Karibský perlivý nápoj z domáceho zázvorového kvásku. Ostrý, sladký, prirodzene bublinkový.
+cuisine: karibska
+meals: [snack]
+categories: [napoje/fermentovane, domace/kvasene]
+time: 20
+active: 20
+servings: 8
+difficulty: 2
+tags: [urob-si-sam, fermentacia, party]
+spicy: 1
+ahead: Zázvorový kvások sa pripravuje 5–7 dní, potom 2 dni kvasí vo fľašiach.
+nutrition: false
+yields: cca 2 l
+keeps: { fridge: 10 }
+ingredients:
+  - zazvor: 8 pl | nastrúhaný so šupkou (na kvások aj nápoj)
+  - cukor: 12 pl
+  - voda: 2,5 l | nechlórovaná alebo odstáta
+  - citron: 2 ks
+steps:
+  - 'Kvások: v pohári zmiešaj 2 PL zázvoru, 2 PL cukru a 1 hrnček vody. Prikry utierkou. Každý deň pridaj 1 PL zázvoru a 1 PL cukru a premiešaj. Za 5–7 dní začne bublať a voňať kvasne.'
+  - Zvyšný zázvor povar 15 minút v 1 l vody, rozpusti v tom zvyšný cukor a nechaj vychladnúť. Preceď a dolej zvyšnou studenou vodou a citrónovou šťavou.
+  - Pridaj 1 hrnček precedeného kvásku, rozlej do pevných fliaš (na pivo alebo s pákovým uzáverom) a nechaj 1–2 dni pri izbovej teplote.
+  - Keď je plastová fľaša tvrdá alebo pri odklopení syčí, daj do chladničky. Otváraj opatrne nad umývadlom.
+tips:
+  - Zvyšok kvásku kŕm raz týždenne v chladničke a máš ho na ďalšiu várku.
+  - Sklenené fľaše v teple môžu od tlaku prasknúť – odvzdušňuj ich denne.
+  - Obsahuje stopové množstvo alkoholu, ako každé kvasenie.

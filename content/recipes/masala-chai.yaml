@@ -1,0 +1,29 @@
+title: Masala chai
+description: Čierny čaj varený s mliekom, zázvorom a korením. Indická pouličná klasika, hriata do kostí.
+cuisine: indicka-sever
+meals: [ranajky, snack]
+categories: [napoje/teple]
+time: 10
+active: 5
+servings: 2
+difficulty: 1
+tags: [rychle, lacne]
+spicy: 1
+keeps: { fridge: 2 }
+ingredients:
+  - voda: 1 hrnček
+  - zazvor: 1 čl | nastrúhaný alebo plátky
+  - kardamom: 1/4 čl
+  - skorica: 1/4 čl
+  - klincek: ~2 ks
+  - cierne-korenie: 1 štipka
+  - cierny-caj: ~2 ks | vrecúška alebo 2 ČL sypaného
+  - sojove-mlieko: 1 hrnček
+  - cukor: 2 čl
+steps:
+  - Vodu so zázvorom, kardamómom, škoricou, klinčekmi a korením prived do varu a varte 3 minúty na miernom ohni, aby korenie pustilo chuť.
+  - Pridaj čaj a lúhuj 2 minúty.
+  - Prilej mlieko a cukor a zohrej tesne pod var – keď začne stúpať pena, stiahni z ohňa. Preceď do hrnčekov.
+tips:
+  - Sójové mlieko sa pri varení s čajom nezrazí, ak ho nezovrieš prudko. Ovsené hustne, mandľové býva vodové.
+  - Bez kofeínu použi rooibos namiesto čierneho čaju.

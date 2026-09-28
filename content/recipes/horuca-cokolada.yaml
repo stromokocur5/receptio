@@ -1,0 +1,26 @@
+title: Hustá horúca čokoláda
+description: Poriadna pitná čokoláda z kakaa a kúska horkej čokolády, hustá ako v kaviarni.
+cuisine: moderna
+meals: [snack, dezert]
+categories: [napoje/teple, dezerty/kremy]
+time: 8
+active: 8
+servings: 2
+difficulty: 1
+tags: [rychle, deti]
+equipment: [hrniec]
+ingredients:
+  - sojove-mlieko: 2 hrnček
+  - kakao: 2 pl
+  - horka-cokolada: 40 g | nalámaná
+  - cukor: 1 pl
+  - kukuricny-skrob: 1 čl
+  - vanilka: 1/2 čl
+  - sol: 1 štipka
+steps:
+  - V studenom mlieku rozmiešaj kakao, cukor, škrob a soľ, aby neboli hrudky.
+  - Zohrievaj na strednom ohni za stáleho miešania, kým nezačne jemne bublať a nezhustne, asi 4 minúty.
+  - Stiahni z ohňa, vmiešaj čokoládu a vanilku a miešaj, kým sa čokoláda nerozpustí.
+tips:
+  - Riedkejšiu, „automatovú“ verziu urobíš bez škrobu.
+  - Štipka škorice a čili z nej spraví mexickú čokoládu.

@@ -1,0 +1,27 @@
+title: Horchata
+description: Mexický ryžový nápoj so škoricou a vanilkou. Krémový, sladký a osviežujúci, bez mlieka.
+cuisine: mexicka
+meals: [snack]
+categories: [napoje/limonady, napoje/mlieka]
+time: 10
+active: 10
+servings: 4
+difficulty: 1
+tags: [lacne, deti]
+ahead: Ryža sa namáča cez noc.
+nutrition: false
+yields: cca 1 l
+keeps: { fridge: 3 }
+ingredients:
+  - ryza-jazminova: 1/2 hrnček
+  - mandle: 2 pl | voliteľne, krémovejšie
+  - skorica: 1 čl | alebo tyčinka
+  - voda: 1 l
+  - cukor: 4 pl
+  - vanilka: 1 čl
+steps:
+  - Ryžu, mandle a škoricu zalej polovicou vody a nechaj cez noc namočené.
+  - Všetko rozmixuj najvyšším výkonom 2 minúty, aby bola ryža úplne rozdrvená.
+  - Preceď cez utierku, dolej zvyšok vody, dosladí a pridaj vanilku. Podávaj s ľadom a posyp škoricou.
+tips:
+  - Usadzuje sa – pred nalievaním premiešaj.

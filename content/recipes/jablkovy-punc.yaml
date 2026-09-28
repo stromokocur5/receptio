@@ -1,0 +1,25 @@
+title: Jablkový punč
+description: Horúci jablkový mušt so škoricou, klinčekmi a pomarančom. Vianočné trhy bez alkoholu.
+cuisine: slovenska
+meals: [snack]
+categories: [napoje/teple]
+time: 20
+active: 5
+servings: 4
+difficulty: 1
+tags: [party, deti]
+keeps: { fridge: 3 }
+ingredients:
+  - jablkovy-must: 1 l
+  - pomaranc: 1 ks | na plátky
+  - skorica: 1/2 čl | alebo 2 celé tyčinky
+  - klincek: ~5 ks
+  - badian: ~2 ks
+  - zazvor: 1 čl | plátky
+  - citron: 1/2 ks
+steps:
+  - Mušt s pomarančom, škoricou, klinčekmi, badiánom a zázvorom zohrej takmer do varu.
+  - Nechaj 15 minút ťahať na najmiernejšom ohni pod pokrievkou. Nevar – mušt by zhorkol.
+  - Dochuť citrónom a nalievaj cez sitko.
+tips:
+  - Na väčšiu párty ho udržíš teplý v pomalom hrnci.

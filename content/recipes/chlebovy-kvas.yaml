@@ -1,0 +1,29 @@
+title: Chlebový kvas
+description: Kvasený nápoj zo sušeného chleba, trochu cukru a droždia. Sladkokyslý, jemne perlivý, ako kedysi.
+cuisine: slovenska
+meals: [snack]
+categories: [napoje/fermentovane, domace/kvasene]
+time: 30
+active: 20
+servings: 8
+difficulty: 2
+tags: [urob-si-sam, fermentacia, lacne, zvysky]
+ahead: Kvasí 2 dni, potom 1 deň v chladničke.
+nutrition: false
+yields: cca 2 l
+keeps: { fridge: 5 }
+ingredients:
+  - chlieb: 10 ks | ražný, tmavý, plátky
+  - voda: 2,5 l
+  - cukor: 6 pl
+  - drozdie: 1/4 čl
+  - hrozienka: 1 pl
+  - bylinky-mata: 1 pl | voliteľne
+steps:
+  - Plátky chleba opeč v rúre pri 180 °C dotmava, asi 15 minút. Čím tmavší, tým tmavší kvas.
+  - Chlieb zalej vriacou vodou, prikry a nechaj 6 hodín (alebo cez noc) lúhovať.
+  - Preceď cez utierku do veľkého pohára, vmiešaj cukor a droždie. Prikry utierkou a nechaj 1–2 dni pri izbovej teplote, kým nezačne perliť a voňať kyslasto.
+  - Prelej do fliaš, do každej daj 2–3 hrozienka, uzavri a daj do chladničky na deň. Fľaše denne raz odvzdušni.
+tips:
+  - V uzavretých fľašiach pri izbovej teplote sa robí tlak – nenechávaj ich vonku.
+  - Obsahuje stopové množstvo alkoholu (pod 1 %), ako každé kvasenie.

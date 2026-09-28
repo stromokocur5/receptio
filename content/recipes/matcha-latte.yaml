@@ -1,0 +1,22 @@
+title: Matcha latte
+description: Zelený čaj vyšľahaný dohladka a zaliaty napeneným mliekom. Horúce aj s ľadom.
+cuisine: japonska
+meals: [ranajky, snack]
+categories: [napoje/teple]
+time: 5
+active: 5
+servings: 1
+difficulty: 1
+tags: [rychle]
+ingredients:
+  - matcha: 1 čl
+  - voda: 3 pl | teplá, nie vriaca (80 °C)
+  - sojove-mlieko: 1 hrnček
+  - javorovy-sirup: 1 čl
+steps:
+  - Matchu preosej do misky, zalej teplou vodou a šľahaj metličkou do „M“ pohybom, kým nie je hladká a spenená.
+  - Mlieko so sirupom zohrej a speň (šľahačom, vo francúzskom lise alebo pretrepaním v uzavretom pohári).
+  - Nalej mlieko do hrnčeka a navrch matchu.
+tips:
+  - Vriaca voda robí matchu horkou.
+  - Ľadové latte – studené mlieko, ľad a matcha navrch.

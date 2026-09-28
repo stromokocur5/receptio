@@ -1,0 +1,21 @@
+title: Mangové lassi
+description: Husté indické lassi z manga, jogurtu a štipky kardamómu. Hodí sa k pálivému kari.
+cuisine: indicka-sever
+meals: [ranajky, snack]
+categories: [napoje/smoothie]
+time: 5
+active: 5
+servings: 2
+difficulty: 1
+tags: [rychle, bez-varenia, deti]
+ingredients:
+  - mango: 1 ks | zrelé, alebo 1 hrnček mrazeného
+  - sojovy-jogurt: 1 hrnček
+  - sojove-mlieko: 1/2 hrnček
+  - javorovy-sirup: 1 pl
+  - kardamom: 1 štipka
+steps:
+  - Všetko rozmixuj dohladka. Ak je husté, prilej mlieko.
+  - Nalej do pohárov a posyp štipkou kardamómu.
+tips:
+  - Z mrazeného manga je lassi studené a husté bez ľadu.

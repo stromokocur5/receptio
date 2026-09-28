@@ -1,0 +1,27 @@
+title: Arašidová omáčka
+description: Sladkoslaná satay omáčka z arašidového masla, limetky a sójovky. Na rezance, závitky, tofu aj šalát.
+cuisine: indonezska
+meals: [snack]
+categories: [omacky/omacky, omacky/dipy]
+time: 5
+active: 5
+servings: 6
+difficulty: 1
+tags: [rychle, bez-varenia, party]
+spicy: 1
+keeps: { fridge: 7 }
+related: [letne-zavitky, gado-gado]
+ingredients:
+  - arasidove-maslo: 4 pl
+  - sojova-omacka: 2 pl
+  - limetka: 1 ks
+  - javorovy-sirup: 1 pl
+  - zazvor: 1 čl | nastrúhaný
+  - cesnak: 1 ks
+  - sriracha: 1 čl | podľa chuti
+  - voda: 5 pl | teplá
+steps:
+  - Arašidové maslo rozmiešaj so sójovkou, limetkovou šťavou, sirupom, zázvorom a pretlačeným cesnakom.
+  - Po lyžiciach pridávaj teplú vodu, kým nie je omáčka hladká a tečie z lyžice. Dochuť srirachou.
+tips:
+  - V chladničke zhustne – pred použitím ju rozrieď teplou vodou.

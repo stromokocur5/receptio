@@ -1,0 +1,28 @@
+title: Bazové „šampanské“
+description: Perlivý nápoj z bazových kvetov, ktorý sa rozkvasí sám z divých kvasiniek na kvetoch.
+cuisine: slovenska
+meals: [snack]
+categories: [napoje/fermentovane]
+time: 20
+active: 20
+servings: 12
+difficulty: 2
+tags: [fermentacia, party, lacne]
+ahead: Kvasí 3–5 dní v nádobe a 5–7 dní vo fľašiach.
+nutrition: false
+yields: cca 3 l
+keeps: { fridge: 21 }
+ingredients:
+  - bazovy-kvet: 12 ks | nepraný, s peľom
+  - voda: 3 l
+  - cukor: 500 g
+  - citron: 2 ks | plátky
+  - ocot: 1 pl | jablčný alebo vínny
+steps:
+  - Cukor rozpusti v troche teplej vody, dolej studenou do 3 l a pridaj kvety, citróny a ocot.
+  - Prikry utierkou a nechaj 3–5 dní pri izbovej teplote. Raz denne premiešaj. Na povrchu sa objaví pena – to je dobre.
+  - Keď bublá, preceď cez utierku do pevných fliaš (pákový uzáver alebo plastové od minerálky). Nechaj 5–7 dní v chlade, fľaše denne odvzdušni.
+tips:
+  - Ak sa do 4 dní nič nedeje, pridaj štipku droždia.
+  - Ak sa objaví chlpatá pleseň, vylej to – biela pena je v poriadku, farebné chĺpky nie.
+  - Obsahuje trochu alkoholu (zvyčajne pod 1 %, pri dlhom kvasení viac) – nie pre deti a šoférov.

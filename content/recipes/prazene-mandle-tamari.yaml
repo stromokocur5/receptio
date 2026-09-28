@@ -1,0 +1,24 @@
+title: Pražené mandle s tamari
+description: Chrumkavé mandle s glazúrou z tamari a údenej papriky. Slaný snack na cesty, do šalátu aj k pivu.
+cuisine: moderna
+meals: [snack]
+categories: [snacky/slane, snacky/na-cesty]
+time: 20
+active: 5
+servings: 6
+difficulty: 1
+tags: [rychle, party, do-krabicky]
+keeps: { fridge: 30 }
+no_equipment: [panvica]
+ingredients:
+  - mandle: 1 hrnček
+  - tamari: 1 pl
+  - javorovy-sirup: 1 čl
+  - udena-paprika: 1/2 čl
+  - cesnak: 1 ks | alebo ¼ ČL sušeného
+steps:
+  - Mandle opekaj na plechu v rúre pri 170 °C 10 minút.
+  - Zmiešaj tamari, sirup, papriku a pretlačený cesnak, obaľ v tom horúce mandle.
+  - Vráť do rúry na 4–5 minút, kým sa glazúra nezasuší. Nechaj vychladnúť, stvrdnú až potom.
+tips:
+  - Rovnako sa robí tekvicové semienko a slnečnica – tie stačí piecť 6 minút.

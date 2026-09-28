@@ -4663,3 +4663,116 @@
   uses:
     - 'Ramen, stir-fry, rizoto, vývar zo stopiek'
   storage: 'V papierovom sáčku v chladničke týždeň. Sušené rok – vývar z nich je silnejší.'
+
+- id: agar
+  name: Agar (prášok)
+  category: ine
+  n: { kcal: 26, p: 0.5, c: 6.8, f: 0, fib: 0.5, salt: 0.1, fe: 1.9, ca: 54, zn: 0.6 }
+  units: { čl: 2 }
+  price: 60
+  co2: 1
+  color: '#efe9d8'
+  about: 'Rastlinná želatína z morských rias. Stuhne už pri izbovej teplote a drží aj v teple.'
+  uses:
+    - 'Korbáčiky a krájateľné syry, pudingy, želé, torty'
+  choose: 'Prášok, nie vločky – vločky potrebujú 3× viac a dlhšie varenie. Musí sa povariť aspoň 1–2 minúty, inak nestuhne.'
+  storage: 'Suchý roky.'
+
+- id: tekuty-dym
+  name: Tekutý dym
+  category: omacky-pasty
+  n: { kcal: 10, p: 0, c: 1, f: 0, fib: 0, salt: 0.5, fe: 0, ca: 0, zn: 0 }
+  units: { čl: 5, pl: 15 }
+  price: 40
+  co2: 1
+  color: '#6a3a1c'
+  substitutes:
+    - { to: udena-paprika, note: 'dym bez tekutiny – daj do cesta, nie do nálevu' }
+  about: 'Kondenzovaný dym z dreva vo vode. Pár kvapiek dá jedlu údenú chuť bez udiarne.'
+  uses:
+    - 'Korbáčiky, údené tofu, BBQ omáčka, fazuľa'
+  choose: 'Bez pridaných príchutí a cukru. Stačí ho veľmi málo.'
+  storage: 'Otvorený v chladničke rok.'
+
+- id: cierny-caj
+  name: Čierny čaj (sypaný alebo vrecúška)
+  category: ine
+  n: { kcal: 1, p: 0, c: 0.3, f: 0, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0 }
+  units: { čl: 2.5, ks: 2 }
+  price: 25
+  co2: 10
+  color: '#3a2016'
+  about: 'Assam alebo Ceylon – silný, na chai aj ľadový čaj. 1 ks = vrecúško.'
+  uses:
+    - 'Masala chai, ľadový čaj, kombucha'
+  storage: 'V tmavej dóze rok.'
+
+- id: matcha
+  name: Matcha (mletý zelený čaj)
+  category: ine
+  n: { kcal: 324, p: 30, c: 39, f: 5, fib: 38, salt: 0, fe: 17, ca: 420, zn: 6 }
+  units: { čl: 2 }
+  price: 120
+  co2: 10
+  color: '#8cae4a'
+  about: 'Jemne mletý zelený čaj. Pije sa celý list, preto je silnejší a má viac kofeínu.'
+  uses:
+    - 'Matcha latte, do smoothie, na polevy'
+  choose: 'Na latte stačí kulinárska kvalita, obradná je drahšia a jemnejšia.'
+  storage: 'Otvorená v chladničke, spotrebuj do 2 mesiacov – stráca farbu.'
+
+- id: ibistek
+  name: Ibištek sušený (jamaica)
+  category: ine
+  n: { kcal: 49, p: 0.4, c: 11, f: 0.6, fib: 1, salt: 0, fe: 1.5, ca: 215, zn: 0.1 }
+  units: { hrnček: 40, pl: 3 }
+  price: 30
+  co2: 1
+  color: '#9a1a3a'
+  about: 'Sušené kalichy ibišteka – kyslé, brusnicovej chuti, sfarbia vodu do rubínova.'
+  uses:
+    - 'Agua de jamaica, čaje, sirup'
+  choose: 'V bio obchodoch a v ovocných čajoch ako „ibištek“ alebo „karkade“.'
+  storage: 'Suchý rok.'
+
+- id: popcorn
+  name: Kukurica na popcorn
+  category: obilniny
+  n: { kcal: 375, p: 11, c: 74, f: 4.5, fib: 13, salt: 0, fe: 3, ca: 7, zn: 3 }
+  units: { pl: 12, hrnček: 190 }
+  price: 3
+  co2: 1.2
+  color: '#f2cf5a'
+  about: 'Zrná, ktoré v teple prasknú. Doma z hrnca lacnejší a bez palmového oleja z vrecúšok.'
+  uses:
+    - 'Popcorn s výživným droždím, škoricový, karamelový'
+  storage: 'Suchý rok – starý a presušený praská horšie.'
+
+- id: bazovy-kvet
+  name: Bazový kvet (okolíky)
+  category: zelenina
+  n: { kcal: 10, p: 0.5, c: 2, f: 0, fib: 1, salt: 0, fe: 0.5, ca: 20, zn: 0.1 }
+  units: { ks: 8 }
+  price: 10
+  co2: 0.1
+  color: '#f5f0d6'
+  season: [5, 6]
+  about: 'Kvety bazy čiernej, v máji a júni. Voňajú medovo, na sirup a limonádu.'
+  uses:
+    - 'Bazový sirup, bazové „šampanské“, do palaciniek'
+  choose: 'Zbieraj za slnka, ďaleko od ciest, len plne rozkvitnuté okolíky. Neoplachuj – prišiel by si o peľ a vôňu. 1 ks = okolík.'
+  storage: 'Spracuj v deň zberu, inak zhnednú a voňajú po mačke.'
+
+- id: jablkovy-must
+  name: Jablkový mušt (100 %)
+  category: ovocie
+  n: { kcal: 46, p: 0.1, c: 11, f: 0.1, fib: 0.2, salt: 0, fe: 0.1, ca: 8, zn: 0 }
+  units: { hrnček: 250 }
+  density: 1.04
+  price: 2
+  co2: 0.6
+  color: '#d99a3a'
+  about: 'Nefiltrovaná jablková šťava bez cukru – od sadu lepšia ako z koncentrátu.'
+  uses:
+    - 'Jablkový punč, smoothie, marinády'
+  storage: 'Otvorený v chladničke 5 dní.'

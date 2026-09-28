@@ -1,0 +1,23 @@
+title: Horčicový vinaigrette
+description: Základný šalátový dresing z oleja, octu a horčice. Za minútu v pohári, vydrží týždeň.
+cuisine: moderna
+meals: [snack]
+categories: [omacky/dresingy]
+time: 3
+active: 3
+servings: 6
+difficulty: 1
+tags: [rychle, bez-varenia, lacne]
+keeps: { fridge: 10 }
+ingredients:
+  - olivovy-olej: 6 pl
+  - ocot: 2 pl | jablčný, vínny alebo balzamiko
+  - horcica: 1 pl | dijonská alebo plnotučná
+  - javorovy-sirup: 1 pl
+  - sol: 1/4 čl
+  - cierne-korenie: 1 štipka
+steps:
+  - Všetko daj do pohára so závitom, zavri a 20 sekúnd poriadne pretras. Horčica spojí olej s octom.
+tips:
+  - Pomer 3 diely oleja na 1 diel kyseliny si zapamätaj – funguje aj s citrónom.
+  - Pred použitím znova pretras.

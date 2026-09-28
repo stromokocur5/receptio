@@ -1,0 +1,28 @@
+title: Domáce mandľové mlieko
+description: Krémové mandľové mlieko bez zahusťovadiel. Zvyšok (mandľová okara) sa hodí do sušienok.
+cuisine: moderna
+meals: [domace, ranajky]
+categories: [domace/mlieka, napoje/mlieka]
+time: 10
+active: 10
+servings: 4
+difficulty: 1
+tags: [urob-si-sam]
+ahead: Mandle namoč cez noc.
+nutrition: false
+yields: cca 1 l mlieka
+keeps: { fridge: 3 }
+related: [domace-ovsene-mlieko, domace-sojove-mlieko]
+ingredients:
+  - mandle: 1 hrnček | namočené, scedené
+  - voda: 1 l | studená
+  - datle: 2 ks | voliteľne
+  - sol: 1 štipka
+  - vanilka: 1/2 čl | voliteľne
+steps:
+  - Namočené mandle opláchni a s vodou, datľami a soľou mixuj 1–2 minúty najvyšším výkonom.
+  - Preceď cez jemnú utierku alebo vrecko na mlieko a dobre vyžmýkaj.
+  - Prelej do fľaše a vychlaď. Pred použitím pretras.
+tips:
+  - Na rozdiel od kupovaného nemá pridaný vápnik – ak ho piješ namiesto mlieka, vápnik ber inde (tofu, kupované obohatené mlieko).
+  - Mandľovú drť usuš v rúre pri 80 °C a použi ako múku do sušienok.

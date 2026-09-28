@@ -1,0 +1,31 @@
+title: Čokoládové brownies
+description: Vlhké, husté brownies s praskajúcou kôrkou. Bez vajec a bez náhrad – len múka, kakao, čokoláda a olej.
+cuisine: americka
+meals: [dezert]
+categories: [dezerty/pecene]
+time: 45
+active: 15
+servings: 12
+difficulty: 1
+tags: [pecenie, party, deti]
+keeps: { fridge: 5, freezer: 3 }
+ingredients:
+  - hladka-muka: 180 g
+  - cukor: 200 g
+  - kakao: 5 pl
+  - kypriaci-prasok: 1 čl
+  - sol: 1/2 čl
+  - sojove-mlieko: 1 hrnček
+  - olej: 120 ml
+  - vanilka: 1 čl
+  - horka-cokolada: 100 g | nasekaná
+  - vlasske-orechy: 1/2 hrnček | voliteľne
+steps:
+  - Rúru rozohrej na 180 °C a formu 20 × 30 cm vystel papierom.
+  - V mise zmiešaj múku, cukor, kakao, prášok do pečiva a soľ.
+  - Polovicu čokolády roztop s olejom (vo vodnom kúpeli alebo po 20 sekundách v mikrovlnke). Vmiešaj mlieko a vanilku.
+  - Mokré zmiešaj so suchým len kým sa to spojí, potom primiešaj zvyšnú čokoládu a orechy.
+  - Peč 22–25 minút. Špáradlo má z brownies vyjsť s pár vlhkými omrvinkami – upečené dosucha sú suché.
+  - Nechaj úplne vychladnúť vo forme, až potom krájaj.
+tips:
+  - Na druhý deň sú ešte lepšie.

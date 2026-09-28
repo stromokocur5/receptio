@@ -1,0 +1,30 @@
+title: Mramorová bábovka
+description: Nadýchaná bábovka so svetlým a kakaovým cestom. K nedeľnej káve, bez vajec aj mlieka.
+cuisine: slovenska
+meals: [dezert, ranajky]
+categories: [dezerty/pecene]
+time: 70
+active: 20
+servings: 12
+difficulty: 1
+tags: [pecenie, klasika, deti]
+keeps: { fridge: 4, freezer: 3 }
+ingredients:
+  - hladka-muka: 350 g
+  - cukor: 180 g
+  - kypriaci-prasok: 1 ks | vrecúško
+  - sol: 1 štipka
+  - sojove-mlieko: 1,5 hrnček
+  - olej: 120 ml
+  - ocot: 1 pl
+  - vanilka: 1 čl
+  - citron: 1 ks | kôra
+  - kakao: 2 pl
+steps:
+  - Formu na bábovku vymaž olejom a vysyp múkou. Rúru rozohrej na 175 °C.
+  - Zmiešaj múku, cukor, prášok do pečiva a soľ. Mlieko s octom, olejom, vanilkou a kôrou prilej a len krátko premiešaj na hladké cesto.
+  - Do tretiny cesta vmiešaj kakao s 2 PL mlieka.
+  - Do formy nalej polovicu svetlého cesta, potom kakaové a navrch zvyšok svetlého. Vidličkou raz-dvakrát prejdi v špirále.
+  - Peč 45–50 minút, kým špáradlo nevyjde suché. Nechaj 10 minút vo forme, potom vyklop.
+tips:
+  - Cesto nemiešaj dlho – bábovka by bola tuhá.

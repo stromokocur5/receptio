@@ -1,0 +1,27 @@
+title: Ranch dresing
+description: Americký bylinkový dresing a dip z jogurtu s kôprom, pažítkou a cesnakom. K zelenine, hranolkám aj buffalo karfiolu.
+cuisine: americka
+meals: [snack]
+categories: [omacky/dresingy, omacky/dipy]
+time: 5
+active: 5
+servings: 6
+difficulty: 1
+tags: [rychle, bez-varenia, party]
+keeps: { fridge: 5 }
+related: [buffalo-karfiol]
+ingredients:
+  - sojovy-jogurt: 1 hrnček
+  - veganska-majoneza: 3 pl
+  - citron: 1 pl
+  - cesnak: 1 ks
+  - kopor: 1 pl
+  - pazitka: 2 pl
+  - petrzlenova-vnat: 1 pl
+  - sol: 1/2 čl
+  - cierne-korenie: 1 štipka
+steps:
+  - Bylinky nadrobno nasekaj, cesnak pretlač.
+  - Všetko zmiešaj a nechaj aspoň 30 minút v chladničke, nech sa chute spoja.
+tips:
+  - S 2–3 PL mlieka je z neho dresing na šalát.

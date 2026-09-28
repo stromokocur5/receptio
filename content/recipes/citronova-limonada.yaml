@@ -1,0 +1,24 @@
+title: Citrónová limonáda s mätou
+description: Domáca limonáda z citrónov, mäty a trochy cukru. Kyslá, osviežujúca, bez sirupov z obchodu.
+cuisine: moderna
+meals: [snack]
+categories: [napoje/limonady]
+time: 10
+active: 10
+servings: 6
+difficulty: 1
+tags: [rychle, lacne, bez-varenia, party]
+keeps: { fridge: 2 }
+ingredients:
+  - citron: 4 ks | šťava + kôra z jedného
+  - cukor: 5 pl
+  - voda: 1,5 l | studená, aj perlivá
+  - bylinky-mata: 4 pl | lístky
+  - limetka: 1 ks | na plátky
+steps:
+  - Cukor s kôrou jedného citróna a mätou pretri v džbáne lyžicou, aby pustili vôňu.
+  - Prilej citrónovú šťavu a pohár vody a miešaj, kým sa cukor nerozpustí.
+  - Dolej zvyšok vody, pridaj plátky limetky a ľad.
+tips:
+  - Ochutnaj a dosládzaj až nakoniec – citróny sú raz kyslejšie, raz menej.
+  - Uhorkovú verziu urobíš s pár plátkami uhorky namiesto limetky.

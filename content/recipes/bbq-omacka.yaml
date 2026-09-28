@@ -1,0 +1,30 @@
+title: Domáca BBQ omáčka
+description: Hustá sladko-údená omáčka z paradajkového pretlaku, octu a papriky. Na pulled jackfruit, tofu a burgery.
+cuisine: americka
+meals: [snack]
+categories: [omacky/omacky]
+time: 20
+active: 5
+servings: 10
+difficulty: 1
+tags: [lacne, meal-prep, party]
+keeps: { fridge: 21 }
+related: [pulled-jackfruit, burger-fazula]
+ingredients:
+  - paradajkovy-pretlak: 6 pl
+  - passata: 1 hrnček
+  - ocot: 3 pl | jablčný
+  - javorovy-sirup: 3 pl
+  - cukor: 2 pl | trstinový
+  - sojova-omacka: 1 pl
+  - horcica: 1 čl
+  - udena-paprika: 2 čl
+  - cesnak: 2 ks | pretlačený
+  - cierne-korenie: 1/2 čl
+  - tekuty-dym: 1/4 čl | voliteľne
+steps:
+  - Všetko zmiešaj v malom hrnci a prived do varu.
+  - Varte bez pokrievky na miernom ohni 15 minút, občas premiešaj, kým nezhustne. Pozor, strieka.
+  - Nechaj vychladnúť a prelej do vyparenej fľaše.
+tips:
+  - S čili alebo chipotle je pálivá, s kávou tmavá a horkastá.

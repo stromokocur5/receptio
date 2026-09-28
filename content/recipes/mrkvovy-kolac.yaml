@@ -1,0 +1,38 @@
+title: Mrkvový koláč s krémom
+description: Vláčny korenistý koláč s mrkvou a orechmi, navrchu krém z kešu syra. Chutí ešte lepšie na druhý deň.
+cuisine: americka
+meals: [dezert]
+categories: [dezerty/pecene]
+time: 70
+active: 25
+servings: 12
+difficulty: 2
+tags: [pecenie, party]
+keeps: { fridge: 4 }
+ingredients:
+  - hladka-muka: 250 g
+  - cukor: 150 g
+  - kypriaci-prasok: 2 čl
+  - skorica: 2 čl
+  - muskatovy-orech: 1/4 čl
+  - zazvor: 1 čl | nastrúhaný
+  - sol: 1/2 čl
+  - mrkva: 4 ks | jemne nastrúhaná
+  - sojove-mlieko: 1 hrnček
+  - olej: 120 ml
+  - ocot: 1 pl
+  - vlasske-orechy: 1/2 hrnček
+  - hrozienka: 3 pl
+  - kesu: 150 g | namočené, na krém
+  - javorovy-sirup: 3 pl | na krém
+  - citron: 1 pl | na krém
+  - kokosovy-olej: 2 pl | na krém
+steps:
+  - Rúru rozohrej na 180 °C, formu 22 × 22 cm vystel papierom.
+  - Zmiešaj múku, cukor, prášok do pečiva, škoricu, muškát a soľ.
+  - Mlieko s octom nechaj 5 minút zraziť, potom vmiešaj olej, zázvor a mrkvu.
+  - Spoj s múčnou zmesou, primiešaj orechy a hrozienka. Vylej do formy a peč 35–40 minút, kým špáradlo nevyjde čisté.
+  - 'Krém: namočené kešu rozmixuj so sirupom, citrónom a roztopeným kokosovým olejom dohladka. Nechaj hodinu stuhnúť v chladničke.'
+  - Na úplne vychladnutý koláč natri krém.
+tips:
+  - Mrkvu nestrúhaj nahrubo – jemná sa v ceste rozpustí.

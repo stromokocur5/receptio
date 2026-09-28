@@ -1,0 +1,29 @@
+title: Nacho „syrová“ omáčka
+description: Zlatá syrová omáčka zo zemiakov a mrkvy. Na nachos, cestoviny aj hranolky – deti ju milujú.
+cuisine: americka
+meals: [snack]
+categories: [omacky/omacky, omacky/dipy]
+time: 20
+active: 10
+servings: 6
+difficulty: 1
+tags: [lacne, deti, party]
+keeps: { fridge: 5 }
+related: [tortilla-chipsy, mac-and-cheese]
+ingredients:
+  - zemiaky: 2 ks | olúpané, na kocky
+  - mrkva: 1 ks | na kolieska
+  - kesu: 3 pl | voliteľne, krémovejšia
+  - vyzivne-drozdie: 4 pl
+  - olej: 3 pl
+  - citron: 1 pl
+  - horcica: 1 čl
+  - cesnak: 1 ks
+  - sladka-paprika: 1/2 čl
+  - sol: 1 čl
+  - voda: 1/2 hrnček | z varenia
+steps:
+  - Zemiaky a mrkvu (aj kešu) uvar v osolenej vode do mäkka, asi 12 minút. Odlej, ale odlož si hrnček vody.
+  - Rozmixuj s droždím, olejom, citrónom, horčicou, cesnakom, paprikou a soľou. Po trochách prilievaj vodu z varenia, kým nie je hladká a lesklá.
+tips:
+  - Nakladané jalapeño alebo čili z nej spravia pálivú verziu.

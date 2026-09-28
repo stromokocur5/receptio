@@ -1,0 +1,26 @@
+title: Zlaté mlieko
+description: Teplé mlieko s kurkumou, zázvorom a škoricou na večer. Korenie a štipka čierneho korenia robia svoje.
+cuisine: indicka-juh
+meals: [snack]
+categories: [napoje/teple]
+time: 7
+active: 5
+servings: 2
+difficulty: 1
+tags: [rychle]
+keeps: { fridge: 2 }
+equipment: [hrniec]
+ingredients:
+  - sojove-mlieko: 2 hrnček
+  - kurkuma: 1 čl
+  - zazvor: 1 čl | nastrúhaný
+  - skorica: 1/2 čl
+  - cierne-korenie: 1 štipka
+  - javorovy-sirup: 1 pl
+  - kokosovy-olej: 1 čl | voliteľne, pre krémovosť
+steps:
+  - Všetko daj do hrnčeka a za stáleho miešania zohrej na miernom ohni, kým sa nezačne pariť. Nevar.
+  - Prelej cez sitko (zachytí zázvor) a pi teplé.
+tips:
+  - Kurkuma farbí – na plast a biele utierky pozor.
+  - Čierne korenie tu nie je pre ostrosť, pomáha telu kurkumín vstrebať.

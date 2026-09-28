@@ -4,7 +4,6 @@
 	import { goto, replaceState } from '$app/navigation';
 	import { useCatalog } from '$lib/catalog';
 	import {
-		CATEGORY_IDS,
 		RECIPE_CATEGORIES,
 		SPICY_LABELS,
 		inCategory,
@@ -12,6 +11,7 @@
 		type CategoryId
 	} from '$lib/categories';
 	import Icon from '$lib/components/Icon.svelte';
+	import CategoryTiles from '$lib/components/CategoryTiles.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import {
 		CATEGORY_LABELS,
@@ -407,22 +407,7 @@
 		</button>
 	</div>
 
-	<nav class="cats" aria-label="Kategórie">
-		{#each CATEGORY_IDS as id, i (id)}
-			{@const c = RECIPE_CATEGORIES[id]}
-			<button
-				class="cat draw-host"
-				style:--tone={c.tone}
-				style:--i={i}
-				aria-pressed={category === id}
-				onclick={() => pickCategory(id)}
-			>
-				<span class="cat-ico"><Icon name={c.icon} size={26} /></span>
-				<span class="cat-label">{c.label}</span>
-				<span class="cat-count">{categoryCounts.get(id) ?? 0}</span>
-			</button>
-		{/each}
-	</nav>
+	<CategoryTiles counts={categoryCounts} selected={category} onpick={pickCategory} />
 	{#if category}
 		{@const c = RECIPE_CATEGORIES[category]}
 		<div class="subs" style:--tone={c.tone} role="group" aria-label="Podkategórie: {c.label}">
@@ -645,12 +630,15 @@
 
 		<section class="results" aria-live="polite">
 			<p class="count-line muted">
-				{#if category}<strong
-						>{RECIPE_CATEGORIES[category].label}{sub
-							? ` · ${(RECIPE_CATEGORIES[category].subs as Record<string, string>)[sub]}`
-							: ''}</strong
-					> ·
-				{/if}{results.length}
+				{#if category}
+					<strong
+						>{[RECIPE_CATEGORIES[category].label, subOptions.find(([id]) => id === sub)?.[1]]
+							.filter(Boolean)
+							.join(' · ')}</strong
+					>
+					<span aria-hidden="true">·</span>
+				{/if}
+				{results.length}
 				{pluralRecipes(results.length)}
 			</p>
 			{#if filtered.closest}
@@ -705,76 +693,6 @@
 </div>
 
 <style>
-	.cats {
-		display: flex;
-		gap: 10px;
-		margin: 0 -16px 12px;
-		padding: 4px 16px 8px;
-		overflow-x: auto;
-		scroll-snap-type: x proximity;
-		scrollbar-width: none;
-	}
-	.cats::-webkit-scrollbar {
-		display: none;
-	}
-	.cat {
-		flex: none;
-		scroll-snap-align: start;
-		position: relative;
-		display: grid;
-		justify-items: center;
-		gap: 6px;
-		width: 104px;
-		padding: 12px 8px 10px;
-		border: 1.5px solid var(--line);
-		border-radius: 18px;
-		background: var(--card);
-		color: var(--ink);
-		font: inherit;
-		cursor: pointer;
-		animation: rise 0.45s var(--ease-out) both;
-		animation-delay: calc(var(--i) * 35ms);
-		transition:
-			transform 0.25s var(--ease-spring),
-			border-color 0.2s,
-			background 0.2s;
-	}
-	.cat:hover {
-		transform: translateY(-3px);
-		border-color: var(--tone);
-	}
-	.cat[aria-pressed='true'] {
-		border-color: var(--tone);
-		background: color-mix(in srgb, var(--tone) 14%, var(--card));
-	}
-	.cat-ico {
-		display: grid;
-		place-items: center;
-		width: 48px;
-		height: 48px;
-		border-radius: 50%;
-		background: color-mix(in srgb, var(--tone) 18%, transparent);
-		color: color-mix(in srgb, var(--tone) 75%, var(--ink));
-		transition: transform 0.35s var(--ease-spring);
-	}
-	.cat:hover .cat-ico,
-	.cat[aria-pressed='true'] .cat-ico {
-		transform: rotate(-8deg) scale(1.08);
-	}
-	.cat-label {
-		font-size: 0.84rem;
-		font-weight: 700;
-		line-height: 1.15;
-		text-align: center;
-	}
-	.cat-count {
-		position: absolute;
-		top: 8px;
-		right: 8px;
-		font-size: 0.7rem;
-		font-weight: 700;
-		color: var(--muted);
-	}
 	.subs {
 		display: flex;
 		flex-wrap: wrap;
@@ -970,16 +888,6 @@
 		}
 		.layout {
 			grid-template-columns: 280px 1fr;
-		}
-		.cats {
-			flex-wrap: wrap;
-			margin: 0 0 14px;
-			padding: 4px 0 0;
-			overflow: visible;
-		}
-		.cat {
-			flex: 1 1 0;
-			min-width: 96px;
 		}
 		.filters {
 			display: flex;

@@ -1,0 +1,24 @@
+title: Tahini dresing
+description: Krémový dresing z tahini, citrónu a cesnaku. Na bowly, falafel, pečenú zeleninu aj šaláty.
+cuisine: libanonska
+meals: [snack]
+categories: [omacky/dresingy]
+time: 5
+active: 5
+servings: 6
+difficulty: 1
+tags: [rychle, bez-varenia, meal-prep]
+keeps: { fridge: 7 }
+ingredients:
+  - tahini: 4 pl
+  - citron: 2 pl
+  - cesnak: 1 ks | pretlačený
+  - voda: 4 pl | studená
+  - sol: 1/4 čl
+  - javorovy-sirup: 1/2 čl
+steps:
+  - Tahini rozmiešaj s citrónom a cesnakom. Najprv zhustne a zrazí sa – to je v poriadku.
+  - Po lyžiciach pridávaj studenú vodu a miešaj, kým nie je hladký a krémový. Dosoľ.
+tips:
+  - Hustejší je dip, redší dresing – rozhoduje voda.
+  - S lyžicou sójovej omáčky a zázvoru je z neho ázijská verzia.

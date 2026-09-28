@@ -1,0 +1,27 @@
+title: Chimichurri
+description: Argentínska zelená omáčka z petržlenu, cesnaku, oregana a octu. K pečeným zemiakom, grilovanému tofu aj hlive.
+cuisine: moderna
+meals: [snack]
+categories: [omacky/omacky]
+time: 10
+active: 10
+servings: 6
+difficulty: 1
+tags: [rychle, bez-varenia, party]
+spicy: 1
+keeps: { fridge: 5 }
+no_equipment: [mixer]
+ingredients:
+  - petrzlenova-vnat: 1 hrnček | nadrobno nasekaná
+  - cesnak: 3 ks
+  - oregano: 1 čl
+  - cili: 1/4 čl
+  - ocot: 2 pl | červený vínny
+  - olivovy-olej: 6 pl
+  - sol: 1/2 čl
+steps:
+  - Petržlen a cesnak nasekaj nožom najjemnejšie, ako vieš. V mixéri by z toho bolo pyré.
+  - Zmiešaj s oreganom, čili, soľou a octom, nechaj 5 minút a potom vmiešaj olej.
+  - Nechaj aspoň 20 minút odstáť, nech sa chute spoja.
+tips:
+  - Na druhý deň je lepšie, ale bledne – kvôli farbe ho podávaj v deň prípravy.

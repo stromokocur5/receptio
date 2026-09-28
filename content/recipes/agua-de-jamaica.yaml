@@ -1,0 +1,23 @@
+title: Agua de jamaica
+description: Mexický ľadový nápoj z ibišteka – rubínový, kyslý ako brusnice, s vôňou limetky.
+cuisine: mexicka
+meals: [snack]
+categories: [napoje/limonady]
+time: 20
+active: 5
+servings: 6
+difficulty: 1
+tags: [lacne, party]
+keeps: { fridge: 5 }
+ingredients:
+  - ibistek: ~1 hrnček
+  - voda: 1,5 l
+  - cukor: 5 pl
+  - limetka: 1 ks
+  - skorica: 1 štipka | voliteľne
+steps:
+  - Polovicu vody prived do varu, pridaj ibištek a varte 1 minútu. Stiahni a nechaj 15 minút lúhovať.
+  - Preceď, v teplom rozmiešaj cukor a dolej zvyšok studenej vody.
+  - Dochuť limetkou a podávaj s ľadom.
+tips:
+  - Vylúhované kvety sa v Mexiku restujú s cibuľou ako plnka do tacos.

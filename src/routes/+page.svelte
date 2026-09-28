@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { useCatalog } from '$lib/catalog';
+	import CategoryTiles from '$lib/components/CategoryTiles.svelte';
 	import Icon, { isIconName, type IconName } from '$lib/components/Icon.svelte';
 	import PlateArt from '$lib/components/PlateArt.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
@@ -17,6 +18,15 @@
 	import type { GrowGuide } from '$lib/types';
 
 	const catalog = useCatalog();
+	const categoryCounts = $derived.by(() => {
+		const counts = new Map<string, number>();
+		for (const r of catalog.recipes) {
+			for (const top of new Set(r.categories.map((path) => path.split('/')[0]))) {
+				counts.set(top, (counts.get(top) ?? 0) + 1);
+			}
+		}
+		return counts;
+	});
 
 	let query = $state('');
 
@@ -324,6 +334,16 @@
 		</div>
 	</section>
 {/if}
+
+<section class="wrap block">
+	<div class="head">
+		<h2>Na čo máš chuť?</h2>
+		<a class="btn ghost small" href="/recepty"
+			>Všetky recepty <Icon name="arrow-right" size={16} /></a
+		>
+	</div>
+	<CategoryTiles counts={categoryCounts} />
+</section>
 
 <section class="wrap block pillars-block">
 	<div class="head">

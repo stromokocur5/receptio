@@ -1,0 +1,24 @@
+title: Zázvorový čaj s citrónom a mätou
+description: Pálivý zázvor, citrón a mäta. Na chrípkové večery aj ako ľadový čaj v lete.
+cuisine: moderna
+meals: [snack]
+categories: [napoje/teple]
+time: 15
+active: 5
+servings: 4
+difficulty: 1
+tags: [lacne, rychle]
+spicy: 1
+keeps: { fridge: 4 }
+ingredients:
+  - voda: 1 l
+  - zazvor: 3 pl | na tenké plátky, šúpať netreba
+  - citron: 1 ks
+  - bylinky-mata: 2 pl | lístky
+  - javorovy-sirup: 2 pl | alebo cukor, podľa chuti
+steps:
+  - Zázvor vo vode prived do varu a varte 10 minút na miernom ohni. Čím dlhšie, tým pálivejší.
+  - Stiahni z ohňa, pridaj mätu a nechaj 3 minúty lúhovať.
+  - Preceď, dochuť citrónovou šťavou a sirupom. Sirup a citrón pridávaj až do teplého, nie vriaceho čaju.
+tips:
+  - Vychladený s ľadom a plátkami citróna je z neho letná limonáda.
