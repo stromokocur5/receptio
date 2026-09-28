@@ -273,6 +273,146 @@ export const GARDEN_BASICS_ART: Record<string, () => string> = {
 		);
 	},
 
+	vermikompost: () =>
+		[0, 1, 2]
+			.map(
+				(i) =>
+					`<rect class="ta-bin-tray" x="70" y="${40 + i * 42}" width="150" height="38" rx="4"/>` +
+					`<rect class="${i === 0 ? 'ta-green-layer' : i === 1 ? 'ta-brown-layer' : 'ta-compost-done'}" x="74" y="${50 + i * 42}" width="142" height="26"/>`
+			)
+			.join('') +
+		`<rect class="ta-bin-tray" x="66" y="166" width="158" height="16" rx="3"/><path class="ta-tap" d="M224 174h12v6"/>` +
+		drop(236, 180, 0, 8) +
+		worm(96, 66, 0) +
+		worm(150, 60, 0.6) +
+		worm(120, 104, 1.2) +
+		`<path class="ta-arrow" d="M250 150V60M244 68l6-8 6 8"/>` +
+		label(258, 108, 'dážďovky', 'start') +
+		label(258, 120, 'idú hore', 'start') +
+		label(258, 132, 'za jedlom', 'start') +
+		label(64, 64, 'čerstvé zvyšky', 'end') +
+		label(64, 106, 'spracúva sa', 'end') +
+		label(64, 148, 'hotový kompost', 'end') +
+		label(160, 26, 'nezapácha, zmestí sa pod umývadlo', 'middle'),
+
+	bokashi: () =>
+		`<path class="ta-bucket" d="M90 40h120l-10 130H100Z"/><path class="ta-bucket-lid" d="M84 34h132v10H84Z"/>` +
+		[0, 1, 2, 3]
+			.map(
+				(i) =>
+					`<rect class="${i % 2 ? 'ta-scraps' : 'ta-scraps ta-scraps-alt'}" x="${100 + (i % 2) * 2}" y="${140 - i * 22}" width="${96 - (i % 2) * 4}" height="18" rx="3"/>`
+			)
+			.join('') +
+		[0, 1, 2, 3, 4, 5]
+			.map(
+				(i) =>
+					`<circle class="ta-bran" style="--d:${i * 0.25}s" cx="${118 + i * 12}" cy="56" r="1.8"/>`
+			)
+			.join('') +
+		`<g class="ta-press"><rect class="ta-plate-press" x="104" y="44" width="92" height="6" rx="3"/></g>` +
+		`<path class="ta-tap" d="M200 158h16v6"/>` +
+		drop(216, 166, 0, 10) +
+		label(240, 90, 'posyp na každú', 'start') +
+		label(240, 102, 'vrstvu, pritlačiť', 'start') +
+		label(240, 150, 'tekutina 1 : 100', 'start') +
+		label(240, 162, 'ako hnojivo', 'start') +
+		label(50, 100, '2 týždne', 'middle') +
+		label(50, 112, 'kvasiť', 'middle') +
+		label(50, 124, 'zatvorené', 'middle'),
+
+	poda: () =>
+		`<rect class="ta-glass-tall" x="40" y="30" width="70" height="140" rx="6"/>` +
+		`<g class="ta-settle">` +
+		`<rect class="ta-sand-layer" x="44" y="130" width="62" height="36"/>` +
+		`<rect class="ta-silt-layer" x="44" y="104" width="62" height="26"/>` +
+		`<rect class="ta-clay-layer" x="44" y="90" width="62" height="14"/>` +
+		`</g>` +
+		`<rect class="ta-water-muddy" x="44" y="48" width="62" height="42"/>` +
+		`<path class="ta-humus" d="M50 50h8M66 52h10M84 50h8"/>` +
+		leader(112, 148, 130, 148) +
+		label(134, 151, 'piesok') +
+		leader(112, 117, 130, 117) +
+		label(134, 120, 'prach (hlina)') +
+		leader(112, 97, 130, 97) +
+		label(134, 100, 'íl') +
+		leader(112, 51, 130, 51) +
+		label(134, 54, 'humus pláva') +
+		// Earthworm count.
+		`<rect class="ta-soil" x="216" y="90" width="80" height="80" rx="4"/>` +
+		crumbs(94, 166, 14, 21).replace(/cx="(\d+)"/g, (_m, x) => `cx="${216 + (Number(x) % 80)}"`) +
+		worm(224, 118, 0) +
+		worm(250, 140, 0.5) +
+		worm(232, 158, 1) +
+		label(256, 186, '10+ dážďoviek = živá pôda', 'middle') +
+		label(256, 80, '20 × 20 cm', 'middle'),
+
+	opelovace: () =>
+		ground(160) +
+		sun(292, 24, 9) +
+		[40, 80, 120, 160]
+			.map(
+				(x, i) =>
+					plant(x, 160, 40 + (i % 2) * 10, i * 0.3) +
+					`<circle class="ta-flower" cx="${x}" cy="${118 - (i % 2) * 10}" r="7"/><circle class="ta-flower-c" cx="${x}" cy="${118 - (i % 2) * 10}" r="3"/>`
+			)
+			.join('') +
+		`<g class="ta-bumble"><ellipse class="ta-bumble-body" cx="60" cy="70" rx="10" ry="7"/><path class="ta-bumble-stripe" d="M56 64v12M62 63v14"/><path class="ta-wing" d="M58 63c-4-10 8-12 6 0M64 63c4-10 14-6 4 2"/></g>` +
+		`<rect class="ta-insect-hotel" x="220" y="70" width="70" height="80" rx="4"/><path class="ta-hotel-roof" d="M212 72l43-24 43 24"/>` +
+		Array.from(
+			{ length: 12 },
+			(_, i) =>
+				`<circle class="ta-tube-hole" cx="${232 + (i % 4) * 15}" cy="${86 + Math.floor(i / 4) * 20}" r="5"/>`
+		).join('') +
+		`<path class="ta-post" d="M255 150v10"/>` +
+		`<g class="ta-bee-peek"><ellipse cx="277" cy="126" rx="5" ry="3.5" class="ta-bumble-body"/></g>` +
+		label(255, 176, 'hmyzí domček na slnku', 'middle') +
+		label(100, 184, 'jednoduché kvety od jari do jesene', 'middle'),
+
+	tien: () =>
+		`<rect class="ta-wall" x="0" y="0" width="60" height="190"/>` +
+		`<rect class="ta-wall ta-wall-light" x="260" y="20" width="60" height="170"/>` +
+		`<path class="ta-rail" d="M60 120h200M60 170h200M80 120v50M110 120v50M140 120v50M170 120v50M200 120v50M230 120v50"/>` +
+		`<path class="ta-pot" d="M90 100h140l-4 20H94Z"/>` +
+		plant(110, 100, 24, 0) +
+		plant(140, 100, 20, 0.4) +
+		plant(170, 100, 26, 0.8) +
+		plant(200, 100, 22, 1.2) +
+		`<path class="ta-bounce" d="M300 30L262 60M262 60L200 76M300 50L262 80M262 80L150 84"/>` +
+		label(254, 16, 'svetlo z oblohy', 'end') +
+		label(254, 186, 'biela stena odráža', 'end') +
+		label(160, 150, 'šalát, bylinky, špenát', 'middle') +
+		`<path class="ta-moon" d="M28 26a12 12 0 1 0 12 18 9 9 0 1 1-12-18Z"/>`,
+
+	sucho: () =>
+		sun(46, 34, 14) +
+		`<g class="ta-heat"><path d="M100 50c4-6-4-8 0-14M130 46c4-6-4-8 0-14M160 50c4-6-4-8 0-14"/></g>` +
+		// Left: bare cracked soil. Right: mulched soil with deep roots.
+		`<rect class="ta-soil ta-soil-dry" x="0" y="120" width="150" height="70"/><path class="ta-crack" d="M20 120l8 14-6 12M60 120l-4 18 10 10M100 120l6 12-8 14M130 120l-6 16"/>` +
+		plant(76, 120, 20, 0, 'sprout') +
+		`<path class="ta-root" d="M76 120v10"/>` +
+		label(75, 176, 'holá zem vyschne', 'middle') +
+		`<rect class="ta-soil" x="170" y="120" width="150" height="70"/><rect class="ta-mulch-band" x="170" y="110" width="150" height="10"/>` +
+		plant(206, 112, 40, 0.2, 'fruit') +
+		plant(266, 112, 36, 0.6) +
+		`<path class="ta-root" d="M206 120c-2 20-6 34-4 56M206 120c4 18 10 30 8 50M266 120c-2 18 4 34 0 56"/>` +
+		`<path class="ta-olla" d="M232 128h10v4c8 4 12 10 12 18s-8 16-16 16-16-8-16-16 4-14 10-18Z"/><path class="ta-olla-water" d="M224 150c6-2 10 2 16 0s8 2 14 0v2c0 8-6 14-14 14s-16-6-16-14Z"/>` +
+		label(245, 186, 'mulč + hlboké korene', 'middle') +
+		`<rect class="ta-barrel" x="170" y="30" width="36" height="56" rx="5"/><path class="ta-barrel-water" d="M172 50c6-3 12 3 16 0s12 3 16 0v32a4 4 0 0 1-4 4h-24a4 4 0 0 1-4-4Z"/>` +
+		label(214, 60, 'dážď do suda', 'start'),
+
+	'vymena-semien': () =>
+		`<rect class="ta-table" x="30" y="120" width="260" height="10" rx="3"/><path class="ta-table-leg" d="M50 130v50M270 130v50"/>` +
+		[0, 1, 2, 3, 4, 5]
+			.map(
+				(i) =>
+					`<g class="ta-float" style="--d:${i * 0.3}s"><path class="ta-envelope" d="M${48 + i * 38} 88h30v30h-30Z"/><path class="ta-envelope" d="M${48 + i * 38} 88l15 12 15-12"/></g>`
+			)
+			.join('') +
+		`<g class="ta-hand-give"><path class="ta-hand" d="M20 60c16-6 36-2 46 6l-4 10c-12-4-26-6-40-4Z"/><path class="ta-envelope" d="M52 44h26v24h-26Z"/></g>` +
+		`<g class="ta-hand-take"><path class="ta-hand" d="M300 60c-16-6-36-2-46 6l4 10c12-4 26-6 40-4Z"/></g>` +
+		label(160, 30, 'prines, čo máš – zober, čo potrebuješ', 'middle') +
+		label(160, 160, 'odroda, rok, miesto na každom vrecúšku', 'middle'),
+
 	uskladnenie: () =>
 		`<path class="ta-shelf-board" d="M10 70h170M10 130h170M16 70v106M174 70v106"/>` +
 		[26, 56, 86]

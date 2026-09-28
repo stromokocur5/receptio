@@ -2541,6 +2541,166 @@ input[type='range'] {
 	fill: #4a2a1c;
 	stroke: none;
 }
+:is(.tech-art, .tech-art-svg) .ta-bin-tray {
+	fill: color-mix(in srgb, var(--leaf) 12%, var(--card));
+	stroke: var(--leaf);
+	stroke-width: 2;
+}
+:is(.tech-art, .tech-art-svg) .ta-compost-done {
+	stroke: none;
+	fill: color-mix(in srgb, var(--soil) 75%, #2a1a10);
+}
+:is(.tech-art, .tech-art-svg) .ta-bucket {
+	fill: color-mix(in srgb, var(--leaf-2) 20%, var(--card));
+	stroke: var(--leaf);
+	stroke-width: 2.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-bucket-lid {
+	fill: var(--leaf);
+	stroke: none;
+}
+:is(.tech-art, .tech-art-svg) .ta-scraps {
+	stroke: none;
+	fill: color-mix(in srgb, var(--turmeric) 50%, var(--leaf-2));
+}
+:is(.tech-art, .tech-art-svg) .ta-scraps-alt {
+	fill: color-mix(in srgb, var(--tomato) 45%, var(--turmeric));
+}
+:is(.tech-art, .tech-art-svg) .ta-bran {
+	fill: #c9a06a;
+	stroke: none;
+	animation: ta-grain 1.8s ease-in infinite;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-plate-press {
+	fill: var(--plate-rim);
+	stroke: none;
+}
+:is(.tech-art, .tech-art-svg) .ta-glass-tall {
+	fill: color-mix(in srgb, var(--sky) 8%, transparent);
+	stroke: var(--sky);
+	stroke-width: 2.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-sand-layer {
+	stroke: none;
+	fill: #d9c08a;
+}
+:is(.tech-art, .tech-art-svg) .ta-silt-layer {
+	stroke: none;
+	fill: #a8845a;
+}
+:is(.tech-art, .tech-art-svg) .ta-clay-layer {
+	stroke: none;
+	fill: #7a5a4a;
+}
+:is(.tech-art, .tech-art-svg) .ta-water-muddy {
+	stroke: none;
+	fill: color-mix(in srgb, var(--sky) 25%, #a8845a 15%);
+}
+:is(.tech-art, .tech-art-svg) .ta-humus {
+	stroke: #3a2a1a;
+	stroke-width: 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-settle {
+	transform-origin: 75px 166px;
+	animation: ta-settle 4s ease-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-bumble {
+	animation: ta-fly 5s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-bumble-body {
+	fill: var(--turmeric);
+	stroke: var(--ink);
+}
+:is(.tech-art, .tech-art-svg) .ta-bumble-stripe {
+	stroke: var(--ink);
+	stroke-width: 2.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-insect-hotel {
+	fill: color-mix(in srgb, var(--wood) 35%, var(--card));
+	stroke: var(--wood);
+	stroke-width: 2.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-hotel-roof {
+	stroke: var(--tomato);
+	stroke-width: 4;
+}
+:is(.tech-art, .tech-art-svg) .ta-tube-hole {
+	fill: #3a2a1a;
+	stroke: color-mix(in srgb, var(--wood) 70%, #fff);
+	stroke-width: 1.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-post {
+	stroke: var(--wood);
+	stroke-width: 5;
+}
+:is(.tech-art, .tech-art-svg) .ta-bee-peek {
+	animation: ta-peek 3s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-wall {
+	fill: color-mix(in srgb, var(--ink-2) 20%, var(--card));
+	stroke: none;
+}
+:is(.tech-art, .tech-art-svg) .ta-wall-light {
+	fill: #f5f1e8;
+}
+:is(.tech-art, .tech-art-svg) .ta-bounce {
+	stroke: var(--turmeric);
+	stroke-width: 2;
+	stroke-dasharray: 5 5;
+	animation: ta-shine 1.4s linear infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-soil-dry {
+	fill: color-mix(in srgb, #d9b98a 45%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-crack {
+	stroke: #8a6a4a;
+	stroke-width: 1.6;
+}
+:is(.tech-art, .tech-art-svg) .ta-table {
+	fill: color-mix(in srgb, var(--wood) 45%, var(--card));
+	stroke: var(--wood);
+}
+:is(.tech-art, .tech-art-svg) .ta-table-leg {
+	stroke: var(--wood);
+	stroke-width: 5;
+}
+:is(.tech-art, .tech-art-svg) .ta-hand-give {
+	animation: ta-give 3s ease-in-out infinite alternate;
+}
+:is(.tech-art, .tech-art-svg) .ta-hand-take {
+	animation: ta-give 3s ease-in-out infinite alternate-reverse;
+}
+@keyframes ta-settle {
+	from {
+		transform: scaleY(0.2);
+		opacity: 0.3;
+	}
+	60%,
+	to {
+		transform: scaleY(1);
+		opacity: 1;
+	}
+}
+@keyframes ta-peek {
+	0%,
+	40%,
+	100% {
+		transform: translateX(0);
+	}
+	60%,
+	80% {
+		transform: translateX(8px);
+	}
+}
+@keyframes ta-give {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(20px);
+	}
+}
 @keyframes ta-sway {
 	from {
 		transform: rotate(-2.5deg);

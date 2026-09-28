@@ -34,8 +34,8 @@ Tretina toho, čo vyhodíme, sú zvyšky z kuchyne. V komposte sa za pár mesiac
 
 ## Na balkóne a v byte
 
-- **Vermikompostér** – krabica s dážďovkami (kalifornskými). Nezapácha, zmestí sa pod umývadlo, spracuje zvyšky jednej domácnosti. Výsledný vermikompost je najsilnejšie hnojivo na nádoby.
-- **Bokaši** – vedro, v ktorom sa zvyšky fermentujú s posypom. Zvládne aj varené jedlo. Po 2 týždňoch sa zakope do zeme alebo pridá do kompostu.
+- **Vermikompostér** – krabica s dážďovkami (kalifornskými). Nezapácha, zmestí sa pod umývadlo, spracuje zvyšky jednej domácnosti. Výsledný vermikompost je najsilnejšie hnojivo na nádoby. [Návod krok za krokom](/wiki/vermikompost).
+- **Bokaši** – vedro, v ktorom sa zvyšky fermentujú s posypom. Zvládne aj varené jedlo. Po 2 týždňoch sa zakope do zeme alebo pridá do kompostu. [Ako na bokaši](/wiki/bokashi).
 - Nemáš kde? Veľa miest má **komunitné kompostoviská** alebo zber bioodpadu – spýtaj sa na úrade.
 
 ## Kompost a rastliny
