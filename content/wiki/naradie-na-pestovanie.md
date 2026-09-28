@@ -5,9 +5,12 @@ section: pestovanie
 group: zaciname
 icon: basket
 order: 6
+art: naradie
 ---
 
 Na začiatok netreba veľa. **Kúp len to, čo naozaj použiješ** – ostatné sa dá požičať od suseda alebo nahradiť tým, čo máš doma. Čo presne potrebuješ na svoje miesto, vypíše **[plánovač](/pestuj#planovac)**.
+
+{{art:naradie|Základná výbava na malú záhradu – všetko ostatné sa dá požičať.}}
 
 ## Náradie
 

@@ -5,9 +5,12 @@ section: pestovanie
 group: zaciname
 icon: sprout
 order: 1
+art: polykultura
 ---
 
 **Monokultúra** je jedna plodina na celej ploche – pole kukurice, záhon plný kapusty. **Polykultúra** je viac druhov, ktoré rastú spolu a navzájom si pomáhajú. Príroda monokultúry nepozná: v lese, na lúke aj na okraji cesty rastie vždy zmes.
+
+{{art:polykultura|V rade rovnakých rastlín škodca skáče ďalej, medzi rôznymi sa stratí.}}
 
 ## Prečo monokultúry nefungujú v malom
 

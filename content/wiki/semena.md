@@ -5,6 +5,7 @@ section: pestovanie
 group: uroda
 icon: seed
 order: 9
+art: semena
 ---
 
 Semeno je začiatok aj koniec každej plodiny. Keď si ho vieš odložiť, nemusíš ho každý rok kupovať a postupne si vypestuješ odrodu, ktorá sa darí práve u teba. Pri každej plodine na stránke **[Pestuj si sám](/pestuj#plodiny)** nájdeš v časti _Vlastné semená_, ako na to.
@@ -23,6 +24,8 @@ Semeno je začiatok aj koniec každej plodiny. Keď si ho vieš odložiť, nemus
 | paradajky (vyber zo zrelých plodov) | mrkva, kapusta, cibuľa kvitnú až druhý rok               |
 | šalát, reďkovka, kôpor, koriander   | kukurica sa kríži na stovky metrov                       |
 | paprika a čili (izoluj od iných)    | zemiaky, cesnak, topinambur – množíš hľuzami a strúčikmi |
+
+{{art:semena|Semená paradajok: vybrať, nechať prekvasiť, usušiť a označiť.}}
 
 ## Ako semená zbierať
 

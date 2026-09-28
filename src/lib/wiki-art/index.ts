@@ -6,10 +6,16 @@
  */
 import { BODY_ART } from './body';
 import { GARDEN_ART } from './garden';
+import { GARDEN_BASICS_ART } from './garden-basics';
 import { NUTRITION_ART } from './nutrition';
 import { H, W } from './kit';
 
-const ART: Record<string, () => string> = { ...GARDEN_ART, ...BODY_ART, ...NUTRITION_ART };
+const ART: Record<string, () => string> = {
+	...GARDEN_ART,
+	...GARDEN_BASICS_ART,
+	...BODY_ART,
+	...NUTRITION_ART
+};
 
 export const ART_NAMES = Object.keys(ART);
 

@@ -5,6 +5,7 @@ section: pestovanie
 group: stromy-huby
 icon: tree
 order: 3
+art: agrolesnictvo
 ---
 
 **Agrolesníctvo** spája stromy a poľnohospodárstvo na jednej ploche. Nie je to nový nápad: staré slovenské medze s ovocnými stromami, remízky a aleje pri poliach robili presne to. Dnes sa k tomu vracajú farmy aj záhradkári, lebo pomáha proti suchu a erózii.
@@ -16,6 +17,8 @@ order: 3
 - **Voda ostane v pôde.** Korene a lístie spomalia dážď, ktorý by inak odtiekol aj s pôdou.
 - **Život.** V stromoch a kroch hniezdia vtáky a žije užitočný hmyz, ktorý žerie škodcov z poľa.
 - **Dve úrody.** Pole rodí hneď, stromy o pár rokov pridajú ovocie a orechy.
+
+{{art:agrolesnictvo|Rady stromov lámu vietor a medzi nimi sa hospodári ďalej.}}
 
 ## Hlavné typy
 

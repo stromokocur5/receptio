@@ -5,6 +5,7 @@ section: pestovanie
 group: zaciname
 icon: sprout
 order: 0
+art: kde-pestovat
 ---
 
 Nemusíš mať záhradu. Bylinky a klíčky vyrastú na okne v byte, na balkóne sa dajú dopestovať paradajky aj zemiaky. **[Plánovač na stránke Pestuj si sám](/pestuj#planovac)** ti podľa miesta navrhne, čo a koľko zasadiť.
@@ -14,6 +15,8 @@ Nemusíš mať záhradu. Bylinky a klíčky vyrastú na okne v byte, na balkóne
 - **Jeden truhlík alebo jeden záhon 1 × 1 m.** Lepšie jedna vec, ktorá sa podarí, ako desať zanedbaných.
 - Vyber si **ľahké plodiny**: reďkovky, šalát, bylinky, cukety, fazuľky, zemiaky vo vreci.
 - Pestuj, čo naozaj ješ. Najviac ušetríš na bylinkách, cesnaku, šaláte a cherry paradajkách.
+
+{{art:kde-pestovat|Okno, balkón aj záhon – rozhoduje hlavne to, koľko hodín slnka tam svieti.}}
 
 ## Svetlo
 

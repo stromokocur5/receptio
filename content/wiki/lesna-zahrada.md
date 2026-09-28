@@ -5,9 +5,12 @@ section: pestovanie
 group: stromy-huby
 icon: tree
 order: 2
+art: lesna-zahrada
 ---
 
 Lesná záhrada (anglicky _food forest_) napodobňuje **okraj lesa**: vysoké stromy, pod nimi menšie stromy a kry, pod nimi byliny a zem zakrytá rastlinami. Všetko je jedlé alebo niečomu pomáha. Keď sa systém usadí, nemusíš ryť, pleť ani každý rok siať.
+
+{{art:lesna-zahrada|Sedem vrstiev lesnej záhrady od stromu až po korene.}}
 
 ## Sedem vrstiev
 

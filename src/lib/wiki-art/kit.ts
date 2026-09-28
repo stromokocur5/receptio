@@ -96,3 +96,51 @@ export function crumbs(y1: number, y2: number, count: number, seed = 1) {
 			`<circle class="ta-crumb" cx="${(rnd() * W).toFixed(0)}" cy="${(y1 + rnd() * (y2 - y1)).toFixed(0)}" r="${(0.8 + rnd() * 1.4).toFixed(1)}"/>`
 	).join('');
 }
+
+/** A tree standing on (x, y): trunk `h` tall and a round crown of radius `r`, swaying. */
+export function tree(x: number, y: number, h: number, r: number, d = 0, fruit = '') {
+	const top = y - h;
+	const fruits = fruit
+		? [
+				[-0.4, 0.1],
+				[0.35, -0.2],
+				[0.1, 0.4],
+				[-0.15, -0.45]
+			]
+				.map(
+					([fx, fy]) =>
+						`<circle class="ta-fruit" style="fill:${fruit}" cx="${(x + fx * r).toFixed(1)}" cy="${(top + fy * r).toFixed(1)}" r="${Math.max(2, r * 0.12).toFixed(1)}"/>`
+				)
+				.join('')
+		: '';
+	return (
+		`<g class="ta-sway" style="--d:${d}s;transform-origin:${x}px ${y}px">` +
+		`<path class="ta-trunk" d="M${x - r * 0.08} ${y}L${x - r * 0.05} ${top}h${r * 0.1}L${x + r * 0.08} ${y}Z"/>` +
+		`<circle class="ta-crown" cx="${x}" cy="${top}" r="${r}"/>` +
+		fruits +
+		`</g>`
+	);
+}
+
+/** A bushy shrub on (x, y), `w` wide. */
+export function shrub(x: number, y: number, w: number, d = 0, berries = '') {
+	const h = w * 0.7;
+	return (
+		`<g class="ta-sway" style="--d:${d}s;transform-origin:${x}px ${y}px">` +
+		`<path class="ta-crown" d="M${x - w / 2} ${y}c-4-${h * 0.6} ${w * 0.2}-${h} ${w / 2}-${h}s${w / 2 + 4} ${h * 0.4} ${w / 2} ${h}Z"/>` +
+		(berries
+			? [0.2, 0.45, 0.7]
+					.map(
+						(f, i) =>
+							`<circle class="ta-fruit" style="fill:${berries}" cx="${(x - w / 2 + f * w).toFixed(1)}" cy="${(y - h * (0.35 + (i % 2) * 0.25)).toFixed(1)}" r="2.4"/>`
+					)
+					.join('')
+			: '') +
+		`</g>`
+	);
+}
+
+/** A small bug that hops between points. */
+export function bug(x: number, y: number, d = 0) {
+	return `<g class="ta-bug" style="--d:${d}s"><ellipse cx="${x}" cy="${y}" rx="4" ry="3"/><path d="M${x - 4} ${y - 2}l-3-2M${x + 4} ${y - 2}l3-2"/></g>`;
+}

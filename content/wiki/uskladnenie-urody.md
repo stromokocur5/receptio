@@ -5,9 +5,12 @@ section: pestovanie
 group: uroda
 icon: jar
 order: 7
+art: uskladnenie
 ---
 
 V auguste máš cukiet viac, ako stihneš zjesť, v januári by si za ne dal čokoľvek. Úrodu sa oplatí **rozdeliť na čerstvú a zásobu hneď pri zbere**. Pri každej plodine v **[Pestuj si sám](/pestuj#plodiny)** nájdeš, čo s ňou robiť; tu sú spôsoby.
+
+{{art:uskladnenie|Pivnica na koreňovú zeleninu a jablká, mraznička na zvyšok.}}
 
 ## Pivnica a chladná komora (0–10 °C)
 

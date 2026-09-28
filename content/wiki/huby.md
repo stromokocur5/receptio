@@ -5,9 +5,12 @@ section: pestovanie
 group: stromy-huby
 icon: mushroom
 order: 10
+art: huby
 ---
 
 Huby nie sú rastliny – nepotrebujú svetlo, živia sa drevom, slamou alebo kompostom. Preto sa dajú pestovať tam, kde nič iné nerastie: **v tieni pod stromom, v pivnici, na parapete severného okna**. V kuchyni sú mäsité, plné umami a hliva sa natrhaná na vlákna podobá kuraciemu mäsu.
+
+{{art:huby|Hliva rastie z vrecka v byte, shiitake z dubového polena v tieni.}}
 
 ## Čo sa dá pestovať
 

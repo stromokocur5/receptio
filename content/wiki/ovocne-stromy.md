@@ -5,6 +5,7 @@ section: pestovanie
 group: stromy-huby
 icon: tree
 order: 4
+art: vysadba-stromu
 ---
 
 Ovocný strom zasadíš raz a rodí 20–50 rokov. Oplatí sa preto vybrať dobre. Na stránke **[Pestuj si sám](/pestuj#plodiny)** nájdeš pri každom strome a kri výšku, kedy prvýkrát zarodí a či potrebuje opeľovača – vo filtri **Stromy a kry**.
@@ -27,6 +28,8 @@ Ovocný strom zasadíš raz a rodí 20–50 rokov. Oplatí sa preto vybrať dobr
 4. **Miesto štepenia** (hrčka na kmeni) musí ostať **nad zemou**.
 5. Zasyp, prišliapni a **vylej 2 vedrá vody**, aj keď prší.
 6. Okolo kmeňa **mulč** (nie až ku kmeňu) a **chránička** proti zajacom.
+
+{{art:vysadba-stromu|Výsadba: široká jama, kôl, štepné miesto nad zemou a poriadne zaliať.}}
 
 ## Zálievka
 

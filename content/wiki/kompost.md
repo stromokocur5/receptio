@@ -5,9 +5,12 @@ section: pestovanie
 group: techniky-pestovania
 icon: leaf
 order: 22
+art: kompost
 ---
 
 Tretina toho, čo vyhodíme, sú zvyšky z kuchyne. V komposte sa za pár mesiacov zmenia na tmavú voňavú zem, ktorá **zadrží vodu a nakŕmi rastliny lepšie ako kupované hnojivo**. A odpadu je o tretinu menej.
+
+{{art:kompost|Striedaj zelené a hnedé vrstvy, drž vlhko a za pár mesiacov máš zeminu.}}
 
 ## Čo patrí do kompostu
 
