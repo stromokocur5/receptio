@@ -13,7 +13,24 @@
 			{@const ringing = kitchen.ringing.includes(timer.id)}
 			{@const left = remaining(timer)}
 			<li class:ringing>
-				<span class="ico"><Icon name={ringing ? 'bell' : 'timer'} size={18} /></span>
+				{#if ringing}
+					<span class="ico"><Icon name="bell" size={18} /></span>
+				{:else}
+					{@const share = Math.max(0, Math.min(1, left / timer.seconds))}
+					<svg class="clock" viewBox="0 0 24 24" aria-hidden="true">
+						<circle class="face" cx="12" cy="12" r="10" />
+						<circle
+							class="left"
+							cx="12"
+							cy="12"
+							r="10"
+							pathLength="1"
+							stroke-dasharray="{share} 1"
+							transform="rotate(-90 12 12)"
+						/>
+						<path class="hand" d="M12 12V5" transform="rotate({(1 - share) * 360} 12 12)" />
+					</svg>
+				{/if}
 				<a class="label" href="/recepty/{timer.recipeId}">{timer.label}</a>
 				<span class="time" aria-live={ringing ? 'assertive' : 'off'}>
 					{ringing ? 'Hotovo!' : formatDuration(left)}
@@ -49,6 +66,26 @@
 {/if}
 
 <style>
+	.clock {
+		width: 22px;
+		height: 22px;
+		fill: none;
+		stroke-linecap: round;
+	}
+	.clock .face {
+		stroke: color-mix(in srgb, var(--paper) 25%, transparent);
+		stroke-width: 2.5;
+	}
+	.clock .left {
+		stroke: var(--turmeric);
+		stroke-width: 2.5;
+		transition: stroke-dasharray 1s linear;
+	}
+	.clock .hand {
+		stroke: var(--paper);
+		stroke-width: 2;
+		transition: transform 1s linear;
+	}
 	.dock {
 		list-style: none;
 		margin: 0;

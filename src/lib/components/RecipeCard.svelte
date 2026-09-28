@@ -8,6 +8,8 @@
 	import LikeButton from './LikeButton.svelte';
 	import { addToPlan, servingsInPlan, ui } from '$lib/state.svelte';
 	import PlateArt from './PlateArt.svelte';
+	import { vesselFor } from '$lib/categories';
+	import { flyToPlan } from '$lib/fly';
 
 	let {
 		recipe,
@@ -20,8 +22,10 @@
 	const inPlan = $derived(ui.loaded ? servingsInPlan(recipe.id) : 0);
 	let justAdded = $state(false);
 
-	function planIt() {
+	function planIt(event: MouseEvent) {
 		addToPlan(recipe.id, recipe.servings);
+		const button = event.currentTarget as HTMLElement;
+		flyToPlan(button, button.closest('.plate-host')?.querySelector('svg.plate'));
 		justAdded = true;
 		setTimeout(() => (justAdded = false), 1400);
 	}
@@ -38,6 +42,7 @@
 				seed={recipe.id}
 				lines={recipe.lines}
 				byId={catalog.ingredientsById}
+				vessel={vesselFor(recipe.categories)}
 				animate={false}
 			/>
 		</div>

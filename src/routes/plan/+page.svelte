@@ -7,6 +7,7 @@
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import PlanSettings from '$lib/components/PlanSettings.svelte';
 	import PlateArt from '$lib/components/PlateArt.svelte';
+	import { vesselFor } from '$lib/categories';
 	import RecipePicker from '$lib/components/RecipePicker.svelte';
 	import { CATEGORY_LABELS } from '$lib/labels';
 	import {
@@ -342,6 +343,7 @@
 										seed={e.recipe.id}
 										lines={e.data.lines}
 										byId={catalog.ingredientsById}
+										vessel={vesselFor(e.recipe.categories)}
 										animate={false}
 									/>
 								</div>

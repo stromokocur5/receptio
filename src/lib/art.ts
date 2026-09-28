@@ -185,3 +185,60 @@ export function plateLayers(
 	if (detail) return layers;
 	return layers.filter((l, i) => l.kind !== 'grain' && (l.kind !== 'speck' || i % 3 === 0));
 }
+
+export interface DrinkLook {
+	/** Mixed colour of what's in the glass. */
+	color: string;
+	/** 0.5 for a lemonade that's mostly water … 1 for a thick smoothie. */
+	opacity: number;
+	/** Garnish worth drawing: a citrus slice on the rim, mint leaves floating. */
+	citrus?: string;
+	mint: boolean;
+}
+
+const hexToRgb = (hex: string) => {
+	const n = parseInt(hex.replace('#', '').padEnd(6, '0').slice(0, 6), 16);
+	return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+};
+
+/** A drink's colour from its ingredients weighed by grams, paler the more water it has. */
+export function drinkLook(lines: RecipeLine[], byId: Map<string, Ingredient>): DrinkLook {
+	let water = 0;
+	let coloured = 0;
+	const rgb = [0, 0, 0];
+	for (const line of lines) {
+		const ingredient = byId.get(line.ingredientId);
+		if (!ingredient || line.grams <= 0) continue;
+		if (ingredient.id === 'voda') {
+			water += line.grams;
+			continue;
+		}
+		// Sugar and syrups sweeten without colouring much.
+		if (ingredient.id === 'cukor' || !ingredient.color) {
+			water += line.grams * 0.5;
+			continue;
+		}
+		const [r, g, b] = hexToRgb(ingredient.color);
+		rgb[0] += r * line.grams;
+		rgb[1] += g * line.grams;
+		rgb[2] += b * line.grams;
+		coloured += line.grams;
+	}
+	const total = water + coloured || 1;
+	const hex = coloured
+		? `#${rgb
+				.map((c) =>
+					Math.round(c / coloured)
+						.toString(16)
+						.padStart(2, '0')
+				)
+				.join('')}`
+		: '#e8e2cf';
+	const ids = new Set(lines.map((l) => l.ingredientId));
+	return {
+		color: hex,
+		opacity: Math.round((0.5 + 0.5 * (coloured / total)) * 100) / 100,
+		citrus: ids.has('citron') ? '#f2d64b' : ids.has('limetka') ? '#9cc84a' : undefined,
+		mint: ids.has('bylinky-mata')
+	};
+}

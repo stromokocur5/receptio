@@ -170,3 +170,18 @@ export function inCategory(categories: string[], category: string, sub = ''): bo
 }
 
 export const SPICY_LABELS = ['Nepálivé', 'Jemne pálivé', 'Pálivé', 'Poriadne pálivé'] as const;
+
+/** `milk` is a glass of something thick and opaque – smoothies and plant milks. */
+export type Vessel = 'plate' | 'glass' | 'milk' | 'mug';
+
+/**
+ * What a dish is drawn in: hot drinks in a mug, other drinks (and DIY milks) in a glass, the
+ * rest on a plate. A smoothie that's also breakfast still goes in a glass.
+ */
+export function vesselFor(categories: string[]): Vessel {
+	const drink = categories.find((c) => c.startsWith('napoje/'));
+	const main = categories[0] ?? '';
+	if (!drink || !(main.startsWith('napoje/') || main.startsWith('domace/'))) return 'plate';
+	if (drink === 'napoje/teple') return 'mug';
+	return drink === 'napoje/smoothie' || drink === 'napoje/mlieka' ? 'milk' : 'glass';
+}

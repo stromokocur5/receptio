@@ -233,3 +233,40 @@ export function formatDuration(totalSeconds: number): string {
 	const sec = String(s % 60).padStart(2, '0');
 	return h ? `${h}:${String(m).padStart(2, '0')}:${sec}` : `${m}:${sec}`;
 }
+
+export const STEP_ACTIVITIES = [
+	'namacanie',
+	'krajanie',
+	'strukanie',
+	'mixovanie',
+	'miesenie',
+	'restovanie',
+	'pecenie',
+	'varenie',
+	'miesanie',
+	'chladenie',
+	'podavanie'
+] as const;
+export type StepActivity = (typeof STEP_ACTIVITIES)[number];
+
+/**
+ * What the cook is doing in a step, for the little animated scene in cook mode. The first
+ * match in this order wins, so "restuj a potom varte" shows the pan, the thing done first.
+ */
+const ACTIVITY_PATTERNS: [StepActivity, RegExp][] = [
+	['namacanie', /\bnamo[čc]|zalej .*vodou a nechaj/i],
+	['mixovanie', /mix(uj|ér|eri)|rozmixuj|tyčov/i],
+	['strukanie', /nastr[úu]haj|strúhadl|nastrúhan/i],
+	['miesenie', /\bmies\b|vymies|vyvaľkaj|valčekom|cesto .*(rozvaľ|vykrajuj)/i],
+	['restovanie', /restuj|orestuj|opekaj|opeč|osmaž|zapeč na panvici|panvic|wok|vypráž/i],
+	['pecenie', /\bpeč|upeč|rúr[ey]|plech/i],
+	['varenie', /\bvar(te|i|)\b|uvar|povar|prived do varu|duste|dus |zovri|vriac/i],
+	['krajanie', /nakrájaj|nasekaj|pokrájaj|na kocky|na plátky|nadrobno|prekroj/i],
+	['chladenie', /chladničk|vychlaď|vychladnúť|stuhn|zamraz/i],
+	['miesanie', /zmiešaj|premiešaj|vmiešaj|rozmiešaj|šľahaj|primiešaj|spoj/i],
+	['podavanie', /podávaj|posyp|ozdob|dochuť|servíruj/i]
+];
+
+export function stepActivity(step: string): StepActivity {
+	return ACTIVITY_PATTERNS.find(([, re]) => re.test(step))?.[0] ?? 'miesanie';
+}

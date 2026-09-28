@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { formatDuration, scaleStep, splitStep, stepGuides, stepLines } from './cooking';
+import {
+	formatDuration,
+	scaleStep,
+	splitStep,
+	stepActivity,
+	stepGuides,
+	stepLines
+} from './cooking';
 import type { Ingredient, RecipeLine } from './types';
 
 const timers = (step: string) =>
@@ -125,5 +132,18 @@ describe('scaleStep', () => {
 			'Peč na 200 °C 25 minút, vytvaruj 8 guliek hrubých 2 cm a var s 1,5-násobkom vody.';
 		expect(scaleStep(step, 2)).toBe(step);
 		expect(scaleStep('Pridaj 2 PL oleja.', 1)).toBe('Pridaj 2 PL oleja.');
+	});
+});
+
+describe('stepActivity', () => {
+	it('picks what the step starts with', () => {
+		expect(stepActivity('Cibuľu nakrájaj nadrobno.')).toBe('krajanie');
+		expect(stepActivity('V panvici rozohrej olej a restuj cibuľu 5 minút.')).toBe('restovanie');
+		expect(stepActivity('Peč pri 200 °C 20 minút.')).toBe('pecenie');
+		expect(stepActivity('Všetko rozmixuj dohladka.')).toBe('mixovanie');
+		expect(stepActivity('Prived do varu a varte 10 minút.')).toBe('varenie');
+		expect(stepActivity('Nechaj hodinu stuhnúť v chladničke.')).toBe('chladenie');
+		expect(stepActivity('Dochuť citrónom a podávaj.')).toBe('podavanie');
+		expect(stepActivity('Niečo úplne iné.')).toBe('miesanie');
 	});
 });

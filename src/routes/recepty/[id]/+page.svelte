@@ -2,8 +2,15 @@
 	import { pushState } from '$app/navigation';
 	import { page } from '$app/state';
 	import { formatAmount, formatEur, formatNumber, formatPiece } from '$lib/amounts';
-	import { RECIPE_CATEGORIES, SPICY_LABELS, splitCategory, subLabel } from '$lib/categories';
+	import {
+		RECIPE_CATEGORIES,
+		SPICY_LABELS,
+		splitCategory,
+		subLabel,
+		vesselFor
+	} from '$lib/categories';
 	import { scaleStep } from '$lib/cooking';
+	import { flyToPlan } from '$lib/fly';
 	import CookMode from '$lib/components/CookMode.svelte';
 	import { useCatalog } from '$lib/catalog';
 	import GlutenBadge from '$lib/components/GlutenBadge.svelte';
@@ -150,8 +157,9 @@
 		doneSteps = doneSteps.includes(i) ? doneSteps.filter((s) => s !== i) : [...doneSteps, i];
 	}
 
-	function plan() {
+	function plan(event: MouseEvent) {
 		addToPlan(recipe.id, servings, variantName ?? undefined);
+		flyToPlan(event.currentTarget as HTMLElement, document.querySelector('.hero svg.plate'));
 		justAdded = true;
 		setTimeout(() => (justAdded = false), 1600);
 	}
@@ -275,7 +283,9 @@
 				lines={recipe.lines}
 				byId={catalog.ingredientsById}
 				detail
-				steam={!recipe.meals.includes('dezert')}
+				vessel={vesselFor(recipe.categories)}
+				steam={!recipe.meals.includes('dezert') &&
+					!/^(salaty|omacky|dezerty)\//.test(recipe.categories[0])}
 				label="Ilustrácia jedla {recipe.title}"
 			/>
 		</div>

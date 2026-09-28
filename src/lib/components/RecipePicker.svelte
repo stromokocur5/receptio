@@ -6,6 +6,7 @@
 	import { MEALS, type Meal } from '$lib/types';
 	import Icon from './Icon.svelte';
 	import PlateArt from './PlateArt.svelte';
+	import { vesselFor } from '$lib/categories';
 
 	const catalog = useCatalog();
 
@@ -77,7 +78,13 @@
 			{@const inPlan = ui.loaded ? servingsInPlan(r.id) : 0}
 			<li>
 				<div class="thumb">
-					<PlateArt seed={r.id} lines={r.lines} byId={catalog.ingredientsById} animate={false} />
+					<PlateArt
+						seed={r.id}
+						lines={r.lines}
+						byId={catalog.ingredientsById}
+						vessel={vesselFor(r.categories)}
+						animate={false}
+					/>
 				</div>
 				<div class="info">
 					<a href="/recepty/{r.id}">{r.title}</a>

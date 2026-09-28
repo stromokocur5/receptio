@@ -4,6 +4,7 @@
 	import CategoryTiles from '$lib/components/CategoryTiles.svelte';
 	import Icon, { isIconName, type IconName } from '$lib/components/Icon.svelte';
 	import PlateArt from '$lib/components/PlateArt.svelte';
+	import { vesselFor } from '$lib/categories';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { SITE_ORIGIN } from '$lib/site';
@@ -241,6 +242,7 @@
 						seed={heroRecipe.id}
 						lines={heroRecipe.lines}
 						byId={catalog.ingredientsById}
+						vessel={vesselFor(heroRecipe.categories)}
 						detail
 						steam
 					/>

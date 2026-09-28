@@ -475,6 +475,24 @@ input[type='range'] {
 	}
 }
 
+/* A dish flying into the "Plán" link (src/lib/fly.ts). */
+.fly-token {
+	position: fixed;
+	z-index: 1000;
+	pointer-events: none;
+	border-radius: 50%;
+	background: var(--leaf);
+	box-shadow: var(--shadow-lift);
+}
+.fly-token:has(svg) {
+	background: none;
+	box-shadow: none;
+}
+.fly-token svg {
+	width: 100%;
+	height: 100%;
+}
+
 /* ── Growing-technique drawings (src/lib/technique-art.ts) ── */
 .tech-art {
 	margin: 1.6em 0;

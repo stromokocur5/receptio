@@ -2,7 +2,8 @@
 	import { onMount } from 'svelte';
 	import { formatAmount, formatGrams, formatPiece } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
-	import { scaleStep, splitStep, stepGuides, stepLines } from '$lib/cooking';
+	import { scaleStep, splitStep, stepActivity, stepGuides, stepLines } from '$lib/cooking';
+	import CookScene from '$lib/components/CookScene.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeFeedback from '$lib/components/RecipeFeedback.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
@@ -336,6 +337,7 @@
 		{#key index}
 			<section class="slide" style:--dir={direction}>
 				{#if !done}
+					<CookScene activity={stepActivity(steps[index])} />
 					<p class="num">Krok {index + 1} <span class="muted">/ {steps.length}</span></p>
 					<p class="text">
 						{#each segments as segment, i (i)}
