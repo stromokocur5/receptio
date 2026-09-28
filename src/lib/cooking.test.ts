@@ -147,3 +147,13 @@ describe('stepActivity', () => {
 		expect(stepActivity('Niečo úplne iné.')).toBe('miesanie');
 	});
 });
+
+describe('stepGuides for preserving', () => {
+	it('points canning, drying and fermenting steps to their guides', () => {
+		const guides = (step: string) => stepGuides(step, [], new Map(), []);
+		expect(guides('Poháre zaváraj 20 minút pri 85 °C.')).toContain('zavaranie');
+		expect(guides('Suš v rúre pri 70 °C 8 hodín.')).toContain('susenie');
+		expect(guides('Zeleninu zalej horúcim nálevom.')).toContain('nakladana-zelenina');
+		expect(guides('Nechaj 3 dni kvasiť pri izbovej teplote.')).toContain('fermentacia');
+	});
+});

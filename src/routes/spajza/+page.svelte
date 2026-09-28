@@ -3,6 +3,7 @@
 	import { formatGrams } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
+	import PreservesShelf from '$lib/components/PreservesShelf.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import { CATEGORY_LABELS, normalizeSearch, searchMatcher } from '$lib/labels';
 	import { rankByPantry, TAP_WATER_ID } from '$lib/pantry';
@@ -181,6 +182,7 @@
 					</p>
 				{/if}
 			</section>
+			<PreservesShelf />
 		</div>
 	</div>
 

@@ -40,6 +40,7 @@
 		history,
 		notes,
 		pantry,
+		preserves,
 		RATING_LABELS,
 		servingsInPlan,
 		setNote,
@@ -48,6 +49,7 @@
 		ui
 	} from '$lib/state.svelte';
 	import { breadcrumbJsonLd, recipeJsonLd } from '$lib/structured-data';
+	import { jarsFromYield } from '$lib/preserves';
 
 	let { data } = $props();
 	const catalog = useCatalog();
@@ -162,6 +164,26 @@
 		flyToPlan(event.currentTarget as HTMLElement, document.querySelector('.hero svg.plate'));
 		justAdded = true;
 		setTimeout(() => (justAdded = false), 1600);
+	}
+
+	/** Preserves go on the shelf in Špajza, where their age is tracked. */
+	const isPreserve = $derived(
+		recipe.categories.some((c) => c === 'domace/zavarane' || c === 'domace/kvasene')
+	);
+	let shelved = $state(false);
+	function shelve() {
+		preserves.current = [
+			...preserves.current,
+			{
+				id: crypto.randomUUID().slice(0, 8),
+				name: recipe.title,
+				count: jarsFromYield(recipe.yields),
+				made: new Date().toISOString().slice(0, 10),
+				place: 'pivnica',
+				recipeId: recipe.id
+			}
+		];
+		shelved = true;
 	}
 
 	function startCooking() {
@@ -439,6 +461,17 @@
 				<button class="btn ghost" onclick={startCooking}>
 					<Icon name="pot" size={18} /> Variť
 				</button>
+				{#if isPreserve}
+					{#if shelved}
+						<a class="btn ghost" href="/spajza#shelf-title">
+							<Icon name="check" size={18} /> V zásobách
+						</a>
+					{:else}
+						<button class="btn ghost" onclick={shelve}>
+							<Icon name="jar" size={18} /> Zapísať do zásob
+						</button>
+					{/if}
+				{/if}
 				<button
 					class="icon-btn fav"
 					class:on={isFavorite}

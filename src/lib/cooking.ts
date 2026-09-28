@@ -199,6 +199,11 @@ const TECHNIQUE_GUIDES: [RegExp, string][] = [
 	[/skrob\w* rozmiesan|rozmiesan\w* .*skrob|zapraz/, 'zahustovanie'],
 	[/\bolup|\bosup/, 'supanie'],
 	[/\bdochut/, 'dochucovanie'],
+	[/\bzavar|\bvyparen\w* pohar/, 'zavaranie'],
+	[/\bblansir/, 'mrazenie-urody'],
+	[/\bsus\w* .*(v rure|v susick|pri \d+ °c)/, 'susenie'],
+	[/\bnalev/, 'nakladana-zelenina'],
+	[/\bkvas(i|ia|it|enie)\b/, 'fermentacia'],
 	[/\bpec\w* .*na \d+ °c/, 'pecenie-zeleniny'],
 	[
 		/\b(spen|restuj|orestuj|dus|sced|spar|zredukuj|odstav|prived\w* do varu|prelisuj|vyslahaj|dotiah)/,

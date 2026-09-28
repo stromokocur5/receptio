@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { consumeFromPantry, type Pantry, type PantryUse } from './pantry';
+import { validatePreserves, type Preserve } from './preserves';
 import type { PlanEntry } from './shopping';
 import type { GrowPlace, GrowSun, Ingredient, RecipeLine } from './types';
 
@@ -320,6 +321,9 @@ function validateBeds(raw: unknown): GardenDiary['beds'] {
 
 export const garden = new Persisted<GardenDiary | null>('garden', null, validateGarden);
 
+/** Home-made jars and freezer bags, with the date they were made. */
+export const preserves = new Persisted<Preserve[]>('preserves', [], validatePreserves);
+
 /** Everything kept on this device, for backup/restore. */
 export const ALL_PERSISTED = {
 	pantry,
@@ -330,7 +334,8 @@ export const ALL_PERSISTED = {
 	history,
 	favorites,
 	notes,
-	garden
+	garden,
+	preserves
 };
 
 export const ui = $state({ loaded: false });

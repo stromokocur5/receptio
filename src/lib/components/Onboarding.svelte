@@ -129,7 +129,7 @@
 		{
 			icon: 'jar',
 			title: 'Špajza',
-			text: 'Zapíš, čo máš doma – recepty sa zoradia podľa toho, na čo už máš suroviny.',
+			text: 'Zapíš, čo máš doma – recepty sa zoradia podľa toho, na čo už máš suroviny. Aj zaváraniny a mrazničku, s dátumom.',
 			tone: 'var(--leaf-2)'
 		},
 		{

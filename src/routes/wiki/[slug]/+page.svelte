@@ -84,7 +84,12 @@
 />
 
 <article class="wrap page">
-	<a class="back" href="/wiki"><Icon name="arrow-left" size={18} /> Wiki</a>
+	<div class="top" data-noprint>
+		<a class="back" href="/wiki"><Icon name="arrow-left" size={18} /> Wiki</a>
+		<button class="btn ghost small" onclick={() => window.print()}>
+			<Icon name="printer" size={16} /> Vytlačiť
+		</button>
+	</div>
 	<header class="rise">
 		<span class="ico"
 			><Icon name={isIconName(page.icon) ? page.icon : 'leaf'} size={34} draw /></span
@@ -108,7 +113,7 @@
 			{/if}
 		</div>
 		{#if siblings.length}
-			<aside class="side">
+			<aside class="side" data-noprint>
 				<h2>Ďalej v sekcii</h2>
 				<ul>
 					{#each siblings as s (s.slug)}
@@ -120,7 +125,7 @@
 	</div>
 
 	{#if related.length}
-		<section class="related">
+		<section class="related" data-noprint>
 			<h2>
 				{page.slug === 'desiata-do-skoly' || page.slug === 'vysokoskolak'
 					? 'Do krabičky'
@@ -140,6 +145,28 @@
 <style>
 	.page {
 		padding-top: 18px;
+	}
+	.top {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+	}
+	/* On paper the guide is a kitchen card: full width, drawings kept, no page chrome. */
+	@media print {
+		.page {
+			padding-top: 0;
+		}
+		.layout {
+			display: block !important;
+		}
+		:global(.tech-art) {
+			break-inside: avoid;
+			max-width: 12cm;
+		}
+		:global(.prose table) {
+			break-inside: avoid;
+		}
 	}
 	.health-note {
 		display: flex;
