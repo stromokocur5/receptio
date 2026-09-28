@@ -3,6 +3,14 @@
 	import { onMount } from 'svelte';
 	import { goto, replaceState } from '$app/navigation';
 	import { useCatalog } from '$lib/catalog';
+	import {
+		CATEGORY_IDS,
+		RECIPE_CATEGORIES,
+		SPICY_LABELS,
+		inCategory,
+		isCategoryId,
+		type CategoryId
+	} from '$lib/categories';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import {
@@ -56,6 +64,12 @@
 	let gf = $state(0);
 	let cuisine = $state('');
 	let meal = $state<Meal | ''>('');
+	/** Dessert and DIY are browsed as categories; the meal filter is about when you eat it. */
+	const MEAL_FILTERS: Meal[] = ['ranajky', 'obed', 'vecera', 'snack'];
+	let category = $state<CategoryId | ''>('');
+	let sub = $state('');
+	/** Exact heat levels to show; empty = any. */
+	let spicy = $state<number[]>([]);
 	let maxTimeIndex = $state(TIME_STEPS.length - 1);
 	let minProtein = $state(0);
 	let excluded = $state<Allergen[]>([]);
@@ -66,6 +80,7 @@
 		'bez-varenia',
 		'len-rura',
 		'jemne',
+		'palive',
 		'sezonne',
 		'menej-soli'
 	] as const;
@@ -75,6 +90,7 @@
 		'bez-varenia': COMPUTED_TAG_LABELS['bez-varenia'],
 		'len-rura': COMPUTED_TAG_LABELS['len-rura'],
 		jemne: 'Nepálivé, pre deti',
+		palive: 'Pálivé',
 		sezonne: 'Z toho, čo je v sezóne',
 		'menej-soli': 'Menej soli'
 	};
@@ -134,39 +150,66 @@
 
 	const matchesQuery = $derived(searchMatcher([...searchIndex.values()], q));
 
-	const filtered = $derived.by(() => {
-		const list = catalog.recipes.filter((r) => {
-			if (!matchesQuery(searchIndex.get(r.id)!)) return false;
-			if (gf === 1 && r.gluten === 'contains') return false;
-			if (gf === 2 && r.gluten === 'contains' && !r.gfSwappable) return false;
-			if (cuisine && r.cuisine !== cuisine) return false;
-			if (meal && !r.meals.includes(meal)) return false;
-			if (maxTime && r.time > maxTime) return false;
-			if (r.perServing.protein < minProtein) return false;
-			if (excluded.some((a) => r.allergens.includes(a))) return false;
-			if (missingTools.some((t) => r.equipment.includes(t))) return false;
-			for (const q of quick) {
-				if (q === 'jemne' && r.spicy > 0) return false;
-				if (q === 'sezonne' && !recipeSeason(r, catalog.ingredientsById, month).inSeason) {
-					return false;
-				}
-				if (q === 'menej-soli' && !lowSalt(r)) return false;
-				if (
-					q !== 'jemne' &&
-					q !== 'sezonne' &&
-					q !== 'menej-soli' &&
-					cookingStyle(r.equipment) !== q
-				) {
-					return false;
-				}
-			}
-			if (subs === 'bez' && r.substitutes === 'required') return false;
-			if (subs === 's' && !r.usesSubstitutes && !r.variants.some((v) => v.usesSubstitutes)) {
+	/** Every filter except the category, so the tiles can count what each one would show. */
+	function passesFilters(r: RecipeSummary): boolean {
+		if (!matchesQuery(searchIndex.get(r.id)!)) return false;
+		if (gf === 1 && r.gluten === 'contains') return false;
+		if (gf === 2 && r.gluten === 'contains' && !r.gfSwappable) return false;
+		if (cuisine && r.cuisine !== cuisine) return false;
+		if (meal && !r.meals.includes(meal)) return false;
+		if (maxTime && r.time > maxTime) return false;
+		if (r.perServing.protein < minProtein) return false;
+		if (excluded.some((a) => r.allergens.includes(a))) return false;
+		if (missingTools.some((t) => r.equipment.includes(t))) return false;
+		for (const q of quick) {
+			if (q === 'jemne' && r.spicy > 0) return false;
+			if (q === 'palive' && r.spicy < 2) return false;
+			if (q === 'sezonne' && !recipeSeason(r, catalog.ingredientsById, month).inSeason) {
 				return false;
 			}
-			if (difficulty && r.difficulty !== difficulty) return false;
-			return true;
-		});
+			if (q === 'menej-soli' && !lowSalt(r)) return false;
+			if (
+				q !== 'jemne' &&
+				q !== 'palive' &&
+				q !== 'sezonne' &&
+				q !== 'menej-soli' &&
+				cookingStyle(r.equipment) !== q
+			) {
+				return false;
+			}
+		}
+		if (subs === 'bez' && r.substitutes === 'required') return false;
+		if (subs === 's' && !r.usesSubstitutes && !r.variants.some((v) => v.usesSubstitutes)) {
+			return false;
+		}
+		if (difficulty && r.difficulty !== difficulty) return false;
+		if (spicy.length && !spicy.includes(r.spicy)) return false;
+		return true;
+	}
+	const unfiltered = $derived(catalog.recipes.filter(passesFilters));
+	const categoryCounts = $derived.by(() => {
+		const counts = new Map<string, number>();
+		for (const r of unfiltered) {
+			const seen = new Set<string>();
+			for (const path of r.categories) {
+				const top = path.split('/')[0];
+				if (!seen.has(top)) counts.set(top, (counts.get(top) ?? 0) + 1);
+				seen.add(top);
+				counts.set(path, (counts.get(path) ?? 0) + 1);
+			}
+		}
+		return counts;
+	});
+	const subOptions = $derived(
+		category
+			? Object.entries(RECIPE_CATEGORIES[category].subs as Record<string, string>).filter(
+					([id]) => id === sub || categoryCounts.get(`${category}/${id}`)
+				)
+			: []
+	);
+
+	const filtered = $derived.by(() => {
+		const list = unfiltered.filter((r) => !category || inCategory(r.categories, category, sub));
 		const by: Record<Sort, (a: (typeof list)[number], b: (typeof list)[number]) => number> = {
 			odporucane: (a, b) =>
 				(likes.counts[b.id] ?? 0) - (likes.counts[a.id] ?? 0) ||
@@ -211,7 +254,9 @@
 		[
 			gf,
 			cuisine,
+			category,
 			meal,
+			spicy.length,
 			maxTime,
 			minProtein,
 			excluded.length,
@@ -222,6 +267,15 @@
 			difficulty
 		].filter(Boolean).length
 	);
+
+	function pickCategory(id: CategoryId) {
+		category = category === id ? '' : id;
+		sub = '';
+	}
+
+	function toggleSpicy(level: number) {
+		spicy = spicy.includes(level) ? spicy.filter((l) => l !== level) : [...spicy, level].sort();
+	}
 
 	function toggleAllergen(a: Allergen) {
 		excluded = excluded.includes(a) ? excluded.filter((x) => x !== a) : [...excluded, a];
@@ -241,7 +295,10 @@
 		q = '';
 		gf = 0;
 		cuisine = '';
+		category = '';
+		sub = '';
 		meal = '';
+		spicy = [];
 		maxTimeIndex = TIME_STEPS.length - 1;
 		minProtein = 0;
 		excluded = [];
@@ -262,6 +319,22 @@
 		cuisine = catalog.cuisinesById.has(p.get('kuchyna') ?? '') ? p.get('kuchyna')! : '';
 		const m = p.get('jedlo');
 		meal = (MEALS as readonly string[]).includes(m ?? '') ? (m as Meal) : '';
+		// Old links used the meal filter for DIY and desserts.
+		if (meal === 'domace' || meal === 'dezert') {
+			category = meal === 'domace' ? 'domace' : 'dezerty';
+			meal = '';
+		}
+		const k = p.get('kategoria') ?? '';
+		if (isCategoryId(k)) {
+			category = k;
+			const pod = p.get('pod') ?? '';
+			if (pod in RECIPE_CATEGORIES[k].subs) sub = pod;
+		}
+		spicy = (p.get('palivost') ?? '')
+			.split(',')
+			.filter(Boolean)
+			.map(Number)
+			.filter((n) => n >= 0 && n <= 3);
 		const s = p.get('sort');
 		if (s && s in SORTS) sort = s as Sort;
 		if (p.get('spajza') === '1') onlyPantry = true;
@@ -281,7 +354,10 @@
 		if (q) p.set('q', q);
 		if (gf) p.set('gf', String(gf));
 		if (cuisine) p.set('kuchyna', cuisine);
+		if (category) p.set('kategoria', category);
+		if (category && sub) p.set('pod', sub);
 		if (meal) p.set('jedlo', meal);
+		if (spicy.length) p.set('palivost', spicy.join(','));
 		if (sort !== 'odporucane') p.set('sort', sort);
 		if (onlyPantry) p.set('spajza', '1');
 		if (subs !== 'all') p.set('nahrady', subs);
@@ -331,6 +407,36 @@
 		</button>
 	</div>
 
+	<nav class="cats" aria-label="Kategórie">
+		{#each CATEGORY_IDS as id, i (id)}
+			{@const c = RECIPE_CATEGORIES[id]}
+			<button
+				class="cat draw-host"
+				style:--tone={c.tone}
+				style:--i={i}
+				aria-pressed={category === id}
+				onclick={() => pickCategory(id)}
+			>
+				<span class="cat-ico"><Icon name={c.icon} size={26} /></span>
+				<span class="cat-label">{c.label}</span>
+				<span class="cat-count">{categoryCounts.get(id) ?? 0}</span>
+			</button>
+		{/each}
+	</nav>
+	{#if category}
+		{@const c = RECIPE_CATEGORIES[category]}
+		<div class="subs" style:--tone={c.tone} role="group" aria-label="Podkategórie: {c.label}">
+			<button class="chip" aria-pressed={!sub} onclick={() => (sub = '')}>
+				Všetky {c.label.toLowerCase()}
+			</button>
+			{#each subOptions as [id, label] (id)}
+				<button class="chip" aria-pressed={sub === id} onclick={() => (sub = sub === id ? '' : id)}>
+					{label} <span class="sub-count">{categoryCounts.get(`${category}/${id}`) ?? 0}</span>
+				</button>
+			{/each}
+		</div>
+	{/if}
+
 	<nav class="ideas" aria-label="Nevieš, čo variť?">
 		<span class="ideas-label">Nevieš, čo variť?</span>
 		<a class="idea" href="/spajza" style:--tone="var(--turmeric)"
@@ -378,15 +484,35 @@
 			</fieldset>
 
 			<fieldset>
-				<legend>Jedlo</legend>
+				<legend>Kedy to zješ</legend>
 				<div class="chips">
-					{#each MEALS as m (m)}
+					{#each MEAL_FILTERS as m (m)}
 						<button
 							class="chip"
 							aria-pressed={meal === m}
 							onclick={() => (meal = meal === m ? '' : m)}
 						>
 							{MEAL_LABELS[m]}
+						</button>
+					{/each}
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<legend>Pálivosť</legend>
+				<div class="chips">
+					{#each SPICY_LABELS as label, level (label)}
+						<button
+							class="chip heat"
+							aria-pressed={spicy.includes(level)}
+							onclick={() => toggleSpicy(level)}
+						>
+							<span class="peppers" aria-hidden="true">
+								{#each [1, 2, 3] as n (n)}<span class:on={level >= n}
+										><Icon name="chili" size={13} stroke={2.2} /></span
+									>{/each}
+							</span>
+							{label}
 						</button>
 					{/each}
 				</div>
@@ -518,7 +644,15 @@
 		</aside>
 
 		<section class="results" aria-live="polite">
-			<p class="count-line muted">{results.length} {pluralRecipes(results.length)}</p>
+			<p class="count-line muted">
+				{#if category}<strong
+						>{RECIPE_CATEGORIES[category].label}{sub
+							? ` · ${(RECIPE_CATEGORIES[category].subs as Record<string, string>)[sub]}`
+							: ''}</strong
+					> ·
+				{/if}{results.length}
+				{pluralRecipes(results.length)}
+			</p>
 			{#if filtered.closest}
 				<p class="closest card">
 					<Icon name="jar" size={18} />
@@ -571,6 +705,105 @@
 </div>
 
 <style>
+	.cats {
+		display: flex;
+		gap: 10px;
+		margin: 0 -16px 12px;
+		padding: 4px 16px 8px;
+		overflow-x: auto;
+		scroll-snap-type: x proximity;
+		scrollbar-width: none;
+	}
+	.cats::-webkit-scrollbar {
+		display: none;
+	}
+	.cat {
+		flex: none;
+		scroll-snap-align: start;
+		position: relative;
+		display: grid;
+		justify-items: center;
+		gap: 6px;
+		width: 104px;
+		padding: 12px 8px 10px;
+		border: 1.5px solid var(--line);
+		border-radius: 18px;
+		background: var(--card);
+		color: var(--ink);
+		font: inherit;
+		cursor: pointer;
+		animation: rise 0.45s var(--ease-out) both;
+		animation-delay: calc(var(--i) * 35ms);
+		transition:
+			transform 0.25s var(--ease-spring),
+			border-color 0.2s,
+			background 0.2s;
+	}
+	.cat:hover {
+		transform: translateY(-3px);
+		border-color: var(--tone);
+	}
+	.cat[aria-pressed='true'] {
+		border-color: var(--tone);
+		background: color-mix(in srgb, var(--tone) 14%, var(--card));
+	}
+	.cat-ico {
+		display: grid;
+		place-items: center;
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		background: color-mix(in srgb, var(--tone) 18%, transparent);
+		color: color-mix(in srgb, var(--tone) 75%, var(--ink));
+		transition: transform 0.35s var(--ease-spring);
+	}
+	.cat:hover .cat-ico,
+	.cat[aria-pressed='true'] .cat-ico {
+		transform: rotate(-8deg) scale(1.08);
+	}
+	.cat-label {
+		font-size: 0.84rem;
+		font-weight: 700;
+		line-height: 1.15;
+		text-align: center;
+	}
+	.cat-count {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		font-size: 0.7rem;
+		font-weight: 700;
+		color: var(--muted);
+	}
+	.subs {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin-bottom: 14px;
+		padding: 12px;
+		border-radius: 16px;
+		background: color-mix(in srgb, var(--tone) 9%, transparent);
+		animation: rise 0.3s var(--ease-out);
+	}
+	.sub-count {
+		opacity: 0.6;
+		font-size: 0.78em;
+	}
+	.peppers {
+		display: inline-flex;
+		margin-right: 2px;
+	}
+	.peppers span {
+		display: inline-flex;
+		opacity: 0.25;
+	}
+	.peppers span.on {
+		opacity: 1;
+		color: var(--tomato);
+	}
+	.heat:first-child .peppers {
+		display: none;
+	}
 	.ideas {
 		display: flex;
 		align-items: center;
@@ -737,6 +970,16 @@
 		}
 		.layout {
 			grid-template-columns: 280px 1fr;
+		}
+		.cats {
+			flex-wrap: wrap;
+			margin: 0 0 14px;
+			padding: 4px 0 0;
+			overflow: visible;
+		}
+		.cat {
+			flex: 1 1 0;
+			min-width: 96px;
 		}
 		.filters {
 			display: flex;

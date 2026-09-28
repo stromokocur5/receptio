@@ -27,6 +27,7 @@ function recipe(
 		description: '',
 		cuisine: id,
 		meals: ['obed', 'vecera'],
+		categories: ['hlavne/kari'],
 		time: 30,
 		activeTime: 10,
 		servings: 4,

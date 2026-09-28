@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { formatAmount, formatGrams } from '$lib/amounts';
+	import { formatAmount, formatGrams, formatPiece } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import { scaleStep, splitStep, stepGuides, stepLines } from '$lib/cooking';
 	import Icon from '$lib/components/Icon.svelte';
@@ -471,10 +471,14 @@
 			<h2>Suroviny <span class="muted">· {servings} porc.</span></h2>
 			<ul>
 				{#each lines as line, i (i)}
+					{@const piece = catalog.ingredientsById.get(line.ingredientId)?.piece}
 					<li class:now={needed.includes(line)}>
 						<strong>{amount(line)}</strong>
 						<span>
 							{catalog.ingredientsById.get(line.ingredientId)?.name}
+							{#if piece && line.grams && line.unit !== 'g'}<small
+									>{formatPiece(line.grams * factor, piece)}</small
+								>{/if}
 							{#if line.note}<small>{line.note}</small>{/if}
 						</span>
 					</li>

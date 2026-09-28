@@ -591,10 +591,11 @@
   category: zelenina
   n: { kcal: 80, p: 1.8, c: 18, f: 0.8, fib: 2, salt: 0, fe: 0.6, ca: 16, zn: 0.3 }
   units: { pl: 6, čl: 2 }
+  piece: { label: 'cm koreňa', grams: 2.5 }
   price: 5
   color: '#dcb45a'
   substitutes:
-    - { note: 'mletý zázvor – ¼ ČL za 1 cm' }
+    - { note: 'mletý zázvor – ¼ ČL za 1 PL nastrúhaného' }
   about: 'Pikantný koreň, základ ázijských a indických jedál. Pomáha aj proti nevoľnosti.'
   uses:
     - 'Nastrúhaný do kari, wok jedál a marinád'

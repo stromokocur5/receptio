@@ -17,4 +17,5 @@ order: 26
 
 - Šúp ho **hranou lyžičky**, nie nožom, stratíš menej.
 - Strúhaj na jemnom strúhadle. Zmrazený sa strúha ešte lepšie a nekazí sa.
-- 1 PL nastrúhaného ≈ palec dlhý kúsok.
+- **Koľko je 1 PL nastrúhaného?** Kúsok koreňa hrubého ako palec, dlhý 2–3 cm (asi 6 g). Recepty pri zázvore ukazujú aj túto dĺžku.
+- Mletý zázvor je ostrejší a inak voňia: **¼ ČL mletého** nahradí 1 PL čerstvého.

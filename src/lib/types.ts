@@ -79,6 +79,8 @@ export interface Ingredient {
 	note?: string;
 	warn?: string;
 	gfAlternative?: string;
+	/** Shown next to amounts: "1 PL" of grated ginger is "≈ 2,5 cm koreňa". */
+	piece?: { label: string; grams: number };
 	/** Slugs of beginner technique pages (wiki section `zaklady`). */
 	howto: string[];
 	/** Ingredients that can stand in for this one (from its substitutes). */
@@ -139,6 +141,8 @@ export interface RecipeSummary extends RecipeComputed {
 	description: string;
 	cuisine: string;
 	meals: Meal[];
+	/** "category/sub" paths from RECIPE_CATEGORIES, main one first. */
+	categories: string[];
 	time: number;
 	activeTime: number;
 	servings: number;

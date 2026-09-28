@@ -1,5 +1,5 @@
 import { formatAmount } from './amounts';
-import { MEAL_LABELS } from './labels';
+import { RECIPE_CATEGORIES, splitCategory, subLabel } from './categories';
 import type { Ingredient, RecipeDetail } from './types';
 
 const minutes = (m: number) => `PT${Math.round(m)}M`;
@@ -84,11 +84,12 @@ export function recipeJsonLd(
 		image: `${origin}/og/${recipe.id}.png`,
 		url: `${origin}/recepty/${recipe.id}`,
 		recipeCuisine: cuisineName,
-		recipeCategory: MEAL_LABELS[recipe.meals[0]],
+		recipeCategory: RECIPE_CATEGORIES[splitCategory(recipe.categories[0]).category].label,
 		keywords: [
 			'vegánsky recept',
 			recipe.gluten === 'free' ? 'bezlepkový recept' : '',
 			cuisineName ? `${cuisineName.toLowerCase()} kuchyňa` : '',
+			...recipe.categories.map(subLabel).map((l) => l.toLowerCase()),
 			...recipe.tags
 		]
 			.filter(Boolean)

@@ -2,6 +2,7 @@ title: Larb s tofu
 description: Laoský a thajský teplý šalát z drobeného tofu s limetkou, mätou, šalotkou a praženou ryžovou múčkou. Zabalený v listoch šalátu.
 cuisine: thajska
 meals: [obed, vecera, snack]
+categories: [hlavne/tofu, salaty/syte]
 time: 25
 active: 20
 servings: 3

@@ -94,6 +94,12 @@ export function formatAmount(amount: number | null, unit: Unit | null): string {
 	return `${formatNumber(amount)} ${unit}`;
 }
 
+/** "≈ 2,5 cm koreňa" – the amount as a piece you can cut, to the nearest half. */
+export function formatPiece(grams: number, piece: { label: string; grams: number }): string {
+	const count = Math.max(0.5, Math.round((grams / piece.grams) * 2) / 2);
+	return `≈ ${formatNumber(count)} ${piece.label}`;
+}
+
 export function formatGrams(grams: number): string {
 	if (grams >= 1000) return `${formatNumber(grams / 1000, 2)} kg`;
 	return `${formatNumber(grams >= 100 ? Math.round(grams / 5) * 5 : Math.round(grams), 0)} g`;

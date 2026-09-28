@@ -2,6 +2,7 @@ title: Domáce tofu
 description: Čerstvé tofu z vlastného sójového mlieka. Jemnejšie a krémovejšie ako kupované, a keď to raz skúsiš, pochopíš, prečo ho v Ázii kupujú denne čerstvé.
 cuisine: moderna
 meals: [domace]
+categories: [domace/bielkoviny]
 time: 60
 active: 40
 servings: 4

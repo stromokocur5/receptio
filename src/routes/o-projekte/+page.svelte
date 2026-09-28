@@ -55,7 +55,7 @@
 		<span class="quote" aria-hidden="true"><Icon name="heart" size={28} /></span>
 		<div class="prose">
 			<p>
-				Receptio vzniklo pre seba a kamarátov. Varíme rastlinne a chýbali nám dobré vegánske a
+				Receptio vzniklo pre mňa a kamarátov. Varíme rastlinne a chýbali nám dobré vegánske a
 				bezlepkové recepty <strong>po slovensky</strong>, pri ktorých by bolo hneď jasné, koľko
 				bielkovín či železa v nich je a <strong>koľko stojí porcia</strong>.
 			</p>

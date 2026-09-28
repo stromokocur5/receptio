@@ -97,7 +97,7 @@
 			more: [
 				{ href: '/recepty?gf=1', label: 'Bezlepkové' },
 				{ href: '/recepty?sort=protein-eur', label: 'Najviac bielkovín za euro' },
-				{ href: '/recepty?jedlo=domace', label: 'Urob si sám' }
+				{ href: '/recepty?kategoria=domace', label: 'Urob si sám' }
 			]
 		},
 		{
@@ -471,7 +471,7 @@
 			<p class="eyebrow">Prečo Receptio vzniklo</p>
 			<h2>Z domácej potreby</h2>
 			<p>
-				Receptio vzniklo pre seba a kamarátov. Chýbali dobré rastlinné a bezlepkové recepty po
+				Receptio vzniklo pre mňa a kamarátov. Chýbali dobré rastlinné a bezlepkové recepty po
 				slovensky, pri ktorých by bolo jasné, koľko bielkovín či železa v nich je a koľko stojí
 				porcia. Weby s receptami boli plné reklám a vyskakovacích okien, čísla na nich chýbali.
 			</p>

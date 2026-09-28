@@ -2,6 +2,7 @@ title: Domáce ovsené mlieko
 description: Liter ovseného mlieka za pár centov. Trik je krátke mixovanie a ľadová voda, inak je slizké.
 cuisine: moderna
 meals: [domace, ranajky]
+categories: [domace/mlieka, napoje/mlieka]
 time: 10
 active: 10
 servings: 4

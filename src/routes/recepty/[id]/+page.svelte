@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { pushState } from '$app/navigation';
 	import { page } from '$app/state';
-	import { formatAmount, formatEur, formatNumber } from '$lib/amounts';
+	import { formatAmount, formatEur, formatNumber, formatPiece } from '$lib/amounts';
+	import { RECIPE_CATEGORIES, SPICY_LABELS, splitCategory, subLabel } from '$lib/categories';
 	import { scaleStep } from '$lib/cooking';
 	import CookMode from '$lib/components/CookMode.svelte';
 	import { useCatalog } from '$lib/catalog';
@@ -225,7 +226,6 @@
 	const dateFormat = new Intl.DateTimeFormat('sk-SK', { day: 'numeric', month: 'numeric' });
 	const lastRating = $derived(cookedTimes.findLast((h) => h.rating)?.rating);
 
-	const SPICY_LABELS = ['Nepálivé', 'Jemne pálivé', 'Pálivé', 'Poriadne pálivé'];
 	const month = new Date().getMonth() + 1;
 	const season = $derived(recipeSeason(recipe, catalog.ingredientsById, month));
 
@@ -252,7 +252,20 @@
 />
 
 <article class="wrap page">
-	<a class="back" href="/recepty" data-noprint><Icon name="arrow-left" size={18} /> Recepty</a>
+	<nav class="crumbs" aria-label="Kategória" data-noprint>
+		<a class="back" href="/recepty"><Icon name="arrow-left" size={18} /> Recepty</a>
+		{#each recipe.categories as path (path)}
+			{@const { category, sub } = splitCategory(path)}
+			<a
+				class="crumb"
+				href="/recepty?kategoria={category}&pod={sub}"
+				style:--tone={RECIPE_CATEGORIES[category].tone}
+			>
+				<Icon name={RECIPE_CATEGORIES[category].icon} size={15} />
+				{RECIPE_CATEGORIES[category].label} · {subLabel(path)}
+			</a>
+		{/each}
+	</nav>
 
 	<header class="hero" style:--accent={cuisine?.color}>
 		<div class="art plate-host">
@@ -551,6 +564,9 @@
 									{#if alt}<span class="swap">→ {alt.name.split(' (')[0]}</span>{/if}
 								</span>
 							{/if}
+							{#if ingredient.piece && line.grams && line.unit !== 'g'}<span class="note"
+									>{formatPiece(line.grams * factor, ingredient.piece)}</span
+								>{/if}
 							{#if line.note}<span class="note">{line.note}</span>{/if}
 						</span>
 						<span class="side">
@@ -749,6 +765,14 @@
 						: ['iron', 'calcium', 'zinc', 'ala']}
 				/>
 			</div>
+			<p class="b12-note">
+				<Icon name="pill" size={18} />
+				<span>
+					<strong>B12</strong> z rastlinného jedla nezískaš{recipe.perServing.b12 >= 0.5
+						? ' (ani z obohatených potravín spoľahlivo)'
+						: ''} – treba ho <a href="/wiki/b12">suplementovať</a>.
+				</span>
+			</p>
 		</section>
 	{/if}
 
@@ -808,6 +832,31 @@
 	}
 	.back:hover {
 		color: var(--ink);
+	}
+	.crumbs {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px 10px;
+		margin-bottom: 8px;
+	}
+	.crumbs .back {
+		margin: 0 4px 0 0;
+	}
+	.crumb {
+		display: inline-flex;
+		align-items: center;
+		gap: 5px;
+		padding: 3px 10px;
+		border-radius: 999px;
+		background: color-mix(in srgb, var(--tone) 14%, transparent);
+		color: color-mix(in srgb, var(--tone) 70%, var(--ink));
+		font-size: 0.8rem;
+		font-weight: 650;
+		text-decoration: none;
+	}
+	.crumb:hover {
+		background: color-mix(in srgb, var(--tone) 24%, transparent);
 	}
 
 	.hero {
@@ -1572,6 +1621,14 @@
 	.nut-grid {
 		display: grid;
 		gap: 12px 40px;
+	}
+	.b12-note {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin: 18px 0 0;
+		font-size: 0.9rem;
+		color: var(--sky);
 	}
 
 	.similar,

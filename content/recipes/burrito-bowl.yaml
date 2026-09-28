@@ -2,6 +2,7 @@ title: Burrito bowl
 description: Všetko dobré z burrita v miske – limetková ryža, korenená čierna fazuľa, salsa, kukurica a avokádo.
 cuisine: mexicka
 meals: [obed, vecera]
+categories: [hlavne/bowly]
 time: 30
 active: 20
 servings: 4

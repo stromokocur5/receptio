@@ -2,6 +2,7 @@ title: Burger z čiernej fazule
 description: Šťavnatý burger z čiernej fazule s údenou paprikou, ktorý sa na grile ani na panvici nerozpadne.
 cuisine: americka
 meals: [obed, vecera]
+categories: [hlavne/plnene]
 time: 40
 active: 30
 servings: 4

@@ -2,6 +2,7 @@ title: Minestrone
 description: Talianska zeleninová polievka s fazuľou a cestovinami. Hustá ako jedlo, varí sa z toho, čo je doma.
 cuisine: talianska
 meals: [obed, vecera]
+categories: [polievky/zeleninove]
 time: 45
 active: 15
 servings: 6

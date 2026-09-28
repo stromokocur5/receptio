@@ -2,6 +2,7 @@ title: Tacu tacu
 description: Chrumkavý placok zo zvyšnej ryže a fazule, opečený na panvici. Afro-peruánske jedlo zo zvyškov.
 cuisine: peruanska
 meals: [obed, vecera, ranajky]
+categories: [hlavne/strukoviny, hlavne/ryza]
 time: 25
 active: 20
 servings: 3

@@ -2,6 +2,7 @@ title: Jiaozi
 description: Čínske varené taštičky so zeleninovou náplňou a omáčkou na namáčanie. Robia sa vo veľkom, zvyšok sa zamrazí.
 cuisine: cinska
 meals: [obed, vecera]
+categories: [hlavne/cesto]
 time: 90
 active: 60
 servings: 4

@@ -58,6 +58,7 @@ function recipe(id: string, lines: [string, number][], servings = 2): RecipeSumm
 		description: '',
 		cuisine: 'x',
 		meals: ['obed'],
+		categories: ['hlavne/kari'],
 		time: 10,
 		activeTime: 5,
 		servings,

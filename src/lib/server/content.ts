@@ -9,6 +9,7 @@ import {
 	recipeNutrients,
 	recipeWarnings
 } from '$lib/nutrition';
+import { CATEGORY_PATHS } from '$lib/categories';
 import { normalizeSearch } from '$lib/labels';
 import { bestPrice } from '$lib/pricing';
 import {
@@ -120,6 +121,11 @@ const ingredientSchema = z
 		note: z.string().optional(),
 		warn: z.string().optional(),
 		gf_alternative: slug.optional(),
+		/** How big a piece the amount is, for things measured by eye (ginger root in cm). */
+		piece: z
+			.object({ label: z.string().min(1), grams: z.number().positive() })
+			.strict()
+			.optional(),
 		howto: z.array(slug).default([]),
 		season: z.array(z.number().int().min(1).max(12)).default([]),
 		about: z.string().min(1).optional(),
@@ -170,6 +176,8 @@ const recipeSchema = z
 		description: z.string().min(1),
 		cuisine: slug,
 		meals: z.array(z.enum(MEALS)).min(1),
+		/** What kind of dish, "hlavne/kari"; the first one is where it belongs most. */
+		categories: z.array(z.enum(CATEGORY_PATHS as [string, ...string[]])).min(1),
 		time: z.number().int().positive(),
 		active: z.number().int().positive(),
 		servings: z.number().int().positive(),
@@ -429,6 +437,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		note: i.note,
 		warn: i.warn,
 		gfAlternative: i.gf_alternative,
+		piece: i.piece,
 		howto: i.howto,
 		swapsTo: i.substitutes.flatMap((sub) => (sub.to ? [sub.to] : [])),
 		homemade: i.homemade !== undefined,
@@ -755,6 +764,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			description: r.description,
 			cuisine: r.cuisine,
 			meals: r.meals,
+			categories: r.categories,
 			time: r.time,
 			activeTime: r.active,
 			servings: r.servings,
