@@ -5,6 +5,7 @@ section: zaklady
 group: prve-kroky
 icon: spoon
 order: 20
+art: jednotky
 ---
 
 | Skratka         | Význam                            | Približne                                          |
@@ -15,6 +16,8 @@ order: 20
 | **štipka**      | čo chytíš medzi palec a dva prsty | ≈ 0,5 g                                            |
 | **ks**          | kus                               | pri konzervách celá plechovka, pri cesnaku strúčik |
 | **podľa chuti** | ochutnaj a pridaj                 | –                                                  |
+
+{{art:jednotky|Zarovnaná PL, ČL, hrnček a štipka.}}
 
 ## Tipy
 

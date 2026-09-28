@@ -5,6 +5,7 @@ section: zaklady
 group: techniky
 icon: knife
 order: 24
+art: krajanie
 ---
 
 ## Bezpečný úchop
@@ -13,6 +14,8 @@ order: 24
 - **Druhá ruka – „mačacia labka“**: končeky prstov zahni dovnútra, čepeľ sa opiera o kĺbiky. Prsty nie sú v ceste.
 - **Stabilná zelenina**: guľatú zeleninu (zemiak, cibuľu, mrkvu) najprv rozrež, aby ležala na rovnej strane. Kotúľajúca sa zelenina = porezaný prst.
 - **Stabilná doska**: podlož pod ňu vlhkú utierku, nebude sa šmýkať.
+
+{{art:krajanie|Mačacia labka chráni prsty; vpravo, čo znamenajú slová v receptoch.}}
 
 ## Čo znamenajú slová v receptoch
 

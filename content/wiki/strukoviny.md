@@ -5,6 +5,7 @@ section: zaklady
 group: prilohy
 icon: bean
 order: 23
+art: strukoviny
 ---
 
 ## Namáčať, alebo nie?
@@ -15,6 +16,8 @@ order: 23
 | Hnedá / zelená šošovica         | netreba   | 20–30 min              |
 | Cícer                           | 8–12 h    | 60–90 min              |
 | Fazuľa (čierna, červená, biela) | 8–12 h    | 45–90 min              |
+
+{{art:strukoviny|Cez noc namočiť, scediť a variť v čerstvej vode.}}
 
 ## Postup (cícer, fazuľa)
 

@@ -5,11 +5,14 @@ section: zaklady
 group: techniky
 icon: spice
 order: 27
+art: korenie
 ---
 
 ## Korenie potrebuje tuk a teplo
 
 Väčšina aróm je rozpustná v tuku. Mleté korenie **opeč 30–60 sekúnd v oleji** (po cibuli, pred tekutinou), kým nezavonia. Chuť bude o triedu lepšia než pri korení nasypanom do vody.
+
+{{art:korenie|Korenie opečené v oleji voňia oveľa viac ako nasypané do vody.}}
 
 ## Celé korenie (tadka)
 

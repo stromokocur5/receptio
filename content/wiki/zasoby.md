@@ -5,7 +5,10 @@ section: zaklady
 group: organizacia
 icon: jar
 order: 11
+art: zasoby
 ---
+
+{{art:zasoby|Základná špajza: strukoviny, obilniny, plechovky a korenie – vo veľkom lacnejšie.}}
 
 ## Základná špajza
 

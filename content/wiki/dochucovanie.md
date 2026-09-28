@@ -5,11 +5,14 @@ section: zaklady
 group: techniky
 icon: salt
 order: 32
+art: dochucovanie
 ---
 
 ## Ochutnávaj priebežne
 
 Nie až na konci. Ochutnaj po každom veľkom kroku – po pridaní tekutiny, po dovarení, pred podávaním.
+
+{{art:dochucovanie|Dobré jedlo je v rovnováhe – soľ, kyselina, sladké a pálivé.}}
 
 ## Chýba niečo, ale nevieš čo?
 

@@ -5,11 +5,14 @@ section: zaklady
 group: organizacia
 icon: snowflake
 order: 35
+art: mrazenie
 ---
 
 ## Uvarené jedlo – rýchlo do chladničky
 
 Nenechávaj jedlo stáť pri izbovej teplote dlhšie ako **2 hodiny**. Veľký hrniec schladíš rýchlejšie, keď ho rozdelíš do plytkých nádob alebo postavíš do drezu so studenou vodou.
+
+{{art:mrazenie|Uvarené jedlo najneskôr do 2 hodín do chladničky.}}
 
 ## Koľko vydrží v chladničke
 

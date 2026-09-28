@@ -5,7 +5,10 @@ section: zaklady
 group: techniky
 icon: bowl
 order: 30
+art: kysnute-cesto
 ---
+
+{{art:kysnute-cesto|Vlažná voda, 8–10 minút miesenia a trpezlivosť, kým cesto nezdvojnásobí objem.}}
 
 ## Droždie
 

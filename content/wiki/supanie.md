@@ -5,6 +5,7 @@ section: zaklady
 group: techniky
 icon: peeler
 order: 29
+art: supanie
 ---
 
 ## Najprv – treba vôbec šúpať?
@@ -18,6 +19,8 @@ Veľa zeleniny sa šúpať **nemusí**. V šupke je vláknina a vitamíny, stač
 | Cuketa, uhorka                        | nie (uhorku len ak je horká alebo voskovaná) |
 | Staré zemiaky, cvikla, kaleráb, zeler | áno                                          |
 | Batát                                 | podľa chuti, pečený je výborný so šupkou     |
+
+{{art:supanie|Škrabkou od seba, zázvor hranou lyžičky.}}
 
 ## Škrabka – zemiaky, mrkva, petržlen
 

@@ -5,7 +5,10 @@ section: zaklady
 group: prve-kroky
 icon: book
 order: 19
+art: slovnik
 ---
+
+{{art:slovnik|Dusiť, variť, restovať – rozdiel je hlavne v sile ohňa.}}
 
 ## Na panvici a v hrnci
 

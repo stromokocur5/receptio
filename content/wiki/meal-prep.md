@@ -5,11 +5,14 @@ section: zaklady
 group: organizacia
 icon: calendar
 order: 36
+art: meal-prep
 ---
 
 ## Prečo
 
 Jedno varenie, tri obedy. Ušetríš čas aj peniaze – strukoviny a obilniny sú vo veľkom najlacnejšie a väčšina kari a gulášov je na druhý deň lepšia.
+
+{{art:meal-prep|Jeden hrniec, tri obedy – čo sa nezje do 3–4 dní, ide do mrazničky.}}
 
 ## Tri spôsoby
 

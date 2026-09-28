@@ -5,6 +5,7 @@ section: zaklady
 group: techniky
 icon: onion
 order: 25
+art: cibula
 ---
 
 ## Krájanie bez sĺz (a bez prstov)
@@ -15,6 +16,8 @@ order: 25
 4. Prsty drž zahnuté „do mačacej labky“, nôž sa opiera o kĺbiky.
 
 Ostrý nôž = menej sĺz. Tupý nôž cibuľu drví a uvoľní viac dráždivých látok.
+
+{{art:cibula|Zvislé rezy k koreňu, potom priečne – a čím dlhšie na panvici, tým sladšia.}}
 
 ## Zosklovatenie (3–5 min)
 

@@ -5,6 +5,7 @@ section: zaklady
 group: techniky
 icon: oven
 order: 31
+art: pecenie-zeleniny
 ---
 
 ## Tri pravidlá
@@ -12,6 +13,8 @@ order: 31
 1. **Horúca rúra** – 200–220 °C (teplovzdušná 190–200 °C). Pri nižšej teplote sa zelenina dusí vo vlastnej šťave.
 2. **Miesto na plechu** – kúsky sa nesmú dotýkať. Radšej dva plechy ako jedna kopa.
 3. **Suchá zelenina a trochu oleja** – umytú zeleninu osuš, olej votri rukami, aby bol každý kúsok tenko pokrytý.
+
+{{art:pecenie-zeleniny|Kúsky s rozostupmi sa opečú, nakopené sa dusia.}}
 
 ## Časy pri 220 °C
 

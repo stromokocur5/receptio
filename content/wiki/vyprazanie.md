@@ -5,6 +5,7 @@ section: zaklady
 group: techniky
 icon: flame
 order: 29
+art: vyprazanie
 ---
 
 ## Hrniec a olej
@@ -12,6 +13,8 @@ order: 29
 - Použi **hlboký hrniec**, olej maximálne do **tretiny výšky** – keď vložíš jedlo, zdvihne sa.
 - Olej s vysokým bodom dymenia: **repkový, slnečnicový, arašidový**. Olivový extra panenský nie.
 - Na falafel stačí ~4 cm oleja, ~500 ml v malom hrnci.
+
+{{art:vyprazanie|Olej najviac do tretiny hrnca a 170–180 °C.}}
 
 ## Teplota: 170–180 °C
 

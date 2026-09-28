@@ -5,6 +5,7 @@ section: zaklady
 group: techniky
 icon: leaf
 order: 34
+art: bylinky
 ---
 
 ## Dve skupiny
@@ -15,6 +16,8 @@ order: 34
 | surové navrch alebo posledná minúta                        | od začiatku do omáčok, polievok a na pečenie    |
 
 Mäkké bylinky varením stratia vôňu a zošedivejú. Tvrdé chuť pustia až teplom.
+
+{{art:bylinky|Mäkké bylinky ako kytica do vody, bazalka mimo chladničky, zvyšok zamraziť.}}
 
 ## Skladovanie
 

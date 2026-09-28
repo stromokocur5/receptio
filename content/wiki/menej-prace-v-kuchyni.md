@@ -5,9 +5,12 @@ section: zaklady
 group: organizacia
 icon: bolt
 order: 37
+art: menej-prace
 ---
 
 Varenie zaberá čas najmä **rozhodovaním, hľadaním, krájaním a umývaním** – samotné varenie je často len chvíľa na sporáku. Každú z tých štyroch vecí sa dá skrátiť.
+
+{{art:menej-prace|Štyri žrúti času v kuchyni – a každý sa dá skrátiť.}}
 
 ## 1. Menej rozhodovania
 

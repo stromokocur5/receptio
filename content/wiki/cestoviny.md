@@ -5,6 +5,7 @@ section: zaklady
 group: prilohy
 icon: pasta
 order: 28
+art: cestoviny
 ---
 
 1. **Veľa vody**: aspoň 1 liter na 100 g cestovín.
@@ -12,6 +13,8 @@ order: 28
 3. **Vsyp a hneď premiešaj**, aby sa nezlepili. Potom miešaj občas.
 4. **Čas z obalu mínus 1 minúta** a ochutnaj. Majú byť _al dente_, teda mäkké, ale s jemným odporom v strede.
 5. **Pred scedením odober hrnček vody z varenia**. Škrobová voda zjednotí omáčku s cestovinou.
+
+{{art:cestoviny|Veľa osolenej vody a hrnček škrobovej vody odložiť do omáčky.}}
 
 ## Bezlepkové cestoviny
 

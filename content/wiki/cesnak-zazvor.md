@@ -5,7 +5,10 @@ section: zaklady
 group: techniky
 icon: garlic
 order: 26
+art: cesnak-zazvor
 ---
+
+{{art:cesnak-zazvor|Cesnak rozpučiť plochou noža, zázvor strúhať zmrazený.}}
 
 ## Cesnak
 

@@ -5,11 +5,14 @@ section: zaklady
 group: prve-kroky
 icon: drop
 order: 30
+art: umyvanie
 ---
 
 ## Základné pravidlo
 
 Umývaj **tesne pred použitím**, nie po nákupe. Vlhká zelenina v chladničke skôr plesnivie. Stačí studená voda – saponát ani ocot netreba.
+
+{{art:umyvanie|Šalát v mise vody: piesok klesne na dno, listy vyber hore.}}
 
 ## Pod tečúcou vodou
 

@@ -5,7 +5,10 @@ section: zaklady
 group: techniky
 icon: spoon
 order: 33
+art: zahustovanie
 ---
+
+{{art:zahustovanie|Škrob rozmiešaný v studenej vode vlej do vriacej omáčky.}}
 
 ## Zápražka (múka a olej)
 

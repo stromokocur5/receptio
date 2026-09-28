@@ -5,6 +5,7 @@ section: zaklady
 group: prve-kroky
 icon: shield
 order: 37
+art: bezpecnost
 ---
 
 ## Nože
@@ -20,6 +21,8 @@ order: 37
 - Mokré jedlo prská – tofu a zeleninu osuš.
 - **Horiaci olej nikdy nehas vodou.** Vypni sporák, prikry hrniec pokrievkou alebo vlhkou utierkou a nechaj ho vychladnúť. Viac v [návode na vyprážanie](/wiki/vyprazanie).
 - Rúčky panvíc otoč dovnútra sporáka, aby sa o ne nikto nezachytil.
+
+{{art:bezpecnost|Horiaci olej: prikryť pokrievkou a vypnúť sporák. Voda ho rozstrekne.}}
 
 ## Para a horúce tekutiny
 

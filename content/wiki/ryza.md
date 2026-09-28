@@ -5,6 +5,7 @@ section: zaklady
 group: prilohy
 icon: bowl
 order: 21
+art: ryza
 ---
 
 ## Metóda absorpcie (basmati, jazmínová)
@@ -14,6 +15,8 @@ order: 21
 3. **Voda.** Na 1 diel ryže 1,5 dielu vody (basmati, jazmínová) a štipka soli.
 4. **Var.** Priveď do varu, stíš na **najmenší plameň**, prikry pokrievkou a var **12 minút**. **Neodkrývaj a nemiešaj.**
 5. **Dotiahnutie.** Odstav a nechaj **10 minút** pod pokrievkou. Potom prehrab vidličkou.
+
+{{art:ryza|Metóda absorpcie: 1 : 1,5, najmenší oheň, pokrievka a nemiešať.}}
 
 ## Metóda ako cestoviny (najistejšia)
 

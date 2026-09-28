@@ -5,6 +5,7 @@ section: zaklady
 group: prilohy
 icon: cube
 order: 24
+art: tofu
 ---
 
 ## 1. Vylisuj vodu
@@ -13,6 +14,8 @@ Tofu je nasiaknuté vodou, ktorá bráni chrumkavosti aj vsiaknutiu chuti.
 
 1. Sceď a zabaľ do čistej utierky.
 2. Zaťaž niečím ťažkým (doska a pár kníh alebo hrniec s vodou) na **15–30 minút**.
+
+{{art:tofu|Vylisované tofu na rozpálenej panvici chrumká, mokré sa varí.}}
 
 ## 2. Nakrájaj
 
