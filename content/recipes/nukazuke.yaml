@@ -1,0 +1,34 @@
+title: Nukazuke
+description: Japonská nakladaná zelenina z kvasenej ryžovej otrubovej hmoty. Uhorka, mrkva či reďkovka za pár hodín kyslastá, slaná a chrumkavá.
+cuisine: japonska
+meals: [domace, snack]
+categories: [domace/kvasene, salaty/prilohove]
+time: 30
+active: 30
+servings: 20
+difficulty: 3
+tags: [urob-si-sam, fermentacia]
+ahead: Nukadoko sa rozbieha 1–2 týždne, potom sa zelenina nakladá 6–24 hodín.
+nutrition: false
+yields: nukadoko na roky, zelenina podľa potreby
+keeps: { fridge: 5 }
+howto: [uchovavanie-zo-sveta]
+ingredients:
+  - ryzove-otruby: ~1 kg | ľahko opražené a vychladnuté
+  - sol: ~130 g | ostáva v otrubách
+  - voda: ~1 l | prevarená, vychladnutá
+  - kombu: ~1 ks
+  - cili-papricka: ~2 ks | sušené
+  - zazvor: ~1 pl | plátky
+  - uhorky-nakladacie: 6 ks | alebo mrkva, reďkovky, kaleráb
+steps:
+  - Otruby opraž na suchej panvici 5 minút na miernom ohni (zabije to plesne a pridá vôňu). Nechaj vychladnúť.
+  - Soľ rozpusti vo vode, pridaj k otrubám a rukami premiesiš na konzistenciu mokrého piesku. Vmiešaj kombu, čili a zázvor.
+  - Natlač do keramickej, sklenenej alebo plastovej nádoby s viekom.
+  - Prvých 7–14 dní zahrabávaj do hmoty zvyšky zeleniny (listy kapusty, šupky z mrkvy), po dni ich vyber a daj nové. Každý deň všetko premiešaj rukou až zo dna.
+  - Keď hmota voňá kyslasto a zemito, je hotová. Umytú zeleninu potri soľou a zahrab celú do otrúb – uhorky na 6–12 hodín, mrkvu a reďkovky na 12–24 hodín.
+  - Vyber, otri otruby, opláchni a nakrájaj. Podávaj k ryži.
+tips:
+  - Nukadoko miešaj každý deň – keď odchádzaš, daj ho do chladničky, spomalí sa a vydrží týždne.
+  - Príliš kyslé alebo riedke? Pridaj hrsť otrúb a soli. Biely povlak navrchu zamiešaj, farebnú pleseň odober aj s okolím.
+  - Zelenina z nukazuke je bohatá na vitamíny B z otrúb.

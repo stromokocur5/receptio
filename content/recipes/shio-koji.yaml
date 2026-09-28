@@ -1,0 +1,28 @@
+title: Shio koji
+description: Japonská slaná marináda z koji, ktorá z tofu, zeleniny aj húb vytiahne sladkosť a umami. Za týždeň hotová, v chladničke pol roka.
+cuisine: japonska
+meals: [domace]
+categories: [domace/kvasene, omacky/omacky]
+time: 10
+active: 10
+servings: 30
+difficulty: 1
+tags: [urob-si-sam, fermentacia]
+ahead: Kvasí 7–10 dní pri izbovej teplote.
+nutrition: false
+yields: cca 250 ml
+keeps: { fridge: 30 }
+howto: [koji]
+ingredients:
+  - koji: 100 g | sušené ryžové
+  - sol: 30 g
+  - voda: 140 ml | prevarená, vychladnutá
+steps:
+  - Koji rozdrob prstami, aby sa zrnká oddelili, a premiešaj so soľou.
+  - Zalej vodou tak, aby bolo celé koji ponorené, a premiešaj.
+  - Prikry voľne viečkom a nechaj 7–10 dní pri izbovej teplote. Raz denne premiešaj čistou lyžicou.
+  - Hotové je, keď voňá sladko ako ryžový puding a zrnká sa dajú roztlačiť. Rozmixuj ho dohladka (voliteľne) a daj do chladničky.
+tips:
+  - Na 200 g tofu stačí 1–2 PL – natri, nechaj cez noc v chladničke a opeč.
+  - Zeleninu (mrkvu, kapustu, uhorky) nechaj v shio koji 1–2 hodiny – vznikne jemne nakladaná príloha.
+  - Nahradí soľ v dresingoch a polievkach – na 1 ČL soli asi 1 PL shio koji.

@@ -1,0 +1,28 @@
+title: Vegánsky dashi
+description: Japonský vývar z riasy kombu a sušených shiitake. Čistá umami chuť na miso polievku, ramen a omáčky – za studena cez noc.
+cuisine: japonska
+meals: [domace]
+categories: [domace/zaklady, polievky/azijske]
+time: 15
+active: 5
+servings: 4
+difficulty: 1
+tags: [urob-si-sam, lacne]
+ahead: Za studena sa lúhuje cez noc (8–12 hodín).
+nutrition: false
+yields: cca 1 l
+keeps: { fridge: 4 }
+howto: [dashi]
+related: [miso-polievka, miso-ramen]
+ingredients:
+  - kombu: 1 ks | 10 × 10 cm
+  - susene-huby: ~20 g | celé shiitake
+  - voda: 1 l | studená
+steps:
+  - Kombu len zotri suchou utierkou – biely povlak neumývaj, to je chuť.
+  - Kombu a huby daj do pohára alebo fľaše so studenou vodou a nechaj cez noc v chladničke.
+  - Ráno vyber kombu a huby. Dashi je hotový.
+  - Rýchlejšie za tepla – po 30 minútach namáčania pomaly zohrej na 60–70 °C, drž 30 minút a kombu vyber pred varom.
+tips:
+  - Namočené shiitake nakrájaj do polievky, kombu použi ešte raz alebo ho nakrájaj na pásiky do kinpiry.
+  - Kombu je veľmi bohaté na jód – dashi nepi vo veľkom každý deň.

@@ -1,0 +1,32 @@
+title: Tortilly z nixtamalu
+description: Pravé mexické kukuričné tortilly z celých zŕn uvarených s vápnom. Mäkké, voňavé, bez lepku – úplne iná liga ako z obchodu.
+cuisine: mexicka
+meals: [domace, obed, vecera]
+categories: [domace/zaklady, prilohy/chlieb]
+time: 90
+active: 60
+servings: 8
+difficulty: 3
+tags: [urob-si-sam]
+ahead: Kukurica s vápnom stojí cez noc (8–12 hodín).
+yields: cca 24 tortíl
+keeps: { fridge: 5, freezer: 3 }
+howto: [nixtamalizacia]
+ingredients:
+  - kukurica-susena: 500 g
+  - vapno-potravinarske: ~5 g | 1 % váhy kukurice
+  - voda: ~1,5 l | na varenie
+  - sol: 1 čl
+  - voda: 1/2 hrnček | do cesta podľa potreby
+steps:
+  - Kukuricu opláchni a daj do nerezového hrnca s 1,5 l vody. Vápno rozmiešaj v troche vody (rukavice, pozor na oči) a vlej do hrnca.
+  - Prived do varu a varte na miernom ohni 30–45 minút, kým sa šupka dá zošúchať prstami. Zrná majú byť zvonka mäkké, vnútri ešte pevné.
+  - Nechaj v tej istej vode cez noc odstáť.
+  - Sceď a pod tečúcou vodou šúchaj zrná medzi dlaňami, kým voda nie je číra a šupky zmyté.
+  - Zomeľ nadrobno – mlynčekom na mäso 2–3×, stolovým mlynom alebo v robote s troškou vody. Vymiesiš so soľou a vodou na vláčne cesto (masa), ktoré sa nelepí na ruky.
+  - Z masy urob guľky po 35 g, prikry vlhkou utierkou. Každú stlač medzi dvoma kusmi fólie (lisom na tortilly alebo dnom ťažkej panvice) na placku 15 cm.
+  - Rozpáľ suchú panvicu na vysokom ohni. Tortillu opeč 30 sekúnd, otoč, 1 minútu, otoč znova – má sa nafúknuť. Hotové ukladaj do utierky, zmäknú v pare.
+tips:
+  - Ak sa okraje trhajú, pridaj do masy lyžicu vody. Ak sa lepí na fóliu, je príliš mokrá.
+  - Zo sušenej masa harina je rýchla verzia – len zmiešaj s vodou a soľou.
+  - Hliníkový hrniec nepoužívaj – vápno ho rozpúšťa.

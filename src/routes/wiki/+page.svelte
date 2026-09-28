@@ -80,6 +80,13 @@
 			text: 'K dobrému jedlu aj trochu cvičenia. Bez posilňovne.',
 			tone: 'var(--tomato)',
 			icon: 'dumbbell'
+		},
+		{
+			id: 'svet',
+			title: 'Techniky zo sveta',
+			text: 'Osvedčené postupy z iných krajín – v kuchyni, na záhrade, v špajzi aj pri pohybe. U nás málo známe, ale fungujú.',
+			tone: 'var(--sky)',
+			icon: 'globe'
 		}
 	];
 
@@ -97,6 +104,12 @@
 			{ id: 'techniky-pestovania', title: 'Techniky pestovania' },
 			{ id: 'stromy-huby', title: 'Stromy, kry a huby' },
 			{ id: 'uroda', title: 'Úroda a semená' }
+		],
+		svet: [
+			{ id: 'svet-kuchyna', title: 'V kuchyni' },
+			{ id: 'svet-spajza', title: 'Domáca výroba a uchovávanie' },
+			{ id: 'svet-zahrada', title: 'Na záhrade' },
+			{ id: 'svet-telo', title: 'Pohyb a stravovanie' }
 		]
 	};
 

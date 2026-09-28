@@ -107,6 +107,7 @@ describe('content', () => {
 			'pestovanie',
 			'pohyb',
 			'suplementy',
+			'svet',
 			'zaklady'
 		]);
 	});

@@ -341,7 +341,14 @@ export interface GrowCombo {
 	gear: string[];
 }
 
-export const WIKI_SECTIONS = ['zaklady', 'suplementy', 'navody', 'pestovanie', 'pohyb'] as const;
+export const WIKI_SECTIONS = [
+	'zaklady',
+	'suplementy',
+	'navody',
+	'pestovanie',
+	'pohyb',
+	'svet'
+] as const;
 export type WikiSection = (typeof WIKI_SECTIONS)[number];
 /** Sub-groups of the long sections ("Základy", "Pestovanie"). */
 export const WIKI_GROUPS = [
@@ -351,6 +358,10 @@ export const WIKI_GROUPS = [
 	'organizacia',
 	'domaca-vyroba',
 	'konzervovanie',
+	'svet-kuchyna',
+	'svet-spajza',
+	'svet-zahrada',
+	'svet-telo',
 	'zaciname',
 	'techniky-pestovania',
 	'stromy-huby',
