@@ -122,6 +122,6 @@ describe('content', () => {
 		const guide = content.wiki.find((w) => w.slug === 'vyvysene-zahony')!;
 		expect(guide.art).toBe('hugelkultura');
 		expect(guide.html.match(/<figure class="tech-art">/g)).toHaveLength(2);
-		expect(guide.html).not.toContain('{{art:');
+		for (const page of content.wiki) expect(page.html, page.slug).not.toContain('{{art:');
 	});
 });

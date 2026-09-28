@@ -4,6 +4,7 @@ summary: Stačí ich dosť a pestro. Strukoviny každý deň.
 section: suplementy
 icon: bean
 order: 8
+art: bielkoviny
 ---
 
 ## Koľko
@@ -27,6 +28,8 @@ Rastlinné bielkoviny sú kompletné, len v rôznom pomere. Obilniny majú menej
 | Cícer (suchý / varený)    | ~20 g / ~8 g |
 | Výživné droždie           | ~45 g        |
 | Sójové mlieko             | ~3,3 g       |
+
+{{art:bielkoviny|Najhustejšie rastlinné zdroje bielkovín na 100 g.}}
 
 ## Proteínový prášok
 

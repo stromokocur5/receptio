@@ -4,9 +4,12 @@ summary: Päť cvikov na stuhnutý krk, chrbát a bedrá po dni za počítačom 
 section: pohyb
 icon: heart
 order: 3
+art: strecing
 ---
 
 Dlhé sedenie skracuje bedrové flexory a hrudné svaly a preťažuje krk. Tieto cviky rob **večer alebo po tréningu**. Každú polohu drž **30–45 sekúnd**, dýchaj pokojne a nič nenaťahuj cez bolesť.
+
+{{art:strecing|Každú polohu drž pokojne, naťahuj len do príjemného pocitu.}}
 
 1. **Krk** – sadni si rovno, ucho pomaly skloň k ramenu, druhé rameno ťahaj dolu. Obe strany.
 2. **Hrudník vo dverách** – predlaktia opri o zárubňu vo výške ramien a jemne sa nakloň dopredu.

@@ -4,6 +4,7 @@ summary: ALA zo semienok každý deň, pre DHA a EPA zváž olej z rias.
 section: suplementy
 icon: drop
 order: 3
+art: omega-3
 ---
 
 Omega-3 mastné kyseliny sú tri hlavné: **ALA** (rastliny), **EPA** a **DHA** (ryby, ktoré ich majú z rias). Telo si z ALA vie urobiť EPA a DHA, ale len málo, rádovo jednotky percent.
@@ -18,6 +19,8 @@ Stačí jedno z toho:
 - varenie na **repkovom oleji** namiesto slnečnicového
 
 Receptio pri receptoch počíta ALA a v pláne ukáže, či si na dennom cieli (~2 g).
+
+{{art:omega-3|Z ALA si telo spraví len trochu EPA a DHA, olej z rias ich dá priamo.}}
 
 ## DHA a EPA
 

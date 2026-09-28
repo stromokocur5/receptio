@@ -4,9 +4,12 @@ summary: Na Slovensku od októbra do marca slnko nestačí nikomu, nielen vegán
 section: suplementy
 icon: sun
 order: 2
+art: vitamin-d
 ---
 
 Vitamín D si telo vyrába v koži z UVB žiarenia. Na našej zemepisnej šírke (~48–49° s. š.) je v zime slnko príliš nízko a **od októbra do marca sa v koži takmer netvorí**. Z potravy ho vegáni dostanú minimum (obohatené rastlinné mlieka, huby ožiarené UV).
+
+{{art:vitamin-d|Od októbra do marca je slnko nízko a v koži sa vitamín D takmer netvorí.}}
 
 ## Koľko
 

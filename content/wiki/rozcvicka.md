@@ -4,9 +4,12 @@ summary: Desať minút bez náradia, ktoré rozhýbu kĺby a nakopnú deň. Zvl�
 section: pohyb
 icon: sun
 order: 1
+art: rozcvicka
 ---
 
 Rozcvička nemá unaviť, len rozhýbať telo po noci. Rob ju pomaly a plynulo, **nič nemá bolieť**.
+
+{{art:rozcvicka|Rozhýbať, nie unaviť – plynulé pohyby bez trhania.}}
 
 ## Postup
 

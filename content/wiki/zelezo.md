@@ -4,6 +4,7 @@ summary: Rastlín ho je dosť, trik je vo vstrebávaní. Nesuplementuj naslepo.
 section: suplementy
 icon: bolt
 order: 5
+art: zelezo
 ---
 
 Vegáni zjedia železa často **viac** ako mäsožravci, ale rastlinné (nehémové) železo sa vstrebáva horšie. Pri vegánskej strave sa preto odporúča príjem až **~1,8-násobne vyšší**, ako je bežná referenčná hodnota (14 mg).
@@ -18,6 +19,8 @@ Vegáni zjedia železa často **viac** ako mäsožravci, ale rastlinné (nehémo
 - **Čaj a kávu** si daj aspoň hodinu pred jedlom alebo po ňom, triesloviny ho blokujú.
 - **Vápnikové suplementy** neber naraz s jedlom bohatým na železo.
 - Namáčanie, klíčenie a fermentácia (kvások) znižujú fytáty.
+
+{{art:zelezo|Vitamín C v jedle pomáha, čaj a káva pri jedle brzdia.}}
 
 ## Suplement? Len po teste
 

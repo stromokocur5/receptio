@@ -10,7 +10,7 @@ import {
 	recipeWarnings
 } from '$lib/nutrition';
 import { CATEGORY_PATHS } from '$lib/categories';
-import { TECHNIQUE_ART_NAMES, techniqueFigure } from '$lib/technique-art';
+import { ART_NAMES, artFigure } from '$lib/wiki-art';
 import { normalizeSearch } from '$lib/labels';
 import { bestPrice } from '$lib/pricing';
 import {
@@ -360,8 +360,8 @@ const wikiFrontmatterSchema = z
 		group: z.enum(WIKI_GROUPS).optional(),
 		icon: z.string(),
 		order: z.number(),
-		/** Drawing from technique-art.ts shown on the page's card. */
-		art: z.enum(TECHNIQUE_ART_NAMES as [string, ...string[]]).optional()
+		/** Drawing from wiki-art shown on the page's card. */
+		art: z.enum(ART_NAMES as [string, ...string[]]).optional()
 	})
 	.strict();
 
@@ -518,8 +518,9 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			if (!match) throw new Error(`${where}: chýba frontmatter`);
 			const meta = parseWith(wikiFrontmatterSchema, parseYaml(match[1]), where);
 			// `{{art:name|caption}}` on its own line becomes one of the drawn diagrams.
-			const body = match[2].replace(/^\{\{art:([a-z-]+)(?:\|(.+))?\}\}$/gm, (_m, name, caption) =>
-				techniqueFigure(name, caption)
+			const body = match[2].replace(
+				/^\{\{art:([a-z0-9-]+)(?:\|(.+))?\}\}$/gm,
+				(_m, name, caption) => artFigure(name, caption)
 			);
 			return { slug: fileId(path), ...meta, html: marked.parse(body, { async: false }) };
 		})

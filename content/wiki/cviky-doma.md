@@ -4,9 +4,12 @@ summary: Tri krátke tréningy týždenne s vlastnou váhou. Plán pre začiato�
 section: pohyb
 icon: dumbbell
 order: 2
+art: drep-klik
 ---
 
 Na silu netreba posilňovňu. Stačí podlaha, stolička a **20–30 minút trikrát týždenne** (napr. pondelok, streda, piatok). Pred tréningom sa rozcvič – **[rozcvička na 10 minút](/wiki/rozcvicka)**.
+
+{{art:drep-klik|Drep aj klik: chrbát rovný, pohyb pomaly a pod kontrolou.}}
 
 ## Tréning
 

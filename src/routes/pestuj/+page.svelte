@@ -30,7 +30,7 @@
 		type SharedGarden
 	} from '$lib/garden';
 	import { normalizeSearch } from '$lib/labels';
-	import { techniqueSvg } from '$lib/technique-art';
+	import { artSvg } from '$lib/wiki-art';
 	import { bestPrice } from '$lib/pricing';
 	import { IN_MONTH, MONTH_NAMES } from '$lib/season';
 	import { favorites, garden, plan as mealPlan, settings, ui } from '$lib/state.svelte';
@@ -796,8 +796,8 @@
 				<a class="card tech-card" href="/wiki/{t.slug}" style:--i={i}>
 					{#if t.art}
 						<span class="tech-thumb" aria-hidden="true">
-							<!-- eslint-disable-next-line svelte/no-at-html-tags -- static drawing from technique-art.ts -->
-							{@html techniqueSvg(t.art)}
+							<!-- eslint-disable-next-line svelte/no-at-html-tags -- static drawing from wiki-art -->
+							{@html artSvg(t.art)}
 						</span>
 					{/if}
 					<span class="tech-body">

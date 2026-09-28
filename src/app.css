@@ -493,7 +493,7 @@ input[type='range'] {
 	height: 100%;
 }
 
-/* ── Growing-technique drawings (src/lib/technique-art.ts) ── */
+/* ── Growing-technique drawings (src/lib/wiki-art) ── */
 .tech-art {
 	margin: 1.6em 0;
 	padding: 14px 14px 10px;
@@ -890,6 +890,317 @@ input[type='range'] {
 	transform-box: view-box;
 	animation: ta-sway 4.5s ease-in-out infinite alternate;
 	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-figure {
+	stroke: var(--ink);
+	stroke-width: 5;
+	transform: translate(var(--x1), var(--y1));
+	animation: ta-figure var(--dur, 1.6s) ease-in-out infinite alternate;
+}
+:is(.tech-art, .tech-art-svg) .ta-joint {
+	transform: rotate(var(--from));
+	animation: ta-joint var(--dur, 1.6s) ease-in-out infinite alternate;
+}
+:is(.tech-art, .tech-art-svg) .ta-figure .ta-joint {
+	animation-duration: inherit;
+}
+:is(.tech-art, .tech-art-svg) .ta-far {
+	stroke: color-mix(in srgb, var(--ink) 45%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-head {
+	fill: var(--card);
+	stroke-width: 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-floor {
+	stroke: var(--line);
+	stroke-width: 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-dumbbell {
+	stroke: var(--tomato);
+	stroke-width: 3;
+	fill: var(--tomato);
+}
+:is(.tech-art, .tech-art-svg) .ta-bowl {
+	fill: var(--plate);
+	stroke: var(--plate-rim);
+}
+:is(.tech-art, .tech-art-svg) .ta-food,
+:is(.tech-art, .tech-art-svg) .ta-tofu {
+	fill: color-mix(in srgb, var(--turmeric) 55%, var(--card));
+	stroke: var(--turmeric);
+}
+:is(.tech-art, .tech-art-svg) .ta-banana {
+	fill: #f2d64b;
+	stroke: #b99a1c;
+}
+:is(.tech-art, .tech-art-svg) .ta-shake {
+	fill: color-mix(in srgb, var(--plum) 45%, var(--card));
+	stroke: none;
+}
+@keyframes ta-figure {
+	to {
+		transform: translate(var(--x2), var(--y2));
+	}
+}
+@keyframes ta-joint {
+	to {
+		transform: rotate(var(--to));
+	}
+}
+:is(.tech-art, .tech-art-svg) .ta-bar-bg {
+	stroke: none;
+	fill: color-mix(in srgb, var(--line) 70%, transparent);
+}
+:is(.tech-art, .tech-art-svg) .ta-bar {
+	stroke: none;
+	fill: var(--leaf-2);
+	transform-box: fill-box;
+	transform-origin: left;
+	animation: ta-grow-x 1.2s var(--ease-out) both;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-bar-v {
+	stroke: none;
+	transform-box: fill-box;
+	transform-origin: bottom;
+	animation: ta-grow-y 0.9s var(--ease-out) both;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-pill {
+	fill: color-mix(in srgb, var(--tomato) 30%, var(--card));
+	stroke: var(--tomato);
+}
+:is(.tech-art, .tech-art-svg) .ta-pill-line {
+	stroke: var(--tomato);
+	stroke-width: 1;
+}
+:is(.tech-art, .tech-art-svg) .ta-pop {
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: ta-pop 2.4s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-dish {
+	fill: color-mix(in srgb, var(--sky) 10%, var(--card));
+	stroke: var(--sky);
+	stroke-width: 2.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-bacterium rect {
+	fill: color-mix(in srgb, var(--leaf-2) 55%, transparent);
+	stroke: var(--leaf);
+}
+:is(.tech-art, .tech-art-svg) .ta-bacterium {
+	animation: ta-wobble 2s ease-in-out infinite alternate;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-bottle,
+:is(.tech-art, .tech-art-svg) .ta-jar {
+	fill: color-mix(in srgb, var(--sky) 10%, var(--card));
+	stroke: var(--sky);
+}
+:is(.tech-art, .tech-art-svg) .ta-cap,
+:is(.tech-art, .tech-art-svg) .ta-jar-lid,
+:is(.tech-art, .tech-art-svg) .ta-shaker-top {
+	fill: var(--ink-2);
+	stroke: var(--ink-2);
+}
+:is(.tech-art, .tech-art-svg) .ta-shaker {
+	fill: color-mix(in srgb, var(--sky) 12%, var(--card));
+	stroke: var(--ink-2);
+}
+:is(.tech-art, .tech-art-svg) .ta-shake {
+	transform-origin: 90px 100px;
+	animation: ta-shake 1.6s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-grain {
+	fill: var(--ink-2);
+	stroke: none;
+	animation: ta-grain 1.6s ease-in infinite;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-salt-fill {
+	stroke: none;
+	fill: #efe6dc;
+}
+:is(.tech-art, .tech-art-svg) .ta-check {
+	stroke: var(--leaf);
+	stroke-width: 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-no {
+	stroke: var(--tomato);
+	stroke-width: 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-spoon-bowl {
+	fill: var(--plate);
+	stroke: var(--plate-rim);
+}
+:is(.tech-art, .tech-art-svg) .ta-spoon {
+	stroke: var(--plate-rim);
+	stroke-width: 3;
+}
+:is(.tech-art, .tech-art-svg) .ta-seed-flax,
+:is(.tech-art, .tech-art-svg) .ta-lentil,
+:is(.tech-art, .tech-art-svg) .ta-pumpkin-seed {
+	stroke: none;
+	fill: #a8743f;
+}
+:is(.tech-art, .tech-art-svg) .ta-lentil {
+	fill: color-mix(in srgb, var(--tomato) 55%, #a8743f);
+}
+:is(.tech-art, .tech-art-svg) .ta-pumpkin-seed {
+	fill: #7ea24a;
+}
+:is(.tech-art, .tech-art-svg) .ta-chia {
+	stroke: none;
+	fill: var(--ink-2);
+}
+:is(.tech-art, .tech-art-svg) .ta-walnut {
+	fill: color-mix(in srgb, #a8743f 40%, var(--card));
+	stroke: #a8743f;
+}
+:is(.tech-art, .tech-art-svg) .ta-thin-arrow {
+	stroke-dasharray: 3 4;
+}
+:is(.tech-art, .tech-art-svg) .ta-alga {
+	stroke: var(--leaf);
+	stroke-width: 3;
+	animation: ta-sway 3s ease-in-out infinite alternate;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-oil-drop {
+	fill: color-mix(in srgb, var(--turmeric) 70%, transparent);
+	stroke: var(--turmeric);
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: ta-pop 2.4s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-lemon {
+	fill: #f2d64b;
+	stroke: #b99a1c;
+}
+:is(.tech-art, .tech-art-svg) .ta-boost {
+	animation: ta-rise-arrow 1.8s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-cup {
+	fill: color-mix(in srgb, var(--wood) 35%, var(--card));
+	stroke: var(--wood);
+}
+:is(.tech-art, .tech-art-svg) .ta-tilt {
+	transform-origin: 240px 70px;
+	animation: ta-tilt 3s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-head-simple {
+	fill: var(--card);
+	stroke: var(--ink);
+	stroke-width: 2.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-person {
+	stroke: var(--ink);
+	stroke-width: 3.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-ray {
+	stroke: var(--turmeric);
+	stroke-width: 2.5;
+	stroke-dasharray: 6 6;
+	animation: ta-shine 1.2s linear infinite;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-ray-weak {
+	opacity: 0.35;
+}
+:is(.tech-art, .tech-art-svg) .ta-winter {
+	fill: color-mix(in srgb, var(--sky) 12%, var(--card));
+}
+:is(.tech-art, .tech-art-svg) .ta-milk {
+	stroke: none;
+	fill: #f1ead8;
+}
+:is(.tech-art, .tech-art-svg) .ta-tofu-line {
+	stroke: var(--turmeric);
+	stroke-width: 1;
+}
+@keyframes ta-grow-x {
+	from {
+		transform: scaleX(0);
+	}
+}
+@keyframes ta-grow-y {
+	from {
+		transform: scaleY(0);
+	}
+}
+@keyframes ta-pop {
+	0%,
+	100% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.12);
+	}
+}
+@keyframes ta-wobble {
+	from {
+		transform: rotate(-10deg) translate(-2px, 0);
+	}
+	to {
+		transform: rotate(10deg) translate(2px, 2px);
+	}
+}
+@keyframes ta-shake {
+	0%,
+	100% {
+		transform: rotate(0deg);
+	}
+	20% {
+		transform: rotate(40deg);
+	}
+	30% {
+		transform: rotate(32deg);
+	}
+	40% {
+		transform: rotate(42deg);
+	}
+	60% {
+		transform: rotate(0deg);
+	}
+}
+@keyframes ta-grain {
+	0%,
+	30% {
+		transform: translateY(0);
+		opacity: 0;
+	}
+	40% {
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(30px);
+		opacity: 0;
+	}
+}
+@keyframes ta-rise-arrow {
+	0%,
+	100% {
+		transform: translateY(6px);
+	}
+	50% {
+		transform: translateY(-4px);
+	}
+}
+@keyframes ta-tilt {
+	0%,
+	30%,
+	100% {
+		transform: rotate(0deg);
+	}
+	55%,
+	75% {
+		transform: rotate(18deg);
+	}
+}
+@keyframes ta-shine {
+	to {
+		stroke-dashoffset: -24;
+	}
 }
 @keyframes ta-sway {
 	from {

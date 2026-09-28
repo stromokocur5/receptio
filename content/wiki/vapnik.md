@@ -4,6 +4,7 @@ summary: Obohatené rastlinné mlieka a správne tofu robia väčšinu práce.
 section: suplementy
 icon: bone
 order: 7
+art: vapnik
 ---
 
 Cieľ pre dospelých je **~1000 mg denne**.
@@ -14,6 +15,8 @@ Cieľ pre dospelých je **~1000 mg denne**.
 - **Tofu zrážané síranom vápenatým** (na obale E516 alebo „calcium sulphate“) môže mať 350+ mg na 100 g. Tofu s nigari ho má výrazne menej.
 - Kel, brokolica, bok choy, rukola, figy, mandle, nelúpaný sezam a tahini z neho.
 - Minerálne vody s vysokým obsahom vápnika (pozri etiketu, niektoré majú 200+ mg/l).
+
+{{art:vapnik|Ako sa dá za deň prísť na 1000 mg vápnika.}}
 
 ## Pozor na špenát
 

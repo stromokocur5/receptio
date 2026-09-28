@@ -4,6 +4,7 @@ summary: Koľko bielkovín, čo jesť pred a po tréningu a na čo si dať pozor
 section: pohyb
 icon: bolt
 order: 4
+art: jedlo-cvicenie
 ---
 
 Rastlinná strava a šport idú dokopy – vegánov nájdeš medzi maratóncami, vzpieračmi aj v profi futbale. Stačí myslieť na pár vecí.
@@ -13,6 +14,8 @@ Rastlinná strava a šport idú dokopy – vegánov nájdeš medzi maratóncami,
 - Pri pravidelnom cvičení **1,4–1,6 g na kg** telesnej hmotnosti (70 kg ≈ 100–110 g denne).
 - Rozdeľ ich do **3–4 jedál po 25–35 g**. Tofu, tempeh, seitan, strukoviny a sójové mlieko sú najhustejšie zdroje.
 - Recepty s najviac bielkovinami nájdeš **[zoradené podľa bielkovín](/recepty?sort=protein-eur)**. Viac v článku **[Bielkoviny](/wiki/bielkoviny)**.
+
+{{art:jedlo-cvicenie|Sacharidy pred tréningom, bielkoviny a sacharidy po ňom.}}
 
 ## Pred a po tréningu
 
