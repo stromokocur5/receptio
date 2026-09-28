@@ -1,8 +1,92 @@
 import { arrow, crumbs, drop, ground, label, plant, sun, worm } from './kit';
-import { bubbles, flames, jar, pot } from './kitchen';
+import { bubbles, flames, jar, pot, steam } from './kitchen';
 
 /** Techniques from other countries – kitchen, pantry, garden and body. */
 export const WORLD_ART: Record<string, () => string> = {
+	'zahony-sveta': () => {
+		const counts = [1, 4, 9, 16, 4, 1, 16, 9, 9, 16, 1, 4, 16, 9, 4, 1];
+		return (
+			`<rect class="ta-box" x="60" y="10" width="170" height="170" rx="4"/>` +
+			counts
+				.map((n, i) => {
+					const cx = 60 + (i % 4) * 42.5;
+					const cy = 10 + Math.floor(i / 4) * 42.5;
+					const per = Math.sqrt(n);
+					const step = 42.5 / (per + 1);
+					let dots = '';
+					for (let a = 1; a <= per; a++)
+						for (let b = 1; b <= per; b++)
+							dots += `<circle class="${n === 1 ? 'ta-sq-big' : n === 16 ? 'ta-sq-tiny' : 'ta-sq-mid'}" style="--d:${(i * 0.1).toFixed(1)}s" cx="${(cx + a * step).toFixed(1)}" cy="${(cy + b * step).toFixed(1)}" r="${n === 1 ? 12 : n === 4 ? 6 : n === 9 ? 4 : 2.6}"/>`;
+					return dots;
+				})
+				.join('') +
+			`<path class="ta-grid-line" d="M102.5 10v170M145 10v170M187.5 10v170M60 52.5h170M60 95h170M60 137.5h170"/>` +
+			label(250, 40, '1 paradajka', 'start') +
+			label(250, 70, '4 šaláty', 'start') +
+			label(250, 100, '9 cvikiel', 'start') +
+			label(250, 130, '16 mrkiev', 'start') +
+			label(250, 170, '30 × 30 cm', 'start')
+		);
+	},
+
+	'krajina-sveta': () =>
+		`<path class="ta-terrace" d="M0 60h80v30h60v30h60v30h60v30h60v10H0Z"/>` +
+		`<path class="ta-stone-wall" d="M80 60v30M140 90v30M200 120v30M260 150v30"/>` +
+		[40, 110, 170, 230, 290]
+			.map((x, i) => plant(x, 60 + i * 30, 22, i * 0.3, i % 2 ? 'fruit' : 'leafy'))
+			.join('') +
+		[0, 1, 2].map((i) => drop(20 + i * 12, 10, i * 0.7, 40)).join('') +
+		`<path class="ta-trickle" d="M80 64c10 10 20 18 30 26M140 94c10 10 20 18 30 26M200 124c10 10 20 18 30 26"/>` +
+		sun(290, 26, 10) +
+		label(160, 20, 'terasy: kamene držia pôdu, vodu aj teplo', 'middle'),
+
+	'starostlivost-sveta': () =>
+		ground(150) +
+		[60, 100, 140, 180, 220]
+			.map(
+				(x, i) =>
+					`<path class="ta-maize" d="M${x} 150V70M${x} 110l-14-10M${x} 96l14-12M${x} 124l14-8"/>`
+			)
+			.join('') +
+		[80, 120, 160, 200].map((x, i) => plant(x, 150, 16, i * 0.3, 'sprout')).join('') +
+		`<path class="ta-grass-border" d="M10 150c2-30 6-40 4-60M20 150c-2-26 4-40 0-56M280 150c2-30 6-40 4-60M292 150c-2-26 4-40 0-56M304 150c2-30 6-40 4-60"/>` +
+		`<g class="ta-pushed"><g class="ta-butterfly"><path d="M150 40c-10-10-18-2-10 6 8 6 10-6 10-6Zm0 0c10-10 18-2 10 6-8 6-10-6-10-6Z"/></g></g>` +
+		`<path class="ta-arrow" d="M170 44c40 0 90 10 110 40"/><path class="ta-arrow" d="M274 76l6 8 2-10"/>` +
+		label(160, 172, 'desmodium medzi kukuricou odpudí', 'middle') +
+		label(160, 184, 'tráva po okraji priláka škodcov preč', 'middle'),
+
+	'zaklady-chuti': () => {
+		const heap = (x: number, colors: string[], name: string) =>
+			colors
+				.map(
+					(c, i) =>
+						`<g class="ta-float" style="--d:${i * 0.3}s">${Array.from({ length: 5 }, (_, j) => `<rect class="ta-dice" style="fill:${c}" x="${x - 30 + i * 20 + (j % 2) * 6}" y="${86 - Math.floor(j / 2) * 7}" width="7" height="7" rx="1.5"/>`).join('')}</g>`
+				)
+				.join('') + label(x, 120, name, 'middle');
+		return (
+			`<rect class="ta-board-kitchen" x="10" y="100" width="300" height="12" rx="5"/>` +
+			heap(60, ['#f1ead8', '#ef8a2d', '#8fb85a'], 'soffritto') +
+			heap(160, ['#f1ead8', '#f1ead8', '#d9582f'], 'sofrito') +
+			heap(260, ['#dcb45a', '#f5efe1', '#6fa35a'], 'zázvor, cesnak, cibuľka') +
+			`<path class="ta-pan" d="M100 150h120l-10 18H110Z"/><path class="ta-handle-long" d="M220 152l40-10"/>` +
+			flames(160, 186, 0.6) +
+			`<g class="ta-sizzle"><path d="M130 140l-4-8M160 136v-10M190 140l4-8"/></g>` +
+			label(160, 24, 'každá kuchyňa začína inou trojicou', 'middle')
+		);
+	},
+
+	'domacnost-sveta': () =>
+		`<g class="ta-float" style="--d:0s"><rect class="ta-lunchbox" x="60" y="80" width="70" height="44" rx="6"/></g>` +
+		`<path class="ta-furoshiki" d="M40 130c10-40 30-60 55-60s45 20 55 60c-20 10-90 10-110 0Z"/>` +
+		`<path class="ta-knot" d="M84 70c-6-12 4-18 11-10 7-8 17-2 11 10"/>` +
+		label(95, 160, 'furošiki', 'middle') +
+		// A tiffin tower.
+		`<rect class="ta-tiffin" x="190" y="60" width="50" height="28" rx="4"/><rect class="ta-tiffin" x="190" y="90" width="50" height="28" rx="4"/><rect class="ta-tiffin" x="190" y="120" width="50" height="28" rx="4"/>` +
+		`<path class="ta-tiffin-handle" d="M186 60V44h58v16"/>` +
+		steam(215, 40) +
+		label(215, 170, 'tiffin', 'middle') +
+		label(160, 20, 'mottainai – škoda vyhodiť', 'middle'),
+
 	'techniky-sveta': () =>
 		// Tadka: spices sizzle in a small pan and are poured over dal.
 		`<path class="ta-bowl" d="M40 120h140a70 44 0 0 1-140 0Z"/><path class="ta-curry" d="M48 126h124a62 34 0 0 1-124 0Z"/>` +

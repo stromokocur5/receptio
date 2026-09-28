@@ -3124,6 +3124,83 @@ input[type='range'] {
 		opacity: 0;
 	}
 }
+:is(.tech-art, .tech-art-svg) .ta-sq-big {
+	fill: color-mix(in srgb, var(--tomato) 55%, transparent);
+	stroke: var(--tomato);
+	transform-box: fill-box;
+	transform-origin: center;
+	animation: ta-pop 3s ease-in-out infinite;
+	animation-delay: var(--d, 0s);
+}
+:is(.tech-art, .tech-art-svg) .ta-sq-mid {
+	fill: color-mix(in srgb, var(--leaf-2) 55%, transparent);
+	stroke: var(--leaf);
+}
+:is(.tech-art, .tech-art-svg) .ta-sq-tiny {
+	fill: #ef8a2d;
+	stroke: none;
+}
+:is(.tech-art, .tech-art-svg) .ta-grid-line {
+	stroke: var(--wood);
+	stroke-width: 2.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-terrace {
+	fill: color-mix(in srgb, var(--soil) 30%, transparent);
+	stroke: var(--soil);
+	stroke-width: 2;
+}
+:is(.tech-art, .tech-art-svg) .ta-stone-wall {
+	stroke: #8a8a7a;
+	stroke-width: 5;
+	stroke-dasharray: 5 2;
+}
+:is(.tech-art, .tech-art-svg) .ta-trickle {
+	stroke: var(--sky);
+	stroke-width: 2;
+	stroke-dasharray: 4 4;
+	animation: ta-pour 1.2s linear infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-maize {
+	stroke: #8fb85a;
+	stroke-width: 2.5;
+}
+:is(.tech-art, .tech-art-svg) .ta-grass-border {
+	stroke: #6f9a3a;
+	stroke-width: 2;
+}
+:is(.tech-art, .tech-art-svg) .ta-pushed {
+	animation: ta-push 4s ease-in-out infinite;
+}
+:is(.tech-art, .tech-art-svg) .ta-dice {
+	stroke: rgba(0, 0, 0, 0.15);
+	stroke-width: 0.6;
+}
+:is(.tech-art, .tech-art-svg) .ta-furoshiki {
+	fill: color-mix(in srgb, var(--plum) 55%, var(--card));
+	stroke: var(--plum);
+}
+:is(.tech-art, .tech-art-svg) .ta-knot {
+	fill: color-mix(in srgb, var(--plum) 55%, var(--card));
+	stroke: var(--plum);
+	stroke-width: 2;
+}
+:is(.tech-art, .tech-art-svg) .ta-tiffin {
+	fill: color-mix(in srgb, var(--plate) 60%, #fff);
+	stroke: var(--plate-rim);
+	stroke-width: 2;
+}
+:is(.tech-art, .tech-art-svg) .ta-tiffin-handle {
+	stroke: var(--plate-rim);
+	stroke-width: 3;
+}
+@keyframes ta-push {
+	from {
+		transform: translate(0, 0);
+	}
+	to {
+		transform: translate(110px, 30px);
+	}
+}
 @keyframes ta-sway {
 	from {
 		transform: rotate(-2.5deg);
