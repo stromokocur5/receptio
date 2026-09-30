@@ -114,6 +114,7 @@ function stem(word: string): string {
 }
 
 const WORD_RE = /[\p{L}]+/gu;
+const MOVABLE_VOWEL = /^(\p{L}*[^aeiouy])[oe]([^aeiouy])$/u;
 /** Adjectives (olivový, sušené, čerstvá…) describe many ingredients, so they don't identify one. */
 const ADJECTIVE_END = /[ýáéíú]$/;
 
@@ -132,9 +133,16 @@ function nameWords(text: string, penalty: number): NameWord[] {
 	const all = (text.toLowerCase().match(WORD_RE) ?? []).filter((w) => w.length >= 3);
 	const nouns = all.filter((w) => !ADJECTIVE_END.test(w));
 	// "Sójové zrná": when every word looks like an adjective, keep them all.
-	return (nouns.length ? nouns : all).map((w) => {
+	return (nouns.length ? nouns : all).flatMap((w) => {
 		const word = normalizeSearch(w);
-		return { word, stem: stem(word), penalty };
+		const forms = [{ word, stem: stem(word), penalty }];
+		// Slovak drops the last vowel when declining: cukor → cukrom, ocot → octom, kôpor → kôprom.
+		const dropped = MOVABLE_VOWEL.exec(word);
+		if (dropped) {
+			const short = dropped[1] + dropped[2];
+			forms.push({ word: short, stem: short, penalty });
+		}
+		return forms;
 	});
 }
 
@@ -154,10 +162,17 @@ function matchWeight(stepWord: string, name: NameWord): number {
 	return commonPrefix(stepWord, name.word) - name.penalty - Math.min(lengthGap, 9) * 0.01;
 }
 
-/** Nouns of an ingredient name, including the parenthesized alias ("Rasca rímska (kmín)"). */
-function ingredientWords(name: string): NameWord[] {
-	const [main, ...aliases] = name.split('(');
-	return [...nameWords(main, 0), ...nameWords(aliases.join(' '), 0.5)];
+/**
+ * Nouns of an ingredient name, including the parenthesized alias ("Rasca rímska (kmín)") and the
+ * other names it goes by ("Sójový nápoj" is "mlieko" in the steps).
+ */
+function ingredientWords(ingredient: Ingredient | undefined): NameWord[] {
+	if (!ingredient) return [];
+	const [main, ...inParens] = ingredient.name.split('(');
+	return [
+		...nameWords(main, 0),
+		...nameWords([...inParens, ...(ingredient.aliases ?? [])].join(' '), 0.5)
+	];
 }
 
 /**
@@ -171,7 +186,7 @@ export function stepLines(
 ): RecipeLine[] {
 	const candidates = lines.map((line) => ({
 		line,
-		names: ingredientWords(byId.get(line.ingredientId)?.name ?? '')
+		names: ingredientWords(byId.get(line.ingredientId))
 	}));
 	const found = new Set<RecipeLine>();
 	for (const word of words(step)) {

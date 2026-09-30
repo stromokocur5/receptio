@@ -1,0 +1,45 @@
+title: Segedínsky guľáš s knedľou
+description: Kyslá kapusta podusená so sladkou paprikou, rascou a údeným tofu, zjemnená smotanou. K tomu kysnutá knedľa – ako v každej jedálni, len lepšie.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [hlavne/kari, hlavne/tofu]
+time: 90
+active: 35
+servings: 4
+difficulty: 1
+tags: [klasika, meal-prep, one-pot, vela-bielkovin]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Na druhý deň je lepší. Knedľu zohrej na pare.'
+related: [knedla-kysnuta, kapustnica]
+ingredients:
+  - kysla-kapusta: 3 hrnček
+  - tofu-udene: 360 g
+  - sojove-granule: 1/2 hrnček | kocky, voliteľne
+  - olej: 2 pl
+  - cibula: 2 ks
+  - cesnak: 2 ks
+  - sladka-paprika: 2 pl
+  - udena-paprika: 1 čl
+  - rasca: 1 čl
+  - bobkovy-list: 2 ks
+  - paradajkovy-pretlak: 1 pl
+  - zeleninovy-vyvar: 2 hrnček
+  - rastlinna-smotana: 1/2 hrnček | na varenie
+  - hladka-muka: 1 pl
+  - sol: podľa chuti
+  - hladka-muka: 250 g | na knedľu
+  - drozdie: 1 čl | sušené, na knedľu
+  - sojove-mlieko: 150 ml | vlažné, na knedľu
+steps:
+  - Knedľa. Múku zmiešaj s droždím a 1/2 ČL soli, prilej vlažné mlieko a vypracuj mäkké hladké cesto. Prikry a nechaj hodinu kysnúť, medzitým var guľáš.
+  - Kapustu nechaj odkvapkať. Ak je veľmi kyslá, prepláchni ju vodou.
+  - Tofu nakrájaj na kocky a opeč na oleji na strednom ohni dozlatista. Vyber.
+  - Na tom istom oleji opekaj nadrobno nakrájanú cibuľu 8 minút do zlatista, pridaj cesnak, pretlak a rascu.
+  - Odstav z ohňa, vmiešaj obe papriky (nesmú sa pripáliť) a hneď podlej vývarom.
+  - Pridaj kapustu, bobkový list, tofu a granulát a duste prikryté na miernom ohni 30 minút.
+  - Smotanu rozmiešaj s múkou, vlej do guľášu a povar 5 minút, kým nezhustne. Dochuť soľou.
+  - Z vykysnutého cesta vytvaruj valček, nechaj 10 minút podkysnúť a var ho vo vriacej osolenej vode 10 minút, otoč a var ďalších 10 minút.
+  - Knedľu hneď prepichni vidličkou, nakrájaj niťou na plátky a podávaj s guľášom.
+tips:
+  - Paprika sa na horúcom oleji pripáli za pár sekúnd a zhorkne – preto vždy mimo ohňa.

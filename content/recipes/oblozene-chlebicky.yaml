@@ -3,20 +3,25 @@ description: Veka natretá vlašským šalátom, navrch plátky klobásy alebo �
 cuisine: slovenska
 meals: [ranajky, vecera, snack]
 categories: [comfort/bufet, snacky/party, ranajky/slane]
-time: 30
-active: 30
+time: 100
+active: 40
 servings: 6
 difficulty: 1
-tags: [party, klasika, bez-varenia]
-ahead: Vlašský šalát a klobásu priprav deň vopred.
+tags: [party, klasika]
+ahead: Vlašský šalát sprav deň vopred – do rána sa chute spoja.
 keeps: { fridge: 1 }
 related: [vlassky-salat, pikantna-klobasa, vajickova-natierka-tofu]
 ingredients:
   - bageta: 2 ks | veka, nakrájaná šikmo na 18 plátkov
-  - veganska-majoneza: 2 pl | na zlepenie
-  - zemiaky: 2 ks | na vlašský šalát
+  - zemiaky: 2 ks | uvarené v šupke
+  - mrkva: 1 ks | uvarená
+  - hrasok: 1/2 hrnček | uvarený
   - kysle-uhorky: 4 ks
-  - hrasok: 1/2 hrnček
+  - veganska-majoneza: 6 pl
+  - horcica: 1 čl
+  - citron: 1 čl
+  - sol: 1/2 čl
+  - cierne-korenie: 1 štipka
   - tofu-udene: 180 g | alebo plátky pikantnej klobásy
   - tofu-natural: 150 g
   - kurkuma: 1/4 čl
@@ -26,8 +31,10 @@ ingredients:
   - petrzlenova-vnat: 3 pl
   - pazitka: 2 pl
 steps:
-  - Sprav vlašský šalát podľa receptu (zemiaky, hrášok, uhorky a majonéza).
-  - Tofu „vajíčko“. Prírodné tofu nakrájaj na hrubé plátky, lyžičkou v každom vyhĺb plytkú jamku a potri ju kurkumou rozmiešanou s kvapkou vody. Žltý stred vyzerá ako vajce natvrdo. Posyp kala namak – tá dá vajíčkovú vôňu.
+  - Vlašský šalát. Zemiaky ošúp a spolu s mrkvou a 2 uhorkami nakrájaj na drobné kocky. Pridaj hrášok.
+  - Majonézu zmiešaj s horčicou, citrónom, soľou a korením, premiešaj so zeleninou a daj aspoň na hodinu do chladničky.
+  - Tofu „vajíčko“. Prírodné tofu nakrájaj na hrubé plátky, lyžičkou v každom vyhĺb plytkú jamku a potri ju kurkumou rozmiešanou s kvapkou vody. Posyp kala namak – tá dá vajíčkovú vôňu.
+  - Údené tofu nakrájaj na tenké plátky, zvyšné uhorky na kolieska a papriku na pásiky.
   - Plátky veky natri hrubou vrstvou vlašského šalátu.
-  - Navrch polož zvlnený plátok údeného tofu alebo klobásy, tofu vajíčko, kolieska uhorky, pásik papriky a kúsok paradajky.
+  - Navrch polož zvlnený plátok údeného tofu, tofu vajíčko, kolieska uhorky, pásik papriky a kúsok paradajky.
   - Ozdob petržlenom a pažítkou. Nechaj 30 minút v chladničke prikryté fóliou, veka zmäkne a chute sa spoja.

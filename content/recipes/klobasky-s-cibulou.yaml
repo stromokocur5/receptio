@@ -1,32 +1,41 @@
 title: Opekané klobásky s cibuľou a zemiakmi
-description: Klobásky opečené s kopou karamelizovanej cibule a zemiakmi na plechu. S horčicou a chlebom – jednoduchá večera, ktorá zasýti.
+description: Domáce klobásky s majoránkou a cesnakom, upečené na plechu s kopou karamelizovanej cibule a zemiakmi. S horčicou a chlebom – večera, ktorá zasýti.
 cuisine: slovenska
 meals: [obed, vecera]
 categories: [comfort/bufet, hlavne/rura, hlavne/tofu]
-time: 50
-active: 15
+time: 90
+active: 25
 servings: 4
-difficulty: 1
+difficulty: 2
 tags: [klasika, vela-bielkovin]
-keeps: { fridge: 3 }
+keeps: { fridge: 3, freezer: 3 }
+leftovers: 'Prehrej v rúre na 200 °C. Klobásky môžeš uvariť aj na zásobu a zamraziť.'
 related: [grilovacie-klobasky, domace-parky]
 ingredients:
-  - lepok-vital: 160 g | na 8 klobások, alebo daj 8 kúpených
-  - vyzivne-drozdie: 1 pl
+  - lepok-vital: 160 g
+  - fazula-cervena: 1/2 ks | plechovka, scedená
+  - vyzivne-drozdie: 2 pl
   - udena-paprika: 2 čl
-  - majoranka: 1 čl
+  - majoranka: 2 čl
+  - cesnak: 3 ks | prelisovaný
+  - cierne-korenie: 1 čl
   - sojova-omacka: 2 pl
-  - voda: 160 ml
+  - voda: 120 ml
   - zemiaky: 6 ks
   - cibula: 3 ks
   - olej: 3 pl
   - rasca: 1 čl
-  - sol: 1 čl
+  - sol: 1,5 čl
   - horcica: 4 čl
 steps:
-  - Ak nemáš hotové klobásky, sprav ich podľa receptu Grilovacie klobásky (alebo zjednodušene – lepok, droždie, paprika, majoránka, sójová omáčka a voda, valčeky v alobale 40 minút na pare).
-  - Rúru predhrej na 210 °C.
-  - Zemiaky nakrájaj na mesiačiky, premiešaj s 2 PL oleja, rascou a soľou a peč na plechu 20 minút.
-  - Cibuľu nakrájaj na hrubé mesiačiky. Klobásky nareži šikmo.
+  - Klobásky. Fazuľu roztlač vidličkou, nie dohladka. Zmiešaj ju s cesnakom, sójovou omáčkou, 1 PL oleja a vodou.
+  - Lepok zmiešaj s droždím, paprikou, majoránkou, korením a 1/2 ČL soli. Spoj s fazuľovou zmesou a mies 2 minúty na pružné cesto.
+  - Rozdeľ na 8 kúskov, vyvaľkaj hrubšie valčeky a každý pevne zabaľ do alobalu, konce zatoč.
+  - Duste ich na pare nad vriacou vodou 40 minút. Nechaj trochu vychladnúť a rozbaľ.
+  - Medzitým predhrej rúru na 210 °C. Zemiaky nakrájaj na mesiačiky, premiešaj s 1 PL oleja, rascou a zvyšnou soľou a peč na plechu 20 minút.
+  - Cibuľu nakrájaj na hrubé mesiačiky, klobásky nareži šikmo.
   - Pridaj na plech cibuľu a klobásky, pokvapkaj zvyšným olejom a peč ďalších 20 minút, kým cibuľa nezhnedne a klobásky nemajú kôrku.
   - Podávaj s horčicou a chlebom.
+tips:
+  - S kúpenými klobáskami preskoč prvé štyri kroky – celé to bude za 45 minút.
+howto: [masove-textury]

@@ -1,0 +1,34 @@
+title: Kysnutá knedľa
+description: Nadýchaná parená knedľa, ktorá nasiakne omáčku až do posledného kúska. K segedínu, sviečkovej aj paradajkovej omáčke.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [prilohy/prilohy]
+time: 90
+active: 20
+servings: 6
+difficulty: 2
+tags: [klasika, lacne, meal-prep]
+gf_swap: false
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Nakrájanú zamraz, prehrej na pare 5 minút. Staršiu opeč s cibuľou ako knedľu s vajcom – s tofu praženicou.'
+related: [segedin, svieckova]
+ingredients:
+  - hladka-muka: 500 g
+  - psenicna-krupica: 2 pl
+  - drozdie: 2 čl | sušené
+  - cukor: 1 čl
+  - sol: 1,5 čl
+  - sojove-mlieko: 300 ml | vlažné
+  - chlieb: 2 ks | starší, na kocky
+  - olej: 1 pl
+steps:
+  - Múku zmiešaj s krupicou, droždím, cukrom a soľou. Prilej mlieko a vypracuj mäkké hladké cesto.
+  - Chlieb nakrájaj na drobné kocky a opeč na oleji dozlatista. Vmiešaj do cesta.
+  - Prikry a nechaj hodinu kysnúť.
+  - Rozdeľ na 2 časti a vytvaruj valčeky dlhé 25 cm. Nechaj ešte 15 minút podkysnúť.
+  - Var vo veľkom hrnci vo vriacej osolenej vode 10 minút, otoč a var ďalších 10 minút. Alebo ich duste na pare 25 minút.
+  - Hneď ich prepichni vidličkou, aby vypustili paru, a krájaj niťou alebo ostrým nožom.
+tips:
+  - Niťou nakrájaná knedľa sa nezlepí ako nožom – prevlečieš niť pod knedľou a prekrížiš.
+howto: [kysnute-cesto]
+equipment: [hrniec]

@@ -1,0 +1,42 @@
+title: Zemiakové pirohy s opraženou cibuľkou
+description: Mäkké pirohy plnené korenistými zemiakmi, poliate cibuľkou opraženou dozlatista. S kyslou smotanou alebo s kešu bryndzou ako na salaši.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [hlavne/cesto]
+time: 75
+active: 55
+servings: 4
+difficulty: 2
+tags: [klasika, lacne]
+gf_swap: false
+keeps: { fridge: 3, freezer: 3 }
+leftovers: 'Surové pirohy zamraz na plechu, potom do vrecka. Var rovno zmrazené o 2 minúty dlhšie.'
+related: [halusky-kesu-bryndza, kesu-syr]
+ingredients:
+  - hladka-muka: 350 g
+  - voda: 180 ml | teplá
+  - olej: 3 pl
+  - sol: 1,5 čl
+  - zemiaky: 4 ks | uvarené
+  - cibula: 2 ks
+  - cierne-korenie: 1/2 čl
+  - majoranka: 1/2 čl
+  - sojovy-jogurt: 4 pl | ako kyslá smotana
+  - pazitka: 2 pl
+steps:
+  - Múku zmiešaj s polovicou soli, vodou a 1 PL oleja a vymies hladké mäkké cesto. Prikry a nechaj 20 minút odpočívať.
+  - Zemiaky roztlač. Jednu cibuľu nakrájaj nadrobno, opraž na 1 PL oleja na strednom ohni dozlatista a primiešaj k zemiakom so zvyšnou soľou, korením a majoránkou.
+  - Cesto tenko vyvaľkaj a vykrajuj pohárom kolieska s priemerom 8 cm.
+  - Na každé daj lyžičku plnky, prelož na polmesiac a okraje dobre stlač prstami alebo vidličkou.
+  - Var v osolenej vode po dávkach. Keď vyplávajú, var ešte 3 minúty a vyber dierovanou lyžicou.
+  - Druhú cibuľu nakrájaj na polkolieska a opraž na zvyšnom oleji dozlatista.
+  - Pirohy polej cibuľkou, pridaj jogurt a posyp pažítkou.
+tips:
+  - Okraje pred stlačením navlhči vodou, pri varení sa neotvoria.
+variants:
+  - name: S kešu bryndzou
+    description: Do zemiakovej plnky vmiešaj 4 PL kešu bryndzy (recept Halušky s kešu bryndzou) a navrch daj ďalšiu.
+    add:
+      - kesu: 1/2 hrnček
+      - citron: 1 pl
+      - miso: 1 čl

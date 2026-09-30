@@ -1,27 +1,45 @@
 title: Párky v rožku
-description: Najrýchlejší obed z bufetu – horúci párok v teplom rožku s horčicou a kečupom. S domácimi párkami je hotový za 5 minút.
+description: Domáce rastlinné párky v teplom rožku s horčicou a kečupom. Párky spravíš za pol hodiny na pare a zvyšok zamraziš – potom je to raňajky za 5 minút.
 cuisine: slovenska
 meals: [ranajky, obed, snack]
 categories: [comfort/burgre, hlavne/plnene, snacky/na-cesty]
-time: 10
-active: 10
-servings: 2
-difficulty: 1
-tags: [rychle, deti, klasika]
-keeps: { fridge: 1 }
+time: 50
+active: 20
+servings: 4
+difficulty: 2
+tags: [deti, klasika, vela-bielkovin]
+keeps: { fridge: 5, freezer: 3 }
+leftovers: 'Uvarené párky vydržia v chladničke 5 dní, zamrazené 3 mesiace. Rozmraz ich rovno v horúcej vode.'
 related: [domace-parky, hot-dog-mrkva]
 ingredients:
-  - lepok-vital: 60 g | na 4 domáce párky (recept Domáce párky)
-  - fazula-biela: 1/3 ks
+  - fazula-biela: 1/2 ks | plechovka, scedená
+  - lepok-vital: 80 g
+  - vyzivne-drozdie: 1 pl
+  - sladka-paprika: 1 čl
   - udena-paprika: 1/2 čl
+  - cesnak: 1 ks | prelisovaný
+  - muskatovy-orech: 1 štipka
+  - cierne-korenie: 1/4 čl
+  - sol: 1/2 čl
   - sojova-omacka: 1 čl
-  - bageta: 1 ks | alebo 2 rožky
-  - horcica: 2 čl
-  - kecup: 2 pl
+  - tekuty-dym: 1/4 čl | voliteľne
+  - olej: 1 pl
+  - voda: 50 ml
+  - bageta: 2 ks | alebo 4 rožky
+  - horcica: 4 čl
+  - kecup: 4 pl
 steps:
-  - Párky (domáce alebo kúpené) daj do horúcej vody na 5 minút. Nesmie vrieť, inak prasknú.
-  - Rožky prehrej v rúre alebo hriankovači.
-  - Rožok nareži z boku, alebo mu vyvŕtaj otvor vareškou zo strany a naplň ho horčicou a kečupom.
-  - Vlož párok a hneď jedz.
+  - Párky. Fazuľu rozmixuj dohladka s vodou, olejom, sójovou omáčkou, cesnakom a dymom.
+  - Lepok zmiešaj s droždím, oboma paprikami, muškátom, korením a soľou. Vlej fazuľovú zmes a mies 2 minúty na hladké pružné cesto.
+  - Rozdeľ ho na 4 kúsky a každý vyvaľkaj na valček dlhý ako rožok a hrubý ako prst – pri varení ešte napučí.
+  - Každý zabaľ do kúska alobalu a konce zatoč ako cukrík.
+  - Duste na pare nad vriacou vodou 30 minút. Nechaj ich 10 minút vychladnúť v alobale, potom rozbaľ.
+  - Tesne pred jedlom daj párky na 3 minúty do horúcej vody, ktorá už nevrie, alebo ich opeč na panvici.
+  - Rožky prehrej v rúre alebo hriankovači, nareži z boku a naplň horčicou a kečupom.
+  - Vlož párok a jedz, kým je teplý.
 tips:
-  - Domáce párky si sprav vo veľkom (recept Domáce párky) a zamraz – na raňajky ich máš vždy po ruke.
+  - Sprav dvojitú dávku a polovicu zamraz – nabudúce máš párky v rožku hotové za 5 minút.
+  - S kúpenými vegánskymi párkami preskoč prvých päť krokov.
+  - Párky sú z lepku, bez lepku nie.
+howto: [masove-textury]
+equipment: [hrniec]

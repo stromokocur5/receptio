@@ -1,0 +1,47 @@
+title: Šúľance s makom
+description: Zemiakové šúľance obalené v sladkom maku s rozpusteným maslom. Babkin obed, po ktorom si si pýtal ešte.
+cuisine: slovenska
+meals: [obed, dezert]
+categories: [hlavne/cesto, dezerty/pecene]
+time: 60
+active: 40
+servings: 4
+difficulty: 2
+tags: [klasika, lacne, deti]
+gf_swap: false
+taste: sladke
+keeps: { fridge: 2, freezer: 2 }
+leftovers: 'Opeč na panvici s troškou masla.'
+ingredients:
+  - zemiaky: 5 ks | uvarené v šupke a vychladnuté
+  - hladka-muka: 180 g
+  - psenicna-krupica: 2 pl
+  - sol: 1/2 čl
+  - mak: 6 pl
+  - cukor: 3 pl
+  - rastlinne-maslo: 3 pl
+  - vanilka: 1/4 čl
+steps:
+  - Zemiaky ošúp, pretlač a spracuj s múkou, krupicou a soľou na hladké cesto.
+  - Rozdeľ na kúsky a dlaňami ich vyšúľaj na prsty dlhé asi 6 cm, na koncoch zúžené.
+  - Var v osolenej vode 3–4 minúty od vyplávania. Vyber dierovanou lyžicou.
+  - Mak zmiešaj s cukrom a vanilkou.
+  - Šúľance premiešaj s rozpusteným maslom a obaľ v maku.
+tips:
+  - Rovnaké cesto sa hodí aj na šúľance so strúhankou – opraž strúhanku na masle dozlatista.
+variants:
+  - name: So strúhankou
+    description: Namiesto maku ich obaľ v strúhanke opraženej na masle dozlatista a posyp trochou cukru.
+    replace:
+      - from: mak
+        to: struhanka
+        amount: 1/2 hrnček
+      - from: cukor
+        to: cukor
+        amount: 1 pl
+  - name: Menej cukru
+    description: Mak osladí jedna lyžica cukru. Pridaj navrch strúhanú kôru z citróna.
+    replace:
+      - from: cukor
+        to: cukor
+        amount: 1 pl

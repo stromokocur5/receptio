@@ -1,0 +1,42 @@
+title: Lokše s lekvárom a makom
+description: Tenké zemiakové placky opečené na suchej platni, potreté rozpusteným maslom a lekvárom, posypané makom s cukrom. Presne ako na hodoch.
+cuisine: slovenska
+meals: [obed, vecera, dezert]
+categories: [prilohy/chlieb, dezerty/pecene]
+time: 60
+active: 40
+servings: 4
+difficulty: 2
+tags: [klasika, lacne]
+gf_swap: false
+taste: sladke
+ahead: Zemiaky uvar deň vopred – vychladnuté sa lepšie spracúvajú.
+keeps: { fridge: 3, freezer: 3 }
+leftovers: 'Proloženú papierom ich zamraz, prehrej na suchej panvici.'
+related: [slivkovy-lekvar, kapustnica]
+ingredients:
+  - zemiaky: 5 ks | múčnaté, uvarené v šupke a vychladnuté
+  - hladka-muka: 200 g
+  - sol: 1 čl
+  - rastlinne-maslo: 3 pl | rozpustené
+  - lekvar: 8 pl
+  - mak: 4 pl
+  - cukor: 2 pl
+steps:
+  - Vychladnuté zemiaky ošúp a pretlač cez lis alebo najjemnejšie nastrúhaj.
+  - Pridaj múku a soľ a rýchlo vypracuj hladké cesto. Nemies dlho, inak začne byť lepivé – múky pridaj len toľko, aby sa nelepilo na ruky.
+  - Rozdeľ na 12 guličiek a každú na pomúčenej doske vyvaľkaj na tenkú placku.
+  - Peč na suchej rozpálenej panvici alebo platni na strednom ohni asi 1 minútu z každej strany, kým nemá hnedé bodky.
+  - Hotové lokše ukladaj na seba pod utierku, aby ostali mäkké.
+  - Potri maslom, natri lekvárom, posyp makom zmiešaným s cukrom a zroluj.
+tips:
+  - Na slano ich potri maslom a naplň dusenou kapustou s cibuľou – k husacine sa na Slovensku jedli presne takto.
+variants:
+  - name: Na slano s kapustou
+    description: Namiesto lekváru a maku ich naplň kapustou podusenou na cibuľke s rascou.
+    remove: [lekvar, mak, cukor]
+    add:
+      - biela-kapusta: 3 hrnček
+      - cibula: 1 ks
+      - rasca: 1 čl
+      - olej: 1 pl

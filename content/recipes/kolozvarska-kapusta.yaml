@@ -1,0 +1,37 @@
+title: Koložvárska kapusta
+description: Kyslá kapusta zapečená s ryžou a paprikovým ragú zo sójového granulátu, zaliata smotanou. Ako segedín, len v rúre a hutnejšia.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [hlavne/rura, hlavne/tofu]
+time: 80
+active: 30
+servings: 5
+difficulty: 1
+tags: [klasika, meal-prep, vela-bielkovin]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Druhý deň je ešte lepšia. Prehrej v rúre alebo mikrovlnke.'
+related: [segedin]
+ingredients:
+  - kysla-kapusta: 3 hrnček
+  - ryza-basmati: 3/4 hrnček
+  - sojove-granule: 1 hrnček
+  - zeleninovy-vyvar: 1 hrnček | horúci
+  - olej: 2 pl
+  - cibula: 2 ks
+  - cesnak: 2 ks
+  - sladka-paprika: 2 pl
+  - udena-paprika: 1 čl
+  - rasca: 1 čl
+  - paradajkovy-pretlak: 2 pl
+  - voda: 2 hrnček
+  - sol: 1/2 čl
+  - rastlinna-smotana: 1 hrnček
+steps:
+  - Ryžu uvar do polomäkka – 8 minút vo vode, sceď.
+  - Granulát zalej horúcim vývarom a nechaj 10 minút nasiaknuť, vyžmýkaj.
+  - Cibuľu nadrobno opekaj na oleji na strednom ohni 8 minút, pridaj cesnak, pretlak a granulát a opekaj 5 minút.
+  - Odstav z ohňa, vmiešaj obe papriky a rascu a zalej 1 hrnčekom vody. Duste 10 minút.
+  - Kapustu nechaj odkvapkať, zalej zvyšnou vodou a duste 15 minút.
+  - Rúru predhrej na 180 °C. Do misy vrstvi kapustu, ryžu a ragú, navrchu kapusta.
+  - Zalej smotanou a peč 30 minút.

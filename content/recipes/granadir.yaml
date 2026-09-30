@@ -1,0 +1,29 @@
+title: Granadír – cestoviny so zemiakmi a cibuľkou
+description: Grenadírmarš z čias Rakúsko-Uhorska – cestoviny a zemiaky opečené s cibuľou a paprikou. Jedlo z toho, čo ostalo, a aj tak ho všetci chcú.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [hlavne/cestoviny, hlavne/zelenina]
+time: 30
+active: 20
+servings: 4
+difficulty: 1
+tags: [lacne, zvysky, rychle, klasika]
+keeps: { fridge: 3 }
+ingredients:
+  - cestoviny: 250 g | kolienka alebo fliačky
+  - zemiaky: 4 ks | uvarené
+  - cibula: 2 ks
+  - olej: 3 pl
+  - sladka-paprika: 2 čl
+  - majoranka: 1 čl
+  - rasca: 1/2 čl
+  - sol: 1 čl
+  - cierne-korenie: 1/2 čl
+  - kysle-uhorky: 4 ks | na podávanie
+steps:
+  - Cestoviny uvar v osolenej vode podľa obalu a sceď.
+  - Zemiaky nakrájaj na kocky, cibuľu na drobno.
+  - Cibuľu opekaj na oleji na strednom ohni 8 minút do zlatista.
+  - Pridaj zemiaky a opekaj 5 minút, kým nemajú kôrku.
+  - Odstav z ohňa, vmiešaj papriku, majoránku a rascu, potom cestoviny. Vráť na oheň a opekaj ešte 3 minúty.
+  - Osoľ, okoreň a podávaj s kyslými uhorkami.

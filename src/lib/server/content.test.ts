@@ -78,6 +78,14 @@ describe('content', () => {
 		}
 	});
 
+	it('spells out every step instead of sending you to another recipe', () => {
+		for (const r of content.recipeDetails.values()) {
+			for (const step of r.steps) {
+				expect(step, r.id).not.toMatch(/podľa receptu|ako v recepte|recept [A-ZÁČĎÉÍĽĹŇÓÔŔŠŤÚÝŽ]/);
+			}
+		}
+	});
+
 	it('leaves not-eaten lines out of nutrition', () => {
 		const seitan = content.recipeDetails.get('seitan')!;
 		expect(seitan.lines.find((l) => l.ingredientId === 'zeleninovy-vyvar')?.notEaten).toBe(true);

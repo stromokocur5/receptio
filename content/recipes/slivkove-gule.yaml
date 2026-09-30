@@ -1,0 +1,38 @@
+title: Slivkové gule so strúhankou
+description: Celé slivky zabalené v zemiakovom ceste, uvarené a obalené v strúhanke opraženej na masle. Leto na tanieri.
+cuisine: slovenska
+meals: [obed, dezert]
+categories: [dezerty/pecene, hlavne/cesto]
+time: 60
+active: 45
+servings: 4
+difficulty: 2
+tags: [klasika, deti]
+gf_swap: false
+taste: sladke
+keeps: { fridge: 2, freezer: 3 }
+leftovers: 'Surové gule zamraz, var ich rovno zmrazené o 4 minúty dlhšie.'
+ingredients:
+  - zemiaky: 4 ks | uvarené v šupke a vychladnuté
+  - hladka-muka: 150 g
+  - psenicna-krupica: 2 pl
+  - sol: 1/4 čl
+  - slivky: 12 ks | alebo marhule
+  - cukor: 3 pl | 1 do sliviek, 2 na posypanie
+  - skorica: 1/2 čl
+  - struhanka: 1 hrnček
+  - rastlinne-maslo: 3 pl
+steps:
+  - Zemiaky ošúp, pretlač a vypracuj s múkou, krupicou a soľou hladké cesto.
+  - Slivky rozrež na boku, vyber kôstku a namiesto nej daj štipku cukru so škoricou.
+  - Z cesta odtrhni kúsok, roztlač na dlani, polož slivku a zabaľ do gule tak, aby nikde nebola diera.
+  - Var v osolenej vode na miernom ohni 8–10 minút od vyplávania.
+  - Strúhanku opraž na masle na strednom ohni dozlatista, stále miešaj.
+  - Uvarené gule obaľ v strúhanke a posyp zvyšným cukrom so škoricou.
+variants:
+  - name: Menej cukru
+    description: Zrelé slivky sú sladké dosť – navrch len škorica bez cukru.
+    replace:
+      - from: cukor
+        to: cukor
+        amount: 1 pl

@@ -1,0 +1,37 @@
+title: Francúzske zemiaky
+description: Vrstvy zemiakov, údeného tofu, kyslých uhoriek a cibule zaliate smotanovou zálievkou a zapečené dozlatista. Nedeľný obed zo školskej jedálne, ktorý si pamätá každý.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [hlavne/rura, hlavne/zelenina]
+time: 75
+active: 25
+servings: 4
+difficulty: 1
+tags: [klasika, deti, meal-prep]
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Nakrájané na kocky prehrej v rúre na 180 °C, alebo opeč na panvici.'
+ingredients:
+  - zemiaky: 7 ks | uvarené v šupke
+  - tofu-udene: 200 g
+  - cibula: 1 ks
+  - kysle-uhorky: 3 ks
+  - olej: 1 pl
+  - rastlinna-smotana: 1 hrnček
+  - sojove-mlieko: 1/2 hrnček
+  - kukuricny-skrob: 1 pl
+  - horcica: 1 čl
+  - kurkuma: 1/4 čl
+  - muskatovy-orech: 1 štipka
+  - sol: 1 čl
+  - cierne-korenie: 1/2 čl
+  - rastlinne-maslo: 1 pl | na vymastenie
+  - vegansky-syr: 1/2 hrnček | strúhaný, voliteľne
+  - petrzlenova-vnat: 2 pl
+steps:
+  - Rúru predhrej na 190 °C a vymasti zapekaciu misu.
+  - Zemiaky ošúp a nakrájaj na kolieska. Tofu nakrájaj na drobné kocky, cibuľu a uhorky nadrobno.
+  - Tofu s cibuľou opeč na oleji na strednom ohni 6 minút do zlatista.
+  - Smotanu vyšľahaj s mliekom, škrobom, horčicou, kurkumou, muškátom, soľou a korením.
+  - Do misy vrstvi zemiaky, tofu s cibuľou a uhorky. Posledná vrstva sú zemiaky.
+  - Zalej smotanovou zálievkou, posyp syrom a peč 35–40 minút, kým nie je vrch zlatý a zálievka stuhnutá.
+  - Nechaj 10 minút postáť, posyp petržlenom a podávaj s kyslou uhorkou alebo šalátom.

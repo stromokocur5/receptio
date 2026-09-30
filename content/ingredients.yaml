@@ -1050,6 +1050,21 @@
     - 'Domáce tahini'
   storage: 'V chladničke – tuk v semienkach rýchlo stuchne.'
 
+- id: mak
+  name: Mak (mletý)
+  category: orechy-semienka
+  n: { kcal: 525, p: 18, c: 28, f: 42, fib: 20, salt: 0, fe: 9.8, ca: 1438, zn: 7.9, ala: 0.3 }
+  units: { pl: 9, hrnček: 140 }
+  price: 8
+  co2: 1
+  color: '#3b3f4a'
+  about: 'Modrý mak – na šúľance, buchty, rezance aj koláče. Vápnika má najviac zo všetkých semien.'
+  uses:
+    - 'Šúľance, rezance s makom, parené buchty'
+    - 'Makové náplne do koláčov'
+  choose: 'Kupuj čerstvo mletý alebo si ho zomeľ sám v mlynčeku na kávu – mletý rýchlo žltne.'
+  storage: 'Mletý v chladničke alebo mrazničke, inak do mesiaca zhorkne.'
+
 - id: lanove-semienko
   name: Ľanové semienko mleté
   category: orechy-semienka
@@ -1111,6 +1126,7 @@
 # ── Rastlinné mlieka ───────────────────────────────────────────
 - id: sojove-mlieko
   name: Sójový nápoj s vápnikom (nesladený)
+  aliases: [sójové mlieko, mlieko]
   category: rastlinne-mlieka
   allergens: [soy]
   n:
@@ -1296,6 +1312,7 @@
 
 - id: vyzivne-drozdie
   name: Výživné droždie (lupienky)
+  aliases: [droždie]
   category: ine
   n: { kcal: 370, p: 45, c: 35, f: 5, fib: 20, salt: 0.1, fe: 4, ca: 30, zn: 7 }
   units: { pl: 5, čl: 2 }
@@ -1876,6 +1893,7 @@
 
 - id: sojovy-jogurt
   name: Sójový jogurt nesladený
+  aliases: [jogurt]
   howto: [nahrady]
   category: nahrady
   allergens: [soy]
@@ -1931,7 +1949,7 @@
 
 - id: sojove-granule
   name: Sójové granule / sójové mäso (sušené)
-  aliases: [sójové mäso, kúsky]
+  aliases: [sójové mäso]
   howto: [nahrady]
   category: nahrady
   allergens: [soy]
@@ -2511,6 +2529,7 @@
 
 - id: petrzlenova-vnat
   name: Petržlenová vňať
+  aliases: [petržlen]
   howto: [bylinky]
   category: zelenina
   n: { kcal: 36, p: 3, c: 6.3, f: 0.8, fib: 3.3, salt: 0.1, fe: 6.2, ca: 138, zn: 1.1 }
@@ -3135,6 +3154,7 @@
 
 - id: tamarind
   name: Tamarindová pasta
+  aliases: [tamarind]
   category: omacky-pasty
   n: { kcal: 239, p: 2.8, c: 62.5, f: 0.6, fib: 5.1, salt: 0.1, fe: 2.8, ca: 74, zn: 0.1 }
   units: { pl: 20, čl: 7 }
@@ -3146,6 +3166,23 @@
   uses:
     - 'Pad thai, chutney, kari'
   storage: 'V chladničke mesiace.'
+
+- id: lekvar
+  name: Slivkový lekvár
+  category: omacky-pasty
+  free_sugar: 0.3
+  n: { kcal: 220, p: 1, c: 54, f: 0.3, fib: 3, salt: 0, fe: 0.8, ca: 20, zn: 0.2 }
+  units: { pl: 20, čl: 7 }
+  price: 7
+  color: '#3e2233'
+  substitutes:
+    - { note: 'hustý džem alebo roztlačené sušené slivky' }
+  about: 'Hustý slivkový lekvár, varený dlho a pomaly. Do buchiet, lokší aj na palacinky.'
+  uses:
+    - 'Parené buchty, lokše, pirohy'
+  storage: 'Zavarený roky, otvorený v chladničke mesiac.'
+  homemade:
+    recipe: slivkovy-lekvar
 
 - id: kecup
   name: Kečup
@@ -3275,6 +3312,7 @@
 
 - id: muskatovy-orech
   name: Muškátový oriešok mletý
+  aliases: [muškát]
   category: koreniny
   n: { kcal: 525, p: 5.8, c: 49, f: 36, fib: 21, salt: 0, fe: 3, ca: 184, zn: 2.2 }
   units: { čl: 2.2 }
@@ -4395,6 +4433,7 @@
 
 - id: vanilka
   name: Vanilkový extrakt
+  aliases: [vanilka]
   category: koreniny
   n: { kcal: 288, p: 0, c: 12.7, f: 0, fib: 0, salt: 0, fe: 0.1, ca: 11, zn: 0.1 }
   units: { čl: 4 }

@@ -1,0 +1,44 @@
+title: Parené buchty s lekvárom a makom
+description: Veľké nadýchané buchty dusené na pare, plnené slivkovým lekvárom, poliate rozpusteným maslom a posypané makom s cukrom.
+cuisine: slovenska
+meals: [obed, dezert]
+categories: [dezerty/pecene, hlavne/cesto]
+time: 100
+active: 35
+servings: 4
+difficulty: 2
+tags: [klasika]
+gf_swap: false
+taste: sladke
+keeps: { fridge: 2, freezer: 3 }
+leftovers: 'Zamrazené buchty prehrej 8 minút na pare, budú ako čerstvé.'
+related: [slivkovy-lekvar, knedla-kysnuta]
+ingredients:
+  - hladka-muka: 400 g
+  - drozdie: 2 čl | sušené
+  - cukor: 3 pl | 1 do cesta, 2 na posypanie
+  - sol: 1/2 čl
+  - sojove-mlieko: 220 ml | vlažné
+  - rastlinne-maslo: 4 pl | 1 do cesta, 3 na poliatie
+  - vanilka: 1/2 čl
+  - lekvar: 8 pl
+  - mak: 5 pl
+steps:
+  - Múku zmiešaj s droždím, 1 PL cukru, soľou a vanilkou. Prilej vlažné mlieko a 1 PL rozpusteného masla a mies 8 minút na mäkké, hladké cesto. Prikry a nechaj hodinu kysnúť.
+  - Cesto rozdeľ na 8 kúskov. Každý roztlač na placku, do stredu daj lyžicu lekváru a okraje stiahni a pevne spoj.
+  - Ulož ich spojom dole na pomúčenú dosku, prikry utierkou a nechaj 20 minút podkysnúť.
+  - V širokom hrnci priveď do varu vodu, na hrniec napni čistú utierku alebo polož parák. Buchty kladieš s medzerami, lebo narastú.
+  - Prikry pokrievkou alebo misou a duste 12–15 minút. Počas toho neodkrývaj, inak spľasnú.
+  - Hotové hneď prepichni vidličkou, aby pustili paru.
+  - Polej rozpusteným maslom a posyp makom zmiešaným so zvyšným cukrom.
+tips:
+  - Buchty duse po 3–4 kusoch, aby mali miesto. Pokiaľ sa dotýkajú, na mieste dotyku ostanú surové.
+howto: [kysnute-cesto]
+equipment: [hrniec, pokrievka]
+variants:
+  - name: Menej cukru
+    description: Mak posyp len so štipkou cukru a lekvár vyber bez pridaného cukru.
+    replace:
+      - from: cukor
+        to: cukor
+        amount: 1 pl
