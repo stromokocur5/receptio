@@ -5,6 +5,8 @@ import type { PlanEntry } from './shopping';
 import type { GrowPlace, GrowSun, Ingredient, RecipeLine } from './types';
 
 const PREFIX = 'receptio:';
+/** sessionStorage: the recipe list's filters, so a recipe's back link returns to them. */
+export const LIST_SEARCH_KEY = `${PREFIX}recepty-search`;
 
 /** Bumped on every saved change, so sync knows when there's something new to upload. */
 export const changes = $state({ count: 0 });

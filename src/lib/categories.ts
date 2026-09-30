@@ -1,4 +1,5 @@
 import type { IconName } from './components/Icon.svelte';
+import type { Taste } from './types';
 
 export interface RecipeCategory {
 	label: string;
@@ -171,6 +172,75 @@ export function inCategory(categories: string[], category: string, sub = ''): bo
 }
 
 export const SPICY_LABELS = ['Nepálivé', 'Jemne pálivé', 'Pálivé', 'Poriadne pálivé'] as const;
+
+export const TASTE_LABELS: Record<Taste, string> = { sladke: 'Sladké', slane: 'Slané' };
+
+/** `null` = neither (plain milks); drinks otherwise go by what's in them. */
+const TASTE_BY_CATEGORY: Record<string, Taste | null> = {
+	dezerty: 'sladke',
+	'snacky/sladke': 'sladke',
+	'ranajky/kase': 'sladke',
+	'napoje/smoothie': 'sladke',
+	'napoje/limonady': 'sladke',
+	polievky: 'slane',
+	hlavne: 'slane',
+	salaty: 'slane',
+	omacky: 'slane',
+	'prilohy/prilohy': 'slane',
+	'snacky/slane': 'slane',
+	'ranajky/slane': 'slane',
+	'domace/bielkoviny': 'slane',
+	'domace/kvasene': 'slane',
+	'domace/mlieka': null,
+	'napoje/mlieka': null
+};
+const SWEETENERS = new Set(['cukor', 'javorovy-sirup', 'datle', 'kakao', 'horka-cokolada']);
+/** Ingredient groups that make a dish savory whatever else is in it. */
+const SAVORY_MARKERS = new Set([
+	'cibula',
+	'cesnak',
+	'sojova-omacka',
+	'tamari',
+	'miso',
+	'zeleninovy-vyvar',
+	'horcica',
+	'vyzivne-drozdie',
+	'cili-papricka'
+]);
+/** Lemon and lime season savory food as often as sweet. */
+const NOT_SWEET_FRUIT = new Set(['citron', 'limetka']);
+/** Sugar and fruit per serving that make it a sweet dish, not a pinch in a dough. */
+const SWEET_G = 8;
+/** Salt per serving above a pinch; baking powder alone gives sweet pancakes ~0.4 g. */
+const SAVORY_SALT_G = 0.6;
+
+/**
+ * Sweet or savory, for the taste filter. The first category that decides it wins
+ * (palacinky can go either way, so they fall through to the next one; a drink never takes
+ * the taste of its DIY category); otherwise the ingredients decide. Plain milks or bread
+ * stay undecided.
+ */
+export function guessTaste(
+	categories: string[],
+	ingredients: { id: string; group: string; category: string; gramsPerServing: number }[],
+	saltPerServing: number
+): Taste | undefined {
+	for (const path of categories) {
+		const taste =
+			path in TASTE_BY_CATEGORY ? TASTE_BY_CATEGORY[path] : TASTE_BY_CATEGORY[path.split('/')[0]];
+		if (taste === null) return undefined;
+		if (taste) return taste;
+		if (path.startsWith('napoje/')) break;
+	}
+	if (ingredients.some((i) => SAVORY_MARKERS.has(i.group))) return 'slane';
+	const sweetGrams = ingredients
+		.filter(
+			(i) => SWEETENERS.has(i.group) || (i.category === 'ovocie' && !NOT_SWEET_FRUIT.has(i.group))
+		)
+		.reduce((sum, i) => sum + i.gramsPerServing, 0);
+	if (sweetGrams >= SWEET_G) return 'sladke';
+	return saltPerServing >= SAVORY_SALT_G ? 'slane' : undefined;
+}
 
 /** `milk` is a glass of something thick and opaque – smoothies and plant milks. */
 export type Vessel = 'plate' | 'glass' | 'milk' | 'mug';

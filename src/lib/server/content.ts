@@ -9,7 +9,7 @@ import {
 	recipeNutrients,
 	recipeWarnings
 } from '$lib/nutrition';
-import { CATEGORY_PATHS } from '$lib/categories';
+import { CATEGORY_PATHS, guessTaste } from '$lib/categories';
 import { ART_NAMES, artFigure } from '$lib/wiki-art';
 import { normalizeSearch } from '$lib/labels';
 import { bestPrice } from '$lib/pricing';
@@ -21,6 +21,7 @@ import {
 	GROW_SUN,
 	INGREDIENT_CATEGORIES,
 	MEALS,
+	TASTES,
 	UNITS,
 	WIKI_GROUPS,
 	WIKI_SECTIONS,
@@ -200,6 +201,8 @@ const recipeSchema = z
 		no_equipment: z.array(slug).default([]),
 		/** 0 mild … 3 hot. */
 		spicy: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]).default(0),
+		/** Only when the guess from categories and ingredients is wrong; `neutralne` = neither. */
+		taste: z.enum([...TASTES, 'neutralne']).optional(),
 		/** Days in the fridge (0 = eat fresh), months in the freezer (0 = don't freeze). */
 		keeps: z
 			.object({
@@ -782,6 +785,18 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			yields: r.yields,
 			showNutrition: r.nutrition,
 			spicy: r.spicy,
+			taste:
+				r.taste === 'neutralne'
+					? undefined
+					: (r.taste ??
+						guessTaste(
+							r.categories,
+							lines.map((l) => ({
+								...byId.get(l.ingredientId)!,
+								gramsPerServing: l.grams / r.servings
+							})),
+							base.perServing.salt
+						)),
 			keeps: r.keeps,
 			tested: r.tested,
 			servingGrams: Math.round(eatenGrams / r.servings),

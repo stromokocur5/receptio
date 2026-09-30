@@ -1,0 +1,27 @@
+title: Pražený cícer so škoricou a kakaom
+description: Sladký chrumkavý cícer z rúry – obalený v sirupe, škorici a kakau. Snack s bielkovinami namiesto sladkostí.
+cuisine: moderna
+meals: [snack]
+categories: [snacky/sladke, snacky/na-cesty]
+time: 50
+active: 10
+servings: 4
+difficulty: 1
+tags: [lacne, vela-bielkovin, deti, do-krabicky]
+keeps: { fridge: 5, freezer: 0 }
+related: [peceny-cicer]
+ingredients:
+  - cicer-sterilizovany: 2 ks | scedený
+  - kokosovy-olej: 1 pl | rozpustený
+  - javorovy-sirup: 2 pl
+  - kakao: 1 pl
+  - skorica: 1 čl
+  - cukor: 1 pl
+  - sol: 1 štipka
+steps:
+  - Rúru predhrej na 200 °C. Cícer opláchni, dôkladne osuš utierkou a odstráň uvoľnené šupky.
+  - Rozlož ho na plech s papierom a peč 20 minút, v polovici premiešaj.
+  - Zmiešaj olej, sirup, kakao, škoricu, cukor a soľ. Horúci cícer v zmesi obaľ priamo na plechu.
+  - Vráť do rúry na 160 °C a peč ešte 10–15 minút, kým nie je suchý a chrumkavý. Na plechu dochrumkavie.
+tips:
+  - Chrumkavý je v deň pečenia, na druhý deň ho opraž 5 minút v rúre.

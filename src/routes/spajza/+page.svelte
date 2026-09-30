@@ -329,6 +329,10 @@
 		padding: 4px 0;
 		outline: none;
 	}
+	.qty:focus-within {
+		outline: 3px solid var(--turmeric);
+		outline-offset: 1px;
+	}
 	.unit {
 		font-size: 0.8rem;
 		color: var(--muted);

@@ -1,0 +1,23 @@
+title: Sušené marhule v čokoláde
+description: Marhule namočené do polovice v horkej čokoláde a posypané tekvicovými semienkami. Darček aj snack.
+cuisine: moderna
+meals: [snack, dezert]
+categories: [snacky/sladke]
+time: 30
+active: 15
+servings: 6
+difficulty: 1
+tags: [bez-varenia, party]
+keeps: { fridge: 21, freezer: 3 }
+ingredients:
+  - susene-marhule: 200 g | nesírené, ak zoženieš
+  - horka-cokolada: 80 g
+  - tekvicove-semienka: 2 pl | nasekané
+  - pomaranc: 1/2 ks | kôra
+steps:
+  - Čokoládu rozpusť vo vodnom kúpeli na miernom ohni tak, aby sa miska nedotýkala vody.
+  - Marhule ponáraj do polovice do čokolády, nechaj odkvapkať a ukladaj na papier na pečenie.
+  - Kým čokoláda nestuhne, posyp semienkami a nastrúhanou pomarančovou kôrou.
+  - Nechaj 15 minút stuhnúť v chladničke.
+tips:
+  - Rovnako sa dajú spraviť sušené slivky, figy alebo plátky pomaranča.

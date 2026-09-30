@@ -68,18 +68,28 @@
 		<div class="meta">
 			<span title="Náročnosť {recipe.difficulty}/3">
 				<Icon name="chef" size={16} />
-				<span class="dots" aria-label="náročnosť {recipe.difficulty} z 3">
+				<span class="dots" aria-hidden="true">
 					{#each [1, 2, 3] as d (d)}<i class:on={d <= recipe.difficulty}></i>{/each}
 				</span>
+				<span class="sr-only">Náročnosť {recipe.difficulty} z 3,</span>
 			</span>
-			<span><Icon name="clock" size={16} /> {recipe.time} min</span>
+			<span><Icon name="clock" size={16} /> <span class="sr-only">čas</span> {recipe.time} min</span
+			>
 			{#if recipe.showNutrition}
-				<span><Icon name="bean" size={16} /> {formatNumber(recipe.perServing.protein, 0)} g</span>
-				<span><Icon name="flame" size={16} /> {formatNumber(recipe.perServing.kcal, 0)}</span>
+				<span
+					><Icon name="bean" size={16} /> <span class="sr-only">bielkoviny</span>
+					{formatNumber(recipe.perServing.protein, 0)} g</span
+				>
+				<span
+					><Icon name="flame" size={16} />
+					{formatNumber(recipe.perServing.kcal, 0)} <span class="sr-only">kcal</span></span
+				>
 			{/if}
 			<span title={recipe.costIsEstimate ? 'Odhad ceny' : 'Podľa aktuálnych cien'}>
 				<Icon name="euro" size={16} />
+				<span class="sr-only">porcia</span>
 				{formatEur(recipe.costPerServing)}{recipe.costIsEstimate ? '*' : ''}
+				{#if recipe.costIsEstimate}<span class="sr-only">(odhad)</span>{/if}
 			</span>
 		</div>
 		<div class="badges">
@@ -211,7 +221,7 @@
 		font-weight: 700;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		color: color-mix(in srgb, var(--accent, var(--ink)) 60%, var(--ink));
+		color: color-mix(in srgb, var(--accent, var(--ink)) 45%, var(--ink));
 		background: color-mix(in srgb, var(--card) 85%, transparent);
 		padding: 0.2em 0.6em;
 		border-radius: 999px;
@@ -304,7 +314,7 @@
 			font-weight: 700;
 			letter-spacing: 0.06em;
 			text-transform: uppercase;
-			color: color-mix(in srgb, var(--accent, var(--ink)) 60%, var(--ink));
+			color: color-mix(in srgb, var(--accent, var(--ink)) 45%, var(--ink));
 			white-space: nowrap;
 			overflow: hidden;
 			text-overflow: ellipsis;

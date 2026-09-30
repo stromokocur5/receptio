@@ -9,7 +9,7 @@ export const prerender = true;
  * files stay small instead of each repeating the whole catalog.
  */
 export const GET: RequestHandler = () => {
-	const { ingredients, recipes, cuisines, stores, prices, wiki } = getContent();
+	const { ingredients, recipes, cuisines, stores, prices, wiki, equipment } = getContent();
 	const catalog: CatalogPayload = {
 		ingredients,
 		// Warnings, line notes and variant descriptions are only shown on a recipe's own page,
@@ -29,6 +29,7 @@ export const GET: RequestHandler = () => {
 		stores,
 		prices,
 		wiki: wiki.map(({ html: _html, ...entry }) => entry),
+		equipment: equipment.map(({ id, name, level }) => ({ id, name, level })),
 		builtAt: new Date().toISOString().slice(0, 10)
 	};
 	// Two decimals are plenty for grams, nutrients and prices, and much shorter.

@@ -1,11 +1,13 @@
 <script lang="ts">
 	import Seo from '$lib/components/Seo.svelte';
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { goto, replaceState } from '$app/navigation';
+	import type { Snapshot } from './$types';
 	import { useCatalog } from '$lib/catalog';
 	import {
 		RECIPE_CATEGORIES,
 		SPICY_LABELS,
+		TASTE_LABELS,
 		inCategory,
 		isCategoryId,
 		type CategoryId
@@ -29,13 +31,15 @@
 	} from '$lib/nutrition';
 	import { recipeSeason } from '$lib/season';
 	import { rankByPantry, type PantryMatch } from '$lib/pantry';
-	import { likes, pantry, ui } from '$lib/state.svelte';
+	import { LIST_SEARCH_KEY, likes, pantry, ui } from '$lib/state.svelte';
 	import {
 		MEALS,
+		TASTES,
 		type Allergen,
 		type IngredientCategory,
 		type Meal,
-		type RecipeSummary
+		type RecipeSummary,
+		type Taste
 	} from '$lib/types';
 
 	const catalog = useCatalog();
@@ -51,13 +55,8 @@
 	type Sort = keyof typeof SORTS;
 	const EXCLUDABLE: Allergen[] = ['soy', 'peanuts', 'nuts', 'sesame', 'celery', 'mustard'];
 	const TIME_STEPS = [15, 20, 30, 45, 60, 0];
-	/** Tools people often don't have; "nemám rúru" hides recipes that need one. */
-	const MISSING_TOOLS: Record<string, string> = {
-		rura: 'rúru',
-		mixer: 'mixér',
-		sekacik: 'sekáčik',
-		teplomer: 'teplomer'
-	};
+	const PROTEIN_STEP = 5;
+	const PROTEIN_MAX = 30;
 
 	let q = $state('');
 	/** 0 = all, 1 = strictly GF (+ label-check risk), 2 = also GF after swaps */
@@ -74,6 +73,10 @@
 	let minProtein = $state(0);
 	let excluded = $state<Allergen[]>([]);
 	let missingTools = $state<string[]>([]);
+	let taste = $state<Taste | ''>('');
+	/** Ingredient ids; a recipe is hidden when it uses anything from the same group. */
+	let withoutIngredients = $state<string[]>([]);
+	let ingredientQuery = $state('');
 	/** Quick picks: one pot, no cooking, oven only, mild (kids), in season now. */
 	const QUICK = [
 		'jeden-hrniec',
@@ -111,6 +114,57 @@
 	let limit = $state(PAGE_SIZE);
 
 	const maxTime = $derived(TIME_STEPS[maxTimeIndex]);
+
+	/** Everyone has the basic tools; a filtered-for one stays so it can be switched off. */
+	const toolOptions = $derived(
+		catalog.equipment.filter(
+			(e) =>
+				missingTools.includes(e.id) ||
+				(e.level !== 'zaklad' && catalog.recipes.some((r) => r.equipment.includes(e.id)))
+		)
+	);
+
+	const recipeGroups = $derived(
+		new Map(
+			catalog.recipes.map((r) => [
+				r.id,
+				new Set(r.lines.map((l) => catalog.ingredientsById.get(l.ingredientId)?.group))
+			])
+		)
+	);
+	const excludedGroups = $derived(
+		withoutIngredients.map((id) => catalog.ingredientsById.get(id)?.group ?? id)
+	);
+	/** Ingredients some recipe uses, one per group (dry and canned chickpeas are one choice). */
+	const excludableIngredients = $derived.by(() => {
+		const used = new Set(catalog.recipes.flatMap((r) => r.lines.map((l) => l.ingredientId)));
+		const seen = new Set<string>();
+		return catalog.ingredients.filter((i) => {
+			if (!used.has(i.id) || i.id === 'voda' || seen.has(i.group)) return false;
+			seen.add(i.group);
+			return true;
+		});
+	});
+	const ingredientSuggestions = $derived.by(() => {
+		const query = normalizeSearch(ingredientQuery.trim());
+		if (!query) return [];
+		const found = excludableIngredients
+			.filter((i) => !excludedGroups.includes(i.group))
+			.map((i) => ({ i, name: normalizeSearch(i.name) }))
+			.filter(({ name }) => name.includes(query));
+		// Names starting with the query first: "mrk" → mrkva before "sušená mrkva".
+		found.sort((a, b) => Number(!a.name.startsWith(query)) - Number(!b.name.startsWith(query)));
+		return found.slice(0, 6).map(({ i }) => i);
+	});
+
+	/** "Cícer sterilizovaný (scedený)" → "Cícer sterilizovaný", short enough for a chip. */
+	const shortName = (id: string) =>
+		(catalog.ingredientsById.get(id)?.name ?? id).replace(/\s*\(.*\)/, '');
+
+	function excludeIngredient(id: string) {
+		withoutIngredients = [...withoutIngredients, id];
+		ingredientQuery = '';
+	}
 
 	/** Categories almost every recipe has; searching them would match everything. */
 	const UNSEARCHED_CATEGORIES = new Set<IngredientCategory>(['koreniny', 'oleje', 'ine']);
@@ -161,6 +215,11 @@
 		if (r.perServing.protein < minProtein) return false;
 		if (excluded.some((a) => r.allergens.includes(a))) return false;
 		if (missingTools.some((t) => r.equipment.includes(t))) return false;
+		if (taste && r.taste !== taste) return false;
+		if (excludedGroups.length) {
+			const groups = recipeGroups.get(r.id)!;
+			if (excludedGroups.some((g) => groups.has(g))) return false;
+		}
 		for (const q of quick) {
 			if (q === 'jemne' && r.spicy > 0) return false;
 			if (q === 'palive' && r.spicy < 2) return false;
@@ -244,11 +303,6 @@
 	}
 
 	const shown = $derived(results.slice(0, limit));
-	$effect(() => {
-		// Any filter change starts from the first page again.
-		void results;
-		limit = PAGE_SIZE;
-	});
 
 	const activeFilterCount = $derived(
 		[
@@ -261,6 +315,8 @@
 			minProtein,
 			excluded.length,
 			missingTools.length,
+			taste,
+			withoutIngredients.length,
 			quick.length,
 			onlyPantry,
 			subs !== 'all',
@@ -303,6 +359,9 @@
 		minProtein = 0;
 		excluded = [];
 		missingTools = [];
+		taste = '';
+		withoutIngredients = [];
+		ingredientQuery = '';
 		quick = [];
 		subs = 'all';
 		difficulty = 0;
@@ -310,8 +369,34 @@
 		sort = 'odporucane';
 	}
 
-	// Filters live in the URL so links like /recepty?gf=1 work; prerendered pages can only read it on mount.
-	let urlReady = false;
+	// Filters live in the URL so links like /recepty?gf=1 work and Back returns to the same
+	// list; prerendered pages can only read it on mount.
+	const search = $derived.by(() => {
+		const p = new URLSearchParams();
+		if (q) p.set('q', q);
+		if (gf) p.set('gf', String(gf));
+		if (cuisine) p.set('kuchyna', cuisine);
+		if (category) p.set('kategoria', category);
+		if (category && sub) p.set('pod', sub);
+		if (meal) p.set('jedlo', meal);
+		if (taste) p.set('chut', taste);
+		if (spicy.length) p.set('palivost', spicy.join(','));
+		if (maxTime) p.set('cas', String(maxTime));
+		if (minProtein) p.set('bielkoviny', String(minProtein));
+		if (excluded.length) p.set('alergeny', excluded.join(','));
+		if (withoutIngredients.length) p.set('bez', withoutIngredients.join(','));
+		if (sort !== 'odporucane') p.set('sort', sort);
+		if (onlyPantry) p.set('spajza', '1');
+		if (subs !== 'all') p.set('nahrady', subs);
+		if (difficulty) p.set('narocnost', String(difficulty));
+		if (missingTools.length) p.set('nemam', missingTools.join(','));
+		if (quick.length) p.set('rychlo', quick.join(','));
+		return p.toString();
+	});
+	const list = (value: string | null) => (value ?? '').split(',').filter(Boolean);
+
+	/** The filters the current page of results belongs to; set once the URL has been read. */
+	let pagedSearch: string | undefined;
 	onMount(() => {
 		const p = new URLSearchParams(location.search);
 		q = p.get('q') ?? '';
@@ -330,11 +415,23 @@
 			const pod = p.get('pod') ?? '';
 			if (pod in RECIPE_CATEGORIES[k].subs) sub = pod;
 		}
-		spicy = (p.get('palivost') ?? '')
-			.split(',')
-			.filter(Boolean)
+		const t = p.get('chut');
+		taste = (TASTES as readonly string[]).includes(t ?? '') ? (t as Taste) : '';
+		spicy = list(p.get('palivost'))
 			.map(Number)
 			.filter((n) => n >= 0 && n <= 3);
+		const time = TIME_STEPS.indexOf(Number(p.get('cas')));
+		if (time >= 0) maxTimeIndex = time;
+		const protein = Number(p.get('bielkoviny'));
+		if (protein > 0 && protein <= PROTEIN_MAX && protein % PROTEIN_STEP === 0) {
+			minProtein = protein;
+		}
+		excluded = list(p.get('alergeny')).filter((a): a is Allergen =>
+			(EXCLUDABLE as string[]).includes(a)
+		);
+		withoutIngredients = [
+			...new Set(list(p.get('bez')).filter((id) => catalog.ingredientsById.has(id)))
+		];
 		const s = p.get('sort');
 		if (s && s in SORTS) sort = s as Sort;
 		if (p.get('spajza') === '1') onlyPantry = true;
@@ -342,33 +439,43 @@
 		if (n === 'bez' || n === 's') subs = n;
 		const d = Number(p.get('narocnost'));
 		if (d === 1 || d === 2 || d === 3) difficulty = d;
-		missingTools = (p.get('nemam') ?? '').split(',').filter((t) => t in MISSING_TOOLS);
-		quick = (p.get('rychlo') ?? '')
-			.split(',')
-			.filter((q): q is Quick => (QUICK as readonly string[]).includes(q));
-		urlReady = true;
+		const tools = new Set(catalog.equipment.map((e) => e.id));
+		missingTools = list(p.get('nemam')).filter((id) => tools.has(id));
+		quick = list(p.get('rychlo')).filter((q): q is Quick =>
+			(QUICK as readonly string[]).includes(q)
+		);
+		pagedSearch = search;
 	});
 
 	$effect(() => {
-		const p = new URLSearchParams();
-		if (q) p.set('q', q);
-		if (gf) p.set('gf', String(gf));
-		if (cuisine) p.set('kuchyna', cuisine);
-		if (category) p.set('kategoria', category);
-		if (category && sub) p.set('pod', sub);
-		if (meal) p.set('jedlo', meal);
-		if (spicy.length) p.set('palivost', spicy.join(','));
-		if (sort !== 'odporucane') p.set('sort', sort);
-		if (onlyPantry) p.set('spajza', '1');
-		if (subs !== 'all') p.set('nahrady', subs);
-		if (difficulty) p.set('narocnost', String(difficulty));
-		if (missingTools.length) p.set('nemam', missingTools.join(','));
-		if (quick.length) p.set('rychlo', quick.join(','));
-		if (!urlReady) return;
-		const search = p.toString();
-		if (search !== location.search.slice(1))
-			replaceState(search ? `?${search}` : location.pathname, {});
+		const current = search;
+		if (pagedSearch === undefined) return;
+		// The URL as opened stays as it is (the router isn't ready for replaceState yet on mount).
+		if (current !== pagedSearch) {
+			// Other filters start from the first page again.
+			limit = PAGE_SIZE;
+			pagedSearch = current;
+			if (current !== location.search.slice(1)) {
+				replaceState(current ? `?${current}` : location.pathname, {});
+			}
+		}
+		try {
+			sessionStorage.setItem(LIST_SEARCH_KEY, current);
+		} catch {
+			// Private mode: the recipe page's back link just goes to all recipes.
+		}
 	});
+
+	// Back from a recipe restores how far the list was expanded. SvelteKit restores the scroll
+	// before the extra cards render, so it's clamped to the first page – scroll again after them.
+	export const snapshot: Snapshot<{ limit: number; filtersOpen: boolean; scrollY: number }> = {
+		capture: () => ({ limit, filtersOpen, scrollY }),
+		restore: (value) => {
+			limit = value.limit;
+			filtersOpen = value.filtersOpen;
+			void tick().then(() => scrollTo(scrollX, value.scrollY));
+		}
+	};
 </script>
 
 <Seo
@@ -449,6 +556,21 @@
 					{#each QUICK as q (q)}
 						<button class="chip" aria-pressed={quick.includes(q)} onclick={() => toggleQuick(q)}>
 							{QUICK_LABELS[q]}
+						</button>
+					{/each}
+				</div>
+			</fieldset>
+
+			<fieldset>
+				<legend>Chuť</legend>
+				<div class="chips">
+					{#each TASTES as t (t)}
+						<button
+							class="chip"
+							aria-pressed={taste === t}
+							onclick={() => (taste = taste === t ? '' : t)}
+						>
+							{TASTE_LABELS[t]}
 						</button>
 					{/each}
 				</div>
@@ -571,8 +693,8 @@
 				<input
 					type="range"
 					min="0"
-					max="30"
-					step="5"
+					max={PROTEIN_MAX}
+					step={PROTEIN_STEP}
 					bind:value={minProtein}
 					aria-label="Minimum bielkovín"
 				/>
@@ -594,15 +716,70 @@
 			</fieldset>
 
 			<fieldset>
+				<legend>Bez týchto surovín</legend>
+				{#if withoutIngredients.length}
+					<div class="chips">
+						{#each withoutIngredients as id (id)}
+							<button
+								class="chip"
+								aria-pressed="true"
+								aria-label="Zrušiť: bez {shortName(id)}"
+								onclick={() => (withoutIngredients = withoutIngredients.filter((x) => x !== id))}
+							>
+								bez: {shortName(id)}
+								<Icon name="x" size={14} />
+							</button>
+						{/each}
+					</div>
+				{/if}
+				<label class="field small-field">
+					<Icon name="search" size={16} />
+					<span class="sr-only">Surovina, ktorú nechceš alebo nemáš</span>
+					<input
+						type="search"
+						bind:value={ingredientQuery}
+						placeholder="Napr. huby, koriander…"
+						autocomplete="off"
+						onkeydown={(e) => {
+							if (e.key === 'Enter' && ingredientSuggestions[0]) {
+								e.preventDefault();
+								excludeIngredient(ingredientSuggestions[0].id);
+							}
+						}}
+					/>
+				</label>
+				{#if ingredientSuggestions.length}
+					<div class="chips" aria-label="Návrhy surovín">
+						{#each ingredientSuggestions as i (i.id)}
+							<button
+								class="chip"
+								aria-label="Skryť recepty s: {shortName(i.id)}"
+								onclick={() => excludeIngredient(i.id)}
+							>
+								<Icon name="plus" size={13} />
+								{shortName(i.id)}
+							</button>
+						{/each}
+					</div>
+				{:else if ingredientQuery.trim()}
+					<p class="hint">Takú surovinu v receptoch nemáme.</p>
+				{:else}
+					<p class="hint">
+						Čo nemáš doma alebo nejete. Skryje aj iné podoby (sušený aj varený cícer).
+					</p>
+				{/if}
+			</fieldset>
+
+			<fieldset>
 				<legend>Nemám doma</legend>
 				<div class="chips">
-					{#each Object.entries(MISSING_TOOLS) as [tool, label] (tool)}
+					{#each toolOptions as tool (tool.id)}
 						<button
 							class="chip"
-							aria-pressed={missingTools.includes(tool)}
-							onclick={() => toggleTool(tool)}
+							aria-pressed={missingTools.includes(tool.id)}
+							onclick={() => toggleTool(tool.id)}
 						>
-							{label}
+							{tool.name}
 						</button>
 					{/each}
 				</div>
@@ -842,6 +1019,15 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
+	}
+	.filters .chip {
+		max-width: 100%;
+		white-space: normal;
+		text-align: left;
+	}
+	.small-field input {
+		padding-block: 8px;
+		font-size: 0.9rem;
 	}
 	.chip:disabled {
 		opacity: 0.5;

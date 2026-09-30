@@ -7,7 +7,7 @@
 	--card: #fffaf1;
 	--ink: #1d2e24;
 	--ink-2: #45564b;
-	--muted: #7b857b;
+	--muted: #58625a;
 	--line: #e2d6bf;
 	--leaf: #2f6b43;
 	--leaf-2: #6fa35a;
@@ -40,7 +40,7 @@
 		--card: #1a261e;
 		--ink: #f0e9da;
 		--ink-2: #c9c2b1;
-		--muted: #909a90;
+		--muted: #9aa49a;
 		--line: #2b3a30;
 		--leaf: #86c893;
 		--leaf-2: #86c893;
@@ -67,7 +67,7 @@
 	--card: #1a261e;
 	--ink: #f0e9da;
 	--ink-2: #c9c2b1;
-	--muted: #909a90;
+	--muted: #9aa49a;
 	--line: #2b3a30;
 	--leaf: #86c893;
 	--leaf-2: #86c893;
@@ -331,15 +331,15 @@ a.chip:hover {
 }
 .badge.tomato {
 	background: var(--tomato-soft);
-	color: var(--tomato);
+	color: color-mix(in srgb, var(--tomato) 60%, var(--ink));
 }
 .badge.turmeric {
 	background: var(--turmeric-soft);
-	color: color-mix(in srgb, var(--turmeric) 70%, var(--ink));
+	color: color-mix(in srgb, var(--turmeric) 40%, var(--ink));
 }
 .badge.sky {
 	background: var(--sky-soft);
-	color: var(--sky);
+	color: color-mix(in srgb, var(--sky) 60%, var(--ink));
 }
 
 /* Slightly rotated "sticker" look for highlight badges. */

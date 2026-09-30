@@ -80,7 +80,11 @@
 										· {AGE_LABELS[age]}{/if}
 								</small>
 							</span>
-							<span class="count" aria-label="{p.count} kusov">{p.count}×</span>
+							<span class="count"
+								><span aria-hidden="true">{p.count}×</span><span class="sr-only"
+									>{p.count} kusov</span
+								></span
+							>
 							<button class="step" aria-label="Pridať kus: {p.name}" onclick={() => addOne(p.id)}>
 								<Icon name="plus" size={16} />
 							</button>

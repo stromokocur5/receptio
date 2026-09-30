@@ -1,0 +1,23 @@
+title: Korenené tekvicové semienka
+description: Semienka pražené na panvici so sójovou omáčkou a paprikou. Chrumkavý posyp na polievku aj náhrada čipsov – so zinkom a železom navyše.
+cuisine: moderna
+meals: [snack]
+categories: [snacky/slane, snacky/na-cesty]
+time: 10
+active: 10
+servings: 6
+difficulty: 1
+tags: [rychle, vela-bielkovin, do-krabicky]
+keeps: { fridge: 30, freezer: 0 }
+ingredients:
+  - tekvicove-semienka: 1 hrnček
+  - sojova-omacka: 1 pl
+  - udena-paprika: 1/2 čl
+  - cili: 1 štipka
+  - citron: 1/4 ks | šťava
+steps:
+  - Semienka praž na suchej panvici na strednom ohni 4–5 minút za častého miešania, kým nezačnú praskať a nafukovať sa.
+  - Stiahni z ohňa, pridaj sójovú omáčku, papriku, čili a citrón a premiešaj – omáčka sa na horúcej panvici hneď odparí.
+  - Vysyp na tanier a nechaj vychladnúť, aby dochrumkaveli.
+tips:
+  - Rovnako sa dajú pražiť slnečnicové semienka alebo semienka z vlastnej tekvice, tie ale najprv umy, osuš a peč 20 minút pri 160 °C.

@@ -1,0 +1,26 @@
+title: Cícerové „cookie dough“
+description: Surové cesto na sušienky, ktoré sa smie jesť lyžičkou – z cíceru, arašidového masla a čokolády. Chutí ako sladkosť, má bielkoviny ako obed.
+cuisine: americka
+meals: [snack, dezert]
+categories: [snacky/sladke, dezerty/nepecene]
+time: 10
+active: 10
+servings: 4
+difficulty: 1
+tags: [bez-varenia, rychle, vela-bielkovin, deti]
+keeps: { fridge: 5, freezer: 3 }
+ingredients:
+  - cicer-sterilizovany: 1 ks | scedený a opláchnutý
+  - arasidove-maslo: 4 pl
+  - javorovy-sirup: 3 pl
+  - vanilka: 1 čl
+  - ovsene-vlocky: 3 pl | jemné
+  - sol: 1 štipka
+  - horka-cokolada: 40 g | nasekaná
+steps:
+  - Cícer osuš utierkou a ak chceš úplne hladké cesto, ošúp šupky.
+  - V sekáčiku alebo mixéri rozmixuj cícer s arašidovým maslom, sirupom, vanilkou, vločkami a soľou na hustú hladkú hmotu. Podľa potreby zoškrab boky.
+  - Vmiešaj čokoládu a nechaj 30 minút v chladničke stuhnúť. Jedz lyžičkou, s jablkom alebo natieraj na ryžový chlebík.
+tips:
+  - Z hmoty sa dajú vyguľkovať guľky a obaliť v kakau.
+  - Ak cícer ešte „cítiť“, pridaj lyžicu sirupu a štipku soli – soľ chuť fazule zakryje.

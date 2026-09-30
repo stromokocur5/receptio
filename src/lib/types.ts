@@ -47,6 +47,9 @@ export const INGREDIENT_CATEGORIES = [
 ] as const;
 export type IngredientCategory = (typeof INGREDIENT_CATEGORIES)[number];
 
+export const TASTES = ['sladke', 'slane'] as const;
+export type Taste = (typeof TASTES)[number];
+
 export const MEALS = ['ranajky', 'obed', 'vecera', 'snack', 'dezert', 'domace'] as const;
 export type Meal = (typeof MEALS)[number];
 
@@ -161,6 +164,8 @@ export interface RecipeSummary extends RecipeComputed {
 	equipment: string[];
 	/** 0 mild (fine for kids) … 3 hot. */
 	spicy: 0 | 1 | 2 | 3;
+	/** Sweet or savory; undefined for neutral things like plant milk. */
+	taste?: Taste;
 	/** Days in the fridge (0 = eat fresh) and months in the freezer (0 = don't freeze). */
 	keeps?: { fridge: number; freezer: number };
 	/** ISO date the recipe was actually cooked and checked. */

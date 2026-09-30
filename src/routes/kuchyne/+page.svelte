@@ -127,6 +127,6 @@
 		gap: 6px;
 		font-size: 0.82rem;
 		font-weight: 700;
-		color: color-mix(in srgb, var(--c) 60%, var(--ink));
+		color: color-mix(in srgb, var(--c) 45%, var(--ink));
 	}
 </style>

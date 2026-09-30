@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { pushState } from '$app/navigation';
+	import { afterNavigate, pushState } from '$app/navigation';
 	import { page } from '$app/state';
 	import { formatAmount, formatEur, formatNumber, formatPiece } from '$lib/amounts';
 	import {
@@ -38,6 +38,7 @@
 		addToPlan,
 		favorites,
 		history,
+		LIST_SEARCH_KEY,
 		notes,
 		pantry,
 		preserves,
@@ -55,6 +56,24 @@
 	const catalog = useCatalog();
 
 	const base = $derived(data.recipe);
+
+	/** Back to the list with the filters it had; a real Back also restores scroll and paging. */
+	let listHref = $state('/recepty');
+	let cameFromList = false;
+	afterNavigate(({ from }) => {
+		cameFromList = from?.url.pathname === '/recepty';
+		try {
+			const search = sessionStorage.getItem(LIST_SEARCH_KEY);
+			listHref = search ? `/recepty?${search}` : '/recepty';
+		} catch {
+			listHref = '/recepty';
+		}
+	});
+	function backToList(event: MouseEvent) {
+		if (!cameFromList || event.metaKey || event.ctrlKey || event.shiftKey) return;
+		event.preventDefault();
+		window.history.back();
+	}
 
 	let variantName = $state<string | null>(null);
 	const variant = $derived(
@@ -284,7 +303,9 @@
 
 <article class="wrap page">
 	<nav class="crumbs" aria-label="Kategória" data-noprint>
-		<a class="back" href="/recepty"><Icon name="arrow-left" size={18} /> Recepty</a>
+		<a class="back" href={listHref} onclick={backToList}
+			><Icon name="arrow-left" size={18} /> Recepty</a
+		>
 		{#each recipe.categories as path (path)}
 			{@const { category, sub } = splitCategory(path)}
 			<a
@@ -322,7 +343,10 @@
 			<dl class="facts">
 				<div>
 					<dt><Icon name="clock" size={18} /> Čas</dt>
-					<dd>{recipe.time} min <small>({recipe.activeTime} aktívne)</small></dd>
+					<dd>
+						{recipe.time} min
+						{#if recipe.activeTime < recipe.time}<small>({recipe.activeTime} aktívne)</small>{/if}
+					</dd>
 				</div>
 				<div>
 					<dt><Icon name="chef" size={18} /> Náročnosť</dt>
@@ -577,15 +601,20 @@
 					{@const ingredient = catalog.ingredientsById.get(line.ingredientId)!}
 					{@const home = hasPantry && isHome(line.ingredientId)}
 					{@const swaps = base.swaps[line.ingredientId] ?? []}
+					{@const amount = formatAmount(
+						line.amount === null ? null : line.amount * factor,
+						line.unit
+					)}
 					<li class:home class:ready={ready[i]}>
 						<button
 							class="amount"
 							aria-pressed={!!ready[i]}
+							aria-label="Pripravené: {amount} {ingredient.name}"
 							title="Odškrtni, keď to máš pripravené"
 							onclick={() => (ready[i] = !ready[i])}
 							><span class="tick" aria-hidden="true"
 								><Icon name="check" size={12} stroke={3} /></span
-							>{formatAmount(line.amount === null ? null : line.amount * factor, line.unit)}</button
+							>{amount}</button
 						>
 						<span class="name" class:not-eaten={line.notEaten}>
 							<a class="ing-link" href="/suroviny/{ingredient.id}">{ingredient.name}</a>
@@ -894,7 +923,7 @@
 		padding: 3px 10px;
 		border-radius: 999px;
 		background: color-mix(in srgb, var(--tone) 14%, transparent);
-		color: color-mix(in srgb, var(--tone) 70%, var(--ink));
+		color: color-mix(in srgb, var(--tone) 45%, var(--ink));
 		font-size: 0.8rem;
 		font-weight: 650;
 		text-decoration: none;
@@ -910,7 +939,8 @@
 	}
 	.art {
 		position: relative;
-		width: min(64%, 380px);
+		/* Small enough on a phone that the title is on the first screen. */
+		width: min(48%, 230px);
 		justify-self: center;
 		padding: 6%;
 	}
@@ -957,31 +987,34 @@
 	}
 	.facts {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 12px;
+		/* Three across on a phone, so the actions aren't three screens down. */
+		grid-template-columns: repeat(3, 1fr);
+		gap: 8px;
 		margin: 18px 0;
 	}
 	.facts div {
+		min-width: 0;
 		background: var(--card);
 		border-radius: var(--radius-sm);
-		padding: 10px 14px;
+		padding: 8px 10px;
 		border: 1px solid var(--line);
 	}
 	dt {
 		display: flex;
 		align-items: center;
-		gap: 6px;
-		font-size: 0.78rem;
+		gap: 5px;
+		font-size: 0.7rem;
 		font-weight: 700;
 		text-transform: uppercase;
-		letter-spacing: 0.08em;
+		letter-spacing: 0.06em;
 		color: var(--muted);
 	}
 	dd {
 		margin: 2px 0 0;
 		font-family: var(--font-display);
-		font-size: 1.2rem;
+		font-size: 1.05rem;
 		font-weight: 600;
+		overflow-wrap: anywhere;
 	}
 	dd small {
 		font-family: var(--font-body);
@@ -1327,10 +1360,10 @@
 		display: inline-grid;
 		place-items: center;
 		flex: none;
-		width: 16px;
-		height: 16px;
+		width: 18px;
+		height: 18px;
 		border-radius: 50%;
-		border: 1.5px solid var(--line);
+		border: 1.5px solid var(--muted);
 		color: transparent;
 		transform: translateY(2px);
 		transition:
@@ -1694,7 +1727,14 @@
 
 	@media (min-width: 720px) {
 		.facts {
-			grid-template-columns: repeat(4, 1fr);
+			grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+			gap: 10px;
+		}
+		.facts div {
+			padding: 10px 12px;
+		}
+		dd {
+			font-size: 1.2rem;
 		}
 		.nut-grid {
 			grid-template-columns: 1fr 1fr;
@@ -1751,6 +1791,11 @@
 		.ingredients {
 			position: sticky;
 			top: 84px;
+			/* A long list scrolls inside, or its end is unreachable while it sticks. */
+			max-height: calc(100vh - 100px);
+			overflow-y: auto;
+			overscroll-behavior: contain;
+			scrollbar-width: thin;
 		}
 	}
 </style>

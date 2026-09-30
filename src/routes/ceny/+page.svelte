@@ -345,7 +345,7 @@
 		background: var(--paper);
 	}
 	.entries li.stale {
-		opacity: 0.55;
+		opacity: 0.8;
 	}
 	.sdot {
 		width: 10px;
