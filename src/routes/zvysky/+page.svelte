@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { avoidFilter } from '$lib/avoid';
+	import { avoid } from '$lib/state.svelte';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
@@ -25,7 +27,11 @@
 	});
 	const matches = $derived(
 		chosen.length
-			? rankByLeftovers(catalog.recipes, chosen, catalog.ingredientsById).slice(0, SHOWN)
+			? rankByLeftovers(
+					catalog.recipes.filter(avoidFilter(avoid.current, catalog.ingredientsById)),
+					chosen,
+					catalog.ingredientsById
+				).slice(0, SHOWN)
 			: []
 	);
 

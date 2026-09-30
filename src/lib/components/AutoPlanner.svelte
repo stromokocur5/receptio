@@ -8,7 +8,8 @@
 	import { ALLERGEN_LABELS } from '$lib/nutrition';
 	import { matchRecipe, pantryByGroup } from '$lib/pantry';
 	import { recipeSeason } from '$lib/season';
-	import { addToPlan, pantry, plan, settings } from '$lib/state.svelte';
+	import { avoidFilter } from '$lib/avoid';
+	import { addToPlan, avoid, pantry, plan, settings } from '$lib/state.svelte';
 	import type { Allergen } from '$lib/types';
 
 	const catalog = useCatalog();
@@ -49,7 +50,8 @@
 			batchCooking,
 			seed
 		};
-		result = autoPlan(catalog.recipes, options, {
+		const allowed = avoidFilter(avoid.current, catalog.ingredientsById);
+		result = autoPlan(catalog.recipes.filter(allowed), options, {
 			pantryScore:
 				usePantry && hasPantry
 					? (r) => matchRecipe(r, groups, catalog.ingredientsById).score

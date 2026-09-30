@@ -1,4 +1,5 @@
 import { browser } from '$app/environment';
+import { NO_AVOID, validateAvoid, type Avoid } from './avoid';
 import { consumeFromPantry, type Pantry, type PantryUse } from './pantry';
 import { validatePreserves, type Preserve } from './preserves';
 import type { PlanEntry } from './shopping';
@@ -196,6 +197,8 @@ export const checkedItems = new Persisted<Record<string, boolean>>('checked', {}
 /** Basics (spices, oils) the user marked as missing at home. */
 export const outOfStock = new Persisted<Record<string, boolean>>('out-of-stock', {}, validateFlags);
 export const settings = new Persisted<Settings>('settings', DEFAULT_SETTINGS, validateSettings);
+/** Ingredients and tools the user doesn't have or eat, set in Špajza. */
+export const avoid = new Persisted<Avoid>('avoid', NO_AVOID, validateAvoid);
 
 /** Recipes cooked, oldest first. */
 export const history = new Persisted<CookedEntry[]>('history', [], validateHistory);
@@ -337,7 +340,8 @@ export const ALL_PERSISTED = {
 	favorites,
 	notes,
 	garden,
-	preserves
+	preserves,
+	avoid
 };
 
 export const ui = $state({ loaded: false });

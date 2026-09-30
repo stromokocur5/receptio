@@ -31,7 +31,9 @@
 	} from '$lib/nutrition';
 	import { recipeSeason } from '$lib/season';
 	import { rankByPantry, type PantryMatch } from '$lib/pantry';
-	import { LIST_SEARCH_KEY, likes, pantry, ui } from '$lib/state.svelte';
+	import { avoidFilter, isAvoiding, missableTools, shortName } from '$lib/avoid';
+	import { LIST_SEARCH_KEY, avoid, likes, pantry, ui } from '$lib/state.svelte';
+	import IngredientExcluder from '$lib/components/IngredientExcluder.svelte';
 	import {
 		MEALS,
 		TASTES,
@@ -76,27 +78,28 @@
 	let taste = $state<Taste | ''>('');
 	/** Ingredient ids; a recipe is hidden when it uses anything from the same group. */
 	let withoutIngredients = $state<string[]>([]);
-	let ingredientQuery = $state('');
-	/** Quick picks: one pot, no cooking, oven only, mild (kids), in season now. */
-	const QUICK = [
-		'jeden-hrniec',
-		'bez-varenia',
-		'len-rura',
-		'jemne',
-		'palive',
-		'sezonne',
-		'menej-soli'
-	] as const;
+	/** Yes/no picks kept in the `rychlo` URL param: how it's cooked, in season, low salt. */
+	const QUICK = ['jeden-hrniec', 'bez-varenia', 'len-rura', 'sezonne', 'menej-soli'] as const;
 	type Quick = (typeof QUICK)[number];
+	const COOKING_STYLES = ['jeden-hrniec', 'bez-varenia', 'len-rura'] as const;
 	const QUICK_LABELS: Record<Quick, string> = {
 		'jeden-hrniec': COMPUTED_TAG_LABELS['jeden-hrniec'],
 		'bez-varenia': COMPUTED_TAG_LABELS['bez-varenia'],
 		'len-rura': COMPUTED_TAG_LABELS['len-rura'],
-		jemne: 'Nepálivé, pre deti',
-		palive: 'Pálivé',
-		sezonne: 'Z toho, čo je v sezóne',
+		sezonne: 'V sezóne',
 		'menej-soli': 'Menej soli'
 	};
+	const DIFFICULTY_LABELS = ['', 'Jednoduché', 'Stredné', 'Náročnejšie'] as const;
+	const GF_LABELS = ['Všetko', 'Bezlepkové', 'Aj s bezlepkovou verziou'] as const;
+
+	/** The filter panel's sections; a crowded list of 14 filters was hard to take in. */
+	type Group = 'chut' | 'cas' | 'strava' | 'doma';
+	let openGroups = $state<Record<Group, boolean>>({
+		chut: true,
+		cas: true,
+		strava: false,
+		doma: false
+	});
 	let quick = $state<Quick[]>([]);
 	/** Salty recipes still count when their automatic "Menej soli" version gets under the line. */
 	const lowSalt = (r: RecipeSummary) =>
@@ -115,13 +118,8 @@
 
 	const maxTime = $derived(TIME_STEPS[maxTimeIndex]);
 
-	/** Everyone has the basic tools; a filtered-for one stays so it can be switched off. */
 	const toolOptions = $derived(
-		catalog.equipment.filter(
-			(e) =>
-				missingTools.includes(e.id) ||
-				(e.level !== 'zaklad' && catalog.recipes.some((r) => r.equipment.includes(e.id)))
-		)
+		missableTools(catalog.equipment, catalog.recipes, [...missingTools, ...avoid.current.tools])
 	);
 
 	const recipeGroups = $derived(
@@ -135,36 +133,12 @@
 	const excludedGroups = $derived(
 		withoutIngredients.map((id) => catalog.ingredientsById.get(id)?.group ?? id)
 	);
-	/** Ingredients some recipe uses, one per group (dry and canned chickpeas are one choice). */
-	const excludableIngredients = $derived.by(() => {
-		const used = new Set(catalog.recipes.flatMap((r) => r.lines.map((l) => l.ingredientId)));
-		const seen = new Set<string>();
-		return catalog.ingredients.filter((i) => {
-			if (!used.has(i.id) || i.id === 'voda' || seen.has(i.group)) return false;
-			seen.add(i.group);
-			return true;
-		});
-	});
-	const ingredientSuggestions = $derived.by(() => {
-		const query = normalizeSearch(ingredientQuery.trim());
-		if (!query) return [];
-		const found = excludableIngredients
-			.filter((i) => !excludedGroups.includes(i.group))
-			.map((i) => ({ i, name: normalizeSearch(i.name) }))
-			.filter(({ name }) => name.includes(query));
-		// Names starting with the query first: "mrk" → mrkva before "sušená mrkva".
-		found.sort((a, b) => Number(!a.name.startsWith(query)) - Number(!b.name.startsWith(query)));
-		return found.slice(0, 6).map(({ i }) => i);
-	});
+	const nameOf = (id: string) => shortName(catalog.ingredientsById.get(id)?.name ?? id);
 
-	/** "Cícer sterilizovaný (scedený)" → "Cícer sterilizovaný", short enough for a chip. */
-	const shortName = (id: string) =>
-		(catalog.ingredientsById.get(id)?.name ?? id).replace(/\s*\(.*\)/, '');
-
-	function excludeIngredient(id: string) {
-		withoutIngredients = [...withoutIngredients, id];
-		ingredientQuery = '';
-	}
+	/** What Špajza says is never at home; one switch turns it off for this visit. */
+	let ignoreAvoid = $state(false);
+	const avoiding = $derived(ui.loaded && !ignoreAvoid && isAvoiding(avoid.current));
+	const allowedByAvoid = $derived(avoidFilter(avoid.current, catalog.ingredientsById));
 
 	/** Categories almost every recipe has; searching them would match everything. */
 	const UNSEARCHED_CATEGORIES = new Set<IngredientCategory>(['koreniny', 'oleje', 'ine']);
@@ -207,6 +181,7 @@
 	/** Every filter except the category, so the tiles can count what each one would show. */
 	function passesFilters(r: RecipeSummary): boolean {
 		if (!matchesQuery(searchIndex.get(r.id)!)) return false;
+		if (avoiding && !allowedByAvoid(r)) return false;
 		if (gf === 1 && r.gluten === 'contains') return false;
 		if (gf === 2 && r.gluten === 'contains' && !r.gfSwappable) return false;
 		if (cuisine && r.cuisine !== cuisine) return false;
@@ -221,19 +196,11 @@
 			if (excludedGroups.some((g) => groups.has(g))) return false;
 		}
 		for (const q of quick) {
-			if (q === 'jemne' && r.spicy > 0) return false;
-			if (q === 'palive' && r.spicy < 2) return false;
-			if (q === 'sezonne' && !recipeSeason(r, catalog.ingredientsById, month).inSeason) {
-				return false;
-			}
-			if (q === 'menej-soli' && !lowSalt(r)) return false;
-			if (
-				q !== 'jemne' &&
-				q !== 'palive' &&
-				q !== 'sezonne' &&
-				q !== 'menej-soli' &&
-				cookingStyle(r.equipment) !== q
-			) {
+			if (q === 'sezonne') {
+				if (!recipeSeason(r, catalog.ingredientsById, month).inSeason) return false;
+			} else if (q === 'menej-soli') {
+				if (!lowSalt(r)) return false;
+			} else if (cookingStyle(r.equipment) !== q) {
 				return false;
 			}
 		}
@@ -304,25 +271,63 @@
 
 	const shown = $derived(results.slice(0, limit));
 
-	const activeFilterCount = $derived(
-		[
-			gf,
-			cuisine,
-			category,
-			meal,
-			spicy.length,
-			maxTime,
-			minProtein,
-			excluded.length,
-			missingTools.length,
-			taste,
-			withoutIngredients.length,
-			quick.length,
-			onlyPantry,
-			subs !== 'all',
-			difficulty
-		].filter(Boolean).length
-	);
+	interface ActiveFilter {
+		key: string;
+		label: string;
+		group: Group;
+		clear: () => void;
+	}
+	/** Everything narrowing the list (but the category), as chips that undo it one by one. */
+	const activeFilters = $derived.by(() => {
+		const out: ActiveFilter[] = [];
+		const add = (key: string, label: string, group: Group, clear: () => void) =>
+			out.push({ key, label, group, clear });
+		if (taste) add('taste', TASTE_LABELS[taste], 'chut', () => (taste = ''));
+		if (meal) add('meal', MEAL_LABELS[meal], 'chut', () => (meal = ''));
+		for (const level of spicy) {
+			add(`spicy-${level}`, SPICY_LABELS[level], 'chut', () => toggleSpicy(level));
+		}
+		if (cuisine) {
+			add('cuisine', catalog.cuisinesById.get(cuisine)?.name ?? cuisine, 'chut', () => {
+				cuisine = '';
+			});
+		}
+		if (maxTime) {
+			add('time', `do ${maxTime} min`, 'cas', () => (maxTimeIndex = TIME_STEPS.length - 1));
+		}
+		if (difficulty) add('difficulty', DIFFICULTY_LABELS[difficulty], 'cas', () => (difficulty = 0));
+		for (const q of quick) {
+			const group: Group = q === 'menej-soli' ? 'strava' : q === 'sezonne' ? 'doma' : 'cas';
+			add(`quick-${q}`, QUICK_LABELS[q], group, () => toggleQuick(q));
+		}
+		if (gf) add('gf', GF_LABELS[gf], 'strava', () => (gf = 0));
+		for (const a of excluded) {
+			add(`allergen-${a}`, `bez: ${ALLERGEN_LABELS[a]}`, 'strava', () => toggleAllergen(a));
+		}
+		for (const id of withoutIngredients) {
+			add(`without-${id}`, `bez: ${nameOf(id)}`, 'strava', () => {
+				withoutIngredients = withoutIngredients.filter((x) => x !== id);
+			});
+		}
+		if (subs !== 'all') {
+			add('subs', subs === 'bez' ? 'Bez náhrad' : 'S náhradami', 'strava', () => (subs = 'all'));
+		}
+		if (minProtein) {
+			add('protein', `aspoň ${minProtein} g bielkovín`, 'strava', () => (minProtein = 0));
+		}
+		if (onlyPantry) add('pantry', 'Len z toho, čo mám', 'doma', () => (onlyPantry = false));
+		if (avoiding) {
+			const n = avoid.current.ingredients.length + avoid.current.tools.length;
+			add('avoid', `bez toho, čo nemám (${n})`, 'doma', () => (ignoreAvoid = true));
+		}
+		for (const id of missingTools) {
+			const name = catalog.equipment.find((e) => e.id === id)?.name ?? id;
+			add(`tool-${id}`, `nemám: ${name}`, 'doma', () => toggleTool(id));
+		}
+		return out;
+	});
+	const activeFilterCount = $derived(activeFilters.length);
+	const groupCount = (group: Group) => activeFilters.filter((f) => f.group === group).length;
 
 	function pickCategory(id: CategoryId) {
 		category = category === id ? '' : id;
@@ -361,7 +366,6 @@
 		missingTools = [];
 		taste = '';
 		withoutIngredients = [];
-		ingredientQuery = '';
 		quick = [];
 		subs = 'all';
 		difficulty = 0;
@@ -420,6 +424,10 @@
 		spicy = list(p.get('palivost'))
 			.map(Number)
 			.filter((n) => n >= 0 && n <= 3);
+		// Old links had mild/hot among the quick picks.
+		const legacyQuick = list(p.get('rychlo'));
+		if (legacyQuick.includes('jemne')) spicy = [0];
+		if (legacyQuick.includes('palive')) spicy = [2, 3];
 		const time = TIME_STEPS.indexOf(Number(p.get('cas')));
 		if (time >= 0) maxTimeIndex = time;
 		const protein = Number(p.get('bielkoviny'));
@@ -444,6 +452,7 @@
 		quick = list(p.get('rychlo')).filter((q): q is Quick =>
 			(QUICK as readonly string[]).includes(q)
 		);
+		for (const f of activeFilters) openGroups[f.group] = true;
 		pagedSearch = search;
 	});
 
@@ -549,254 +558,297 @@
 	</nav>
 
 	<div class="layout">
-		<aside id="filters" class="filters card" class:open={filtersOpen}>
-			<fieldset>
-				<legend>Rýchly výber</legend>
-				<div class="chips">
-					{#each QUICK as q (q)}
-						<button class="chip" aria-pressed={quick.includes(q)} onclick={() => toggleQuick(q)}>
-							{QUICK_LABELS[q]}
-						</button>
-					{/each}
-				</div>
-			</fieldset>
+		<aside id="filters" class="filters card" class:open={filtersOpen} aria-label="Filtre">
+			<details class="group" bind:open={openGroups.chut}>
+				<summary>
+					Chuť a jedlo
+					{#if groupCount('chut')}<span class="count">{groupCount('chut')}</span>{/if}
+				</summary>
+				<div class="group-body">
+					<fieldset>
+						<legend>Chuť</legend>
+						<div class="chips">
+							{#each TASTES as t (t)}
+								<button
+									class="chip"
+									aria-pressed={taste === t}
+									onclick={() => (taste = taste === t ? '' : t)}
+								>
+									{TASTE_LABELS[t]}
+								</button>
+							{/each}
+						</div>
+					</fieldset>
 
-			<fieldset>
-				<legend>Chuť</legend>
-				<div class="chips">
-					{#each TASTES as t (t)}
-						<button
-							class="chip"
-							aria-pressed={taste === t}
-							onclick={() => (taste = taste === t ? '' : t)}
+					<fieldset>
+						<legend>Kedy to zješ</legend>
+						<div class="chips">
+							{#each MEAL_FILTERS as m (m)}
+								<button
+									class="chip"
+									aria-pressed={meal === m}
+									onclick={() => (meal = meal === m ? '' : m)}
+								>
+									{MEAL_LABELS[m]}
+								</button>
+							{/each}
+						</div>
+					</fieldset>
+
+					<fieldset>
+						<legend>Pálivosť</legend>
+						<div class="chips">
+							{#each SPICY_LABELS as label, level (label)}
+								<button
+									class="chip heat"
+									aria-pressed={spicy.includes(level)}
+									onclick={() => toggleSpicy(level)}
+								>
+									<span class="peppers" aria-hidden="true">
+										{#each [1, 2, 3] as n (n)}<span class:on={level >= n}
+												><Icon name="chili" size={13} stroke={2.2} /></span
+											>{/each}
+									</span>
+									{label}
+								</button>
+							{/each}
+						</div>
+					</fieldset>
+
+					<fieldset>
+						<legend>Kuchyňa</legend>
+						<label class="field">
+							<span class="sr-only">Kuchyňa</span>
+							<select bind:value={cuisine}>
+								<option value="">Všetky kuchyne</option>
+								{#each catalog.cuisines as c (c.id)}
+									<option value={c.id}>{c.name}</option>
+								{/each}
+							</select>
+						</label>
+					</fieldset>
+				</div>
+			</details>
+
+			<details class="group" bind:open={openGroups.cas}>
+				<summary>
+					Čas a námaha
+					{#if groupCount('cas')}<span class="count">{groupCount('cas')}</span>{/if}
+				</summary>
+				<div class="group-body">
+					<fieldset>
+						<legend>Čas: <strong>{maxTime ? `do ${maxTime} min` : 'hocikoľko'}</strong></legend>
+						<input
+							type="range"
+							min="0"
+							max={TIME_STEPS.length - 1}
+							step="1"
+							bind:value={maxTimeIndex}
+							aria-label="Maximálny čas"
+							aria-valuetext={maxTime ? `do ${maxTime} minút` : 'hocikoľko'}
+						/>
+					</fieldset>
+
+					<fieldset>
+						<legend>Náročnosť</legend>
+						<div class="chips">
+							{#each [1, 2, 3] as const as level (level)}
+								<button
+									class="chip"
+									aria-pressed={difficulty === level}
+									onclick={() => (difficulty = difficulty === level ? 0 : level)}
+								>
+									{DIFFICULTY_LABELS[level]}
+								</button>
+							{/each}
+						</div>
+					</fieldset>
+
+					<fieldset>
+						<legend>Menej riadu</legend>
+						<div class="chips">
+							{#each COOKING_STYLES as q (q)}
+								<button
+									class="chip"
+									aria-pressed={quick.includes(q)}
+									onclick={() => toggleQuick(q)}
+								>
+									{QUICK_LABELS[q]}
+								</button>
+							{/each}
+						</div>
+					</fieldset>
+				</div>
+			</details>
+
+			<details class="group" bind:open={openGroups.strava}>
+				<summary>
+					Strava a alergie
+					{#if groupCount('strava')}<span class="count">{groupCount('strava')}</span>{/if}
+				</summary>
+				<div class="group-body">
+					<fieldset>
+						<legend>Lepok</legend>
+						<div class="chips">
+							{#each GF_LABELS as label, i (label)}
+								<button class="chip" aria-pressed={gf === i} onclick={() => (gf = i)}
+									>{label}</button
+								>
+							{/each}
+						</div>
+						{#if gf}
+							<p class="hint">
+								Bezlepkové* = niektorá surovina (bujón, tortilly…) môže mať lepok, kontroluj
+								etiketu.
+							</p>
+						{/if}
+					</fieldset>
+
+					<fieldset>
+						<legend>Bez alergénov</legend>
+						<div class="chips">
+							{#each EXCLUDABLE as a (a)}
+								<button
+									class="chip"
+									aria-pressed={excluded.includes(a)}
+									onclick={() => toggleAllergen(a)}
+								>
+									bez: {ALLERGEN_LABELS[a]}
+								</button>
+							{/each}
+						</div>
+					</fieldset>
+
+					<fieldset>
+						<legend>Bez týchto surovín</legend>
+						<IngredientExcluder
+							selected={withoutIngredients}
+							onchange={(ids) => (withoutIngredients = ids)}
+							hint="Skryje aj iné podoby (sušený aj varený cícer). Natrvalo si to nastavíš v Špajzi."
+						/>
+					</fieldset>
+
+					<fieldset>
+						<legend>Vegánske náhrady</legend>
+						<div class="chips">
+							<button class="chip" aria-pressed={subs === 'all'} onclick={() => (subs = 'all')}
+								>Všetko</button
+							>
+							<button class="chip" aria-pressed={subs === 'bez'} onclick={() => (subs = 'bez')}>
+								Bez náhrad
+							</button>
+							<button class="chip" aria-pressed={subs === 's'} onclick={() => (subs = 's')}>
+								S náhradami
+							</button>
+						</div>
+						<p class="hint">
+							Rastlinná smotana, maslo, syr, jogurt, majonéza, sójové mäso. <a href="/wiki/nahrady"
+								>Čo kupovať</a
+							>
+						</p>
+					</fieldset>
+
+					<fieldset>
+						<legend
+							>Bielkoviny: <strong
+								>{minProtein ? `aspoň ${minProtein} g/porcia` : 'hocikoľko'}</strong
+							></legend
 						>
-							{TASTE_LABELS[t]}
-						</button>
-					{/each}
-				</div>
-			</fieldset>
+						<input
+							type="range"
+							min="0"
+							max={PROTEIN_MAX}
+							step={PROTEIN_STEP}
+							bind:value={minProtein}
+							aria-label="Minimum bielkovín"
+							aria-valuetext={minProtein ? `aspoň ${minProtein} gramov na porciu` : 'hocikoľko'}
+						/>
+					</fieldset>
 
-			<fieldset>
-				<legend>Lepok</legend>
-				<div class="chips">
-					{#each ['Všetko', 'Bezlepkové', 'Aj s bezlepkovou verziou'] as label, i (label)}
-						<button class="chip" aria-pressed={gf === i} onclick={() => (gf = i)}>{label}</button>
-					{/each}
-				</div>
-				{#if gf}
-					<p class="hint">
-						Bezlepkové* = niektorá surovina (bujón, tortilly…) môže mať lepok, kontroluj etiketu.
-					</p>
-				{/if}
-			</fieldset>
-
-			<fieldset>
-				<legend>Kedy to zješ</legend>
-				<div class="chips">
-					{#each MEAL_FILTERS as m (m)}
-						<button
-							class="chip"
-							aria-pressed={meal === m}
-							onclick={() => (meal = meal === m ? '' : m)}
-						>
-							{MEAL_LABELS[m]}
-						</button>
-					{/each}
-				</div>
-			</fieldset>
-
-			<fieldset>
-				<legend>Pálivosť</legend>
-				<div class="chips">
-					{#each SPICY_LABELS as label, level (label)}
-						<button
-							class="chip heat"
-							aria-pressed={spicy.includes(level)}
-							onclick={() => toggleSpicy(level)}
-						>
-							<span class="peppers" aria-hidden="true">
-								{#each [1, 2, 3] as n (n)}<span class:on={level >= n}
-										><Icon name="chili" size={13} stroke={2.2} /></span
-									>{/each}
-							</span>
-							{label}
-						</button>
-					{/each}
-				</div>
-			</fieldset>
-
-			<fieldset>
-				<legend>Vegánske náhrady</legend>
-				<div class="chips">
-					<button class="chip" aria-pressed={subs === 'all'} onclick={() => (subs = 'all')}
-						>Všetko</button
-					>
-					<button class="chip" aria-pressed={subs === 'bez'} onclick={() => (subs = 'bez')}>
-						Bez náhrad
-					</button>
-					<button class="chip" aria-pressed={subs === 's'} onclick={() => (subs = 's')}>
-						S náhradami
-					</button>
-				</div>
-				<p class="hint">
-					Rastlinná smotana, maslo, syr, jogurt, majonéza, sójové mäso. <a href="/wiki/nahrady"
-						>Čo kupovať</a
-					>
-				</p>
-			</fieldset>
-
-			<fieldset>
-				<legend>Náročnosť</legend>
-				<div class="chips">
-					{#each ['Jednoduché', 'Stredné', 'Náročnejšie'] as label, i (label)}
-						<button
-							class="chip"
-							aria-pressed={difficulty === i + 1}
-							onclick={() => (difficulty = difficulty === i + 1 ? 0 : ((i + 1) as 1 | 2 | 3))}
-						>
-							{label}
-						</button>
-					{/each}
-				</div>
-			</fieldset>
-
-			<fieldset>
-				<legend>Kuchyňa</legend>
-				<label class="field">
-					<span class="sr-only">Kuchyňa</span>
-					<select bind:value={cuisine}>
-						<option value="">Všetky kuchyne</option>
-						{#each catalog.cuisines as c (c.id)}
-							<option value={c.id}>{c.name}</option>
-						{/each}
-					</select>
-				</label>
-			</fieldset>
-
-			<fieldset>
-				<legend>Čas: <strong>{maxTime ? `do ${maxTime} min` : 'hocikoľko'}</strong></legend>
-				<input
-					type="range"
-					min="0"
-					max={TIME_STEPS.length - 1}
-					step="1"
-					bind:value={maxTimeIndex}
-					aria-label="Maximálny čas"
-				/>
-			</fieldset>
-
-			<fieldset>
-				<legend
-					>Bielkoviny: <strong>{minProtein ? `aspoň ${minProtein} g/porcia` : 'hocikoľko'}</strong
-					></legend
-				>
-				<input
-					type="range"
-					min="0"
-					max={PROTEIN_MAX}
-					step={PROTEIN_STEP}
-					bind:value={minProtein}
-					aria-label="Minimum bielkovín"
-				/>
-			</fieldset>
-
-			<fieldset>
-				<legend>Bez alergénov</legend>
-				<div class="chips">
-					{#each EXCLUDABLE as a (a)}
-						<button
-							class="chip"
-							aria-pressed={excluded.includes(a)}
-							onclick={() => toggleAllergen(a)}
-						>
-							bez: {ALLERGEN_LABELS[a]}
-						</button>
-					{/each}
-				</div>
-			</fieldset>
-
-			<fieldset>
-				<legend>Bez týchto surovín</legend>
-				{#if withoutIngredients.length}
-					<div class="chips">
-						{#each withoutIngredients as id (id)}
+					<fieldset>
+						<legend>Soľ</legend>
+						<div class="chips">
 							<button
 								class="chip"
-								aria-pressed="true"
-								aria-label="Zrušiť: bez {shortName(id)}"
-								onclick={() => (withoutIngredients = withoutIngredients.filter((x) => x !== id))}
+								aria-pressed={quick.includes('menej-soli')}
+								onclick={() => toggleQuick('menej-soli')}
 							>
-								bez: {shortName(id)}
-								<Icon name="x" size={14} />
+								{QUICK_LABELS['menej-soli']}
 							</button>
-						{/each}
-					</div>
-				{/if}
-				<label class="field small-field">
-					<Icon name="search" size={16} />
-					<span class="sr-only">Surovina, ktorú nechceš alebo nemáš</span>
-					<input
-						type="search"
-						bind:value={ingredientQuery}
-						placeholder="Napr. huby, koriander…"
-						autocomplete="off"
-						onkeydown={(e) => {
-							if (e.key === 'Enter' && ingredientSuggestions[0]) {
-								e.preventDefault();
-								excludeIngredient(ingredientSuggestions[0].id);
-							}
-						}}
-					/>
-				</label>
-				{#if ingredientSuggestions.length}
-					<div class="chips" aria-label="Návrhy surovín">
-						{#each ingredientSuggestions as i (i.id)}
+						</div>
+					</fieldset>
+				</div>
+			</details>
+
+			<details class="group" bind:open={openGroups.doma}>
+				<summary>
+					Čo mám doma
+					{#if groupCount('doma')}<span class="count">{groupCount('doma')}</span>{/if}
+				</summary>
+				<div class="group-body">
+					<fieldset>
+						<legend>Suroviny</legend>
+						<div class="chips">
 							<button
 								class="chip"
-								aria-label="Skryť recepty s: {shortName(i.id)}"
-								onclick={() => excludeIngredient(i.id)}
+								aria-pressed={onlyPantry}
+								disabled={!hasPantry}
+								onclick={() => (onlyPantry = !onlyPantry)}
 							>
-								<Icon name="plus" size={13} />
-								{shortName(i.id)}
+								<Icon name="jar" size={16} /> Len z toho, čo mám
 							</button>
-						{/each}
-					</div>
-				{:else if ingredientQuery.trim()}
-					<p class="hint">Takú surovinu v receptoch nemáme.</p>
-				{:else}
-					<p class="hint">
-						Čo nemáš doma alebo nejete. Skryje aj iné podoby (sušený aj varený cícer).
-					</p>
-				{/if}
-			</fieldset>
+							<button
+								class="chip"
+								aria-pressed={quick.includes('sezonne')}
+								onclick={() => toggleQuick('sezonne')}
+							>
+								<Icon name="leaf" size={16} /> V sezóne
+							</button>
+						</div>
+						{#if !hasPantry}
+							<p class="hint">
+								<a href="/spajza">Nakliknúť špajzu →</a> a ukážem, čo z nej uvaríš.
+							</p>
+						{/if}
+					</fieldset>
 
-			<fieldset>
-				<legend>Nemám doma</legend>
-				<div class="chips">
-					{#each toolOptions as tool (tool.id)}
-						<button
-							class="chip"
-							aria-pressed={missingTools.includes(tool.id)}
-							onclick={() => toggleTool(tool.id)}
-						>
-							{tool.name}
-						</button>
-					{/each}
+					{#if ui.loaded && isAvoiding(avoid.current)}
+						<fieldset>
+							<legend>Zo Špajze</legend>
+							<div class="chips">
+								<button
+									class="chip"
+									aria-pressed={!ignoreAvoid}
+									onclick={() => (ignoreAvoid = !ignoreAvoid)}
+								>
+									Skryť, čo nemám a nejem
+								</button>
+							</div>
+							<p class="hint"><a href="/spajza#nemam">Upraviť zoznam</a></p>
+						</fieldset>
+					{/if}
+
+					<fieldset>
+						<legend>Nemám doma</legend>
+						<div class="chips">
+							{#each toolOptions as tool (tool.id)}
+								<button
+									class="chip"
+									aria-pressed={missingTools.includes(tool.id) ||
+										(avoiding && avoid.current.tools.includes(tool.id))}
+									disabled={avoiding && avoid.current.tools.includes(tool.id)}
+									title={avoiding && avoid.current.tools.includes(tool.id)
+										? 'Nastavené v Špajzi'
+										: undefined}
+									onclick={() => toggleTool(tool.id)}
+								>
+									{tool.name}
+								</button>
+							{/each}
+						</div>
+					</fieldset>
 				</div>
-			</fieldset>
-
-			<fieldset>
-				<legend>Špajza</legend>
-				<button
-					class="chip"
-					aria-pressed={onlyPantry}
-					disabled={!hasPantry}
-					onclick={() => (onlyPantry = !onlyPantry)}
-				>
-					<Icon name="jar" size={16} /> Len z toho, čo mám
-				</button>
-				{#if !hasPantry}<p class="hint"><a href="/spajza">Nakliknúť špajzu →</a></p>{/if}
-			</fieldset>
+			</details>
 
 			{#if activeFilterCount || q}
 				<button class="btn ghost small" onclick={reset}
@@ -818,6 +870,23 @@
 				{results.length}
 				{pluralRecipes(results.length)}
 			</p>
+			{#if activeFilters.length}
+				<ul class="active-filters" aria-label="Zapnuté filtre">
+					{#each activeFilters as f (f.key)}
+						<li>
+							<button class="chip" onclick={f.clear} aria-label="Zrušiť filter: {f.label}">
+								{f.label}
+								<Icon name="x" size={14} />
+							</button>
+						</li>
+					{/each}
+					{#if activeFilters.length > 1}
+						<li>
+							<button class="link-btn" onclick={reset}>Zrušiť všetko</button>
+						</li>
+					{/if}
+				</ul>
+			{/if}
 			{#if filtered.closest}
 				<p class="closest card">
 					<Icon name="jar" size={18} />
@@ -990,12 +1059,76 @@
 		display: none;
 		padding: 18px;
 		flex-direction: column;
-		gap: 18px;
+		gap: 14px;
 		align-self: start;
 	}
 	.filters.open {
 		display: flex;
 		animation: rise 0.35s var(--ease-out);
+	}
+	.group {
+		border-bottom: 1px solid var(--line);
+		padding-bottom: 14px;
+	}
+	.group:last-of-type {
+		border-bottom: 0;
+		padding-bottom: 0;
+	}
+	.group summary {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		list-style: none;
+		cursor: pointer;
+		font-family: var(--font-display);
+		font-size: 1.08rem;
+		font-weight: 600;
+	}
+	.group summary::-webkit-details-marker {
+		display: none;
+	}
+	.group summary::after {
+		content: '';
+		width: 8px;
+		height: 8px;
+		margin-left: auto;
+		border-right: 2px solid currentColor;
+		border-bottom: 2px solid currentColor;
+		transform: translateY(-2px) rotate(45deg);
+		transition: transform 0.2s var(--ease-out);
+	}
+	.group[open] summary::after {
+		transform: translateY(2px) rotate(-135deg);
+	}
+	.group-body {
+		display: grid;
+		gap: 18px;
+		padding-top: 14px;
+	}
+	.active-filters {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px;
+		margin: 0 0 14px;
+		padding: 0;
+		list-style: none;
+	}
+	.active-filters .chip {
+		background: var(--ink);
+		border-color: var(--ink);
+		color: var(--paper);
+	}
+	.link-btn {
+		border: 0;
+		background: none;
+		padding: 4px 6px;
+		font: inherit;
+		font-size: 0.86rem;
+		font-weight: 650;
+		color: var(--ink-2);
+		text-decoration: underline;
+		cursor: pointer;
 	}
 	fieldset {
 		border: 0;
@@ -1024,10 +1157,6 @@
 		max-width: 100%;
 		white-space: normal;
 		text-align: left;
-	}
-	.small-field input {
-		padding-block: 8px;
-		font-size: 0.9rem;
 	}
 	.chip:disabled {
 		opacity: 0.5;

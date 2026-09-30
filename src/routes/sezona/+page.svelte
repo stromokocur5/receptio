@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { avoidFilter } from '$lib/avoid';
+	import { avoid } from '$lib/state.svelte';
 	import { onMount } from 'svelte';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
@@ -17,7 +19,9 @@
 	);
 	const inSeasonNow = $derived(produce.filter((i) => i.season.includes(month)));
 	const recipes = $derived(
-		catalog.recipes.filter((r) => recipeSeason(r, catalog.ingredientsById, month).inSeason)
+		catalog.recipes
+			.filter(avoidFilter(avoid.current, catalog.ingredientsById))
+			.filter((r) => recipeSeason(r, catalog.ingredientsById, month).inSeason)
 	);
 </script>
 

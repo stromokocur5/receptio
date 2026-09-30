@@ -7,7 +7,9 @@
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import { CATEGORY_LABELS, normalizeSearch, searchMatcher } from '$lib/labels';
 	import { rankByPantry, TAP_WATER_ID } from '$lib/pantry';
-	import { pantry, removePantryItem, setPantryItem, ui } from '$lib/state.svelte';
+	import { avoidFilter, missableTools } from '$lib/avoid';
+	import IngredientExcluder from '$lib/components/IngredientExcluder.svelte';
+	import { avoid, pantry, removePantryItem, setPantryItem, ui } from '$lib/state.svelte';
 	import { INGREDIENT_CATEGORIES, type Ingredient } from '$lib/types';
 
 	const catalog = useCatalog();
@@ -36,11 +38,27 @@
 	);
 
 	const suggestions = $derived(
-		rankByPantry(catalog.recipes, pantry.current, catalog.ingredientsById)
+		rankByPantry(
+			catalog.recipes.filter(avoidFilter(avoid.current, catalog.ingredientsById)),
+			pantry.current,
+			catalog.ingredientsById
+		)
 			.filter((m) => m.have > 0)
 			.slice(0, 8)
 	);
 	const cookable = $derived(suggestions.filter((m) => m.missing.length === 0).length);
+
+	const toolOptions = $derived(
+		missableTools(catalog.equipment, catalog.recipes, avoid.current.tools)
+	);
+
+	function toggleAvoidTool(id: string) {
+		const tools = avoid.current.tools;
+		avoid.current = {
+			...avoid.current,
+			tools: tools.includes(id) ? tools.filter((t) => t !== id) : [...tools, id]
+		};
+	}
 
 	function toggle(ingredient: Ingredient) {
 		if (ingredient.id in pantry.current) removePantryItem(ingredient.id);
@@ -186,6 +204,45 @@
 		</div>
 	</div>
 
+	<section class="card never" id="nemam" aria-labelledby="nemam-title">
+		<div class="never-head">
+			<h2 id="nemam-title">Čo nemám a nejem</h2>
+			<p class="muted">
+				Recepty s týmito vecami ti Receptio nebude ponúkať – v receptoch, v návrhu týždňa ani tu. V
+				receptoch sa to dá na chvíľu vypnúť.
+			</p>
+		</div>
+		<div class="never-cols">
+			<div>
+				<h3>Suroviny</h3>
+				<IngredientExcluder
+					selected={ui.loaded ? avoid.current.ingredients : []}
+					onchange={(ids) => (avoid.current = { ...avoid.current, ingredients: ids })}
+					prefix="nemám"
+					placeholder="Napr. huby, tofu, koriander…"
+					hint="Čo nejete, na čo je niekto alergický, alebo čo u vás nekúpiš. Platí aj pre iné podoby (sušený aj varený cícer)."
+				/>
+			</div>
+			<div>
+				<h3>Náradie</h3>
+				<div class="chips">
+					{#each toolOptions as tool (tool.id)}
+						<button
+							class="chip"
+							aria-pressed={ui.loaded && avoid.current.tools.includes(tool.id)}
+							onclick={() => toggleAvoidTool(tool.id)}
+						>
+							{tool.name}
+						</button>
+					{/each}
+				</div>
+				<p class="muted small">
+					Ťukni na to, čo doma nemáš. <a href="/vybavenie">Čím to nahradiť</a>
+				</p>
+			</div>
+		</div>
+	</section>
+
 	{#if suggestions.length}
 		<section class="cook">
 			<h2>Čo z toho uvarím</h2>
@@ -282,6 +339,32 @@
 	}
 	.mine {
 		padding: 18px;
+	}
+	.never {
+		display: grid;
+		gap: 16px;
+		margin-top: 22px;
+		padding: 20px;
+	}
+	.never-head h2 {
+		margin: 0 0 4px;
+		font-size: 1.4rem;
+	}
+	.never-head p {
+		margin: 0;
+	}
+	.never h3 {
+		margin: 0 0 8px;
+		font-size: 1rem;
+	}
+	.never-cols {
+		display: grid;
+		gap: 20px;
+	}
+	@media (min-width: 760px) {
+		.never-cols {
+			grid-template-columns: 1fr 1fr;
+		}
 	}
 	.mine-head {
 		display: flex;
