@@ -1315,6 +1315,11 @@
 		/* Covers the list scrolling under it in the card's top padding. */
 		box-shadow: 0 -12px 0 8px var(--card);
 	}
+	/* At rest the summary's cover shadow reaches up into the heading; keep the heading on top. */
+	.shop .box-head {
+		position: relative;
+		z-index: 3;
+	}
 	.shop-summary p {
 		margin: 0;
 		font-size: 0.9rem;
