@@ -109,7 +109,7 @@
 
 <Seo
 	title="Navrhni recept"
-	description="Pošli svoj obľúbený vegánsky recept. Každý skontrolujeme, dopočítame živiny a cenu."
+	description="Máš recept, ktorý u vás mizne z taniera ako prvý? Pošli ho – skontrolujeme ho a dopočítame živiny aj cenu."
 />
 
 <div class="wrap page">

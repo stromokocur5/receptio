@@ -26,7 +26,7 @@
 
 <Seo
 	title="Kuchyne sveta"
-	description="Rastlinné jedlá z kuchýň celého sveta a na čo si v nich dať pozor."
+	description="Indické kari, mexické tacos, etiópska injera… rastlinné jedlá z celého sveta a čo si v nich postrážiť."
 />
 
 <div class="wrap page">

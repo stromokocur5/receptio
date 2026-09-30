@@ -85,7 +85,10 @@
 	const storesWithPrices = $derived(new Set(catalog.prices.map((p) => p.storeId)).size);
 </script>
 
-<Seo title="Ceny" description="Ceny surovín v slovenských obchodoch prepočítané na kilogram." />
+<Seo
+	title="Ceny"
+	description="Koľko stojí cícer, tofu či ryža v slovenských obchodoch – prepočítané na kilogram, aby sa ceny dali férovo porovnať."
+/>
 
 <div class="wrap page">
 	<header class="rise">

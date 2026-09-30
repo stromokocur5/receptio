@@ -56,7 +56,7 @@
 
 <Seo
 	title="Čo uvariť zo zvyškov"
-	description="Zadaj, čo treba minúť – pol cukety, ryžu zo včera – a Receptio nájde recepty, ktoré to použijú."
+	description="Pol cukety, ryža zo včera, zvyšok cíceru? Zadaj, čo treba minúť, a nájdeme recept, ktorý to spotrebuje."
 />
 
 <div class="wrap page">

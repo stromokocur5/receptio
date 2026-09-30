@@ -5,7 +5,7 @@
 
 	let {
 		title,
-		description = 'Vegánske a bezlepkové recepty so živinami, cenami, špajzou a nákupným zoznamom.',
+		description = 'Chutné rastlinné jedlo na každý deň. Pri každom recepte vidíš, koľko ťa porcia vyjde a či ťa zasýti. Zadarmo a bez registrácie.',
 		image = '/og/receptio.png',
 		type = 'website',
 		jsonLd = []
@@ -20,9 +20,7 @@
 	} = $props();
 
 	const fullTitle = $derived(
-		title
-			? `${title} · ${SITE_NAME}`
-			: `${SITE_NAME} – vegánske a bezlepkové recepty so živinami a cenou`
+		title ? `${title} · ${SITE_NAME}` : `${SITE_NAME} – vegánske recepty na každý deň`
 	);
 	const url = $derived(SITE_ORIGIN + page.url.pathname);
 </script>

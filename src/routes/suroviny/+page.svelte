@@ -41,7 +41,7 @@
 
 <Seo
 	title="Suroviny"
-	description="Encyklopédia surovín – druhy, ako vybrať, skladovanie, náhrady, sezóna a recepty."
+	description="Všetko o surovinách: ako vybrať dobrú, ako ju skladovať, čím ju nahradiť a čo z nej uvariť."
 />
 
 <div class="wrap page">

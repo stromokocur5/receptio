@@ -32,7 +32,7 @@
 
 <Seo
 	title="Vybavenie kuchyne"
-	description="Čo potrebuješ na varenie – panvice, hrnce, mixér, rúra – a čím to nahradíš, keď to nemáš."
+	description="Bez čoho sa v kuchyni nezaobídeš, čo sa oplatí dokúpiť a čím nahradíš to, čo doma nemáš."
 />
 
 <div class="wrap page">

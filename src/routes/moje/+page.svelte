@@ -82,7 +82,10 @@
 	}
 </script>
 
-<Seo title="Moje" description="Obľúbené recepty, história varenia, poznámky a záloha dát." />
+<Seo
+	title="Moje"
+	description="Tvoje obľúbené recepty, história varenia a poznámky na jednom mieste."
+/>
 
 <div class="wrap page">
 	<header class="rise">

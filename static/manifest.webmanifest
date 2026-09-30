@@ -1,7 +1,7 @@
 {
 	"name": "Receptio – rastlinné recepty",
 	"short_name": "Receptio",
-	"description": "Vegánske a bezlepkové recepty so živinami, cenami, špajzou a nákupným zoznamom.",
+	"description": "Vegánske recepty na každý deň – s cenou porcie, plánom na týždeň a nákupným zoznamom.",
 	"lang": "sk",
 	"start_url": "/",
 	"scope": "/",

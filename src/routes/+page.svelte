@@ -100,7 +100,7 @@
 	}[] = [
 		{
 			title: 'Nájdi, čo uvariť',
-			text: 'Recepty z 21 kuchýň sveta so živinami, cenou porcie, lepkom a alergénmi. Filtre podľa času, jedla aj pálivosti.',
+			text: 'Stovky receptov z 21 kuchýň – od rýchlej večere po nedeľné varenie. Pri každom vidíš cenu porcie, bielkoviny aj alergény.',
 			icon: 'bowl',
 			tone: 'var(--tomato)',
 			href: '/recepty',
@@ -199,7 +199,7 @@
 </script>
 
 <Seo
-	description="Vegánske a bezlepkové recepty z celého sveta so živinami a cenou porcie, týždenný plán, nákupný zoznam, špajza a pestovanie. Zadarmo, bez reklám a registrácie."
+	description="Vegánske recepty z celého sveta, pri ktorých hneď vidíš, koľko ťa porcia vyjde a či ťa zasýti. Naplánuj si týždeň, nakúp naraz a var z toho, čo máš doma."
 	jsonLd={[websiteJsonLd(SITE_ORIGIN)]}
 />
 
@@ -211,8 +211,8 @@
 				Rastlinné jedlo,<br />ktoré <span class="hl">sedí<Squiggle width={130} /></span> telu aj peňaženke.
 			</h1>
 			<p class="lede">
-				Recepty z celého sveta so živinami, cenou na porciu, upozorneniami na lepok a alergény,
-				špajzou a nákupným zoznamom. Bez reklám a bez registrácie.
+				Jedlá z celého sveta, pri ktorých hneď vidíš, koľko ťa porcia vyjde, či ťa zasýti a či je v
+				nich lepok. Bez reklám, bez registrácie – len dobré jedlo.
 			</p>
 			<form class="field search" onsubmit={search} role="search">
 				<Icon name="search" size={20} />

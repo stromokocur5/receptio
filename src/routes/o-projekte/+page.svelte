@@ -38,7 +38,7 @@
 
 <Seo
 	title="O projekte"
-	description="Prečo Receptio vzniklo, čo sa v ňom dá robiť a na čom si zakladá."
+	description="Prečo Receptio vzniklo, kto za ním stojí a na čom mu záleží."
 />
 
 <div class="wrap page">

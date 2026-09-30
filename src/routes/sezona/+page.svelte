@@ -27,7 +27,7 @@
 
 <Seo
 	title="Sezónny kalendár"
-	description="Čo sa na Slovensku kedy zbiera a čo z toho uvariť – zelenina a ovocie po mesiacoch."
+	description="Čo práve dozrieva na Slovensku a čo z toho uvariť – zelenina a ovocie mesiac po mesiaci."
 />
 
 <div class="wrap page">

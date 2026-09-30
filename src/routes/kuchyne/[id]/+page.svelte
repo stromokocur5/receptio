@@ -15,7 +15,7 @@
 
 <Seo
 	title="{cuisine.name} kuchyňa – vegánske recepty"
-	description="{recipes.length} vegánskych receptov: {cuisine.tagline}"
+	description="{cuisine.tagline} {recipes.length} vegánskych receptov na vyskúšanie."
 	jsonLd={[
 		breadcrumbJsonLd(
 			[

@@ -343,7 +343,7 @@
 
 <Seo
 	title="Pestuj si sám"
-	description="Čo sa oplatí pestovať na Slovensku, plánovač záhradky, balkóna aj okna v byte so zmiešanými výsadbami a kalendárom."
+	description="Čo sa u nás oplatí pestovať – na okne, balkóne aj v záhrade. S plánovačom, kalendárom prác a tipmi, čo sadiť spolu."
 />
 
 <div class="wrap page">

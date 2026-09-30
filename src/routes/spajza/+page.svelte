@@ -165,7 +165,10 @@
 	}
 </script>
 
-<Seo title="Špajza" description="Nakliknem, čo mám doma, a Receptio zoradí recepty podľa zhody." />
+<Seo
+	title="Špajza"
+	description="Naklikaj, čo máš doma, a uvidíš, čo z toho uvaríš bez cesty do obchodu."
+/>
 
 <div class="wrap page">
 	<header class="rise">

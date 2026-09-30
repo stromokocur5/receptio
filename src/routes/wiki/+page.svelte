@@ -131,7 +131,7 @@
 
 <Seo
 	title="Wiki"
-	description="Základy varenia, výživa a suplementy, vegánsky život, pestovanie a pohyb – krátko a prakticky."
+	description="Ako uvariť strukoviny, čo so suplementmi, ako zavárať či začať pestovať – krátke návody bez zbytočných rečí."
 />
 
 <div class="wrap page">

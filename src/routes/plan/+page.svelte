@@ -288,7 +288,7 @@
 
 <Seo
 	title="Plán a nákup"
-	description="Týždenný plán jedál, živiny na deň a jeden nákupný zoznam."
+	description="Naplánuj si jedlá na týždeň a dostaneš jeden nákupný zoznam – bez vecí, ktoré už máš doma."
 />
 
 <div class="wrap page">

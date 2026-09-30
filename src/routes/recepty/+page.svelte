@@ -532,7 +532,7 @@
 
 <Seo
 	title="Recepty"
-	description="Vegánske a bezlepkové recepty z celého sveta so živinami a cenou porcie."
+	description="Stovky vegánskych receptov – rýchle večere, polievky, dezerty aj snacky. Pri každom vidíš, koľko stojí porcia a koľko má bielkovín."
 />
 
 <div class="wrap page">

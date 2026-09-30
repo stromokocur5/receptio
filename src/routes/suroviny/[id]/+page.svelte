@@ -74,7 +74,8 @@
 
 <Seo
 	title={ingredient.name}
-	description={info.about ?? `${ingredient.name} – živiny, náhrady a recepty.`}
+	description={info.about ??
+		`${ingredient.name} – ako vybrať, ako skladovať, čím nahradiť a čo z toho uvariť.`}
 	type="article"
 	jsonLd={[
 		breadcrumbJsonLd(
