@@ -2,7 +2,7 @@ title: Katsu sando s tofu
 description: Japonský sendvič – hrubý plátok tofu v panko obale, sladko-pikantná tonkatsu omáčka a jemná kapusta v mäkkom bielom chlebe bez kôrky.
 cuisine: japonska
 meals: [obed, vecera]
-categories: [hlavne/plnene, hlavne/tofu]
+categories: [comfort/burgre, hlavne/plnene, hlavne/tofu]
 time: 35
 active: 25
 servings: 2
@@ -17,7 +17,7 @@ ingredients:
   - sojove-mlieko: 1/3 hrnček
   - kukuricny-skrob: 1 pl
   - struhanka: 3/4 hrnček | ideálne panko
-  - olej: 5 pl
+  - olej: 5 pl | na vyprážanie
   - kecup: 2 pl
   - sojova-omacka: 1 pl
   - javorovy-sirup: 1 čl
@@ -33,3 +33,11 @@ steps:
   - Chlieb natri majonézou, daj kapustu, tofu natreté omáčkou a prikry.
   - Pritlač, odkroj kôrky a rozkroj na polovice.
 howto: [tofu]
+variants:
+  - name: Ľahšia verzia
+    description: Obalené tofu pokvapkaj olejom a peč 20 minút na 210 °C, v polovici otoč. Použi celozrnný toastový chlieb a majonézu vynechaj.
+    replace:
+      - from: olej
+        to: olej
+        amount: 1 pl
+    remove: [veganska-majoneza]

@@ -8,6 +8,7 @@ const ingredient = (overrides: Partial<Ingredient> = {}): Ingredient => ({
 	category: 'ine',
 	group: 'test',
 	groupFactor: 1,
+	freeSugar: 0,
 	season: [],
 	gluten: 'free',
 	allergens: [],

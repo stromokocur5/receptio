@@ -28,7 +28,8 @@
 		SALT_HIGH_G,
 		VEGAN_PROTEIN_G_PER_KG,
 		computedTags,
-		scaleNutrients
+		scaleNutrients,
+		treatText
 	} from '$lib/nutrition';
 	import { isAssumedAtHome, matchRecipe, pantryByGroup, TAP_WATER_ID } from '$lib/pantry';
 	import { bestPrice, shelfCost } from '$lib/pricing';
@@ -402,6 +403,9 @@
 				{#each recipe.allergens as a (a)}
 					<span class="badge turmeric">{ALLERGEN_LABELS[a]}</span>
 				{/each}
+				{#if recipe.treat.length}
+					<span class="badge tomato" title={treatText(recipe.treat)}>Na občas</span>
+				{/if}
 				{#if recipe.showNutrition && recipe.perServing.salt > SALT_HIGH_G}
 					<span
 						class="badge tomato"

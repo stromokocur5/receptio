@@ -27,7 +27,8 @@
 		COMPUTED_TAG_LABELS,
 		SALT_HIGH_G,
 		computedTags,
-		cookingStyle
+		cookingStyle,
+		everydayVersion
 	} from '$lib/nutrition';
 	import { recipeSeason } from '$lib/season';
 	import { rankByPantry, type PantryMatch } from '$lib/pantry';
@@ -86,8 +87,15 @@
 	let taste = $state<Taste | ''>('');
 	/** Ingredient ids; a recipe is hidden when it uses anything from the same group. */
 	let withoutIngredients = $state<string[]>([]);
-	/** Yes/no picks kept in the `rychlo` URL param: how it's cooked, in season, low salt. */
-	const QUICK = ['jeden-hrniec', 'bez-varenia', 'len-rura', 'sezonne', 'menej-soli'] as const;
+	/** Yes/no picks kept in the `rychlo` URL param: how it's cooked, in season, low salt, not a treat. */
+	const QUICK = [
+		'jeden-hrniec',
+		'bez-varenia',
+		'len-rura',
+		'sezonne',
+		'menej-soli',
+		'na-kazdy-den'
+	] as const;
 	type Quick = (typeof QUICK)[number];
 	const COOKING_STYLES = ['jeden-hrniec', 'bez-varenia', 'len-rura'] as const;
 	const QUICK_LABELS: Record<Quick, string> = {
@@ -95,7 +103,8 @@
 		'bez-varenia': COMPUTED_TAG_LABELS['bez-varenia'],
 		'len-rura': COMPUTED_TAG_LABELS['len-rura'],
 		sezonne: 'V sezóne',
-		'menej-soli': 'Menej soli'
+		'menej-soli': 'Menej soli',
+		'na-kazdy-den': 'Na každý deň'
 	};
 	const DIFFICULTY_LABELS = ['', 'Jednoduché', 'Stredné', 'Náročnejšie'] as const;
 	const GF_LABELS = ['Všetko', 'Bezlepkové', 'Aj s bezlepkovou verziou'] as const;
@@ -211,6 +220,8 @@
 				if (!recipeSeason(r, catalog.ingredientsById, month).inSeason) return false;
 			} else if (q === 'menej-soli') {
 				if (!lowSalt(r)) return false;
+			} else if (q === 'na-kazdy-den') {
+				if (!everydayVersion(r)) return false;
 			} else if (cookingStyle(r.equipment) !== q) {
 				return false;
 			}
@@ -308,7 +319,8 @@
 		}
 		if (difficulty) add('difficulty', DIFFICULTY_LABELS[difficulty], 'cas', () => (difficulty = 0));
 		for (const q of quick) {
-			const group: Group = q === 'menej-soli' ? 'strava' : q === 'sezonne' ? 'doma' : 'cas';
+			const group: Group =
+				q === 'menej-soli' || q === 'na-kazdy-den' ? 'strava' : q === 'sezonne' ? 'doma' : 'cas';
 			add(`quick-${q}`, QUICK_LABELS[q], group, () => toggleQuick(q));
 		}
 		if (gf) add('gf', GF_LABELS[gf], 'strava', () => (gf = 0));
@@ -825,7 +837,7 @@
 					</fieldset>
 
 					<fieldset>
-						<legend>Soľ</legend>
+						<legend>Zdravšie</legend>
 						<div class="chips">
 							<button
 								class="chip"
@@ -833,6 +845,14 @@
 								onclick={() => toggleQuick('menej-soli')}
 							>
 								{QUICK_LABELS['menej-soli']}
+							</button>
+							<button
+								class="chip"
+								aria-pressed={quick.includes('na-kazdy-den')}
+								onclick={() => toggleQuick('na-kazdy-den')}
+								title="Skryje vyprážané, veľmi mastné, sladké a kalorické jedlá, ak nemajú ľahšiu verziu"
+							>
+								{QUICK_LABELS['na-kazdy-den']}
 							</button>
 						</div>
 					</fieldset>

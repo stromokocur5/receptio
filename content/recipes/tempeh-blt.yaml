@@ -2,7 +2,7 @@ title: BLT sendvič s tempeh slaninou
 description: Tenké plátky tempehu v údenej marináde opečené dochrumkava, s paradajkou, šalátom a majonézou medzi opečeným chlebom.
 cuisine: americka
 meals: [ranajky, obed]
-categories: [hlavne/plnene, ranajky/slane]
+categories: [comfort/burgre, hlavne/plnene, ranajky/slane]
 time: 25
 active: 20
 servings: 2
@@ -28,3 +28,12 @@ steps:
   - Opekaj ich na oleji na strednom ohni 2–3 minúty z každej strany, kým nie sú tmavé a chrumkavé. Na konci polej zvyšnou marinádou.
   - Chlieb opeč, natri majonézou.
   - Poskladaj šalát, paradajku posypanú korením a tempeh, prikry druhým krajcom a rozkroj naprieč.
+variants:
+  - name: Ľahšia verzia
+    description: Tempeh opeč len na 1 PL oleja (alebo peč 15 minút na 200 °C) a namiesto majonézy natri chlieb hummusom alebo sójovým jogurtom s horčicou. Použi celozrnný chlieb.
+    replace:
+      - from: olej
+        to: olej
+        amount: 1 pl
+      - from: veganska-majoneza
+        to: sojovy-jogurt

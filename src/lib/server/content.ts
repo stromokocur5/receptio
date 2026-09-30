@@ -7,7 +7,8 @@ import {
 	recipeAllergens,
 	recipeGluten,
 	recipeNutrients,
-	recipeWarnings
+	recipeWarnings,
+	treatReasons
 } from '$lib/nutrition';
 import { CATEGORY_PATHS, guessTaste } from '$lib/categories';
 import { ART_NAMES, artFigure } from '$lib/wiki-art';
@@ -125,6 +126,7 @@ const ingredientSchema = z
 		note: z.string().optional(),
 		warn: z.string().optional(),
 		gf_alternative: slug.optional(),
+		free_sugar: z.number().min(0).max(1).default(0),
 		/** How big a piece the amount is, for things measured by eye (ginger root in cm). */
 		piece: z
 			.object({ label: z.string().min(1), grams: z.number().positive() })
@@ -446,6 +448,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		note: i.note,
 		warn: i.warn,
 		gfAlternative: i.gf_alternative,
+		freeSugar: i.free_sugar,
 		piece: i.piece,
 		howto: i.howto,
 		swapsTo: i.substitutes.flatMap((sub) => (sub.to ? [sub.to] : [])),
@@ -623,6 +626,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 				lines.reduce((sum, l) => sum + (l.grams / 1000) * byId.get(l.ingredientId)!.co2, 0) /
 				servings,
 			usesSubstitutes: used.some((i) => i.category === 'nahrady'),
+			treat: treatReasons(lines, byId, servings, perServing),
 			warnings: recipeWarnings(used, byId, perServing)
 		};
 	};
@@ -670,8 +674,11 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		});
 		const base = compute(lines, r.servings);
 		if (!r.gf_swap) base.gfSwappable = false;
-		// Iron/salt hints are nutrition-derived; meaningless when the result is strained.
-		if (!r.nutrition) base.warnings = base.warnings.filter((w) => w.level !== 'info');
+		// Iron/salt hints and treat reasons are nutrition-derived; meaningless when the result is strained.
+		if (!r.nutrition) {
+			base.warnings = base.warnings.filter((w) => w.level !== 'info');
+			base.treat = [];
+		}
 
 		const variants: RecipeVariant[] = r.variants.map((v) => {
 			const vWhere = `${where} variant "${v.name}"`;

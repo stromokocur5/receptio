@@ -38,6 +38,7 @@ function ing(id: string, group = id, extra: Partial<Ingredient> = {}): Ingredien
 		swapsTo: [],
 		byproduct: false,
 		groupFactor: 1,
+		freeSugar: 0,
 		season: [],
 		...extra
 	};
@@ -73,6 +74,7 @@ function recipe(id: string, lines: [string, number][], servings = 2): RecipeSumm
 		costKnownShare: 0,
 		co2PerServing: 0.5,
 		usesSubstitutes: false,
+		treat: [],
 		warnings: [],
 		substitutes: 'none',
 		showNutrition: true,

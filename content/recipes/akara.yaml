@@ -23,3 +23,10 @@ steps:
   - Fazuľu rozmixuj s cibuľou, papričkou a vodou na hustú hladkú pastu.
   - Osoľ a šľahaj varechou 3 minúty, aby do cesta vnikol vzduch – placky budú nadýchané.
   - Lyžicou klaď kôpky do oleja zohriateho na 175 °C a vyprážaj 4 minúty, kým nie sú zlatohnedé.
+variants:
+  - name: Ľahšia verzia
+    description: Cesto opeč ako malé placky na panvici s troškou oleja, 3 minúty z každej strany. Nebudú guľaté, ale chuť ostane.
+    replace:
+      - from: olej
+        to: olej
+        amount: 2 pl

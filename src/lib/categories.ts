@@ -56,6 +56,18 @@ export const RECIPE_CATEGORIES = {
 			bowly: 'Misky a bowly'
 		}
 	},
+	comfort: {
+		label: 'Fast food a comfort',
+		blurb: 'Kebab, burgre, hranolky, párky',
+		icon: 'flame',
+		tone: 'var(--tomato)',
+		subs: {
+			kebab: 'Kebab, gyros a wrapy',
+			burgre: 'Burgre, pizza a sendviče',
+			vyprazane: 'Vyprážané a hranolky',
+			bufet: 'Párky, klobásy a bufet'
+		}
+	},
 	salaty: {
 		label: 'Šaláty',
 		blurb: 'Sýte aj k jedlu',
@@ -184,6 +196,7 @@ const TASTE_BY_CATEGORY: Record<string, Taste | null> = {
 	'napoje/limonady': 'sladke',
 	polievky: 'slane',
 	hlavne: 'slane',
+	comfort: 'slane',
 	salaty: 'slane',
 	omacky: 'slane',
 	'prilohy/prilohy': 'slane',

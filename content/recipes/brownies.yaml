@@ -29,3 +29,10 @@ steps:
   - Nechaj úplne vychladnúť vo forme, až potom krájaj.
 tips:
   - Na druhý deň sú ešte lepšie.
+variants:
+  - name: Menej cukru
+    description: Daj o 80 g cukru menej. Brownies budú menej sladké, viac čokoládové – s kopčekom nice cream to nevadí.
+    replace:
+      - from: cukor
+        to: cukor
+        amount: 120 g

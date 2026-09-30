@@ -7,6 +7,7 @@ import {
 	type Nutrients,
 	type RecipeLine,
 	type RecipeSummary,
+	type TreatReason,
 	type Warning
 } from './types';
 
@@ -78,6 +79,65 @@ export function recipeNutrients(
 		if (!line.notEaten) addScaled(total, byId.get(line.ingredientId)!.per100g, line.grams);
 	}
 	return scaleNutrients(total, 1 / servings);
+}
+
+/** Per serving: added cooking fat (g), free sugar (g, WHO: ideally under 25 g a day) and energy. */
+export const TREAT_FAT_G = 20;
+export const TREAT_SUGAR_G = 15;
+export const TREAT_KCAL = 900;
+
+export const TREAT_LABELS: Record<TreatReason, string> = {
+	vyprazane: 'vyprážané v oleji',
+	tuk: 'veľa pridaného tuku',
+	cukor: 'veľa pridaného cukru',
+	kalorie: 'veľa kalórií na porciu'
+};
+
+/** "Na občas: vyprážané v oleji, veľa pridaného cukru." for badge tooltips. */
+export function treatText(reasons: TreatReason[]): string {
+	const list = reasons.map((r) => TREAT_LABELS[r]).join(', ');
+	return `Na občas: ${list}. Nie je to zakázané, len to nejedz každý deň.`;
+}
+
+/** Fine for every day as written, or with one of its variants (baked instead of fried…). */
+export function everydayVersion(r: RecipeSummary): boolean {
+	return r.treat.length === 0 || r.variants.some((v) => v.treat.length === 0);
+}
+
+/** Olive oil is left out of "added fat": in salads and stews it's the healthy part of the dish. */
+const EVERYDAY_FATS = new Set(['olivovy-olej']);
+const FRYING = /vypráž/i;
+
+/**
+ * Why a dish is comfort food rather than everyday food. Read from the ingredients, so a lighter
+ * variant (baked instead of fried, less oil) loses the label on its own.
+ */
+export function treatReasons(
+	lines: RecipeLine[],
+	byId: Map<string, Ingredient>,
+	servings: number,
+	perServing: Nutrients
+): TreatReason[] {
+	let fried = false;
+	let fat = 0;
+	let sugar = 0;
+	for (const line of lines) {
+		const ingredient = byId.get(line.ingredientId)!;
+		// Oils plus the fat-based substitutes (plant butter, mayo), not cheese or cream.
+		const cookingFat =
+			(ingredient.category === 'oleje' && !EVERYDAY_FATS.has(ingredient.id)) ||
+			(ingredient.category === 'nahrady' && ingredient.per100g.fat >= 50);
+		if (ingredient.category === 'oleje' && FRYING.test(line.note ?? '')) fried = true;
+		if (line.notEaten) continue;
+		if (cookingFat) fat += (line.grams * ingredient.per100g.fat) / 100;
+		sugar += line.grams * ingredient.freeSugar;
+	}
+	const reasons: TreatReason[] = [];
+	if (fried) reasons.push('vyprazane');
+	if (fat / servings > TREAT_FAT_G) reasons.push('tuk');
+	if (sugar / servings > TREAT_SUGAR_G) reasons.push('cukor');
+	if (perServing.kcal > TREAT_KCAL) reasons.push('kalorie');
+	return reasons;
 }
 
 const GLUTEN_RANK: Record<GlutenStatus, number> = { free: 0, risk: 1, contains: 2 };

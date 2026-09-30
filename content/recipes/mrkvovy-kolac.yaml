@@ -36,3 +36,10 @@ steps:
   - Na úplne vychladnutý koláč natri krém.
 tips:
   - Mrkvu nestrúhaj nahrubo – jemná sa v ceste rozpustí.
+variants:
+  - name: Menej cukru
+    description: Do cesta daj o tretinu cukru menej. Mrkva a hrozienka ho dosladia.
+    replace:
+      - from: cukor
+        to: cukor
+        amount: 100 g

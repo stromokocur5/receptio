@@ -8,6 +8,7 @@
 # co2: kg CO₂e na kg (Our World in Data, Poore & Nemecek 2018); bez údaja platí priemer kategórie
 # group_factor: koľko gramov „bežnej“ formy v skupine urobí 1 g tejto (suchý cícer 2.4 = po uvarení 2,4× ťažší)
 # howto: návody zo sekcie Základy (content/wiki), recept na ne odkáže automaticky
+# free_sugar: podiel pridaného (voľného) cukru v hmotnosti, podľa neho sa recept označí „Na občas“
 
 # ── Obilniny a prílohy ──────────────────────────────────────────
 - id: ryza-basmati
@@ -1261,6 +1262,7 @@
 - id: javorovy-sirup
   name: Javorový sirup
   category: omacky-pasty
+  free_sugar: 0.6
   n: { kcal: 260, p: 0, c: 67, f: 0.1, fib: 0, salt: 0, fe: 0.1, ca: 102, zn: 1.5 }
   units: { pl: 20, čl: 7 }
   price: 25
@@ -3047,6 +3049,7 @@
 - id: cukor
   name: Cukor
   category: ine
+  free_sugar: 1
   n: { kcal: 387, p: 0, c: 100, f: 0, fib: 0, salt: 0, fe: 0, ca: 1, zn: 0 }
   units: { pl: 12, čl: 4, hrnček: 200 }
   price: 1
@@ -3061,6 +3064,7 @@
 - id: horka-cokolada
   name: Horká čokoláda 70 % (vegánska)
   category: ine
+  free_sugar: 0.3
   n: { kcal: 600, p: 7.8, c: 46, f: 43, fib: 11, salt: 0, fe: 11.9, ca: 73, zn: 3.3 }
   price: 20
   co2: 46.7
@@ -3147,6 +3151,7 @@
   name: Kečup
   aliases: [ketchup]
   category: omacky-pasty
+  free_sugar: 0.22
   n: { kcal: 101, p: 1, c: 27, f: 0.1, fib: 0.3, salt: 2.3, fe: 0.4, ca: 15, zn: 0.2 }
   units: { pl: 17, čl: 6 }
   price: 3

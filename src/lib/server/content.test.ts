@@ -64,6 +64,20 @@ describe('content', () => {
 		);
 	});
 
+	it('labels comfort food "na občas" and clears it for lighter versions', () => {
+		const falafel = content.recipeDetails.get('falafel')!;
+		expect(falafel.treat).toContain('vyprazane');
+		expect(falafel.variants.find((v) => v.name === 'Pečený v rúre')!.treat).toEqual([]);
+		expect(content.recipeDetails.get('brownies')!.treat).toContain('cukor');
+		expect(content.recipeDetails.get('hummus')!.treat).toEqual([]);
+		// Olive oil in a slow-cooked vegetable dish isn't "added fat".
+		expect(content.recipeDetails.get('imam-bayildi')!.treat).toEqual([]);
+		for (const r of content.recipes.filter((r) => r.categories[0].startsWith('comfort/'))) {
+			const everyday = r.treat.length === 0 || r.variants.some((v) => v.treat.length === 0);
+			expect(everyday, `${r.id}: pridaj Ľahšiu verziu`).toBe(true);
+		}
+	});
+
 	it('leaves not-eaten lines out of nutrition', () => {
 		const seitan = content.recipeDetails.get('seitan')!;
 		expect(seitan.lines.find((l) => l.ingredientId === 'zeleninovy-vyvar')?.notEaten).toBe(true);

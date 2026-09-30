@@ -25,3 +25,7 @@ steps:
 tips:
   - Aquafaba sa šľahá dlhšie ako bielky – vydrž.
   - Cícer z plechovky použi na hummus.
+variants:
+  - name: Menej cukru
+    description: Cukor vynechaj úplne, sladkosť dá len čokoláda. Vyber čokoládu so 60–70 % kakaa.
+    remove: [cukor]

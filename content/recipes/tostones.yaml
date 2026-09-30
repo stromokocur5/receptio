@@ -23,3 +23,10 @@ steps:
   - Každý kúsok rozpľacni dnom pohára na placku hrubú 1 cm.
   - Vyprážaj druhýkrát na 190 °C 2–3 minúty dochrumkava. Osoľ.
   - Na mojo zmiešaj cesnak, limetku, olivový olej a štipku soli a podávaj na namáčanie.
+variants:
+  - name: Ľahšia verzia
+    description: Plátky plantainu potri olejom a peč 15 minút na 220 °C, potom ich rozpuč, znova potri a peč ďalších 10 minút dochrumkava.
+    replace:
+      - from: olej
+        to: olej
+        amount: 1 pl

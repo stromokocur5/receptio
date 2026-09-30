@@ -2,7 +2,7 @@ title: Vyprážané hlivové rezne
 description: Celé trsy hlivy rozklepané na plocho a obalené v trojobale. Šťavnaté, mäsité a s kyslou uhorkou a zemiakovým šalátom na nedeľu ako stvorené.
 cuisine: slovenska
 meals: [obed, vecera]
-categories: [hlavne/zelenina]
+categories: [comfort/vyprazane, hlavne/zelenina]
 time: 30
 active: 25
 servings: 3
@@ -31,3 +31,10 @@ steps:
   - Vyprážaj na oleji na strednom ohni 3 minúty z každej strany dozlatista.
   - Podávaj s citrónom, zemiakovým šalátom alebo zemiakmi.
 howto: [vyprazanie]
+variants:
+  - name: Ľahšia verzia
+    description: Obalenú hlivu pokvapkaj olejom a peč 20 minút na 220 °C, v polovici otoč. Hliva ostane šťavnatá a obal chrumkavý.
+    replace:
+      - from: olej
+        to: olej
+        amount: 1 pl

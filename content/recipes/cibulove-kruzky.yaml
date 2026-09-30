@@ -2,7 +2,7 @@ title: Cibuľové krúžky v chrumkavom cestíčku
 description: Sladkastá cibuľa v ľahkom cestíčku z perlivej vody a strúhanke. K burgru alebo len tak s dipom.
 cuisine: americka
 meals: [snack]
-categories: [snacky/slane, snacky/party]
+categories: [comfort/vyprazane, snacky/slane, snacky/party]
 time: 30
 active: 30
 servings: 4
@@ -31,3 +31,10 @@ tips:
 howto: [vyprazanie]
 equipment: [hrniec, teplomer]
 no_equipment: [panvica]
+variants:
+  - name: Ľahšia verzia
+    description: Krúžky obaľ len v múke, mlieku a strúhanke (bez cestíčka), pokvapkaj olejom a peč na plechu 15–18 minút na 220 °C alebo 10 minút v teplovzdušnej fritéze.
+    replace:
+      - from: olej
+        to: olej
+        amount: 1 pl

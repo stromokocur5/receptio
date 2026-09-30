@@ -2,7 +2,7 @@ title: Langoš s cesnakom, kečupom a syrom
 description: Nadýchaný vyprážaný langoš ako z kúpaliska – potretý cesnakovou vodou, s kečupom, vegánskym syrom a hustou „smotanou“.
 cuisine: slovenska
 meals: [obed, vecera, snack]
-categories: [hlavne/cesto, snacky/slane]
+categories: [comfort/vyprazane, hlavne/cesto, snacky/slane]
 time: 100
 active: 35
 servings: 4
@@ -36,3 +36,10 @@ tips:
 howto: [kysnute-cesto, vyprazanie]
 equipment: [hrniec, teplomer]
 no_equipment: [panvica]
+variants:
+  - name: Ľahšia verzia
+    description: Placky ulož na plech s papierom, potri ich 1 PL oleja a peč 10–12 minút na 240 °C, kým nie sú zlaté a nafúknuté. Chutí ako pečený langoš z pece – menej mastný, rovnako cesnakový.
+    replace:
+      - from: olej
+        to: olej
+        amount: 2 pl

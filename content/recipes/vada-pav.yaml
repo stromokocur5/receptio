@@ -2,7 +2,7 @@ title: Vada pav – indický zemiakový burger
 description: Korenisté zemiakové guľky v cícerovom cestíčku, vyprážané a vložené do mäkkej žemle s koriandrovým a pikantným cesnakovým chutney. Street food z Bombaja.
 cuisine: indicka-sever
 meals: [obed, vecera, snack]
-categories: [hlavne/plnene, snacky/slane]
+categories: [comfort/burgre, hlavne/plnene, snacky/slane]
 time: 50
 active: 35
 servings: 4
@@ -39,3 +39,10 @@ steps:
   - Žemľu nareži, natri zeleným chutney, posyp suchým a vlož vadu. Stlač a jedz.
 howto: [vyprazanie]
 equipment: [hrniec, teplomer]
+variants:
+  - name: Ľahšia verzia
+    description: Zemiakové guľky sploští na placky, obaľ v hustom cestíčku a opeč na panvici na 2 PL oleja z oboch strán, alebo peč 20 minút na 220 °C. Bez hlbokého vyprážania.
+    replace:
+      - from: olej
+        to: olej
+        amount: 2 pl

@@ -29,3 +29,10 @@ steps:
   - Vmiešaj všetko ostatné na husté cesto ako na bublaninu.
   - Prelej do vymastenej formy 20×20 cm a peč na 180 °C 60–70 minút, kým povrch nie je tmavý a stred pevný.
   - Nechaj vychladnúť, stuhne. Podávaj vlažný alebo studený.
+variants:
+  - name: Menej cukru
+    description: Batáty sú sladké samy – stačí 90 g cukru. Pridaj viac škorice a vanilky.
+    replace:
+      - from: cukor
+        to: cukor
+        amount: 90 g

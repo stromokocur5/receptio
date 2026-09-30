@@ -34,3 +34,10 @@ steps:
 tips:
   - Najlepšie s mätovým alebo tamarindovým chutney, alebo so sójovým jogurtom s mätou.
 howto: [vyprazanie]
+variants:
+  - name: Ľahšia verzia
+    description: Zmes daj po lyžiciach na plech s papierom, sploští, postrekaj olejom a peč 20–25 minút na 210 °C, v polovici otoč. Alebo 12 minút v teplovzdušnej fritéze.
+    replace:
+      - from: olej
+        to: olej
+        amount: 1 pl

@@ -2,7 +2,7 @@ title: „Fish“ and chips z tofu a nori
 description: Tofu zabalené v plátku nori v chrumkavom cestíčku – more z neho naozaj cítiť. S hranolkami, hráškovou kašou a tatárkou ako v Londýne.
 cuisine: moderna
 meals: [obed, vecera]
-categories: [hlavne/tofu]
+categories: [comfort/vyprazane, hlavne/tofu]
 time: 55
 active: 35
 servings: 3
@@ -37,3 +37,22 @@ steps:
 howto: [tofu, vyprazanie]
 equipment: [hrniec, teplomer]
 no_equipment: [panvica]
+variants:
+  - name: Ľahšia verzia
+    description: 'Tofu neobaľuj v cestíčku, ale v múke, mlieku a strúhanke, pokvapkaj olejom a peč 20 minút na 220 °C, v polovici otoč. Namiesto majonézy sprav tatárku zo sójového jogurtu a hrášok roztlač bez masla. Hranoliek o trochu menej, hrášku kopa.'
+    replace:
+      - from: olej
+        to: olej
+        amount: 1 pl
+      - from: veganska-majoneza
+        to: sojovy-jogurt
+      - from: zemiaky
+        to: zemiaky
+        amount: 4 ks
+      - from: hladka-muka
+        to: hladka-muka
+        amount: 3 pl
+    remove: [rastlinne-maslo, kukuricny-skrob, kypriaci-prasok, voda]
+    add:
+      - sojove-mlieko: 1/2 hrnček
+      - struhanka: 3/4 hrnček

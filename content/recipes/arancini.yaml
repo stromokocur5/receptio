@@ -2,7 +2,7 @@ title: Arancini – plnené rizotové guľky
 description: Sicílske guľky zo šafránovo-žltého rizota s ragú a hráškom vnútri, obalené v strúhanke a vyprážané dozlatista.
 cuisine: talianska
 meals: [obed, vecera, snack]
-categories: [snacky/party, hlavne/ryza]
+categories: [comfort/vyprazane, snacky/party, hlavne/ryza]
 time: 90
 active: 50
 servings: 4
@@ -37,3 +37,10 @@ tips:
   - Zvyšky rizota sú na arancini ideálne.
 howto: [vyprazanie]
 equipment: [hrniec, teplomer]
+variants:
+  - name: Ľahšia verzia
+    description: Obalené guľky ulož na plech s papierom, postrekaj alebo potri olejom a peč 25 minút na 210 °C, v polovici otoč. Menej chrumkavé, ale bez vyprážania.
+    replace:
+      - from: olej
+        to: olej
+        amount: 2 pl

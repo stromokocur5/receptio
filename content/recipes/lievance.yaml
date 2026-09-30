@@ -25,3 +25,12 @@ steps:
   - Múku, prášok do pečiva, cukor a soľ premiešaj, prilej mlieko a lyžicu oleja a len krátko premiešaj. Hrudky sú v poriadku, premiešané cesto je tvrdé.
   - Panvicu potri olejom a na strednom ohni peč po naberačke. Otoč, keď sa na povrchu robia bublinky a okraje matnú.
   - Podávaj s javorovým sirupom a malinami.
+variants:
+  - name: Ľahšia verzia
+    description: Sirupu len lyžicu navrch a namiesto neho kopa čerstvého ovocia.
+    replace:
+      - from: javorovy-sirup
+        to: javorovy-sirup
+        amount: 1 pl
+    add:
+      - cucoriedky: 1 hrnček

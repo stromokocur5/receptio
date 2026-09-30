@@ -2,7 +2,7 @@ title: Tofu karaage
 description: Japonské vyprážané kúsky – tofu marinované v sóji, zázvore a cesnaku, obalené v zemiakovom škrobe a vyprážané dvakrát. S majonézou a citrónom.
 cuisine: japonska
 meals: [obed, vecera, snack]
-categories: [hlavne/tofu, snacky/party]
+categories: [comfort/vyprazane, hlavne/tofu, snacky/party]
 time: 45
 active: 30
 servings: 3
@@ -33,3 +33,11 @@ steps:
 howto: [tofu, vyprazanie]
 equipment: [hrniec, teplomer]
 no_equipment: [panvica]
+variants:
+  - name: Ľahšia verzia
+    description: Tofu obalené v škrobe postrekaj olejom a peč 15 minút v teplovzdušnej fritéze na 200 °C (alebo 25 minút v rúre na 220 °C), v polovici pretras. Namiesto majonézy podávaj s citrónom a pálivou sójovou omáčkou.
+    replace:
+      - from: olej
+        to: olej
+        amount: 1 pl
+    remove: [veganska-majoneza]

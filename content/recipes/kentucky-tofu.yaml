@@ -2,7 +2,7 @@ title: Tofu stripsy ako z Kentucky
 description: Rozmrazené tofu natrhané na kúsky, marinované v „cmare“ a obalené v múke s jedenástimi koreninami. Chrumkavé zvonka, šťavnaté vnútri.
 cuisine: americka
 meals: [obed, vecera, snack]
-categories: [hlavne/tofu, snacky/party]
+categories: [comfort/vyprazane, hlavne/tofu, snacky/party]
 time: 50
 active: 35
 servings: 4
@@ -44,3 +44,10 @@ tips:
 howto: [tofu, vyprazanie]
 equipment: [hrniec, teplomer]
 no_equipment: [panvica]
+variants:
+  - name: Ľahšia verzia
+    description: Obalené tofu ulož na mriežku, postrekaj olejom a peč 15 minút v teplovzdušnej fritéze na 200 °C alebo 25 minút v rúre na 220 °C, v polovici otoč.
+    replace:
+      - from: olej
+        to: olej
+        amount: 1 pl

@@ -34,3 +34,9 @@ variants:
   - name: Bez náhrad
     description: Bez jogurtu – podávaj s kyslou kapustou alebo len natreté cesnakom.
     remove: [sojovy-jogurt]
+  - name: Ľahšia verzia
+    description: Placky opeč na nepriľnavej panvici len na troche oleja (pár kvapiek na každú dávku), alebo ich peč na plechu s papierom 25 minút na 220 °C, v polovici otoč.
+    replace:
+      - from: olej
+        to: olej
+        amount: 1 pl

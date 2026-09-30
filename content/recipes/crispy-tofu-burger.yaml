@@ -2,7 +2,7 @@ title: Chrumkavý tofu burger
 description: Hrubý plátok tofu v chrumkavom korenenom obale, pikantná majonéza, coleslaw a kyslé uhorky. Ako „chicken“ burger z fastfoodu.
 cuisine: americka
 meals: [obed, vecera]
-categories: [hlavne/plnene, hlavne/tofu]
+categories: [comfort/burgre, hlavne/plnene, hlavne/tofu]
 time: 45
 active: 30
 servings: 4
@@ -42,3 +42,12 @@ steps:
   - Majonézu zmiešaj so srirachou. Žemle opeč reznou stranou na suchej panvici.
   - Poskladaj – žemľa, majonéza, šalát, tofu, kapusta, uhorky, zase majonéza a vrch.
 howto: [tofu, vyprazanie]
+variants:
+  - name: Ľahšia verzia
+    description: Obalené tofu pokvapkaj olejom a peč 25 minút na 210 °C (alebo 15 minút v teplovzdušnej fritéze), v polovici otoč. Namiesto majonézy zmiešaj srirachu so sójovým jogurtom.
+    replace:
+      - from: olej
+        to: olej
+        amount: 1 pl
+      - from: veganska-majoneza
+        to: sojovy-jogurt

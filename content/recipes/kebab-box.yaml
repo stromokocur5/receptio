@@ -2,7 +2,7 @@ title: Kebab box s hranolkami
 description: Krabička ako z kebabárne – chrumkavé hranolky z rúry, pikantná hliva, šalát a dve omáčky cez to všetko.
 cuisine: turecka
 meals: [obed, vecera]
-categories: [hlavne/zelenina, hlavne/bowly]
+categories: [comfort/kebab, hlavne/zelenina, hlavne/bowly]
 time: 45
 active: 20
 servings: 3
@@ -38,3 +38,11 @@ steps:
   - Do krabičiek alebo misiek daj hranolky, navrch hlivu, vedľa kapustu, paradajky, uhorku a cibuľu. Polej oboma omáčkami.
 tips:
   - Zemiaky nakrájané na hranolky namoč na 10 minút do studenej vody a dobre osuš – budú chrumkavejšie.
+variants:
+  - name: Ľahšia verzia
+    description: Hranolky peč len s 1 PL oleja, hlivu opeč na 1 PL a bielu omáčku sprav len z jogurtu a cesnaku, bez majonézy. Pridaj viac kapusty a uhorky.
+    replace:
+      - from: olej
+        to: olej
+        amount: 2 pl
+    remove: [veganska-majoneza]

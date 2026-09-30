@@ -27,3 +27,10 @@ steps:
   - Na panvici s 2 PL oleja rozpálenej na strednom až vysokom ohni rozotri polovicu cesta na tenkú placku.
   - Peč 3–4 minúty, obráť, pridaj olej po okrajoch a peč ďalšie 3 minúty dochrumkava. Opakuj.
   - Podávaj s omáčkou zo sójovej omáčky, octu a gochugaru.
+variants:
+  - name: Ľahšia verzia
+    description: Placky opeč na nepriľnavej panvici na polovici oleja. Budú o trochu menej chrumkavé na okrajoch.
+    replace:
+      - from: olej
+        to: olej
+        amount: 2 pl

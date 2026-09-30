@@ -2,7 +2,7 @@ title: Churros so škoricovým cukrom a čokoládou
 description: Chrumkavé vyprážané tyčinky z odpaľovaného cesta obalené v škoricovom cukre, na namáčanie do hustej horúcej čokolády.
 cuisine: mexicka
 meals: [dezert, snack]
-categories: [dezerty/smazene]
+categories: [dezerty/smazene, comfort/vyprazane]
 time: 35
 active: 30
 servings: 4
@@ -33,3 +33,13 @@ tips:
 howto: [vyprazanie]
 equipment: [hrniec, teplomer]
 no_equipment: [panvica]
+variants:
+  - name: Ľahšia verzia
+    description: Churros vytláčaj na plech s papierom, postrekaj olejom a peč 20 minút na 200 °C, kým nie sú zlaté. Obaľ len v tenkej vrstve škoricového cukru.
+    replace:
+      - from: olej
+        to: olej
+        amount: 3 pl
+      - from: cukor
+        to: cukor
+        amount: 2 pl

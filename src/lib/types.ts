@@ -84,6 +84,8 @@ export interface Ingredient {
 	note?: string;
 	warn?: string;
 	gfAlternative?: string;
+	/** Share of the weight that is added (free) sugar: 1 for sugar, less for syrups and ketchup. */
+	freeSugar: number;
 	/** Shown next to amounts: "1 PL" of grated ginger is "≈ 2,5 cm koreňa". */
 	piece?: { label: string; grams: number };
 	/** Slugs of beginner technique pages (wiki section `zaklady`). */
@@ -119,6 +121,9 @@ export interface Warning {
 }
 
 /** Everything that depends on the ingredient list, so a variant can recompute it. */
+/** Why a dish is better kept for now and then; see `treatReasons`. */
+export type TreatReason = 'vyprazane' | 'tuk' | 'cukor' | 'kalorie';
+
 export interface RecipeComputed {
 	lines: RecipeLine[];
 	gluten: GlutenStatus;
@@ -134,6 +139,8 @@ export interface RecipeComputed {
 	co2PerServing: number;
 	/** Uses vegan convenience substitutes (plant cream, butter, cheese, mayo…). */
 	usesSubstitutes: boolean;
+	/** Empty for everyday food; otherwise it's labeled "Na občas" with these reasons. */
+	treat: TreatReason[];
 	warnings: Warning[];
 }
 

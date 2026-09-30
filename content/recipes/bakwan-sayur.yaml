@@ -30,3 +30,10 @@ steps:
   - Vmiešaj zeleninu tak, aby bola len obalená.
   - Olej v panvici (asi 1 cm) zohrej na 175 °C. Naberačkou klaď doň cesto, placky rozrovnaj a vyprážaj 3 minúty z každej strany dozlatista.
   - Nechaj odkvapkať a podávaj so srirachou.
+variants:
+  - name: Ľahšia verzia
+    description: Placky opeč na panvici len na tenkej vrstve oleja, 3 minúty z každej strany.
+    replace:
+      - from: olej
+        to: olej
+        amount: 2 pl

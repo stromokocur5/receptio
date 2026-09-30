@@ -70,6 +70,13 @@ function pickVersion(r: RecipeSummary, o: AutoPlanOptions): Candidate | null {
 		data = plain;
 		variant = plain.name;
 	}
+	// Comfort food isn't planned for the week; its lighter version (baked, less oil) can be.
+	if (data.treat.length) {
+		const light = r.variants.find((v) => v.treat.length === 0);
+		if (!light || variant) return null;
+		data = light;
+		variant = light.name;
+	}
 	if (o.excludeAllergens.some((a) => data.allergens.includes(a))) return null;
 	const fridge = r.keeps?.fridge ?? 2;
 	return {

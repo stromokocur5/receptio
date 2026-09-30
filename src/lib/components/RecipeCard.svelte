@@ -9,6 +9,7 @@
 	import { addToPlan, servingsInPlan, ui } from '$lib/state.svelte';
 	import PlateArt from './PlateArt.svelte';
 	import { vesselFor } from '$lib/categories';
+	import { treatText } from '$lib/nutrition';
 	import { flyToPlan } from '$lib/fly';
 
 	let {
@@ -98,6 +99,9 @@
 		</div>
 		<div class="badges">
 			<GlutenBadge {recipe} />
+			{#if recipe.treat.length}<span class="badge tomato" title={treatText(recipe.treat)}
+					>Na občas</span
+				>{/if}
 			{#if recipe.ahead}<span class="badge sky" title={recipe.ahead}>Pripraviť vopred</span>{/if}
 			{#if match}
 				{#if match.missing.length === 0 && match.short.length === 0 && match.swaps.length}

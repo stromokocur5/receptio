@@ -30,3 +30,11 @@ steps:
   - Na panvici s olejom rozotri polovicu na placku hrubú 2 cm, prikry a peč na strednom ohni 5 minút.
   - Obráť (pomôž si tanierom) a peč ďalších 5 minút.
   - Sójovú omáčku, pretlak a sirup zmiešaj, natri na placku, pokresli majonézou a posyp nori.
+variants:
+  - name: Ľahšia verzia
+    description: Opeč na nepriľnavej panvici na 2 lyžičkách oleja a majonézu vynechaj – stačí okonomi omáčka a nori.
+    replace:
+      - from: olej
+        to: olej
+        amount: 2 čl
+    remove: [veganska-majoneza]

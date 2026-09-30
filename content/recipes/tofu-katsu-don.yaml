@@ -2,7 +2,7 @@ title: Tofu katsu don
 description: Chrumkavý rezeň z tofu v panko strúhanke na ryži s dusenou cibuľou v sladkej sójovej omáčke. Japonský comfort food.
 cuisine: japonska
 meals: [obed, vecera]
-categories: [hlavne/tofu, hlavne/ryza]
+categories: [hlavne/tofu, hlavne/ryza, comfort/vyprazane]
 time: 35
 active: 30
 servings: 2
@@ -29,3 +29,10 @@ steps:
   - Opeč na oleji na strednom ohni 3 minúty z každej strany dozlatista a nakrájaj na prúžky.
   - Cibuľu duste na miernom ohni vo vode so sójovou omáčkou, sirupom a kurkumou 5 minút. Vmiešaj škrob rozmiešaný v lyžici vody.
   - Na ryžu daj rezeň, polej cibuľovou omáčkou a posyp cibuľkou.
+variants:
+  - name: Ľahšia verzia
+    description: Obalené tofu pokvapkaj olejom a peč 20 minút na 210 °C, v polovici otoč. Omáčka a ryža ostávajú rovnaké.
+    replace:
+      - from: olej
+        to: olej
+        amount: 1 pl

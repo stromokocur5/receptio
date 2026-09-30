@@ -2,7 +2,7 @@ title: Vyprážaný „syr“ z údeného tofu s tatárkou
 description: Hrubé plátky údeného tofu v trojobale, vyprážané dozlatista. S hranolkami a tatárskou omáčkou ako v každej slovenskej reštaurácii.
 cuisine: slovenska
 meals: [obed, vecera]
-categories: [hlavne/tofu, hlavne/zelenina]
+categories: [comfort/vyprazane, hlavne/tofu, hlavne/zelenina]
 time: 35
 active: 25
 servings: 3
@@ -31,3 +31,15 @@ steps:
 tips:
   - Na „ťahavú“ verziu vlož medzi dva tenšie plátky tofu plátok vegánskeho syru, pritlač a obaľuj spolu.
 howto: [vyprazanie]
+variants:
+  - name: Ľahšia verzia
+    description: Obalené tofu pokvapkaj olejom a peč 20 minút na 220 °C, v polovici otoč. Tatárku sprav z polovice majonézy a polovice sójového jogurtu a podávaj s varenými zemiakmi namiesto hranoliek.
+    replace:
+      - from: olej
+        to: olej
+        amount: 1 pl
+      - from: veganska-majoneza
+        to: veganska-majoneza
+        amount: 2 pl
+    add:
+      - sojovy-jogurt: 2 pl
