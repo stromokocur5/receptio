@@ -56,6 +56,30 @@
 	);
 	const maxProtein = $derived(Math.max(...proteinPerEuro.map((p) => p.gramsPerEuro)));
 
+	/** How much of what recipes cost comes from real prices, weighted by cost. */
+	const knownShare = $derived.by(() => {
+		const total = catalog.recipes.reduce((sum, r) => sum + r.costPerServing, 0);
+		const known = catalog.recipes.reduce((sum, r) => sum + r.costPerServing * r.costKnownShare, 0);
+		return total ? known / total : 0;
+	});
+	/** Ingredients without a real price that weigh most in recipe costs – worth collecting next. */
+	const missingPrices = $derived.by(() => {
+		const weight = new Map<string, number>();
+		for (const r of catalog.recipes) {
+			for (const l of r.lines) {
+				const i = catalog.ingredientsById.get(l.ingredientId);
+				if (!i || i.byproduct || i.id === 'voda') continue;
+				const best = bestPrice(i, catalog.prices, today);
+				if (!best.isEstimate) continue;
+				weight.set(i.id, (weight.get(i.id) ?? 0) + (best.perKg * l.grams) / 1000 / r.servings);
+			}
+		}
+		return [...weight]
+			.sort((a, b) => b[1] - a[1])
+			.slice(0, 12)
+			.map(([id]) => catalog.ingredientsById.get(id)!);
+	});
+
 	const bulk = $derived(catalog.prices.filter((p) => p.packGrams >= BULK_PACK_GRAMS));
 	const realCount = $derived(catalog.prices.length);
 	const storesWithPrices = $derived(new Set(catalog.prices.map((p) => p.storeId)).size);
@@ -84,6 +108,22 @@
 			financií, kam ich reťazce posielajú každý deň. Ostatné ceny zbierame ručne.
 		</p>
 	</header>
+
+	<section class="card box coverage">
+		<h2><Icon name="store" size={24} /> Koľko cien je z obchodov</h2>
+		<div class="meter" role="img" aria-label="{Math.round(knownShare * 100)} % z obchodov">
+			<span style:width="{knownShare * 100}%"></span>
+		</div>
+		<p class="muted small">
+			<strong>{Math.round(knownShare * 100)} %</strong> ceny receptov je z reálnych cien v obchodoch,
+			zvyšok je odhad. Najviac by pomohli ceny týchto surovín:
+		</p>
+		<ul class="missing">
+			{#each missingPrices as i (i.id)}
+				<li><a href="/suroviny/{i.id}">{i.name}</a></li>
+			{/each}
+		</ul>
+	</section>
 
 	<section class="card box ppe">
 		<h2><Icon name="bean" size={24} /> Najviac bielkovín za euro</h2>
@@ -226,6 +266,36 @@
 	}
 	.small {
 		font-size: 0.85rem;
+	}
+	.meter {
+		height: 12px;
+		margin: 12px 0 10px;
+		border-radius: 999px;
+		background: var(--paper-2);
+		overflow: hidden;
+	}
+	.meter span {
+		display: block;
+		height: 100%;
+		border-radius: inherit;
+		background: var(--leaf-2);
+	}
+	.missing {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin: 10px 0;
+		padding: 0;
+		list-style: none;
+	}
+	.missing a {
+		display: inline-block;
+		padding: 3px 10px;
+		border: 1.5px solid var(--line);
+		border-radius: 999px;
+		font-size: 0.86rem;
+		text-decoration: none;
+		color: var(--ink);
 	}
 	.box {
 		padding: 20px;
