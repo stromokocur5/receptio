@@ -5,7 +5,7 @@
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
 	import PreservesShelf from '$lib/components/PreservesShelf.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
-	import { CATEGORY_LABELS, ingredientSearchText, searchMatcher } from '$lib/labels';
+	import { CATEGORY_LABELS, ingredientSearchText, pluralRecipes, searchMatcher } from '$lib/labels';
 	import { rankByPantry, TAP_WATER_ID, useSoon } from '$lib/pantry';
 	import { avoidFilter, missableTools } from '$lib/avoid';
 	import IngredientExcluder from '$lib/components/IngredientExcluder.svelte';
@@ -189,6 +189,29 @@
 			<Icon name="arrow-right" size={18} />
 		</a>
 	</header>
+
+	{#if suggestions.length}
+		<section class="cook">
+			<div class="cook-head">
+				<h2>Čo z toho uvarím</h2>
+				<a class="btn ghost small" href="/recepty?spajza=1&sort=spajza"
+					>Všetky <Icon name="arrow-right" size={16} /></a
+				>
+			</div>
+			<p class="muted">
+				{cookable
+					? `${cookable} ${pluralRecipes(cookable)} môžeš uvariť hneď, ostatným chýba len málo.`
+					: 'Tieto recepty sú najbližšie k tomu, čo máš doma.'}
+			</p>
+			<div class="grid">
+				{#each suggestions.slice(0, 4) as m, i (m.recipe.id)}<RecipeCard
+						recipe={m.recipe}
+						match={m}
+						index={i}
+					/>{/each}
+			</div>
+		</section>
+	{/if}
 
 	<div class="layout">
 		<section class="picker card">
@@ -378,24 +401,6 @@
 			</div>
 		</div>
 	</section>
-
-	{#if suggestions.length}
-		<section class="cook">
-			<h2>Čo z toho uvarím</h2>
-			<p class="muted">
-				{cookable
-					? `${cookable} ${cookable === 1 ? 'recept môžeš uvariť' : 'recepty môžeš uvariť'} hneď, ostatným chýba len málo.`
-					: 'Tieto recepty sú najbližšie k tomu, čo máš doma.'}
-			</p>
-			<div class="grid">
-				{#each suggestions as m, i (m.recipe.id)}<RecipeCard
-						recipe={m.recipe}
-						match={m}
-						index={i}
-					/>{/each}
-			</div>
-		</section>
-	{/if}
 </div>
 
 <style>
@@ -663,7 +668,16 @@
 		margin: 12px 0 0;
 	}
 	.cook {
-		margin-top: 44px;
+		margin: 26px 0 30px;
+	}
+	.cook-head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 10px;
+	}
+	.cook-head h2 {
+		margin: 0;
 	}
 	.grid {
 		display: grid;

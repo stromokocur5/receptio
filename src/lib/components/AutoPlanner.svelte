@@ -22,7 +22,8 @@
 	const EXCLUDABLE: Allergen[] = ['soy', 'peanuts', 'nuts', 'sesame'];
 	const month = new Date().getMonth() + 1;
 
-	let open = $state(false);
+	/** Bindable, so the plan page's empty state can open it. */
+	let { open = $bindable(false) }: { open?: boolean } = $props();
 
 	// Links like "Navrhni mi týždeň" land here already opened.
 	onMount(() => {

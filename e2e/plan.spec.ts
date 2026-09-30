@@ -12,7 +12,7 @@ test('a recipe goes to the plan and its ingredients into the shopping list', asy
 
 	await page.goto('/plan');
 	await page.waitForLoadState('networkidle');
-	await expect(page.getByRole('heading', { name: 'Recepty v pláne' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Tvoj týždeň' })).toBeVisible();
 	await expect(page.getByText(/falafel/i).first()).toBeVisible();
 	await expect(page.getByRole('heading', { name: 'Nákupný zoznam' })).toBeVisible();
 	await expect(page.getByText(/Cícer/).first()).toBeVisible();

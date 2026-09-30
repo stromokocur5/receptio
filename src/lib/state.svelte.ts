@@ -205,6 +205,38 @@ export const pantry = new Persisted<Pantry>('pantry', {}, validatePantry);
 export const pantryAdded = new Persisted<Record<string, string>>('pantry-added', {}, validateDates);
 export const plan = new Persisted<PlanEntry[]>('plan', [], validatePlan);
 export const checkedItems = new Persisted<Record<string, boolean>>('checked', {}, validateFlags);
+/** Things to buy that no recipe needs (toilet paper, coffee), added by hand to the list. */
+export interface ExtraItem {
+	id: string;
+	text: string;
+	checked: boolean;
+}
+const MAX_EXTRA_ITEMS = 60;
+function validateExtraItems(raw: unknown): ExtraItem[] | undefined {
+	if (!Array.isArray(raw)) return undefined;
+	return raw
+		.filter(
+			(i): i is ExtraItem =>
+				isRecord(i) &&
+				typeof i.id === 'string' &&
+				typeof i.text === 'string' &&
+				i.text.length > 0 &&
+				i.text.length <= 80 &&
+				typeof i.checked === 'boolean'
+		)
+		.slice(0, MAX_EXTRA_ITEMS)
+		.map(({ id, text, checked }) => ({ id, text, checked }));
+}
+export const extraItems = new Persisted<ExtraItem[]>('extra-items', [], validateExtraItems);
+
+export function addExtraItem(text: string) {
+	const clean = text.trim().slice(0, 80);
+	if (!clean || extraItems.current.length >= MAX_EXTRA_ITEMS) return;
+	extraItems.current = [
+		...extraItems.current,
+		{ id: crypto.randomUUID(), text: clean, checked: false }
+	];
+}
 /** Basics (spices, oils) the user marked as missing at home. */
 export const outOfStock = new Persisted<Record<string, boolean>>('out-of-stock', {}, validateFlags);
 export const settings = new Persisted<Settings>('settings', DEFAULT_SETTINGS, validateSettings);
@@ -369,6 +401,7 @@ export const ALL_PERSISTED = {
 	pantryAdded,
 	plan,
 	checkedItems,
+	extraItems,
 	outOfStock,
 	settings,
 	history,

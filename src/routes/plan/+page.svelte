@@ -21,7 +21,10 @@
 	import { encodeSharedPlan } from '$lib/share';
 	import { approxPieces, buildShoppingList, type ShoppingItem } from '$lib/shopping';
 	import {
+		addExtraItem,
 		checkedItems,
+		extraItems,
+		type ExtraItem,
 		markCooked,
 		movePlanEntryUp,
 		outOfStock,
@@ -41,6 +44,17 @@
 	let shareState = $state<'idle' | 'copied' | 'failed'>('idle');
 	let confirmClear = $state(false);
 	let cookedMessage = $state('');
+	let plannerOpen = $state(false);
+
+	/** Adding recipes happens in a sheet; the full list inline made the page endless. */
+	let pickerDialog = $state<HTMLDialogElement>();
+	const openPicker = () => pickerDialog?.showModal();
+	const closePicker = () => pickerDialog?.close();
+
+	function startWithPlanner() {
+		plannerOpen = true;
+		document.getElementById('navrh')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+	}
 
 	const entries = $derived(
 		plan.current
@@ -191,6 +205,24 @@
 		outOfStock.current = missing ? { ...rest, [id]: true } : rest;
 	}
 
+	let extraText = $state('');
+	const itemCount = $derived(allItems.length + extraItems.current.length);
+	const boughtCount = $derived(checkedCount + extraItems.current.filter((x) => x.checked).length);
+
+	function toggleExtra(id: string) {
+		extraItems.current = extraItems.current.map((x) =>
+			x.id === id ? { ...x, checked: !x.checked } : x
+		);
+	}
+	function removeExtra(id: string) {
+		extraItems.current = extraItems.current.filter((x) => x.id !== id);
+	}
+	/** Unticks everything; bought extras are done with and go away. */
+	function clearChecked() {
+		checkedItems.current = {};
+		extraItems.current = extraItems.current.filter((x) => !x.checked);
+	}
+
 	function toggleChecked(id: string) {
 		checkedItems.current = { ...checkedItems.current, [id]: !checkedItems.current[id] };
 	}
@@ -203,6 +235,8 @@
 			...items.map((i) => `- ${i.ingredient.name}: ${formatGrams(i.buyGrams)}${pieces(i)}`),
 			''
 		]);
+		const extras = extraItems.current.filter((x) => !x.checked);
+		if (extras.length) lines.push('Navyše:', ...extras.map((x) => `- ${x.text}`));
 		try {
 			await navigator.clipboard.writeText(lines.join('\n').trim());
 			copied = true;
@@ -249,6 +283,7 @@
 			setPantryItem(item.ingredient.id, Math.round((current ?? 0) + bought));
 		}
 		checkedItems.current = {};
+		extraItems.current = extraItems.current.filter((x) => !x.checked);
 	}
 
 	function clearPlan() {
@@ -264,12 +299,12 @@
 
 	/** Phones stack everything; these tabs jump straight to the shopping list in the shop. */
 	const PLAN_SECTIONS = [
-		{ id: 'recepty-v-plane', label: 'Plán' },
-		{ id: 'rozpis', label: 'Dni' },
+		{ id: 'rozpis', label: 'Týždeň' },
+		{ id: 'recepty-v-plane', label: 'Porcie' },
 		{ id: 'ziviny', label: 'Živiny' },
 		{ id: 'nakup', label: 'Nákup' }
 	] as const;
-	let currentSection = $state<string>('recepty-v-plane');
+	let currentSection = $state<string>('rozpis');
 	$effect(() => {
 		if (!entries.length) return;
 		const observer = new IntersectionObserver(
@@ -315,26 +350,123 @@
 
 	<div class="layout">
 		<div class="left">
-			<AutoPlanner />
-			<section class="card box" id="recepty-v-plane">
-				<div class="box-head">
-					<h2><Icon name="calendar" size={24} /> Recepty v pláne</h2>
-					{#if entries.length}
+			{#if ui.loaded && entries.length === 0}
+				<section class="card box start">
+					<h2>Ako chceš začať?</h2>
+					<p class="muted">
+						Plán je zatiaľ prázdny. Vyber si, čo ti sedí – všetko sa dá neskôr zmeniť.
+					</p>
+					<div class="start-grid">
+						<button class="start-opt" onclick={startWithPlanner}>
+							<span class="start-ico" style:--tone="var(--sky)"
+								><Icon name="sparkle" size={22} /></span
+							>
+							<strong>Navrhni mi týždeň</strong>
+							<small>Podľa rozpočtu, bielkovín a toho, čo máš doma.</small>
+						</button>
+						<button class="start-opt" onclick={openPicker}>
+							<span class="start-ico" style:--tone="var(--tomato)"
+								><Icon name="bowl" size={22} /></span
+							>
+							<strong>Vyberiem recepty</strong>
+							<small>Nájdi recepty a pridaj ich jedným ťuknutím.</small>
+						</button>
+						<a class="start-opt" href="/spajza">
+							<span class="start-ico" style:--tone="var(--turmeric)"
+								><Icon name="jar" size={22} /></span
+							>
+							<strong>Z toho, čo mám doma</strong>
+							<small>Naklikaj špajzu a uvidíš, čo z nej uvaríš.</small>
+						</a>
+					</div>
+				</section>
+			{/if}
+			<AutoPlanner bind:open={plannerOpen} />
+			{#if entries.length}
+				<section class="card box" id="rozpis">
+					<div class="box-head">
+						<h2><Icon name="calendar" size={24} /> Tvoj týždeň</h2>
+						<button class="btn leaf small" onclick={openPicker}>
+							<Icon name="plus" size={16} /> Pridať recept
+						</button>
+					</div>
+					<PlanSettings />
+					<ol class="days">
+						{#each schedule.days as day, d (d)}
+							<li class:today={d === 0}>
+								<span class="day">{dayName(d)}</span>
+								<span class="meals">
+									{#each day.meals as meal, m (m)}
+										{#if meal}
+											<span
+												class="meal"
+												class:cook={meal.kind === 'cook'}
+												class:old={meal.freeze || meal.spoils}
+											>
+												{#if meal.kind === 'cook'}
+													{@const r = catalog.recipesById.get(meal.entry.recipeId)}
+													{#if r}
+														<span class="day-plate" aria-hidden="true"
+															><PlateArt
+																seed={r.id}
+																lines={r.lines}
+																byId={catalog.ingredientsById}
+																vessel={vesselFor(r.categories)}
+																animate={false}
+															/></span
+														>
+													{/if}
+												{:else}
+													<span class="leftover-ico" aria-hidden="true"
+														><Icon name="jar" size={16} /></span
+													>
+												{/if}
+												<span class="meal-text">
+													<span class="meal-kind">{meal.kind === 'cook' ? 'Uvariť' : 'Zvyšky'}</span
+													>
+													<a href="/recepty/{meal.entry.recipeId}">{titleOf(meal.entry.recipeId)}</a
+													>
+													{#if meal.freeze}<small>tieto porcie hneď zamraz</small>
+													{:else if meal.spoils}<small>nevydrží – uvar menej alebo neskôr</small
+														>{/if}
+												</span>
+											</span>
+										{:else}
+											<span class="meal empty">nič naplánované</span>
+										{/if}
+									{/each}
+								</span>
+							</li>
+						{/each}
+					</ol>
+					<p class="muted small">
+						{#if schedule.unplannedMeals}
+							Chýba ešte {schedule.unplannedMeals}
+							{schedule.unplannedMeals === 1
+								? 'jedlo'
+								: schedule.unplannedMeals < 5
+									? 'jedlá'
+									: 'jedál'}
+							– pridaj recept alebo porcie.
+						{:else}
+							Plán pokryje všetky jedlá.
+						{/if}
+						{#if schedule.extraServings}
+							Zvýši {schedule.extraServings} porc. navyše.
+						{/if}
+						Rozpis počíta s tým, koľko ktoré jedlo vydrží v chladničke a či sa dá zamraziť. Poradie zmeníš
+						tlačidlom „Skôr“. <a href="/wiki/meal-prep">Ako variť na viac dní</a>
+					</p>
+				</section>
+				<section class="card box" id="recepty-v-plane">
+					<div class="box-head">
+						<h2><Icon name="bowl" size={24} /> Recepty a porcie</h2>
 						<button class="btn ghost small" onclick={clearPlan}>
 							<Icon name="trash" size={16} />
-							{confirmClear ? 'Naozaj?' : 'Vymazať'}
+							{confirmClear ? 'Naozaj?' : 'Vymazať plán'}
 						</button>
-					{/if}
-				</div>
+					</div>
 
-				{#if !ui.loaded}
-					<p class="muted">Načítavam…</p>
-				{:else if entries.length === 0}
-					<p class="muted empty">
-						Plán je prázdny. Pridaj recept nižšie, tlačidlom + na karte receptu alebo „Do plánu“ v
-						detaile.
-					</p>
-				{:else}
 					<ul class="entries">
 						{#each entries as e, i (e.key)}
 							<li>
@@ -398,64 +530,7 @@
 						<strong>{totalServings}</strong> porcií · spolu <strong>{formatEur(planCost)}</strong>
 						· <strong>{formatEur(totalServings ? planCost / totalServings : 0)}</strong> / porcia
 					</p>
-				{/if}
-
-				<div class="picker-wrap">
-					<h3><Icon name="plus" size={18} /> Pridať recept</h3>
-					<RecipePicker />
-				</div>
-			</section>
-
-			{#if entries.length}
-				<section class="card box" id="rozpis">
-					<h2><Icon name="clock" size={24} /> Rozpis dní</h2>
-					<PlanSettings />
-					<ol class="days">
-						{#each schedule.days as day, d (d)}
-							<li>
-								<span class="day">{dayName(d)}</span>
-								<span class="meals">
-									{#each day.meals as meal, m (m)}
-										{#if meal}
-											<span
-												class="meal"
-												class:cook={meal.kind === 'cook'}
-												class:old={meal.freeze || meal.spoils}
-											>
-												<Icon name={meal.kind === 'cook' ? 'pot' : 'jar'} size={16} />
-												{meal.kind === 'cook' ? 'Uvar' : 'Zvyšky'}: {titleOf(meal.entry.recipeId)}
-												{#if meal.freeze}<small>– tieto porcie hneď zamraz</small>
-												{:else if meal.spoils}<small>– nevydrží, uvar menej alebo neskôr</small
-													>{/if}
-											</span>
-										{:else}
-											<span class="meal empty">nič naplánované</span>
-										{/if}
-									{/each}
-								</span>
-							</li>
-						{/each}
-					</ol>
-					<p class="muted small">
-						{#if schedule.unplannedMeals}
-							Chýba ešte {schedule.unplannedMeals}
-							{schedule.unplannedMeals === 1
-								? 'jedlo'
-								: schedule.unplannedMeals < 5
-									? 'jedlá'
-									: 'jedál'}
-							– pridaj recept alebo porcie.
-						{:else}
-							Plán pokryje všetky jedlá.
-						{/if}
-						{#if schedule.extraServings}
-							Zvýši {schedule.extraServings} porc. navyše.
-						{/if}
-						Rozpis počíta s tým, koľko ktoré jedlo vydrží v chladničke a či sa dá zamraziť. Poradie zmeníš
-						tlačidlom „Skôr“. <a href="/wiki/meal-prep">Ako variť na viac dní</a>
-					</p>
 				</section>
-
 				<section class="card box" id="ziviny">
 					<h2><Icon name="bean" size={24} /> Živiny na deň</h2>
 					<div class="settings">
@@ -539,59 +614,92 @@
 						</button>
 					</div>
 				{/if}
+				<div class="shop-summary">
+					<div
+						class="progress"
+						role="progressbar"
+						aria-label="Nakúpené"
+						aria-valuemin="0"
+						aria-valuemax={itemCount}
+						aria-valuenow={boughtCount}
+					>
+						<span style:width="{itemCount ? (boughtCount / itemCount) * 100 : 0}%"></span>
+					</div>
+					<p>
+						{#if boughtCount === itemCount}
+							<strong>Všetko v košíku.</strong>
+						{:else}
+							<strong>{boughtCount} z {itemCount}</strong> v košíku
+						{/if}
+						· zaplatíš {payHasEstimates ? 'asi' : ''} <strong>{formatEur(payTotal)}</strong>
+						{#if comparison.recommended}
+							· najlacnejšie v {storeNames(comparison.recommended)}
+						{/if}
+					</p>
+				</div>
 				{#each groups as [key, label, items] (key)}
-					<div class="cat">
-						<h3>{label}</h3>
+					{@const toBuy = items.filter((i) => !checkedItems.current[i.ingredient.id])}
+					{#if toBuy.length}
+						<div class="cat">
+							<h3>{label}</h3>
+							<ul>
+								{#each toBuy as item (item.ingredient.id)}
+									{@render itemRow(item)}
+								{/each}
+							</ul>
+						</div>
+					{/if}
+				{/each}
+
+				<div class="cat extra">
+					<h3>Niečo navyše</h3>
+					{#if extraItems.current.length}
 						<ul>
-							{#each items as item (item.ingredient.id)}
-								{@const checked = !!checkedItems.current[item.ingredient.id]}
-								{@const itemPay = pay.get(item.ingredient.id)}
-								<li class:checked>
-									<label>
-										<input
-											type="checkbox"
-											{checked}
-											onchange={() => toggleChecked(item.ingredient.id)}
-										/>
-										<span class="box-ui" aria-hidden="true"
-											><Icon name="check" size={14} stroke={3} /></span
-										>
-										<span class="nm">
-											{item.ingredient.name}
-											<small>
-												{formatGrams(item.buyGrams)}{pieces(item)}
-												{#if item.buyGrams < item.needGrams - 0.5}· zvyšok máš doma{/if}
-												{#if item.restock}· stačí najmenšie balenie{/if}
-												{#if itemPay?.shelf}
-													<span title={itemPay.shelf.product}
-														>· {Number.isInteger(itemPay.shelf.packs)
-															? `${itemPay.shelf.packs}× balenie`
-															: 'na váhu'}{groupBy === 'aisle'
-															? `, ${storeName(itemPay.shelf.storeId)}`
-															: ''}</span
-													>
-												{:else}· cena odhadom{/if}
-											</small>
-										</span>
-										<span class="price" class:est={!itemPay?.shelf}
-											>{formatEur(itemPay?.cost ?? item.cost)}</span
-										>
-									</label>
-									{#if item.restock}
-										<button
-											class="undo"
-											title="Predsa to mám doma"
-											aria-label="Predsa mám doma: {item.ingredient.name}"
-											onclick={() => setOutOfStock(item.ingredient.id, false)}
-										>
-											<Icon name="x" size={14} />
-										</button>
-									{/if}
-								</li>
+							{#each extraItems.current.filter((x) => !x.checked) as x (x.id)}
+								{@render extraRow(x)}
 							{/each}
 						</ul>
-					</div>
-				{/each}
+					{/if}
+					<form
+						class="extra-add"
+						onsubmit={(e) => {
+							e.preventDefault();
+							addExtraItem(extraText);
+							extraText = '';
+						}}
+					>
+						<label class="sr-only" for="extra-text">Pridať vlastnú položku</label>
+						<input
+							id="extra-text"
+							bind:value={extraText}
+							maxlength="80"
+							placeholder="Pridať vlastnú vec – káva, papierové utierky…"
+						/>
+						<button class="btn small" disabled={!extraText.trim()}>
+							<Icon name="plus" size={16} /> Pridať
+						</button>
+					</form>
+				</div>
+
+				{#if boughtCount}
+					<details class="cat in-cart" open>
+						<summary><h3>V košíku ({boughtCount})</h3></summary>
+						<ul>
+							{#each allItems.filter((i) => checkedItems.current[i.ingredient.id]) as item (item.ingredient.id)}
+								{@render itemRow(item)}
+							{/each}
+							{#each extraItems.current.filter((x) => x.checked) as x (x.id)}
+								{@render extraRow(x)}
+							{/each}
+						</ul>
+						{#if checkedCount}
+							<button class="btn leaf wide" onclick={boughtToPantry}>
+								<Icon name="jar" size={18} /> Nakúpené → do špajze
+							</button>
+						{/if}
+						<button class="link-btn" onclick={clearChecked}>Vyčistiť košík</button>
+					</details>
+				{/if}
 
 				{#if list.staples.length}
 					<div class="staples">
@@ -689,16 +797,79 @@
 						najlacnejší.
 					</p>
 				{/if}
-
-				{#if checkedCount}
-					<button class="btn leaf wide" onclick={boughtToPantry}>
-						<Icon name="jar" size={18} /> Nakúpené ({checkedCount}) → do špajze
-					</button>
-				{/if}
 			{/if}
 		</section>
 	</div>
 </div>
+
+{#snippet itemRow(item: ShoppingItem)}
+	{@const checked = !!checkedItems.current[item.ingredient.id]}
+	{@const itemPay = pay.get(item.ingredient.id)}
+	<li class:checked>
+		<label>
+			<input type="checkbox" {checked} onchange={() => toggleChecked(item.ingredient.id)} />
+			<span class="box-ui" aria-hidden="true"><Icon name="check" size={14} stroke={3} /></span>
+			<span class="nm">
+				{item.ingredient.name}
+				<small>
+					{formatGrams(item.buyGrams)}{pieces(item)}
+					{#if item.buyGrams < item.needGrams - 0.5}· zvyšok máš doma{/if}
+					{#if item.restock}· stačí najmenšie balenie{/if}
+					{#if itemPay?.shelf}
+						<span title={itemPay.shelf.product}
+							>· {Number.isInteger(itemPay.shelf.packs)
+								? `${itemPay.shelf.packs}× balenie`
+								: 'na váhu'}{groupBy === 'aisle'
+								? `, ${storeName(itemPay.shelf.storeId)}`
+								: ''}</span
+						>
+					{:else}· cena odhadom{/if}
+				</small>
+			</span>
+			<span class="price" class:est={!itemPay?.shelf}>{formatEur(itemPay?.cost ?? item.cost)}</span>
+		</label>
+		{#if item.restock}
+			<button
+				class="undo"
+				title="Predsa to mám doma"
+				aria-label="Predsa mám doma: {item.ingredient.name}"
+				onclick={() => setOutOfStock(item.ingredient.id, false)}
+			>
+				<Icon name="x" size={14} />
+			</button>
+		{/if}
+	</li>
+{/snippet}
+
+{#snippet extraRow(x: ExtraItem)}
+	<li class:checked={x.checked}>
+		<label>
+			<input type="checkbox" checked={x.checked} onchange={() => toggleExtra(x.id)} />
+			<span class="box-ui" aria-hidden="true"><Icon name="check" size={14} stroke={3} /></span>
+			<span class="nm">{x.text}</span>
+		</label>
+		<button class="undo" aria-label="Odstrániť: {x.text}" onclick={() => removeExtra(x.id)}>
+			<Icon name="x" size={14} />
+		</button>
+	</li>
+{/snippet}
+
+<dialog
+	class="sheet picker-sheet"
+	bind:this={pickerDialog}
+	onclick={(e) => e.target === pickerDialog && closePicker()}
+	aria-labelledby="picker-title"
+>
+	<div class="sheet-inner">
+		<header class="sheet-head">
+			<h2 id="picker-title"><Icon name="plus" size={22} /> Pridať recept</h2>
+			<button class="close" onclick={closePicker} aria-label="Zavrieť">
+				<Icon name="x" size={20} />
+			</button>
+		</header>
+		<RecipePicker />
+	</div>
+</dialog>
 
 <style>
 	.page {
@@ -887,9 +1058,9 @@
 		display: grid;
 		grid-template-columns: 5.5em 1fr;
 		gap: 10px;
-		padding: 7px 0;
+		padding: 8px 0;
 		border-bottom: 1px dashed var(--line);
-		align-items: baseline;
+		align-items: center;
 	}
 	.day {
 		font-weight: 700;
@@ -904,7 +1075,7 @@
 	.meal {
 		display: inline-flex;
 		align-items: center;
-		gap: 6px;
+		gap: 10px;
 		font-size: 0.9rem;
 		color: var(--ink-2);
 	}
@@ -920,16 +1091,180 @@
 		color: var(--muted);
 		font-style: italic;
 	}
-	.picker-wrap {
-		margin-top: 20px;
-		padding-top: 16px;
-		border-top: 1px dashed var(--line);
+	.start {
+		display: grid;
+		gap: 10px;
 	}
-	.picker-wrap h3 {
+	.start h2 {
+		margin: 0;
+	}
+	.start p {
+		margin: 0;
+	}
+	.start-grid {
+		display: grid;
+		gap: 10px;
+		margin-top: 6px;
+	}
+	.start-opt {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		grid-template-rows: auto auto;
+		column-gap: 12px;
+		align-items: center;
+		padding: 14px;
+		border: 1.5px solid var(--line);
+		border-radius: var(--radius-sm);
+		background: var(--paper);
+		color: var(--ink);
+		font: inherit;
+		text-align: left;
+		text-decoration: none;
+		cursor: pointer;
+		transition:
+			transform 0.25s var(--ease-spring),
+			border-color 0.2s;
+	}
+	.start-opt:hover {
+		transform: translateY(-2px);
+		border-color: var(--leaf-2);
+	}
+	.start-opt small {
+		grid-column: 2;
+		color: var(--muted);
+	}
+	.start-ico {
+		grid-row: span 2;
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		border-radius: 50%;
+		background: color-mix(in srgb, var(--tone) 18%, transparent);
+		color: color-mix(in srgb, var(--tone) 70%, var(--ink));
+	}
+	@media (min-width: 720px) {
+		.start-grid {
+			grid-template-columns: repeat(3, 1fr);
+		}
+		.start-opt {
+			grid-template-columns: 1fr;
+			row-gap: 6px;
+			align-content: start;
+		}
+		.start-opt small {
+			grid-column: 1;
+		}
+		.start-ico {
+			grid-row: auto;
+		}
+	}
+	.days li.today {
+		background: color-mix(in srgb, var(--leaf-2) 8%, transparent);
+		border-radius: var(--radius-sm);
+		padding-inline: 8px;
+		margin-inline: -8px;
+	}
+	.day-plate {
+		flex: none;
+		display: block;
+		width: 34px;
+		height: 34px;
+	}
+	.leftover-ico {
+		flex: none;
+		display: grid;
+		place-items: center;
+		width: 34px;
+		height: 34px;
+		border-radius: 50%;
+		background: var(--paper-2);
+		color: var(--muted);
+	}
+	.meal-text {
+		display: grid;
+		line-height: 1.25;
+	}
+	.meal-kind {
+		font-size: 0.72rem;
+		font-weight: 700;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--muted);
+	}
+	.meal-text a {
+		color: inherit;
+		text-decoration: none;
+	}
+	.meal-text a:hover {
+		text-decoration: underline;
+	}
+	.sheet {
+		width: min(640px, 100%);
+		max-width: 100%;
+		max-height: min(88dvh, 900px);
+		margin: auto auto 0;
+		padding: 0;
+		border: 0;
+		border-radius: var(--radius) var(--radius) 0 0;
+		background: var(--card);
+		color: var(--ink);
+		box-shadow: var(--shadow-lift);
+	}
+	.sheet[open] {
+		animation: sheet-up 0.35s var(--ease-out);
+	}
+	.sheet::backdrop {
+		background: rgba(17, 26, 20, 0.45);
+		backdrop-filter: blur(2px);
+	}
+	@keyframes sheet-up {
+		from {
+			transform: translateY(40%);
+			opacity: 0;
+		}
+	}
+	@media (min-width: 700px) {
+		.sheet {
+			margin: auto;
+			border-radius: var(--radius);
+		}
+	}
+	.sheet-inner {
+		display: grid;
+		gap: 12px;
+		padding: 0 20px 22px;
+		max-height: inherit;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+	}
+	.sheet-head {
+		position: sticky;
+		top: 0;
+		z-index: 1;
 		display: flex;
 		align-items: center;
-		gap: 6px;
-		font-size: 1.05rem;
+		justify-content: space-between;
+		padding: 14px 0 10px;
+		background: var(--card);
+	}
+	.sheet-head h2 {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin: 0;
+		font-size: 1.4rem;
+	}
+	.close {
+		display: grid;
+		place-items: center;
+		width: 40px;
+		height: 40px;
+		border: 0;
+		border-radius: 50%;
+		background: var(--paper-2);
+		color: var(--ink);
+		cursor: pointer;
 	}
 	.summary {
 		margin: 14px 0 0;
@@ -962,6 +1297,75 @@
 		margin: 16px 0 0;
 		font-size: 0.88rem;
 		color: var(--sky);
+	}
+	.shop-summary {
+		position: sticky;
+		top: -20px;
+		z-index: 2;
+		display: grid;
+		gap: 6px;
+		margin: 4px 0 14px;
+		padding: 12px 14px;
+		border-radius: var(--radius-sm);
+		background: var(--paper);
+	}
+	.shop-summary p {
+		margin: 0;
+		font-size: 0.9rem;
+	}
+	.progress {
+		height: 8px;
+		border-radius: 999px;
+		background: var(--paper-2);
+		overflow: hidden;
+	}
+	.progress span {
+		display: block;
+		height: 100%;
+		border-radius: inherit;
+		background: var(--leaf-2);
+		transition: width 0.4s var(--ease-out);
+	}
+	.extra-add {
+		display: flex;
+		gap: 8px;
+		margin-top: 8px;
+	}
+	.extra-add input {
+		flex: 1;
+		min-width: 0;
+		padding: 8px 12px;
+		border: 1.5px solid var(--line);
+		border-radius: 999px;
+		background: var(--paper);
+		color: var(--ink);
+		font: inherit;
+		font-size: 0.9rem;
+	}
+	.in-cart summary {
+		cursor: pointer;
+		list-style: none;
+	}
+	.in-cart summary::-webkit-details-marker {
+		display: none;
+	}
+	.in-cart summary h3::after {
+		content: ' ▾';
+		color: var(--muted);
+	}
+	.in-cart:not([open]) summary h3::after {
+		content: ' ▸';
+	}
+	.link-btn {
+		display: block;
+		margin: 10px auto 0;
+		border: 0;
+		background: none;
+		color: var(--ink-2);
+		font: inherit;
+		font-size: 0.86rem;
+		text-decoration: underline;
+		cursor: pointer;
 	}
 	.cat {
 		margin-top: 16px;
