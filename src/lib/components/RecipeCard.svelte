@@ -85,7 +85,11 @@
 					{formatNumber(recipe.perServing.kcal, 0)} <span class="sr-only">kcal</span></span
 				>
 			{/if}
-			<span title={recipe.costIsEstimate ? 'Odhad ceny' : 'Podľa aktuálnych cien'}>
+			<span
+				title={recipe.costIsEstimate
+					? `Čiastočne odhad – z obchodov ${Math.round(recipe.costKnownShare * 100)} % ceny`
+					: 'Podľa aktuálnych cien'}
+			>
 				<Icon name="euro" size={16} />
 				<span class="sr-only">porcia</span>
 				{formatEur(recipe.costPerServing)}{recipe.costIsEstimate ? '*' : ''}

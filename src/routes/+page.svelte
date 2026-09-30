@@ -220,6 +220,12 @@
 				<input id="home-q" bind:value={query} placeholder="cícer, kari, raňajky…" />
 				<button class="btn leaf">Hľadať</button>
 			</form>
+			<nav class="quick-start" aria-label="Rýchly štart">
+				<a href="/recepty?cas=20"><Icon name="clock" size={16} /> Do 20 minút</a>
+				<a href="/spajza"><Icon name="jar" size={16} /> Z toho, čo mám</a>
+				<a href="/recepty?chut=sladke"><Icon name="cake" size={16} /> Niečo sladké</a>
+				<a href="/plan#navrh"><Icon name="calendar" size={16} /> Navrhni mi týždeň</a>
+			</nav>
 			<div class="stats">
 				<span
 					><strong>{catalog.recipes.length}</strong> {pluralRecipes(catalog.recipes.length)}</span
@@ -1098,5 +1104,31 @@
 			align-items: center;
 			padding: 36px;
 		}
+	}
+	.quick-start {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin: 14px 0 4px;
+	}
+	.quick-start a {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 7px 14px;
+		border: 1.5px solid var(--line);
+		border-radius: 999px;
+		background: var(--card);
+		color: var(--ink);
+		font-size: 0.9rem;
+		font-weight: 650;
+		text-decoration: none;
+		transition:
+			transform 0.25s var(--ease-spring),
+			border-color 0.2s;
+	}
+	.quick-start a:hover {
+		transform: translateY(-2px);
+		border-color: var(--leaf-2);
 	}
 </style>

@@ -8,10 +8,10 @@
 # cenách v prices.yaml alebo na odhade.
 
 - { ingredient: zemiaky, types: [ai] }
-- { ingredient: cibula, types: [ax] }
+- { ingredient: cibula, types: [ax, ay] }
 - { ingredient: cibula-cervena, types: [az] }
-- { ingredient: mrkva, types: [bb, bc] }
-- { ingredient: petrzlen-koren, types: [bf, bg] }
+- { ingredient: mrkva, types: [bb, bc, bd] }
+- { ingredient: petrzlen-koren, types: [bf, bg, bh] }
 - { ingredient: citron, types: [bi] }
 - { ingredient: banan, types: [bj] }
 - { ingredient: jablko, types: [ag, ah] }
@@ -32,7 +32,7 @@
     types: [aq, at, aw],
     include: 'bezlep|bezglut|gluten ?free|bez lepku|free from|tff|k ?free|sam mills'
   }
-- { ingredient: olej, types: [bl] }
+- { ingredient: olej, types: [bl, bk] }
 - { ingredient: chlieb, types: [a] }
 - {
     ingredient: chlieb-bezlepkovy,

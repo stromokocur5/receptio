@@ -361,7 +361,14 @@
 					<dt><Icon name="euro" size={18} /> Porcia</dt>
 					<dd>
 						{formatEur(recipe.costPerServing)}
-						{#if recipe.costIsEstimate}<small title="Časť cien je odhad">odhad</small>{/if}
+						{#if recipe.costIsEstimate}<a
+								class="price-note"
+								href="/ceny"
+								title="Podiel ceny z reálnych cien v obchodoch; zvyšok je odhad"
+								>{recipe.costKnownShare >= 0.05
+									? `${Math.round(recipe.costKnownShare * 100)} % z obchodov`
+									: 'odhad'}</a
+							>{/if}
 					</dd>
 				</div>
 				<div>
@@ -1043,6 +1050,12 @@
 		font-size: 1.05rem;
 		font-weight: 600;
 		overflow-wrap: anywhere;
+	}
+	.price-note {
+		font-family: var(--font-body);
+		font-size: 0.72rem;
+		font-weight: 500;
+		color: var(--muted);
 	}
 	dd small {
 		font-family: var(--font-body);

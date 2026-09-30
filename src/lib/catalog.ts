@@ -1,5 +1,6 @@
 import { getContext, setContext } from 'svelte';
 import type {
+	RecipeLine,
 	Catalog,
 	Cuisine,
 	Equipment,
@@ -34,7 +35,36 @@ export interface IndexedCatalog extends Catalog {
 
 const KEY = Symbol('catalog');
 
+/**
+ * A variant's lines mostly repeat the base recipe's; in catalog.json an unchanged line is the
+ * index of the base line instead (about a quarter of the file).
+ */
+export type PackedLine = RecipeLine | number;
+
+export function packVariantLines(base: RecipeLine[], lines: RecipeLine[]): PackedLine[] {
+	return lines.map((line) => {
+		const i = base.findIndex(
+			(b) =>
+				b.ingredientId === line.ingredientId &&
+				b.grams === line.grams &&
+				b.amount === line.amount &&
+				b.unit === line.unit &&
+				b.notEaten === line.notEaten
+		);
+		return i >= 0 ? i : line;
+	});
+}
+
+export function unpackVariantLines(base: RecipeLine[], lines: PackedLine[]): RecipeLine[] {
+	return lines.map((line) => (typeof line === 'number' ? base[line] : line));
+}
+
 export function indexCatalog(catalog: CatalogPayload): IndexedCatalog {
+	for (const recipe of catalog.recipes) {
+		for (const variant of recipe.variants) {
+			variant.lines = unpackVariantLines(recipe.lines, variant.lines as PackedLine[]);
+		}
+	}
 	return {
 		...catalog,
 		// A catalog cached by an older service worker has no equipment yet.

@@ -1,7 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { formatEur, formatNumber } from '$lib/amounts';
-	import { autoPlan, type AutoPlanOptions, type AutoPlanResult } from '$lib/autoplan';
+	import {
+		autoPlan,
+		swapEntry,
+		type AutoPlanContext,
+		type AutoPlanOptions,
+		type AutoPlanResult
+	} from '$lib/autoplan';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import PlanSettings from '$lib/components/PlanSettings.svelte';
@@ -10,7 +16,7 @@
 	import { recipeSeason } from '$lib/season';
 	import { avoidFilter } from '$lib/avoid';
 	import { addToPlan, avoid, pantry, plan, settings } from '$lib/state.svelte';
-	import type { Allergen } from '$lib/types';
+	import type { Allergen, RecipeSummary } from '$lib/types';
 
 	const catalog = useCatalog();
 	const EXCLUDABLE: Allergen[] = ['soy', 'peanuts', 'nuts', 'sesame'];
@@ -34,7 +40,11 @@
 	let result = $state<AutoPlanResult | null>(null);
 	let confirmReplace = $state(false);
 
-	function suggest() {
+	function planInput(): {
+		recipes: RecipeSummary[];
+		options: AutoPlanOptions;
+		ctx: AutoPlanContext;
+	} {
 		const groups = pantryByGroup(pantry.current, catalog.ingredientsById);
 		const hasPantry = Object.keys(pantry.current).length > 0;
 		const options: AutoPlanOptions = {
@@ -51,14 +61,31 @@
 			seed
 		};
 		const allowed = avoidFilter(avoid.current, catalog.ingredientsById);
-		result = autoPlan(catalog.recipes.filter(allowed), options, {
-			pantryScore:
-				usePantry && hasPantry
-					? (r) => matchRecipe(r, groups, catalog.ingredientsById).score
-					: undefined,
-			inSeason: (r) => recipeSeason(r, catalog.ingredientsById, month).inSeason
-		});
+		return {
+			recipes: catalog.recipes.filter(allowed),
+			options,
+			ctx: {
+				pantryScore:
+					usePantry && hasPantry
+						? (r) => matchRecipe(r, groups, catalog.ingredientsById).score
+						: undefined,
+				inSeason: (r) => recipeSeason(r, catalog.ingredientsById, month).inSeason
+			}
+		};
+	}
+
+	function suggest() {
+		const { recipes, options, ctx } = planInput();
+		result = autoPlan(recipes, options, ctx);
 		confirmReplace = false;
+	}
+
+	/** Just one recipe doesn't appeal: swap it for a similar one, keep the rest. */
+	function swap(index: number) {
+		if (!result) return;
+		seed += 1;
+		const { recipes, options, ctx } = planInput();
+		result = swapEntry(recipes, options, result, index, ctx);
 	}
 
 	function another() {
@@ -182,7 +209,7 @@
 					</p>
 				{:else}
 					<ul>
-						{#each result.entries as e (e.recipeId + (e.variant ?? ''))}
+						{#each result.entries as e, i (e.recipeId + (e.variant ?? ''))}
 							{@const r = catalog.recipesById.get(e.recipeId)!}
 							<li>
 								<a href="/recepty/{r.id}">{r.title}</a>
@@ -190,6 +217,12 @@
 									{e.servings} porc.{#if e.variant}
 										· {e.variant}{/if}
 								</span>
+								<button
+									class="swap"
+									onclick={() => swap(i)}
+									aria-label="Vymeniť {r.title} za iný recept"
+									title="Iný recept"><Icon name="history" size={15} /> Iný</button
+								>
 							</li>
 						{/each}
 					</ul>
@@ -296,6 +329,27 @@
 	.form > .btn {
 		justify-self: start;
 	}
+	.result li a {
+		flex: 1;
+	}
+	.swap {
+		flex: none;
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		padding: 2px 10px;
+		border: 1.5px solid var(--line);
+		border-radius: 999px;
+		background: var(--card);
+		color: var(--ink-2);
+		font: inherit;
+		font-size: 0.8rem;
+		font-weight: 650;
+		cursor: pointer;
+	}
+	.swap:hover {
+		border-color: var(--leaf-2);
+	}
 	.result {
 		margin-top: 16px;
 		padding-top: 14px;
@@ -308,7 +362,7 @@
 	}
 	.result li {
 		display: flex;
-		justify-content: space-between;
+		align-items: center;
 		gap: 10px;
 		padding: 6px 0;
 		border-bottom: 1px dashed var(--line);

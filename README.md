@@ -167,6 +167,7 @@ povolené hostnames v `TURNSTILE_HOSTNAMES` (`wrangler.jsonc`). Server overuje k
 ## Nasadenie (Cloudflare)
 
 1. `pnpm exec wrangler d1 create receptio` a vrátené `database_id` vlož do `wrangler.jsonc`.
-2. `pnpm exec wrangler d1 migrations apply receptio --remote`
-3. `pnpm build && pnpm exec wrangler deploy`
-4. Vlastná subdoména: v `wrangler.jsonc` pridaj `"routes": [{ "pattern": "recepty.tvojadomena.sk", "custom_domain": true }]`.
+2. `pnpm build && pnpm run deploy` – najprv aplikuje nové D1 migrácie, potom nasadí Worker.
+   Vo Workers Builds nastav ako deploy command `npm run deploy` (API token buildu potrebuje
+   aj oprávnenie D1 Edit), inak treba migrácie púšťať ručne.
+3. Vlastná subdoména: v `wrangler.jsonc` pridaj `"routes": [{ "pattern": "recepty.tvojadomena.sk", "custom_domain": true }]`.

@@ -128,6 +128,8 @@ export interface RecipeComputed {
 	perServing: Nutrients;
 	costPerServing: number;
 	costIsEstimate: boolean;
+	/** Share of the cost (0–1) that comes from real store prices rather than estimates. */
+	costKnownShare: number;
 	/** Rough kg CO₂e of the ingredients per serving. */
 	co2PerServing: number;
 	/** Uses vegan convenience substitutes (plant cream, butter, cheese, mayo…). */

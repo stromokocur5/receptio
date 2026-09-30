@@ -177,3 +177,51 @@ export function autoPlan(
 		}
 	);
 }
+
+/**
+ * Replaces one recipe of a suggested plan with a similar one (price close, preferably another
+ * cuisine) that isn't in the plan yet, keeping its servings. Returns the plan unchanged when
+ * nothing else fits.
+ */
+export function swapEntry(
+	recipes: RecipeSummary[],
+	o: AutoPlanOptions,
+	plan: AutoPlanResult,
+	index: number,
+	ctx: AutoPlanContext = {}
+): AutoPlanResult {
+	const pool = candidates(recipes, o);
+	const byId = new Map(pool.map((c) => [c.recipe.id, c]));
+	const current = plan.entries[index];
+	const old = current && byId.get(current.recipeId);
+	if (!old) return plan;
+	const taken = new Set(plan.entries.map((e) => e.recipeId));
+	const rand = seededRandom(o.seed);
+	const scored = pool
+		.filter((c) => !taken.has(c.recipe.id))
+		.map((c) => ({
+			c,
+			score:
+				Math.abs(c.cost - old.cost) * 2 +
+				(c.recipe.cuisine === old.recipe.cuisine ? 0.6 : 0) -
+				(ctx.pantryScore?.(c.recipe) ?? 0) -
+				(ctx.inSeason?.(c.recipe) ? 0.3 : 0) +
+				rand() * 1.5
+		}))
+		.sort((a, b) => a.score - b.score);
+	const pick = scored[0]?.c;
+	if (!pick) return plan;
+
+	const entry: PlanEntry = pick.variant
+		? { recipeId: pick.recipe.id, servings: current.servings, variant: pick.variant }
+		: { recipeId: pick.recipe.id, servings: current.servings };
+	const entries = plan.entries.map((e, i) => (i === index ? entry : e));
+	const cost = plan.cost + (pick.cost - old.cost) * current.servings;
+	return {
+		...plan,
+		entries,
+		cost,
+		minProtein: Math.min(...entries.map((e) => byId.get(e.recipeId)?.protein ?? Infinity)),
+		withinBudget: o.budget === null || cost <= o.budget
+	};
+}

@@ -1,4 +1,5 @@
-import type { CatalogPayload } from '$lib/catalog';
+import { packVariantLines, type CatalogPayload } from '$lib/catalog';
+import type { RecipeLine } from '$lib/types';
 import { getContent } from '$lib/server/content';
 import type { RequestHandler } from './$types';
 
@@ -22,7 +23,11 @@ export const GET: RequestHandler = () => {
 				...v,
 				description: '',
 				warnings: [],
-				lines: v.lines.map(({ note: _note, ...line }) => line)
+				// Unpacked again by indexCatalog.
+				lines: packVariantLines(
+					r.lines,
+					v.lines.map(({ note: _note, ...line }) => line)
+				) as RecipeLine[]
 			}))
 		})),
 		cuisines,

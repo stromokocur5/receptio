@@ -600,11 +600,14 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		const gluten = recipeGluten(used);
 		const perServing = recipeNutrients(lines, byId, servings);
 		let cost = 0;
+		let knownCost = 0;
 		let costIsEstimate = false;
 		for (const line of lines) {
 			const price = bestPrice(byId.get(line.ingredientId)!, prices, today);
-			cost += (price.perKg * line.grams) / 1000;
+			const lineCost = (price.perKg * line.grams) / 1000;
+			cost += lineCost;
 			if (price.isEstimate && line.grams > 0) costIsEstimate = true;
+			else knownCost += lineCost;
 		}
 		return {
 			lines,
@@ -614,6 +617,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			perServing,
 			costPerServing: cost / servings,
 			costIsEstimate,
+			costKnownShare: cost > 0 ? Math.round((knownCost / cost) * 100) / 100 : 1,
 			// Everything bought counts, including broth that isn't eaten.
 			co2PerServing:
 				lines.reduce((sum, l) => sum + (l.grams / 1000) * byId.get(l.ingredientId)!.co2, 0) /

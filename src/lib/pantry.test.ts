@@ -70,6 +70,7 @@ function recipe(id: string, lines: [string, number][], servings = 2): RecipeSumm
 		perServing: zero,
 		costPerServing: 1,
 		costIsEstimate: true,
+		costKnownShare: 0,
 		co2PerServing: 0.5,
 		usesSubstitutes: false,
 		warnings: [],

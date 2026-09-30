@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { autoPlan, type AutoPlanOptions } from './autoplan';
+import { autoPlan, swapEntry, type AutoPlanOptions } from './autoplan';
 import type { RecipeSummary } from './types';
 
 const zero = {
@@ -39,6 +39,7 @@ function recipe(
 		perServing: { ...zero, protein },
 		costPerServing: 1,
 		costIsEstimate: true,
+		costKnownShare: 0,
 		co2PerServing: 0.5,
 		usesSubstitutes: false,
 		warnings: [],
@@ -130,5 +131,18 @@ describe('autoPlan', () => {
 		);
 		const soup = plan.entries.find((e) => e.recipeId === 'polievka');
 		if (soup) expect(soup.servings).toBe(1);
+	});
+});
+
+describe('swapEntry', () => {
+	const recipes = ['a', 'b', 'c', 'd'].map((id, i) => recipe(id, { costPerServing: 1 + i * 0.1 }));
+
+	it('replaces one recipe with one not in the plan, keeping its servings', () => {
+		const plan = autoPlan(recipes, { ...base, days: 2, batchCooking: false });
+		const swapped = swapEntry(recipes, base, plan, 0);
+		expect(swapped.entries[0].recipeId).not.toBe(plan.entries[0].recipeId);
+		expect(plan.entries.map((e) => e.recipeId)).not.toContain(swapped.entries[0].recipeId);
+		expect(swapped.entries[0].servings).toBe(plan.entries[0].servings);
+		expect(swapped.entries[1]).toEqual(plan.entries[1]);
 	});
 });
