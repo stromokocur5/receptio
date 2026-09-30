@@ -22,6 +22,8 @@ export default defineConfig({
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
 			adapter: adapter(),
+			// Tabs stay open for days (shopping list, cook mode); notice deploys so they reload onto new code.
+			version: { pollInterval: 5 * 60_000 },
 			// Prerendered pages get this as a <meta> tag; header-only directives (frame-ancestors)
 			// are set in /_headers and src/hooks.server.ts.
 			csp: {

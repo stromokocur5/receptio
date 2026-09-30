@@ -1,8 +1,8 @@
 <script lang="ts">
 	import '../app.css';
 	import { onMount } from 'svelte';
-	import { onNavigate } from '$app/navigation';
-	import { page } from '$app/state';
+	import { beforeNavigate, onNavigate } from '$app/navigation';
+	import { page, updated } from '$app/state';
 	import { indexCatalog, provideCatalog } from '$lib/catalog';
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
 	import Logo from '$lib/components/Logo.svelte';
@@ -60,6 +60,11 @@
 			(settings.current.theme === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches);
 		settings.current = { ...settings.current, theme: dark ? 'light' : 'dark' };
 	}
+
+	beforeNavigate(({ willUnload, to }) => {
+		// A new version was deployed: load the next page fully instead of running old code.
+		if (updated.current && !willUnload && to?.url) location.href = to.url.href;
+	});
 
 	onNavigate((navigation) => {
 		if (!document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) {
