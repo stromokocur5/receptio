@@ -596,25 +596,25 @@
 			{:else if allItems.length === 0}
 				<p class="empty"><Icon name="check" size={20} /> Všetko máš doma. Môžeš variť.</p>
 			{:else}
-				{#if hasRealPrices}
-					<div class="group-by" role="group" aria-label="Zoradenie zoznamu">
-						<button
-							class="chip"
-							aria-pressed={groupBy === 'aisle'}
-							onclick={() => (groupBy = 'aisle')}
-						>
-							Podľa uličiek
-						</button>
-						<button
-							class="chip"
-							aria-pressed={groupBy === 'store'}
-							onclick={() => (groupBy = 'store')}
-						>
-							Kde je najlacnejšie
-						</button>
-					</div>
-				{/if}
 				<div class="shop-summary">
+					{#if hasRealPrices}
+						<div class="group-by" role="group" aria-label="Zoradenie zoznamu">
+							<button
+								class="chip"
+								aria-pressed={groupBy === 'aisle'}
+								onclick={() => (groupBy = 'aisle')}
+							>
+								Podľa uličiek
+							</button>
+							<button
+								class="chip"
+								aria-pressed={groupBy === 'store'}
+								onclick={() => (groupBy = 'store')}
+							>
+								Kde je najlacnejšie
+							</button>
+						</div>
+					{/if}
 					<div
 						class="progress"
 						role="progressbar"
@@ -1016,7 +1016,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
-		margin-top: 6px;
+		margin-bottom: 4px;
 	}
 	.head-actions {
 		display: flex;
@@ -1308,7 +1308,7 @@
 		z-index: 2;
 		display: grid;
 		gap: 6px;
-		margin: 4px 0 14px;
+		margin: 8px 0 14px;
 		padding: 12px 14px;
 		border-radius: var(--radius-sm);
 		background: var(--paper);
