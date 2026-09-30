@@ -1,0 +1,33 @@
+title: Vyprážané hlivové rezne
+description: Celé trsy hlivy rozklepané na plocho a obalené v trojobale. Šťavnaté, mäsité a s kyslou uhorkou a zemiakovým šalátom na nedeľu ako stvorené.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [hlavne/zelenina]
+time: 30
+active: 25
+servings: 3
+difficulty: 1
+tags: [klasika]
+keeps: { fridge: 2 }
+leftovers: 'Studené aj do chleba. Prehrej v rúre na 200 °C.'
+related: [zemiakovy-salat, tatarska-omacka]
+ingredients:
+  - hliva: 400 g | celé veľké trsy
+  - sol: 1 čl
+  - cierne-korenie: 1/2 čl
+  - hladka-muka: 4 pl
+  - sojove-mlieko: 1/2 hrnček
+  - kukuricny-skrob: 2 pl
+  - horcica: 1 čl
+  - cesnak: 1 ks | prelisovaný
+  - struhanka: 1 hrnček
+  - olej: 6 pl | na vyprážanie
+  - citron: 1 ks
+steps:
+  - Hlivu rozdeľ na veľké kusy a každý jemne naklep medzi dvoma fóliami, aby bol plochý a rovnomerne hrubý.
+  - Osoľ a okoreň z oboch strán.
+  - Mlieko vyšľahaj so škrobom, horčicou a cesnakom.
+  - Hlivu obaľ v múke, mlieku a strúhanke.
+  - Vyprážaj na oleji na strednom ohni 3 minúty z každej strany dozlatista.
+  - Podávaj s citrónom, zemiakovým šalátom alebo zemiakmi.
+howto: [vyprazanie]

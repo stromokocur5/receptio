@@ -1,0 +1,35 @@
+title: Tofu karaage
+description: Japonské vyprážané kúsky – tofu marinované v sóji, zázvore a cesnaku, obalené v zemiakovom škrobe a vyprážané dvakrát. S majonézou a citrónom.
+cuisine: japonska
+meals: [obed, vecera, snack]
+categories: [hlavne/tofu, snacky/party]
+time: 45
+active: 30
+servings: 3
+difficulty: 2
+tags: [vela-bielkovin, party]
+ahead: Tofu predtým zamraz a rozmraz, bude mať mäsitú štruktúru.
+keeps: { fridge: 2 }
+leftovers: 'Prehrej v rúre na 200 °C 6 minút.'
+ingredients:
+  - tofu-natural: 400 g | zamrazené a rozmrazené
+  - sojova-omacka: 3 pl
+  - zazvor: 1 pl | nastrúhaný
+  - cesnak: 2 ks
+  - sezamovy-olej: 1 čl
+  - cukor: 1 čl
+  - kukuricny-skrob: 6 pl | tradične zemiakový
+  - olej: 6 pl | toľko vsiakne, na vyprážanie treba ~500 ml
+  - veganska-majoneza: 3 pl
+  - citron: 1/2 ks
+  - biela-kapusta: 1 hrnček | na tenučko
+steps:
+  - Rozmrazené tofu vyžmýkaj a natrhaj na kúsky veľkosti sústa.
+  - Zmiešaj sójovú omáčku, zázvor, cesnak, sezamový olej a cukor. Tofu v tom nechaj 15 minút nasiaknuť.
+  - Kúsky obaľ v škrobe a nechaj 5 minút postáť, kým obal nezvlhne.
+  - Olej rozohrej na 165 °C a vyprážaj 3 minúty. Vyber a nechaj 3 minúty odpočívať.
+  - Olej zohrej na 185 °C a vyprážaj ešte 1 minútu. Druhé vyprážanie robí obal chrumkavý.
+  - Podávaj na kapuste s majonézou a citrónom.
+howto: [tofu, vyprazanie]
+equipment: [hrniec, teplomer]
+no_equipment: [panvica]

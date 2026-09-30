@@ -1,0 +1,46 @@
+title: Lahmacun – turecká tenká pizza
+description: Tenučké chrumkavé cesto natreté korenistou paradajkovou zmesou zo sójového granulátu. Posyp petržlenom, pokvapkaj citrónom a zroluj.
+cuisine: turecka
+meals: [obed, vecera]
+categories: [hlavne/cesto, snacky/party]
+time: 90
+active: 35
+servings: 4
+difficulty: 2
+tags: [party, lacne]
+gf_swap: false
+spicy: 1
+keeps: { fridge: 2, freezer: 2 }
+leftovers: 'Upečené zamraz, prehrej 4 minúty na suchej panvici pod pokrievkou.'
+ingredients:
+  - hladka-muka: 300 g
+  - drozdie: 1 čl | sušené
+  - cukor: 1 čl
+  - sol: 1 čl
+  - voda: 180 ml | vlažná
+  - olivovy-olej: 3 pl
+  - sojove-granule: 1/2 hrnček
+  - zeleninovy-vyvar: 1/2 hrnček | horúci
+  - cibula: 1 ks
+  - paprika-cervena: 1 ks
+  - paradajky: 1 ks
+  - cesnak: 2 ks
+  - paradajkovy-pretlak: 2 pl
+  - petrzlenova-vnat: 4 pl
+  - udena-paprika: 1 čl
+  - kmin: 1/2 čl
+  - cili: 1/2 čl
+  - sumak: 1 čl
+  - citron: 1 ks
+  - cibula-cervena: 1/2 ks | na tenké plátky
+steps:
+  - Múku zmiešaj s droždím, cukrom a polovicou soli, prilej vodu a 1 PL oleja. Mies 8 minút na hladké cesto, prikry a nechaj 1 hodinu kysnúť.
+  - Granulát zalej horúcim vývarom a nechaj 10 minút nasiaknuť.
+  - Cibuľu, papriku, paradajku, cesnak a polovicu petržlenu rozmixuj v sekáčiku na hrubú kašu. Vmiešaj granulát, pretlak, koreniny, zvyšnú soľ a 2 PL oleja.
+  - Rúru predhrej na najvyššiu teplotu (250 °C) aj s plechom vnútri.
+  - Cesto rozdeľ na 6 guliek a každú vyvaľkaj na pomúčenej doske na tenký ovál, skoro priesvitný.
+  - Tenko natri zmesou až po okraje. Placky prenes na papier na pečenie a peč po dvoch na rozpálenom plechu 6–8 minút, kým okraje nie sú zlaté.
+  - Posyp červenou cibuľou, petržlenom a sumakom, pokvapkaj citrónom, zroluj a jedz.
+tips:
+  - Zmes musí byť naozaj tenká vrstva. Hrubá by cesto rozmočila.
+howto: [kysnute-cesto]

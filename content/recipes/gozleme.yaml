@@ -1,0 +1,33 @@
+title: Gözleme so špenátom a zemiakmi
+description: Tenké nekysnuté placky preložené cez plnku a opečené na suchej panvici. Turecké pouličné raňajky aj obed.
+cuisine: turecka
+meals: [ranajky, obed, vecera]
+categories: [prilohy/chlieb, ranajky/slane]
+time: 50
+active: 35
+servings: 4
+difficulty: 2
+tags: [lacne, klasika]
+gf_swap: false
+keeps: { fridge: 2, freezer: 2 }
+leftovers: 'Prehrej na suchej panvici, najlepšie pod pokrievkou.'
+ingredients:
+  - hladka-muka: 300 g
+  - voda: 170 ml | teplá
+  - olivovy-olej: 3 pl
+  - sol: 1 čl
+  - zemiaky: 2 ks | uvarené
+  - spenat: 200 g
+  - cibula: 1 ks
+  - vegansky-syr: 1/2 hrnček | strúhaný
+  - sladka-paprika: 1 čl
+  - cili: 1/2 čl
+  - rastlinne-maslo: 2 pl | na potretie
+steps:
+  - Múku zmiešaj s polovicou soli, vodou a 1 PL oleja a mies 5 minút na mäkké cesto. Prikry a nechaj 20 minút odpočívať.
+  - Cibuľu nadrobno orestuj na 1 PL oleja na strednom ohni do mäkka, pridaj špenát a duste, kým sa neodparí voda.
+  - Zemiaky roztlač, zmiešaj so špenátom, syrom, paprikou, čili a zvyšnou soľou.
+  - Cesto rozdeľ na 4 časti a každú vyvaľkaj na veľmi tenký obdĺžnik.
+  - Plnku rozotri na polovicu, druhou polovicou prekry a okraje pritlač.
+  - Opekaj na suchej panvici na strednom ohni 3 minúty z každej strany, kým nemá hnedé bodky. Počas pečenia potri maslom.
+  - Nakrájaj na štvorce a podávaj s citrónom alebo jogurtom.

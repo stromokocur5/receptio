@@ -1,0 +1,40 @@
+title: Gyros pita s tzatziki a hranolkami vnútri
+description: Grécky pouličný gyros – opečené plátky seitanu s oreganom, tzatziki, paradajka, cibuľa a hranolky zabalené priamo v pite.
+cuisine: grecka
+meals: [obed, vecera]
+categories: [hlavne/plnene, hlavne/tofu]
+time: 45
+active: 30
+servings: 4
+difficulty: 2
+tags: [party, vela-bielkovin]
+keeps: { fridge: 2 }
+leftovers: 'Seitan a tzatziki uchovaj zvlášť, zabaľ čerstvé.'
+related: [tzatziki, seitan, hranolky-z-rury]
+ingredients:
+  - lepok-vital: 120 g | alebo 400 g hotového seitanu
+  - vyzivne-drozdie: 1 pl
+  - sojova-omacka: 2 pl
+  - voda: 120 ml
+  - zeleninovy-vyvar: ~5 hrnček | na dusenie
+  - olivovy-olej: 3 pl
+  - oregano: 2 čl
+  - sladka-paprika: 1 čl
+  - cesnak: 2 ks
+  - citron: 1/2 ks
+  - zemiaky: 3 ks
+  - sol: 1/2 čl
+  - pita: 4 ks | ploché grécke
+  - sojovy-jogurt: 3/4 hrnček
+  - uhorka: 1/2 ks | nastrúhaná, vyžmýkaná
+  - kopor: 1 pl
+  - paradajky: 2 ks
+  - cibula-cervena: 1/2 ks
+steps:
+  - Seitan. Lepok zmiešaj s droždím, prilej sójovú omáčku s vodou a mies 2 minúty. Vytvaruj valček a var ho vo vývare na miernom ohni 40 minút. Ak máš hotový seitan, preskoč.
+  - Medzitým upeč hranolky zo zemiakov s 1 PL oleja a soľou na 230 °C asi 30 minút.
+  - Tzatziki. Jogurt zmiešaj s uhorkou, 1 prelisovaným cesnakom, kôprom a štipkou soli.
+  - Seitan nakrájaj na tenké plátky a opeč na zvyšnom oleji na veľkom ohni dochrumkava. Na konci pridaj oregano, papriku, druhý cesnak a citrónovú šťavu.
+  - Pitu opeč na suchej panvici. Natri tzatziki, pridaj seitan, paradajky, cibuľu a hrsť hranoliek.
+  - Zaviň do papiera, aby držala, a jedz.
+howto: [masove-textury]

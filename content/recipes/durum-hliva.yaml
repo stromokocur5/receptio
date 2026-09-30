@@ -1,0 +1,47 @@
+title: Dürüm s kebabom z hlivy
+description: Hliva natrhaná na prúžky a opečená v kebabovom korení je chrumkavá a vláknitá ako mäso. Zabalená v tortille s cesnakovou omáčkou.
+cuisine: turecka
+meals: [obed, vecera]
+categories: [hlavne/plnene, hlavne/zelenina]
+time: 30
+active: 25
+servings: 3
+difficulty: 1
+tags: [rychle, party]
+spicy: 1
+keeps: { fridge: 2 }
+leftovers: 'Hlivu drž zvlášť a opeč ju znova na panvici, zabaľ až pred jedlom.'
+related: [cesnakova-kebab-omacka, doner-kebab]
+ingredients:
+  - hliva: 400 g
+  - olej: 3 pl
+  - udena-paprika: 1 čl
+  - sladka-paprika: 1 čl
+  - kmin: 1 čl
+  - koriander-mlety: 1/2 čl
+  - oregano: 1/2 čl
+  - sojova-omacka: 2 pl
+  - citron: 1/2 ks
+  - psenicne-tortilly: 3 ks
+  - biela-kapusta: 1,5 hrnček | nadrobno
+  - paradajky: 2 ks
+  - cibula-cervena: 1/2 ks
+  - petrzlenova-vnat: 2 pl
+  - sojovy-jogurt: 1/2 hrnček
+  - cesnak: 1 ks | prelisovaný
+  - cili: podľa chuti
+steps:
+  - Hlivu natrhaj rukami na tenké prúžky pozdĺž vlákien.
+  - Na veľkej panvici rozohrej olej na veľkom ohni, hlivu rozlož v jednej vrstve a nechaj 4–5 minút bez miešania, kým spodok nezhnedne. Potom premiešaj a opekaj ešte 3 minúty.
+  - Pridaj všetky koreniny, sójovú omáčku a šťavu z polovice citróna, premiešaj a opekaj minútu, kým sa tekutina neodparí.
+  - Jogurt zmiešaj s cesnakom a štipkou soli.
+  - Tortilly prehrej na suchej panvici. Do stredu daj kapustu, hlivu, paradajky, cibuľu a petržlen, polej omáčkou, posyp čili.
+  - Zaviň spodok, potom boky a pevne zroluj. Opeč ešte 1 minútu na každej strane, aby držal.
+tips:
+  - Hliva pustí veľa vody – ak ju solíš alebo miešaš hneď, nezhnedne. Nechaj ju najprv opiecť.
+variants:
+  - name: Bezlepkovo v miske
+    description: Namiesto tortilly podávaj na ryži alebo s hranolkami ako kebab box.
+    remove: [psenicne-tortilly]
+    add:
+      - ryza-basmati: 1 hrnček

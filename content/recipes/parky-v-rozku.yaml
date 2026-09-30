@@ -1,0 +1,27 @@
+title: Párky v rožku
+description: Najrýchlejší obed z bufetu – horúci párok v teplom rožku s horčicou a kečupom. S domácimi párkami je hotový za 5 minút.
+cuisine: slovenska
+meals: [ranajky, obed, snack]
+categories: [hlavne/plnene, snacky/na-cesty]
+time: 10
+active: 10
+servings: 2
+difficulty: 1
+tags: [rychle, deti, klasika]
+keeps: { fridge: 1 }
+related: [domace-parky, hot-dog-mrkva]
+ingredients:
+  - lepok-vital: 60 g | na 4 domáce párky (recept Domáce párky)
+  - fazula-biela: 1/3 ks
+  - udena-paprika: 1/2 čl
+  - sojova-omacka: 1 čl
+  - bageta: 1 ks | alebo 2 rožky
+  - horcica: 2 čl
+  - kecup: 2 pl
+steps:
+  - Párky (domáce alebo kúpené) daj do horúcej vody na 5 minút. Nesmie vrieť, inak prasknú.
+  - Rožky prehrej v rúre alebo hriankovači.
+  - Rožok nareži z boku, alebo mu vyvŕtaj otvor vareškou zo strany a naplň ho horčicou a kečupom.
+  - Vlož párok a hneď jedz.
+tips:
+  - Domáce párky si sprav vo veľkom (recept Domáce párky) a zamraz – na raňajky ich máš vždy po ruke.

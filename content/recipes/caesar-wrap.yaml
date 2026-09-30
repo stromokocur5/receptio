@@ -1,0 +1,40 @@
+title: Caesar wrap s chrumkavým cícerom
+description: Rímsky šalát v krémovom „caesar“ dresingu, pečený cícer namiesto kuracieho a vegánsky parmezán, zabalené v tortille.
+cuisine: americka
+meals: [obed, vecera]
+categories: [hlavne/plnene, salaty/syte]
+time: 35
+active: 15
+servings: 3
+difficulty: 1
+tags: [do-krabicky, rychle]
+keeps: { fridge: 1 }
+leftovers: 'Do krabičky zabaľ dresing zvlášť, inak šalát zvädne.'
+ingredients:
+  - cicer-sterilizovany: 1 ks | plechovka, scedený
+  - olivovy-olej: 2 pl
+  - udena-paprika: 1/2 čl
+  - sol: 1/2 čl
+  - veganska-majoneza: 3 pl
+  - citron: 1 pl
+  - horcica: 1 čl
+  - cesnak: 1 ks
+  - vyzivne-drozdie: 1 pl
+  - miso: 1 čl | dáva slanosť ako ančovičky
+  - cierne-korenie: 1/2 čl
+  - salat: 1 ks | rímsky
+  - psenicne-tortilly: 3 ks
+  - kesu: 2 pl | na parmezán
+steps:
+  - Rúru predhrej na 210 °C. Cícer osuš, premiešaj s olejom, paprikou a soľou a peč 20–25 minút, kým nie je chrumkavý.
+  - Dresing. Majonézu zmiešaj s citrónom, horčicou, prelisovaným cesnakom, droždím, misom a korením.
+  - Parmezán. Kešu pomeľ na drobno so štipkou soli.
+  - Šalát nakrájaj na pásy a premiešaj s dresingom.
+  - Na tortilly daj šalát, cícer a parmezán, zaviň boky a pevne zroluj. Rozkroj šikmo.
+variants:
+  - name: Ako šalát v miske
+    description: Bez tortilly, s krutónmi z opečeného chleba.
+    replace:
+      - from: psenicne-tortilly
+        to: chlieb
+        amount: 2 ks

@@ -1,0 +1,44 @@
+title: Chrumkavý tofu burger
+description: Hrubý plátok tofu v chrumkavom korenenom obale, pikantná majonéza, coleslaw a kyslé uhorky. Ako „chicken“ burger z fastfoodu.
+cuisine: americka
+meals: [obed, vecera]
+categories: [hlavne/plnene, hlavne/tofu]
+time: 45
+active: 30
+servings: 4
+difficulty: 2
+tags: [vela-bielkovin, party, deti]
+spicy: 1
+ahead: Tofu vylisuj aspoň 20 minút, alebo ho predtým zamraz a rozmraz – bude mäsitejšie.
+keeps: { fridge: 2, freezer: 2 }
+leftovers: 'Obalené tofu prehrej v rúre na 200 °C, nie v mikrovlnke.'
+related: [coleslaw, kentucky-tofu]
+ingredients:
+  - tofu-natural: 400 g | vylisované
+  - sojove-mlieko: 1/2 hrnček
+  - ocot: 1 pl
+  - horcica: 1 čl
+  - hladka-muka: 1/2 hrnček
+  - kukuricny-skrob: 2 pl
+  - struhanka: 1/2 hrnček
+  - sladka-paprika: 2 čl
+  - cesnak: 1 ks | alebo 1/2 ČL sušeného
+  - oregano: 1/2 čl
+  - sol: 1 čl
+  - cierne-korenie: 1/2 čl
+  - olej: 6 pl | na vyprážanie
+  - hamburgerova-zemla: 4 ks
+  - veganska-majoneza: 3 pl
+  - sriracha: 1 pl
+  - biela-kapusta: 1 hrnček | nadrobno
+  - kysle-uhorky: 2 ks | na plátky
+  - salat: 4 ks | listy
+steps:
+  - Tofu nakrájaj na 4 hrubé plátky. Ak chceš nepravidelný „mäsový“ okraj, odlom ho rukami.
+  - Mlieko zmiešaj s octom a horčicou, nechaj 5 minút zraziť.
+  - V druhej miske zmiešaj múku, škrob, strúhanku, koreniny a soľ.
+  - Tofu namoč do mlieka, obaľ v múke, znova namoč a znova obaľ. Dvojitý obal je chrumkavejší.
+  - Vyprážaj na oleji na strednom ohni 3–4 minúty z každej strany dozlatista. Nechaj odkvapkať.
+  - Majonézu zmiešaj so srirachou. Žemle opeč reznou stranou na suchej panvici.
+  - Poskladaj – žemľa, majonéza, šalát, tofu, kapusta, uhorky, zase majonéza a vrch.
+howto: [tofu, vyprazanie]

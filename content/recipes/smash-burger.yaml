@@ -1,0 +1,40 @@
+title: Smash burger zo sójového granulátu
+description: Tenké placky rozpučené na rozpálenej panvici, s chrumkavými hnedými okrajmi, dvojitý „syr“, cibuľa a burger omáčka.
+cuisine: americka
+meals: [obed, vecera]
+categories: [hlavne/plnene, hlavne/tofu]
+time: 40
+active: 30
+servings: 4
+difficulty: 2
+tags: [vela-bielkovin, party]
+keeps: { fridge: 2, freezer: 3 }
+leftovers: 'Surové guľky zamraz, rozpuč rovno zmrazené.'
+ingredients:
+  - sojove-granule: 1,5 hrnček | jemné
+  - zeleninovy-vyvar: 1,5 hrnček | horúci
+  - lepok-vital: 60 g
+  - sojova-omacka: 1 pl
+  - paradajkovy-pretlak: 1 pl
+  - udena-paprika: 1 čl
+  - cibula: 1 ks | polovica nastrúhaná, polovica nadrobno
+  - cesnak: 1 ks
+  - olej: 3 pl
+  - vegansky-syr: 1/2 hrnček | plátky alebo strúhaný
+  - hamburgerova-zemla: 4 ks
+  - veganska-majoneza: 3 pl
+  - kecup: 2 pl
+  - horcica: 1 čl
+  - kysle-uhorky: 2 ks
+  - salat: 4 ks | listy
+steps:
+  - Granulát zalej horúcim vývarom, nechaj 10 minút nasiaknuť a poriadne vyžmýkaj.
+  - V sekáčiku ho zomeľ so sójovou omáčkou, pretlakom, paprikou, nastrúhanou polovicou cibule a cesnakom. Vmiešaj lepok a mies rukou 2 minúty.
+  - Vytvaruj 8 guliek.
+  - Panvicu (najlepšie liatinovú) rozpáľ na veľkom ohni, pokvapkaj olejom a daj na ňu 2–3 guľky. Hneď ich rozpuč stierkou na tenké placky, pritlač a nechaj 2 minúty bez pohnutia.
+  - Otoč, na každú daj syr, posyp nadrobno nakrájanou cibuľou a peč ešte minútu, pokým sa syr neroztopí.
+  - Omáčka. Majonézu zmiešaj s kečupom, horčicou a 1 PL nadrobno nakrájaných uhoriek.
+  - Do opečenej žemle daj omáčku, šalát, dve placky na sebe, uhorky a vrch.
+tips:
+  - Rozpučiť musíš hneď na začiatku. Keď sa spodok opečie, už sa to nedá.
+howto: [masove-textury]

@@ -1,0 +1,38 @@
+title: Crunchwrap s chrumkavou tostadou vnútri
+description: Veľká tortilla zložená do šesťuholníka okolo pikantnej plnky, syrovej omáčky a chrumkavej tortilly. Opečená z oboch strán.
+cuisine: mexicka
+meals: [obed, vecera]
+categories: [hlavne/plnene]
+time: 35
+active: 30
+servings: 4
+difficulty: 2
+tags: [party, vela-bielkovin]
+spicy: 1
+keeps: { fridge: 1 }
+leftovers: 'Plnku uchovaj zvlášť 3 dni, skladaj čerstvé.'
+ingredients:
+  - sojove-granule: 1 hrnček
+  - zeleninovy-vyvar: 1 hrnček | horúci
+  - olej: 2 pl
+  - cibula: 1/2 ks
+  - kmin: 1 čl
+  - udena-paprika: 1 čl
+  - cili: 1/2 čl
+  - paradajkovy-pretlak: 1 pl
+  - sol: 1/2 čl
+  - psenicne-tortilly: 4 ks | veľké
+  - kukuricne-tortilly: 4 ks | opečené dochrumkava
+  - vegansky-syr: 3/4 hrnček | strúhaný
+  - sojovy-jogurt: 4 pl
+  - salat: 1/4 ks | na pásiky
+  - paradajky: 1 ks
+steps:
+  - Granulát zalej horúcim vývarom, nechaj 10 minút nasiaknuť a vyžmýkaj.
+  - Cibuľu nadrobno opeč na 1 PL oleja 3 minúty, pridaj granulát, koreniny, pretlak a soľ a opekaj 5 minút dochrumkava.
+  - Malé kukuričné tortilly opeč na suchej panvici alebo v rúre, kým nie sú tvrdé ako tostada.
+  - Veľkú tortillu prehrej, aby bola ohybná. Do stredu daj plnku, syr, na to chrumkavú tortillu, jogurt, šalát a paradajku.
+  - Okraje veľkej tortilly skladaj jeden po druhom do stredu, kým ju celú neuzavrieš (5–6 záhybov).
+  - Opeč záhybmi dole na zvyšnom oleji na strednom ohni 2–3 minúty, otoč a opeč druhú stranu.
+tips:
+  - Ak sa veľká tortilla trhá, zohrej ju 10 sekúnd v mikrovlnke pod vlhkou utierkou.

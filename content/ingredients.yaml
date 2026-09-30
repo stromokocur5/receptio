@@ -3143,6 +3143,21 @@
     - 'Pad thai, chutney, kari'
   storage: 'V chladničke mesiace.'
 
+- id: kecup
+  name: Kečup
+  aliases: [ketchup]
+  category: omacky-pasty
+  n: { kcal: 101, p: 1, c: 27, f: 0.1, fib: 0.3, salt: 2.3, fe: 0.4, ca: 15, zn: 0.2 }
+  units: { pl: 17, čl: 6 }
+  price: 3
+  color: '#c0271b'
+  substitutes:
+    - { to: paradajkovy-pretlak, note: '+ lyžička octu a cukru' }
+  about: 'Sladkokyslá paradajková omáčka. Bežný kečup je vegánsky.'
+  uses:
+    - 'Hranolky, burgre, langoš'
+  storage: 'Po otvorení v chladničke mesiace.'
+
 - id: sriracha
   name: Sriracha
   category: omacky-pasty
@@ -4100,6 +4115,45 @@
   uses:
     - 'Marocký kuskus so zeleninou, šaláty'
   storage: 'Suchý rok.'
+
+- id: bulgur
+  name: Bulgur (suchý)
+  category: obilniny
+  gluten: contains
+  gf_alternative: quinoa
+  n: { kcal: 342, p: 12.3, c: 75.9, f: 1.3, fib: 12.5, salt: 0, fe: 2.5, ca: 35, zn: 1.9 }
+  units: { hrnček: 140 }
+  price: 3
+  co2: 1.6
+  color: '#d8b879'
+  substitutes:
+    - { to: quinoa, note: 'bez lepku, treba uvariť' }
+    - { to: kuskus }
+  about: 'Predvarená a nalámaná pšenica. Jemný stačí zaliať vriacou vodou.'
+  uses:
+    - 'Kısır, tabbouleh, mercimek köfte'
+    - 'Pilaf namiesto ryže'
+  storage: 'Suchý rok.'
+
+- id: psenicne-tortilly
+  name: Pšeničné tortilly (wrapy)
+  aliases: [wrap, dürüm, lavaš]
+  category: obilniny
+  gluten: contains
+  gf_alternative: pecivo-bezlepkove
+  n: { kcal: 306, p: 8.2, c: 50, f: 8, fib: 3.5, salt: 1.5, fe: 3.6, ca: 140, zn: 0.7 }
+  units: { ks: 60 }
+  price: 6
+  co2: 1.5
+  color: '#ecd9a8'
+  substitutes:
+    - { to: kukuricne-tortilly, note: 'bez lepku, menšie' }
+    - { to: pita }
+  about: 'Veľké mäkké placky (25–30 cm) na wrapy, burritá a dürüm.'
+  uses:
+    - 'Dürüm kebab, burrito, quesadilla'
+  choose: 'Pozri zloženie – niektoré obsahujú bravčovú masť alebo mliečnu srvátku.'
+  storage: 'Po otvorení v chladničke týždeň, zamrazené mesiace.'
 
 - id: nori
   name: Nori (morská riasa, plát)

@@ -1,0 +1,46 @@
+title: Mercimek köfte
+description: Mäkké šošovicové „karbonátky“ z červenej šošovice a bulguru, s cibuľou, paprikou a kopou petržlenu. Balia sa do šalátového listu, nevaria sa ďalej.
+cuisine: turecka
+meals: [obed, vecera, snack]
+categories: [hlavne/strukoviny, snacky/party]
+time: 50
+active: 25
+servings: 4
+difficulty: 1
+tags: [lacne, meal-prep, do-krabicky, party]
+spicy: 1
+keeps: { fridge: 4 }
+leftovers: 'Studené sú ešte lepšie. Ideálne do krabičky.'
+ingredients:
+  - sosovica-cervena: 1 hrnček
+  - voda: 3 hrnček
+  - bulgur: 3/4 hrnček | jemný
+  - olivovy-olej: 3 pl
+  - cibula: 1 ks | nadrobno
+  - paradajkovy-pretlak: 2 pl
+  - sladka-paprika: 1 čl
+  - kmin: 1 čl
+  - cili: 1/2 čl
+  - sol: 1,5 čl
+  - jarna-cibulka: 4 ks
+  - petrzlenova-vnat: 1 hrnček
+  - citron: 1 ks
+  - salat: 1 ks | listy na podávanie
+steps:
+  - Šošovicu prepláchni a var vo vode na miernom ohni 15 minút, kým sa nerozpadne na kašu. Voda sa má skoro celá vpiť.
+  - Stiahni z ohňa, vmiešaj bulgur, prikry a nechaj 15 minút napučať.
+  - Medzitým orestuj cibuľu na oleji na strednom ohni 6 minút dozlatista, vmiešaj pretlak, papriku, kmín a čili a opekaj minútu.
+  - Cibuľu primiešaj k šošovici, osoľ a nechaj trochu vychladnúť.
+  - Vmiešaj nadrobno nakrájanú jarnú cibuľku, petržlen a šťavu z polovice citróna. Zmes rukami dobre premiesi.
+  - Mokrými rukami tvaruj podlhovasté guľky stlačené v dlani, aby mali odtlačky prstov.
+  - Podávaj v listoch šalátu s kúskami citróna.
+tips:
+  - Ak sa zmes lepí, je ešte teplá. Nechaj ju vychladnúť a bude sa tvarovať ľahko.
+howto: [strukoviny]
+variants:
+  - name: Bezlepkovo s quinoou
+    description: Namiesto bulguru vmiešaj 1 hrnček uvarenej quinoi.
+    replace:
+      - from: bulgur
+        to: quinoa
+        amount: 1/2 hrnček

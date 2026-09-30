@@ -1,0 +1,41 @@
+title: Vada pav – indický zemiakový burger
+description: Korenisté zemiakové guľky v cícerovom cestíčku, vyprážané a vložené do mäkkej žemle s koriandrovým a pikantným cesnakovým chutney. Street food z Bombaja.
+cuisine: indicka-sever
+meals: [obed, vecera, snack]
+categories: [hlavne/plnene, snacky/slane]
+time: 50
+active: 35
+servings: 4
+difficulty: 2
+tags: [lacne, party]
+spicy: 2
+keeps: { fridge: 2 }
+leftovers: 'Vady prehrej v rúre na 200 °C, žemle až pred jedlom.'
+ingredients:
+  - zemiaky: 4 ks | uvarené
+  - olej: 6 pl | toľko vsiakne, na vyprážanie treba ~500 ml
+  - horcicne-semienko: 1 čl
+  - kari-listy: 8 ks
+  - cesnak: 4 ks
+  - zazvor: 1 čl | nastrúhaný
+  - cili-papricka: 2 ks
+  - kurkuma: 1/2 čl
+  - sol: 1,5 čl
+  - bylinky-koriander: 1 hrnček
+  - citron: 1 pl
+  - cicerova-muka: 1 hrnček
+  - kypriaci-prasok: 1/4 čl
+  - voda: 1/2 hrnček
+  - hamburgerova-zemla: 4 ks | mäkké
+  - udena-paprika: 1 čl
+  - kokos-struhany: 2 pl
+steps:
+  - Zemiaky roztlač nahrubo.
+  - Na 1 PL oleja nechaj na strednom ohni prasknúť horčičné semienko, pridaj kari listy, 3 strúčiky cesnaku, zázvor a 1 papričku. Opekaj 30 sekúnd, pridaj kurkumu a zemiaky, 1 ČL soli a polovicu koriandra. Nechaj vychladnúť a vytvaruj 4 guľky.
+  - Cestíčko. Cícerovú múku zmiešaj s práškom, štipkou kurkumy, soľou a vodou na husté cestíčko.
+  - Zelené chutney. Zvyšný koriander rozmixuj s papričkou, citrónom, štipkou soli a 2 PL vody.
+  - Suché chutney. Kokos opraž na suchej panvici so zvyšným cesnakom a údenou paprikou a pomeľ.
+  - Olej rozohrej na 175 °C. Guľky ponor do cestíčka a vyprážaj 3–4 minúty dozlatista.
+  - Žemľu nareži, natri zeleným chutney, posyp suchým a vlož vadu. Stlač a jedz.
+howto: [vyprazanie]
+equipment: [hrniec, teplomer]

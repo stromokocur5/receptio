@@ -1,0 +1,32 @@
+title: Pomarančové tofu ako z food courtu
+description: Chrumkavé tofu v lesklej pomarančovej glazúre so zázvorom a štipkou čili. Deti ho milujú.
+cuisine: cinska
+meals: [obed, vecera]
+categories: [hlavne/tofu]
+time: 35
+active: 25
+servings: 3
+difficulty: 1
+tags: [deti, vela-bielkovin]
+keeps: { fridge: 3 }
+ingredients:
+  - tofu-natural: 400 g | vylisované
+  - kukuricny-skrob: 5 pl
+  - olej: 4 pl
+  - pomaranc: 2 ks | kôra a šťava
+  - sojova-omacka: 2 pl
+  - javorovy-sirup: 2 pl
+  - ryzovy-ocot: 1 pl
+  - zazvor: 1 čl | nastrúhaný
+  - cesnak: 1 ks
+  - cili: 1 štipka
+  - brokolica: 1 ks
+  - sezam: 1 čl
+  - ryza-jazminova: 1 hrnček
+steps:
+  - Ryžu uvar podľa obalu. Brokolicu rozdeľ na ružičky a var 3 minúty v osolenej vode.
+  - Tofu nakrájaj na kocky, obaľ v 4 PL škrobu a opekaj na oleji na strednom ohni 8–10 minút dochrumkava.
+  - Zmiešaj pomarančovú šťavu a kôru, sójovú omáčku, sirup, ocot, zázvor, cesnak, čili a zvyšný škrob.
+  - Tofu odsuň nabok, vlej omáčku a miešaj minútu, kým nezhustne. Premiešaj s tofu a brokolicou.
+  - Posyp sezamom a podávaj s ryžou.
+howto: [tofu]

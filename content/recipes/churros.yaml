@@ -1,0 +1,35 @@
+title: Churros so škoricovým cukrom a čokoládou
+description: Chrumkavé vyprážané tyčinky z odpaľovaného cesta obalené v škoricovom cukre, na namáčanie do hustej horúcej čokolády.
+cuisine: mexicka
+meals: [dezert, snack]
+categories: [dezerty/smazene]
+time: 35
+active: 30
+servings: 4
+difficulty: 2
+tags: [dezert, party]
+gf_swap: false
+keeps: { fridge: 1 }
+leftovers: 'Najlepšie hneď. Zvyšky prehrej v rúre na 200 °C 4 minúty.'
+ingredients:
+  - voda: 1 hrnček
+  - cukor: 5 pl
+  - sol: 1 štipka
+  - olej: 8 pl | 2 PL do cesta, zvyšok toľko vsiakne pri vyprážaní
+  - hladka-muka: 1 hrnček
+  - vanilka: 1/2 čl
+  - skorica: 2 čl
+  - horka-cokolada: 100 g
+  - sojove-mlieko: 1/2 hrnček
+steps:
+  - Vodu, 1 PL cukru, soľ a 2 PL oleja priveď do varu. Stiahni z ohňa, naraz vsyp múku s vanilkou a miešaj, kým nevznikne hladká guľa, ktorá sa odlepí od hrnca.
+  - Nechaj 5 minút vychladnúť a daj do vrecka s hviezdicovou špičkou.
+  - Olej v hrnci rozohrej na 180 °C. Vytláčaj do neho 10 cm dlhé pásy a odstrihni nožnicami.
+  - Vyprážaj po 3–4 kusoch 3 minúty, kým nie sú zlaté. Nechaj odkvapkať.
+  - Ešte teplé obaľ v zmesi zvyšného cukru a škorice.
+  - Čokoládu rozpusti v horúcom mlieku a podávaj na namáčanie.
+tips:
+  - Hviezdicová špička je dôležitá – hladké churros môžu v oleji prasknúť.
+howto: [vyprazanie]
+equipment: [hrniec, teplomer]
+no_equipment: [panvica]

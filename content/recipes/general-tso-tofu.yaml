@@ -1,0 +1,37 @@
+title: General Tso tofu
+description: Chrumkavé kocky tofu v lepkavej sladko-pikantnej omáčke so zázvorom, cesnakom a sušenými čili. Lepšie ako z čínskeho bistra.
+cuisine: cinska
+meals: [obed, vecera]
+categories: [hlavne/tofu]
+time: 35
+active: 25
+servings: 3
+difficulty: 2
+tags: [vela-bielkovin, party]
+spicy: 2
+keeps: { fridge: 3 }
+leftovers: 'Obal zmäkne, ale chuť ostane. Prehrej na panvici.'
+ingredients:
+  - tofu-natural: 400 g | vylisované
+  - kukuricny-skrob: 5 pl
+  - sol: 1/4 čl
+  - olej: 4 pl
+  - sojova-omacka: 3 pl
+  - ryzovy-ocot: 2 pl
+  - cukor: 2 pl
+  - paradajkovy-pretlak: 1 pl
+  - voda: 1/2 hrnček
+  - cesnak: 3 ks
+  - zazvor: 1 pl | nastrúhaný
+  - cili-papricka: 4 ks | sušené celé
+  - jarna-cibulka: 3 ks
+  - sezam: 1 čl
+  - ryza-jazminova: 1 hrnček
+steps:
+  - Ryžu uvar podľa obalu.
+  - Tofu natrhaj na kúsky veľkosti orecha a obaľ v 4 PL škrobu so soľou.
+  - Opekaj na oleji na strednom ohni 8–10 minút, otáčaj, kým nie je zo všetkých strán chrumkavé. Vyber.
+  - Omáčka. Zmiešaj sójovú omáčku, ocot, cukor, pretlak, vodu a zvyšný škrob.
+  - Na tej istej panvici opeč cesnak, zázvor a papričky 30 sekúnd, kým nezavoňajú. Vlej omáčku a miešaj, kým nezhustne a nebude lesklá.
+  - Vráť tofu, premiešaj a hneď podávaj s ryžou, posypané cibuľkou a sezamom.
+howto: [tofu]

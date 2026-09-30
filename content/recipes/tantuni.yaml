@@ -1,0 +1,37 @@
+title: Tantuni – tenký wrap s pikantnou plnkou
+description: Drobný sójový granulát podusený v paradajkovej šťave s paprikou a zabalený v tenkej placke s petržlenom a cibuľou. Pouličná klasika z Mersinu.
+cuisine: turecka
+meals: [obed, vecera]
+categories: [hlavne/plnene]
+time: 20
+active: 20
+servings: 3
+difficulty: 1
+tags: [rychle, vela-bielkovin, lacne]
+spicy: 2
+keeps: { fridge: 3 }
+related: [doner-kebab]
+ingredients:
+  - sojove-granule: 1 hrnček
+  - zeleninovy-vyvar: 1 hrnček | horúci
+  - sojova-omacka: 1 pl
+  - olej: 2 pl
+  - cibula: 1 ks
+  - paradajky: 2 ks
+  - paradajkovy-pretlak: 1 pl
+  - sladka-paprika: 1 čl
+  - cili: 1 čl
+  - kmin: 1/2 čl
+  - sol: 1/2 čl
+  - voda: 4 pl
+  - psenicne-tortilly: 3 ks
+  - petrzlenova-vnat: 4 pl
+  - cibula-cervena: 1/2 ks
+  - sumak: 1 čl
+  - citron: 1/2 ks
+steps:
+  - Granulát zalej horúcim vývarom so sójovou omáčkou, nechaj 10 minút nasiaknuť a poriadne vyžmýkaj.
+  - Opekaj ho na oleji na veľkom ohni 5 minút dohneda a dochrumkava.
+  - Pridaj nadrobno nakrájanú cibuľu a opekaj 3 minúty, potom paradajky, pretlak, koreniny, soľ a vodu. Duste 5 minút, kým šťava nezhustne.
+  - Tortillu na chvíľu polož na panvicu, aby nasala šťavu.
+  - Naplň seitanom, petržlenom a cibuľou premiešanou so sumakom, pokvapkaj citrónom a zroluj.

@@ -1,0 +1,42 @@
+title: Kısır – pikantný bulgurový šalát
+description: Bulgur nasiaknutý paprikovou pastou a paradajkami, s jarnou cibuľkou, mätou a granátovým jablkom. Turecký šalát na každú oslavu.
+cuisine: turecka
+meals: [obed, vecera, snack]
+categories: [salaty/syte, salaty/prilohove]
+time: 30
+active: 15
+servings: 4
+difficulty: 1
+tags: [lacne, bez-varenia, party, do-krabicky, meal-prep]
+spicy: 1
+keeps: { fridge: 4 }
+ingredients:
+  - bulgur: 1 hrnček | jemný
+  - voda: 1 hrnček | vriaca
+  - paradajkovy-pretlak: 2 pl
+  - olivovy-olej: 4 pl
+  - citron: 1 ks
+  - sol: 1 čl
+  - cili: 1/2 čl
+  - kmin: 1/2 čl
+  - paradajky: 2 ks
+  - uhorka: 1 ks
+  - jarna-cibulka: 4 ks
+  - petrzlenova-vnat: 1 hrnček
+  - bylinky-mata: 2 pl
+  - granatove-jablko: 1/2 ks | zrniečka
+  - salat: 1 ks | listy na podávanie
+steps:
+  - Bulgur zmiešaj s pretlakom, zalej vriacou vodou, prikry a nechaj 15 minút napučať.
+  - Rozdrob ho vidličkou a vmiešaj olej, šťavu z citróna, soľ, čili a kmín.
+  - Pridaj nadrobno nakrájané paradajky, uhorku, jarnú cibuľku, petržlen a mätu.
+  - Posyp zrniečkami granátového jablka a podávaj v listoch šalátu.
+tips:
+  - Tradične sa pridáva aj melasa z granátového jablka – ak ju máš, daj 1 PL namiesto polovice citróna.
+variants:
+  - name: Bezlepkovo s quinoou
+    description: Bulgur nahraď uvarenou a vychladnutou quinoou.
+    replace:
+      - from: bulgur
+        to: quinoa
+        amount: 3/4 hrnček

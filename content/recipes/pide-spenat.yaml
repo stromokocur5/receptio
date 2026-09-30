@@ -1,0 +1,43 @@
+title: Pide so špenátom a „syrom“
+description: Turecké lodičky z mäkkého kysnutého cesta plnené špenátom, cibuľou a rozpusteným vegánskym syrom.
+cuisine: turecka
+meals: [obed, vecera]
+categories: [hlavne/cesto, hlavne/rura]
+time: 100
+active: 35
+servings: 4
+difficulty: 2
+tags: [party]
+gf_swap: false
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Prehrej v rúre na 200 °C 6 minút, mikrovlnka cesto rozmočí.'
+ingredients:
+  - hladka-muka: 350 g
+  - drozdie: 1 čl
+  - cukor: 1 čl
+  - sol: 1,5 čl
+  - voda: 200 ml | vlažná
+  - olivovy-olej: 4 pl
+  - spenat: 400 g | čerstvý alebo rozmrazený a vyžmýkaný
+  - cibula: 1 ks
+  - cesnak: 2 ks
+  - vegansky-syr: 1 hrnček | strúhaný
+  - cili: 1/2 čl
+  - sojove-mlieko: 2 pl | na potretie
+  - sezam: 1 pl
+steps:
+  - Múku zmiešaj s droždím, cukrom a 1 ČL soli, prilej vodu a 2 PL oleja. Mies 8 minút, prikry a nechaj hodinu kysnúť.
+  - Cibuľu nadrobno orestuj na 1 PL oleja na strednom ohni 5 minút, pridaj cesnak a špenát a duste, kým sa neodparí všetka voda. Osoľ, pridaj čili a nechaj vychladnúť.
+  - Rúru predhrej na 230 °C.
+  - Cesto rozdeľ na 4 časti, každú vyvaľkaj na dlhý ovál asi 30 × 15 cm.
+  - Do stredu daj špenát a syr, okraj nechaj voľný 2 cm. Dlhé okraje prehni cez plnku a konce zatoč, aby vznikla lodička.
+  - Okraje potri mliekom zmiešaným so zvyšným olejom a posyp sezamom.
+  - Peč na plechu s papierom 12–15 minút dozlatista.
+howto: [kysnute-cesto]
+variants:
+  - name: So zemiakmi
+    description: Namiesto špenátu daj 3 uvarené a roztlačené zemiaky s cibuľou a paprikou.
+    remove: [spenat]
+    add:
+      - zemiaky: 3 ks
+      - sladka-paprika: 1 čl

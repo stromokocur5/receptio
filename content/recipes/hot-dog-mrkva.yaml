@@ -1,0 +1,34 @@
+title: Hot dog s mrkvovým „párkom“
+description: Mrkva uvarená a marinovaná v údenej marináde chutí prekvapivo ako párok. V teplom rožku s horčicou, kečupom a opraženou cibuľkou.
+cuisine: americka
+meals: [obed, vecera, snack]
+categories: [hlavne/plnene, snacky/party]
+time: 40
+active: 15
+servings: 4
+difficulty: 1
+tags: [deti, party, lacne]
+ahead: Marinuj mrkvu cez noc, bude chutnejšia.
+keeps: { fridge: 4 }
+leftovers: 'Mrkvy v marináde vydržia 4 dni, stačí ich opiecť.'
+ingredients:
+  - mrkva: 4 ks | rovné, hrubé ako párok
+  - sojova-omacka: 3 pl
+  - ocot: 1 pl
+  - javorovy-sirup: 1 pl
+  - tekuty-dym: 1/2 čl
+  - udena-paprika: 1 čl
+  - cesnak: 1 ks | prelisovaný
+  - voda: 4 pl
+  - olej: 2 pl
+  - cibula: 1 ks
+  - hamburgerova-zemla: 4 ks | alebo rožky na hot dog
+  - horcica: 4 čl
+  - kecup: 4 pl
+  - kysle-uhorky: 2 ks | nadrobno
+steps:
+  - Mrkvy ošúp, zarovnaj konce, aby mali tvar párku, a var ich v osolenej vode 8–10 minút, kým nie sú mäkké, ale nerozpadajú sa.
+  - Zmiešaj sójovú omáčku, ocot, sirup, dym, papriku, cesnak a vodu. Horúce mrkvy do nej vlož a nechaj aspoň 20 minút marinovať (ideálne cez noc).
+  - Cibuľu nakrájaj na tenké krúžky a opekaj na 1 PL oleja na strednom ohni 10 minút do hneda.
+  - Mrkvy opeč na zvyšnom oleji na veľkom ohni 4 minúty zo všetkých strán. Na konci podlej 2 PL marinády, nech sa na nich spraví glazúra.
+  - Pečivo nareži, prehrej a naplň mrkvou. Navrch horčica, kečup, uhorky a cibuľka.

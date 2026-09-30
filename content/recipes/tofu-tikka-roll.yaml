@@ -1,0 +1,38 @@
+title: Tofu tikka roll
+description: Kolkatský kati roll – tofu marinované v jogurte a korení, opečené dočierna, zabalené v placke s cibuľou, mätovým chutney a limetkou.
+cuisine: indicka-sever
+meals: [obed, vecera]
+categories: [hlavne/plnene, hlavne/tofu]
+time: 40
+active: 20
+servings: 3
+difficulty: 1
+tags: [vela-bielkovin, do-krabicky, party]
+spicy: 2
+ahead: Marinuj aspoň 30 minút, najlepšie cez noc.
+keeps: { fridge: 3 }
+ingredients:
+  - tofu-natural: 400 g | vylisované
+  - sojovy-jogurt: 1/2 hrnček
+  - garam-masala: 2 čl
+  - sladka-paprika: 2 čl
+  - kmin: 1 čl
+  - kurkuma: 1/2 čl
+  - cili: 1/2 čl
+  - cesnak: 2 ks
+  - zazvor: 1 čl | nastrúhaný
+  - citron: 1 pl
+  - sol: 1 čl
+  - olej: 2 pl
+  - psenicne-tortilly: 3 ks | alebo paratha
+  - cibula-cervena: 1 ks | na tenké krúžky
+  - bylinky-mata: 3 pl
+  - bylinky-koriander: 3 pl
+  - limetka: 1 ks
+steps:
+  - Polovicu jogurtu zmiešaj so všetkými koreninami, cesnakom, zázvorom, citrónom a soľou. Tofu nakrájaj na hrubé prúžky a obaľ v marináde. Nechaj aspoň 30 minút.
+  - Chutney. Mätu a koriander rozmixuj so zvyšným jogurtom, šťavou z polovice limetky a štipkou soli.
+  - Tofu opekaj na oleji na veľkom ohni 8 minút, kým nemá tmavé, skoro spálené miesta.
+  - Cibuľu premiešaj so zvyšnou limetkou a štipkou soli.
+  - Tortillu prehrej, natri chutney, pridaj tofu a cibuľu a zroluj. Spodok obaľ papierom.
+howto: [tofu]

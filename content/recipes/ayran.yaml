@@ -1,0 +1,21 @@
+title: Vegánsky ayran
+description: Slaný, jemne kyslý jogurtový nápoj, ktorý sa v Turecku pije ku kebabu. Osvieži a uhasí pálivé.
+cuisine: turecka
+meals: [snack]
+categories: [napoje/limonady]
+time: 3
+active: 3
+servings: 2
+difficulty: 1
+tags: [rychle, bez-varenia]
+keeps: { fridge: 1 }
+ingredients:
+  - sojovy-jogurt: 1 hrnček | nesladený
+  - voda: 1 hrnček | ľadová
+  - sol: 1/4 čl
+  - bylinky-mata: 1 čl | voliteľne
+steps:
+  - Jogurt, vodu a soľ vyšľahaj alebo rozmixuj, kým nie je spenený.
+  - Podávaj hneď s ľadom, posyp mätou.
+tips:
+  - Pena navrchu je znak dobrého ayranu – mixér ju spraví najlepšie.

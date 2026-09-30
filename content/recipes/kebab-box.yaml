@@ -1,0 +1,40 @@
+title: Kebab box s hranolkami
+description: Krabička ako z kebabárne – chrumkavé hranolky z rúry, pikantná hliva, šalát a dve omáčky cez to všetko.
+cuisine: turecka
+meals: [obed, vecera]
+categories: [hlavne/zelenina, hlavne/bowly]
+time: 45
+active: 20
+servings: 3
+difficulty: 1
+tags: [party, deti]
+spicy: 1
+keeps: { fridge: 2 }
+leftovers: 'Hranolky a hlivu prehrej v rúre na 220 °C, šalát a omáčky pridaj studené.'
+related: [durum-hliva, cesnakova-kebab-omacka, hranolky-z-rury]
+ingredients:
+  - zemiaky: 5 ks
+  - olej: 4 pl
+  - sol: 1 čl
+  - hliva: 350 g
+  - udena-paprika: 1 čl
+  - kmin: 1 čl
+  - oregano: 1/2 čl
+  - sojova-omacka: 1 pl
+  - biela-kapusta: 1,5 hrnček | nadrobno
+  - paradajky: 2 ks
+  - uhorka: 1/2 ks
+  - cibula-cervena: 1/2 ks
+  - sojovy-jogurt: 1/2 hrnček
+  - veganska-majoneza: 1 pl
+  - cesnak: 1 ks | prelisovaný
+  - paradajkovy-pretlak: 1 pl
+  - sriracha: 1 pl
+steps:
+  - Rúru predhrej na 220 °C. Zemiaky nakrájaj na hranolky, premiešaj s 2 PL oleja a soľou a rozlož na plech v jednej vrstve. Peč 30–35 minút, v polovici otoč.
+  - Medzitým natrhaj hlivu na prúžky a opekaj ju na zvyšnom oleji na veľkom ohni 6–8 minút dohneda. Pridaj koreniny a sójovú omáčku a opekaj ešte minútu.
+  - Biela omáčka. Jogurt zmiešaj s majonézou, cesnakom a štipkou soli.
+  - Červená omáčka. Pretlak zmiešaj so srirachou a 2 PL vody.
+  - Do krabičiek alebo misiek daj hranolky, navrch hlivu, vedľa kapustu, paradajky, uhorku a cibuľu. Polej oboma omáčkami.
+tips:
+  - Zemiaky nakrájané na hranolky namoč na 10 minút do studenej vody a dobre osuš – budú chrumkavejšie.

@@ -1,0 +1,31 @@
+title: Simit – sezamové praclíky
+description: Chrumkavé kolesá z kysnutého cesta namočené v sladkom sirupe a obalené v sezame. Turecké raňajky na ulici.
+cuisine: turecka
+meals: [ranajky, snack]
+categories: [prilohy/chlieb, snacky/na-cesty]
+time: 120
+active: 40
+servings: 8
+difficulty: 3
+tags: [pecenie]
+gf_swap: false
+keeps: { fridge: 2, freezer: 3 }
+yields: 8 kusov
+ingredients:
+  - hladka-muka: 450 g
+  - drozdie: 2 čl
+  - cukor: 1 čl
+  - sol: 1,5 čl
+  - voda: 260 ml | vlažná
+  - olivovy-olej: 2 pl
+  - javorovy-sirup: 3 pl | tradične hroznová melasa
+  - sezam: 1 hrnček
+steps:
+  - Múku zmiešaj s droždím, cukrom a soľou, prilej vodu a olej a mies 10 minút na tuhé hladké cesto. Nechaj hodinu kysnúť.
+  - Sezam opraž na suchej panvici na strednom ohni 3 minúty dozlatista a vysyp na tanier.
+  - Sirup rozrieď 1/2 hrnčeka vody v plytkej miske.
+  - Cesto rozdeľ na 16 kúskov, každý vyvaľkaj na šúľok dlhý 40 cm. Dva šúľky zatoč do seba, spoj do kruhu a konce pritlač.
+  - Každý kruh ponor do sirupu a potom obaľ v sezame zo všetkých strán.
+  - Nechaj 20 minút podkysnúť na plechu s papierom. Rúru predhrej na 220 °C.
+  - Peč 18–20 minút, kým nie sú tmavozlaté.
+howto: [kysnute-cesto]

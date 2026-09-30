@@ -1,0 +1,30 @@
+title: Hubové zapekané chlebíky
+description: Chrumkavé krajce chleba s hubovo-cibuľovou nátierkou, zapečené so syrom. Bufetová klasika a záchrana starého chleba.
+cuisine: slovenska
+meals: [ranajky, vecera, snack]
+categories: [snacky/slane, ranajky/slane]
+time: 30
+active: 15
+servings: 4
+difficulty: 1
+tags: [lacne, zvysky, rychle, deti]
+keeps: { fridge: 2 }
+ingredients:
+  - chlieb: 8 ks | krajce, aj starší
+  - sampinony: 2 hrnček
+  - cibula: 1 ks
+  - olej: 2 pl
+  - cesnak: 2 ks
+  - majoranka: 1 čl
+  - rasca: 1/2 čl
+  - sojova-omacka: 1 pl
+  - veganska-majoneza: 2 pl
+  - vegansky-syr: 3/4 hrnček | strúhaný
+  - cierne-korenie: 1 štipka
+  - pazitka: 2 pl
+steps:
+  - Rúru predhrej na 220 °C.
+  - Cibuľu a huby nakrájaj nadrobno. Cibuľu opeč na oleji na strednom ohni 4 minúty, pridaj huby a opekaj 8 minút, kým sa neodparí všetka voda.
+  - Vmiešaj cesnak, majoránku, rascu, sójovú omáčku a korenie a nechaj chvíľu vychladnúť. Primiešaj majonézu.
+  - Natri na krajce, posyp syrom a ulož na plech.
+  - Zapekaj 8–10 minút, kým sa syr neroztopí a okraje chleba nie sú chrumkavé. Posyp pažítkou.

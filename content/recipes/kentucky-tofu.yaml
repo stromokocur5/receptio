@@ -1,0 +1,46 @@
+title: Tofu stripsy ako z Kentucky
+description: Rozmrazené tofu natrhané na kúsky, marinované v „cmare“ a obalené v múke s jedenástimi koreninami. Chrumkavé zvonka, šťavnaté vnútri.
+cuisine: americka
+meals: [obed, vecera, snack]
+categories: [hlavne/tofu, snacky/party]
+time: 50
+active: 35
+servings: 4
+difficulty: 2
+tags: [vela-bielkovin, party, deti]
+spicy: 1
+ahead: Tofu deň vopred zamraz a nechaj rozmraziť – pustí vodu a bude vláknité ako mäso.
+keeps: { fridge: 2, freezer: 2 }
+leftovers: 'Prehrej v rúre na 200 °C 8 minút.'
+related: [crispy-tofu-burger, coleslaw, hranolky-z-rury]
+ingredients:
+  - tofu-natural: 400 g | zamrazené a rozmrazené
+  - sojove-mlieko: 3/4 hrnček
+  - citron: 1 pl
+  - horcica: 1 čl
+  - sojova-omacka: 1 pl
+  - hladka-muka: 1 hrnček
+  - kukuricny-skrob: 3 pl
+  - sladka-paprika: 2 čl
+  - udena-paprika: 1 čl
+  - cesnak: 2 ks | alebo 1 ČL sušeného
+  - oregano: 1/2 čl
+  - tymian: 1/2 čl
+  - majoranka: 1/2 čl
+  - zazvor: 1/2 čl | mletý
+  - horcicne-semienko: 1/2 čl | mleté, voliteľne
+  - cierne-korenie: 1 čl
+  - cili: 1/2 čl
+  - sol: 1,5 čl
+  - olej: 6 pl | toľko vsiakne, na vyprážanie treba ~500 ml
+steps:
+  - Rozmrazené tofu pevne vyžmýkaj medzi dlaňami, ako hubku. Natrhaj ho na kúsky veľkosti prsta – natrhané okraje sú chrumkavejšie ako rezané.
+  - Mlieko zmiešaj s citrónom, horčicou a sójovou omáčkou. Tofu v tom nechaj 15 minút nasiaknuť.
+  - Múku zmiešaj so škrobom, všetkými koreninami a soľou.
+  - Tofu vyber, obaľ v múke, vráť na chvíľu do mlieka a obaľ znova. Do múky pokvapkaj 2 PL mlieka a premiešaj prstami – vzniknú hrudky, ktoré sa prilepia a dajú typický zvrásnený obal.
+  - Olej v hrnci rozohrej na 175 °C a vyprážaj po dávkach 4–5 minút dozlatista. Nechaj odkvapkať na mriežke.
+tips:
+  - V teplovzdušnej fritéze postrek olejom a 15 minút na 200 °C, v polovici otoč.
+howto: [tofu, vyprazanie]
+equipment: [hrniec, teplomer]
+no_equipment: [panvica]

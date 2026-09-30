@@ -1,0 +1,29 @@
+title: Vlašský šalát
+description: Hustý majonézový šalát so zeleninou, uhorkami a kúskami údeného tofu alebo klobásy. Základ každých chlebíčkov.
+cuisine: slovenska
+meals: [ranajky, vecera, snack]
+categories: [salaty/prilohove, omacky/dipy]
+time: 30
+active: 20
+servings: 6
+difficulty: 1
+tags: [klasika, party]
+keeps: { fridge: 3 }
+related: [oblozene-chlebicky, zemiakovy-salat]
+ingredients:
+  - zemiaky: 2 ks | uvarené v šupke
+  - mrkva: 1 ks | uvarená
+  - petrzlen-koren: 1 ks | uvarený
+  - hrasok: 1/2 hrnček | uvarený
+  - kysle-uhorky: 3 ks
+  - tofu-udene: 120 g | alebo pikantná klobása
+  - veganska-majoneza: 6 pl
+  - sojovy-jogurt: 2 pl
+  - horcica: 1 čl
+  - citron: 1 čl
+  - sol: 1/2 čl
+  - cierne-korenie: 1 štipka
+steps:
+  - Zemiaky, mrkvu, petržlen, uhorky a údené tofu nakrájaj na drobné kocky.
+  - Majonézu zmiešaj s jogurtom, horčicou, citrónom, soľou a korením.
+  - Všetko spolu s hráškom premiešaj a nechaj aspoň hodinu v chladničke.

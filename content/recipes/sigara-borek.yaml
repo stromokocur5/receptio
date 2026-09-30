@@ -1,0 +1,31 @@
+title: Sigara börek – chrumkavé cigary z filo cesta
+description: Tenké rolky z filo cesta plnené tofu „syrom“ s petržlenom, upečené dochrumkava. Na párty zmiznú ako prvé.
+cuisine: turecka
+meals: [snack, obed]
+categories: [snacky/party, snacky/slane]
+time: 40
+active: 25
+servings: 4
+difficulty: 2
+tags: [party]
+gf_swap: false
+keeps: { fridge: 2, freezer: 3 }
+leftovers: 'Surové zabalené rolky zamraz a peč rovno zmrazené o 5 minút dlhšie.'
+ingredients:
+  - tofu-natural: 250 g
+  - vyzivne-drozdie: 2 pl
+  - citron: 1 pl
+  - sol: 1/2 čl
+  - petrzlenova-vnat: 4 pl
+  - kopor: 1 pl
+  - cierne-korenie: 1 štipka
+  - filo-cesto: 6 ks | pláty
+  - olivovy-olej: 4 pl
+steps:
+  - Tofu rozdrob vidličkou na jemné kúsky a zmiešaj s droždím, citrónom, soľou, bylinkami a korením. Má chutiť slano ako feta.
+  - Rúru predhrej na 200 °C.
+  - Každý plát filo rozrež na 2 trojuholníky (alebo pásy). Potri olejom.
+  - Na širší koniec daj 1 lyžicu plnky, preklop boky a pevne zroluj do tenkej cigary.
+  - Ulož na plech s papierom, potri olejom a peč 15–18 minút dozlatista.
+tips:
+  - Filo cesto rýchlo vysychá – kým pracuješ, drž ho prikryté vlhkou utierkou.

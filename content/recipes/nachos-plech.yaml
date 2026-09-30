@@ -1,0 +1,34 @@
+title: Nachos z plechu so všetkým
+description: Tortilla chipsy zapečené s fazuľou a syrovou omáčkou, navrch guacamole, salsa a jalapeño. Na zdieľanie z jedného plechu.
+cuisine: mexicka
+meals: [vecera, snack]
+categories: [snacky/party, snacky/slane]
+time: 30
+active: 20
+servings: 4
+difficulty: 1
+tags: [party, rychle]
+spicy: 2
+keeps: { fridge: 1 }
+related: [tortilla-chipsy, guacamole, nacho-syrova-omacka, pico-de-gallo]
+ingredients:
+  - kukuricne-tortilly: 10 ks | alebo 200 g hotových chipsov
+  - olej: 2 pl
+  - sol: 1/2 čl
+  - fazula-cierna: 1 ks | plechovka, scedená
+  - kmin: 1/2 čl
+  - udena-paprika: 1/2 čl
+  - vegansky-syr: 1 hrnček | strúhaný, alebo nacho omáčka
+  - avokado: 2 ks
+  - limetka: 1 ks
+  - paradajky: 2 ks
+  - cibula-cervena: 1/2 ks
+  - bylinky-koriander: 3 pl
+  - cili-papricka: 1 ks
+  - sojovy-jogurt: 3 pl | ako kyslá smotana
+steps:
+  - Rúru predhrej na 200 °C. Tortilly nakrájaj na trojuholníky, potri olejom, posoľ a peč na plechoch 8–10 minút dozlatista.
+  - Fazuľu premiešaj s kmínom, paprikou a lyžicou vody a trochu roztlač.
+  - Chipsy nahusto rozlož na jeden plech, posyp fazuľou a syrom a zapekaj 5–6 minút, kým sa syr neroztopí.
+  - Avokádo roztlač s polovicou limetky a štipkou soli. Paradajky, cibuľu a koriander nakrájaj nadrobno a premiešaj so zvyškom limetky.
+  - Na horúce nachos daj guacamole, salsu, jogurt a plátky papričky. Jedz hneď.

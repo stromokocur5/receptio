@@ -1,0 +1,38 @@
+title: Langoš s cesnakom, kečupom a syrom
+description: Nadýchaný vyprážaný langoš ako z kúpaliska – potretý cesnakovou vodou, s kečupom, vegánskym syrom a hustou „smotanou“.
+cuisine: slovenska
+meals: [obed, vecera, snack]
+categories: [hlavne/cesto, snacky/slane]
+time: 100
+active: 35
+servings: 4
+difficulty: 2
+tags: [klasika, lacne, party]
+gf_swap: false
+keeps: { fridge: 1 }
+leftovers: 'Najlepší je hneď. Studený prehrej na suchej panvici pod pokrievkou.'
+ingredients:
+  - hladka-muka: 400 g
+  - zemiaky: 1 ks | uvarený, roztlačený
+  - drozdie: 2 čl | sušené
+  - cukor: 1 čl
+  - sol: 1,5 čl
+  - voda: 250 ml | vlažná
+  - olej: 8 pl | toľko vsiakne, na vyprážanie treba ~600 ml
+  - cesnak: 5 ks
+  - kecup: 4 pl
+  - vegansky-syr: 1 hrnček | strúhaný
+  - sojovy-jogurt: 4 pl | hustý, ako kyslá smotana
+steps:
+  - Múku zmiešaj s droždím, cukrom a 1 ČL soli. Pridaj roztlačený zemiak, vodu a 1 PL oleja a mies 8 minút na mäkké lepivé cesto. Prikry a nechaj hodinu kysnúť.
+  - Cesnak prelisuj do 4 PL vody so štipkou soli.
+  - Olej v širokom hrnci rozohrej na 175 °C.
+  - Naolejovanými rukami odtrhávaj kúsky cesta veľkosti mandarínky a na naolejovanej doske ich roztiahni na tenké placky so zhrubnutým okrajom. V strede môžu byť skoro priesvitné.
+  - Vyprážaj po jednom 1–2 minúty z každej strany do zlatista. Nechaj odkvapkať na papierovej utierke.
+  - Horúci langoš potri cesnakovou vodou, natri kečupom, posyp syrom a pridaj lyžicu jogurtu.
+tips:
+  - Zemiak v ceste ho udrží mäkký aj po vychladnutí.
+  - Olej nesmie byť príliš horúci – langoš by bol zvonka tmavý a vnútri surový.
+howto: [kysnute-cesto, vyprazanie]
+equipment: [hrniec, teplomer]
+no_equipment: [panvica]

@@ -1,0 +1,28 @@
+title: Cesnaková kebabová omáčka
+description: Hustá biela omáčka, bez ktorej kebab nie je kebab. Zo sójového jogurtu, s cesnakom, kôprom a štipkou mäty.
+cuisine: turecka
+meals: [domace]
+categories: [omacky/dresingy, omacky/dipy]
+time: 5
+active: 5
+servings: 6
+difficulty: 1
+tags: [rychle, bez-varenia, party]
+keeps: { fridge: 4 }
+yields: asi 300 ml
+related: [doner-kebab, durum-hliva, kebab-box]
+ingredients:
+  - sojovy-jogurt: 1 hrnček | hustý, nesladený
+  - veganska-majoneza: 3 pl
+  - cesnak: 2 ks | prelisovaný
+  - citron: 1 pl
+  - kopor: 1 pl | nasekaný
+  - bylinky-mata: 1 čl | nasekaná alebo štipka sušenej
+  - sol: 1/2 čl
+  - cierne-korenie: 1 štipka
+steps:
+  - Všetko zmiešaj v miske dohladka.
+  - Nechaj aspoň 15 minút postáť v chladničke, cesnak sa za ten čas rozvonia.
+tips:
+  - Na pikantnú verziu vmiešaj 1 ČL srirachy alebo harissy.
+  - Ak je jogurt riedky, nechaj ho hodinu odkvapkať v sitku s papierovou utierkou.

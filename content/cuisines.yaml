@@ -95,6 +95,18 @@
     - Pita a chlieb k mezze sú pšeničné.
     - Falafel sa niekedy viaže múkou a vypráža sa v spoločnom oleji s inými jedlami.
 
+- id: turecka
+  name: Turecká a kebab
+  region: Blízky východ
+  tagline: Döner, lahmacun, köfte a pide. Street food, ktorý vieš spraviť rastlinne.
+  color: '#b5472a'
+  staples: [bulgur, červená šošovica, baklažán, paprika, jogurt, pul biber (čili vločky), sumak]
+  dishes: [Mercimek köfte, İmam bayıldı, Kısır, Lahmacun so zeleninou, Gözleme so špenátom]
+  pitfalls:
+    - Kebabová omáčka je z mliečneho jogurtu – pýtaj si inú alebo si sprav vlastnú zo sójového.
+    - Pita, lavaš, pide aj bulgur sú pšeničné.
+    - Zelenina sa často dusí na masle (tereyağı).
+
 - id: peruanska
   name: Peruánska a andská
   region: Latinská Amerika

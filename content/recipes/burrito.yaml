@@ -1,0 +1,39 @@
+title: Veľké burrito s ryžou a fazuľou
+description: Poriadne burrito ako z food trucku – limetková ryža, korenistá fazuľa, opečená paprika, guacamole a salsa zabalené v jednej veľkej tortille.
+cuisine: mexicka
+meals: [obed, vecera]
+categories: [hlavne/plnene]
+time: 40
+active: 25
+servings: 4
+difficulty: 1
+tags: [meal-prep, do-krabicky, lacne]
+spicy: 1
+keeps: { fridge: 3, freezer: 3 }
+leftovers: 'Zabalené v alobale zamraz, prehrej v rúre na 180 °C 25 minút.'
+related: [guacamole, pico-de-gallo]
+ingredients:
+  - ryza-basmati: 1 hrnček
+  - voda: 2 hrnček
+  - limetka: 2 ks
+  - bylinky-koriander: 4 pl
+  - sol: 1 čl
+  - fazula-cierna: 2 ks | plechovky, scedené
+  - olej: 2 pl
+  - cibula: 1 ks
+  - cesnak: 2 ks
+  - kmin: 1 čl
+  - udena-paprika: 1 čl
+  - cili: 1/2 čl
+  - paprika-cervena: 2 ks
+  - kukurica: 1 ks | plechovka
+  - avokado: 2 ks
+  - paradajky: 2 ks
+  - psenicne-tortilly: 4 ks | čo najväčšie
+steps:
+  - Ryžu uvar vo vode so štipkou soli 12 minút pod pokrievkou, nechaj 10 minút dôjsť. Vmiešaj šťavu z 1 limetky a polovicu koriandra.
+  - Cibuľu opeč na 1 PL oleja na strednom ohni 5 minút, pridaj cesnak, kmín, papriku a čili. Pridaj fazuľu so 4 PL vody a trochu ju roztlač.
+  - Papriku nakrájaj na pásy a opeč na zvyšnom oleji na veľkom ohni s kukuricou 5 minút.
+  - Avokádo roztlač so šťavou z polovice limetky a soľou. Paradajky nakrájaj nadrobno so zvyšným koriandrom a limetkou.
+  - Tortillu prehrej, aby bola ohybná. Do spodnej tretiny daj ryžu, fazuľu, zeleninu, guacamole a salsu.
+  - Preklop spodok cez plnku, zaviň boky a pevne zroluj. Opeč na suchej panvici švom dole 2 minúty, aby sa zlepil.

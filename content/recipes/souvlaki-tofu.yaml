@@ -1,0 +1,34 @@
+title: Tofu souvlaki na špajdliach
+description: Kocky tofu marinované v citróne, cesnaku a oregane, opečené na grile so zeleninou. S pitou a tzatziki.
+cuisine: grecka
+meals: [obed, vecera]
+categories: [hlavne/tofu]
+time: 45
+active: 20
+servings: 3
+difficulty: 1
+tags: [vela-bielkovin, party]
+ahead: Marinuj aspoň hodinu, najlepšie cez noc.
+keeps: { fridge: 3 }
+related: [tzatziki, horiatiki]
+ingredients:
+  - tofu-natural: 400 g | vylisované
+  - olivovy-olej: 4 pl
+  - citron: 1 ks
+  - cesnak: 3 ks
+  - oregano: 2 čl
+  - sladka-paprika: 1 čl
+  - sol: 1 čl
+  - cierne-korenie: 1/2 čl
+  - paprika-cervena: 1 ks
+  - cibula-cervena: 1 ks
+  - cuketa: 1/2 ks
+  - pita: 3 ks
+steps:
+  - Tofu nakrájaj na veľké kocky.
+  - Zmiešaj olej, šťavu a kôru z citróna, prelisovaný cesnak, oregano, papriku, soľ a korenie. Tofu v tom obaľ a nechaj aspoň hodinu marinovať.
+  - Papriku, cibuľu a cuketu nakrájaj na podobné kúsky.
+  - Napichaj na špajdle striedavo tofu a zeleninu.
+  - Opekaj na grile alebo grilovacej panvici na strednom ohni 10–12 minút, otáčaj a potieraj zvyšnou marinádou.
+  - Podávaj s teplou pitou a tzatziki.
+howto: [tofu]

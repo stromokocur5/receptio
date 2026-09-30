@@ -1,0 +1,35 @@
+title: Tacos al pastor s hlivou a ananásom
+description: Hliva v údeno-pikantnej marináde s ananásom, opečená do karamelova, na kukuričných tortillách s cibuľou a koriandrom.
+cuisine: mexicka
+meals: [obed, vecera]
+categories: [hlavne/plnene, hlavne/zelenina]
+time: 35
+active: 25
+servings: 3
+difficulty: 1
+tags: [party, rychle]
+spicy: 2
+keeps: { fridge: 2 }
+ingredients:
+  - hliva: 400 g
+  - ananas: 1/4 ks
+  - udena-paprika: 2 čl
+  - cili: 1 čl
+  - kmin: 1/2 čl
+  - oregano: 1 čl
+  - cesnak: 2 ks
+  - ocot: 1 pl
+  - sojova-omacka: 1 pl
+  - paradajkovy-pretlak: 1 pl
+  - olej: 3 pl
+  - kukuricne-tortilly: 9 ks
+  - cibula: 1/2 ks | nadrobno
+  - bylinky-koriander: 4 pl
+  - limetka: 1 ks
+steps:
+  - Zmiešaj papriku, čili, kmín, oregano, prelisovaný cesnak, ocot, sójovú omáčku, pretlak a 1 PL oleja.
+  - Hlivu natrhaj na prúžky a premiešaj s marinádou. Nechaj aspoň 10 minút postáť.
+  - Ananás nakrájaj na malé kocky.
+  - Hlivu opekaj na zvyšnom oleji na veľkom ohni 8 minút, kým nemá tmavé chrumkavé okraje. Posledné 2 minúty pridaj ananás, nech skaramelizuje.
+  - Tortilly prehrej na suchej panvici.
+  - Na každú daj hlivu s ananásom, cibuľu a koriander a pokvapkaj limetkou.

@@ -1,0 +1,57 @@
+title: Döner kebab v pite zo seitanu
+description: Tenké opečené plátky korenistého seitanu, cesnaková omáčka, kapusta a paradajky v teplej pite. Presne ako z bufetu, len bez mäsa.
+cuisine: turecka
+meals: [obed, vecera]
+categories: [hlavne/plnene, hlavne/tofu]
+time: 90
+active: 35
+servings: 4
+difficulty: 2
+tags: [party, vela-bielkovin, meal-prep]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Uvarený seitan vydrží v chladničke 4 dni. Plátky opeč až tesne pred jedlom, nech sú chrumkavé.'
+related: [cesnakova-kebab-omacka, kebab-box, seitan]
+ingredients:
+  - lepok-vital: 150 g
+  - cicerova-muka: 2 pl
+  - vyzivne-drozdie: 2 pl
+  - udena-paprika: 2 čl
+  - kmin: 1 čl
+  - koriander-mlety: 1 čl
+  - oregano: 1 čl
+  - cierne-korenie: 1/2 čl
+  - cesnak: 3 ks | prelisovaný
+  - sojova-omacka: 3 pl
+  - paradajkovy-pretlak: 1 pl
+  - voda: 150 ml
+  - zeleninovy-vyvar: ~6 hrnček | na dusenie
+  - olej: 3 pl
+  - pita: 4 ks
+  - biela-kapusta: 2 hrnček | nadrobno
+  - paradajky: 2 ks
+  - cibula-cervena: 1 ks
+  - uhorka: 1/2 ks
+  - sojovy-jogurt: 1 hrnček
+  - veganska-majoneza: 2 pl
+  - citron: 1/2 ks
+  - cili: podľa chuti | na posypanie
+steps:
+  - Zmiešaj lepok, cícerovú múku, droždie, papriku, kmín, koriander, oregano a korenie.
+  - Zvlášť zmiešaj 2 prelisované strúčiky cesnaku, sójovú omáčku, pretlak, 1 PL oleja a vodu. Vlej k suchým surovinám a mies 2–3 minúty na pružné cesto.
+  - Vytvaruj z neho tesný valček, zabaľ do alobalu ako cukrík a nechaj 10 minút odpočívať.
+  - Vývar priveď do varu, stíš na minimum a valček v ňom 45 minút jemne duste. Nesmie prudko vrieť, inak bude hubovitý.
+  - Nechaj ho trochu vychladnúť, potom ostrým nožom nakrájaj na čo najtenšie plátky. Čím tenšie, tým viac to pripomína döner.
+  - Omáčka. Jogurt zmiešaj s majonézou, zvyšným cesnakom, šťavou z citróna a štipkou soli.
+  - Plátky opeč na zvyšnom oleji na veľkom ohni po dávkach 3–4 minúty, kým nemajú chrumkavé okraje.
+  - Pitu prehrej na suchej panvici, rozkroj vrecko a naplň kapustou, seitanom, paradajkami, cibuľou a uhorkou. Polej omáčkou a posyp čili.
+tips:
+  - Najviac „kebabová“ chuť je z chrumkavých okrajov – panvicu nepreplň, inak sa plátky dusia.
+  - Seitan je čistý lepok. Bezlepkovo skús Dürüm z hlivy.
+howto: [masove-textury]
+variants:
+  - name: V tortille ako dürüm
+    description: Namiesto pity zabaľ všetko do veľkej pšeničnej tortilly a opeč na suchej panvici zo všetkých strán.
+    replace:
+      - from: pita
+        to: psenicne-tortilly

@@ -1,0 +1,39 @@
+title: Arancini – plnené rizotové guľky
+description: Sicílske guľky zo šafránovo-žltého rizota s ragú a hráškom vnútri, obalené v strúhanke a vyprážané dozlatista.
+cuisine: talianska
+meals: [obed, vecera, snack]
+categories: [snacky/party, hlavne/ryza]
+time: 90
+active: 50
+servings: 4
+difficulty: 3
+tags: [party, zvysky]
+ahead: Rizoto uvar deň vopred – vychladnuté sa tvaruje oveľa ľahšie.
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Obalené surové zamraz a vyprážaj rovno zmrazené o 2 minúty dlhšie na nižšom ohni.'
+ingredients:
+  - ryza-arborio: 1 hrnček
+  - zeleninovy-vyvar: 3 hrnček
+  - kurkuma: 1/2 čl | namiesto šafránu
+  - olivovy-olej: 2 pl
+  - cibula: 1 ks
+  - vyzivne-drozdie: 2 pl
+  - sojove-granule: 1/3 hrnček
+  - passata: 1/2 hrnček
+  - hrasok: 1/3 hrnček
+  - oregano: 1/2 čl
+  - sol: 1/2 čl
+  - hladka-muka: 4 pl
+  - voda: 1/2 hrnček
+  - struhanka: 1 hrnček
+  - olej: 6 pl | toľko vsiakne, na vyprážanie treba ~600 ml
+steps:
+  - Polovicu cibule nadrobno opeč na 1 PL olivového oleja, pridaj ryžu a opekaj minútu. Postupne prilievaj horúci vývar s kurkumou (odlož si 1/3 hrnčeka) a miešaj 18 minút, kým ryža nie je mäkká a hustá. Vmiešaj droždie, rozlož na tanier a nechaj úplne vychladnúť.
+  - Ragú. Granulát zalej odloženým horúcim vývarom. Zvyšnú cibuľu opeč na zvyšnom oleji, pridaj granulát, passatu, hrášok, oregano a soľ a duste 10 minút do hustoty.
+  - Mokrými rukami vezmi hrsť rizota, sprav v ňom jamku, daj lyžičku ragú a uzavri do gule.
+  - Múku rozšľahaj s vodou na riedke cestíčko. Guľky ponor do cestíčka a obaľ v strúhanke.
+  - Olej v hrnci rozohrej na 175 °C a vyprážaj po 3 kusoch 4 minúty dozlatista.
+tips:
+  - Zvyšky rizota sú na arancini ideálne.
+howto: [vyprazanie]
+equipment: [hrniec, teplomer]

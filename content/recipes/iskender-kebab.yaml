@@ -1,0 +1,43 @@
+title: İskender kebab zo seitanu
+description: Kocky chleba, na nich tenké plátky seitanu, rozpálená paradajková omáčka, jogurt a na záver prskajúce paprikové maslo.
+cuisine: turecka
+meals: [obed, vecera]
+categories: [hlavne/tofu, hlavne/plnene]
+time: 30
+active: 25
+servings: 3
+difficulty: 2
+tags: [vela-bielkovin, zvysky]
+spicy: 1
+keeps: { fridge: 1 }
+leftovers: 'Skladá sa tesne pred jedlom. Seitan a omáčku uchovaj zvlášť.'
+related: [doner-kebab, seitan]
+ingredients:
+  - lepok-vital: 100 g | alebo 350 g hotového seitanu
+  - vyzivne-drozdie: 1 pl
+  - udena-paprika: 1 čl
+  - sojova-omacka: 2 pl
+  - voda: 100 ml
+  - zeleninovy-vyvar: ~5 hrnček | na dusenie
+  - olej: 1 pl
+  - pita: 3 ks
+  - passata: 1 hrnček
+  - paradajkovy-pretlak: 1 pl
+  - cukor: 1/2 čl
+  - sol: 1/2 čl
+  - rastlinne-maslo: 3 pl
+  - sladka-paprika: 1 čl
+  - cili: 1/2 čl
+  - sojovy-jogurt: 1 hrnček
+  - cesnak: 1 ks | prelisovaný
+  - paprika-cervena: 1 ks
+steps:
+  - Seitan. Lepok zmiešaj s droždím a paprikou, prilej sójovú omáčku s vodou a mies 2 minúty. Vytvaruj valček a var ho vo vývare na miernom ohni 40 minút. Ak máš hotový seitan, preskoč.
+  - Seitan nakrájaj na tenké plátky a opeč na oleji na veľkom ohni dochrumkava.
+  - Passatu povar s pretlakom, cukrom, soľou a 1 PL masla 5 minút.
+  - Pitu nakrájaj na kocky a opeč na suchej panvici alebo v rúre.
+  - Jogurt zmiešaj s cesnakom a štipkou soli. Papriku opeč na panvici.
+  - Na tanier daj chlieb, pokvapkaj trochou omáčky, navrch seitan a zvyšnú omáčku.
+  - Zvyšné maslo rozpusti s paprikou a čili, až kým nezačne prskať, a polej ním seitan. Vedľa daj jogurt a opečenú papriku.
+tips:
+  - Zo zvyškov včerajšieho döneru je to za 10 minút.

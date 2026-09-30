@@ -1,0 +1,40 @@
+title: Pav bhaji
+description: Hustá korenistá zeleninová kaša z Bombaja, rozmačkaná na panvici s maslom, podávaná s opečenými maslovými žemľami, cibuľou a citrónom.
+cuisine: indicka-sever
+meals: [obed, vecera]
+categories: [hlavne/zelenina, hlavne/kari]
+time: 45
+active: 25
+servings: 4
+difficulty: 1
+tags: [lacne, meal-prep, one-pot]
+spicy: 2
+keeps: { fridge: 3, freezer: 3 }
+ingredients:
+  - zemiaky: 3 ks
+  - karfiol: 1/4 ks
+  - hrasok: 1/2 hrnček
+  - mrkva: 1 ks
+  - rastlinne-maslo: 3 pl
+  - cibula: 2 ks | jedna do bhaji, jedna na posypanie
+  - paprika-cervena: 1 ks
+  - cesnak: 4 ks
+  - zazvor: 1 pl | nastrúhaný
+  - paradajky: 3 ks
+  - garam-masala: 2 čl
+  - kmin: 1 čl
+  - sladka-paprika: 2 čl
+  - cili: 1/2 čl
+  - kurkuma: 1/2 čl
+  - sol: 1,5 čl
+  - voda: 1 hrnček
+  - hamburgerova-zemla: 4 ks | mäkké
+  - bylinky-koriander: 3 pl
+  - citron: 1 ks
+steps:
+  - Zemiaky, karfiol, hrášok a mrkvu nakrájaj na kúsky a uvar vo vode do mäkka (15 minút). Sceď a roztlač.
+  - Na 2 PL masla opeč jednu cibuľu nadrobno na strednom ohni 5 minút, pridaj papriku, cesnak a zázvor a opekaj 3 minúty.
+  - Pridaj nakrájané paradajky a všetky koreniny a duste 5 minút, kým sa paradajky nerozpadnú.
+  - Pridaj zeleninu a vodu a všetko tlač a miešaj priamo na panvici 5–8 minút na hustú kašu. Osoľ.
+  - Žemle rozkroj a opeč na zvyšnom masle dozlatista.
+  - Bhaji posyp druhou nadrobno nakrájanou cibuľou a koriandrom, pokvapkaj citrónom a jedz so žemľami.

@@ -1,0 +1,26 @@
+title: Coleslaw – krémový kapustový šalát
+description: Nadrobno nakrájaná kapusta a mrkva v sladkokyslom majonézovom dresingu. K burgrom, BBQ aj vyprážanému tofu.
+cuisine: americka
+meals: [obed, vecera]
+categories: [salaty/prilohove]
+time: 15
+active: 15
+servings: 4
+difficulty: 1
+tags: [rychle, lacne, bez-varenia, party]
+keeps: { fridge: 3 }
+ingredients:
+  - biela-kapusta: 3 hrnček | nadrobno
+  - mrkva: 1 ks | nastrúhaná
+  - cibula-cervena: 1/4 ks
+  - veganska-majoneza: 4 pl
+  - ocot: 1 pl | jablčný
+  - horcica: 1 čl
+  - cukor: 1 čl
+  - sol: 1/2 čl
+  - cierne-korenie: 1 štipka
+steps:
+  - Kapustu osoľ, premasíruj rukami a nechaj 10 minút pustiť vodu. Vyžmýkaj.
+  - Majonézu zmiešaj s octom, horčicou a cukrom.
+  - Kapustu, mrkvu a nadrobno nakrájanú cibuľu premiešaj s dresingom a okoreň.
+  - Nechaj 15 minút postáť, nech sa chute prepoja.

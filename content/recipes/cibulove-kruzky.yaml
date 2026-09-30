@@ -1,0 +1,33 @@
+title: Cibuľové krúžky v chrumkavom cestíčku
+description: Sladkastá cibuľa v ľahkom cestíčku z perlivej vody a strúhanke. K burgru alebo len tak s dipom.
+cuisine: americka
+meals: [snack]
+categories: [snacky/slane, snacky/party]
+time: 30
+active: 30
+servings: 4
+difficulty: 2
+tags: [party, lacne]
+keeps: { fridge: 1 }
+leftovers: 'Najlepšie hneď. Zvyšky prehrej v rúre na 220 °C 5 minút.'
+ingredients:
+  - cibula: 2 ks | veľké
+  - hladka-muka: 1 hrnček
+  - kukuricny-skrob: 2 pl
+  - kypriaci-prasok: 1 čl
+  - sladka-paprika: 1 čl
+  - sol: 1 čl
+  - voda: 1 hrnček | ľadová perlivá
+  - struhanka: 1 hrnček
+  - olej: 6 pl | toľko vsiakne, na vyprážanie treba ~500 ml
+steps:
+  - Cibuľu nakrájaj na krúžky hrubé 1 cm a rozdeľ ich. Najmenšie stredy odlož na iné varenie.
+  - Múku, škrob, prášok, papriku a soľ zmiešaj s ľadovou perlivou vodou na cestíčko hustoty palacinkového.
+  - Olej v hrnci rozohrej na 175 °C.
+  - Krúžky obaľ najprv v troche suchej múky, potom v cestíčku, nechaj odkvapkať a obaľ v strúhanke.
+  - Vyprážaj po dávkach 2–3 minúty dozlatista. Vyber na papierovú utierku a hneď osoľ.
+tips:
+  - Ľadová perlivá voda robí cestíčko ľahké a chrumkavé – nemiešaj ho dlho.
+howto: [vyprazanie]
+equipment: [hrniec, teplomer]
+no_equipment: [panvica]

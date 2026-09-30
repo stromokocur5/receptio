@@ -1,0 +1,39 @@
+title: „Fish“ and chips z tofu a nori
+description: Tofu zabalené v plátku nori v chrumkavom cestíčku – more z neho naozaj cítiť. S hranolkami, hráškovou kašou a tatárkou ako v Londýne.
+cuisine: moderna
+meals: [obed, vecera]
+categories: [hlavne/tofu]
+time: 55
+active: 35
+servings: 3
+difficulty: 2
+tags: [vela-bielkovin, klasika]
+keeps: { fridge: 1 }
+related: [hranolky-z-rury, tatarska-omacka]
+ingredients:
+  - tofu-natural: 400 g | vylisované
+  - nori: 2 ks
+  - citron: 1 ks
+  - sol: 1,5 čl
+  - hladka-muka: 1 hrnček
+  - kukuricny-skrob: 2 pl
+  - kypriaci-prasok: 1 čl
+  - kurkuma: 1 štipka
+  - voda: 1 hrnček | ľadová perlivá
+  - olej: 6 pl | toľko vsiakne, na vyprážanie treba ~500 ml
+  - zemiaky: 5 ks
+  - hrasok: 1,5 hrnček | mrazený
+  - bylinky-mata: 1 pl
+  - rastlinne-maslo: 1 pl
+  - veganska-majoneza: 3 pl
+  - kysle-uhorky: 1 ks
+steps:
+  - Hranolky zo zemiakov priprav podľa receptu Chrumkavé hranolky z rúry.
+  - Tofu nakrájaj na 6 plátkov ako rybie filé. Pokvapkaj citrónom, osoľ a na jednu stranu pritlač kúsok nori (namočený prstami vo vode, aby sa prilepil).
+  - Múku zmiešaj so škrobom, práškom, kurkumou a štipkou soli, prilej ľadovú perlivú vodu a len krátko premiešaj.
+  - Olej rozohrej na 175 °C. Plátky obaľ v troche múky, potom v cestíčku a vyprážaj 4 minúty dozlatista.
+  - Hrášok uvar 3 minúty, sceď a roztlač s maslom, mätou a soľou.
+  - Majonézu zmiešaj s nadrobno nakrájanou uhorkou a citrónom. Podávaj všetko spolu s kúskami citróna.
+howto: [tofu, vyprazanie]
+equipment: [hrniec, teplomer]
+no_equipment: [panvica]

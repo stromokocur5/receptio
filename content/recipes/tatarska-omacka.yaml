@@ -1,0 +1,29 @@
+title: Tatárska omáčka
+description: Domáca tatárka z vegánskej majonézy s kyslými uhorkami, cibuľkou a horčicou. K hranolkám, vyprážanému „syru“ aj rezňom.
+cuisine: slovenska
+meals: [domace]
+categories: [omacky/dresingy, omacky/dipy]
+time: 10
+active: 10
+servings: 6
+difficulty: 1
+tags: [rychle, bez-varenia, klasika]
+keeps: { fridge: 5 }
+yields: asi 250 ml
+ingredients:
+  - veganska-majoneza: 8 pl
+  - sojovy-jogurt: 3 pl
+  - kysle-uhorky: 2 ks | nadrobno
+  - cibula: 1/4 ks | nadrobno
+  - horcica: 1 čl
+  - citron: 1 čl
+  - cukor: 1/2 čl
+  - petrzlenova-vnat: 1 pl
+  - sol: 1 štipka
+steps:
+  - Majonézu vyšľahaj s jogurtom, horčicou, citrónom a cukrom.
+  - Vmiešaj uhorky, cibuľu a petržlen, dochuť soľou.
+  - Nechaj aspoň 30 minút v chladničke, nech sa chute prepoja.
+tips:
+  - Ak chceš domácu majonézu, sprav ju z aquafaby – recept Domáca majonéza.
+related: [domaca-majoneza, vyprazany-syr-tofu, hranolky-z-rury]
