@@ -226,3 +226,320 @@ entries:
     price: 0.66
     date: 2026-09-26
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100776915
+
+  # Tesco online (potravinydomov.itesco.sk), bežné ceny 30. 9. 2026
+  - ingredient: javorovy-sirup
+    store: tesco
+    product: 'Tesco Finest Javorový sirup 330 g'
+    pack: 330 g
+    price: 6.39
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100957384
+  - ingredient: kokosove-mlieko
+    store: tesco
+    product: 'Asia Time Kokosové mlieko 400 ml'
+    pack: 400 ml
+    price: 1.79
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/220194890
+  - ingredient: zeleninovy-vyvar
+    store: tesco
+    product: 'MAGGI Zeleninový bujón v kocke na 5 l (10 × 10 g)'
+    pack: 5 l
+    price: 1.69
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/220204750
+  - ingredient: olivovy-olej
+    store: tesco
+    product: 'Tesco Extra panenský olivový olej 750 ml'
+    pack: 750 ml
+    price: 6.69
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100242208
+  - ingredient: avokado
+    store: tesco
+    product: 'Tesco Finest Avokádo zrelé'
+    pack: 1 ks
+    price: 1.89
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/216366901
+  - ingredient: tempeh
+    store: tesco
+    product: 'Sojaprodukt Tempeh marinovaný 200 g'
+    pack: 200 g
+    price: 1.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/220302503
+  - ingredient: baklazan
+    store: tesco
+    product: 'Baklažán voľný'
+    pack: 1 kg
+    price: 2.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206555865
+  - ingredient: zelene-fazulky
+    store: tesco
+    product: 'Tesco Zelené fazuľové struky krájané 450 g (mrazené)'
+    pack: 450 g
+    price: 0.95
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100579707
+  - ingredient: hliva
+    store: tesco
+    product: 'Tesco Hliva ustricová 250 g'
+    pack: 250 g
+    price: 1.69
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/212094655
+  - ingredient: sojova-omacka
+    store: tesco
+    product: 'Vitana Sójová omáčka 160 ml'
+    pack: 160 ml
+    price: 0.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206362654
+  - ingredient: sampinony
+    store: tesco
+    product: 'Šampiňóny voľné'
+    pack: 1 kg
+    price: 3.59
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/207806003
+  - ingredient: petrzlenova-vnat
+    store: tesco
+    product: 'Tesco Petržlen vňaťový 100 g'
+    pack: 100 g
+    price: 0.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/111273450
+  - ingredient: uhorka
+    store: tesco
+    product: 'Uhorka šalátová'
+    pack: 1 ks
+    price: 0.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/213968665
+  - ingredient: kesu
+    store: tesco
+    product: 'Tesco Kešu orechy jadrá nepražené 200 g'
+    pack: 200 g
+    price: 2.15
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100547294
+  - ingredient: batat
+    store: tesco
+    product: 'Zemiaky sladké (batáty) voľné'
+    pack: 1 kg
+    price: 2.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/208374518
+  - ingredient: vlasske-orechy
+    store: tesco
+    product: 'Tesco Vlašské orechy 200 g'
+    pack: 200 g
+    price: 2.79
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100241612
+  - ingredient: cuketa
+    store: tesco
+    product: 'Cuketa voľná'
+    pack: 1 kg
+    price: 2.49
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/207785742
+  - ingredient: tekvica-hokkaido
+    store: tesco
+    product: 'Tekvica Hokkaido voľná'
+    pack: 1 kg
+    price: 1.79
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/120630863
+  - ingredient: tamari
+    store: tesco
+    product: 'Kikkoman Tamari sójová omáčka bezgluténová 250 ml'
+    pack: 250 ml
+    price: 4.89
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/105009019
+  - ingredient: cucoriedky
+    store: tesco
+    product: 'Tesco Čučoriedky 450 g (mrazené)'
+    pack: 450 g
+    price: 2.69
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100579717
+  - ingredient: karfiol
+    store: tesco
+    product: 'Karfiol'
+    pack: 1 ks
+    price: 1.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206557302
+  - ingredient: nori
+    store: tesco
+    product: 'Pearl River Bridge Morská riasa Nori 28 g'
+    pack: 28 g
+    price: 4.89
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/120011865
+  - ingredient: arasidove-maslo
+    store: tesco
+    product: 'Tesco Arašidová nátierka 340 g'
+    pack: 340 g
+    price: 2.55
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/220330621
+  - ingredient: salat
+    store: tesco
+    product: 'Tesco Ľadový šalát'
+    pack: 1 ks
+    price: 1.59
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206558996
+  - ingredient: arasidy
+    store: tesco
+    product: 'Tesco Pražené lúpané solené arašidy 200 g'
+    pack: 200 g
+    price: 1.39
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/215954628
+  - ingredient: tekvicove-semienka
+    store: tesco
+    product: 'Tesco Lúpané tekvicové semienka 200 g'
+    pack: 200 g
+    price: 1.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100241884
+  - ingredient: brokolica
+    store: tesco
+    product: 'Tesco Brokolica 500 g'
+    pack: 500 g
+    price: 1.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/120725607
+  - ingredient: biela-kapusta
+    store: tesco
+    product: 'Kapusta biela voľná'
+    pack: 1 kg
+    price: 0.89
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206557234
+  - ingredient: olivy
+    store: tesco
+    product: 'Tesco Čierne vykôstkované olivy v slanom náleve (160 g po odkvapkaní)'
+    pack: 160 g
+    price: 1.25
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100242028
+  - ingredient: mandle
+    store: tesco
+    product: 'Tesco Mandle jadrá 200 g'
+    pack: 200 g
+    price: 1.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100396842
+  - ingredient: sezamovy-olej
+    store: tesco
+    product: 'Natur Farm Sezamový olej 250 ml'
+    pack: 250 ml
+    price: 6.59
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/121534814
+  - ingredient: maliny
+    store: tesco
+    product: 'Tesco Maliny 125 g'
+    pack: 125 g
+    price: 2.59
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206558064
+  - ingredient: hrasok
+    store: tesco
+    product: 'Tesco Zelený hrášok 450 g (mrazený)'
+    pack: 450 g
+    price: 0.89
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100579741
+  - ingredient: cesnak
+    store: tesco
+    product: 'Cesnak voľný'
+    pack: 1 kg
+    price: 4.89
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206556190
+  - ingredient: spenat
+    store: tesco
+    product: 'Tesco Špenát listy porciovaný 450 g (mrazený)'
+    pack: 450 g
+    price: 0.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100579708
+  - ingredient: sezam
+    store: tesco
+    product: 'Tesco Sezamové semená 200 g'
+    pack: 200 g
+    price: 0.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100396861
+  - ingredient: kakao
+    store: tesco
+    product: 'Thymos Holandské kakao 100 g'
+    pack: 100 g
+    price: 1.65
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/120307711
+  - ingredient: datle
+    store: tesco
+    product: 'Tesco Vykôstkované datle 200 g'
+    pack: 200 g
+    price: 1.85
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100757733
+  - ingredient: paradajky
+    store: tesco
+    product: 'Paradajky voľné'
+    pack: 1 kg
+    price: 2.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/120500234
+  - ingredient: passata
+    store: tesco
+    product: 'Podravka Pasírované paradajky 500 g'
+    pack: 500 g
+    price: 0.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/216846946
+  - ingredient: ocot
+    store: tesco
+    product: 'Tesco Ocot 8 % 1 l'
+    pack: 1 l
+    price: 0.49
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/215693749
+  - ingredient: kypriaci-prasok
+    store: tesco
+    product: 'Dr. Oetker Kypriaci prášok do pečiva 12 g'
+    pack: 12 g
+    price: 0.19
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206458302
+  - ingredient: kukuricny-skrob
+    store: tesco
+    product: 'Dr. Oetker Gustin jemný kukuričný škrob 200 g'
+    pack: 200 g
+    price: 1.75
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206462514
+  - ingredient: struhanka
+    store: tesco
+    product: 'Tesco Strúhanka 500 g'
+    pack: 500 g
+    price: 0.79
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/220267088
+  - ingredient: tofu-udene
+    store: tesco
+    product: 'Tesco Plant Chef Tofu údené 180 g'
+    pack: 180 g
+    price: 0.99
+    date: 2026-09-30
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/220319140

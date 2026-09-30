@@ -49,9 +49,10 @@ test('excluding an ingredient hides recipes with any form of it', async ({ page 
 	await expect(page.getByRole('link', { name: 'Krémový hummus' })).toBeVisible();
 	const filters = page.locator('#filters');
 	if (!(await filters.isVisible())) await page.getByRole('button', { name: /Filtre/ }).click();
+	await filters.getByText('Strava a alergie').click();
 	await filters.getByPlaceholder('Napr. huby, koriander…').fill('cícer');
 	await filters
-		.getByRole('button', { name: /Skryť recepty s: Cícer/ })
+		.getByRole('button', { name: /Pridať: bez Cícer/ })
 		.first()
 		.click();
 	await expect(page).toHaveURL(/bez=cicer/);

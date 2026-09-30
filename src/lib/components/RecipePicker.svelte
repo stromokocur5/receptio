@@ -40,6 +40,17 @@
 		);
 	});
 
+	/** 450 plates at once made the plan page ~24 000 elements; show a page at a time. */
+	const PAGE = 30;
+	let limit = $state(PAGE);
+	const shown = $derived(results.slice(0, limit));
+	$effect(() => {
+		void query;
+		void meal;
+		void glutenFree;
+		limit = PAGE;
+	});
+
 	function add(recipeId: string, servings: number) {
 		addToPlan(recipeId, servings);
 		justAdded = recipeId;
@@ -74,7 +85,7 @@
 	</div>
 
 	<ul class="results" aria-live="polite">
-		{#each results as r (r.id)}
+		{#each shown as r (r.id)}
 			{@const inPlan = ui.loaded ? servingsInPlan(r.id) : 0}
 			<li>
 				<div class="thumb">
@@ -108,6 +119,11 @@
 			<li class="none muted">Nič sa nenašlo.</li>
 		{/each}
 	</ul>
+	{#if results.length > shown.length}
+		<button class="btn ghost small more" onclick={() => (limit += PAGE)}>
+			Ďalšie recepty ({results.length - shown.length})
+		</button>
+	{/if}
 	<p class="hint muted">
 		{results.length} receptov · pridá sa celý recept, porcie upravíš v zozname.
 	</p>
@@ -117,6 +133,9 @@
 	.picker {
 		display: grid;
 		gap: 10px;
+	}
+	.more {
+		justify-self: center;
 	}
 	.chips {
 		display: flex;
