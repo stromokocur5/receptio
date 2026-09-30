@@ -347,49 +347,48 @@
 
 			<dl class="facts">
 				<div>
-					<dt><Icon name="clock" size={18} /> Čas</dt>
+					<dt><Icon name="clock" size={16} /> Čas</dt>
 					<dd>
 						{recipe.time} min
-						{#if recipe.activeTime < recipe.time}<small>({recipe.activeTime} aktívne)</small>{/if}
-					</dd>
-				</div>
-				<div>
-					<dt><Icon name="chef" size={18} /> Náročnosť</dt>
-					<dd>{['', 'Jednoduché', 'Stredné', 'Náročnejšie'][recipe.difficulty]}</dd>
-				</div>
-				<div>
-					<dt><Icon name="euro" size={18} /> Porcia</dt>
-					<dd>
-						{formatEur(recipe.costPerServing)}
-						{#if recipe.costIsEstimate}<a
-								class="price-note"
-								href="/ceny"
-								title="Podiel ceny z reálnych cien v obchodoch; zvyšok je odhad"
-								>{recipe.costKnownShare >= 0.05
-									? `${Math.round(recipe.costKnownShare * 100)} % z obchodov`
-									: 'odhad'}</a
+						{#if recipe.activeTime < recipe.time}<small>z toho {recipe.activeTime} min práce</small
 							>{/if}
 					</dd>
 				</div>
 				<div>
-					<dt><Icon name="basket" size={18} /> Celý recept ({servings} porc.)</dt>
+					<dt><Icon name="chef" size={16} /> Náročnosť</dt>
+					<dd>{['', 'Jednoduché', 'Stredné', 'Náročnejšie'][recipe.difficulty]}</dd>
+				</div>
+				<div>
+					<dt><Icon name="euro" size={16} /> Cena</dt>
 					<dd>
-						{formatEur(recipe.costPerServing * servings)}
+						{formatEur(recipe.costPerServing)} <span class="unit">/ porcia</span>
+						<small>celý recept {formatEur(recipe.costPerServing * servings)}</small>
 						<small
-							class="shelf"
-							title="Keby si kupoval všetko od nuly v celých baleniach, bez korenia a oleja – zvyšok balení ti ostane"
+							title="Keby sa všetko kupovalo od nuly v celých baleniach, bez korenia a oleja – zvyšok balení ostane doma"
 							>v obchode {formatEur(shelfTotal)}</small
 						>
+						{#if recipe.costIsEstimate}<small
+								><a
+									class="price-note"
+									href="/ceny"
+									title="Podiel ceny z reálnych cien v obchodoch; zvyšok je odhad"
+									>{recipe.costKnownShare >= 0.05
+										? `${Math.round(recipe.costKnownShare * 100)} % z cien obchodov`
+										: 'odhad ceny'}</a
+								></small
+							>{/if}
 					</dd>
 				</div>
 				{#if recipe.showNutrition}
 					<div>
-						<dt><Icon name="bean" size={18} /> Bielkoviny</dt>
-						<dd>{formatNumber(recipe.perServing.protein, 0)} g <small>/ porcia</small></dd>
+						<dt><Icon name="bean" size={16} /> Bielkoviny</dt>
+						<dd>
+							{formatNumber(recipe.perServing.protein, 0)} g <span class="unit">/ porcia</span>
+						</dd>
 					</div>
 				{:else if recipe.yields}
 					<div>
-						<dt><Icon name="package" size={18} /> Výťažok</dt>
+						<dt><Icon name="package" size={16} /> Výťažok</dt>
 						<dd class="yields">{recipe.yields}</dd>
 					</div>
 				{/if}
@@ -922,9 +921,6 @@
 {/if}
 
 <style>
-	.shelf {
-		display: block;
-	}
 	.page {
 		padding-top: 18px;
 		overflow-x: clip;
@@ -1022,8 +1018,7 @@
 	}
 	.facts {
 		display: grid;
-		/* Three across on a phone, so the actions aren't three screens down. */
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(2, 1fr);
 		gap: 8px;
 		margin: 18px 0;
 	}
@@ -1047,21 +1042,26 @@
 	dd {
 		margin: 2px 0 0;
 		font-family: var(--font-display);
-		font-size: 1.05rem;
+		font-size: 1.1rem;
 		font-weight: 600;
-		overflow-wrap: anywhere;
 	}
-	.price-note {
+	.unit {
 		font-family: var(--font-body);
-		font-size: 0.72rem;
+		font-size: 0.78rem;
 		font-weight: 500;
 		color: var(--muted);
 	}
 	dd small {
+		display: block;
+		margin-top: 2px;
 		font-family: var(--font-body);
-		font-size: 0.78rem;
+		font-size: 0.75rem;
+		line-height: 1.35;
 		color: var(--muted);
 		font-weight: 500;
+	}
+	.price-note {
+		color: inherit;
 	}
 	.badges {
 		display: flex;
@@ -1807,7 +1807,7 @@
 
 	@media (min-width: 720px) {
 		.facts {
-			grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+			grid-template-columns: 0.9fr 1fr 1.3fr 0.9fr;
 			gap: 10px;
 		}
 		.facts div {
