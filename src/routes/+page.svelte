@@ -330,7 +330,9 @@
 				<p>
 					{install.prompt
 						? 'Otvorí sa ako appka, bez panela prehliadača, a recepty aj plán máš aj offline.'
-						: 'V Safari ťukni na Zdieľať a potom na „Pridať na plochu“. Recepty aj plán máš potom aj offline.'}
+						: install.hint === 'ios'
+							? 'Ťukni na Zdieľať a potom na „Pridať na plochu“. Recepty aj plán máš potom aj offline.'
+							: 'Otvor menu prehliadača (⋮) a ťukni na „Pridať na plochu“ alebo „Inštalovať“. Recepty aj plán máš potom aj offline.'}
 				</p>
 			</div>
 			<div class="i-actions">

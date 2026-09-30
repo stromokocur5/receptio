@@ -62,6 +62,7 @@
 	import { page } from '$app/state';
 	import Icon from '$lib/components/Icon.svelte';
 	import { onboarding } from '$lib/onboarding.svelte';
+	import { acceptInstall, install } from '$lib/install.svelte';
 
 	let menu: HTMLElement;
 
@@ -121,6 +122,28 @@
 								</span>
 							</button>
 						</li>
+						{#if install.prompt || install.hint}
+							<li>
+								<button
+									onclick={() => {
+										close();
+										void acceptInstall();
+									}}
+								>
+									<span class="ico"><Icon name="download" size={20} /></span>
+									<span>
+										<strong>Pridať na plochu</strong>
+										<small
+											>{install.prompt
+												? 'Ako appka, funguje aj offline'
+												: install.hint === 'ios'
+													? 'Zdieľať → Pridať na plochu'
+													: 'Menu prehliadača ⋮ → Pridať na plochu'}</small
+										>
+									</span>
+								</button>
+							</li>
+						{/if}
 					{/if}
 				</ul>
 			</section>

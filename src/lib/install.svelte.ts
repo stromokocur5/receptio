@@ -4,18 +4,25 @@ interface BeforeInstallPromptEvent extends Event {
 	userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
-const VISITS_KEY = 'receptio:visits';
+declare global {
+	interface Window {
+		/** Caught by the inline script in app.html, since Chrome can fire it before hydration. */
+		__installPrompt?: BeforeInstallPromptEvent;
+	}
+}
+
 const DISMISSED_KEY = 'receptio:install-dismissed';
-/** Only people who come back get asked; a first visit shouldn't be nagged. */
-const MIN_VISITS = 2;
+/** "Nie, ďakujem" hides the home card for a while, not forever. */
+const SNOOZE_DAYS = 14;
 
 export const install = $state<{
-	/** Chrome/Android can install with one tap. */
+	/** Chrome/Edge/Samsung can install with one tap. */
 	prompt: BeforeInstallPromptEvent | null;
-	/** Safari on iPhone can't be prompted; show how to do it by hand. */
-	iosHint: boolean;
+	/** Browsers that can't be prompted but can add to the home screen by hand. */
+	hint: 'ios' | 'android' | null;
+	/** Show the card on the home page. */
 	offer: boolean;
-}>({ prompt: null, iosHint: false, offer: false });
+}>({ prompt: null, hint: null, offer: false });
 
 function read(key: string): string | null {
 	try {
@@ -33,33 +40,33 @@ function write(key: string, value: string) {
 	}
 }
 
-/** Counts a visit per day and listens for the browser's install offer. Call once on mount. */
+function snoozed(): boolean {
+	const since = Date.parse(read(DISMISSED_KEY) ?? '');
+	return Number.isFinite(since) && Date.now() - since < SNOOZE_DAYS * 86_400_000;
+}
+
+function takePrompt(event: BeforeInstallPromptEvent, showCard: boolean) {
+	install.prompt = event;
+	install.offer = showCard;
+}
+
+/** Listens for the browser's install offer and decides whether to show the card. Call once on mount. */
 export function initInstall() {
-	const standalone = matchMedia('(display-mode: standalone)').matches;
-	if (standalone || read(DISMISSED_KEY)) return;
+	if (matchMedia('(display-mode: standalone)').matches) return;
+	const showCard = !snoozed();
 
-	const today = new Date().toISOString().slice(0, 10);
-	let visits: { count: number; last: string } = { count: 0, last: '' };
-	try {
-		visits = { ...visits, ...JSON.parse(read(VISITS_KEY) ?? '{}') };
-	} catch {
-		// Starts counting again.
-	}
-	if (visits.last !== today) {
-		visits = { count: visits.count + 1, last: today };
-		write(VISITS_KEY, JSON.stringify(visits));
-	}
-	const returning = visits.count >= MIN_VISITS;
+	const ua = navigator.userAgent;
+	install.hint = /iPhone|iPad|iPod/.test(ua) ? 'ios' : /Android/.test(ua) ? 'android' : null;
+	install.offer = showCard && install.hint !== null;
 
-	install.iosHint = returning && /iPhone|iPad|iPod/.test(navigator.userAgent);
-	install.offer = install.iosHint;
+	if (window.__installPrompt) takePrompt(window.__installPrompt, showCard);
 	addEventListener('beforeinstallprompt', (event) => {
 		event.preventDefault();
-		install.prompt = event as BeforeInstallPromptEvent;
-		install.offer = returning;
+		takePrompt(event as BeforeInstallPromptEvent, showCard);
 	});
 	addEventListener('appinstalled', () => {
 		install.prompt = null;
+		install.hint = null;
 		install.offer = false;
 	});
 }

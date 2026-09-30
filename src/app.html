@@ -17,6 +17,13 @@
 					document.documentElement.dataset.theme = s.theme;
 			} catch {}
 		</script>
+		<script>
+			// Chrome can offer installing before the app hydrates; keep the event for install.svelte.ts.
+			addEventListener('beforeinstallprompt', (event) => {
+				event.preventDefault();
+				window.__installPrompt = event;
+			});
+		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
