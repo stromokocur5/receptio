@@ -652,7 +652,10 @@
 				{/each}
 
 				<div class="cat extra">
-					<h3>Niečo navyše</h3>
+					<h3>Vlastné položky</h3>
+					{#if !extraItems.current.length}
+						<p class="muted small">Čo kúpiš popri receptoch – drogériu, kávu, pečivo na raňajky.</p>
+					{/if}
 					{#if extraItems.current.length}
 						<ul>
 							{#each extraItems.current.filter((x) => !x.checked) as x (x.id)}
@@ -668,16 +671,17 @@
 							extraText = '';
 						}}
 					>
-						<label class="sr-only" for="extra-text">Pridať vlastnú položku</label>
-						<input
-							id="extra-text"
-							bind:value={extraText}
-							maxlength="80"
-							placeholder="Pridať vlastnú vec – káva, papierové utierky…"
-						/>
-						<button class="btn small" disabled={!extraText.trim()}>
-							<Icon name="plus" size={16} /> Pridať
-						</button>
+						<label class="field extra-field">
+							<Icon name="plus" size={18} />
+							<span class="sr-only">Pridať vlastnú položku</span>
+							<input
+								id="extra-text"
+								bind:value={extraText}
+								maxlength="80"
+								placeholder="Napíš, čo ešte kúpiť…"
+							/>
+						</label>
+						<button class="btn small leaf" disabled={!extraText.trim()}>Pridať</button>
 					</form>
 				</div>
 
@@ -1308,6 +1312,8 @@
 		padding: 12px 14px;
 		border-radius: var(--radius-sm);
 		background: var(--paper);
+		/* Covers the list scrolling under it in the card's top padding. */
+		box-shadow: 0 -12px 0 8px var(--card);
 	}
 	.shop-summary p {
 		margin: 0;
@@ -1328,19 +1334,17 @@
 	}
 	.extra-add {
 		display: flex;
+		align-items: center;
 		gap: 8px;
 		margin-top: 8px;
 	}
-	.extra-add input {
+	.extra-field {
 		flex: 1;
 		min-width: 0;
-		padding: 8px 12px;
-		border: 1.5px solid var(--line);
-		border-radius: 999px;
-		background: var(--paper);
-		color: var(--ink);
-		font: inherit;
-		font-size: 0.9rem;
+	}
+	.extra-field input {
+		padding-block: 8px;
+		font-size: 0.92rem;
 	}
 	.in-cart summary {
 		cursor: pointer;
@@ -1406,7 +1410,7 @@
 		background: var(--tomato-soft);
 		color: var(--tomato);
 	}
-	.cat label {
+	.cat li label {
 		display: grid;
 		grid-template-columns: auto 1fr auto;
 		align-items: center;
@@ -1414,7 +1418,7 @@
 		padding: 8px 0;
 		cursor: pointer;
 	}
-	.cat input {
+	.cat input[type='checkbox'] {
 		position: absolute;
 		opacity: 0;
 		pointer-events: none;
