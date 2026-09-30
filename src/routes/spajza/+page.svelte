@@ -2,14 +2,21 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import { formatGrams } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
-	import Icon from '$lib/components/Icon.svelte';
+	import Icon, { type IconName } from '$lib/components/Icon.svelte';
 	import PreservesShelf from '$lib/components/PreservesShelf.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
-	import { CATEGORY_LABELS, normalizeSearch, searchMatcher } from '$lib/labels';
-	import { rankByPantry, TAP_WATER_ID } from '$lib/pantry';
+	import { CATEGORY_LABELS, ingredientSearchText, searchMatcher } from '$lib/labels';
+	import { rankByPantry, TAP_WATER_ID, useSoon } from '$lib/pantry';
 	import { avoidFilter, missableTools } from '$lib/avoid';
 	import IngredientExcluder from '$lib/components/IngredientExcluder.svelte';
-	import { avoid, pantry, removePantryItem, setPantryItem, ui } from '$lib/state.svelte';
+	import {
+		avoid,
+		pantry,
+		pantryAdded,
+		removePantryItem,
+		setPantryItem,
+		ui
+	} from '$lib/state.svelte';
 	import { INGREDIENT_CATEGORIES, type Ingredient } from '$lib/types';
 
 	const catalog = useCatalog();
@@ -17,10 +24,10 @@
 	let search = $state('');
 	let confirmClear = $state(false);
 
-	const ingredientNames = catalog.ingredients.map((i) => normalizeSearch(i.name));
+	const ingredientNames = catalog.ingredients.map(ingredientSearchText);
 	const matchesName = $derived(searchMatcher(ingredientNames, search));
 	const pickable = $derived(
-		catalog.ingredients.filter((i) => i.id !== TAP_WATER_ID && matchesName(normalizeSearch(i.name)))
+		catalog.ingredients.filter((i) => i.id !== TAP_WATER_ID && matchesName(ingredientSearchText(i)))
 	);
 	const pickableByCategory = $derived(
 		INGREDIENT_CATEGORIES.map((c) => [c, pickable.filter((i) => i.category === c)] as const).filter(
@@ -59,6 +66,83 @@
 			tools: tools.includes(id) ? tools.filter((t) => t !== id) : [...tools, id]
 		};
 	}
+
+	/** One tap fills what most kitchens have; the long list is for the rest. */
+	const BUNDLES: { label: string; icon: IconName; ids: string[] }[] = [
+		{
+			label: 'Základy',
+			icon: 'jar',
+			ids: [
+				'ryza-basmati',
+				'cestoviny',
+				'ovsene-vlocky',
+				'hladka-muka',
+				'cibula',
+				'cesnak',
+				'zemiaky',
+				'sosovica-cervena',
+				'cicer-sterilizovany',
+				'paradajky-sterilizovane'
+			]
+		},
+		{
+			label: 'Bežná zelenina a ovocie',
+			icon: 'leaf',
+			ids: [
+				'mrkva',
+				'paprika-cervena',
+				'cuketa',
+				'brokolica',
+				'paradajky',
+				'jablko',
+				'banan',
+				'citron'
+			]
+		},
+		{
+			label: 'Ázijská kuchyňa',
+			icon: 'soup',
+			ids: [
+				'sojova-omacka',
+				'ryzove-rezance',
+				'kokosove-mlieko',
+				'zazvor',
+				'tofu-natural',
+				'limetka',
+				'jarna-cibulka'
+			]
+		},
+		{
+			label: 'Mexická kuchyňa',
+			icon: 'chili',
+			ids: [
+				'fazula-cierna',
+				'kukuricne-tortilly',
+				'avokado',
+				'kukurica',
+				'cili-papricka',
+				'limetka'
+			]
+		},
+		{
+			label: 'Raňajky',
+			icon: 'sunrise',
+			ids: ['ovsene-vlocky', 'sojove-mlieko', 'arasidove-maslo', 'chia', 'banan']
+		}
+	];
+	const bundleMissing = (ids: string[]) =>
+		ids.filter((id) => catalog.ingredientsById.has(id) && !(id in pantry.current));
+	function addBundle(ids: string[]) {
+		for (const id of bundleMissing(ids)) setPantryItem(id, null);
+	}
+
+	const soon = $derived(
+		ui.loaded
+			? useSoon(pantry.current, pantryAdded.current, catalog.ingredientsById, new Date())
+			: []
+	);
+	const daysAgo = (days: number) =>
+		days < 14 ? `${days} dňami` : `${Math.round(days / 7)} týždňami`;
 
 	function toggle(ingredient: Ingredient) {
 		if (ingredient.id in pantry.current) removePantryItem(ingredient.id);
@@ -108,12 +192,39 @@
 			<div class="field">
 				<Icon name="search" size={20} />
 				<label for="pantry-q" class="sr-only">Hľadať surovinu</label>
-				<input id="pantry-q" type="search" bind:value={search} placeholder="Hľadaj surovinu…" />
+				<input
+					id="pantry-q"
+					type="search"
+					bind:value={search}
+					placeholder="Hľadaj surovinu – napr. cícer, huby, orechy…"
+				/>
 			</div>
+			{#if !search.trim()}
+				<div class="bundles" role="group" aria-label="Pridať naraz">
+					<span class="bundles-label">Pridať naraz:</span>
+					{#each BUNDLES as bundle (bundle.label)}
+						{@const missing = ui.loaded ? bundleMissing(bundle.ids).length : bundle.ids.length}
+						<button
+							class="chip"
+							disabled={missing === 0}
+							onclick={() => addBundle(bundle.ids)}
+							title={bundle.ids.map((id) => catalog.ingredientsById.get(id)?.name).join(', ')}
+						>
+							<Icon name={missing ? bundle.icon : 'check'} size={15} />
+							{bundle.label}
+							{#if missing && missing < bundle.ids.length}<small>+{missing}</small>{/if}
+						</button>
+					{/each}
+				</div>
+			{/if}
 			<div class="cats">
 				{#each pickableByCategory as [category, list] (category)}
-					<div class="cat">
-						<h3>{CATEGORY_LABELS[category]}</h3>
+					{@const picked = ui.loaded ? list.filter((i) => i.id in pantry.current).length : 0}
+					<details class="cat" open={!!search.trim()}>
+						<summary>
+							<h3>{CATEGORY_LABELS[category]}</h3>
+							<span class="cat-n">{picked ? `${picked} z ${list.length}` : list.length}</span>
+						</summary>
 						<div class="chips">
 							{#each list as ingredient (ingredient.id)}
 								{@const on = ui.loaded && ingredient.id in pantry.current}
@@ -129,7 +240,7 @@
 								</button>
 							{/each}
 						</div>
-					</div>
+					</details>
 				{:else}
 					<p class="muted">Takú surovinu v databáze zatiaľ nemáme.</p>
 				{/each}
@@ -137,6 +248,28 @@
 		</section>
 
 		<div class="side">
+			{#if soon.length}
+				<section class="card soon" aria-labelledby="soon-title">
+					<h2 id="soon-title"><Icon name="clock" size={20} /> Minúť čoskoro</h2>
+					<p class="muted small">Čerstvé veci, ktoré máš v špajzi už pár dní.</p>
+					<ul>
+						{#each soon.slice(0, 5) as { ingredient, days } (ingredient.id)}
+							<li>
+								<span class="dot" style:--c={ingredient.color}></span>
+								{ingredient.name}
+								<small class="muted">pred {daysAgo(days)}</small>
+							</li>
+						{/each}
+					</ul>
+					<a
+						class="btn small"
+						href="/zvysky?s={soon
+							.slice(0, 5)
+							.map((s) => s.ingredient.id)
+							.join(',')}">Nájdi recept, ktorý to minie <Icon name="arrow-right" size={16} /></a
+					>
+				</section>
+			{/if}
 			<section class="card mine">
 				<div class="mine-head">
 					<h2><Icon name="jar" size={24} /> Moja špajza</h2>
@@ -301,8 +434,8 @@
 	}
 	.cats {
 		display: grid;
-		gap: 18px;
-		margin-top: 16px;
+		gap: 2px;
+		margin-top: 12px;
 		max-height: 70vh;
 		overflow: auto;
 		padding-right: 4px;
@@ -312,8 +445,10 @@
 		font-family: var(--font-body);
 		text-transform: uppercase;
 		letter-spacing: 0.1em;
-		color: var(--muted);
-		margin-bottom: 8px;
+		color: var(--ink-2);
+	}
+	.cat .chips {
+		padding: 4px 0 14px;
 	}
 	.chips {
 		display: flex;
@@ -339,6 +474,86 @@
 	}
 	.mine {
 		padding: 18px;
+	}
+	.bundles {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px;
+		margin: 14px 0 4px;
+	}
+	.bundles-label {
+		font-size: 0.85rem;
+		font-weight: 650;
+		color: var(--muted);
+		margin-right: 2px;
+	}
+	.bundles small {
+		opacity: 0.7;
+	}
+	.cat summary {
+		display: flex;
+		align-items: baseline;
+		gap: 8px;
+		padding: 8px 0;
+		cursor: pointer;
+		list-style: none;
+	}
+	.cat summary::-webkit-details-marker {
+		display: none;
+	}
+	.cat summary::before {
+		content: '';
+		align-self: center;
+		width: 7px;
+		height: 7px;
+		border-right: 2px solid currentColor;
+		border-bottom: 2px solid currentColor;
+		transform: rotate(-45deg);
+		transition: transform 0.2s var(--ease-out);
+	}
+	.cat[open] summary::before {
+		transform: rotate(45deg);
+	}
+	.cat summary h3 {
+		margin: 0;
+	}
+	.cat-n {
+		font-size: 0.8rem;
+		color: var(--muted);
+	}
+	.soon {
+		display: grid;
+		gap: 8px;
+		padding: 18px;
+		margin-bottom: 18px;
+		background: var(--turmeric-soft);
+		border-color: transparent;
+	}
+	.soon h2 {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin: 0;
+		font-size: 1.2rem;
+	}
+	.soon p {
+		margin: 0;
+	}
+	.soon ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		display: grid;
+		gap: 4px;
+	}
+	.soon li {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+	.soon .btn {
+		justify-self: start;
 	}
 	.never {
 		display: grid;

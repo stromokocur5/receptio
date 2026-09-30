@@ -1,11 +1,12 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { avoidFilter } from '$lib/avoid';
 	import { avoid } from '$lib/state.svelte';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
-	import { normalizeSearch, searchMatcher } from '$lib/labels';
+	import { ingredientSearchText, searchMatcher } from '$lib/labels';
 	import { isAssumedAtHome, rankByLeftovers } from '$lib/pantry';
 
 	const catalog = useCatalog();
@@ -15,14 +16,14 @@
 	let q = $state('');
 	let chosen = $state<string[]>([]);
 
-	const ingredientNames = catalog.ingredients.map((i) => normalizeSearch(i.name));
+	const ingredientNames = catalog.ingredients.map(ingredientSearchText);
 
 	const suggestions = $derived.by(() => {
 		if (!q.trim()) return [];
 		const matchesName = searchMatcher(ingredientNames, q);
 		return catalog.ingredients
 			.filter((i) => !isAssumedAtHome(i) && !chosen.includes(i.id) && i.id !== 'voda')
-			.filter((i) => matchesName(normalizeSearch(i.name)))
+			.filter((i) => matchesName(ingredientSearchText(i)))
 			.slice(0, 8);
 	});
 	const matches = $derived(
@@ -43,6 +44,14 @@
 		chosen = chosen.filter((c) => c !== id);
 	}
 	const nameOf = (id: string) => catalog.ingredientsById.get(id)?.name ?? id;
+
+	// Špajza links here with what should be used up soon: /zvysky?s=spenat,tofu-natural.
+	onMount(() => {
+		const ids = (new URLSearchParams(location.search).get('s') ?? '')
+			.split(',')
+			.filter((id) => catalog.ingredientsById.has(id));
+		chosen = [...new Set(ids)].slice(0, MAX_CHOSEN);
+	});
 </script>
 
 <Seo

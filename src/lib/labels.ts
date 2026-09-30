@@ -15,6 +15,26 @@ export const CATEGORY_LABELS: Record<IngredientCategory, string> = {
 	ine: 'Ostatné'
 };
 
+/** Categories almost everything is in; matching them would find far too much. */
+const UNSEARCHED_INGREDIENT_CATEGORIES = new Set<IngredientCategory>(['koreniny', 'oleje', 'ine']);
+
+/** What an ingredient is found by: name, synonyms and its category ("orechy", "huby"). */
+export function ingredientSearchText(ingredient: {
+	name: string;
+	aliases?: string[];
+	category: IngredientCategory;
+}): string {
+	return normalizeSearch(
+		[
+			ingredient.name,
+			...(ingredient.aliases ?? []),
+			UNSEARCHED_INGREDIENT_CATEGORIES.has(ingredient.category)
+				? ''
+				: CATEGORY_LABELS[ingredient.category]
+		].join(' ')
+	);
+}
+
 export function pluralRecipes(n: number): string {
 	if (n === 1) return 'recept';
 	if (n >= 2 && n <= 4) return 'recepty';

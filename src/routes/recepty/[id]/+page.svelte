@@ -9,7 +9,7 @@
 		subLabel,
 		vesselFor
 	} from '$lib/categories';
-	import { scaleStep } from '$lib/cooking';
+	import { scaleStep, stepLines } from '$lib/cooking';
 	import { flyToPlan } from '$lib/fly';
 	import CookMode from '$lib/components/CookMode.svelte';
 	import { useCatalog } from '$lib/catalog';
@@ -51,6 +51,7 @@
 	} from '$lib/state.svelte';
 	import { breadcrumbJsonLd, recipeJsonLd } from '$lib/structured-data';
 	import { jarsFromYield } from '$lib/preserves';
+	import { shortName } from '$lib/avoid';
 
 	let { data } = $props();
 	const catalog = useCatalog();
@@ -90,6 +91,10 @@
 		variantName = null;
 	});
 	const cuisine = $derived(catalog.cuisinesById.get(recipe.cuisine));
+	/** What each step uses, so the amounts are right there while cooking. */
+	const stepUses = $derived(
+		recipe.steps.map((step) => stepLines(step, recipe.lines, catalog.ingredientsById))
+	);
 	const jsonLd = $derived([
 		recipeJsonLd(base, catalog.ingredientsById, cuisine?.name, SITE_ORIGIN),
 		breadcrumbJsonLd(
@@ -406,44 +411,49 @@
 				{/if}
 			</div>
 
-			<ul class="meta">
-				<li class="spicy spicy-{recipe.spicy}" title="Pálivosť">
-					{#each [1, 2, 3] as level (level)}<span class:on={recipe.spicy >= level}
-							><Icon name="chili" size={16} /></span
-						>{/each}
-					{SPICY_LABELS[recipe.spicy]}
-				</li>
-				{#if recipe.showNutrition}
-					<li title="Hmotnosť surovín na porciu (pred varením)">
-						<Icon name="scale" size={16} /> porcia ≈ {recipe.servingGrams} g
+			<details class="more-info">
+				<summary>Viac o recepte <small>pálivosť, porcia, skladovanie, CO₂</small></summary>
+				<ul class="meta">
+					<li class="spicy spicy-{recipe.spicy}" title="Pálivosť">
+						{#each [1, 2, 3] as level (level)}<span class:on={recipe.spicy >= level}
+								><Icon name="chili" size={16} /></span
+							>{/each}
+						{SPICY_LABELS[recipe.spicy]}
 					</li>
-				{/if}
-				{#if base.keeps}
-					<li>
-						<Icon name="fridge" size={16} />
-						{base.keeps.fridge ? `chladnička ${daysLabel(base.keeps.fridge)}` : 'zjedz hneď'}
-					</li>
-					{#if base.keeps.freezer}
-						<li><Icon name="snowflake" size={16} /> mraznička {monthsLabel(base.keeps.freezer)}</li>
+					{#if recipe.showNutrition}
+						<li title="Hmotnosť surovín na porciu (pred varením)">
+							<Icon name="scale" size={16} /> porcia ≈ {recipe.servingGrams} g
+						</li>
 					{/if}
-				{/if}
-				<li title="Uhlíková stopa surovín na porciu (Our World in Data)">
-					<Icon name="leaf" size={16} />
-					<a class="co2" href="/wiki/uhlikova-stopa"
-						>≈ {formatNumber(recipe.co2PerServing, 1)} kg CO₂e</a
-					>
-				</li>
-				<li class:tested={!!base.tested}>
-					{#if base.tested}
-						<Icon name="check" size={16} /> Vyskúšané
-					{:else}
-						<span
-							title="Recept je napísaný podľa overených postupov, ale v Receptiu ho ešte nikto neuvaril. Časy a množstvá ber orientačne."
-							>Zatiaľ nevyskúšané v praxi</span
+					{#if base.keeps}
+						<li>
+							<Icon name="fridge" size={16} />
+							{base.keeps.fridge ? `chladnička ${daysLabel(base.keeps.fridge)}` : 'zjedz hneď'}
+						</li>
+						{#if base.keeps.freezer}
+							<li>
+								<Icon name="snowflake" size={16} /> mraznička {monthsLabel(base.keeps.freezer)}
+							</li>
+						{/if}
+					{/if}
+					<li title="Uhlíková stopa surovín na porciu (Our World in Data)">
+						<Icon name="leaf" size={16} />
+						<a class="co2" href="/wiki/uhlikova-stopa"
+							>≈ {formatNumber(recipe.co2PerServing, 1)} kg CO₂e</a
 						>
-					{/if}
-				</li>
-			</ul>
+					</li>
+					<li class:tested={!!base.tested}>
+						{#if base.tested}
+							<Icon name="check" size={16} /> Vyskúšané
+						{:else}
+							<span
+								title="Recept je napísaný podľa overených postupov, ale v Receptiu ho ešte nikto neuvaril. Časy a množstvá ber orientačne."
+								>Zatiaľ nevyskúšané v praxi</span
+							>
+						{/if}
+					</li>
+				</ul>
+			</details>
 
 			{#if base.variants.length}
 				<div class="variants" role="group" aria-label="Verzia receptu" data-noprint>
@@ -725,7 +735,25 @@
 							aria-pressed={doneSteps.includes(i)}
 						>
 							<span class="num">{i + 1}</span>
-							<span class="text">{scaleStep(step, factor)}</span>
+							<span class="text"
+								>{scaleStep(step, factor)}
+								{#if stepUses[i].length}
+									<span class="uses" data-noprint>
+										<span class="sr-only">Použiješ:</span>
+										{#each stepUses[i] as line (line.ingredientId)}
+											{@const amount = formatAmount(
+												line.amount === null ? null : line.amount * factor,
+												line.unit
+											)}
+											<span class="use"
+												>{shortName(
+													catalog.ingredientsById.get(line.ingredientId)?.name ?? ''
+												)}{#if amount}&nbsp;<b>{amount}</b>{/if}</span
+											>
+										{/each}
+									</span>
+								{/if}</span
+							>
 						</button>
 					</li>
 				{/each}
@@ -1600,6 +1628,45 @@
 		padding: 12px 12px 12px 0;
 		border-radius: var(--radius-sm);
 		transition: background 0.2s;
+	}
+	.uses {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 6px;
+		margin-top: 8px;
+	}
+	.use {
+		padding: 1px 8px;
+		border-radius: 999px;
+		background: var(--paper-2);
+		color: var(--ink-2);
+		font-size: 0.8rem;
+	}
+	.use b {
+		font-weight: 700;
+		color: color-mix(in srgb, var(--leaf) 80%, var(--ink));
+	}
+	.done .uses {
+		display: none;
+	}
+	.more-info {
+		margin: 4px 0 14px;
+	}
+	.more-info summary {
+		display: inline-flex;
+		align-items: baseline;
+		gap: 8px;
+		cursor: pointer;
+		font-weight: 650;
+		font-size: 0.9rem;
+		color: var(--ink-2);
+	}
+	.more-info summary small {
+		color: var(--muted);
+		font-weight: 500;
+	}
+	.more-info .meta {
+		margin-top: 10px;
 	}
 	.step:hover {
 		background: color-mix(in srgb, var(--card) 70%, transparent);

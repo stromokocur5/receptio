@@ -56,6 +56,8 @@ export type Meal = (typeof MEALS)[number];
 export interface Ingredient {
 	id: string;
 	name: string;
+	/** Other words people search by ("huby" for šampiňóny). */
+	aliases?: string[];
 	category: IngredientCategory;
 	/** Ingredients sharing a group are interchangeable for pantry matching (dry vs canned chickpeas). */
 	group: string;

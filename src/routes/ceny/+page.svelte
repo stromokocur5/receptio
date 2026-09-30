@@ -3,7 +3,7 @@
 	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
-	import { CATEGORY_LABELS, normalizeSearch, searchMatcher } from '$lib/labels';
+	import { CATEGORY_LABELS, ingredientSearchText, searchMatcher } from '$lib/labels';
 	import { proteinEnergyShare } from '$lib/nutrition';
 	import {
 		BULK_PACK_GRAMS,
@@ -22,13 +22,13 @@
 	let search = $state('');
 	let category = $state<IngredientCategory | ''>('');
 
-	const ingredientNames = catalog.ingredients.map((i) => normalizeSearch(i.name));
+	const ingredientNames = catalog.ingredients.map(ingredientSearchText);
 	const matchesName = $derived(searchMatcher(ingredientNames, search));
 	const rows = $derived(
 		catalog.ingredients
 			.filter((i) => i.id !== 'voda')
 			.filter((i) => !category || i.category === category)
-			.filter((i) => matchesName(normalizeSearch(i.name)))
+			.filter((i) => matchesName(ingredientSearchText(i)))
 			.map((ingredient) => ({
 				ingredient,
 				best: bestPrice(ingredient, catalog.prices, today),

@@ -63,6 +63,15 @@ class Persisted<T> {
 	}
 }
 
+function validateDates(raw: unknown): Record<string, string> | undefined {
+	if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) return undefined;
+	return Object.fromEntries(
+		Object.entries(raw).filter(
+			(e): e is [string, string] => typeof e[1] === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(e[1])
+		)
+	);
+}
+
 const isRecord = (v: unknown): v is Record<string, unknown> =>
 	typeof v === 'object' && v !== null && !Array.isArray(v);
 
@@ -192,11 +201,36 @@ function validateSettings(raw: unknown): Settings | undefined {
 }
 
 export const pantry = new Persisted<Pantry>('pantry', {}, validatePantry);
+/** When each pantry item was added (ISO date), to remind about fresh food before it spoils. */
+export const pantryAdded = new Persisted<Record<string, string>>('pantry-added', {}, validateDates);
 export const plan = new Persisted<PlanEntry[]>('plan', [], validatePlan);
 export const checkedItems = new Persisted<Record<string, boolean>>('checked', {}, validateFlags);
 /** Basics (spices, oils) the user marked as missing at home. */
 export const outOfStock = new Persisted<Record<string, boolean>>('out-of-stock', {}, validateFlags);
 export const settings = new Persisted<Settings>('settings', DEFAULT_SETTINGS, validateSettings);
+/** Named filter sets on Recepty ("môj bežný večer"), stored as the list's URL params. */
+export interface FilterPreset {
+	name: string;
+	search: string;
+}
+export const MAX_PRESETS = 8;
+function validatePresets(raw: unknown): FilterPreset[] | undefined {
+	if (!Array.isArray(raw)) return undefined;
+	return raw
+		.filter(
+			(p): p is FilterPreset =>
+				isRecord(p) &&
+				typeof p.name === 'string' &&
+				p.name.length > 0 &&
+				p.name.length <= 40 &&
+				typeof p.search === 'string' &&
+				p.search.length <= 2000
+		)
+		.slice(-MAX_PRESETS)
+		.map(({ name, search }) => ({ name, search }));
+}
+export const presets = new Persisted<FilterPreset[]>('presets', [], validatePresets);
+
 /** Ingredients and tools the user doesn't have or eat, set in Špajza. */
 export const avoid = new Persisted<Avoid>('avoid', NO_AVOID, validateAvoid);
 
@@ -332,6 +366,7 @@ export const preserves = new Persisted<Preserve[]>('preserves', [], validatePres
 /** Everything kept on this device, for backup/restore. */
 export const ALL_PERSISTED = {
 	pantry,
+	pantryAdded,
 	plan,
 	checkedItems,
 	outOfStock,
@@ -341,7 +376,8 @@ export const ALL_PERSISTED = {
 	notes,
 	garden,
 	preserves,
-	avoid
+	avoid,
+	presets
 };
 
 export const ui = $state({ loaded: false });
@@ -399,12 +435,20 @@ export function markCooked(
 }
 
 export function setPantryItem(id: string, grams: number | null) {
+	if (!(id in pantry.current)) {
+		pantryAdded.current = {
+			...pantryAdded.current,
+			[id]: new Date().toISOString().slice(0, 10)
+		};
+	}
 	pantry.current = { ...pantry.current, [id]: grams };
 }
 
 export function removePantryItem(id: string) {
 	const { [id]: _removed, ...rest } = pantry.current;
 	pantry.current = rest;
+	const { [id]: _date, ...dates } = pantryAdded.current;
+	pantryAdded.current = dates;
 }
 
 const sameEntry = (e: PlanEntry, recipeId: string, variant?: string) =>

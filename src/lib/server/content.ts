@@ -107,6 +107,8 @@ const ingredientSchema = z
 	.object({
 		id: slug,
 		name: z.string().min(1),
+		/** Other words people search by: "huby" for šampiňóny. */
+		aliases: z.array(z.string().min(1)).optional(),
 		category: z.enum(INGREDIENT_CATEGORIES),
 		group: slug.optional(),
 		group_factor: z.number().positive().default(1),
@@ -415,6 +417,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 	const ingredients: Ingredient[] = rawIngredients.map((i) => ({
 		id: i.id,
 		name: i.name,
+		aliases: i.aliases,
 		category: i.category,
 		group: i.group ?? i.id,
 		groupFactor: i.group_factor,

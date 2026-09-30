@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { consumeFromPantry, rankByLeftovers, rankByPantry } from './pantry';
+import { consumeFromPantry, rankByLeftovers, rankByPantry, useSoon } from './pantry';
 import { buildShoppingList } from './shopping';
 import { compareStores, shelfCost } from './pricing';
 import type { Ingredient, PriceEntry, RecipeSummary } from './types';
@@ -350,5 +350,34 @@ describe('rankByLeftovers', () => {
 		expect(ranked[0].uses.map((i) => i.id)).toEqual(['cicer-sterilizovany', 'ryza']);
 		// Salt is assumed at home, so nothing else is needed.
 		expect(ranked[1].others).toEqual([]);
+	});
+});
+
+describe('useSoon', () => {
+	const byId = new Map(
+		[
+			{ id: 'spenat', name: 'Špenát', category: 'zelenina', group: 'spenat' },
+			{ id: 'zemiaky', name: 'Zemiaky', category: 'zelenina', group: 'zemiaky' },
+			{
+				id: 'kukurica-sterilizovana',
+				name: 'Kukurica',
+				category: 'zelenina',
+				group: 'kukurica'
+			},
+			{ id: 'ryza', name: 'Ryža', category: 'obilniny', group: 'ryza' }
+		].map((i) => [i.id, i as Ingredient])
+	);
+	const pantry = { spenat: null, zemiaky: null, 'kukurica-sterilizovana': null, ryza: null };
+	const added = {
+		spenat: '2026-09-20',
+		zemiaky: '2026-09-01',
+		'kukurica-sterilizovana': '2026-09-01',
+		ryza: '2026-09-01'
+	};
+
+	it('reminds only about fresh food that has been there a while', () => {
+		const soon = useSoon(pantry, added, byId, new Date(2026, 8, 30));
+		expect(soon.map((s) => [s.ingredient.id, s.days])).toEqual([['spenat', 10]]);
+		expect(useSoon(pantry, added, byId, new Date(2026, 8, 22))).toEqual([]);
 	});
 });

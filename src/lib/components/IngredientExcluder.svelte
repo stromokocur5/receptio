@@ -2,7 +2,7 @@
 	import { shortName } from '$lib/avoid';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
-	import { normalizeSearch } from '$lib/labels';
+	import { ingredientSearchText, normalizeSearch } from '$lib/labels';
 
 	let {
 		selected,
@@ -42,11 +42,14 @@
 		if (!q) return [];
 		const found = choosable
 			.filter((i) => !selectedGroups.includes(i.group))
-			.map((i) => ({ i, name: normalizeSearch(i.name) }))
-			.filter(({ name }) => name.includes(q));
-		// Names starting with the query first: "mrk" → mrkva before "sušená mrkva".
-		found.sort((a, b) => Number(!a.name.startsWith(q)) - Number(!b.name.startsWith(q)));
-		return found.slice(0, 6).map(({ i }) => i);
+			.map((i) => ({ i, name: normalizeSearch(i.name), text: ingredientSearchText(i) }))
+			.filter(({ text }) => text.includes(q));
+		// Own name first, and names starting with the query before the rest: "mrk" → mrkva
+		// before "sušená mrkva"; "huby" → šampiňóny before everything in their category.
+		const rank = ({ name }: { name: string }) =>
+			name.startsWith(q) ? 0 : name.includes(q) ? 1 : 2;
+		found.sort((a, b) => rank(a) - rank(b));
+		return found.slice(0, 8).map(({ i }) => i);
 	});
 
 	function add(id: string) {

@@ -12,7 +12,7 @@
 		isCategoryId,
 		type CategoryId
 	} from '$lib/categories';
-	import Icon from '$lib/components/Icon.svelte';
+	import Icon, { type IconName } from '$lib/components/Icon.svelte';
 	import CategoryTiles from '$lib/components/CategoryTiles.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import {
@@ -32,7 +32,15 @@
 	import { recipeSeason } from '$lib/season';
 	import { rankByPantry, type PantryMatch } from '$lib/pantry';
 	import { avoidFilter, isAvoiding, missableTools, shortName } from '$lib/avoid';
-	import { LIST_SEARCH_KEY, avoid, likes, pantry, ui } from '$lib/state.svelte';
+	import {
+		LIST_SEARCH_KEY,
+		MAX_PRESETS,
+		avoid,
+		likes,
+		pantry,
+		presets,
+		ui
+	} from '$lib/state.svelte';
 	import IngredientExcluder from '$lib/components/IngredientExcluder.svelte';
 	import {
 		MEALS,
@@ -152,7 +160,10 @@
 						r.description,
 						catalog.cuisinesById.get(r.cuisine)?.name ?? '',
 						...r.meals.map((m) => MEAL_LABELS[m]),
-						...r.lines.map((l) => catalog.ingredientsById.get(l.ingredientId)?.name ?? ''),
+						...r.lines.flatMap((l) => {
+							const i = catalog.ingredientsById.get(l.ingredientId);
+							return i ? [i.name, ...(i.aliases ?? [])] : [];
+						}),
 						// "strukoviny", "orechy" or "ovocie" find recipes by what's in them.
 						...new Set(
 							r.lines
@@ -401,8 +412,8 @@
 
 	/** The filters the current page of results belongs to; set once the URL has been read. */
 	let pagedSearch: string | undefined;
-	onMount(() => {
-		const p = new URLSearchParams(location.search);
+	/** Sets every filter from URL params – the page's own URL, or a saved set of filters. */
+	function applyParams(p: URLSearchParams) {
 		q = p.get('q') ?? '';
 		gf = Math.min(2, Math.max(0, Number(p.get('gf')) || 0));
 		cuisine = catalog.cuisinesById.has(p.get('kuchyna') ?? '') ? p.get('kuchyna')! : '';
@@ -452,9 +463,41 @@
 		quick = list(p.get('rychlo')).filter((q): q is Quick =>
 			(QUICK as readonly string[]).includes(q)
 		);
+	}
+
+	onMount(() => {
+		applyParams(new URLSearchParams(location.search));
 		for (const f of activeFilters) openGroups[f.group] = true;
 		pagedSearch = search;
 	});
+
+	/** A saved set, or one of the starters: the whole filter state is replaced. */
+	function applySearch(saved: string) {
+		reset();
+		applyParams(new URLSearchParams(saved));
+		for (const f of activeFilters) openGroups[f.group] = true;
+	}
+	const STARTERS: { label: string; search: string; icon: IconName; tone: string }[] = [
+		{ label: 'Do 20 minút', search: 'cas=20', icon: 'clock', tone: 'var(--sky)' },
+		{ label: 'Niečo sladké', search: 'chut=sladke', icon: 'cake', tone: 'var(--tomato)' },
+		{ label: 'Veľa bielkovín', search: 'bielkoviny=20', icon: 'bean', tone: 'var(--leaf)' },
+		{ label: 'Lacno', search: 'sort=cena', icon: 'euro', tone: 'var(--turmeric)' }
+	];
+
+	let presetName = $state('');
+	let savingPreset = $state(false);
+	function savePreset() {
+		const name = presetName.trim().slice(0, 40);
+		if (!name || !search) return;
+		presets.current = [...presets.current.filter((p) => p.name !== name), { name, search }].slice(
+			-MAX_PRESETS
+		);
+		presetName = '';
+		savingPreset = false;
+	}
+	function removePreset(name: string) {
+		presets.current = presets.current.filter((p) => p.name !== name);
+	}
 
 	$effect(() => {
 		const current = search;
@@ -538,19 +581,35 @@
 		</div>
 	{/if}
 
-	<nav class="ideas" aria-label="Nevieš, čo variť?">
-		<span class="ideas-label">Nevieš, čo variť?</span>
+	<nav class="ideas" aria-label="Rýchly štart">
+		<span class="ideas-label">Na čo máš chuť?</span>
+		{#each ui.loaded ? presets.current : [] as preset (preset.name)}
+			<span class="idea preset" style:--tone="var(--plum)">
+				<button class="preset-apply" onclick={() => applySearch(preset.search)}
+					><span class="idea-ico"><Icon name="star" size={16} /></span> {preset.name}</button
+				>
+				<button
+					class="preset-rm"
+					aria-label="Zmazať uložené filtre: {preset.name}"
+					onclick={() => removePreset(preset.name)}><Icon name="x" size={14} /></button
+				>
+			</span>
+		{/each}
+		{#each STARTERS as starter (starter.label)}
+			<button
+				class="idea"
+				style:--tone={starter.tone}
+				aria-pressed={search === starter.search}
+				onclick={() => applySearch(search === starter.search ? '' : starter.search)}
+				><span class="idea-ico"><Icon name={starter.icon} size={16} /></span>
+				{starter.label}</button
+			>
+		{/each}
 		<a class="idea" href="/spajza" style:--tone="var(--turmeric)"
 			><span class="idea-ico"><Icon name="jar" size={16} /></span> Z toho, čo mám doma</a
 		>
 		<a class="idea" href="/zvysky" style:--tone="var(--leaf-2)"
 			><span class="idea-ico"><Icon name="history" size={16} /></span> Zo zvyškov</a
-		>
-		<a class="idea" href="/sezona" style:--tone="var(--leaf)"
-			><span class="idea-ico"><Icon name="leaf" size={16} /></span> V sezóne</a
-		>
-		<a class="idea" href="/plan#navrh" style:--tone="var(--sky)"
-			><span class="idea-ico"><Icon name="calendar" size={16} /></span> Navrhni mi týždeň</a
 		>
 		<button class="idea" style:--tone="var(--tomato)" onclick={surprise}
 			><span class="idea-ico"><Icon name="sparkle" size={16} /></span> Prekvap ma</button
@@ -885,6 +944,35 @@
 							<button class="link-btn" onclick={reset}>Zrušiť všetko</button>
 						</li>
 					{/if}
+					<li>
+						{#if savingPreset}
+							<form
+								class="preset-form"
+								onsubmit={(e) => {
+									e.preventDefault();
+									savePreset();
+								}}
+							>
+								<label class="sr-only" for="preset-name">Názov uložených filtrov</label>
+								<!-- svelte-ignore a11y_autofocus -->
+								<input
+									id="preset-name"
+									bind:value={presetName}
+									maxlength="40"
+									placeholder="Napr. Bežný večer"
+									autofocus
+								/>
+								<button class="btn small" disabled={!presetName.trim()}>Uložiť</button>
+								<button type="button" class="link-btn" onclick={() => (savingPreset = false)}
+									>Zrušiť</button
+								>
+							</form>
+						{:else}
+							<button class="link-btn" onclick={() => (savingPreset = true)}
+								><Icon name="star" size={14} /> Uložiť tieto filtre</button
+							>
+						{/if}
+					</li>
 				</ul>
 			{/if}
 			{#if filtered.closest}
@@ -1119,7 +1207,59 @@
 		border-color: var(--ink);
 		color: var(--paper);
 	}
+	.idea[aria-pressed='true'] {
+		border-color: var(--tone);
+		background: color-mix(in srgb, var(--tone) 14%, var(--card));
+	}
+	.preset {
+		padding: 0;
+		gap: 0;
+	}
+	.preset-apply {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		padding: 5px 4px 5px 5px;
+		border: 0;
+		background: none;
+		color: inherit;
+		font: inherit;
+		cursor: pointer;
+	}
+	.preset-rm {
+		display: grid;
+		place-items: center;
+		width: 30px;
+		height: 30px;
+		margin-right: 2px;
+		border: 0;
+		border-radius: 50%;
+		background: none;
+		color: var(--muted);
+		cursor: pointer;
+	}
+	.preset-rm:hover {
+		color: var(--ink);
+	}
+	.preset-form {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.preset-form input {
+		width: 170px;
+		padding: 6px 10px;
+		border: 1.5px solid var(--line);
+		border-radius: 999px;
+		background: var(--card);
+		color: var(--ink);
+		font: inherit;
+		font-size: 0.88rem;
+	}
 	.link-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
 		border: 0;
 		background: none;
 		padding: 4px 6px;

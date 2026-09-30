@@ -188,3 +188,60 @@ export function rankByLeftovers(
 		.filter((m) => m.uses.length > 0)
 		.sort((a, b) => b.uses.length - a.uses.length || a.others.length - b.others.length);
 }
+
+/** Fresh food that keeps for weeks – no reminder for these. */
+const LONG_KEEPING = new Set([
+	'zemiaky',
+	'batat',
+	'cibula',
+	'cesnak',
+	'mrkva',
+	'cvikla',
+	'tekvica-hokkaido',
+	'jablko',
+	'biela-kapusta',
+	'citron',
+	'limetka',
+	'pomaranc',
+	'zazvor',
+	'topinambur',
+	'petrzlen-koren',
+	'pastinak',
+	'chren'
+]);
+const PRESERVED = /steriliz|susen|mrazen|konzerv|nakladan|kysl/;
+/** Days fresh vegetables, fruit and tofu usually keep once bought. */
+const FRESH_DAYS = 5;
+
+/**
+ * Fresh things that have been in the pantry a while and should be cooked soon, oldest first.
+ * Only a hint: the pantry doesn't know when something was bought, only when it was added.
+ */
+export function useSoon(
+	pantry: Pantry,
+	added: Record<string, string>,
+	byId: Map<string, Ingredient>,
+	today: Date
+): { ingredient: Ingredient; days: number }[] {
+	const todayMs = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+	return Object.keys(pantry)
+		.flatMap((id) => {
+			const ingredient = byId.get(id);
+			const date = added[id];
+			if (!ingredient || !date) return [];
+			const group = ingredient.group;
+			const fresh =
+				(ingredient.category === 'zelenina' ||
+					ingredient.category === 'ovocie' ||
+					group === 'tofu-natural' ||
+					id.startsWith('tofu') ||
+					id === 'tempeh') &&
+				!LONG_KEEPING.has(group) &&
+				!LONG_KEEPING.has(id) &&
+				!PRESERVED.test(id);
+			if (!fresh) return [];
+			const days = Math.round((todayMs - Date.parse(date)) / 86_400_000);
+			return days >= FRESH_DAYS ? [{ ingredient, days }] : [];
+		})
+		.sort((a, b) => b.days - a.days);
+}

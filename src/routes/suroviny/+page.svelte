@@ -3,7 +3,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { CATEGORY_ICONS } from '$lib/ingredient-icons';
-	import { CATEGORY_LABELS, normalizeSearch, searchMatcher } from '$lib/labels';
+	import { CATEGORY_LABELS, ingredientSearchText, searchMatcher } from '$lib/labels';
 	import { INGREDIENT_CATEGORIES } from '$lib/types';
 
 	const catalog = useCatalog();
@@ -23,13 +23,13 @@
 		return counts;
 	});
 
-	const ingredientNames = catalog.ingredients.map((i) => normalizeSearch(i.name));
+	const ingredientNames = catalog.ingredients.map(ingredientSearchText);
 
 	const groups = $derived.by(() => {
 		const matchesName = searchMatcher(ingredientNames, q);
 		const visible = catalog.ingredients
 			.filter((i) => i.id !== 'voda')
-			.filter((i) => matchesName(normalizeSearch(i.name)))
+			.filter((i) => matchesName(ingredientSearchText(i)))
 			.filter((i) => !onlySeason || i.season.includes(month))
 			.filter((i) => !onlyHomemade || i.homemade)
 			.sort((a, b) => a.name.localeCompare(b.name, 'sk'));
