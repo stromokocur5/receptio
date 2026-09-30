@@ -25,9 +25,18 @@
 	/** Bindable, so the plan page's empty state can open it. */
 	let { open = $bindable(false) }: { open?: boolean } = $props();
 
-	// Links like "Navrhni mi týždeň" land here already opened.
+	/** Ready-made budgets per person for a 7-day week; scaled to the plan's days and people. */
+	const BUDGET_PRESETS = [15, 20, 30];
+	const PRESET_PARAM = 'rozpocet';
+
+	// Links like "Navrhni mi týždeň" land here already opened; /plan?rozpocet=25 also proposes.
 	onMount(() => {
 		if (location.hash === '#navrh') open = true;
+		const perWeek = Number(new URLSearchParams(location.search).get(PRESET_PARAM));
+		if (BUDGET_PRESETS.includes(perWeek)) {
+			open = true;
+			usePreset(perWeek);
+		}
 	});
 	let budget = $state<number | null>(null);
 	let minProtein = $state(20);
@@ -73,6 +82,17 @@
 				inSeason: (r) => recipeSeason(r, catalog.ingredientsById, month).inSeason
 			}
 		};
+	}
+
+	function presetBudget(perWeek: number) {
+		return Math.round((perWeek * settings.current.people * settings.current.planDays) / 7);
+	}
+
+	function usePreset(perWeek: number) {
+		budget = presetBudget(perWeek);
+		// Each preset gets its own plan, not the same one under a different limit.
+		seed = perWeek;
+		suggest();
 	}
 
 	function suggest() {
@@ -137,6 +157,24 @@
 
 	{#if open}
 		<div class="form">
+			<div class="presets">
+				<p class="small"><strong>Hotový týždeň za:</strong></p>
+				<div class="chips">
+					{#each BUDGET_PRESETS as perWeek (perWeek)}
+						<button
+							class="chip"
+							aria-pressed={budget === presetBudget(perWeek)}
+							onclick={() => usePreset(perWeek)}
+						>
+							do {perWeek} € na osobu
+						</button>
+					{/each}
+				</div>
+				<p class="muted small">
+					Za suroviny, ktoré recepty spotrebujú. Pri nákupe celých balení zaplatíš viac, zvyšok ti
+					ostane doma.
+				</p>
+			</div>
 			<PlanSettings />
 			<label>
 				Rozpočet na celý plán
@@ -326,6 +364,12 @@
 	.small {
 		font-size: 0.84rem;
 		margin: 0;
+	}
+	.presets {
+		display: grid;
+		gap: 6px;
+		padding-bottom: 12px;
+		border-bottom: 1px dashed var(--line);
 	}
 	.form > .btn {
 		justify-self: start;

@@ -9,14 +9,17 @@
 		onchange,
 		prefix = 'bez',
 		placeholder = 'Napr. huby, koriander…',
+		fieldLabel = 'Surovina, ktorú nechceš alebo nemáš',
 		hint
 	}: {
 		/** Ingredient ids. */
 		selected: string[];
 		onchange: (ids: string[]) => void;
-		/** Word before each chosen name: "bez: huby". */
+		/** Word before each chosen name: "bez: huby"; empty for just the name. */
 		prefix?: string;
 		placeholder?: string;
+		/** For screen readers; the placeholder isn't a label. */
+		fieldLabel?: string;
 		hint: string;
 	} = $props();
 
@@ -24,6 +27,7 @@
 	let query = $state('');
 
 	const nameOf = (id: string) => shortName(catalog.ingredientsById.get(id)?.name ?? id);
+	const label = (id: string) => (prefix ? `${prefix}: ${nameOf(id)}` : nameOf(id));
 	const selectedGroups = $derived(
 		selected.map((id) => catalog.ingredientsById.get(id)?.group ?? id)
 	);
@@ -65,10 +69,10 @@
 				<button
 					class="chip"
 					aria-pressed="true"
-					aria-label="Zrušiť: {prefix} {nameOf(id)}"
+					aria-label="Zrušiť: {label(id)}"
 					onclick={() => onchange(selected.filter((x) => x !== id))}
 				>
-					{prefix}: {nameOf(id)}
+					{label(id)}
 					<Icon name="x" size={14} />
 				</button>
 			{/each}
@@ -76,7 +80,7 @@
 	{/if}
 	<label class="field small-field">
 		<Icon name="search" size={16} />
-		<span class="sr-only">Surovina, ktorú nechceš alebo nemáš</span>
+		<span class="sr-only">{fieldLabel}</span>
 		<input
 			type="search"
 			bind:value={query}
@@ -93,7 +97,7 @@
 	{#if suggestions.length}
 		<div class="chips" role="group" aria-label="Návrhy surovín">
 			{#each suggestions as i (i.id)}
-				<button class="chip" aria-label="Pridať: {prefix} {nameOf(i.id)}" onclick={() => add(i.id)}>
+				<button class="chip" aria-label="Pridať: {label(i.id)}" onclick={() => add(i.id)}>
 					<Icon name="plus" size={13} />
 					{nameOf(i.id)}
 				</button>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { formatGrams } from '$lib/amounts';
 	import { hashString } from '$lib/art';
@@ -8,6 +8,7 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import { CATEGORY_LABELS } from '$lib/labels';
 	import { decodeSharedPlan, type SharedPlan } from '$lib/share';
+	import { LIVE_PREFIX, joinLiveList, leaveLiveList, live, tickLive } from '$lib/live-list.svelte';
 	import { approxPieces } from '$lib/shopping';
 	import { plan, settings } from '$lib/state.svelte';
 	import { INGREDIENT_CATEGORIES } from '$lib/types';
@@ -16,10 +17,26 @@
 
 	const catalog = useCatalog();
 
-	let shared = $state<SharedPlan | null>(null);
+	let snapshot = $state<SharedPlan | null>(null);
 	let status = $state<'loading' | 'ok' | 'empty' | 'invalid'>('loading');
 	let listKey = '';
-	let checked = $state<Record<string, boolean>>({});
+	let localChecked = $state<Record<string, boolean>>({});
+	/** Shopping together: the list and ticks come from the shared, encrypted record. */
+	let isLive = $state(false);
+
+	const decode = (fragment: string) =>
+		decodeSharedPlan(
+			fragment,
+			new Set(catalog.recipesById.keys()),
+			new Set(catalog.ingredientsById.keys())
+		);
+	const liveList = $derived(isLive && live.data ? decode(live.data.list) : null);
+	const shared = $derived(isLive ? liveList : snapshot);
+	const checked = $derived<Record<string, boolean>>(
+		isLive
+			? Object.fromEntries(Object.entries(live.data?.ticks ?? {}).map(([id, [done]]) => [id, done]))
+			: localChecked
+	);
 	let confirmReplace = $state(false);
 
 	const groups = $derived.by(() => {
@@ -39,26 +56,35 @@
 			status = 'empty';
 			return;
 		}
-		shared = decodeSharedPlan(
-			fragment,
-			new Set(catalog.recipesById.keys()),
-			new Set(catalog.ingredientsById.keys())
-		);
-		status = shared ? 'ok' : 'invalid';
+		if (fragment.startsWith(LIVE_PREFIX)) {
+			isLive = true;
+			status = 'ok';
+			void joinLiveList(fragment.slice(LIVE_PREFIX.length));
+			return;
+		}
+		snapshot = decode(fragment);
+		status = snapshot ? 'ok' : 'invalid';
 		// Ticks are kept for the most recent shared list only.
 		listKey = String(hashString(fragment));
 		try {
 			const saved = JSON.parse(localStorage.getItem(CHECKED_KEY) ?? '{}');
-			if (saved?.key === listKey && typeof saved.checked === 'object') checked = saved.checked;
+			if (saved?.key === listKey && typeof saved.checked === 'object') localChecked = saved.checked;
 		} catch {
-			checked = {};
+			localChecked = {};
 		}
+	});
+	onDestroy(() => {
+		if (isLive) leaveLiveList();
 	});
 
 	function toggle(id: string) {
-		checked = { ...checked, [id]: !checked[id] };
+		if (isLive) {
+			tickLive(id, !checked[id]);
+			return;
+		}
+		localChecked = { ...localChecked, [id]: !localChecked[id] };
 		try {
-			localStorage.setItem(CHECKED_KEY, JSON.stringify({ key: listKey, checked }));
+			localStorage.setItem(CHECKED_KEY, JSON.stringify({ key: listKey, checked: localChecked }));
 		} catch {
 			// Ticks just won't survive a reload.
 		}
@@ -84,12 +110,30 @@
 
 <div class="wrap page">
 	<header class="rise">
-		<p class="eyebrow">Zdieľaný zoznam</p>
-		<h1>Nákup od kamaráta</h1>
+		<p class="eyebrow">{isLive ? 'Nakupujeme spolu' : 'Zdieľaný zoznam'}</p>
+		<h1>{isLive ? 'Spoločný nákup' : 'Nákup od kamaráta'}</h1>
+		{#if isLive}
+			<p class="live-status" data-status={live.status} role="status">
+				<span class="dot" aria-hidden="true"></span>
+				{live.status === 'live'
+					? 'Naživo – čo odškrtne jeden, uvidí aj druhý'
+					: live.status === 'offline'
+						? 'Bez spojenia – zaškrtnutia sa pošlú, keď sa pripojíš'
+						: 'Pripájam sa…'}
+			</p>
+		{/if}
 	</header>
 
-	{#if status === 'loading'}
+	{#if status === 'loading' || (isLive && live.status === 'connecting' && !live.data)}
 		<p class="muted">Načítavam…</p>
+	{:else if isLive && live.status === 'missing'}
+		<section class="card box">
+			<p>
+				Tento spoločný zoznam už neexistuje alebo je odkaz neúplný. Popros o nový – v Pláne cez
+				„Nakupovať spolu“.
+			</p>
+			<a class="btn leaf" href="/plan"><Icon name="calendar" size={18} /> Môj plán</a>
+		</section>
 	{:else if status !== 'ok' || !shared}
 		<section class="card box">
 			<p>
@@ -138,8 +182,10 @@
 					</div>
 				{/each}
 				<p class="muted small">
-					Zoznam už nezahŕňa to, čo má odosielateľ doma. Zaškrtnutie sa ukladá len v tvojom
-					telefóne.
+					Zoznam už nezahŕňa to, čo má odosielateľ doma.
+					{isLive
+						? 'Zaškrtnutia vidia všetci, ktorí majú tento odkaz. Server ich má len zašifrované.'
+						: 'Zaškrtnutie sa ukladá len v tvojom telefóne.'}
 				</p>
 			</section>
 
@@ -254,6 +300,38 @@
 	.on .nm {
 		opacity: 0.5;
 		text-decoration: line-through;
+	}
+	.live-status {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		margin: 8px 0 0;
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--ink-2);
+	}
+	.dot {
+		width: 10px;
+		height: 10px;
+		border-radius: 50%;
+		background: var(--muted);
+	}
+	[data-status='live'] .dot {
+		background: var(--leaf);
+		animation: pulse 2s ease-in-out infinite;
+	}
+	[data-status='offline'] .dot {
+		background: var(--turmeric);
+	}
+	@keyframes pulse {
+		50% {
+			box-shadow: 0 0 0 6px color-mix(in srgb, var(--leaf) 25%, transparent);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		[data-status='live'] .dot {
+			animation: none;
+		}
 	}
 	.small {
 		font-size: 0.84rem;

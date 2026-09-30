@@ -6,6 +6,9 @@
 	import PlateArt from '$lib/components/PlateArt.svelte';
 	import { vesselFor } from '$lib/categories';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
+	import IngredientExcluder from '$lib/components/IngredientExcluder.svelte';
+	import { avoidFilter } from '$lib/avoid';
+	import { rankByLeftovers } from '$lib/pantry';
 	import Seo from '$lib/components/Seo.svelte';
 	import { SITE_ORIGIN } from '$lib/site';
 	import { websiteJsonLd } from '$lib/structured-data';
@@ -15,7 +18,7 @@
 	import { bedPlants, localizeGuide, monthTasks, seasonDelayWeeks } from '$lib/garden';
 	import { acceptInstall, dismissInstall, install } from '$lib/install.svelte';
 	import { onboarding } from '$lib/onboarding.svelte';
-	import { favorites, garden, likes, pantry, plan, settings, ui } from '$lib/state.svelte';
+	import { avoid, favorites, garden, likes, pantry, plan, settings, ui } from '$lib/state.svelte';
 	import type { GrowGuide } from '$lib/types';
 
 	const catalog = useCatalog();
@@ -30,6 +33,34 @@
 	});
 
 	let query = $state('');
+
+	/** "What do I have?" without filling in the pantry: pick a few things, see recipes right away. */
+	let haveIds = $state<string[]>([]);
+	const haveMatches = $derived(
+		haveIds.length
+			? rankByLeftovers(
+					catalog.recipes.filter(avoidFilter(avoid.current, catalog.ingredientsById)),
+					haveIds,
+					catalog.ingredientsById
+				).slice(0, 4)
+			: []
+	);
+
+	/** Grandma's classics shown on the home page, in this order when they exist. */
+	const HOME_CLASSICS = [
+		'halusky-kesu-bryndza',
+		'kapustnica',
+		'lokse',
+		'segedin',
+		'parene-buchty',
+		'kysla-sosovica',
+		'strapacky-s-kapustou',
+		'langos'
+	];
+	const classics = $derived(
+		HOME_CLASSICS.flatMap((id) => catalog.recipesById.get(id) ?? []).slice(0, 4)
+	);
+	const slovakCount = $derived(catalog.recipes.filter((r) => r.cuisine === 'slovenska').length);
 
 	const heroRecipe = $derived(catalog.recipesById.get('zelene-kari-tofu') ?? catalog.recipes[0]);
 	const featured = $derived(
@@ -100,7 +131,7 @@
 	}[] = [
 		{
 			title: 'Nájdi, čo uvariť',
-			text: 'Stovky receptov z 21 kuchýň – od rýchlej večere po nedeľné varenie. Pri každom vidíš cenu porcie, bielkoviny aj alergény.',
+			text: `Stovky receptov z ${catalog.cuisines.length} kuchýň – od babkiných klasík po street food zo sveta. Pri každom vidíš cenu porcie, bielkoviny aj alergény.`,
 			icon: 'bowl',
 			tone: 'var(--tomato)',
 			href: '/recepty',
@@ -222,7 +253,8 @@
 			</form>
 			<nav class="quick-start" aria-label="Rýchly štart">
 				<a href="/recepty?cas=20"><Icon name="clock" size={16} /> Do 20 minút</a>
-				<a href="/spajza"><Icon name="jar" size={16} /> Z toho, čo mám</a>
+				<a href="#co-mam-doma"><Icon name="jar" size={16} /> Z toho, čo mám</a>
+				<a href="/plan?rozpocet=20#navrh"><Icon name="euro" size={16} /> Týždeň do 20 €</a>
 				<a href="/recepty?chut=sladke"><Icon name="cake" size={16} /> Niečo sladké</a>
 				<a href="/plan#navrh"><Icon name="calendar" size={16} /> Navrhni mi týždeň</a>
 			</nav>
@@ -345,6 +377,40 @@
 	</section>
 {/if}
 
+<section class="wrap block" id="co-mam-doma">
+	<div class="have card">
+		<div class="have-copy">
+			<p class="eyebrow">Bez vypĺňania špajze</p>
+			<h2>Čo máš doma?</h2>
+			<p>Napíš dve-tri veci z chladničky a hneď uvidíš, čo z nich uvaríš.</p>
+		</div>
+		<div class="have-pick">
+			<IngredientExcluder
+				selected={haveIds}
+				onchange={(ids) => (haveIds = ids.slice(0, 5))}
+				prefix=""
+				placeholder="cícer, špenát, ryža…"
+				fieldLabel="Surovina, ktorú máš doma"
+				hint="Stačia aj zvyšky – pol cukety, ryža zo včera."
+			/>
+		</div>
+	</div>
+	{#if haveIds.length}
+		<div class="grid have-results" aria-live="polite">
+			{#each haveMatches as m, i (m.recipe.id)}
+				<RecipeCard recipe={m.recipe} index={i} />
+			{/each}
+		</div>
+		{#if haveMatches.length}
+			<a class="btn ghost small more-have" href="/zvysky?s={haveIds.join(',')}"
+				>Viac receptov a čo ešte treba <Icon name="arrow-right" size={16} /></a
+			>
+		{:else}
+			<p class="muted">Z tohto zatiaľ nemáme recept. Skús pridať ešte niečo.</p>
+		{/if}
+	{/if}
+</section>
+
 <section class="wrap block">
 	<div class="head">
 		<h2>Na čo máš chuť?</h2>
@@ -458,10 +524,33 @@
 	</div>
 </section>
 
-<section class="wrap block">
-	<div class="head">
-		<h2>Kuchyne sveta</h2>
-		<a class="btn ghost small" href="/kuchyne">Všetky <Icon name="arrow-right" size={16} /></a>
+<section class="wrap block roots">
+	<div class="roots-copy">
+		<p class="eyebrow">Od babky aj zo sveta</p>
+		<h2>Kapustnica ako na Štedrý deň. Kebab ako o druhej v noci. Kari ako v Kérale.</h2>
+		<p>
+			Nemusíš si vyberať medzi chuťami z detstva a tým, čo ťa zlákalo na cestách. Halušky s
+			bryndzou, lokše s lekvárom, segedín, parené buchty – {slovakCount} slovenských klasík urobených
+			rastlinne tak, že rozdiel spoznáš len podľa toho, že ti po nich nie je ťažko.
+		</p>
+		<p>
+			A keď zatúžiš po niečom inom, máš tu {catalog.cuisines.length} kuchýň sveta: etiópsku injeru, mexické
+			tacos, kórejský bibimbap, japonské ramen či turecký lahmacun. Každý deň iná krajina, stále ten istý
+			nákup.
+		</p>
+	</div>
+	{#if classics.length}
+		<div class="grid">
+			{#each classics as recipe, i (recipe.id)}
+				<RecipeCard {recipe} index={i} />
+			{/each}
+		</div>
+	{/if}
+	<div class="head roots-head">
+		<h3>Kam dnes?</h3>
+		<a class="btn ghost small" href="/kuchyne"
+			>Všetky kuchyne <Icon name="arrow-right" size={16} /></a
+		>
 	</div>
 	<div class="cuisines">
 		{#each catalog.cuisines as c (c.id)}
@@ -954,6 +1043,52 @@
 		gap: 18px;
 	}
 
+	.have {
+		display: grid;
+		gap: 16px;
+		padding: 20px;
+		background: color-mix(in srgb, var(--turmeric) 10%, var(--card));
+	}
+	.have h2 {
+		margin: 0 0 4px;
+	}
+	.have-copy p:last-child {
+		margin: 0;
+		color: var(--ink-2);
+	}
+	.have-results {
+		margin-top: 18px;
+	}
+	.more-have {
+		margin-top: 14px;
+	}
+	@media (min-width: 800px) {
+		.have {
+			grid-template-columns: 1fr 1.2fr;
+			align-items: center;
+			padding: 24px 28px;
+		}
+	}
+	.roots-copy {
+		max-width: 46em;
+		margin-bottom: 20px;
+	}
+	.roots-copy h2 {
+		font-size: clamp(1.5rem, 3.4vw, 2.2rem);
+		line-height: 1.15;
+		margin: 0 0 12px;
+	}
+	.roots-copy p:not(.eyebrow) {
+		color: var(--ink-2);
+		font-size: 1.05rem;
+	}
+	.roots-head {
+		margin-top: 28px;
+	}
+	.roots-head h3 {
+		margin: 0;
+		font-size: 1.3rem;
+	}
 	.cuisines {
 		display: flex;
 		flex-wrap: wrap;

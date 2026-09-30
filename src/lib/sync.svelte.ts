@@ -134,7 +134,7 @@ function saveMeta() {
 	}
 }
 
-async function request(keys: SyncKeys, method: 'GET' | 'PUT' | 'DELETE', body?: object) {
+export async function request(keys: SyncKeys, method: 'GET' | 'PUT' | 'DELETE', body?: object) {
 	const res = await fetch(`/api/sync/${keys.id}`, {
 		method,
 		headers: body ? { 'content-type': 'application/json' } : undefined,

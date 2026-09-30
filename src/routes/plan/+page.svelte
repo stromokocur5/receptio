@@ -19,6 +19,7 @@
 	import { compareStores, shelfCost, type ShelfCost, type StorePlan } from '$lib/pricing';
 	import { mealSchedule } from '$lib/schedule';
 	import { encodeSharedPlan } from '$lib/share';
+	import { LIVE_PREFIX, createLiveList } from '$lib/live-list.svelte';
 	import { approxPieces, buildShoppingList, type ShoppingItem } from '$lib/shopping';
 	import {
 		addExtraItem,
@@ -42,6 +43,10 @@
 
 	let copied = $state(false);
 	let shareState = $state<'idle' | 'copied' | 'failed'>('idle');
+	let together = $state<{ status: 'idle' | 'creating' | 'failed'; url: string }>({
+		status: 'idle',
+		url: ''
+	});
 	let confirmClear = $state(false);
 	let cookedMessage = $state('');
 	let plannerOpen = $state(false);
@@ -247,14 +252,17 @@
 	}
 
 	/** Link with the plan and the still-to-buy list in the URL fragment (never sent to the server). */
-	async function shareList() {
-		const fragment = encodeSharedPlan({
+	function listFragment() {
+		return encodeSharedPlan({
 			plan: plan.current,
 			buy: allItems.map((i) => [i.ingredient.id, i.buyGrams]),
 			people: settings.current.people,
 			days: settings.current.planDays
 		});
-		const url = `${location.origin}/zoznam#${fragment}`;
+	}
+
+	async function shareList() {
+		const url = `${location.origin}/zoznam#${listFragment()}`;
 		try {
 			if (navigator.share) {
 				await navigator.share({ title: 'Nákupný zoznam · Receptio', url });
@@ -268,6 +276,21 @@
 			shareState = 'failed';
 		}
 		setTimeout(() => (shareState = 'idle'), 2200);
+	}
+
+	/** A list both people tick off together; the code stays in the link, the server sees ciphertext. */
+	async function shopTogether() {
+		together = { status: 'creating', url: '' };
+		try {
+			const code = await createLiveList(listFragment());
+			const url = `${location.origin}/zoznam#${LIVE_PREFIX}${code}`;
+			together = { status: 'idle', url };
+			if (navigator.share) await navigator.share({ title: 'Nakupujeme spolu · Receptio', url });
+			else await navigator.clipboard.writeText(url);
+		} catch (err) {
+			if (err instanceof DOMException && err.name === 'AbortError') return;
+			if (!together.url) together = { status: 'failed', url: '' };
+		}
 	}
 
 	function boughtToPantry() {
@@ -466,6 +489,16 @@
 							{confirmClear ? 'Naozaj?' : 'Vymazať plán'}
 						</button>
 					</div>
+					{#if entries.length > 1}
+						<a class="prep-link" href="/plan/varenie">
+							<Icon name="pot" size={20} />
+							<span>
+								<strong>Navar všetko naraz</strong>
+								<small>Čo nakrájať spolu, v akom poradí variť a čo koľko vydrží</small>
+							</span>
+							<Icon name="arrow-right" size={18} />
+						</a>
+					{/if}
 
 					<ul class="entries">
 						{#each entries as e, i (e.key)}
@@ -741,6 +774,32 @@
 						? ` v obchode ${storeNames(comparison.recommended)}`
 						: ''}. Na tieto recepty z nich spotrebuješ za {formatEur(list.total)}, zvyšok ti ostane.
 				</p>
+
+				<div class="together">
+					<p>
+						<strong>Nakupujete dvaja?</strong> Pošli spoločný zoznam. Čo jeden odškrtne, druhý hneď vidí
+						– aj keď ste každý v inej uličke.
+					</p>
+					{#if together.url}
+						<p class="small">
+							Pošli tento odkaz tomu, s kým nakupuješ, a otvor ho aj u seba:
+							<a href={together.url}>spoločný zoznam</a>
+						</p>
+					{:else}
+						<button
+							class="btn ghost small"
+							onclick={shopTogether}
+							disabled={together.status === 'creating'}
+						>
+							<Icon name="users" size={16} />
+							{together.status === 'creating'
+								? 'Vytváram…'
+								: together.status === 'failed'
+									? 'Nepodarilo sa, skús znova'
+									: 'Nakupovať spolu'}
+						</button>
+					{/if}
+				</div>
 
 				{#if comparison.recommended}
 					{@const rec = comparison.recommended}
@@ -1319,6 +1378,38 @@
 	.shop .box-head {
 		position: relative;
 		z-index: 3;
+	}
+	.prep-link {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		align-items: center;
+		gap: 12px;
+		margin-bottom: 12px;
+		padding: 12px 14px;
+		border-radius: var(--radius-sm);
+		background: color-mix(in srgb, var(--leaf) 12%, var(--card));
+		color: var(--ink);
+		text-decoration: none;
+	}
+	.prep-link span {
+		display: flex;
+		flex-direction: column;
+	}
+	.prep-link small {
+		color: var(--muted);
+	}
+	.together {
+		display: grid;
+		gap: 8px;
+		justify-items: start;
+		margin-top: 16px;
+		padding: 14px;
+		border-radius: var(--radius-sm);
+		background: var(--paper);
+	}
+	.together p {
+		margin: 0;
+		font-size: 0.92rem;
 	}
 	.shop-summary p {
 		margin: 0;

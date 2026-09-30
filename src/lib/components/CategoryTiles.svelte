@@ -125,7 +125,9 @@
 		}
 		.cat {
 			flex: 1 1 0;
-			min-width: 96px;
+			/* All eleven categories in one row at 1080 px. */
+			min-width: 84px;
+			padding-inline: 4px;
 		}
 	}
 </style>

@@ -15,6 +15,12 @@
 			kept: `Kým ju nezmažeš (Moje → Zmazať zo servera). Záloha, ktorú ${syncYears} roky neotvorilo žiadne zariadenie, sa zmaže sama.`
 		},
 		{
+			what: 'Spoločný nákup',
+			detail: 'Len ak ho vytvoríš: zašifrovaný nákupný zoznam a čo je v ňom odškrtnuté.',
+			why: 'Aby ste mohli nakupovať dvaja naraz. Kľúč je len v odkaze, ktorý pošleš – server zoznam neprečíta.',
+			kept: `Zoznam, ktorý ${syncYears} roky nikto neotvoril, sa zmaže sám.`
+		},
+		{
 			what: 'Lajky',
 			detail: 'Náhodné ID zariadenia a recepty, ktoré sa ti páčia.',
 			why: 'Aby sa lajk počítal raz a dal sa zrušiť.',
