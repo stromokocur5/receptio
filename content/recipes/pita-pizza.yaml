@@ -1,0 +1,38 @@
+title: Pita pizza za 15 minút
+description: Keď nie je čas na cesto – pita ako korpus, passata s cesnakom a oreganom, šampiňóny, paprika a olivy. Z rúry za osem minút.
+cuisine: moderna
+meals: [obed, vecera, snack]
+categories: [hlavne/cesto, hlavne/rura]
+time: 15
+active: 7
+servings: 2
+difficulty: 1
+tags: [rychle, pre-deti]
+keeps: { fridge: 1 }
+leftovers: 'Studená je dobrá aj na druhý deň do krabičky. Zohrej ju na suchej panvici pod pokrievkou, v mikrovlnke zmäkne.'
+related: [pita-chlieb, marinara-omacka, pizza]
+ingredients:
+  - pita: 4 ks
+  - passata: 1/2 hrnček
+  - cesnak: 1 ks
+  - oregano: 1 čl
+  - sol: 1/4 čl
+  - olivovy-olej: 1 pl
+  - sampinony: 1 hrnček | na tenké plátky
+  - paprika-cervena: 1/2 ks | na pásiky
+  - olivy: 8 ks | na kolieska
+  - vegansky-syr: 1 hrnček
+steps:
+  - Rúru rozohrej na 220 °C aj s plechom.
+  - Passatu zmiešaj s prelisovaným cesnakom, oreganom, soľou a olejom.
+  - Pity potri tenkou vrstvou omáčky až po okraj – hrubá vrstva ich rozmočí. Rozlož šampiňóny, papriku a olivy a posyp syrom.
+  - Prelož na horúci plech a peč 7–8 minút, kým okraje nezhnednú a syr sa neroztopí.
+tips:
+  - Zeleninu krájaj natenko, hrubé kúsky sa za osem minút neupečú.
+variants:
+  - name: Bez náhrad
+    description: Namiesto vegánskeho syra posyp pizzu po upečení lahôdkovým droždím a pokvapkaj olivovým olejom.
+    replace:
+      - from: vegansky-syr
+        to: vyzivne-drozdie
+        amount: 2 pl

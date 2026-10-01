@@ -9,6 +9,7 @@
 	import PlateArt from '$lib/components/PlateArt.svelte';
 	import { vesselFor } from '$lib/categories';
 	import RecipePicker from '$lib/components/RecipePicker.svelte';
+	import SavedWeeks from '$lib/components/SavedWeeks.svelte';
 	import { CATEGORY_LABELS } from '$lib/labels';
 	import {
 		DAILY_REFERENCE,
@@ -405,6 +406,7 @@
 				</section>
 			{/if}
 			<AutoPlanner bind:open={plannerOpen} />
+			<SavedWeeks />
 			{#if entries.length}
 				<section class="card box" id="rozpis">
 					<div class="box-head">

@@ -3,6 +3,7 @@
 	import { useCatalog } from '$lib/catalog';
 	import type { PantryMatch } from '$lib/pantry';
 	import type { RecipeSummary } from '$lib/types';
+	import CookedBadge from './CookedBadge.svelte';
 	import GlutenBadge from './GlutenBadge.svelte';
 	import Icon from './Icon.svelte';
 	import LikeButton from './LikeButton.svelte';
@@ -99,6 +100,7 @@
 		</div>
 		<div class="badges">
 			<GlutenBadge {recipe} />
+			<CookedBadge recipeId={recipe.id} />
 			{#if recipe.treat.length}<span class="badge tomato" title={treatText(recipe.treat)}
 					>Na občas</span
 				>{/if}

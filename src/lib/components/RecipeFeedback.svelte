@@ -10,6 +10,7 @@
 	let mode = $state<'idle' | 'problem' | 'sending' | 'sent' | 'error'>('idle');
 	let sentKind = $state<'worked' | 'problem' | null>(null);
 	let message = $state('');
+	let rating = $state(0);
 	let errorText = $state('');
 	let challengeBox: HTMLDivElement;
 	let challenge: Awaited<ReturnType<typeof createChallenge>> | null = null;
@@ -52,6 +53,7 @@
 					recipeId,
 					kind,
 					message: message.trim() || undefined,
+					rating: rating || undefined,
 					turnstile
 				})
 			});
@@ -64,6 +66,7 @@
 			sentKind = kind;
 			mode = 'sent';
 			message = '';
+			rating = 0;
 			try {
 				localStorage.setItem(SENT_KEY, JSON.stringify({ ...readSent(), [recipeId]: kind }));
 			} catch {
@@ -89,6 +92,21 @@
 		</p>
 	{:else}
 		<p class="title">Po uvarení: pomôž recept overiť</p>
+		<div class="stars" role="radiogroup" aria-label="Ako chutilo (nepovinné)">
+			<span class="muted small">Ako chutilo?</span>
+			{#each [1, 2, 3, 4, 5] as star (star)}
+				<button
+					type="button"
+					role="radio"
+					class:on={star <= rating}
+					aria-checked={star === rating}
+					aria-label="{star} z 5"
+					onclick={() => (rating = rating === star ? 0 : star)}
+				>
+					<Icon name="star" size={22} />
+				</button>
+			{/each}
+		</div>
 		<div class="buttons">
 			<button class="btn ghost small" disabled={mode === 'sending'} onclick={() => send('worked')}>
 				<Icon name="check" size={16} /> Funguje, ako je napísané
@@ -131,6 +149,30 @@
 	.title {
 		margin: 0;
 		font-weight: 650;
+	}
+	.stars {
+		display: flex;
+		align-items: center;
+		gap: 2px;
+	}
+	.stars .muted {
+		margin-right: 6px;
+	}
+	.stars button {
+		display: grid;
+		place-items: center;
+		width: 34px;
+		height: 34px;
+		border: 0;
+		border-radius: 50%;
+		background: none;
+		color: var(--line);
+	}
+	.stars button.on {
+		color: var(--turmeric);
+	}
+	.stars button.on :global(svg) {
+		fill: currentColor;
 	}
 	.buttons {
 		display: flex;

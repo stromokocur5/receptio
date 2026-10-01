@@ -1,0 +1,37 @@
+title: Penne all'arrabbiata
+description: Rímske „nahnevané“ cestoviny – passata, veľa cesnaku a čili na olivovom oleji. Hotové, kým sa uvaria cestoviny.
+cuisine: talianska
+meals: [obed, vecera]
+categories: [hlavne/cestoviny]
+time: 20
+active: 15
+servings: 4
+difficulty: 1
+tags: [rychle, lacne, zo-spajze]
+spicy: 2
+keeps: { fridge: 3, freezer: 3 }
+leftovers: 'Na druhý deň zapeč so strúhankou a olivovým olejom, alebo zrieď vývarom na pikantnú paradajkovú polievku.'
+related: [marinara-omacka, domaca-passata, spagety-bolognese]
+howto: [cestoviny]
+ingredients:
+  - cestoviny: 400 g | penne
+  - sol: ~1 pl | do vody na cestoviny
+  - olivovy-olej: 3 pl
+  - cesnak: 4 ks | na plátky
+  - cili-papricka: 2 ks | alebo 1 čl sušených čili vločiek
+  - passata: 2 hrnček
+  - sol: 1/2 čl
+  - petrzlenova-vnat: 3 pl | nasekaná
+steps:
+  - Vo veľkom hrnci priveď do varu 4 litre vody, osoľ ju lyžicou soli a daj variť penne o 1 minútu kratšie, ako píše obal.
+  - Medzitým na panvici zohrej olej na miernom ohni. Pridaj cesnak a nadrobno nakrájané čili a 2 minúty ich nechaj voňať – cesnak má ostať svetlý, hnedý zhorkne.
+  - Prilej passatu, pridaj 1/2 čl soli a var na strednom ohni 8–10 minút, kým omáčka nezhustne.
+  - Odober hrnček vody z cestovín. Penne sceď, pridaj k omáčke s 3–4 lyžicami vody z cestovín a minútu spolu povar, nech sa omáčka na cestoviny prilepí.
+  - Vmiešaj petržlen a podávaj.
+tips:
+  - Menej pálivé – z čili papričiek vyber semienka alebo daj len jednu.
+variants:
+  - name: S cícerom
+    description: Viac bielkovín – scedený cícer pridaj do omáčky spolu s passatou.
+    add:
+      - cicer-sterilizovany: 1 ks

@@ -10,6 +10,7 @@ import { GARDEN_ART } from './garden';
 import { GARDEN_BASICS_ART } from './garden-basics';
 import { KITCHEN_ART } from './kitchen';
 import { LIFE_ART } from './life';
+import { MEADOW_ART } from './meadow';
 import { NUTRITION_ART } from './nutrition';
 import { PRESERVES_ART } from './preserves';
 import { WORLD_ART } from './world';
@@ -23,6 +24,7 @@ const ART: Record<string, () => string> = {
 	...KITCHEN_ART,
 	...DIY_ART,
 	...LIFE_ART,
+	...MEADOW_ART,
 	...PRESERVES_ART,
 	...WORLD_ART
 };

@@ -1,0 +1,41 @@
+title: Burrito do mrazničky
+description: Šesť burrít s ryžou, čiernou fazuľou a kukuricou, ktoré zabalíš naraz a zamrazíš. Obed na dni, keď sa nechce variť, je potom otázkou zohriatia.
+cuisine: americka
+meals: [obed, vecera]
+categories: [hlavne/plnene, hlavne/strukoviny]
+time: 45
+active: 25
+servings: 6
+difficulty: 1
+tags: [meal-prep, do-mraznicky, vela-vlakniny]
+spicy: 1
+keeps: { fridge: 3, freezer: 3 }
+leftovers: 'Zvyšnú plnku zjedz ako bowl s avokádom a šalátom.'
+related: [paradajkova-ryza-s-fazulou, burrito, guacamole]
+howto: [ryza, mrazenie]
+ingredients:
+  - ryza-basmati: 1 hrnček | prepláchnutá
+  - voda: 1,5 hrnček
+  - olej: 1 pl
+  - cibula: 1 ks
+  - cesnak: 2 ks
+  - kmin: 2 čl
+  - udena-paprika: 1 čl
+  - cili: 1/2 čl
+  - passata: 1 hrnček
+  - fazula-cierna: 2 ks | scedená
+  - kukurica: 1 ks | scedená
+  - sol: 1 čl
+  - limetka: 1 ks
+  - psenicne-tortilly: 6 ks | veľké
+steps:
+  - Ryžu zalej vodou, pridaj 1/2 čl soli, priveď do varu, prikry a var na najmenšom ohni 12 minút. Odstav a nechaj 10 minút prikrytú.
+  - Na oleji na strednom ohni speň nadrobno nakrájanú cibuľu 5 minút. Pridaj prelisovaný cesnak, rímsku rascu, údenú papriku a čili a pol minúty miešaj.
+  - Prilej passatu, pridaj fazuľu, kukuricu a zvyšnú soľ. Var 8–10 minút, kým plnka nie je hustá a po dne netečie žiadna tekutina – riedka by tortilly rozmočila. Časť fazule roztlač vidličkou, bude držať pokope.
+  - Plnku zmiešaj s ryžou a limetkovou šťavou a nechaj vychladnúť aspoň 20 minút. Teplá plnka v mrazničke vytvorí ľad a burrito bude po rozmrazení mokré.
+  - Tortillu zohrej 15 sekúnd na suchej panvici, nech je ohybná. Do stredu daj šestinu plnky, prehni boky dovnútra a pevne zroluj od seba.
+  - Každé burrito zabaľ do papiera na pečenie, ulož do vrecka a zamraz. Na vrecko napíš dátum.
+  - Zohrievanie zo zmrazeného – v rúre na 200 °C 25–30 minút aj v papieri, alebo bez papiera v mikrovlnke 3–4 minúty, v polovici otoč. Na konci ho minútu opeč na suchej panvici, nech je chrumkavé.
+tips:
+  - Šalát, avokádo, paradajky ani jogurt dnu nedávaj – po rozmrazení sú vodnaté. Pridaj ich čerstvé pri jedle.
+  - Chceš viac bielkovín? Vmiešaj do plnky hrsť pečeného tofu na malé kocky.

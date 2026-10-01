@@ -1,0 +1,1242 @@
+# GENEROVANÉ – neupravuj ručne. Ceny zo stránok produktov v e-shopoch, obnov cez
+# `pnpm prices:eshops`; zoznam produktov je v eshops.yaml.
+entries:
+  - ingredient: ryza-jazminova
+    store: grizly
+    product: GRIZLY Ryža jazmínová 1 kg
+    pack: 1 kg
+    price: 2.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-ryza-jazminova-1000-g
+  - ingredient: ryza-arborio
+    store: grizly
+    product: GRIZLY Ryža Arborio 1 kg
+    pack: 1 kg
+    price: 4.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-ryza-arborio-1000-g
+  - ingredient: ryza-sushi
+    store: grizly
+    product: GRIZLY Ryža Sushi 1 kg
+    pack: 1 kg
+    price: 2.48
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-ryza-sushi-1000-g
+  - ingredient: quinoa
+    store: grizly
+    product: GRIZLY Quinoa biela 1 kg
+    pack: 1 kg
+    price: 6.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-quinoa-biela-1000-g
+  - ingredient: pohanka
+    store: grizly
+    product: GRIZLY Pohánka lúpaná krúpy 1 kg
+    pack: 1 kg
+    price: 5.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-pohanka-lupana-krupy-1000-g
+  - ingredient: proso
+    store: grizly
+    product: GRIZLY Pšeno 1 kg
+    pack: 1 kg
+    price: 2.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-pseno-1000-g
+  - ingredient: bulgur
+    store: grizly
+    product: GRIZLY Bulgur hrubý 1 kg
+    pack: 1 kg
+    price: 3.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-bulgur-hruby-1000-g
+  - ingredient: krupy
+    store: grizly
+    product: PROBIO Bioharmonie Jačmenné krúpy (veľké) 500 g
+    pack: 500 g
+    price: 1.39
+    date: 2026-10-01
+    url: https://www.grizly.sk/bioharmonie-jacmenne-krupy-velke-500-g
+  - ingredient: ovsene-vlocky
+    store: grizly
+    product: GRIZLY Ovsené vločky 1 kg
+    pack: 1 kg
+    price: 2.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-ovsene-vlocky-1000-g
+  - ingredient: ovsene-vlocky-bezlepkove
+    store: grizly
+    product: GRIZLY Ovsené vločky jemné bezlepkové 1 kg
+    pack: 1 kg
+    price: 4.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-ovsene-vlocky-bezlepkove-1000-g
+  - ingredient: ryzova-muka
+    store: grizly
+    product: GRIZLY Ryžová múka 500 g
+    pack: 500 g
+    price: 1.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-ryzova-muka-500-g
+  - ingredient: cicerova-muka
+    store: grizly
+    product: PROBIO Bioharmonie Cícerová múka BIO 450 g
+    pack: 450 g
+    price: 3.39
+    date: 2026-10-01
+    url: https://www.grizly.sk/bioharmonie-cicerova-muka-bio-450-g
+  - ingredient: maniokova-muka
+    store: grizly
+    product: GRIZLY manioková (Cassava) múka BIO 1 kg
+    pack: 1 kg
+    price: 6.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-maniokova-cassava-muka-bio-1000-g
+  - ingredient: kukuricny-skrob
+    store: grizly
+    product: Amylon Kukuričný škrob BIO 200 g
+    pack: 200 g
+    price: 3.19
+    date: 2026-10-01
+    url: https://www.grizly.sk/amylon-kukuricny-skrob-bio-200-g
+  - ingredient: popcorn
+    store: grizly
+    product: Wolfberry Kukurica na popcorn BIO 1 kg
+    pack: 1 kg
+    price: 6.09
+    date: 2026-10-01
+    url: https://www.grizly.sk/wolfberry-kukurica-na-popcorn-bio-1000-g
+  - ingredient: sosovica-cervena
+    store: grizly
+    product: GRIZLY šošovica červená polená 1 kg
+    pack: 1 kg
+    price: 3.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-sosovica-cervena-polena-1000-g
+  - ingredient: sosovica-hneda
+    store: grizly
+    product: GRIZLY Šošovica hnedá Laird 1 kg
+    pack: 1 kg
+    price: 3.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-sosovica-hneda-laird-1000-g
+  - ingredient: cicer-suchy
+    store: grizly
+    product: GRIZLY Cícer Kabul 1 kg
+    pack: 1 kg
+    price: 3.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-cicer-kabul-1000-g
+  - ingredient: zlty-hrach
+    store: grizly
+    product: GRIZLY Hrach žltý lúpaný polený 1 kg
+    pack: 1 kg
+    price: 2.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-hrach-zlty-lupany-poleny-1000-g
+  - ingredient: mungo
+    store: grizly
+    product: GRIZLY Fazuľa Mungo 1 kg
+    pack: 1 kg
+    price: 4.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-fazula-mungo-1000g
+  - ingredient: sojove-zrna
+    store: grizly
+    product: Country Life Sójové bôby BIO 500 g
+    pack: 500 g
+    price: 2.59
+    date: 2026-10-01
+    url: https://www.grizly.sk/country-life-sojove-boby-bio-500-g
+  - ingredient: sojove-granule
+    store: grizly
+    product: Country Life Sójový granulát 100 g
+    pack: 100 g
+    price: 0.89
+    date: 2026-10-01
+    url: https://www.grizly.sk/country-life-sojovy-granulat-100-g
+  - ingredient: kesu
+    store: grizly
+    product: GRIZLY Kešu natural WW320 1 kg
+    pack: 1 kg
+    price: 10.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-kesu-natural-ww320-premium-1000-g
+  - ingredient: kesu
+    store: grizly
+    product: GRIZLY Kešu zlomky 1 kg
+    pack: 1 kg
+    price: 9.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-kesu-zlomky-1000-g
+  - ingredient: mandle
+    store: grizly
+    product: GRIZLY Mandle natural 1 kg
+    pack: 1 kg
+    price: 9.9
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-mandle-natural-nelupane-1000-g
+  - ingredient: vlasske-orechy
+    store: grizly
+    product: GRIZLY Vlašské orechy 1 kg
+    pack: 1 kg
+    price: 12.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-vlasske-orechy-1000-g
+  - ingredient: lieskove-orechy
+    store: grizly
+    product: GRIZLY Lieskové orechy natural 1 kg
+    pack: 1 kg
+    price: 24.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-lieskove-orechy-1000-g
+  - ingredient: arasidy
+    store: grizly
+    product: GRIZLY Arašidy pražené nesolené 1 kg
+    pack: 1 kg
+    price: 6.29
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-arasidy-lupane-prazene-1000-g
+  - ingredient: arasidove-maslo
+    store: grizly
+    product: GRIZLY Arašidové maslo jemné 100% 1 kg
+    pack: 1 kg
+    price: 7.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-100-arasidove-maslo-jemne-1000-g
+  - ingredient: tahini
+    store: grizly
+    product: Country Life Tahini bez soli BIO Horizon 650 g
+    pack: 650 g
+    price: 10.19
+    date: 2026-10-01
+    url: https://www.grizly.sk/country-life-tahini-bez-soli-bio-horizon-650-g
+  - ingredient: tahini
+    store: grizly
+    product: Wolfberry Tahini sezamová pasta 400 g
+    pack: 400 g
+    price: 6.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/wolfberry-tahini-sezamova-pasta-400-g
+  - ingredient: sezam
+    store: grizly
+    product: GRIZLY Sezam lúpaný 1 kg
+    pack: 1 kg
+    price: 7.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-sezam-lupany-1000-g
+  - ingredient: mak
+    store: grizly
+    product: GRIZLY Mak mletý 100% 1 kg
+    pack: 1 kg
+    price: 7.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-mak-mlety-100-1000-g
+  - ingredient: lanove-semienko
+    store: grizly
+    product: GRIZLY Ľanové semienko hnedé 1 kg
+    pack: 1 kg
+    price: 2.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-lanove-semienko-hnede-1000-g
+  - ingredient: chia
+    store: grizly
+    product: GRIZLY Chia semienka 1 kg
+    pack: 1 kg
+    price: 6.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-chia-semienka-1000-g
+  - ingredient: konopne-semienka
+    store: grizly
+    product: GRIZLY Konopné semienko lúpané 1 kg
+    pack: 1 kg
+    price: 12.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-konopne-semienko-lupane-1000-g
+  - ingredient: slnecnicove-semienka
+    store: grizly
+    product: GRIZLY Slnečnicové semienka lúpané 1 kg
+    pack: 1 kg
+    price: 2.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-slnecnicove-semienka-lupane-1000-g
+  - ingredient: tekvicove-semienka
+    store: grizly
+    product: GRIZLY Tekvicové semienko lúpané české 1 kg
+    pack: 1 kg
+    price: 8.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-tekvicove-semienko-lupane-1000-g
+  - ingredient: kokos-struhany
+    store: grizly
+    product: GRIZLY Kokos strúhaný 1 kg
+    pack: 1 kg
+    price: 10.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-kokos-struhany-1000-g
+  - ingredient: kokosovy-olej
+    store: grizly
+    product: GRIZLY BIO RBD Kokosový olej 1 kg
+    pack: 1 kg
+    price: 9.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-bio-rbd-kokosovy-olej-1000-g
+  - ingredient: vyzivne-drozdie
+    store: grizly
+    product: GRIZLY Lahôdkové droždie 250 g
+    pack: 250 g
+    price: 4.95
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-lahodkove-drozdie-250-g
+  - ingredient: kypriaci-prasok
+    store: grizly
+    product: GRIZLY Prášok kypriaci do pečiva BIO 200 g
+    pack: 200 g
+    price: 3.29
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-prasok-kypriaci-do-peciva-bio-200-g
+  - ingredient: agar
+    store: grizly
+    product: Wolfberry Agar 30 g
+    pack: 30 g
+    price: 1.89
+    date: 2026-10-01
+    url: https://www.grizly.sk/wolfberry-agar-30-g
+  - ingredient: sojova-omacka
+    store: grizly
+    product: Country Life Shoyu sójová omáčka 500 ml
+    pack: 500 ml
+    price: 5.19
+    date: 2026-10-01
+    url: https://www.grizly.sk/country-life-shoyu-sojova-omacka-500-ml
+  - ingredient: tamari
+    store: grizly
+    product: Country Life Tamari sójová omáčka 500 ml
+    pack: 500 ml
+    price: 4.39
+    date: 2026-10-01
+    url: https://www.grizly.sk/country-life-tamari-sojova-omacka-500-ml
+  - ingredient: javorovy-sirup
+    store: grizly
+    product: Country Life Sirup javorový Grade A BIO 250 ml
+    pack: 250 ml
+    price: 6.39
+    date: 2026-10-01
+    url: https://www.grizly.sk/country-life-sirup-javorovy-grade-a-bio-250-ml
+  - ingredient: tamarind
+    store: grizly
+    product: Heera Tamarindová pasta 200 g
+    pack: 200 g
+    price: 3.89
+    date: 2026-10-01
+    url: https://www.grizly.sk/heera-tamarindova-pasta-200-g
+  - ingredient: harissa
+    store: grizly
+    product: Sonnentor Harissa BIO 70 g
+    pack: 70 g
+    price: 3.59
+    date: 2026-10-01
+    url: https://www.grizly.sk/sonnentor-harissa-bio-70-g
+  - ingredient: kecup
+    store: grizly
+    product: GRIZLY Kečup sladký 520 g
+    pack: 520 g
+    price: 2.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-kecup-sladky-520-g
+  - ingredient: hrozienka
+    store: grizly
+    product: GRIZLY Hrozienka Sultánky 1 kg
+    pack: 1 kg
+    price: 6.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-hrozienka-sultanky-1000-g
+  - ingredient: datle
+    store: grizly
+    product: GRIZLY Datle sušené 1 kg
+    pack: 1 kg
+    price: 4.29
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-datle-susene-1000-g
+  - ingredient: susene-marhule
+    store: grizly
+    product: GRIZLY Marhuľe sušené 1 kg
+    pack: 1 kg
+    price: 21.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-marhule-susene-1000-g
+  - ingredient: matcha
+    store: grizly
+    product: GRIZLY Matcha BIO 100 g
+    pack: 100 g
+    price: 13.29
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-matcha-bio-100-g
+  - ingredient: ibistek
+    store: grizly
+    product: GRIZLY Ibiškový kvet 250 g
+    pack: 250 g
+    price: 5.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-ibiskovy-kvet-250-g
+  - ingredient: kurkuma
+    store: grizly
+    product: GRIZLY Kurkuma mletá BIO 500 g
+    pack: 500 g
+    price: 6.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-kurkuma-mleta-bio-500-g
+  - ingredient: kurkuma
+    store: grizly
+    product: GRIZLY Kurkuma mletá 50 g
+    pack: 50 g
+    price: 0.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-kurkuma-mleta-50-g
+  - ingredient: sladka-paprika
+    store: grizly
+    product: GRIZLY Paprika sladká mletá 50 g
+    pack: 50 g
+    price: 1.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-paprika-sladka-mleta-50-g
+  - ingredient: udena-paprika
+    store: grizly
+    product: GRIZLY Paprika sladká údená mletá 50 g
+    pack: 50 g
+    price: 1.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-paprika-sladka-udena-mleta-50-g
+  - ingredient: rasca
+    store: grizly
+    product: GRIZLY Rasca celá 500 g
+    pack: 500 g
+    price: 6.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-rasca-cely-500-g
+  - ingredient: skorica
+    store: grizly
+    product: GRIZLY Škorica mletá 250 g
+    pack: 250 g
+    price: 5.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-skorica-mleta-250-g
+  - ingredient: oregano
+    store: grizly
+    product: GRIZLY Oregáno drhnuté BIO 15 g
+    pack: 15 g
+    price: 1.29
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-oregano-drhnute-bio-15-g
+  - ingredient: tymian
+    store: grizly
+    product: GRIZLY Tymián drhnutý 15 g
+    pack: 15 g
+    price: 0.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/grizly-tymian-drhnuty-15-g
+  - ingredient: rozmarin
+    store: grizly
+    product: Sonnentor Rozmarín bio 25 g
+    pack: 25 g
+    price: 2.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/sonnentor-rozmarin-bio-25-g
+  - ingredient: kmin
+    store: grizly
+    product: Heera Rímsky kmín mletý 100 g
+    pack: 100 g
+    price: 2.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/heera-rimsky-kmin-mlety-100-g
+  - ingredient: koriander-mlety
+    store: grizly
+    product: Heera Koriander mletý dhania 100 g
+    pack: 100 g
+    price: 1.69
+    date: 2026-10-01
+    url: https://www.grizly.sk/heera-koriander-mlety-dhania-100-g
+  - ingredient: cierne-korenie
+    store: grizly
+    product: Sonnentor Korenie čierne mleté BIO 50 g
+    pack: 50 g
+    price: 3.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/sonnentor-korenie-cierne-mlete-bio-50-g
+  - ingredient: cili
+    store: grizly
+    product: Sonnentor Chilli mleté ​​BIO 40 g
+    pack: 40 g
+    price: 2.89
+    date: 2026-10-01
+    url: https://www.grizly.sk/sonnentor-chilli-mlete-bio-40-g
+  - ingredient: garam-masala
+    store: grizly
+    product: Sonnentor Garam Masala mletá BIO 55 g
+    pack: 55 g
+    price: 4.49
+    date: 2026-10-01
+    url: https://www.grizly.sk/sonnentor-garam-masala-mleta-bio-55-g
+  - ingredient: kari-korenie
+    store: grizly
+    product: Grešík Indické karí 50 g
+    pack: 50 g
+    price: 2.27
+    date: 2026-10-01
+    url: https://www.grizly.sk/gresik-indicke-kari-50-g
+  - ingredient: bobkovy-list
+    store: grizly
+    product: Grešík Bobkový list celý 10 g
+    pack: 10 g
+    price: 2.02
+    date: 2026-10-01
+    url: https://www.grizly.sk/gresik-bobkovy-list-cely-10-g
+  - ingredient: klincek
+    store: grizly
+    product: Grešík - Klinček celý 20 g
+    pack: 20 g
+    price: 2.64
+    date: 2026-10-01
+    url: https://www.grizly.sk/gresik-klincek-cely-20-g
+  - ingredient: nove-korenie
+    store: grizly
+    product: Sonnentor Nové korenie celé bio 35 g
+    pack: 35 g
+    price: 2.79
+    date: 2026-10-01
+    url: https://www.grizly.sk/sonnentor-nove-korenie-cele-bio-35-g
+  - ingredient: badian
+    store: grizly
+    product: Heera Badián 50 g
+    pack: 50 g
+    price: 3.99
+    date: 2026-10-01
+    url: https://www.grizly.sk/heera-badian-50-g
+  - ingredient: kardamom
+    store: grizly
+    product: Sonnentor Kardamóm BIO celý 40 g
+    pack: 40 g
+    price: 6.79
+    date: 2026-10-01
+    url: https://www.grizly.sk/sonnentor-kardamom-bio-cely-40-g
+  - ingredient: susene-huby
+    store: grizly
+    product: Sonnentor Hríby rezané BIO 25 g
+    pack: 25 g
+    price: 4.59
+    date: 2026-10-01
+    url: https://www.grizly.sk/sonnentor-hriby-rezane-bio-25-g
+  - ingredient: miso
+    store: foodland
+    product: Miso Pasta Červená HIKARI 400g
+    pack: 400 g
+    price: 3.21
+    date: 2026-10-01
+    url: https://www.foodland.sk/pasty-korenia/miso-pasta-cervena-hikari-400g/
+  - ingredient: miso
+    store: foodland
+    product: BIO Biela miso pasta HIKARI 500 g
+    pack: 500 g
+    price: 5.95
+    date: 2026-10-01
+    url: https://www.foodland.sk/pasty-korenia/bio-biela-miso-pasta-hikari-500-g/
+  - ingredient: nori
+    store: foodland
+    product: Morské riasy SUSHINORI na suši RED INAKA 50 ks
+    pack: 50 ks
+    price: 9.04
+    date: 2026-10-01
+    url: https://www.foodland.sk/morske-riasy/morske-riasy-nori-na-susi-inaka-50-listov/
+  - ingredient: nori
+    store: foodland
+    product: Morské riasy Yaki Sushi Nori JHFOODS 10 listov 10 ks
+    pack: 10 ks
+    price: 2.98
+    date: 2026-10-01
+    url: https://www.foodland.sk/susi/morske-riasy-nori-na-susi-jhfoods-10-listov/
+  - ingredient: gochujang
+    store: foodland
+    product: Čili pasta kórejská GOCHUJANG SEMPIO 250g
+    pack: 250 g
+    price: 3.57
+    date: 2026-10-01
+    url: https://www.foodland.sk/pasty-korenia/cili-pasta-korejska-gochujang-sempio-250g/
+  - ingredient: gochujang
+    store: foodland
+    product: Čili pasta Kórejská GOCHUJANG SEMPIO 1000g
+    pack: 1 kg
+    price: 8.33
+    date: 2026-10-01
+    url: https://www.foodland.sk/pasty-korenia/cili-pasta-korejska-gochujang-sempio-1000g/
+  - ingredient: gochugaru
+    store: foodland
+    product: Paprika pálivá mletá Gochugaru TAEKYUNG 454 g
+    pack: 454 g
+    price: 6.78
+    date: 2026-10-01
+    url: https://www.foodland.sk/horeca-hotel-restauracia-catering/paprika-paliva-mleta-gochugaru-taekyung-454-g/
+  - ingredient: gochugaru
+    store: foodland
+    product: Kórejská červená paprika Gochugaru DAE KYUNG 1 kg
+    pack: 1 kg
+    price: 12.5
+    date: 2026-10-01
+    url: https://www.foodland.sk/horeca-hotel-restauracia-catering/korejska-cervena-paprika-gochugaru-dae-kyung-1-kg/
+  - ingredient: ryzovy-papier
+    store: foodland
+    product: Okrúhly ryžový papier na čerstvé jarné rolky 400g
+    pack: 400 g
+    price: 2.74
+    date: 2026-10-01
+    url: https://www.foodland.sk/ryzovy-papier/ryzovy-papier-na-cerstve-jarne-rolky-tufoco-400g/
+  - ingredient: soba
+    store: foodland
+    product: Soba pohánkové japonské rezance CHUNSI 300g
+    pack: 300 g
+    price: 1.9
+    date: 2026-10-01
+    url: https://www.foodland.sk/pohankove-rezance/soba-pohankove-japonske-rezance-chunsi-300g/
+  - ingredient: sklenene-rezance
+    store: foodland
+    product: Sklenené rezance zo sladkých zemiakov EAGLOBE 500g
+    pack: 500 g
+    price: 4.52
+    date: 2026-10-01
+    url: https://www.foodland.sk/sklenene-rezance/sklenene-rezance-zo-sladkych-zemiakov-eaglobe-500-g/
+  - ingredient: ryzove-rezance
+    store: foodland
+    product: Ryžové rezance široké PHO OH! RICEY 500g
+    pack: 500 g
+    price: 3.09
+    date: 2026-10-01
+    url: https://www.foodland.sk/ryzove-rezance/ryzove-rezance-siroke-pho-ohricey-500g/
+  - ingredient: psenicne-rezance
+    store: foodland
+    product: Somen biele japonské rezance EAGLOBE 400g
+    pack: 400 g
+    price: 2.26
+    date: 2026-10-01
+    url: https://www.foodland.sk/psenicne-rezance/somen-biele-japonske-rezance-eaglobe-400g/
+  - ingredient: tteok
+    store: foodland
+    product: Kórejské ryžové koláčiky (duté) Tteokbokki JONGGA 500g
+    pack: 500 g
+    price: 4.76
+    date: 2026-10-01
+    url: https://www.foodland.sk/rezance-nitovky-a-cestoviny/korejske-ryzove-kolaciky-dute-tteokbokki-jongga-500g/
+  - ingredient: wakame
+    store: foodland
+    product: Wakame morské riasy sušené INAKA 100g
+    pack: 100 g
+    price: 3.33
+    date: 2026-10-01
+    url: https://www.foodland.sk/susena-zelenina/wakame-morske-riasy-susene-inaka-100g/
+  - ingredient: kombu
+    store: foodland
+    product: Kombu / Kelp morské riasy sušené - DEASANG 150g
+    pack: 150 g
+    price: 6.66
+    date: 2026-10-01
+    url: https://www.foodland.sk/susena-zelenina/kombu-kelp-morske-riasy-susene-deasang-150g/
+  - ingredient: kecap-manis
+    store: foodland
+    product: Sladká sójová omáčka Kecap Manis ABC 600 ml
+    pack: 600 ml
+    price: 4.76
+    date: 2026-10-01
+    url: https://www.foodland.sk/sojove-omacky/sladka-sojova-omacka-kecap-manis-abc-600-ml/
+  - ingredient: sriracha
+    store: foodland
+    product: SRIRACHA HUY FONG čili omáčka 481g
+    pack: 481 g
+    price: 5.12
+    date: 2026-10-01
+    url: https://www.foodland.sk/sriracha-cili-omacky/cili-omacka-sriracha-huy-fong-481g-pikantna/
+  - ingredient: ryzovy-ocot
+    store: foodland
+    product: Mizkan ryžový ocot 355ml – originál z Japonska
+    pack: 355 ml
+    price: 3.57
+    date: 2026-10-01
+    url: https://www.foodland.sk/susi/ryzovy-ocot-mizkan-355ml/
+  - ingredient: sezamovy-olej
+    store: foodland
+    product: Sezamový olej 100% OH AIK GUAN 650 ml
+    pack: 650 ml
+    price: 9.52
+    date: 2026-10-01
+    url: https://www.foodland.sk/olej-na-dochucovanie/sezamovy-olej-100-oh-aik-guan-650-ml/
+  - ingredient: sojova-omacka
+    store: foodland
+    product: Sójová omáčka KIKKOMAN 1000ml
+    pack: 1 l
+    price: 7.74
+    date: 2026-10-01
+    url: https://www.foodland.sk/sojove-omacky/sojova-omacka-kikkoman-1000ml/
+  - ingredient: tamarind
+    store: foodland
+    product: Tamarind pasta SUREE 227 g
+    pack: 227 g
+    price: 2.62
+    date: 2026-10-01
+    url: https://www.foodland.sk/pasty-korenia/tamarind-pasta-suree-227-g/
+  - ingredient: kokosove-mlieko
+    store: foodland
+    product: Kokosové mlieko AROY-D 400 ml
+    pack: 400 ml
+    price: 2.62
+    date: 2026-10-01
+    url: https://www.foodland.sk/kokosove-mlieko-a-kremy/kokosove-mlieko-aroy-d-400-ml/
+  - ingredient: kokosove-mlieko
+    store: foodland
+    product: Kokosové mlieko Aroy‑D1 000 ml
+    pack: 1 l
+    price: 4.05
+    date: 2026-10-01
+    url: https://www.foodland.sk/kokosove-mlieko-a-kremy/kokosove-mlieko-aroy-d-1000ml/
+  - ingredient: lepkava-ryza
+    store: foodland
+    product: Lepkavá ryža ROYAL THAI 1 kg
+    pack: 1 kg
+    price: 3.93
+    date: 2026-10-01
+    url: https://www.foodland.sk/lepkava-ryza/lepkava-ryza-royal-thai-1-kg/
+  - ingredient: lepkava-ryzova-muka
+    store: foodland
+    product: COCK BRAND múka z lepkavej ryže 400 g
+    pack: 400 g
+    price: 1.68
+    date: 2026-10-01
+    url: https://www.foodland.sk/muka/muka-z-lepkavej-ryze-cock-brand-400-g/
+  - ingredient: ryzova-muka
+    store: foodland
+    product: Ryžová múka VINH THUAN 400g
+    pack: 400 g
+    price: 1.68
+    date: 2026-10-01
+    url: https://www.foodland.sk/muka/ryzova-muka-vinh-thuan-400g/
+  - ingredient: cicerova-muka
+    store: foodland
+    product: Cícerová superjemná múka KTC 1000 g
+    pack: 1 kg
+    price: 3.57
+    date: 2026-10-01
+    url: https://www.foodland.sk/muka-skrob-a-ryzovy-papier/cicerova-superjemna-muka-ktc-1000-g/
+  - ingredient: tapiokovy-skrob
+    store: foodland
+    product: Tapiokový škrob COCK BRAND 400 g
+    pack: 400 g
+    price: 1.58
+    date: 2026-10-01
+    url: https://www.foodland.sk/skrob/tapiokovy-skrob-cock-brand-400-g/
+  - ingredient: ryza-sushi
+    store: foodland
+    product: Suši ryža OBENTO 1 kg
+    pack: 1 kg
+    price: 3.93
+    date: 2026-10-01
+    url: https://www.foodland.sk/susi-ryza/susi-ryza-obento-1-kg/
+  - ingredient: mungo
+    store: foodland
+    product: Zelená mungo fazuľa nelúpaná COCK BRAND 400g
+    pack: 400 g
+    price: 2.02
+    date: 2026-10-01
+    url: https://www.foodland.sk/fazula-a-hrach/zelena-mungo-fazula-nelupana-cock-brand-400g/
+  - ingredient: secuanske-korenie
+    store: foodland
+    product: Sečuánske korenie celé NBH 50g
+    pack: 50 g
+    price: 2.74
+    date: 2026-10-01
+    url: https://www.foodland.sk/koreniny/secuanske-korenie-cele-nbh-50g/
+  - ingredient: edamame
+    store: foodland
+    product: Edamame Sójové struky zmrazené ASIAN CHOICE 500g
+    pack: 500 g
+    price: 2.94
+    date: 2026-10-01
+    url: https://www.foodland.sk/mrazene-ovocie-a-zelenina/edamame-sojove-struky-zmrazene-asian-choice-500g/
+  - ingredient: kala-namak
+    store: veganstore
+    product: Soľ čierna Kala Namak 100g Cereus
+    pack: 100 g
+    price: 1.62
+    date: 2026-10-01
+    url: https://www.veganstore.sk/p/sol-cierna-kala-namak-100g-cereus
+  - ingredient: tofu-hodvabne
+    store: veganstore
+    product: Hodvábne Silken tofu extra jemné 125g Veto
+    pack: 125 g
+    price: 1.16
+    date: 2026-10-01
+    url: https://www.veganstore.sk/p/hodvabne-silken-tofu-extra-jemne-125g-veto
+  - ingredient: vegansky-syr
+    store: veganstore
+    product: Vegánska alternatíva syra pizza 250 g GreenVie
+    pack: 250 g
+    price: 4.69
+    date: 2026-10-01
+    url: https://www.veganstore.sk/p/veganska-alternativa-syra-pizza-250-g-greenvie
+  - ingredient: tempeh
+    store: veganstore
+    product: Tempeh údený BIO 190g Sunfood
+    pack: 190 g
+    price: 2.06
+    date: 2026-10-01
+    url: https://www.veganstore.sk/p/tempeh-udeny-bio-190g-sunfood
+  - ingredient: amarant
+    store: veganstore
+    product: Amarant Bio 500g Country life
+    pack: 500 g
+    price: 3.03
+    date: 2026-10-01
+    url: https://www.veganstore.sk/p/amarant-bio-500g-country-life
+  - ingredient: miso
+    store: veganstore
+    product: Miso shiro biela ryža 400g Muso
+    pack: 400 g
+    price: 7.05
+    date: 2026-10-01
+    url: https://www.veganstore.sk/p/miso-shiro-biela-ryza-400g-muso
+  - ingredient: vyzivne-drozdie
+    store: veganstore
+    product: Lahôdkové droždie 150g Country life
+    pack: 150 g
+    price: 3.03
+    date: 2026-10-01
+    url: https://www.veganstore.sk/p/lahodkove-drozdie-150g-country-life
+  - ingredient: cicer-suchy
+    store: ebio24
+    product: Cícer 1 kg – Tola
+    pack: 1 kg
+    price: 3.02
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/cicer-1-kg-tola-94323
+  - ingredient: cicer-suchy
+    store: ebio24
+    product: Cícer 5 kg – Tola
+    pack: 5 kg
+    price: 12.85
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/cicer-5-kg-tola-94325
+  - ingredient: cicer-suchy
+    store: ebio24
+    product: HORECA Cícer BIO 5 kg
+    pack: 5 kg
+    price: 23.67
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/cicer-bio-5-kg-45123
+  - ingredient: sosovica-cervena
+    store: ebio24
+    product: HORECA Červená šošovica BIO 5 kg
+    pack: 5 kg
+    price: 30.25
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/cervena-sosovica-bio-5-kg-45126
+  - ingredient: zlty-hrach
+    store: ebio24
+    product: Lúpaný hrach 1 kg – Tola
+    pack: 1 kg
+    price: 2.29
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/lupany-hrach-1-kg-tola-93982
+  - ingredient: zlty-hrach
+    store: ebio24
+    product: Lúpaný hrach 5 kg – Tola
+    pack: 5 kg
+    price: 8.99
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/lupany-hrach-5-kg-tola-93984
+  - ingredient: mungo
+    store: ebio24
+    product: Mungo fazuľa 1 kg – Tola
+    pack: 1 kg
+    price: 4.03
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/mungo-fazula-1-kg-tola-95223
+  - ingredient: mungo
+    store: ebio24
+    product: Fazuľa mungo 5 kg – Tola
+    pack: 5 kg
+    price: 17.66
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/fazula-mungo-5-kg-tola-95222
+  - ingredient: sojove-zrna
+    store: ebio24
+    product: Sója zrno 1 kg – Tola
+    pack: 1 kg
+    price: 2.19
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/soja-zrno-1-kg-tola-93972
+  - ingredient: sojove-zrna
+    store: ebio24
+    product: Sójové zrno 5 kg – Tola
+    pack: 5 kg
+    price: 8.84
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/sojove-zrno-5-kg-tola-93974
+  - ingredient: urad-dal
+    store: ebio24
+    product: Biela šúpaná šošovica Urid Dal 500 g – Sattva
+    pack: 500 g
+    price: 4.41
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/biela-supana-sosovica-urid-dal-500-g-sattva-104287
+  - ingredient: kesu
+    store: ebio24
+    product: Kešu orechy 1 kg – Tola
+    pack: 1 kg
+    price: 21.29
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/kesu-orechy-1-kg-tola-94372
+  - ingredient: kesu
+    store: ebio24
+    product: Kešu orechy 5 kg – Tola
+    pack: 5 kg
+    price: 100.37
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/kesu-orechy-5-kg-tola-94374
+  - ingredient: mandle
+    store: ebio24
+    product: Mandle prírodné tmavé 1 kg – Tola
+    pack: 1 kg
+    price: 18.47
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/mandle-prirodne-tmave-1-kg-tola-93911
+  - ingredient: mandle
+    store: ebio24
+    product: Mandle prírodné tmavé 5 kg – Tola
+    pack: 5 kg
+    price: 82.38
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/mandle-prirodne-tmave-5-kg-tola-93913
+  - ingredient: lieskove-orechy
+    store: ebio24
+    product: Lieskové orechy 1 kg – Tola
+    pack: 1 kg
+    price: 36.45
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/lieskove-orechy-1-kg-tola-95180
+  - ingredient: lieskove-orechy
+    store: ebio24
+    product: Lieskové orechy 5 kg – Tola
+    pack: 5 kg
+    price: 163.93
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/lieskove-orechy-5-kg-tola-95178
+  - ingredient: vlasske-orechy
+    store: ebio24
+    product: Vlašské orechy lúpané 1 kg – Tola
+    pack: 1 kg
+    price: 16.34
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/vlasske-orechy-lupane-1-kg-tola-93920
+  - ingredient: vlasske-orechy
+    store: ebio24
+    product: Vlašské orechy lúpané 5 kg – Tola
+    pack: 5 kg
+    price: 76.65
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/vlasske-orechy-lupane-5-kg-tola-93922
+  - ingredient: arasidy
+    store: ebio24
+    product: Arašidy pražené 1 kg – Tola
+    pack: 1 kg
+    price: 4.99
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/arasidy-prazene-1-kg-tola-95213
+  - ingredient: arasidy
+    store: ebio24
+    product: Arašidy pražené 5 kg – Tola
+    pack: 5 kg
+    price: 22.23
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/arasidy-prazene-5-kg-tola-95215
+  - ingredient: tekvicove-semienka
+    store: ebio24
+    product: Tekvicové semienka lúpané 1 kg – Tola
+    pack: 1 kg
+    price: 9.48
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/tekvicove-semienka-lupane-1-kg-tola-93881
+  - ingredient: tekvicove-semienka
+    store: ebio24
+    product: Tekvicové semienka lúpané 5 kg – Tola
+    pack: 5 kg
+    price: 41.61
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/tekvicove-semienka-lupane-5-kg-tola-93885
+  - ingredient: slnecnicove-semienka
+    store: ebio24
+    product: Lúpané slnečnicové semená 2 kg – Tola
+    pack: 2 kg
+    price: 6.59
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/lupane-slnecnicove-semena-2-kg-tola-93891
+  - ingredient: slnecnicove-semienka
+    store: ebio24
+    product: Lúpané slnečnicové semienka 5 kg – Tola
+    pack: 5 kg
+    price: 15.9
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/lupane-slnecnicove-semienka-5-kg-tola-93893
+  - ingredient: lanove-semienko
+    store: ebio24
+    product: Hnedý ľan, ľanové semienka 1 kg – Tola
+    pack: 1 kg
+    price: 2.72
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/hnedy-lan-lanove-semienka-1-kg-tola-94343
+  - ingredient: lanove-semienko
+    store: ebio24
+    product: Hnedé ľanové semienka 5 kg – Tola
+    pack: 5 kg
+    price: 11.41
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/hnede-lanove-semienka-5-kg-tola-94345
+  - ingredient: chia
+    store: ebio24
+    product: Chia semienka 1 kg – Tola
+    pack: 1 kg
+    price: 8.54
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/chia-semienka-1-kg-tola-95145
+  - ingredient: chia
+    store: ebio24
+    product: Chia semienka 5 kg – Tola
+    pack: 5 kg
+    price: 39.3
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/chia-semienka-5-kg-tola-95147
+  - ingredient: quinoa
+    store: ebio24
+    product: Biela quinoa 1 kg – Tola
+    pack: 1 kg
+    price: 3.83
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/biela-quinoa-1-kg-tola-95152
+  - ingredient: quinoa
+    store: ebio24
+    product: Quinoa biela 5 kg – Tola
+    pack: 5 kg
+    price: 16.7
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/quinoa-biela-5-kg-tola-95154
+  - ingredient: pohanka
+    store: ebio24
+    product: Nepražené pohánkové krúpy 1 kg – Tola
+    pack: 1 kg
+    price: 2.79
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/neprazene-pohankove-krupy-1-kg-tola-94385
+  - ingredient: pohanka
+    store: ebio24
+    product: Nepražené pohánkové krúpy 5 kg – Tola
+    pack: 5 kg
+    price: 11.9
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/neprazene-pohankove-krupy-5-kg-tola-94387
+  - ingredient: proso
+    store: ebio24
+    product: HORECA Proso krúpy bezlepkový bio 5 kg
+    pack: 5 kg
+    price: 14.7
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/proso-krupy-bezlepkovy-bio-5-kg-45124
+  - ingredient: bulgur
+    store: ebio24
+    product: BIO PLANET Bulgur (krupica) BIO 1 kg
+    pack: 1 kg
+    price: 5.3
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/bulgur-krupica-bio-1-kg-44471
+  - ingredient: kuskus
+    store: ebio24
+    product: Kuskus 1 kg - Tola
+    pack: 1 kg
+    price: 4.27
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/kuskus-1-kg-tola-95880
+  - ingredient: kuskus
+    store: ebio24
+    product: Kuskus 5 kg - Tola
+    pack: 5 kg
+    price: 17.96
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/kuskus-5-kg-tola-96349
+  - ingredient: amarant
+    store: ebio24
+    product: BIO PLANET Amarant BIO 1 kg
+    pack: 1 kg
+    price: 5.5
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/amarant-bio-1-kg-45857
+  - ingredient: cirok
+    store: ebio24
+    product: Cirok (lúpané zrno) BIO 500 g – Bio Planet
+    pack: 500 g
+    price: 2.91
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/cirok-lupane-zrno-bio-500-g-bio-planet-44520
+  - ingredient: kukuricna-krupica
+    store: ebio24
+    product: Kukuričná krupica 1 kg – Tola
+    pack: 1 kg
+    price: 2.47
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/kukuricna-krupica-1-kg-tola-96740
+  - ingredient: kukuricna-krupica
+    store: ebio24
+    product: Kukuričná krupica 5 kg – Tola
+    pack: 5 kg
+    price: 9.81
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/kukuricna-krupica-5-kg-tola-96742
+  - ingredient: ryza-arborio
+    store: ebio24
+    product: Ryža Arborio 1 kg – Tola
+    pack: 1 kg
+    price: 5.29
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/ryza-arborio-1-kg-tola-97720
+  - ingredient: ryza-basmati
+    store: ebio24
+    product: HORECA Bezlepková biela ryža basmati BIO 5 kg
+    pack: 5 kg
+    price: 30.25
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/bezlepkova-biela-ryza-basmati-bio-5-kg-58169
+  - ingredient: ryza-jazminova
+    store: ebio24
+    product: HORECA Bezlepková biela jazmínová ryža bio 5 kg
+    pack: 5 kg
+    price: 26.74
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/bezlepkova-biela-jazminova-ryza-bio-5-kg-77852
+  - ingredient: ovsene-vlocky
+    store: ebio24
+    product: HORECA Ovsené vločky BIO 3 kg
+    pack: 3 kg
+    price: 10.8
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/ovsene-vlocky-bio-3-kg-46540
+  - ingredient: cestoviny
+    store: ebio24
+    product: Semolinové cestoviny penne Bio 5 kg – Horeca
+    pack: 5 kg
+    price: 27.62
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/semolinove-cestoviny-penne-bio-5-kg-horeca-97600
+  - ingredient: ryzova-muka
+    store: ebio24
+    product: Ryžová múka 1 kg – Tola
+    pack: 1 kg
+    price: 2.66
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/ryzova-muka-1-kg-tola-93925
+  - ingredient: ryzova-muka
+    store: ebio24
+    product: Ryžová múka 5 kg – Tola
+    pack: 5 kg
+    price: 11.09
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/ryzova-muka-5-kg-tola-93927
+  - ingredient: cicerova-muka
+    store: ebio24
+    product: Cícerová múka 1 kg – Tola
+    pack: 1 kg
+    price: 3.36
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/cicerova-muka-1-kg-tola-93950
+  - ingredient: cicerova-muka
+    store: ebio24
+    product: Cícerová múka 5 kg – Tola
+    pack: 5 kg
+    price: 14.45
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/cicerova-muka-5-kg-tola-93952
+  - ingredient: datle
+    store: ebio24
+    product: Sušené datle bez kôstky 1 kg – Tola
+    pack: 1 kg
+    price: 4.87
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/susene-datle-bez-kostky-1-kg-tola-95661
+  - ingredient: datle
+    store: ebio24
+    product: Datle sušené bez kôstok 5 kg – Tola
+    pack: 5 kg
+    price: 20.68
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/datle-susene-bez-kostok-5-kg-tola-95663
+  - ingredient: passata
+    store: ebio24
+    product: EKOWITAL Paradajková passata BIO 680 g
+    pack: 680 g
+    price: 3
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/paradajkova-passata-bio-680-g-49143
+  - ingredient: paradajky-sterilizovane
+    store: ebio24
+    product: MANFUSO Nakrájané paradajky BIO 400 g
+    pack: 400 g
+    price: 2.34
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/nakrajane-paradajky-bio-400-g-49246
+  - ingredient: paradajky-sterilizovane
+    store: ebio24
+    product: MANFUSO Nakrájané paradajky BIO 2,5 kg
+    pack: 2500 g
+    price: 11.57
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/nakrajane-paradajky-bio-2-5-kg-51451
+  - ingredient: kokosove-mlieko
+    store: ebio24
+    product: CLEARSPRING Kokosové mlieko BIO 400 ml
+    pack: 400 ml
+    price: 5.51
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/kokosove-mlieko-bio-400-ml-51472
+  - ingredient: tahini
+    store: ebio24
+    product: PRIMAVIKA Tahini Active light 100% sezam 460 g
+    pack: 460 g
+    price: 8.94
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/tahini-active-light-100-sezam-460-g-48996
+  - ingredient: olivovy-olej
+    store: ebio24
+    product: LEVANTE Extra panenský olivový olej bio 3 l
+    pack: 3 l
+    price: 95.42
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/extra-panensky-olivovy-olej-bio-3-l-79944
+  - ingredient: javorovy-sirup
+    store: ebio24
+    product: HORIZON Javorový sirup C BIO 950 ml
+    pack: 950 ml
+    price: 38.58
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/javorovy-sirup-c-bio-950-ml-46677
+  - ingredient: veganska-majoneza
+    store: ebio24
+    product: VITAQUELL Vegánska majonéza BIO 250 ml
+    pack: 250 ml
+    price: 4.46
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/veganska-majoneza-bio-250-ml-45388
+  - ingredient: psenicne-tortilly
+    store: ebio24
+    product: AMAIZIN BIO tortilla wraps 240 g
+    pack: 240 g
+    price: 4.48
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/bio-tortilla-wraps-240-g-45734
+  - ingredient: kala-namak
+    store: ebio24
+    product: CRYSTALLINE PLANET Čierna soľ kala namak jemne mletá 1 kg
+    pack: 1 kg
+    price: 3.81
+    date: 2026-10-01
+    url: https://ebio24.sk/sk/products/cierna-sol-kala-namak-jemne-mleta-1-kg-44826

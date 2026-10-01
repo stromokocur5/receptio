@@ -17,6 +17,7 @@
 		"test": "npm run test:unit -- --run",
 		"gen": "wrangler types",
 		"prices:sync": "node scripts/sync-prices.ts",
+		"prices:eshops": "node scripts/sync-eshops.ts",
 		"test:e2e": "playwright test"
 	},
 	"devDependencies": {

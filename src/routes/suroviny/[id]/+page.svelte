@@ -285,6 +285,7 @@
 								<span class="sdot" style:background={store?.color}></span>
 								<span class="pname">
 									<strong>{store?.name ?? p.storeId}</strong>
+									{#if p.online}<span class="badge" title="Cena bez dopravy">e-shop</span>{/if}
 									{#if p.saleUntil}<span class="badge tomato"
 											>akcia do {dayMonth.format(new Date(p.saleUntil))}</span
 										>{/if}

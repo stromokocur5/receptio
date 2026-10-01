@@ -2,6 +2,9 @@
 # Porovnáva sa cena za kg. Bežná cena sa po 60 dňoch berie ako zastaraná, akciová cena platí do sale_until.
 # Kým pre surovinu nie je žiadna platná cena, appka použije odhad z ingredients.yaml a označí ho.
 #
+# online: true pri obchode = e-shop (veľké balenia, doprava navyše). Do nákupu v obchodoch sa
+# neráta, kým surovinu predáva aj kamenný obchod; na stránke Ceny je ako cena „vo veľkom“.
+#
 # pack: veľkosť balenia v rovnakom formáte ako v receptoch (400 g, 1 l, 5 kg, 1 ks)
 #
 # Príklad:
@@ -28,7 +31,11 @@ stores:
   - { id: terno, name: Terno, color: '#ff6600' }
   - { id: fresh, name: Fresh, color: '#e4002b' }
   - { id: dm, name: dm, color: '#002878' }
-  - { id: gymbeam, name: GymBeam, color: '#ff5a00' }
+  - { id: gymbeam, name: GymBeam, color: '#ff5a00', online: true }
+  - { id: grizly, name: Grizly, color: '#5b3a1e', online: true }
+  - { id: foodland, name: Foodland, color: '#c8102e', online: true }
+  - { id: veganstore, name: Veganstore, color: '#3f8f3a', online: true }
+  - { id: ebio24, name: ebio24, color: '#6aa329', online: true }
   - { id: aziske-potraviny, name: Ázijské potraviny, color: '#b8321f' }
 
 entries:

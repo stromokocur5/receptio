@@ -52,7 +52,7 @@ test('excluding an ingredient hides recipes with any form of it', async ({ page 
 	await filters.getByText('Strava a alergie').click();
 	await filters.getByPlaceholder('Napr. huby, koriander…').fill('cícer');
 	await filters
-		.getByRole('button', { name: /Pridať: bez Cícer/ })
+		.getByRole('button', { name: /Pridať: bez: Cícer/ })
 		.first()
 		.click();
 	await expect(page).toHaveURL(/bez=cicer/);

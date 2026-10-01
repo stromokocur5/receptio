@@ -20,6 +20,7 @@
 	import PlateArt from '$lib/components/PlateArt.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import RecipeFeedback from '$lib/components/RecipeFeedback.svelte';
+	import CookedBadge from '$lib/components/CookedBadge.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import {
 		ALLERGEN_LABELS,
@@ -39,6 +40,7 @@
 		addToPlan,
 		favorites,
 		history,
+		likes,
 		LIST_SEARCH_KEY,
 		notes,
 		pantry,
@@ -455,6 +457,8 @@
 					<li class:tested={!!base.tested}>
 						{#if base.tested}
 							<Icon name="check" size={16} /> Vyskúšané
+						{:else if likes.cooked[base.id]}
+							<CookedBadge recipeId={base.id} />
 						{:else}
 							<span
 								title="Recept je napísaný podľa overených postupov, ale v Receptiu ho ešte nikto neuvaril. Časy a množstvá ber orientačne."

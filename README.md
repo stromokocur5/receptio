@@ -119,7 +119,7 @@ Nová surovina patrí do `content/ingredients.yaml` (hodnoty na 100 g, ideálne 
 
 `content/prices.yaml`, každý záznam je konkrétny produkt v konkrétnom obchode a dni. Porovnáva sa cena za kg,
 bežná cena po 60 dňoch zastará, akciová platí do `sale_until`. Kým pre surovinu nie je reálna cena, použije sa
-odhad z `ingredients.yaml` a appka ho označí.
+posledná videná cena (do roka) alebo odhad z `ingredients.yaml` a appka to označí ako odhad.
 
 Základné potraviny sa sťahujú z [cenyslovensko.sk](https://www.cenyslovensko.sk/) (porovnávač MF SR, reťazce
 tam ceny posielajú denne zo zákona): `pnpm prices:sync` prepíše `content/prices-cenyslovensko.yaml` podľa
@@ -129,6 +129,12 @@ aj ručne v záložke Actions): stiahne ceny, spustí testy a build a pri zmene 
 nasadenie. Každý beh pridá riadky do `content/price-history.csv` (história cien na neskoršie grafy).
 
 Ručne: `pnpm prices:sync` a commitni `content/prices-cenyslovensko.yaml`.
+
+Ceny veľkých balení z e-shopov (Grizly, ebio24, Foodland, Veganstore) číta `pnpm prices:eshops` zo stránok
+produktov uvedených v `content/eshops.yaml` do `content/prices-eshops.yaml` – raz týždenne cez
+`.github/workflows/eshops.yml`. `pnpm prices:eshops grizly` obnoví len jeden obchod. Obchod s `online: true`
+v `prices.yaml` sa neráta do nákupu v kamenných obchodoch, kým surovinu predáva aj niektorý z nich; na stránke
+Ceny je ako cena „vo veľkom“. Bežná cena, ktorá zastarala, ostáva až rok ako označený odhad s dátumom.
 
 ## Návrhy receptov
 

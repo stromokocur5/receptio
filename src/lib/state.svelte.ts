@@ -263,6 +263,44 @@ function validatePresets(raw: unknown): FilterPreset[] | undefined {
 }
 export const presets = new Persisted<FilterPreset[]>('presets', [], validatePresets);
 
+/** A plan kept under a name, to put the same week back later. */
+export interface SavedWeek {
+	name: string;
+	entries: PlanEntry[];
+}
+export const MAX_SAVED_WEEKS = 8;
+function validateSavedWeeks(raw: unknown): SavedWeek[] | undefined {
+	if (!Array.isArray(raw)) return undefined;
+	return raw
+		.flatMap((w): SavedWeek[] => {
+			if (!isRecord(w) || typeof w.name !== 'string' || !w.name || w.name.length > 40) return [];
+			const entries = validatePlan(w.entries);
+			return entries?.length ? [{ name: w.name, entries }] : [];
+		})
+		.slice(-MAX_SAVED_WEEKS);
+}
+export const savedWeeks = new Persisted<SavedWeek[]>('saved-weeks', [], validateSavedWeeks);
+
+/** Keeps the current plan under `name`, replacing a week of the same name. */
+export function saveWeek(name: string) {
+	const trimmed = name.trim().slice(0, 40);
+	if (!trimmed || !plan.current.length) return;
+	savedWeeks.current = [
+		...savedWeeks.current.filter((w) => w.name !== trimmed),
+		{ name: trimmed, entries: plan.current.map((e) => ({ ...e })) }
+	].slice(-MAX_SAVED_WEEKS);
+}
+
+/** Replaces the plan with a saved week; the shopping list starts unticked. */
+export function applySavedWeek(week: SavedWeek) {
+	plan.current = week.entries.map((e) => ({ ...e }));
+	checkedItems.current = {};
+}
+
+export function deleteSavedWeek(name: string) {
+	savedWeeks.current = savedWeeks.current.filter((w) => w.name !== name);
+}
+
 /** Ingredients and tools the user doesn't have or eat, set in Špajza. */
 export const avoid = new Persisted<Avoid>('avoid', NO_AVOID, validateAvoid);
 
@@ -410,7 +448,8 @@ export const ALL_PERSISTED = {
 	garden,
 	preserves,
 	avoid,
-	presets
+	presets,
+	savedWeeks
 };
 
 export const ui = $state({ loaded: false });
@@ -516,21 +555,37 @@ export function servingsInPlan(recipeId: string): number {
 }
 
 // ── Likes (server-backed, anonymous per device) ──────────────────
-export const likes = $state<{ counts: Record<string, number>; mine: string[]; available: boolean }>(
-	{
-		counts: {},
-		mine: [],
-		available: false
-	}
-);
+export interface CookedStats {
+	cooked: number;
+	rating?: number;
+	ratings: number;
+}
+
+export const likes = $state<{
+	counts: Record<string, number>;
+	mine: string[];
+	/** What other cooks reported: how often it worked and the average stars. */
+	cooked: Record<string, CookedStats>;
+	available: boolean;
+}>({
+	counts: {},
+	mine: [],
+	cooked: {},
+	available: false
+});
 
 export async function loadLikes() {
 	try {
 		const res = await fetch('/api/likes');
 		if (!res.ok) return;
-		const data = (await res.json()) as { counts: Record<string, number>; mine: string[] };
+		const data = (await res.json()) as {
+			counts: Record<string, number>;
+			mine: string[];
+			cooked?: Record<string, CookedStats>;
+		};
 		likes.counts = data.counts;
 		likes.mine = data.mine;
+		likes.cooked = data.cooked ?? {};
 		likes.available = true;
 	} catch {
 		// Likes are a nice-to-have; the app works without the API (e.g. static preview).

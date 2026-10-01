@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { normalizeSearch, searchMatcher } from './labels';
+import { normalizeSearch, searchMatcher, termsFound } from './labels';
 
 const dal = normalizeSearch(
 	'Šošovicový dal s brokolicou a ryžou – indická kuchyňa, čierne korenie'
@@ -32,5 +32,27 @@ describe('searchMatcher', () => {
 		expect(find('cier')).toEqual([dal]);
 		expect(find('tofu')).toEqual([]);
 		expect(find('rys')).toEqual([]);
+	});
+
+	it('knows other names and other endings', () => {
+		const kari = normalizeSearch('Zelené kari s tofu');
+		const soup = normalizeSearch('Hrachová polievka');
+		const schnitzel = normalizeSearch('Rezeň z tofu');
+		const all = [
+			kari,
+			soup,
+			normalizeSearch('Dve polievky naraz'),
+			normalizeSearch('Rezance'),
+			schnitzel
+		];
+		expect(all.filter(searchMatcher(all, 'curry'))).toEqual([kari]);
+		expect(all.filter(searchMatcher(all, 'polievky'))).toHaveLength(2);
+		// Short words keep their ending: "rezen" is not "rezance".
+		expect(all.filter(searchMatcher(all, 'rezen'))).toEqual([schnitzel]);
+	});
+
+	it('counts how many query words a text has', () => {
+		expect(termsFound(dal, 'brokolica korenie mango')).toBe(2);
+		expect(termsFound(hummus, 'curry')).toBe(0);
 	});
 });

@@ -6,6 +6,7 @@
 	import PlateArt from '$lib/components/PlateArt.svelte';
 	import { vesselFor } from '$lib/categories';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
+	import TodayPicker from '$lib/components/TodayPicker.svelte';
 	import IngredientExcluder from '$lib/components/IngredientExcluder.svelte';
 	import { avoidFilter } from '$lib/avoid';
 	import { rankByLeftovers } from '$lib/pantry';
@@ -376,6 +377,8 @@
 		</div>
 	</section>
 {/if}
+
+<TodayPicker />
 
 <section class="wrap block" id="co-mam-doma">
 	<div class="have card">

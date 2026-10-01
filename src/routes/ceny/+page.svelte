@@ -9,6 +9,7 @@
 		BULK_PACK_GRAMS,
 		STALE_AFTER_DAYS,
 		ageInDays,
+		bestOnlinePrice,
 		bestPrice,
 		isSaleActive,
 		isStale,
@@ -18,6 +19,9 @@
 
 	const catalog = useCatalog();
 	const today = new Date();
+
+	const formatDate = (iso: string) =>
+		new Date(iso).toLocaleDateString('sk-SK', { day: 'numeric', month: 'numeric' });
 
 	let search = $state('');
 	let category = $state<IngredientCategory | ''>('');
@@ -32,6 +36,7 @@
 			.map((ingredient) => ({
 				ingredient,
 				best: bestPrice(ingredient, catalog.prices, today),
+				online: bestOnlinePrice(ingredient, catalog.prices, today),
 				entries: catalog.prices
 					.filter((p) => p.ingredientId === ingredient.id)
 					.sort((a, b) => pricePerKg(a) - pricePerKg(b))
@@ -80,7 +85,34 @@
 			.map(([id]) => catalog.ingredientsById.get(id)!);
 	});
 
-	const bulk = $derived(catalog.prices.filter((p) => p.packGrams >= BULK_PACK_GRAMS));
+	/** Big packs and e-shop prices next to what the same thing costs in a shop, best saving first. */
+	const bulk = $derived(
+		catalog.prices
+			.filter((p) => (p.online || p.packGrams >= BULK_PACK_GRAMS) && !isStale(p, today))
+			.map((entry) => {
+				const ingredient = catalog.ingredientsById.get(entry.ingredientId)!;
+				const shop = bestPrice(ingredient, catalog.prices, today);
+				// Without a shop price there is nothing real to compare with.
+				const saving =
+					shop.isEstimate || shop.storeId === entry.storeId
+						? null
+						: 1 - pricePerKg(entry) / shop.perKg;
+				return { entry, ingredient, shop, saving };
+			})
+			.sort(
+				(a, b) =>
+					(b.saving ?? -1) - (a.saving ?? -1) ||
+					a.ingredient.name.localeCompare(b.ingredient.name, 'sk')
+			)
+			// The best offer per ingredient; the rest is in its row of the table above.
+			.filter((row, index, all) => all.findIndex((r) => r.ingredient === row.ingredient) === index)
+	);
+	const onlineStoreNames = $derived(
+		catalog.stores
+			.filter((s) => s.online && catalog.prices.some((p) => p.storeId === s.id))
+			.map((s) => s.name)
+			.join(', ')
+	);
 	const realCount = $derived(catalog.prices.length);
 	const storesWithPrices = $derived(new Set(catalog.prices.map((p) => p.storeId)).size);
 </script>
@@ -96,19 +128,30 @@
 		<h1>Čo koľko stojí</h1>
 		<p class="lede">
 			Ceny porovnávame vždy za kilogram, takže veľké balenie a malé vrecúško sa dajú férovo
-			porovnať. Reálne ceny majú obchod a dátum, bežná cena po {STALE_AFTER_DAYS} dňoch zastará. Kde reálnu
-			cenu ešte nemáme, ukážeme <span class="badge">odhad</span>.
+			porovnať. Reálne ceny majú obchod a dátum. Všetko ostatné je <span class="badge">odhad</span>
+			a tak to aj označujeme.
 		</p>
 		<p class="muted small">
 			{realCount
 				? `${realCount} cien z ${storesWithPrices} obchodov.`
-				: 'Reálne ceny z obchodov sa zatiaľ zbierajú, všetko nižšie je hrubý odhad.'}
+				: 'Reálne ceny z obchodov zatiaľ nemáme, všetko nižšie je hrubý odhad.'}
 		</p>
 		<p class="muted small">
-			Ceny základných potravín (zelenina, múka, cestoviny, vločky, sójový nápoj…) z Billy, Lidla,
-			Kauflandu, Tesca, Terna a Freshu preberáme z
-			<a href="https://www.cenyslovensko.sk/" rel="noopener">cenyslovensko.sk</a> – porovnávača Ministerstva
-			financií, kam ich reťazce posielajú každý deň. Ostatné ceny zbierame ručne.
+			<strong>Každý deň sa samy obnovujú</strong> ceny základných potravín (zelenina, múka,
+			cestoviny, vločky, sójový nápoj…) z Billy, Lidla, Kauflandu, Tesca, Terna a Freshu – preberáme
+			ich z
+			<a href="https://www.cenyslovensko.sk/" rel="noopener">cenyslovensko.sk</a>, porovnávača
+			Ministerstva financií, kam ich reťazce posielajú.
+		</p>
+		<p class="muted small">
+			<strong>Raz týždenne sa obnovujú</strong> ceny veľkých balení z e-shopov – orechy, semienka,
+			strukoviny, obilniny a koreniny. Sú <a href="#vo-velkom">nižšie na stránke</a> aj pri každej surovine;
+			do nákupu v obchode ich nerátame, lebo k nim treba pripočítať dopravu.
+		</p>
+		<p class="muted small">
+			<strong>Ostatné ceny sú orientačné.</strong> Tofu, tahini či koreniny porovnávač nesleduje,
+			tak sme ich cenu raz pozreli v obchode. Po {STALE_AFTER_DAYS} dňoch ju už neberieme ako aktuálnu
+			– ostane ako odhad s dátumom, kedy sme ju videli naposledy. Kde nemáme ani to, je odhad len hrubý.
 		</p>
 	</header>
 
@@ -119,7 +162,7 @@
 		</div>
 		<p class="muted small">
 			<strong>{Math.round(knownShare * 100)} %</strong> ceny receptov je z reálnych cien v obchodoch,
-			zvyšok je odhad. Najviac by pomohli ceny týchto surovín:
+			zvyšok je odhad. Najviac v ňom vážia tieto suroviny:
 		</p>
 		<ul class="missing">
 			{#each missingPrices as i (i.id)}
@@ -163,7 +206,7 @@
 		</div>
 
 		<ul class="rows">
-			{#each rows as { ingredient, best, entries } (ingredient.id)}
+			{#each rows as { ingredient, best, online, entries } (ingredient.id)}
 				<li class="row card">
 					<div class="main">
 						<span class="dot" style:background={ingredient.color}></span>
@@ -180,9 +223,22 @@
 							{#if ingredient.byproduct}
 								<!-- a leftover has no price to label -->
 							{:else if best.isEstimate}
-								<span class="badge">odhad</span>
+								<span
+									class="badge"
+									title={best.lastSeen
+										? `Podľa ceny, ktorú sme v obchode videli ${formatDate(best.lastSeen)}`
+										: 'Hrubý odhad, v obchode sme ju nevideli'}
+									>odhad{best.lastSeen ? ` z ${formatDate(best.lastSeen)}` : ''}</span
+								>
 							{:else}
 								<span class="badge leaf">{catalog.storesById.get(best.storeId!)?.name}</span>
+							{/if}
+							{#if online && online.storeId !== best.storeId && pricePerKg(online) < best.perKg}
+								<small class="bulk-hint"
+									>vo veľkom {formatEur(pricePerKg(online))}/kg · {catalog.storesById.get(
+										online.storeId
+									)?.name}</small
+								>
 							{/if}
 						</div>
 					</div>
@@ -219,16 +275,30 @@
 
 	{#if bulk.length}
 		<section class="card box">
-			<h2><Icon name="package" size={24} /> Veľké balenia</h2>
+			<h2 id="vo-velkom"><Icon name="package" size={24} /> Vo veľkom a z e-shopov</h2>
+			<p class="muted small">
+				Kilové balenia orechov, strukovín, obilnín a korenín z e-shopov ({onlineStoreNames}) – cena
+				je bez dopravy, takže sa oplatia pri väčšej objednávke alebo s kamarátmi. Pri každom je,
+				koľko by to isté stálo v obchode.
+			</p>
 			<ul class="bulk">
-				{#each bulk as e, i (i)}
+				{#each bulk as { entry: e, ingredient, shop, saving }, i (i)}
 					<li>
-						<strong>{catalog.ingredientsById.get(e.ingredientId)?.name}</strong>
-						{e.product}, {formatGrams(e.packGrams)} · {catalog.storesById.get(e.storeId)?.name} ·
-						{formatEur(pricePerKg(e))}/kg
-						{#if e.url}<a href={e.url} rel="noopener noreferrer" target="_blank"
-								>odkaz <Icon name="external" size={14} /></a
-							>{/if}
+						<strong><a class="ing" href="/suroviny/{ingredient.id}">{ingredient.name}</a></strong>
+						<span class="bulk-price">{formatEur(pricePerKg(e))}/kg</span>
+						{#if saving !== null && saving > 0.05}
+							<span class="badge leaf">o {Math.round(saving * 100)} % lacnejšie</span>
+						{/if}
+						<span class="muted small bulk-detail">
+							{e.product} · {catalog.storesById.get(e.storeId)?.name}
+							{#if !shop.isEstimate && shop.storeId !== e.storeId}
+								· v obchode od {formatEur(shop.perKg)}/kg ({catalog.storesById.get(shop.storeId!)
+									?.name})
+							{/if}
+							{#if e.url}<a href={e.url} rel="noopener noreferrer" target="_blank"
+									>odkaz <Icon name="external" size={14} /></a
+								>{/if}
+						</span>
 					</li>
 				{/each}
 			</ul>
@@ -239,7 +309,9 @@
 		<summary><Icon name="info" size={20} /> Ako sa pridávajú ceny</summary>
 		<p>
 			Ceny sú v súbore <code>content/prices.yaml</code>, každý záznam je konkrétny produkt v
-			konkrétnom obchode a dni. Stačí poslať fotku cenovky alebo letáku a doplníme ich.
+			konkrétnom obchode a dni. Stačí poslať fotku cenovky alebo letáku a doplníme ich. Poznáš
+			e-shop, kde je niečo lacnejšie? <a href="/navrhni">Napíš nám</a> odkaz na produkt a pridáme ho medzi
+			tie, ktoré sa obnovujú samy.
 		</p>
 		<pre><code
 				>- ingredient: sosovica-cervena
@@ -444,8 +516,37 @@
 	.tags:empty {
 		display: none;
 	}
+	.bulk-hint {
+		display: block;
+		font-weight: 500;
+		color: var(--leaf);
+	}
+	.bulk-price {
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+	}
+	.bulk-detail {
+		flex-basis: 100%;
+	}
 	.bulk {
-		padding-left: 1.2em;
+		display: grid;
+		gap: 10px;
+		margin: 14px 0 0;
+		padding: 0;
+		list-style: none;
+	}
+	.bulk li {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 2px 10px;
+	}
+	.bulk-detail a {
+		white-space: nowrap;
+	}
+	.bulk-detail :global(svg) {
+		display: inline;
+		vertical-align: -2px;
 	}
 	.how summary {
 		display: flex;

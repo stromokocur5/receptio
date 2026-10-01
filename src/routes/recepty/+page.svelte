@@ -10,6 +10,7 @@
 		TASTE_LABELS,
 		inCategory,
 		isCategoryId,
+		splitCategory,
 		type CategoryId
 	} from '$lib/categories';
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
@@ -18,8 +19,10 @@
 	import {
 		CATEGORY_LABELS,
 		MEAL_LABELS,
+		countTerms,
 		normalizeSearch,
 		searchMatcher,
+		termsFound,
 		pluralRecipes
 	} from '$lib/labels';
 	import {
@@ -169,6 +172,13 @@
 						r.description,
 						catalog.cuisinesById.get(r.cuisine)?.name ?? '',
 						...r.meals.map((m) => MEAL_LABELS[m]),
+						// "polievky", "dezerty" or "kari" find recipes by where they're filed.
+						...r.categories.map((path) => {
+							const { category, sub } = splitCategory(path);
+							const subs: Record<string, string> = RECIPE_CATEGORIES[category].subs;
+							return `${RECIPE_CATEGORIES[category].label} ${subs[sub] ?? ''}`;
+						}),
+						...r.tags,
 						...r.lines.flatMap((l) => {
 							const i = catalog.ingredientsById.get(l.ingredientId);
 							return i ? [i.name, ...(i.aliases ?? [])] : [];
@@ -197,6 +207,12 @@
 	const hasPantry = $derived(ui.loaded && Object.keys(pantry.current).length > 0);
 
 	const matchesQuery = $derived(searchMatcher([...searchIndex.values()], q));
+	/** How many of the searched words are in a recipe's name – those results go first. */
+	const titleHits = $derived(
+		new Map(
+			q.trim() ? catalog.recipes.map((r) => [r.id, termsFound(normalizeSearch(r.title), q)]) : []
+		)
+	);
 
 	/** Every filter except the category, so the tiles can count what each one would show. */
 	function passesFilters(r: RecipeSummary): boolean {
@@ -260,6 +276,7 @@
 		const list = unfiltered.filter((r) => !category || inCategory(r.categories, category, sub));
 		const by: Record<Sort, (a: (typeof list)[number], b: (typeof list)[number]) => number> = {
 			odporucane: (a, b) =>
+				(titleHits.get(b.id) ?? 0) - (titleHits.get(a.id) ?? 0) ||
 				(likes.counts[b.id] ?? 0) - (likes.counts[a.id] ?? 0) ||
 				computedTags(b).length - computedTags(a).length,
 			'protein-eur': (a, b) =>
@@ -283,6 +300,40 @@
 		};
 	});
 	const results = $derived(filtered.list);
+
+	const MAX_NEAREST = 4;
+	/**
+	 * What to offer when nothing matches: the same search without the filters, or – when the
+	 * words aren't found together anywhere – the recipes that have the most of them.
+	 */
+	const nearest = $derived.by((): { kind: 'filters' | 'words' | 'none'; list: RecipeSummary[] } => {
+		if (results.length || !q.trim()) return { kind: 'none', list: [] };
+		const byRelevance = (a: RecipeSummary, b: RecipeSummary) =>
+			(titleHits.get(b.id) ?? 0) - (titleHits.get(a.id) ?? 0) ||
+			(likes.counts[b.id] ?? 0) - (likes.counts[a.id] ?? 0);
+		const withoutFilters = catalog.recipes
+			.filter((r) => matchesQuery(searchIndex.get(r.id)!))
+			.sort(byRelevance);
+		if (withoutFilters.length) {
+			return { kind: 'filters', list: withoutFilters.slice(0, MAX_NEAREST) };
+		}
+		if (countTerms(q) < 2) return { kind: 'none', list: [] };
+		const found = (r: RecipeSummary) => termsFound(searchIndex.get(r.id)!, q);
+		return {
+			kind: 'words',
+			list: catalog.recipes
+				.filter((r) => found(r) > 0)
+				.sort((a, b) => found(b) - found(a) || byRelevance(a, b))
+				.slice(0, MAX_NEAREST)
+		};
+	});
+
+	/** Keeps the search, drops everything that narrows it. */
+	function clearFilters() {
+		const query = q;
+		reset();
+		q = query;
+	}
 
 	/** A random recipe from what the current filters allow (or from all, if none match). */
 	function surprise() {
@@ -1037,10 +1088,35 @@
 							stroke-linecap="round"
 						/>
 					</svg>
-					<h3>Nič také zatiaľ nemáme</h3>
-					<p class="muted">Skús uvoľniť filtre, alebo si recept vyžiadaj a pridáme ho.</p>
-					<button class="btn" onclick={reset}>Zrušiť filtre</button>
+					{#if nearest.kind === 'filters'}
+						<h3>S týmito filtrami nič</h3>
+						<p class="muted">
+							„{q.trim()}“ tu máme, len ho filtre schovali. Bez nich nájdeš napríklad:
+						</p>
+						<button class="btn" onclick={clearFilters}>Zrušiť filtre, hľadanie nechať</button>
+					{:else if nearest.kind === 'words' && nearest.list.length}
+						<h3>Všetko naraz v žiadnom recepte nie je</h3>
+						<p class="muted">Tieto majú z hľadaného najviac:</p>
+					{:else}
+						<h3>Nič také zatiaľ nemáme</h3>
+						<p class="muted">
+							{#if q.trim()}
+								Skús iné slovo alebo surovinu. Ak ti tu recept chýba,
+								<a href="/navrhni">napíš nám oň</a> a pridáme ho.
+							{:else}
+								Skús uvoľniť filtre, alebo si recept <a href="/navrhni">vyžiadaj</a> a pridáme ho.
+							{/if}
+						</p>
+						<button class="btn" onclick={reset}>Zrušiť filtre</button>
+					{/if}
 				</div>
+				{#if nearest.list.length}
+					<div class="grid nearest">
+						{#each nearest.list as recipe, i (recipe.id)}
+							<RecipeCard {recipe} index={i} />
+						{/each}
+					</div>
+				{/if}
 			{/if}
 		</section>
 	</div>
@@ -1349,6 +1425,9 @@
 		display: flex;
 		justify-content: center;
 		margin-top: 24px;
+	}
+	.nearest {
+		margin-top: 18px;
 	}
 	.empty {
 		display: grid;

@@ -1,0 +1,39 @@
+title: Paradajková ryža s fazuľou z jedného hrnca
+description: Ryža uvarená rovno v passate s fazuľou, kukuricou a paprikou. Jeden hrniec, žiadne scedzovanie a štyri obedy do krabičiek.
+cuisine: mexicka
+meals: [obed, vecera]
+categories: [hlavne/ryza, hlavne/strukoviny]
+time: 40
+active: 15
+servings: 4
+difficulty: 1
+tags: [meal-prep, one-pot, lacne, zo-spajze, vela-vlakniny]
+spicy: 1
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Zabaľ do tortilly s avokádom, alebo opeč na panvici dochrumkava a podávaj so šalátom.'
+related: [burrito-do-mraznicky, arroz-rojo, chili-sin-carne]
+howto: [ryza]
+ingredients:
+  - olej: 2 pl
+  - cibula: 1 ks
+  - paprika-cervena: 1 ks | na kocky
+  - cesnak: 2 ks
+  - kmin: 1 čl
+  - udena-paprika: 1 čl
+  - oregano: 1 čl
+  - ryza-basmati: 1,5 hrnček | prepláchnutá
+  - passata: 1,5 hrnček
+  - zeleninovy-vyvar: 2 hrnček
+  - sol: 1 čl
+  - fazula-cervena: 2 ks | scedená
+  - kukurica: 1 ks | scedená
+  - limetka: 1 ks
+  - bylinky-koriander: 2 pl
+steps:
+  - V širokom hrnci s pokrievkou zohrej olej na strednom ohni. Speň cibuľu a papriku 5 minút, pridaj prelisovaný cesnak, rímsku rascu, údenú papriku a oregano a pol minúty miešaj.
+  - Vsyp ryžu a minútu ju miešaj v korení. Prilej passatu a vývar, osoľ a priveď do varu.
+  - Stiahni na najmenší oheň, prikry a var 18–20 minút bez miešania. Ryža v paradajkách mäkne pomalšie ako vo vode – ak je po 20 minútach ešte tvrdá, prilej 3 lyžice vody a daj jej ďalších 5 minút.
+  - Odstav, navrch nasyp fazuľu a kukuricu, znova prikry a nechaj 10 minút dôjsť. Para ich prehreje a ryža dopije zvyšok tekutiny.
+  - Vidličkou všetko premiešaj, pokvapkaj limetkou a posyp koriandrom.
+tips:
+  - Počas varenia nedvíhaj pokrievku. Uniknutá para je presne tá voda, ktorá bude ryži chýbať.

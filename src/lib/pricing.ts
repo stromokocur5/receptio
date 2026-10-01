@@ -1,6 +1,8 @@
 import type { Ingredient, IngredientCategory, PriceEntry, Store } from './types';
 
 export const STALE_AFTER_DAYS = 60;
+/** An old shelf price still beats a rough guess for this long; it's shown as an estimate. */
+export const LAST_SEEN_DAYS = 365;
 export const BULK_PACK_GRAMS = 2000;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -32,6 +34,17 @@ export interface BestPrice {
 	perKg: number;
 	storeId: string | null;
 	isEstimate: boolean;
+	/** For an estimate taken from an outdated shelf price: the day that price was seen. */
+	lastSeen?: string;
+}
+
+/**
+ * Prices a weekly shopping can use: the shops you walk into. E-shop prices (big packs, with
+ * delivery on top) only count when no such shop has the ingredient.
+ */
+function forShopping(candidates: PriceEntry[]): PriceEntry[] {
+	const inShops = candidates.filter((p) => !p.online);
+	return inShops.length ? inShops : candidates;
 }
 
 export function bestPrice(
@@ -40,17 +53,55 @@ export function bestPrice(
 	today: Date,
 	storeId?: string
 ): BestPrice {
-	const candidates = prices.filter(
-		(p) =>
-			p.ingredientId === ingredient.id &&
-			(storeId === undefined || p.storeId === storeId) &&
-			isUsable(p, today)
+	const candidates = forShopping(
+		prices.filter(
+			(p) =>
+				p.ingredientId === ingredient.id &&
+				(storeId === undefined || p.storeId === storeId) &&
+				isUsable(p, today)
+		)
 	);
 	if (candidates.length === 0) {
+		const lastSeen = lastSeenPrice(ingredient, prices, today);
+		if (lastSeen) {
+			return {
+				perKg: pricePerKg(lastSeen),
+				storeId: null,
+				isEstimate: true,
+				lastSeen: lastSeen.date
+			};
+		}
 		return { perKg: ingredient.priceEstimate, storeId: null, isEstimate: true };
 	}
 	const cheapest = candidates.reduce((a, b) => (pricePerKg(b) < pricePerKg(a) ? b : a));
 	return { perKg: pricePerKg(cheapest), storeId: cheapest.storeId, isEstimate: false };
+}
+
+/** The cheapest usable e-shop price per kg – what buying in bulk would cost. */
+export function bestOnlinePrice(
+	ingredient: Ingredient,
+	prices: PriceEntry[],
+	today: Date
+): PriceEntry | undefined {
+	return prices
+		.filter((p) => p.online && p.ingredientId === ingredient.id && isUsable(p, today))
+		.sort((a, b) => pricePerKg(a) - pricePerKg(b))[0];
+}
+
+/** The newest outdated regular price (sales say little about the usual price), cheapest that day. */
+function lastSeenPrice(
+	ingredient: Ingredient,
+	prices: PriceEntry[],
+	today: Date
+): PriceEntry | undefined {
+	return prices
+		.filter(
+			(p) =>
+				p.ingredientId === ingredient.id &&
+				p.saleUntil === undefined &&
+				ageInDays(p.date, today) <= LAST_SEEN_DAYS
+		)
+		.sort((a, b) => b.date.localeCompare(a.date) || pricePerKg(a) - pricePerKg(b))[0];
 }
 
 const LOOSE_CATEGORIES: ReadonlySet<IngredientCategory> = new Set(['zelenina', 'ovocie']);
@@ -78,9 +129,15 @@ export function shelfCost(
 ): ShelfCost | null {
 	if (grams <= 0) return null;
 	let best: ShelfCost | null = null;
-	for (const p of prices) {
-		if (p.ingredientId !== ingredient.id || !isUsable(p, today)) continue;
-		if (storeId !== undefined && p.storeId !== storeId) continue;
+	const candidates = forShopping(
+		prices.filter(
+			(p) =>
+				p.ingredientId === ingredient.id &&
+				isUsable(p, today) &&
+				(storeId === undefined || p.storeId === storeId)
+		)
+	);
+	for (const p of candidates) {
 		// Loose produce is priced per kg and weighed at the till – you pay for what you take.
 		const byWeight = LOOSE_CATEGORIES.has(ingredient.category) && p.packGrams === 1000;
 		// A few grams over a pack (rounded recipe amounts) shouldn't mean buying a second one.
@@ -128,11 +185,13 @@ export function compareStores(
 	prices: PriceEntry[],
 	today: Date
 ): StoreComparison {
+	// An e-shop isn't a stop on the way; its prices are for stocking up, not for this comparison.
+	const shops = stores.filter((s) => !s.online);
 	const priced = items
 		.filter((i) => i.grams > 0)
 		.map((item) => {
 			const costs = new Map<string, number>();
-			for (const store of stores) {
+			for (const store of shops) {
 				const shelf = shelfCost(item.ingredient, item.grams, prices, today, store.id);
 				if (shelf) costs.set(store.id, shelf.cost);
 			}
@@ -172,7 +231,7 @@ export function compareStores(
 	const cheapest = (plans: StorePlan[]) =>
 		plans.reduce<StorePlan | null>((a, b) => (!a || better(a, b) ? b : a), null);
 
-	const ids = stores.map((s) => s.id).filter((id) => withPrice.some((i) => i.costs.has(id)));
+	const ids = shops.map((s) => s.id).filter((id) => withPrice.some((i) => i.costs.has(id)));
 	const singles = ids.map((id) => plan([id])).sort((a, b) => (better(a, b) ? 1 : -1));
 	const single = singles[0] ?? null;
 	const pairs: StorePlan[] = [];

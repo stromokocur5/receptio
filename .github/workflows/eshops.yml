@@ -1,0 +1,53 @@
+# Raz týždenne prečíta ceny produktov z e-shopov (content/eshops.yaml), overí ich testami
+# a buildom a commitne. Push na main spustí nasadenie cez Workers Builds.
+name: Ceny z e-shopov
+
+on:
+  schedule:
+    - cron: '0 4 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: prices
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.33.2
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Stiahnuť ceny
+        run: pnpm prices:eshops
+
+      - name: Overiť
+        run: |
+          pnpm test
+          pnpm build
+
+      - name: Commitnúť
+        run: |
+          git add content/prices-eshops.yaml
+          if git diff --cached --quiet; then
+            echo "Žiadne zmeny."
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m "Update e-shop prices ($(date -u +%F))"
+          git push

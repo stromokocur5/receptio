@@ -34,8 +34,8 @@
 		},
 		{
 			what: 'Spätná väzba k receptu',
-			detail: 'Či recept fungoval a tvoja správa.',
-			why: 'Aby sa chyby v receptoch dali opraviť.',
+			detail: 'Či recept fungoval, hviezdičky a tvoja správa.',
+			why: 'Aby sa chyby v receptoch dali opraviť. Počet potvrdení a priemer hviezdičiek vidia pri recepte všetci.',
 			kept: `Kým ju nespracujem; spracované správy sa priebežne mažú ${handledYears} rok od odoslania.`
 		},
 		{

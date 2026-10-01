@@ -243,6 +243,8 @@ export interface Store {
 	id: string;
 	name: string;
 	color: string;
+	/** An e-shop that posts the goods: big packs, delivery on top, not part of a shopping trip. */
+	online?: boolean;
 }
 
 export interface PriceEntry {
@@ -257,6 +259,8 @@ export interface PriceEntry {
 	date: string;
 	saleUntil?: string;
 	url?: string;
+	/** From an e-shop (see Store.online). */
+	online?: boolean;
 }
 
 export interface Cuisine {

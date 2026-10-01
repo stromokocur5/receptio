@@ -1,0 +1,803 @@
+# Produkty v e-shopoch, z ktorých `pnpm prices:eshops` raz týždenne číta cenu do
+# content/prices-eshops.yaml. Cena sa berie zo strojovo čitateľných údajov na stránke produktu
+# (schema.org Product), takže e-shop musí mať v stránke JSON-LD s cenou.
+#
+# pack: veľkosť balenia v rovnakom formáte ako v receptoch (1 kg, 500 g, 500 ml)
+# Pridávaj len produkty v rovnakej forme, ako je surovina (suchý cícer ≠ sterilizovaný).
+
+- ingredient: ryza-basmati
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-ryza-basmati-parboiled-1000-g
+- ingredient: ryza-jazminova
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-ryza-jazminova-1000-g
+- ingredient: ryza-arborio
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-ryza-arborio-1000-g
+- ingredient: ryza-sushi
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-ryza-sushi-1000-g
+- ingredient: quinoa
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-quinoa-biela-1000-g
+- ingredient: pohanka
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-pohanka-lupana-krupy-1000-g
+- ingredient: proso
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-pseno-1000-g
+- ingredient: bulgur
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-bulgur-hruby-1000-g
+- ingredient: kuskus
+  store: grizly
+  pack: 500 g
+  url: https://www.grizly.sk/grizly-kuskus-semolinovy-medium-500-g
+- ingredient: krupy
+  store: grizly
+  pack: 500 g
+  url: https://www.grizly.sk/bioharmonie-jacmenne-krupy-velke-500-g
+- ingredient: ovsene-vlocky
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-ovsene-vlocky-1000-g
+- ingredient: ovsene-vlocky-bezlepkove
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-ovsene-vlocky-bezlepkove-1000-g
+- ingredient: ryzova-muka
+  store: grizly
+  pack: 500 g
+  url: https://www.grizly.sk/grizly-ryzova-muka-500-g
+- ingredient: cicerova-muka
+  store: grizly
+  pack: 450 g
+  url: https://www.grizly.sk/bioharmonie-cicerova-muka-bio-450-g
+- ingredient: maniokova-muka
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-maniokova-cassava-muka-bio-1000-g
+- ingredient: kukuricny-skrob
+  store: grizly
+  pack: 200 g
+  url: https://www.grizly.sk/amylon-kukuricny-skrob-bio-200-g
+- ingredient: popcorn
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/wolfberry-kukurica-na-popcorn-bio-1000-g
+- ingredient: sosovica-cervena
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-sosovica-cervena-polena-1000-g
+- ingredient: sosovica-hneda
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-sosovica-hneda-laird-1000-g
+- ingredient: cicer-suchy
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-cicer-kabul-1000-g
+- ingredient: zlty-hrach
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-hrach-zlty-lupany-poleny-1000-g
+- ingredient: mungo
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-fazula-mungo-1000g
+- ingredient: fazula-cierne-oko
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-fazula-cierne-oko-1-kg
+- ingredient: sojove-zrna
+  store: grizly
+  pack: 500 g
+  url: https://www.grizly.sk/country-life-sojove-boby-bio-500-g
+- ingredient: sojove-granule
+  store: grizly
+  pack: 100 g
+  url: https://www.grizly.sk/country-life-sojovy-granulat-100-g
+- ingredient: kesu
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-kesu-natural-ww320-premium-1000-g
+- ingredient: kesu
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-kesu-zlomky-1000-g
+- ingredient: mandle
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-mandle-natural-nelupane-1000-g
+- ingredient: vlasske-orechy
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-vlasske-orechy-1000-g
+- ingredient: lieskove-orechy
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-lieskove-orechy-1000-g
+- ingredient: arasidy
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-arasidy-lupane-prazene-1000-g
+- ingredient: arasidove-maslo
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-100-arasidove-maslo-jemne-1000-g
+- ingredient: tahini
+  store: grizly
+  pack: 650 g
+  url: https://www.grizly.sk/country-life-tahini-bez-soli-bio-horizon-650-g
+- ingredient: tahini
+  store: grizly
+  pack: 400 g
+  url: https://www.grizly.sk/wolfberry-tahini-sezamova-pasta-400-g
+- ingredient: sezam
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-sezam-lupany-1000-g
+- ingredient: mak
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-mak-mlety-100-1000-g
+- ingredient: lanove-semienko
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-lanove-semienko-hnede-1000-g
+- ingredient: chia
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-chia-semienka-1000-g
+- ingredient: konopne-semienka
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-konopne-semienko-lupane-1000-g
+- ingredient: slnecnicove-semienka
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-slnecnicove-semienka-lupane-1000-g
+- ingredient: tekvicove-semienka
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-tekvicove-semienko-lupane-1000-g
+- ingredient: kokos-struhany
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-kokos-struhany-1000-g
+- ingredient: kokosovy-olej
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-bio-rbd-kokosovy-olej-1000-g
+- ingredient: olivovy-olej
+  store: grizly
+  pack: 1 l
+  url: https://www.grizly.sk/grizly-olivovy-olej-extra-panensky-1000-ml
+- ingredient: vyzivne-drozdie
+  store: grizly
+  pack: 250 g
+  url: https://www.grizly.sk/grizly-lahodkove-drozdie-250-g
+- ingredient: drozdie
+  store: grizly
+  pack: 100 g
+  url: https://www.grizly.sk/wolfberry-drozdie-aktivne-instantne-kvasnice-100-g
+- ingredient: kypriaci-prasok
+  store: grizly
+  pack: 200 g
+  url: https://www.grizly.sk/grizly-prasok-kypriaci-do-peciva-bio-200-g
+- ingredient: kakao
+  store: grizly
+  pack: 250 g
+  url: https://www.grizly.sk/grizly-kakaovy-prasok-bio-250-g
+- ingredient: agar
+  store: grizly
+  pack: 30 g
+  url: https://www.grizly.sk/wolfberry-agar-30-g
+- ingredient: sojova-omacka
+  store: grizly
+  pack: 500 ml
+  url: https://www.grizly.sk/country-life-shoyu-sojova-omacka-500-ml
+- ingredient: tamari
+  store: grizly
+  pack: 500 ml
+  url: https://www.grizly.sk/country-life-tamari-sojova-omacka-500-ml
+- ingredient: javorovy-sirup
+  store: grizly
+  pack: 250 ml
+  url: https://www.grizly.sk/country-life-sirup-javorovy-grade-a-bio-250-ml
+- ingredient: tamarind
+  store: grizly
+  pack: 200 g
+  url: https://www.grizly.sk/heera-tamarindova-pasta-200-g
+- ingredient: harissa
+  store: grizly
+  pack: 70 g
+  url: https://www.grizly.sk/sonnentor-harissa-bio-70-g
+- ingredient: kecup
+  store: grizly
+  pack: 520 g
+  url: https://www.grizly.sk/grizly-kecup-sladky-520-g
+- ingredient: hrozienka
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-hrozienka-sultanky-1000-g
+- ingredient: datle
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-datle-susene-1000-g
+- ingredient: susene-marhule
+  store: grizly
+  pack: 1 kg
+  url: https://www.grizly.sk/grizly-marhule-susene-1000-g
+- ingredient: matcha
+  store: grizly
+  pack: 100 g
+  url: https://www.grizly.sk/grizly-matcha-bio-100-g
+- ingredient: ibistek
+  store: grizly
+  pack: 250 g
+  url: https://www.grizly.sk/grizly-ibiskovy-kvet-250-g
+- ingredient: kurkuma
+  store: grizly
+  pack: 500 g
+  url: https://www.grizly.sk/grizly-kurkuma-mleta-bio-500-g
+- ingredient: kurkuma
+  store: grizly
+  pack: 50 g
+  url: https://www.grizly.sk/grizly-kurkuma-mleta-50-g
+- ingredient: sladka-paprika
+  store: grizly
+  pack: 50 g
+  url: https://www.grizly.sk/grizly-paprika-sladka-mleta-50-g
+- ingredient: udena-paprika
+  store: grizly
+  pack: 50 g
+  url: https://www.grizly.sk/grizly-paprika-sladka-udena-mleta-50-g
+- ingredient: rasca
+  store: grizly
+  pack: 500 g
+  url: https://www.grizly.sk/grizly-rasca-cely-500-g
+- ingredient: skorica
+  store: grizly
+  pack: 250 g
+  url: https://www.grizly.sk/grizly-skorica-mleta-250-g
+- ingredient: majoranka
+  store: grizly
+  pack: 20 g
+  url: https://www.grizly.sk/grizly-majoran-drhnuty-bio-20-g
+- ingredient: oregano
+  store: grizly
+  pack: 15 g
+  url: https://www.grizly.sk/grizly-oregano-drhnute-bio-15-g
+- ingredient: tymian
+  store: grizly
+  pack: 15 g
+  url: https://www.grizly.sk/grizly-tymian-drhnuty-15-g
+- ingredient: rozmarin
+  store: grizly
+  pack: 25 g
+  url: https://www.grizly.sk/sonnentor-rozmarin-bio-25-g
+- ingredient: kmin
+  store: grizly
+  pack: 100 g
+  url: https://www.grizly.sk/heera-rimsky-kmin-mlety-100-g
+- ingredient: koriander-mlety
+  store: grizly
+  pack: 100 g
+  url: https://www.grizly.sk/heera-koriander-mlety-dhania-100-g
+- ingredient: cierne-korenie
+  store: grizly
+  pack: 50 g
+  url: https://www.grizly.sk/sonnentor-korenie-cierne-mlete-bio-50-g
+- ingredient: cili
+  store: grizly
+  pack: 40 g
+  url: https://www.grizly.sk/sonnentor-chilli-mlete-bio-40-g
+- ingredient: garam-masala
+  store: grizly
+  pack: 55 g
+  url: https://www.grizly.sk/sonnentor-garam-masala-mleta-bio-55-g
+- ingredient: kari-korenie
+  store: grizly
+  pack: 50 g
+  url: https://www.grizly.sk/gresik-indicke-kari-50-g
+- ingredient: bobkovy-list
+  store: grizly
+  pack: 10 g
+  url: https://www.grizly.sk/gresik-bobkovy-list-cely-10-g
+- ingredient: klincek
+  store: grizly
+  pack: 20 g
+  url: https://www.grizly.sk/gresik-klincek-cely-20-g
+- ingredient: nove-korenie
+  store: grizly
+  pack: 35 g
+  url: https://www.grizly.sk/sonnentor-nove-korenie-cele-bio-35-g
+- ingredient: badian
+  store: grizly
+  pack: 50 g
+  url: https://www.grizly.sk/heera-badian-50-g
+- ingredient: muskatovy-orech
+  store: grizly
+  pack: 30 g
+  url: https://www.grizly.sk/sonnentor-muskatovy-oriesok-mlety-bio-30-g
+- ingredient: kardamom
+  store: grizly
+  pack: 40 g
+  url: https://www.grizly.sk/sonnentor-kardamom-bio-cely-40-g
+- ingredient: horcicne-semienko
+  store: grizly
+  pack: 120 g
+  url: https://www.grizly.sk/sonnentor-semienka-horcice-zltej-bio-120-g
+- ingredient: susene-huby
+  store: grizly
+  pack: 25 g
+  url: https://www.grizly.sk/sonnentor-hriby-rezane-bio-25-g
+- ingredient: miso
+  store: foodland
+  pack: 400 g
+  url: https://www.foodland.sk/pasty-korenia/miso-pasta-cervena-hikari-400g/
+- ingredient: miso
+  store: foodland
+  pack: 500 g
+  url: https://www.foodland.sk/pasty-korenia/bio-biela-miso-pasta-hikari-500-g/
+- ingredient: nori
+  store: foodland
+  pack: 50 ks
+  url: https://www.foodland.sk/morske-riasy/morske-riasy-nori-na-susi-inaka-50-listov/
+- ingredient: nori
+  store: foodland
+  pack: 10 ks
+  url: https://www.foodland.sk/susi/morske-riasy-nori-na-susi-jhfoods-10-listov/
+- ingredient: gochujang
+  store: foodland
+  pack: 250 g
+  url: https://www.foodland.sk/pasty-korenia/cili-pasta-korejska-gochujang-sempio-250g/
+- ingredient: gochujang
+  store: foodland
+  pack: 1 kg
+  url: https://www.foodland.sk/pasty-korenia/cili-pasta-korejska-gochujang-sempio-1000g/
+- ingredient: gochugaru
+  store: foodland
+  pack: 454 g
+  url: https://www.foodland.sk/horeca-hotel-restauracia-catering/paprika-paliva-mleta-gochugaru-taekyung-454-g/
+- ingredient: gochugaru
+  store: foodland
+  pack: 1 kg
+  url: https://www.foodland.sk/horeca-hotel-restauracia-catering/korejska-cervena-paprika-gochugaru-dae-kyung-1-kg/
+- ingredient: ryzovy-papier
+  store: foodland
+  pack: 400 g
+  url: https://www.foodland.sk/ryzovy-papier/ryzovy-papier-na-cerstve-jarne-rolky-tufoco-400g/
+- ingredient: soba
+  store: foodland
+  pack: 300 g
+  url: https://www.foodland.sk/pohankove-rezance/soba-pohankove-japonske-rezance-chunsi-300g/
+- ingredient: sklenene-rezance
+  store: foodland
+  pack: 500 g
+  url: https://www.foodland.sk/sklenene-rezance/sklenene-rezance-zo-sladkych-zemiakov-eaglobe-500-g/
+- ingredient: ryzove-rezance
+  store: foodland
+  pack: 500 g
+  url: https://www.foodland.sk/ryzove-rezance/ryzove-rezance-siroke-pho-ohricey-500g/
+- ingredient: psenicne-rezance
+  store: foodland
+  pack: 400 g
+  url: https://www.foodland.sk/psenicne-rezance/somen-biele-japonske-rezance-eaglobe-400g/
+- ingredient: tteok
+  store: foodland
+  pack: 500 g
+  url: https://www.foodland.sk/rezance-nitovky-a-cestoviny/korejske-ryzove-kolaciky-dute-tteokbokki-jongga-500g/
+- ingredient: wakame
+  store: foodland
+  pack: 100 g
+  url: https://www.foodland.sk/susena-zelenina/wakame-morske-riasy-susene-inaka-100g/
+- ingredient: kombu
+  store: foodland
+  pack: 150 g
+  url: https://www.foodland.sk/susena-zelenina/kombu-kelp-morske-riasy-susene-deasang-150g/
+- ingredient: kecap-manis
+  store: foodland
+  pack: 600 ml
+  url: https://www.foodland.sk/sojove-omacky/sladka-sojova-omacka-kecap-manis-abc-600-ml/
+- ingredient: sriracha
+  store: foodland
+  pack: 481 g
+  url: https://www.foodland.sk/sriracha-cili-omacky/cili-omacka-sriracha-huy-fong-481g-pikantna/
+- ingredient: ryzovy-ocot
+  store: foodland
+  pack: 355 ml
+  url: https://www.foodland.sk/susi/ryzovy-ocot-mizkan-355ml/
+- ingredient: sezamovy-olej
+  store: foodland
+  pack: 650 ml
+  url: https://www.foodland.sk/olej-na-dochucovanie/sezamovy-olej-100-oh-aik-guan-650-ml/
+- ingredient: sojova-omacka
+  store: foodland
+  pack: 1 l
+  url: https://www.foodland.sk/sojove-omacky/sojova-omacka-kikkoman-1000ml/
+- ingredient: tamarind
+  store: foodland
+  pack: 227 g
+  url: https://www.foodland.sk/pasty-korenia/tamarind-pasta-suree-227-g/
+- ingredient: kokosove-mlieko
+  store: foodland
+  pack: 400 ml
+  url: https://www.foodland.sk/kokosove-mlieko-a-kremy/kokosove-mlieko-aroy-d-400-ml/
+- ingredient: kokosove-mlieko
+  store: foodland
+  pack: 1 l
+  url: https://www.foodland.sk/kokosove-mlieko-a-kremy/kokosove-mlieko-aroy-d-1000ml/
+- ingredient: lepkava-ryza
+  store: foodland
+  pack: 1 kg
+  url: https://www.foodland.sk/lepkava-ryza/lepkava-ryza-royal-thai-1-kg/
+- ingredient: lepkava-ryzova-muka
+  store: foodland
+  pack: 400 g
+  url: https://www.foodland.sk/muka/muka-z-lepkavej-ryze-cock-brand-400-g/
+- ingredient: ryzova-muka
+  store: foodland
+  pack: 400 g
+  url: https://www.foodland.sk/muka/ryzova-muka-vinh-thuan-400g/
+- ingredient: cicerova-muka
+  store: foodland
+  pack: 1 kg
+  url: https://www.foodland.sk/muka-skrob-a-ryzovy-papier/cicerova-superjemna-muka-ktc-1000-g/
+- ingredient: tapiokovy-skrob
+  store: foodland
+  pack: 400 g
+  url: https://www.foodland.sk/skrob/tapiokovy-skrob-cock-brand-400-g/
+- ingredient: ryza-sushi
+  store: foodland
+  pack: 1 kg
+  url: https://www.foodland.sk/susi-ryza/susi-ryza-obento-1-kg/
+- ingredient: mungo
+  store: foodland
+  pack: 400 g
+  url: https://www.foodland.sk/fazula-a-hrach/zelena-mungo-fazula-nelupana-cock-brand-400g/
+- ingredient: secuanske-korenie
+  store: foodland
+  pack: 50 g
+  url: https://www.foodland.sk/koreniny/secuanske-korenie-cele-nbh-50g/
+- ingredient: edamame
+  store: foodland
+  pack: 500 g
+  url: https://www.foodland.sk/mrazene-ovocie-a-zelenina/edamame-sojove-struky-zmrazene-asian-choice-500g/
+- ingredient: kala-namak
+  store: veganstore
+  pack: 100 g
+  url: https://www.veganstore.sk/p/sol-cierna-kala-namak-100g-cereus
+- ingredient: tofu-hodvabne
+  store: veganstore
+  pack: 125 g
+  url: https://www.veganstore.sk/p/hodvabne-silken-tofu-extra-jemne-125g-veto
+- ingredient: vegansky-syr
+  store: veganstore
+  pack: 250 g
+  url: https://www.veganstore.sk/p/veganska-alternativa-syra-pizza-250-g-greenvie
+- ingredient: rastlinne-maslo
+  store: veganstore
+  pack: 250 g
+  url: https://www.veganstore.sk/p/margarin-bio-250g-alsan
+- ingredient: tempeh
+  store: veganstore
+  pack: 190 g
+  url: https://www.veganstore.sk/p/tempeh-udeny-bio-190g-sunfood
+- ingredient: amarant
+  store: veganstore
+  pack: 500 g
+  url: https://www.veganstore.sk/p/amarant-bio-500g-country-life
+- ingredient: miso
+  store: veganstore
+  pack: 400 g
+  url: https://www.veganstore.sk/p/miso-shiro-biela-ryza-400g-muso
+- ingredient: vyzivne-drozdie
+  store: veganstore
+  pack: 150 g
+  url: https://www.veganstore.sk/p/lahodkove-drozdie-150g-country-life
+- ingredient: sojove-granule
+  store: veganstore
+  pack: 100 g
+  url: https://www.veganstore.sk/p/sojovy-granulat-100g-country-life
+- ingredient: cicer-suchy
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/cicer-1-kg-tola-94323
+- ingredient: cicer-suchy
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/cicer-5-kg-tola-94325
+- ingredient: cicer-suchy
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/cicer-bio-5-kg-45123
+- ingredient: sosovica-cervena
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/cervena-sosovica-bio-5-kg-45126
+- ingredient: sosovica-hneda
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/hneda-sosovica-bio-5-kg-48638
+- ingredient: zlty-hrach
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/lupany-hrach-1-kg-tola-93982
+- ingredient: zlty-hrach
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/lupany-hrach-5-kg-tola-93984
+- ingredient: mungo
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/mungo-fazula-1-kg-tola-95223
+- ingredient: mungo
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/fazula-mungo-5-kg-tola-95222
+- ingredient: sojove-zrna
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/soja-zrno-1-kg-tola-93972
+- ingredient: sojove-zrna
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/sojove-zrno-5-kg-tola-93974
+- ingredient: urad-dal
+  store: ebio24
+  pack: 500 g
+  url: https://ebio24.sk/sk/products/biela-supana-sosovica-urid-dal-500-g-sattva-104287
+- ingredient: kesu
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/kesu-orechy-1-kg-tola-94372
+- ingredient: kesu
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/kesu-orechy-5-kg-tola-94374
+- ingredient: mandle
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/mandle-prirodne-tmave-1-kg-tola-93911
+- ingredient: mandle
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/mandle-prirodne-tmave-5-kg-tola-93913
+- ingredient: lieskove-orechy
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/lieskove-orechy-1-kg-tola-95180
+- ingredient: lieskove-orechy
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/lieskove-orechy-5-kg-tola-95178
+- ingredient: vlasske-orechy
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/vlasske-orechy-lupane-1-kg-tola-93920
+- ingredient: vlasske-orechy
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/vlasske-orechy-lupane-5-kg-tola-93922
+- ingredient: arasidy
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/arasidy-prazene-1-kg-tola-95213
+- ingredient: arasidy
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/arasidy-prazene-5-kg-tola-95215
+- ingredient: tekvicove-semienka
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/tekvicove-semienka-lupane-1-kg-tola-93881
+- ingredient: tekvicove-semienka
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/tekvicove-semienka-lupane-5-kg-tola-93885
+- ingredient: slnecnicove-semienka
+  store: ebio24
+  pack: 2 kg
+  url: https://ebio24.sk/sk/products/lupane-slnecnicove-semena-2-kg-tola-93891
+- ingredient: slnecnicove-semienka
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/lupane-slnecnicove-semienka-5-kg-tola-93893
+- ingredient: lanove-semienko
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/hnedy-lan-lanove-semienka-1-kg-tola-94343
+- ingredient: lanove-semienko
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/hnede-lanove-semienka-5-kg-tola-94345
+- ingredient: chia
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/chia-semienka-1-kg-tola-95145
+- ingredient: chia
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/chia-semienka-5-kg-tola-95147
+- ingredient: quinoa
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/biela-quinoa-1-kg-tola-95152
+- ingredient: quinoa
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/quinoa-biela-5-kg-tola-95154
+- ingredient: pohanka
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/neprazene-pohankove-krupy-1-kg-tola-94385
+- ingredient: pohanka
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/neprazene-pohankove-krupy-5-kg-tola-94387
+- ingredient: proso
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/proso-krupy-bezlepkovy-bio-5-kg-45124
+- ingredient: bulgur
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/bulgur-krupica-bio-1-kg-44471
+- ingredient: kuskus
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/kuskus-1-kg-tola-95880
+- ingredient: kuskus
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/kuskus-5-kg-tola-96349
+- ingredient: amarant
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/amarant-bio-1-kg-45857
+- ingredient: cirok
+  store: ebio24
+  pack: 500 g
+  url: https://ebio24.sk/sk/products/cirok-lupane-zrno-bio-500-g-bio-planet-44520
+- ingredient: kukuricna-krupica
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/kukuricna-krupica-1-kg-tola-96740
+- ingredient: kukuricna-krupica
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/kukuricna-krupica-5-kg-tola-96742
+- ingredient: ryza-arborio
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/ryza-arborio-1-kg-tola-97720
+- ingredient: ryza-basmati
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/bezlepkova-biela-ryza-basmati-bio-5-kg-58169
+- ingredient: ryza-jazminova
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/bezlepkova-biela-jazminova-ryza-bio-5-kg-77852
+- ingredient: ovsene-vlocky
+  store: ebio24
+  pack: 3 kg
+  url: https://ebio24.sk/sk/products/ovsene-vlocky-bio-3-kg-46540
+- ingredient: cestoviny
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/semolinove-cestoviny-penne-bio-5-kg-horeca-97600
+- ingredient: ryzova-muka
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/ryzova-muka-1-kg-tola-93925
+- ingredient: ryzova-muka
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/ryzova-muka-5-kg-tola-93927
+- ingredient: cicerova-muka
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/cicerova-muka-1-kg-tola-93950
+- ingredient: cicerova-muka
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/cicerova-muka-5-kg-tola-93952
+- ingredient: datle
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/susene-datle-bez-kostky-1-kg-tola-95661
+- ingredient: datle
+  store: ebio24
+  pack: 5 kg
+  url: https://ebio24.sk/sk/products/datle-susene-bez-kostok-5-kg-tola-95663
+- ingredient: passata
+  store: ebio24
+  pack: 680 g
+  url: https://ebio24.sk/sk/products/paradajkova-passata-bio-680-g-49143
+- ingredient: passata
+  store: ebio24
+  pack: 2500 g
+  url: https://ebio24.sk/sk/products/paradajkova-passata-bio-2-5-kg-51452
+- ingredient: paradajky-sterilizovane
+  store: ebio24
+  pack: 400 g
+  url: https://ebio24.sk/sk/products/nakrajane-paradajky-bio-400-g-49246
+- ingredient: paradajky-sterilizovane
+  store: ebio24
+  pack: 2500 g
+  url: https://ebio24.sk/sk/products/nakrajane-paradajky-bio-2-5-kg-51451
+- ingredient: paradajkovy-pretlak
+  store: ebio24
+  pack: 4500 g
+  url: https://ebio24.sk/sk/products/paradajkovy-pretlak-bio-4-5-kg-44690
+- ingredient: jackfruit
+  store: ebio24
+  pack: 215 g
+  url: https://ebio24.sk/sk/products/jackfruit-jackfruit-v-naleve-bio-v-plechovke-400-g-215-g-48502
+- ingredient: kokosove-mlieko
+  store: ebio24
+  pack: 400 ml
+  url: https://ebio24.sk/sk/products/kokosove-mlieko-bio-400-ml-51472
+- ingredient: tofu-natural
+  store: ebio24
+  pack: 400 g
+  url: https://ebio24.sk/sk/products/prirodne-tvrde-tofu-bio-400-g-well-well-98680
+- ingredient: sojove-granule
+  store: ebio24
+  pack: 200 g
+  url: https://ebio24.sk/sk/products/sojovy-granulat-200-g-65974
+- ingredient: tahini
+  store: ebio24
+  pack: 460 g
+  url: https://ebio24.sk/sk/products/tahini-active-light-100-sezam-460-g-48996
+- ingredient: olivovy-olej
+  store: ebio24
+  pack: 3 l
+  url: https://ebio24.sk/sk/products/extra-panensky-olivovy-olej-bio-3-l-79944
+- ingredient: kokosovy-olej
+  store: ebio24
+  pack: 900 ml
+  url: https://ebio24.sk/sk/products/rafinovany-kokosovy-olej-bez-vone-900-ml-67737
+- ingredient: javorovy-sirup
+  store: ebio24
+  pack: 950 ml
+  url: https://ebio24.sk/sk/products/javorovy-sirup-c-bio-950-ml-46677
+- ingredient: veganska-majoneza
+  store: ebio24
+  pack: 250 ml
+  url: https://ebio24.sk/sk/products/veganska-majoneza-bio-250-ml-45388
+- ingredient: rastlinne-maslo
+  store: ebio24
+  pack: 200 g
+  url: https://ebio24.sk/sk/products/vegansky-margarin-v-kocke-bio-200-g-48954
+- ingredient: pita
+  store: ebio24
+  pack: 560 g
+  url: https://ebio24.sk/sk/products/pita-chlieb-bio-560-g-terrasana-99007
+- ingredient: psenicne-tortilly
+  store: ebio24
+  pack: 240 g
+  url: https://ebio24.sk/sk/products/bio-tortilla-wraps-240-g-45734
+- ingredient: agar
+  store: ebio24
+  pack: 100 g
+  url: https://ebio24.sk/sk/products/agar-100-g-66884
+- ingredient: kala-namak
+  store: ebio24
+  pack: 1 kg
+  url: https://ebio24.sk/sk/products/cierna-sol-kala-namak-jemne-mleta-1-kg-44826
+- ingredient: sumak
+  store: ebio24
+  pack: 170 g
+  url: https://ebio24.sk/sk/products/sumac-mlety-170-g-royal-brand-101475

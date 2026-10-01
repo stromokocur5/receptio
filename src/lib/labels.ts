@@ -110,22 +110,103 @@ function nearWord(words: string[], term: string): boolean {
 }
 
 /**
- * Search over a list of (normalized) texts. Every word of the query must appear; a word that
- * appears nowhere as typed is matched with typos instead ("sosovcia" finds "šošovica"), and a
- * query word may be the start of a longer word ("sosov" → "šošovicová"). Words that do appear
- * somewhere stay exact, so "cicer" never turns into "čierne".
+ * Words people type that the recipes spell differently: English, Czech and dialect names.
+ * Keys and values are normalized (lowercase, no diacritics).
+ */
+const SEARCH_SYNONYMS: Record<string, string[]> = {
+	curry: ['kari'],
+	karri: ['kari'],
+	noodles: ['rezance'],
+	nudle: ['rezance'],
+	risotto: ['rizoto'],
+	lazane: ['lasagne'],
+	lasagna: ['lasagne'],
+	spaghetti: ['spagety'],
+	krumple: ['zemiaky'],
+	zemaky: ['zemiaky'],
+	brambory: ['zemiaky'],
+	pomfri: ['hranolky'],
+	fries: ['hranolky'],
+	pomazanka: ['natierka'],
+	cocka: ['sosovica'],
+	lentils: ['sosovica'],
+	chickpeas: ['cicer'],
+	beans: ['fazula'],
+	rice: ['ryza'],
+	rajciny: ['paradajky'],
+	rajcina: ['paradajky'],
+	perogi: ['pirohy'],
+	pierogi: ['pirohy'],
+	houmous: ['hummus'],
+	porridge: ['kasa'],
+	pancakes: ['palacinky', 'lievance'],
+	soup: ['polievka'],
+	salad: ['salat'],
+	bread: ['chlieb'],
+	cake: ['kolac'],
+	cookies: ['susienky'],
+	keksy: ['susienky'],
+	omeleta: ['prazenica']
+};
+
+/** From this length a word also matches its other endings ("polievky" finds "polievka"). */
+const STEM_FROM = 6;
+
+/** Whether a text has the term as typed, or a word with the same stem and another ending. */
+function hasTerm(text: string, term: string): boolean {
+	if (text.includes(term)) return true;
+	if (term.length < STEM_FROM) return false;
+	const stem = term.slice(0, -1);
+	let at = text.indexOf(stem);
+	while (at !== -1) {
+		if (at === 0 || !/[\p{L}\p{N}]/u.test(text[at - 1])) return true;
+		at = text.indexOf(stem, at + 1);
+	}
+	return false;
+}
+
+/** The query as words, each with the other names it goes by. */
+function queryTerms(query: string): string[][] {
+	return normalizeSearch(query)
+		.split(/\s+/)
+		.filter(Boolean)
+		.map((term) => [term, ...(SEARCH_SYNONYMS[term] ?? [])]);
+}
+
+/**
+ * Search over a list of (normalized) texts. Every word of the query must appear – as typed,
+ * under another name ("curry" finds "kari") or with another ending; a word that appears nowhere
+ * is matched with typos instead ("sosovcia" finds "šošovica"), and a query word may be the start
+ * of a longer word ("sosov" → "šošovicová"). Words that do appear somewhere stay exact, so
+ * "cicer" never turns into "čierne".
  */
 export function searchMatcher(texts: string[], query: string): (text: string) => boolean {
-	const terms = normalizeSearch(query).split(/\s+/).filter(Boolean);
+	const terms = queryTerms(query);
 	if (!terms.length) return () => true;
-	const typoTerms = new Set(terms.filter((t) => !texts.some((text) => text.includes(t))));
+	const typoTerms = new Set(
+		terms
+			.filter((names) => !texts.some((text) => names.some((name) => hasTerm(text, name))))
+			.map(([term]) => term)
+	);
 	return (text) => {
 		let words: string[] | undefined;
-		return terms.every((term) => {
-			if (text.includes(term)) return true;
-			if (!typoTerms.has(term)) return false;
+		return terms.every((names) => {
+			if (names.some((name) => hasTerm(text, name))) return true;
+			if (!typoTerms.has(names[0])) return false;
 			words ??= text.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
-			return nearWord(words, term);
+			return nearWord(words, names[0]);
 		});
 	};
+}
+
+/**
+ * How many of the query's words a (normalized) text has – for putting title matches first and
+ * for offering the nearest recipes when nothing has all of them.
+ */
+export function termsFound(text: string, query: string): number {
+	return queryTerms(query).filter((names) => names.some((name) => hasTerm(text, name))).length;
+}
+
+export function countTerms(query: string): number {
+	return queryTerms(query).length;
 }

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { consumeFromPantry, rankByLeftovers, rankByPantry, useSoon } from './pantry';
 import { buildShoppingList } from './shopping';
-import { compareStores, shelfCost } from './pricing';
+import { bestPrice, compareStores, shelfCost } from './pricing';
 import type { Ingredient, PriceEntry, RecipeSummary } from './types';
 
 const zero = {
@@ -382,5 +382,30 @@ describe('useSoon', () => {
 		const soon = useSoon(pantry, added, byId, new Date(2026, 8, 30));
 		expect(soon.map((s) => [s.ingredient.id, s.days])).toEqual([['spenat', 10]]);
 		expect(useSoon(pantry, added, byId, new Date(2026, 8, 22))).toEqual([]);
+	});
+});
+
+describe('bestPrice', () => {
+	const tofu = ing('tofu');
+	const entry = (date: string, price: number, extra: Partial<PriceEntry> = {}): PriceEntry => ({
+		ingredientId: 'tofu',
+		storeId: 'tesco',
+		product: 'Tofu',
+		pack: '1 kg',
+		packGrams: 1000,
+		price,
+		date,
+		...extra
+	});
+	const today = new Date('2026-12-01');
+
+	it('keeps an outdated shelf price as a labelled estimate instead of a rough guess', () => {
+		const best = bestPrice(tofu, [entry('2026-09-26', 7), entry('2026-06-01', 5)], today);
+		expect(best).toEqual({ perKg: 7, storeId: null, isEstimate: true, lastSeen: '2026-09-26' });
+	});
+
+	it('ignores ended sales and prices older than a year', () => {
+		const prices = [entry('2026-09-26', 3, { saleUntil: '2026-09-30' }), entry('2025-10-01', 4)];
+		expect(bestPrice(tofu, prices, today)).toEqual({ perKg: 2, storeId: null, isEstimate: true });
 	});
 });
