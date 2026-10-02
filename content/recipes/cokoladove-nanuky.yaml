@@ -1,0 +1,29 @@
+title: Čokoládové nanuky z banánu
+description: Banán, kakao a arašidové maslo rozmixované a zamrazené na paličke. Chutí ako čokoládový nanuk z detstva, cukor v ňom skoro nie je.
+cuisine: moderna
+meals: [dezert, snack]
+categories: [dezerty/mrazene, snacky/sladke]
+time: 250
+active: 10
+servings: 6
+difficulty: 1
+tags: [deti, bez-varenia, lacne, zvysky]
+spicy: 0
+ahead: Mrznú aspoň 4 hodiny.
+keeps: { fridge: 0, freezer: 2 }
+yields: 6 nanukov
+related: [banan-nanuky, ovocne-nanuky]
+ingredients:
+  - banan: 2 ks | veľmi zrelé
+  - sojove-mlieko: 1 hrnček
+  - kakao: 3 pl
+  - arasidove-maslo: 2 pl
+  - javorovy-sirup: 2 pl
+  - sol: 1 štipka
+steps:
+  - Všetko rozmixuj dohladka, aspoň minútu.
+  - Nalej do formičiek na nanuky a zapichni paličky.
+  - Mraz aspoň 4 hodiny. Formičku podrž 10 sekúnd pod teplou vodou a nanuk vytiahni.
+tips:
+  - Hnedé prezreté banány sú na toto najlepšie – sladia samy.
+  - Na čokoládový kabát roztop 80 g horkej čokolády s lyžicou kokosového oleja a zmrznuté nanuky do nej ponor.

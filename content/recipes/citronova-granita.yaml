@@ -1,0 +1,36 @@
+title: Citrónová granita
+description: Sicílska ľadová drť z vody, cukru a citrónov, zoškrabaná vidličkou na sypké kryštály. Kyslá, ľadová, na najhorúcejšie dni.
+cuisine: talianska
+meals: [dezert, snack]
+categories: [dezerty/mrazene, napoje/limonady]
+time: 200
+active: 20
+servings: 6
+difficulty: 1
+tags: [lacne, party, deti]
+spicy: 0
+ahead: Mrzne asi 3 hodiny a každú polhodinu ju treba prehrabať vidličkou.
+keeps: { fridge: 0, freezer: 1 }
+leftovers: 'Stuhnutú granitu poškrab vidličkou znova, alebo ju zalej perlivou vodou na limonádu.'
+related: [kavova-granita, citronova-limonada]
+ingredients:
+  - voda: 500 ml
+  - cukor: 100 g
+  - citron: 4 ks | šťava zo všetkých, kôra z jedného
+steps:
+  - Polovicu vody zohrej s cukrom a miešaj, kým sa cukor nerozpustí. Variť netreba.
+  - Prilej zvyšok studenej vody, citrónovú šťavu a nastrúhanú kôru. Ochutnaj – má byť výrazne sladkokyslá, mrazením chuť zoslabne.
+  - Nalej do plytkej nádoby alebo na hlboký plech, aby vrstva nebola vyššia ako 3 cm, a daj do mrazničky.
+  - Po 45 minútach vidličkou zoškrab zamrznuté okraje do stredu a premiešaj.
+  - Opakuj každých 30 minút, ešte tri až štyri razy, kým nie je celá zmes sypká drť z drobných kryštálov.
+  - Naber do vychladených pohárov a jedz lyžičkou.
+tips:
+  - Cukru neuberaj veľa – s malým množstvom zmrzne na tvrdý blok, ktorý sa nedá škrabať.
+  - Na Sicílii sa jedáva na raňajky so sladkou žemľou.
+variants:
+  - name: Melónová
+    description: Namiesto vody rozmixuj a preceď 600 g vodového melóna, cukru stačí 50 g a citrón jeden.
+    replace:
+      - { from: voda, to: melon, amount: '600 g | rozmixovaný a precedený' }
+      - { from: cukor, to: cukor, amount: '50 g' }
+      - { from: citron, to: citron, amount: '1 ks' }

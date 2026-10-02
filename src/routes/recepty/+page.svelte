@@ -392,7 +392,11 @@
 		if (onlyPantry) add('pantry', 'Len z toho, čo mám', 'doma', () => (onlyPantry = false));
 		if (avoiding) {
 			const n = avoid.current.ingredients.length + avoid.current.tools.length;
-			add('avoid', `bez toho, čo nemám (${n})`, 'doma', () => (ignoreAvoid = true));
+			const parts = [
+				...(n ? [`bez toho, čo nemám (${n})`] : []),
+				...(avoid.current.treats ? ['bez fast foodu a jedál na občas'] : [])
+			];
+			add('avoid', parts.join(', '), 'doma', () => (ignoreAvoid = true));
 		}
 		for (const id of missingTools) {
 			const name = catalog.equipment.find((e) => e.id === id)?.name ?? id;
@@ -951,7 +955,7 @@
 									aria-pressed={!ignoreAvoid}
 									onclick={() => (ignoreAvoid = !ignoreAvoid)}
 								>
-									Skryť, čo nemám a nejem
+									Skryť, čo nemám, nejem a nechcem vidieť
 								</button>
 							</div>
 							<p class="hint"><a href="/spajza#nemam">Upraviť zoznam</a></p>

@@ -400,6 +400,23 @@
 				</p>
 			</div>
 		</div>
+		<div class="never-treats">
+			<h3>Fast food a jedlá na občas</h3>
+			<div class="chips">
+				<button
+					class="chip"
+					aria-pressed={ui.loaded && avoid.current.treats}
+					onclick={() => (avoid.current = { ...avoid.current, treats: !avoid.current.treats })}
+				>
+					Neukazovať fast food a jedlá na občas
+				</button>
+			</div>
+			<p class="muted small">
+				Skryje kebab, burgre, vyprážané a všetko so štítkom „Na občas“ – veľa tuku alebo cukru.
+				Recepty nezmiznú, cez odkaz alebo vyhľadanie v receptoch s vypnutým filtrom ich otvoríš
+				stále.
+			</p>
+		</div>
 	</section>
 </div>
 

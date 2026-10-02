@@ -1,0 +1,27 @@
+title: Jahodový sorbet za 5 minút
+description: Mrazené jahody rozmixované so sirupom a citrónom na hustý ružový sorbet. Bez zmrzlinovača, bez čakania – z mixéra rovno do misky.
+cuisine: moderna
+meals: [dezert, snack]
+categories: [dezerty/mrazene, snacky/sladke]
+time: 10
+active: 10
+servings: 4
+difficulty: 1
+tags: [rychle, bez-varenia, deti, lacne]
+spicy: 0
+keeps: { fridge: 0, freezer: 1 }
+leftovers: 'Stuhnutý sorbet nechaj 10 minút povoliť, alebo ho rozmixuj s mliekom na jahodový shake.'
+related: [mangovy-sorbet, nice-cream]
+ingredients:
+  - jahody: 3 hrnček | mrazené
+  - javorovy-sirup: 3 pl
+  - citron: 1 pl | šťava
+  - voda: 4 pl | studená, podľa potreby
+steps:
+  - Mrazené jahody nechaj 5 minút povoliť – úplne tvrdé mixér len obíja.
+  - Daj ich do sekáčika alebo silného mixéra so sirupom a citrónovou šťavou a mixuj. Priebežne zotieraj steny.
+  - Vodu prilievaj po lyžici, len kým sa hmota nezačne točiť. Čím menej vody, tým hustejší sorbet.
+  - Jedz hneď ako mäkkú zmrzlinu, alebo daj na hodinu do mrazničky a naberaj kopčeky.
+tips:
+  - Rovnako sa robí malinový, čučoriedkový alebo čerešňový. Maliny chcú o lyžicu sirupu viac.
+  - Hrsť mrazeného banánu spraví sorbet krémovejší.

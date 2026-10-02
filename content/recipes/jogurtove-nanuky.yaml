@@ -1,0 +1,28 @@
+title: Jogurtové nanuky s čučoriedkami
+description: Krémové nanuky zo sójového jogurtu s fialovými žilkami čučoriedok. Desať minút práce a mraznička spraví zvyšok.
+cuisine: moderna
+meals: [dezert, snack]
+categories: [dezerty/mrazene, snacky/sladke]
+time: 250
+active: 10
+servings: 6
+difficulty: 1
+tags: [deti, bez-varenia, lacne]
+spicy: 0
+ahead: Mrznú aspoň 4 hodiny.
+keeps: { fridge: 0, freezer: 2 }
+yields: 6 nanukov
+related: [ovocne-nanuky, jogurtova-kora]
+ingredients:
+  - sojovy-jogurt: 2 hrnček | hustý
+  - javorovy-sirup: 3 pl
+  - vanilka: 1/2 čl
+  - citron: 1 čl | šťava
+  - cucoriedky: 1 hrnček | aj mrazené
+steps:
+  - Jogurt vymiešaj s dvoma lyžicami sirupu, vanilkou a citrónovou šťavou.
+  - Čučoriedky roztlač vidličkou so zvyšným sirupom. Mrazené nechaj najprv rozmraziť.
+  - Do formičiek striedavo lyžičkou vrstvi jogurt a čučoriedky. Špajdľou raz-dvakrát zamiešaj, aby vznikli žilky.
+  - Zapichni paličky a mraz aspoň 4 hodiny. Formičku podrž 10 sekúnd pod teplou vodou a nanuk vytiahni.
+tips:
+  - Čím hustejší jogurt, tým krémovejší nanuk. Riedky nechaj hodinu odkvapkať v sitku s utierkou.

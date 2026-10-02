@@ -1,0 +1,39 @@
+title: Vanilková zmrzlina z kešu
+description: Krémová biela zmrzlina z kešu a kokosového mlieka, sladená javorovým sirupom. Základ, z ktorého spravíš stracciatellu, jahodovú aj pohár s ovocím.
+cuisine: moderna
+meals: [dezert]
+categories: [dezerty/mrazene]
+time: 20
+active: 20
+servings: 6
+difficulty: 2
+tags: [party, deti]
+spicy: 0
+ahead: Kešu namoč na 4 hodiny (alebo na 15 minút do vriacej vody). Zmrzlina potom mrzne 4 hodiny.
+keeps: { fridge: 0, freezer: 1 }
+related: [cokoladova-zmrzlina, jahodovy-sorbet]
+ingredients:
+  - kesu: 150 g | namočené, scedené
+  - kokosove-mlieko: 1 ks | plnotučné
+  - javorovy-sirup: 5 pl
+  - vanilka: 2 čl
+  - citron: 1 čl | šťava
+  - sol: 1 štipka
+steps:
+  - Všetko mixuj v silnom mixéri 2–3 minúty, kým krém nie je úplne hladký. Pretri ho medzi prstami – nesmie byť zrnitý.
+  - Ochutnaj. Má byť o trochu sladší, ako by si čakal, mrazením sladkosť ustúpi.
+  - Prelej do plytkej nádoby a daj do mrazničky.
+  - Každých 30 minút ju vidličkou alebo metličkou prešľahaj od okrajov do stredu, spolu štyrikrát. Potom nechaj 2 hodiny domraziť.
+  - Pred naberaním ju nechaj 10 minút povoliť pri izbovej teplote.
+tips:
+  - Kopček na horúce espresso je affogato.
+  - Slabší mixér – kešu namáčaj cez noc a mixuj s prestávkami dlhšie.
+variants:
+  - name: Stracciatella
+    description: Pri poslednom miešaní vmiešaj nadrobno nasekanú horkú čokoládu.
+    add:
+      - horka-cokolada: 50 g | nadrobno nasekaná
+  - name: Jahodová
+    description: Jahody rozmixuj spolu s ostatným. Mrazené netreba rozmrazovať, zmrzlina bude hotová rýchlejšie.
+    add:
+      - jahody: 1,5 hrnček

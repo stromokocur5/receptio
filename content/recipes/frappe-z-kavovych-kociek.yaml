@@ -1,0 +1,28 @@
+title: Frappé z kávových kociek
+description: Káva zamrazená v tvorítku na ľad a rozmixovaná s mliekom na hustú ľadovú drť. Nezriedi sa, lebo ľad je tiež káva.
+cuisine: moderna
+meals: [snack]
+categories: [napoje/limonady, dezerty/mrazene]
+taste: sladke
+time: 10
+active: 10
+servings: 2
+difficulty: 1
+tags: [rychle, bez-varenia]
+spicy: 0
+ahead: Kávu uvar a zamraz v tvorítku na ľad aspoň 4 hodiny vopred.
+keeps: { fridge: 0, freezer: 0 }
+related: [vietnamska-ladova-kava, kava-latte, kavova-granita]
+ingredients:
+  - kava: ~3 pl | mletá
+  - voda: 1,5 hrnček
+  - sojove-mlieko: 1,5 hrnček | studené
+  - javorovy-sirup: 2 pl
+  - vanilka: 1/2 čl
+steps:
+  - Uvar silnú kávu z celého množstva vody, nechaj ju vychladnúť, nalej do tvorítka na ľad a zamraz.
+  - Kávové kocky daj do mixéra s mliekom, sirupom a vanilkou.
+  - Mixuj krátkymi pulzmi, kým nevznikne hustá drť. Nalej do pohárov a pi slamkou.
+tips:
+  - Zvyšnú kávu z kanvičky nevylievaj – zamraz ju do kociek a máš zásobu.
+  - S lyžicou kakaa je z toho mocha, s banánom raňajky.

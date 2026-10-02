@@ -109,6 +109,7 @@ export const RECIPE_CATEGORIES = {
 			pecene: 'Koláče a pečené',
 			susienky: 'Sušienky a muffiny',
 			kremy: 'Krémy a pudingy',
+			mrazene: 'Zmrzlina a mrazené',
 			nepecene: 'Bez pečenia',
 			smazene: 'Šišky a vyprážané'
 		}

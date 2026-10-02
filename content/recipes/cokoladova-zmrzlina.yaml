@@ -1,0 +1,41 @@
+title: Čokoládová zmrzlina bez zmrzlinovača
+description: Hustá tmavá zmrzlina z kokosového mlieka, kakaa a horkej čokolády. Stačí hrniec, mraznička a vidlička, ktorou ju štyrikrát prešľaháš.
+cuisine: moderna
+meals: [dezert]
+categories: [dezerty/mrazene]
+time: 30
+active: 25
+servings: 8
+difficulty: 2
+tags: [party, deti]
+spicy: 0
+ahead: Základ sa najprv 2 hodiny chladí a potom 3–4 hodiny mrazí. Začni ráno alebo deň vopred.
+keeps: { fridge: 0, freezer: 1 }
+leftovers: 'Rozpustenú zmrzlinu znova nemraz – vypi ju ako čokoládový shake.'
+related: [vanilkova-zmrzlina, horuca-cokolada]
+ingredients:
+  - kokosove-mlieko: 2 ks | plnotučné
+  - cukor: 100 g
+  - kakao: 4 pl
+  - kukuricny-skrob: 1 pl
+  - sol: 1 štipka
+  - horka-cokolada: 80 g | nalámaná
+  - vanilka: 1 čl
+steps:
+  - Škrob rozmiešaj v malej miske s tromi lyžicami kokosového mlieka dohladka.
+  - Zvyšok mlieka daj do hrnca s cukrom, kakaom a soľou a za stáleho miešania metličkou zohrej na strednom ohni tesne pod var.
+  - Vlej rozmiešaný škrob a var na miernom ohni 2 minúty, kým krém mierne nezhustne. Škrob bráni tomu, aby zmrzlina zmrzla na ľad.
+  - Odstav, vmiešaj čokoládu a vanilku a miešaj, kým sa čokoláda nerozpustí. Nechaj vychladnúť a daj na 2 hodiny do chladničky.
+  - Studený krém prelej do plytkej nádoby (čím plytšia, tým rýchlejšie mrzne) a daj do mrazničky.
+  - Každých 30 minút ju vyber a vidličkou alebo metličkou poriadne prešľahaj od okrajov do stredu. Zopakuj štyrikrát – rozbíjaš tým kryštáliky ľadu a zmrzlina ostane krémová.
+  - Potom ju nechaj ešte 1–2 hodiny domraziť. Pred naberaním ju nechaj 10 minút povoliť pri izbovej teplote.
+tips:
+  - Ak na miešanie zabudneš a zmrzne na kameň, nakrájaj ju na kocky a rozmixuj v sekáčiku – bude zase krémová.
+  - Kokos v nej cítiť len jemne. Úplne bez kokosovej chuti to ide s rastlinnou smotanou na šľahanie.
+variants:
+  - name: Menej cukru
+    description: Stačí 70 g cukru, ak použiješ čokoládu s menej kakaom. Menej už nie – cukor drží zmrzlinu mäkkú.
+    replace:
+      - from: cukor
+        to: cukor
+        amount: 70 g

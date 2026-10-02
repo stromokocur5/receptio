@@ -1,0 +1,24 @@
+title: Mangový sorbet s kokosom
+description: Mrazené mango, limetka a trocha kokosového mlieka. Hladký ako z talianskej zmrzlinárne, hotový skôr, ako sa rozmrazí.
+cuisine: moderna
+meals: [dezert, snack]
+categories: [dezerty/mrazene, snacky/sladke]
+time: 10
+active: 10
+servings: 4
+difficulty: 1
+tags: [rychle, bez-varenia, deti, party]
+spicy: 0
+keeps: { fridge: 0, freezer: 1 }
+related: [jahodovy-sorbet, mango-lassi]
+ingredients:
+  - mango: 3 hrnček | mrazené kocky
+  - kokosove-mlieko: 1/4 ks | asi 100 ml
+  - limetka: 1 ks | šťava
+  - javorovy-sirup: 2 pl
+steps:
+  - Mango nechaj 5 minút povoliť.
+  - Rozmixuj ho s kokosovým mliekom, limetkovou šťavou a sirupom dohladka. Zotieraj steny a mixuj len dovtedy, kým nezmiznú kúsky – dlhším mixovaním sa roztopí.
+  - Podávaj hneď, alebo nechaj hodinu v mrazničke stuhnúť na kopčeky.
+tips:
+  - Štipka čili a soli navrchu z neho spraví mexickú pouličnú zmrzlinu.

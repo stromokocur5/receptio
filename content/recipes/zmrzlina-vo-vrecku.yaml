@@ -1,0 +1,30 @@
+title: Zmrzlina vo vrecku za 10 minút
+description: Pokus aj dezert naraz. Sladké mlieko v malom vrecku, ľad so soľou vo veľkom a desať minút trasenia. Deti neveria, kým neochutnajú.
+cuisine: moderna
+meals: [dezert, snack]
+categories: [dezerty/mrazene]
+time: 15
+active: 15
+servings: 2
+difficulty: 1
+tags: [deti, rychle, bez-varenia, party]
+spicy: 0
+ahead: Potrebuješ dve plné tvorítka ľadu a dve uzatvárateľné vrecká – malé a veľké.
+keeps: { fridge: 0, freezer: 0 }
+related: [vanilkova-zmrzlina, kakigori]
+ingredients:
+  - sojove-mlieko: 1/2 hrnček
+  - rastlinna-smotana: 1/2 hrnček | čím tučnejšia, tým krémovejšia
+  - cukor: 2 pl
+  - vanilka: 1/2 čl
+  - voda: ~1 l | zamrazená na kocky ľadu
+  - sol: ~6 pl | do ľadu, neje sa
+steps:
+  - Do malého vrecka nalej mlieko, smotanu, cukor a vanilku. Vytlač vzduch a poriadne zavri. Pre istotu ho vlož do druhého malého vrecka.
+  - Veľké vrecko naplň do polovice ľadom, nasyp naň soľ a vlož doň malé vrecko. Zavri.
+  - Zabaľ do utierky alebo si daj rukavice – vrecko je ľadovejšie než samotný ľad. Tras a miesi ho 8–10 minút, kým mlieko nestuhne na mäkkú zmrzlinu.
+  - Malé vrecko vyber a zvonka ho opláchni studenou vodou, aby sa do zmrzliny nedostala slaná voda. Až potom ho otvor a jedz lyžičkou rovno z vrecka.
+tips:
+  - Prečo to funguje – soľ núti ľad topiť sa pri teplote hlboko pod nulou a to teplo si berie z mlieka. Samotný ľad by ho len schladil.
+  - Čokoládová – pridaj lyžicu kakaa a o lyžičku cukru viac.
+  - Vrecká umy a použi znova. Dve tesne zavreté dózy, menšia vo väčšej, fungujú tiež.

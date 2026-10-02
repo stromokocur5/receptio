@@ -9,9 +9,11 @@ export interface Avoid {
 	ingredients: string[];
 	/** Equipment ids. */
 	tools: string[];
+	/** Hide fast food and everything labeled "Na občas" (fried, lots of fat or sugar). */
+	treats: boolean;
 }
 
-export const NO_AVOID: Avoid = { ingredients: [], tools: [] };
+export const NO_AVOID: Avoid = { ingredients: [], tools: [], treats: false };
 
 const MAX_ITEMS = 200;
 const ID_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -26,12 +28,17 @@ function ids(raw: unknown): string[] {
 
 export function validateAvoid(raw: unknown): Avoid | undefined {
 	if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) return undefined;
-	const { ingredients, tools } = raw as Record<string, unknown>;
-	return { ingredients: ids(ingredients), tools: ids(tools) };
+	const { ingredients, tools, treats } = raw as Record<string, unknown>;
+	return { ingredients: ids(ingredients), tools: ids(tools), treats: treats === true };
 }
 
 export function isAvoiding(avoid: Avoid): boolean {
-	return avoid.ingredients.length > 0 || avoid.tools.length > 0;
+	return avoid.ingredients.length > 0 || avoid.tools.length > 0 || avoid.treats;
+}
+
+/** Fast food by category, or labeled "Na občas" by what's in it – even when a lighter variant exists. */
+export function isTreat(recipe: RecipeSummary): boolean {
+	return recipe.treat.length > 0 || recipe.categories.some((c) => c.startsWith('comfort/'));
 }
 
 /** A test for "can this person cook it", built once for a whole list. */
@@ -42,6 +49,7 @@ export function avoidFilter(
 	const groups = new Set(avoid.ingredients.map((id) => ingredientsById.get(id)?.group ?? id));
 	const tools = new Set(avoid.tools);
 	return (recipe) =>
+		!(avoid.treats && isTreat(recipe)) &&
 		!recipe.equipment.some((t) => tools.has(t)) &&
 		!recipe.lines.some((l) => groups.has(ingredientsById.get(l.ingredientId)?.group ?? ''));
 }
