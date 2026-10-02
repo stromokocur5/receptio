@@ -19,7 +19,7 @@
 	import { bedPlants, localizeGuide, monthTasks, seasonDelayWeeks } from '$lib/garden';
 	import { acceptInstall, dismissInstall, install } from '$lib/install.svelte';
 	import { onboarding } from '$lib/onboarding.svelte';
-	import { avoid, favorites, garden, likes, pantry, plan, settings, ui } from '$lib/state.svelte';
+	import { avoid, favorites, gardens, likes, pantry, plan, settings, ui } from '$lib/state.svelte';
 	import type { GrowGuide } from '$lib/types';
 
 	const catalog = useCatalog();
@@ -78,7 +78,7 @@
 	/** Reminder for people with a saved garden; calendars load only then. */
 	let growGuides = $state<GrowGuide[]>([]);
 	$effect(() => {
-		if (!ui.loaded || !garden.current || growGuides.length) return;
+		if (!ui.loaded || !gardens.current.length || growGuides.length) return;
 		fetch('/pestuj/plodiny.json')
 			.then((r) => (r.ok ? (r.json() as Promise<GrowGuide[]>) : []))
 			.then((g: GrowGuide[]) => (growGuides = g))
@@ -89,22 +89,21 @@
 			localizeGuide(g, seasonDelayWeeks(settings.current.location?.elevation ?? 150))
 		)
 	);
-	const gardenPlants = $derived(
-		garden.current
-			? [...garden.current.plants, ...garden.current.beds.flatMap((b) => bedPlants(b, localGuides))]
-			: []
-	);
-	const gardenTasks = $derived(
-		garden.current && growGuides.length
-			? monthTasks(
-					[...new Map(gardenPlants.map((p) => [p.ingredientId, p])).values()],
-					localGuides,
-					garden.current.done,
-					new Date().getFullYear(),
-					month
-				).filter((t) => !garden.current!.done[t.key])
-			: []
-	);
+	/** What is left to do this month in any of the gardens, each task once. */
+	const gardenTasks = $derived.by(() => {
+		if (!growGuides.length) return [];
+		const open = gardens.current.flatMap((g) => {
+			const plants = [...g.plants, ...g.beds.flatMap((b) => bedPlants(b, localGuides))];
+			return monthTasks(
+				[...new Map(plants.map((p) => [p.ingredientId, p])).values()],
+				localGuides,
+				g.done,
+				new Date().getFullYear(),
+				month
+			).filter((t) => !g.done[t.key]);
+		});
+		return [...new Map(open.map((t) => [t.key, t])).values()];
+	});
 	const seasonal = $derived(
 		catalog.recipes
 			.map((r) => ({ r, season: recipeSeason(r, catalog.ingredientsById, month) }))
@@ -787,7 +786,7 @@
 	}
 
 	.install-wrap {
-		margin-top: 12px;
+		margin-top: 16px;
 	}
 	.install {
 		display: flex;
@@ -820,19 +819,19 @@
 		gap: 8px;
 	}
 	.continue {
-		display: flex;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
 		gap: 10px;
 		margin-top: 8px;
-		overflow-x: auto;
-		scrollbar-width: none;
 	}
 	.cont {
-		flex: 1 0 200px;
 		display: flex;
 		align-items: center;
 		gap: 12px;
-		padding: 12px 16px;
+		min-width: 0;
+		padding: 12px 14px;
 		color: var(--ink);
+		line-height: 1.3;
 		text-decoration: none;
 		border-left: 4px solid var(--tone);
 		transition: transform 0.25s var(--ease-spring);
@@ -848,7 +847,7 @@
 		display: grid;
 	}
 	.cont small {
-		color: var(--muted);
+		color: var(--ink-2);
 	}
 
 	.pillars {
@@ -1200,6 +1199,10 @@
 	@media (max-width: 600px) {
 		.block {
 			margin-top: 40px;
+		}
+		/* Three cards make two rows; the odd one takes the whole second row. */
+		.cont:last-child:nth-child(odd) {
+			grid-column: 1 / -1;
 		}
 	}
 	@media (min-width: 860px) {

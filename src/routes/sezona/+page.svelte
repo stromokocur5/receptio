@@ -188,6 +188,29 @@
 		outline: 2px solid var(--ink);
 		outline-offset: -2px;
 	}
+	/* On a phone all twelve months fit the screen; scrolling sideways hid the current one. */
+	@media (max-width: 599px) {
+		table {
+			width: 100%;
+			min-width: 0;
+			table-layout: fixed;
+			border-spacing: 1px;
+			font-size: 0.8rem;
+		}
+		thead th:first-child {
+			width: 38%;
+		}
+		thead th,
+		td {
+			width: auto;
+		}
+		th[scope='row'] {
+			padding-right: 6px;
+			white-space: normal;
+			line-height: 1.2;
+			overflow-wrap: anywhere;
+		}
+	}
 	.recipes {
 		margin-top: 32px;
 	}

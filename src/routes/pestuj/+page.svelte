@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, tick } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { Tween } from 'svelte/motion';
 	import { replaceState } from '$app/navigation';
@@ -33,7 +33,21 @@
 	import { artSvg } from '$lib/wiki-art';
 	import { bestPrice } from '$lib/pricing';
 	import { IN_MONTH, MONTH_NAMES } from '$lib/season';
-	import { favorites, garden, plan as mealPlan, settings, ui } from '$lib/state.svelte';
+	import {
+		MAX_GARDENS,
+		PLANNER_KEY,
+		activeGarden,
+		favorites,
+		gardenName,
+		gardens,
+		newGardenId,
+		openGarden,
+		plan as mealPlan,
+		saveGarden,
+		settings,
+		ui,
+		type GardenDiary as SavedGarden
+	} from '$lib/state.svelte';
 	import type { GrowGuide, GrowPlace, GrowSun } from '$lib/types';
 
 	let { data } = $props();
@@ -86,14 +100,17 @@
 			{ id: 'nepestuje-sa', label: 'Čo u nás nerastie', icon: 'globe' }
 		];
 
-	const STORAGE_KEY = 'receptio:garden';
 	let input = $state<GardenInput>({ place: 'balkon', area: 2, sun: 'slnko', level: 1 });
 	let month = $state(new Date().getMonth() + 1);
 	let tab = $state<Tab>('planovac');
 	/** A link into a tab or crop wins over opening "my garden" by default. */
 	let hashChoseTab = false;
 
-	const hasGarden = $derived(ui.loaded && !!garden.current);
+	const diary = $derived(ui.loaded ? activeGarden() : null);
+	const hasGarden = $derived(!!diary);
+	const canAddGarden = $derived(gardens.current.length < MAX_GARDENS);
+	/** The planner is setting up one more garden rather than changing the open one. */
+	let addingGarden = $state(false);
 	const current = $derived<Tab>(tab === 'moja-zahradka' && !hasGarden ? 'planovac' : tab);
 	const visibleTabs = $derived(TABS.filter((t) => t.id !== 'moja-zahradka' || hasGarden));
 
@@ -110,7 +127,7 @@
 		}
 		hashChoseTab = readHash();
 		try {
-			const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');
+			const saved = JSON.parse(localStorage.getItem(PLANNER_KEY) ?? 'null');
 			if (saved && PLACES.some((p) => p.id === saved.place)) input = { ...input, ...saved };
 		} catch {
 			// Starts from the defaults.
@@ -123,11 +140,36 @@
 	$effect(() => {
 		if (!ui.loaded || gardenRestored) return;
 		gardenRestored = true;
-		const diary = garden.current;
-		if (!diary || sharedPlan) return;
-		input = { place: diary.place, area: diary.area, sun: diary.sun, level: diary.level };
-		if (!hashChoseTab) tab = 'moja-zahradka';
+		if (activeGarden() && !sharedPlan && !hashChoseTab) tab = 'moja-zahradka';
 	});
+
+	/** Points the planner at a saved garden, so "Upraviť plán" starts from what it has. */
+	function planFrom(saved: SavedGarden) {
+		input = { place: saved.place, area: saved.area, sun: saved.sun, level: saved.level };
+	}
+	let plannedFor: string | null = null;
+	$effect(() => {
+		if (!diary || diary.id === plannedFor) return;
+		plannedFor = diary.id;
+		if (!sharedPlan && !addingGarden) planFrom(diary);
+	});
+
+	function switchGarden(id: string) {
+		addingGarden = false;
+		openGarden(id);
+	}
+
+	function startAnotherGarden() {
+		addingGarden = true;
+		selectTab('planovac');
+	}
+
+	function cancelAnotherGarden() {
+		addingGarden = false;
+		const opened = activeGarden();
+		if (opened) planFrom(opened);
+		selectTab('moja-zahradka');
+	}
 
 	/** Opens the tab or crop the URL points at; false when it points at nothing here. */
 	function readHash(): boolean {
@@ -172,9 +214,12 @@
 		return () => observer.disconnect();
 	});
 
-	function selectTab(id: Tab) {
+	async function selectTab(id: Tab) {
 		tab = id;
 		replaceState(`#${id}`, {});
+		// The panels swap first: scrolled before that, the browser's scroll anchoring moves the
+		// page again and the new panel opens somewhere in its middle.
+		await tick();
 		// When the tab bar is stuck to the top, jump back so the new panel starts in view.
 		const top = tabsAnchor.getBoundingClientRect().top + window.scrollY - 64;
 		if (window.scrollY > top) window.scrollTo({ top });
@@ -204,7 +249,7 @@
 
 	function save() {
 		try {
-			localStorage.setItem(STORAGE_KEY, JSON.stringify(input));
+			localStorage.setItem(PLANNER_KEY, JSON.stringify(input));
 		} catch {
 			// The planner still works, it just won't remember.
 		}
@@ -280,7 +325,7 @@
 			past: []
 		}));
 		sharedPlan = null;
-		saveGarden(beds);
+		keepPlan({ asNew: true, beds });
 	}
 
 	const nameById = $derived(
@@ -315,10 +360,20 @@
 	const notHere = $derived(data.notGrown.filter((n) => n.status === 'nie'));
 	const hardHere = $derived(data.notGrown.filter((n) => n.status === 'tazko'));
 
-	/** Keeps the plan (and the diary already written for it) as "my garden". */
-	function saveGarden(beds?: NonNullable<typeof garden.current>['beds'], empty = false) {
-		const previous = garden.current;
-		garden.current = {
+	/**
+	 * Keeps the plan as a garden: the open one gets the new plan and keeps its diary and beds,
+	 * `asNew` starts another garden next to it.
+	 */
+	function keepPlan({
+		asNew = false,
+		beds,
+		empty = false
+	}: { asNew?: boolean; beds?: SavedGarden['beds']; empty?: boolean } = {}) {
+		const previous = asNew ? null : activeGarden();
+		if (!previous && !canAddGarden) return;
+		saveGarden({
+			id: previous?.id ?? newGardenId(),
+			name: previous?.name ?? gardenName(input.place, gardens.current),
 			...input,
 			combos: empty ? [] : plan.combos.map((c) => ({ id: c.combo.id, modules: c.modules })),
 			plants: empty
@@ -328,7 +383,8 @@
 			harvests: previous?.harvests ?? [],
 			beds: beds ?? previous?.beds ?? [],
 			savedAt: new Date().toISOString().slice(0, 10)
-		};
+		});
+		addingGarden = false;
 		selectTab('moja-zahradka');
 	}
 
@@ -374,9 +430,9 @@
 					: ''}. Plánovač nižšie ho už ukazuje.
 			</p>
 			<div class="save-row">
-				<button class="btn leaf" onclick={adoptShared}>
+				<button class="btn leaf" onclick={adoptShared} disabled={!canAddGarden}>
 					<Icon name="bookmark" size={18} />
-					{garden.current ? 'Nahradiť moju záhradku' : 'Uložiť ako moju záhradku'}
+					{hasGarden ? 'Uložiť ako ďalšiu záhradku' : 'Uložiť ako moju záhradku'}
 				</button>
 				<button class="btn ghost" onclick={() => (sharedPlan = null)}>Len si ho pozriem</button>
 			</div>
@@ -385,7 +441,7 @@
 
 	{#if ui.loaded}
 		<LocationPicker />
-		{#if settings.current.location && !garden.current}
+		{#if settings.current.location && !diary}
 			<WeatherPanel location={settings.current.location} tender={false} plantingTender={false} />
 		{/if}
 	{/if}
@@ -417,14 +473,14 @@
 					onclick={() => selectTab(t.id)}
 				>
 					<Icon name={t.icon} size={16} />
-					{t.label}
+					{t.id === 'moja-zahradka' && gardens.current.length > 1 ? 'Moje záhradky' : t.label}
 					{#if t.id === 'plodiny'}<span class="count">{guides.length}</span>{/if}
 				</button>
 			{/each}
 		</div>
 	</div>
 
-	{#if hasGarden && garden.current}
+	{#if diary}
 		<div
 			id="moja-zahradka"
 			class="panel"
@@ -432,13 +488,28 @@
 			aria-labelledby="tab-moja-zahradka"
 			hidden={current !== 'moja-zahradka'}
 		>
-			<GardenDiary
-				diary={garden.current}
-				{guides}
-				combos={data.growCombos}
-				onplan={() => selectTab('planovac')}
-				oncrop={openCrop}
-			/>
+			<div class="gardens" role="group" aria-label="Moje záhradky">
+				{#each gardens.current as g (g.id)}
+					<button class="chip" aria-pressed={g.id === diary.id} onclick={() => switchGarden(g.id)}>
+						<Icon name="sprout" size={14} />
+						{g.name}
+					</button>
+				{/each}
+				{#if canAddGarden}
+					<button class="chip add" onclick={startAnotherGarden}>
+						<Icon name="plus" size={14} /> Ďalšia záhradka
+					</button>
+				{/if}
+			</div>
+			{#key diary.id}
+				<GardenDiary
+					{diary}
+					{guides}
+					combos={data.growCombos}
+					onplan={() => selectTab('planovac')}
+					oncrop={openCrop}
+				/>
+			{/key}
 		</div>
 	{/if}
 
@@ -455,10 +526,19 @@
 				Povedz, koľko máš miesta, a plánovač ho zaplní kombináciami rastlín, ktoré si navzájom
 				pomáhajú – namiesto jedného záhonu kapusty, kde sa darí hlavne škodcom.
 			</p>
-			{#if ui.loaded && !garden.current}
+			{#if addingGarden}
+				<p class="adding" role="status">
+					<Icon name="plus" size={16} />
+					<span
+						><strong>Ďalšia záhradka.</strong> Nastav jej miesto a plochu a ulož ju – tie, čo už máš,
+						ostanú, ako sú.</span
+					>
+				</p>
+			{/if}
+			{#if ui.loaded && canAddGarden && (!diary || addingGarden)}
 				<p class="muted small">
 					Chceš si záhony nakresliť sám?
-					<button class="linkish" onclick={() => saveGarden([], true)}
+					<button class="linkish" onclick={() => keepPlan({ asNew: true, beds: [], empty: true })}
 						>Začni s prázdnou záhradkou</button
 					>.
 				</p>
@@ -643,10 +723,25 @@
 					</p>
 				{/if}
 				<div class="save-row">
-					<button class="btn leaf" onclick={() => saveGarden()}>
-						<Icon name="bookmark" size={18} />
-						{garden.current ? 'Aktualizovať moju záhradku' : 'Uložiť ako moju záhradku'}
-					</button>
+					{#if diary && !addingGarden}
+						<button class="btn leaf" onclick={() => keepPlan()}>
+							<Icon name="bookmark" size={18} />
+							Aktualizovať: {diary.name}
+						</button>
+						{#if canAddGarden}
+							<button class="btn ghost" onclick={() => keepPlan({ asNew: true })}>
+								<Icon name="plus" size={18} /> Uložiť ako ďalšiu záhradku
+							</button>
+						{/if}
+					{:else}
+						<button class="btn leaf" onclick={() => keepPlan({ asNew: true })}>
+							<Icon name="bookmark" size={18} />
+							{diary ? 'Uložiť ako ďalšiu záhradku' : 'Uložiť ako moju záhradku'}
+						</button>
+						{#if addingGarden}
+							<button class="btn ghost" onclick={cancelAnotherGarden}>Zrušiť</button>
+						{/if}
+					{/if}
 					<span class="muted small"
 						>Dostaneš úlohy na každý mesiac, zápis úrody a recepty z nej.</span
 					>
@@ -945,7 +1040,7 @@
 <CropSheet
 	guide={openGuide}
 	{guides}
-	place={placeFilter || (hasGarden && garden.current ? garden.current.place : input.place)}
+	place={placeFilter || (diary ? diary.place : input.place)}
 	onpick={openCrop}
 	onclose={closeCrop}
 />
@@ -1292,6 +1387,30 @@
 		font-weight: inherit;
 		text-decoration-color: var(--line);
 		text-underline-offset: 3px;
+	}
+	.gardens {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin-bottom: 12px;
+	}
+	.gardens .add {
+		border-style: dashed;
+		color: var(--leaf);
+	}
+	.adding {
+		display: flex;
+		align-items: flex-start;
+		gap: 8px;
+		margin: 10px 0;
+		padding: 10px 14px;
+		border-radius: var(--radius-sm);
+		background: var(--leaf-soft);
+	}
+	.adding :global(svg) {
+		flex: none;
+		margin-top: 4px;
+		color: var(--leaf);
 	}
 	.save-row {
 		display: flex;

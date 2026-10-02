@@ -296,6 +296,14 @@
 	function monthsLabel(n: number) {
 		return n === 1 ? '1 mesiac' : n < 5 ? `${n} mesiace` : `${n} mesiacov`;
 	}
+	/** A long shopping list in one sentence hides the point; the ingredient list has the detail. */
+	function shortList(items: { name: string }[], max = 4): string {
+		const names = items.map((i) => i.name);
+		const rest = names.length - max;
+		if (rest < 2) return names.join(', ');
+		return `${names.slice(0, max).join(', ')} a ${rest < 5 ? 'ďalšie' : 'ďalších'} ${rest}`;
+	}
+
 	function daysLabel(n: number) {
 		return n === 1 ? '1 deň' : n < 5 ? `${n} dni` : `${n} dní`;
 	}
@@ -423,51 +431,44 @@
 				{/if}
 			</div>
 
-			<details class="more-info">
-				<summary>Viac o recepte <small>pálivosť, porcia, skladovanie, CO₂</small></summary>
-				<ul class="meta">
-					<li class="spicy spicy-{recipe.spicy}" title="Pálivosť">
+			<ul class="meta" aria-label="O recepte">
+				<li class="spicy" title="Pálivosť">
+					<span class="chilis" aria-hidden="true">
 						{#each [1, 2, 3] as level (level)}<span class:on={recipe.spicy >= level}
 								><Icon name="chili" size={16} /></span
 							>{/each}
-						{SPICY_LABELS[recipe.spicy]}
+					</span>
+					{SPICY_LABELS[recipe.spicy]}
+				</li>
+				{#if recipe.showNutrition}
+					<li title="Hmotnosť surovín na porciu (pred varením)">
+						<Icon name="scale" size={16} /> porcia ≈ {recipe.servingGrams} g
 					</li>
-					{#if recipe.showNutrition}
-						<li title="Hmotnosť surovín na porciu (pred varením)">
-							<Icon name="scale" size={16} /> porcia ≈ {recipe.servingGrams} g
-						</li>
-					{/if}
-					{#if base.keeps}
+				{/if}
+				{#if base.keeps}
+					<li>
+						<Icon name="fridge" size={16} />
+						{base.keeps.fridge ? `chladnička ${daysLabel(base.keeps.fridge)}` : 'zjedz hneď'}
+					</li>
+					{#if base.keeps.freezer}
 						<li>
-							<Icon name="fridge" size={16} />
-							{base.keeps.fridge ? `chladnička ${daysLabel(base.keeps.fridge)}` : 'zjedz hneď'}
+							<Icon name="snowflake" size={16} /> mraznička {monthsLabel(base.keeps.freezer)}
 						</li>
-						{#if base.keeps.freezer}
-							<li>
-								<Icon name="snowflake" size={16} /> mraznička {monthsLabel(base.keeps.freezer)}
-							</li>
-						{/if}
 					{/if}
-					<li title="Uhlíková stopa surovín na porciu (Our World in Data)">
-						<Icon name="leaf" size={16} />
-						<a class="co2" href="/wiki/uhlikova-stopa"
-							>≈ {formatNumber(recipe.co2PerServing, 1)} kg CO₂e</a
-						>
+				{/if}
+				{#if base.tested}
+					<li class="tested"><Icon name="check" size={16} /> Vyskúšané</li>
+				{:else if likes.cooked[base.id]}
+					<li class="bare"><CookedBadge recipeId={base.id} /></li>
+				{:else}
+					<li
+						class="untested"
+						title="Recept je napísaný podľa overených postupov, ale v Receptiu ho ešte nikto neuvaril. Časy a množstvá ber orientačne."
+					>
+						Zatiaľ nevyskúšané v praxi
 					</li>
-					<li class:tested={!!base.tested}>
-						{#if base.tested}
-							<Icon name="check" size={16} /> Vyskúšané
-						{:else if likes.cooked[base.id]}
-							<CookedBadge recipeId={base.id} />
-						{:else}
-							<span
-								title="Recept je napísaný podľa overených postupov, ale v Receptiu ho ešte nikto neuvaril. Časy a množstvá ber orientačne."
-								>Zatiaľ nevyskúšané v praxi</span
-							>
-						{/if}
-					</li>
-				</ul>
-			</details>
+				{/if}
+			</ul>
 
 			{#if base.variants.length}
 				<div class="variants" role="group" aria-label="Verzia receptu" data-noprint>
@@ -499,56 +500,60 @@
 			{/if}
 
 			<div class="actions" data-noprint bind:this={actionsEl}>
-				<button class="btn leaf" onclick={plan}>
-					{#if justAdded}
-						<Icon name="check" size={18} draw /> Pridané
-					{:else}
-						<Icon name="calendar" size={18} /> Do plánu ({servings}
-						{servings === 1 ? 'porcia' : servings < 5 ? 'porcie' : 'porcií'})
+				<div class="main-actions">
+					<button class="btn leaf" onclick={plan}>
+						{#if justAdded}
+							<Icon name="check" size={18} draw /> Pridané
+						{:else}
+							<Icon name="calendar" size={18} /> Do plánu ({servings}
+							{servings === 1 ? 'porcia' : servings < 5 ? 'porcie' : 'porcií'})
+						{/if}
+					</button>
+					<button class="btn ghost" onclick={startCooking}>
+						<Icon name="pot" size={18} /> Variť
+					</button>
+					{#if isPreserve}
+						{#if shelved}
+							<a class="btn ghost" href="/spajza#shelf-title">
+								<Icon name="check" size={18} /> V zásobách
+							</a>
+						{:else}
+							<button class="btn ghost" onclick={shelve}>
+								<Icon name="jar" size={18} /> Zapísať do zásob
+							</button>
+						{/if}
 					{/if}
-				</button>
-				<button class="btn ghost" onclick={startCooking}>
-					<Icon name="pot" size={18} /> Variť
-				</button>
-				{#if isPreserve}
-					{#if shelved}
-						<a class="btn ghost" href="/spajza#shelf-title">
-							<Icon name="check" size={18} /> V zásobách
-						</a>
-					{:else}
-						<button class="btn ghost" onclick={shelve}>
-							<Icon name="jar" size={18} /> Zapísať do zásob
-						</button>
-					{/if}
-				{/if}
-				<button
-					class="icon-btn fav"
-					class:on={isFavorite}
-					onclick={() => toggleFavorite(base.id)}
-					aria-pressed={isFavorite}
-					aria-label={isFavorite ? 'Odobrať z obľúbených' : 'Uložiť medzi obľúbené'}
-					title={isFavorite ? 'V obľúbených' : 'Uložiť medzi obľúbené'}
-				>
-					<Icon name="bookmark" size={19} />
-				</button>
-				<LikeButton recipeId={recipe.id} />
-				<button
-					class="icon-btn"
-					onclick={share}
-					aria-label="Zdieľať recept"
-					title={shared ? 'Odkaz skopírovaný' : 'Zdieľať'}
-				>
-					<Icon name={shared ? 'check' : 'share'} size={19} />
-				</button>
-				<button
-					class="icon-btn print-btn"
-					onclick={() => window.print()}
-					aria-label="Vytlačiť recept"
-					title="Vytlačiť"
-				>
-					<Icon name="printer" size={19} />
-				</button>
-				{#if inPlan}<a class="in-plan" href="/plan">V pláne: {inPlan} porc.</a>{/if}
+				</div>
+				<div class="side-actions">
+					<button
+						class="icon-btn fav"
+						class:on={isFavorite}
+						onclick={() => toggleFavorite(base.id)}
+						aria-pressed={isFavorite}
+						aria-label={isFavorite ? 'Odobrať z obľúbených' : 'Uložiť medzi obľúbené'}
+						title={isFavorite ? 'V obľúbených' : 'Uložiť medzi obľúbené'}
+					>
+						<Icon name="bookmark" size={19} />
+					</button>
+					<LikeButton recipeId={recipe.id} />
+					<button
+						class="icon-btn"
+						onclick={share}
+						aria-label="Zdieľať recept"
+						title={shared ? 'Odkaz skopírovaný' : 'Zdieľať'}
+					>
+						<Icon name={shared ? 'check' : 'share'} size={19} />
+					</button>
+					<button
+						class="icon-btn print-btn"
+						onclick={() => window.print()}
+						aria-label="Vytlačiť recept"
+						title="Vytlačiť"
+					>
+						<Icon name="printer" size={19} />
+					</button>
+					{#if inPlan}<a class="in-plan" href="/plan">V pláne: {inPlan} porc.</a>{/if}
+				</div>
 			</div>
 			{#if cookedTimes.length}
 				<p class="cooked-line" data-noprint>
@@ -564,8 +569,8 @@
 						{match.swaps.length ? 'Uvaríš to z toho, čo máš doma.' : 'Máš doma všetko potrebné.'}
 					{:else}
 						Máš {match.have - match.short.length}/{match.needed}.
-						{#if match.missing.length}Chýba: {match.missing.map((i) => i.name).join(', ')}.{/if}
-						{#if match.short.length}Málo: {match.short.map((i) => i.name).join(', ')}.{/if}
+						{#if match.missing.length}Chýba: {shortList(match.missing)}.{/if}
+						{#if match.short.length}Málo: {shortList(match.short)}.{/if}
 					{/if}
 					{#if match.swaps.length}
 						Použi, čo máš: {match.swaps
@@ -1063,9 +1068,9 @@
 		display: block;
 		margin-top: 2px;
 		font-family: var(--font-body);
-		font-size: 0.75rem;
+		font-size: 0.8rem;
 		line-height: 1.35;
-		color: var(--muted);
+		color: var(--ink-2);
 		font-weight: 500;
 	}
 	.price-note {
@@ -1114,8 +1119,28 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 10px;
+		gap: 10px 14px;
 		margin-top: 18px;
+	}
+	.main-actions,
+	.side-actions {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+	}
+	@media (max-width: 599px) {
+		.main-actions {
+			width: 100%;
+		}
+		.main-actions .btn {
+			flex: 1 1 auto;
+			justify-content: center;
+		}
+		.side-actions .icon-btn {
+			width: 44px;
+			height: 44px;
+		}
 	}
 	.in-plan {
 		font-size: 0.88rem;
@@ -1142,38 +1167,53 @@
 		list-style: none;
 		display: flex;
 		flex-wrap: wrap;
-		gap: 6px 16px;
-		margin: 12px 0 0;
+		gap: 6px;
+		margin: 10px 0 0;
 		padding: 0;
-		font-size: 0.86rem;
-		color: var(--ink-2);
 	}
 	.meta li {
 		display: inline-flex;
 		align-items: center;
-		gap: 5px;
+		gap: 6px;
+		padding: 5px 10px;
+		border: 1px solid var(--line);
+		border-radius: 10px;
+		background: var(--paper-2);
+		color: var(--ink);
+		font-size: 0.88rem;
+		font-weight: 600;
 	}
-	.meta .co2 {
-		color: inherit;
-		text-decoration: underline dotted;
+	.meta li > :global(svg) {
+		flex: none;
+		color: var(--leaf);
 	}
 	.meta .tested {
+		border-color: transparent;
+		background: var(--leaf-soft);
 		color: var(--leaf);
-		font-weight: 650;
 	}
-	.meta li span[title] {
-		color: var(--muted);
-		text-decoration: underline dotted;
-		cursor: help;
+	.meta .untested {
+		border-style: dashed;
+		background: none;
+		color: var(--ink-2);
+		font-weight: 500;
 	}
-	.spicy span {
+	.meta .bare {
+		padding: 0;
+		border: 0;
+		background: none;
+	}
+	.chilis {
 		display: inline-flex;
-		color: var(--line);
 	}
-	.spicy span.on {
+	.chilis span {
+		display: inline-flex;
+		color: color-mix(in srgb, var(--muted) 45%, transparent);
+	}
+	.chilis span.on {
 		color: var(--tomato);
 	}
-	.spicy span + span {
+	.chilis span + span {
 		margin-left: -7px;
 	}
 	.side {
@@ -1669,25 +1709,6 @@
 	}
 	.done .uses {
 		display: none;
-	}
-	.more-info {
-		margin: 4px 0 14px;
-	}
-	.more-info summary {
-		display: inline-flex;
-		align-items: baseline;
-		gap: 8px;
-		cursor: pointer;
-		font-weight: 650;
-		font-size: 0.9rem;
-		color: var(--ink-2);
-	}
-	.more-info summary small {
-		color: var(--muted);
-		font-weight: 500;
-	}
-	.more-info .meta {
-		margin-top: 10px;
 	}
 	.step:hover {
 		background: color-mix(in srgb, var(--card) 70%, transparent);

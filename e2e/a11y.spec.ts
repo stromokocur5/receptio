@@ -15,6 +15,8 @@ const PAGES = [
 	'/suroviny/cicer-suchy',
 	'/vybavenie',
 	'/kuchyne',
+	'/ceny',
+	'/wiki/mini-les',
 	'/navrhni'
 ];
 

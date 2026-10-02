@@ -142,6 +142,7 @@
 
 <Onboarding />
 
+<div class="nav-fade" aria-hidden="true" data-noprint></div>
 <nav class="mobile" aria-label="Navigácia" data-noprint>
 	{#each NAV as item (item.href)}
 		<a
@@ -185,8 +186,8 @@
 		position: sticky;
 		top: 0;
 		z-index: 40;
-		background: color-mix(in srgb, var(--paper) 82%, transparent);
-		backdrop-filter: blur(14px) saturate(1.3);
+		background: color-mix(in srgb, var(--paper) 94%, transparent);
+		backdrop-filter: blur(14px);
 		border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
 		view-transition-name: header;
 	}
@@ -308,6 +309,17 @@
 		margin: 0;
 	}
 
+	/* Without it, cards peek out under and around the floating navigation. */
+	.nav-fade {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 49;
+		height: calc(96px + env(safe-area-inset-bottom));
+		background: linear-gradient(to top, var(--paper) 45%, transparent);
+		pointer-events: none;
+	}
 	.mobile {
 		position: fixed;
 		left: 10px;
@@ -316,8 +328,7 @@
 		z-index: 50;
 		display: grid;
 		grid-template-columns: repeat(5, 1fr);
-		background: color-mix(in srgb, var(--card) 88%, transparent);
-		backdrop-filter: blur(16px) saturate(1.4);
+		background: var(--card);
 		border: 1px solid var(--line);
 		border-radius: 22px;
 		box-shadow: var(--shadow-lift);
@@ -373,7 +384,8 @@
 		.desktop {
 			display: flex;
 		}
-		.mobile {
+		.mobile,
+		.nav-fade {
 			display: none;
 		}
 		.foot {

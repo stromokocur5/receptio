@@ -63,7 +63,7 @@
 	const hasPantry = $derived(Object.keys(pantry.current).length > 0);
 </script>
 
-<section class="wrap block" id="co-dnes">
+<section class="wrap" id="co-dnes">
 	<div class="today card">
 		<div class="copy">
 			<p class="eyebrow">Bez rozmýšľania</p>
@@ -107,6 +107,10 @@
 </section>
 
 <style>
+	section {
+		margin-top: 20px;
+		scroll-margin-top: 84px;
+	}
 	.today {
 		display: grid;
 		gap: 16px;

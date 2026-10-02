@@ -38,12 +38,18 @@ export function importBackup(text: string): StoreName[] | null {
 	const { app, version, data } = parsed as Record<string, unknown>;
 	if (app !== APP || version !== VERSION || typeof data !== 'object' || data === null) return null;
 
+	const parts = data as Record<string, unknown>;
+	// Backups made while there could be only one garden keep it under `garden`.
+	if (!('gardens' in parts) && 'garden' in parts) {
+		parts.gardens = parts.garden === null ? [] : [parts.garden];
+	}
+
 	const restored: StoreName[] = [];
 	for (const [name, store] of Object.entries(ALL_PERSISTED) as [
 		StoreName,
 		(typeof ALL_PERSISTED)[StoreName]
 	][]) {
-		if (name in data && store.restore((data as Record<string, unknown>)[name])) restored.push(name);
+		if (name in parts && store.restore(parts[name])) restored.push(name);
 	}
 	return restored;
 }

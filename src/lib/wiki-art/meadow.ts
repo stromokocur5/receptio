@@ -1,5 +1,5 @@
-/** Drawings for the guides on mowing less, lawn alternatives and leaving plants standing. */
-import { bug, ground, label, leader, log, plant, shrub, snow, sun } from './kit';
+/** Drawings for the guides on mowing less, lawn alternatives, mini forests and leaving plants standing. */
+import { bug, ground, label, leader, log, plant, shrub, snow, sun, tree } from './kit';
 
 /** Grass blades from x1 to x2 standing on y, `h` tall, leaning a little each way. */
 function grass(x1: number, x2: number, y: number, h: number, step = 7) {
@@ -72,6 +72,30 @@ export const MEADOW_ART: Record<string, () => string> = {
 		label(276, 158, 'jedlý záhon', 'middle') +
 		label(160, 180, 'menej práce, menej vody, viac života', 'middle') +
 		sun(292, 26, 9),
+
+	// A strip of lawn next to what can stand there: trees and shrubs planted densely, in layers.
+	'mini-les': () =>
+		ground(150) +
+		sun(30, 24, 9) +
+		grass(8, 92, 150, 7, 6) +
+		label(50, 176, 'trávnik', 'middle') +
+		`<path class="ta-mulch" d="M104 150c0-5 4-8 10-8h192c6 0 10 3 10 8Z"/>` +
+		tree(152, 144, 76, 24, 0.2) +
+		tree(236, 144, 88, 26, 0.9) +
+		tree(120, 144, 42, 15, 0.5) +
+		tree(194, 144, 50, 17, 1.3, 'var(--tomato)') +
+		tree(284, 144, 46, 16, 0.1) +
+		shrub(140, 146, 26, 0.7, 'var(--plum)') +
+		shrub(218, 146, 28, 0.3) +
+		shrub(258, 146, 24, 1.1, 'var(--tomato)') +
+		shrub(304, 146, 22, 0.6) +
+		label(8, 62, 'hlavné stromy') +
+		leader(80, 59, 128, 66) +
+		label(8, 90, 'nižšie stromy') +
+		leader(78, 87, 105, 100) +
+		label(8, 118, 'kry') +
+		leader(26, 115, 128, 134) +
+		label(210, 176, 'husto, vo vrstvách, pod mulčom', 'middle'),
 
 	// A garden left standing for the winter: seed heads, hollow stems, leaves and a log pile.
 	'nech-ziju': () =>

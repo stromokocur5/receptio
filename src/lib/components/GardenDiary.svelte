@@ -16,7 +16,7 @@
 	} from '$lib/garden';
 	import { bestPrice } from '$lib/pricing';
 	import { IN_MONTH } from '$lib/season';
-	import { garden, pantry, setPantryItem, settings } from '$lib/state.svelte';
+	import { pantry, removeGarden, saveGarden, setPantryItem, settings } from '$lib/state.svelte';
 	import type { GardenDiary } from '$lib/state.svelte';
 	import type { GrowCombo, GrowGuide } from '$lib/types';
 
@@ -125,7 +125,7 @@
 			beds: diary.beds.map(({ name, width, depth, cells }) => ({ name, width, depth, cells }))
 		})}`;
 		try {
-			if (navigator.share) await navigator.share({ title: 'Moja záhradka', url });
+			if (navigator.share) await navigator.share({ title: diary.name, url });
 			else {
 				await navigator.clipboard.writeText(url);
 				shareNote = 'Odkaz je skopírovaný.';
@@ -135,27 +135,38 @@
 		}
 	}
 
+	const plantName = (id: string) => guideById.get(id)?.name ?? id;
+
 	let harvestId = $state('');
+	/** What is ripe now comes first; out of season anything in the garden can be weighed. */
+	const harvestOptions = $derived(
+		harvestNow.length
+			? harvestNow.map((t) => ({ ingredientId: t.ingredientId, name: t.name }))
+			: plants.map((p) => ({ ingredientId: p.ingredientId, name: plantName(p.ingredientId) }))
+	);
+	const harvestChoice = $derived(
+		harvestOptions.some((o) => o.ingredientId === harvestId)
+			? harvestId
+			: (harvestOptions[0]?.ingredientId ?? '')
+	);
 	let harvestGrams = $state<number | null>(null);
 	let harvestNote = $state('');
 	let confirmDelete = $state(false);
 
-	const plantName = (id: string) => guideById.get(id)?.name ?? id;
-
 	function toggle(key: string) {
 		const { [key]: was, ...rest } = diary.done;
-		garden.current = { ...diary, done: was ? rest : { ...rest, [key]: today } };
+		saveGarden({ ...diary, done: was ? rest : { ...rest, [key]: today } });
 	}
 
 	function logHarvest(event: SubmitEvent) {
 		event.preventDefault();
-		const id = harvestId || harvestNow[0]?.ingredientId || plants[0]?.ingredientId;
+		const id = harvestChoice;
 		if (!id || !harvestGrams || harvestGrams <= 0) return;
 		const grams = Math.round(harvestGrams);
-		garden.current = {
+		saveGarden({
 			...diary,
 			harvests: [...diary.harvests, { ingredientId: id, grams, date: today }]
-		};
+		});
 		const had = pantry.current[id];
 		setPantryItem(id, (typeof had === 'number' ? had : 0) + grams);
 		const tip = guideById.get(id)?.preserve;
@@ -167,7 +178,17 @@
 <section class="card diary">
 	<header>
 		<div>
-			<p class="eyebrow"><Icon name="sprout" size={16} /> Moja záhradka</p>
+			<label class="name">
+				<Icon name="sprout" size={16} />
+				<span class="sr-only">Názov záhradky</span>
+				<input
+					value={diary.name}
+					maxlength="40"
+					placeholder="Názov záhradky"
+					onchange={(e) => saveGarden({ ...diary, name: e.currentTarget.value })}
+				/>
+				<Icon name="pencil" size={14} />
+			</label>
 			<h2>
 				{formatNumber(diary.area)} m² {PLACE[diary.place]}, {plants.length}
 				{plants.length === 1 ? 'druh' : plants.length < 5 ? 'druhy' : 'druhov'} rastlín
@@ -183,7 +204,7 @@
 			<button
 				class="btn ghost small"
 				onclick={() => {
-					if (confirmDelete) garden.current = null;
+					if (confirmDelete) removeGarden(diary.id);
 					confirmDelete = !confirmDelete;
 				}}
 			>
@@ -248,8 +269,12 @@
 		<section>
 			<h3>Zapíš úrodu</h3>
 			<form class="harvest" onsubmit={logHarvest}>
-				<select bind:value={harvestId} aria-label="Plodina">
-					{#each harvestNow.length ? harvestNow : plants.map( (p) => ({ ingredientId: p.ingredientId, name: plantName(p.ingredientId) }) ) as p (p.ingredientId)}
+				<select
+					value={harvestChoice}
+					onchange={(e) => (harvestId = e.currentTarget.value)}
+					aria-label="Plodina"
+				>
+					{#each harvestOptions as p (p.ingredientId)}
 						<option value={p.ingredientId}>{p.name}</option>
 					{/each}
 				</select>
@@ -344,11 +369,37 @@
 		justify-content: space-between;
 		gap: 12px;
 	}
-	.eyebrow {
+	.name {
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		margin: 0;
+		max-width: 100%;
+		color: var(--muted);
+	}
+	.name input {
+		min-width: 4em;
+		max-width: 100%;
+		field-sizing: content;
+		padding: 2px 6px;
+		border: 1.5px solid transparent;
+		border-radius: 8px;
+		background: none;
+		color: var(--ink);
+		font-weight: 700;
+	}
+	.name input:hover,
+	.name input:focus {
+		border-color: var(--line);
+		background: var(--paper);
+		outline: none;
+	}
+	.name input:focus {
+		border-color: var(--leaf-2);
+	}
+	@supports not (field-sizing: content) {
+		.name input {
+			width: 16em;
+		}
 	}
 	h2 {
 		margin: 4px 0 0;

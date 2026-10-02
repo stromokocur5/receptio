@@ -40,7 +40,6 @@ function recipe(
 		costPerServing: 1,
 		costIsEstimate: true,
 		costKnownShare: 0,
-		co2PerServing: 0.5,
 		usesSubstitutes: false,
 		treat: [],
 		warnings: [],

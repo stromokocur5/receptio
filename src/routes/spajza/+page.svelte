@@ -222,7 +222,7 @@
 					id="pantry-q"
 					type="search"
 					bind:value={search}
-					placeholder="Hľadaj surovinu – napr. cícer, huby, orechy…"
+					placeholder="Hľadaj surovinu – cícer, huby…"
 				/>
 			</div>
 			{#if !search.trim()}

@@ -12,7 +12,7 @@
 		type Bed
 	} from '$lib/garden';
 	import { normalizeSearch } from '$lib/labels';
-	import { garden, type GardenDiary } from '$lib/state.svelte';
+	import { saveGarden, type GardenDiary } from '$lib/state.svelte';
 	import type { GrowCombo, GrowGuide } from '$lib/types';
 
 	let {
@@ -78,7 +78,7 @@
 	const color = (id: string) => catalog.ingredientsById.get(id)?.color ?? '#6fa35a';
 
 	function update(bed: Bed) {
-		garden.current = { ...diary, beds: diary.beds.map((b) => (b.id === bed.id ? bed : b)) };
+		saveGarden({ ...diary, beds: diary.beds.map((b) => (b.id === bed.id ? bed : b)) });
 	}
 
 	function remember(bed: Bed) {
@@ -104,7 +104,7 @@
 			cells: {},
 			past: []
 		};
-		garden.current = { ...diary, beds: [...diary.beds, bed] };
+		saveGarden({ ...diary, beds: [...diary.beds, bed] });
 		newName = '';
 		newWidth = null;
 		newDepth = null;
@@ -197,30 +197,32 @@
 	</p>
 
 	<form class="add" onsubmit={addBed}>
-		<input bind:value={newName} placeholder="Názov (napr. Záhon pri plote)" aria-label="Názov" />
-		<label
-			><input
-				type="number"
-				min="0.1"
-				max="50"
-				step="any"
-				bind:value={newWidth}
-				aria-label="Šírka v metroch"
-				placeholder="šírka"
-			/> m</label
-		>
-		<span>×</span>
-		<label
-			><input
-				type="number"
-				min="0.1"
-				max="50"
-				step="any"
-				bind:value={newDepth}
-				aria-label="Hĺbka v metroch"
-				placeholder="hĺbka"
-			/> m</label
-		>
+		<input bind:value={newName} placeholder="Názov, napr. Záhon pri plote" aria-label="Názov" />
+		<span class="size">
+			<label
+				><input
+					type="number"
+					min="0.1"
+					max="50"
+					step="any"
+					bind:value={newWidth}
+					aria-label="Šírka v metroch"
+					placeholder="šírka"
+				/> m</label
+			>
+			<span>×</span>
+			<label
+				><input
+					type="number"
+					min="0.1"
+					max="50"
+					step="any"
+					bind:value={newDepth}
+					aria-label="Hĺbka v metroch"
+					placeholder="hĺbka"
+				/> m</label
+			>
+		</span>
 		<button class="btn leaf small" type="submit" disabled={!newWidth || !newDepth}>
 			<Icon name="plus" size={16} /> Pridať záhon
 		</button>
@@ -328,7 +330,7 @@
 						aria-label="Zmazať záhon"
 						onclick={() =>
 							confirm(`del-${bed.id}`, () => {
-								garden.current = { ...diary, beds: diary.beds.filter((b) => b.id !== bed.id) };
+								saveGarden({ ...diary, beds: diary.beds.filter((b) => b.id !== bed.id) });
 							})}
 					>
 						<Icon name="trash" size={16} />
@@ -450,7 +452,15 @@
 		font: inherit;
 	}
 	.add > input {
-		flex: 1 1 200px;
+		flex: 1 1 240px;
+		min-width: 0;
+	}
+	/* Width × depth stay on one line, also on a phone. */
+	.size {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		white-space: nowrap;
 	}
 	.add label input {
 		width: 80px;

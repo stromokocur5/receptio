@@ -116,7 +116,7 @@
 			<p class="stats">
 				<strong>{formatNumber(week.portions, 0)}</strong>
 				{week.portions < 1.5 ? 'porcia' : week.portions < 4.5 ? 'porcie' : 'porcií'} na osobu ·
-				{formatEur(week.cost)} · ≈ {formatNumber(week.co2, 1)} kg CO₂e
+				{formatEur(week.cost)}
 			</p>
 			<NutrientBars
 				values={week.perDay}

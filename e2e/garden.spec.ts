@@ -36,3 +36,34 @@ test('a saved garden gets a bed that can be painted', async ({ page }) => {
 	await page.getByRole('button', { name: 'Späť', exact: true }).click();
 	await expect(cells.first()).toHaveAttribute('aria-label', /prázdne/);
 });
+
+test('a second garden lives next to the first and keeps its own name', async ({ page }) => {
+	await visit(page, '/pestuj#planovac');
+	await page.getByRole('button', { name: 'Uložiť ako moju záhradku' }).click();
+	const switcher = page.getByRole('group', { name: 'Moje záhradky' });
+	await expect(switcher.getByRole('button', { name: 'Balkón' })).toHaveAttribute(
+		'aria-pressed',
+		'true'
+	);
+
+	await switcher.getByRole('button', { name: 'Ďalšia záhradka' }).click();
+	await page.getByRole('button', { name: /^Záhrada/ }).click();
+	await page.getByRole('button', { name: 'Uložiť ako ďalšiu záhradku' }).click();
+	await expect(page.getByRole('tab', { name: 'Moje záhradky' })).toHaveAttribute(
+		'aria-selected',
+		'true'
+	);
+	await expect(switcher.getByRole('button', { name: 'Záhrada' })).toHaveAttribute(
+		'aria-pressed',
+		'true'
+	);
+
+	const name = page.getByLabel('Názov záhradky');
+	await name.fill('U babky');
+	await name.blur();
+	await expect(switcher.getByRole('button', { name: 'U babky' })).toBeVisible();
+
+	await switcher.getByRole('button', { name: 'Balkón' }).click();
+	await expect(name).toHaveValue('Balkón');
+	await expect(page.getByRole('heading', { name: /na balkóne/ })).toBeVisible();
+});

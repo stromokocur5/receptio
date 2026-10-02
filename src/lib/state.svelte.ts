@@ -21,11 +21,19 @@ class Persisted<T> {
 	#key: string;
 	#value: T = $state() as T;
 	#validate: (raw: unknown) => T | undefined;
+	#deviceOnly: boolean;
 
-	constructor(key: string, initial: T, validate: (raw: unknown) => T | undefined) {
+	/** `deviceOnly` values (which garden is open) stay out of backups and don't trigger sync. */
+	constructor(
+		key: string,
+		initial: T,
+		validate: (raw: unknown) => T | undefined,
+		deviceOnly = false
+	) {
 		this.#key = PREFIX + key;
 		this.#value = initial;
 		this.#validate = validate;
+		this.#deviceOnly = deviceOnly;
 	}
 
 	get current(): T {
@@ -35,7 +43,7 @@ class Persisted<T> {
 	set current(value: T) {
 		this.#value = value;
 		if (!browser) return;
-		changes.count++;
+		if (!this.#deviceOnly) changes.count++;
 		try {
 			localStorage.setItem(this.#key, JSON.stringify(value));
 		} catch {
@@ -312,6 +320,10 @@ export const notes = new Persisted<Record<string, string>>('notes', {}, validate
 
 /** A saved garden plan and its diary. */
 export interface GardenDiary {
+	/** Stable handle, so a garden keeps its diary when it is renamed. */
+	id: string;
+	/** What the grower calls it: "Balkón", "Záhrada u babky". */
+	name: string;
 	place: GrowPlace;
 	area: number;
 	sun: GrowSun;
@@ -337,12 +349,31 @@ export interface GardenDiary {
 const PLACES = ['parapet', 'balkon', 'zahrada'];
 const SUNS = ['slnko', 'polotien', 'tien'];
 const MAX_HARVESTS = 1000;
+export const MAX_GARDENS = 12;
+const MAX_GARDEN_NAME = 40;
+const GARDEN_NAMES: Record<GrowPlace, string> = {
+	parapet: 'Okno',
+	balkon: 'Balkón',
+	zahrada: 'Záhrada'
+};
 const isDate = (v: unknown): v is string => typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v);
 
-function validateGarden(raw: unknown): GardenDiary | null | undefined {
-	if (raw === null) return null;
+export const newGardenId = () => crypto.randomUUID().slice(0, 8);
+
+/** "Balkón", or "Balkón 2" when there already is one. */
+export function gardenName(place: GrowPlace, existing: { name: string }[]): string {
+	const base = GARDEN_NAMES[place];
+	const taken = new Set(existing.map((g) => g.name));
+	for (let n = 1; ; n++) {
+		const name = n === 1 ? base : `${base} ${n}`;
+		if (!taken.has(name)) return name;
+	}
+}
+
+/** Gardens saved before there could be several have no id or name; they get them here. */
+function validateGarden(raw: unknown): GardenDiary | undefined {
 	if (!isRecord(raw)) return undefined;
-	const { place, area, sun, level, combos, plants, done, harvests, beds, savedAt } = raw;
+	const { id, name, place, area, sun, level, combos, plants, done, harvests, beds, savedAt } = raw;
 	if (typeof place !== 'string' || !PLACES.includes(place)) return undefined;
 	if (typeof sun !== 'string' || !SUNS.includes(sun)) return undefined;
 	if (typeof area !== 'number' || !(area > 0) || area > 100_000) return undefined;
@@ -350,6 +381,11 @@ function validateGarden(raw: unknown): GardenDiary | null | undefined {
 	if (!Array.isArray(combos) || !Array.isArray(plants) || !Array.isArray(harvests))
 		return undefined;
 	return {
+		id: typeof id === 'string' && /^[a-z0-9-]{1,40}$/.test(id) ? id : newGardenId(),
+		name:
+			typeof name === 'string' && name.trim()
+				? name.trim().slice(0, MAX_GARDEN_NAME)
+				: GARDEN_NAMES[place as GrowPlace],
 		place: place as GrowPlace,
 		area,
 		sun: sun as GrowSun,
@@ -428,7 +464,67 @@ function validateBeds(raw: unknown): GardenDiary['beds'] {
 		}));
 }
 
-export const garden = new Persisted<GardenDiary | null>('garden', null, validateGarden);
+function validateGardens(raw: unknown): GardenDiary[] | undefined {
+	if (!Array.isArray(raw)) return undefined;
+	const byId = new Map(raw.flatMap((g) => validateGarden(g) ?? []).map((g) => [g.id, g]));
+	return [...byId.values()].slice(0, MAX_GARDENS);
+}
+
+/** Every saved garden: a balcony at home, a plot at the cottage… */
+export const gardens = new Persisted<GardenDiary[]>('gardens', [], validateGardens);
+/** Which garden is open on this device. */
+const openGardenId = new Persisted<string | null>(
+	'open-garden',
+	null,
+	(raw) => (typeof raw === 'string' || raw === null ? raw : undefined),
+	true
+);
+
+/** The garden being looked at; the first one until another is opened. */
+export function activeGarden(): GardenDiary | null {
+	const all = gardens.current;
+	return all.find((g) => g.id === openGardenId.current) ?? all[0] ?? null;
+}
+
+export function openGarden(id: string) {
+	openGardenId.current = id;
+}
+
+/** Stores a garden – a new one is added, a known one replaced – and opens it. */
+export function saveGarden(diary: GardenDiary) {
+	const name = diary.name.trim().slice(0, MAX_GARDEN_NAME) || GARDEN_NAMES[diary.place];
+	const next = { ...diary, name };
+	gardens.current = gardens.current.some((g) => g.id === next.id)
+		? gardens.current.map((g) => (g.id === next.id ? next : g))
+		: [...gardens.current, next].slice(0, MAX_GARDENS);
+	openGardenId.current = next.id;
+}
+
+export function removeGarden(id: string) {
+	gardens.current = gardens.current.filter((g) => g.id !== id);
+}
+
+/**
+ * Until October 2026 there was one garden under `garden`, and the planner's inputs were written
+ * to the same key. Whichever of the two is there moves to where it belongs now.
+ */
+export const PLANNER_KEY = `${PREFIX}planner`;
+function migrateSingleGarden() {
+	const LEGACY_KEY = `${PREFIX}garden`;
+	try {
+		const raw = localStorage.getItem(LEGACY_KEY);
+		if (raw === null) return;
+		const garden = validateGarden(JSON.parse(raw));
+		if (garden && localStorage.getItem(`${PREFIX}gardens`) === null) {
+			localStorage.setItem(`${PREFIX}gardens`, JSON.stringify([garden]));
+		} else if (!garden && localStorage.getItem(PLANNER_KEY) === null) {
+			localStorage.setItem(PLANNER_KEY, raw);
+		}
+		localStorage.removeItem(LEGACY_KEY);
+	} catch {
+		// Corrupt or inaccessible storage: nothing to carry over.
+	}
+}
 
 /** Home-made jars and freezer bags, with the date they were made. */
 export const preserves = new Persisted<Preserve[]>('preserves', [], validatePreserves);
@@ -445,7 +541,7 @@ export const ALL_PERSISTED = {
 	history,
 	favorites,
 	notes,
-	garden,
+	gardens,
 	preserves,
 	avoid,
 	presets,
@@ -455,7 +551,9 @@ export const ALL_PERSISTED = {
 export const ui = $state({ loaded: false });
 
 export function loadPersisted() {
+	migrateSingleGarden();
 	for (const store of Object.values(ALL_PERSISTED)) store.load();
+	openGardenId.load();
 	ui.loaded = true;
 }
 

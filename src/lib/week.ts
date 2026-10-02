@@ -13,7 +13,6 @@ export interface WeekSummary {
 	portions: number;
 	/** Average per day, from cooked Receptio meals only. */
 	perDay: Nutrients;
-	co2: number;
 	cost: number;
 }
 
@@ -33,7 +32,6 @@ export function weekSummary(
 	const fromIso = from.toISOString().slice(0, 10);
 	const total = emptyNutrients();
 	let portions = 0;
-	let co2 = 0;
 	let cost = 0;
 	for (const h of history) {
 		if (h.date < fromIso) continue;
@@ -42,7 +40,6 @@ export function weekSummary(
 		const data = (h.variant && recipe.variants.find((v) => v.name === h.variant)) || recipe;
 		const mine = h.servings / people;
 		portions += mine;
-		co2 += data.co2PerServing * mine;
 		cost += data.costPerServing * mine;
 		for (const key of Object.keys(total) as (keyof Nutrients)[]) {
 			total[key] += data.perServing[key] * mine;
@@ -50,5 +47,5 @@ export function weekSummary(
 	}
 	const perDay = emptyNutrients();
 	for (const key of Object.keys(total) as (keyof Nutrients)[]) perDay[key] = total[key] / days;
-	return { portions, perDay, co2, cost };
+	return { portions, perDay, cost };
 }

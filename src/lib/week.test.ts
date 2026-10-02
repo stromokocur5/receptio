@@ -18,7 +18,6 @@ const recipe = {
 		ala: 0,
 		b12: 0
 	},
-	co2PerServing: 0.5,
 	costPerServing: 1
 } as unknown as RecipeSummary;
 
@@ -35,7 +34,6 @@ describe('weekSummary', () => {
 		);
 		expect(s.portions).toBe(2);
 		expect(s.perDay.protein).toBeCloseTo(6);
-		expect(s.co2).toBeCloseTo(1);
 		expect(s.cost).toBeCloseTo(2);
 	});
 });

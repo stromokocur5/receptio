@@ -49,4 +49,4 @@ Na malej záhrade stačia tri vrstvy: **jeden ovocný strom, pár kríkov a zakr
 
 Lesná záhrada nie je džungľa. Chodníky, rez a občasné vytrhnutie toho, čo sa rozrastá, patria k nej. Rozdiel je v tom, že robíš **so systémom**, nie proti nemu.
 
-Súvisí: [Monokultúry a polykultúry](/wiki/monokultury-polykultury) · [Ovocné stromy](/wiki/ovocne-stromy) · [Stromy a pole spolu](/wiki/agrolesnictvo)
+Súvisí: [Monokultúry a polykultúry](/wiki/monokultury-polykultury) · [Ovocné stromy](/wiki/ovocne-stromy) · [Stromy a pole spolu](/wiki/agrolesnictvo) · [Mini les namiesto trávnika](/wiki/mini-les)

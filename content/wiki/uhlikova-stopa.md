@@ -1,6 +1,6 @@
 ---
 title: Uhlíková stopa jedla
-summary: Čo znamená „kg CO₂e“ pri recepte, odkiaľ sú čísla a ako sa rastlinné jedlo porovná s mäsom.
+summary: Čo znamená „kg CO₂e“, odkiaľ sú čísla a ako sa rastlinné jedlo porovná s mäsom.
 section: navody
 icon: leaf
 order: 13
@@ -8,13 +8,13 @@ order: 13
 
 ## Čo je to číslo
 
-Pri každom recepte je odhad, koľko skleníkových plynov vzniklo pri výrobe surovín na **jednu porciu**, prepočítaných na kilogramy CO₂ (**kg CO₂e** – „ekvivalent“, zahŕňa aj metán a oxid dusný). Počíta sa celý život suroviny: pôda, pestovanie, spracovanie, doprava a balenie.
+Uhlíková stopa jedla hovorí, koľko skleníkových plynov vzniklo pri výrobe jeho surovín, prepočítaných na kilogramy CO₂ (**kg CO₂e** – „ekvivalent“, zahŕňa aj metán a oxid dusný). Počíta sa celý život suroviny: pôda, pestovanie, spracovanie, doprava a balenie.
 
-Hodnoty surovín sú svetové priemery z databázy **Our World in Data** (štúdia Poore & Nemecek, 2018, Science). Konkrétny výrobok sa môže líšiť aj niekoľkonásobne, preto ber číslo ako smer, nie presnú hodnotu. Energia na varenie doma v ňom nie je.
+Čísla nižšie sú svetové priemery z databázy **Our World in Data** (štúdia Poore & Nemecek, 2018, Science). Konkrétny výrobok sa môže líšiť aj niekoľkonásobne, preto ber číslo ako smer, nie presnú hodnotu. Energia na varenie doma v ňom nie je.
 
 ## Porovnanie
 
-Bežný rastlinný obed v Receptiu má okolo **0,3–1 kg CO₂e** na porciu. Len samotné mäso v porcii (150 g) bez príloh:
+Bežný rastlinný obed má okolo **0,3–1 kg CO₂e** na porciu. Len samotné mäso v porcii (150 g) bez príloh:
 
 | Mäso (150 g)                 | kg CO₂e |
 | ---------------------------- | ------- |

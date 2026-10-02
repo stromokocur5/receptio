@@ -25,6 +25,14 @@
 
 	let search = $state('');
 	let category = $state<IngredientCategory | ''>('');
+	/** The whole list is hundreds of rows; it opens a page at a time. */
+	const PAGE = 30;
+	let shown = $state(PAGE);
+	$effect(() => {
+		void search;
+		void category;
+		shown = PAGE;
+	});
 
 	const ingredientNames = catalog.ingredients.map(ingredientSearchText);
 	const matchesName = $derived(searchMatcher(ingredientNames, search));
@@ -46,7 +54,6 @@
 
 	const proteinPerEuro = $derived(
 		catalog.ingredients
-			// Protein must be a meaningful share of energy, otherwise cheap starches (flour) top the chart.
 			// Protein must be a meaningful share of energy, otherwise cheap starches (flour) top the chart;
 			// free leftovers (okara, aquafaba) would divide by ~0.
 			.filter(
@@ -104,7 +111,7 @@
 					(b.saving ?? -1) - (a.saving ?? -1) ||
 					a.ingredient.name.localeCompare(b.ingredient.name, 'sk')
 			)
-			// The best offer per ingredient; the rest is in its row of the table above.
+			// The best offer per ingredient; the rest is in its row of the list above.
 			.filter((row, index, all) => all.findIndex((r) => r.ingredient === row.ingredient) === index)
 	);
 	const onlineStoreNames = $derived(
@@ -135,60 +142,19 @@
 			{realCount
 				? `${realCount} cien z ${storesWithPrices} obchodov.`
 				: 'Reálne ceny z obchodov zatiaľ nemáme, všetko nižšie je hrubý odhad.'}
+			<a href="#odkial">Odkiaľ ich berieme</a>
 		</p>
-		<p class="muted small">
-			<strong>Každý deň sa samy obnovujú</strong> ceny základných potravín (zelenina, múka,
-			cestoviny, vločky, sójový nápoj…) z Billy, Lidla, Kauflandu, Tesca, Terna a Freshu – preberáme
-			ich z
-			<a href="https://www.cenyslovensko.sk/" rel="noopener">cenyslovensko.sk</a>, porovnávača
-			Ministerstva financií, kam ich reťazce posielajú.
-		</p>
-		<p class="muted small">
-			<strong>Raz týždenne sa obnovujú</strong> ceny veľkých balení z e-shopov – orechy, semienka,
-			strukoviny, obilniny a koreniny. Sú <a href="#vo-velkom">nižšie na stránke</a> aj pri každej surovine;
-			do nákupu v obchode ich nerátame, lebo k nim treba pripočítať dopravu.
-		</p>
-		<p class="muted small">
-			<strong>Ostatné ceny sú orientačné.</strong> Tofu, tahini či koreniny porovnávač nesleduje,
-			tak sme ich cenu raz pozreli v obchode. Po {STALE_AFTER_DAYS} dňoch ju už neberieme ako aktuálnu
-			– ostane ako odhad s dátumom, kedy sme ju videli naposledy. Kde nemáme ani to, je odhad len hrubý.
-		</p>
+		<nav class="jump" aria-label="Na tejto stránke">
+			<a class="chip" href="#bielkoviny"><Icon name="bean" size={14} /> Bielkoviny za euro</a>
+			{#if bulk.length}
+				<a class="chip" href="#vo-velkom"><Icon name="package" size={14} /> Vo veľkom</a>
+			{/if}
+			<a class="chip" href="#pokrytie"><Icon name="store" size={14} /> Koľko je z obchodov</a>
+		</nav>
 	</header>
 
-	<section class="card box coverage">
-		<h2><Icon name="store" size={24} /> Koľko cien je z obchodov</h2>
-		<div class="meter" role="img" aria-label="{Math.round(knownShare * 100)} % z obchodov">
-			<span style:width="{knownShare * 100}%"></span>
-		</div>
-		<p class="muted small">
-			<strong>{Math.round(knownShare * 100)} %</strong> ceny receptov je z reálnych cien v obchodoch,
-			zvyšok je odhad. Najviac v ňom vážia tieto suroviny:
-		</p>
-		<ul class="missing">
-			{#each missingPrices as i (i.id)}
-				<li><a href="/suroviny/{i.id}">{i.name}</a></li>
-			{/each}
-		</ul>
-	</section>
-
-	<section class="card box ppe">
-		<h2><Icon name="bean" size={24} /> Najviac bielkovín za euro</h2>
-		<p class="muted small">
-			Gramy bielkovín, ktoré dostaneš za 1 €. Počítané zo suchej váhy, len potraviny, kde bielkoviny
-			tvoria aspoň 15 % energie.
-		</p>
-		<ol>
-			{#each proteinPerEuro as p, i (p.ingredient.id)}
-				<li style:--w="{(p.gramsPerEuro / maxProtein) * 100}%" style:--i={i}>
-					<span class="nm">{p.ingredient.name}</span>
-					<span class="bar"><span></span></span>
-					<strong>{formatNumber(p.gramsPerEuro, 0)} g</strong>
-				</li>
-			{/each}
-		</ol>
-	</section>
-
-	<section class="table-section">
+	<section class="table-section" aria-labelledby="suroviny">
+		<h2 id="suroviny" class="sr-only">Suroviny a ich ceny</h2>
 		<div class="filters">
 			<div class="field grow">
 				<Icon name="search" size={20} />
@@ -206,11 +172,11 @@
 		</div>
 
 		<ul class="rows">
-			{#each rows as { ingredient, best, online, entries } (ingredient.id)}
+			{#each rows.slice(0, shown) as { ingredient, best, online, entries } (ingredient.id)}
 				<li class="row card">
 					<div class="main">
 						<span class="dot" style:background={ingredient.color}></span>
-						<div>
+						<div class="who">
 							<strong><a class="ing" href="/suroviny/{ingredient.id}">{ingredient.name}</a></strong>
 							<span class="muted small">{CATEGORY_LABELS[ingredient.category]}</span>
 						</div>
@@ -218,30 +184,28 @@
 							{#if ingredient.byproduct}
 								<span class="badge leaf">zvyšok – zadarmo</span>
 							{:else}
-								{formatEur(best.perKg)}<small>/kg</small>
-							{/if}
-							{#if ingredient.byproduct}
-								<!-- a leftover has no price to label -->
-							{:else if best.isEstimate}
-								<span
-									class="badge"
-									title={best.lastSeen
-										? `Podľa ceny, ktorú sme v obchode videli ${formatDate(best.lastSeen)}`
-										: 'Hrubý odhad, v obchode sme ju nevideli'}
-									>odhad{best.lastSeen ? ` z ${formatDate(best.lastSeen)}` : ''}</span
-								>
-							{:else}
-								<span class="badge leaf">{catalog.storesById.get(best.storeId!)?.name}</span>
-							{/if}
-							{#if online && online.storeId !== best.storeId && pricePerKg(online) < best.perKg}
-								<small class="bulk-hint"
-									>vo veľkom {formatEur(pricePerKg(online))}/kg · {catalog.storesById.get(
-										online.storeId
-									)?.name}</small
-								>
+								<span class="price">{formatEur(best.perKg)}<small>/kg</small></span>
+								{#if best.isEstimate}
+									<span
+										class="badge"
+										title={best.lastSeen
+											? `Podľa ceny, ktorú sme v obchode videli ${formatDate(best.lastSeen)}`
+											: 'Hrubý odhad, v obchode sme ju nevideli'}
+										>odhad{best.lastSeen ? ` z ${formatDate(best.lastSeen)}` : ''}</span
+									>
+								{:else}
+									<span class="badge leaf">{catalog.storesById.get(best.storeId!)?.name}</span>
+								{/if}
 							{/if}
 						</div>
 					</div>
+					{#if !ingredient.byproduct && online && online.storeId !== best.storeId && pricePerKg(online) < best.perKg}
+						<p class="bulk-hint">
+							<Icon name="package" size={14} />
+							vo veľkom {formatEur(pricePerKg(online))}/kg · {catalog.storesById.get(online.storeId)
+								?.name}
+						</p>
+					{/if}
 					{#if entries.length}
 						<ul class="entries">
 							{#each entries as e, i (i)}
@@ -249,10 +213,12 @@
 								{@const stale = e.saleUntil ? !isSaleActive(e, today) : isStale(e, today)}
 								<li class:stale>
 									<span class="sdot" style:background={store?.color}></span>
-									<span class="store">{store?.name}</span>
-									<span class="prod"
-										>{e.product} · {formatGrams(e.packGrams)} za {formatEur(e.price)}</span
-									>
+									<span class="what">
+										<span class="store">{store?.name}</span>
+										<span class="prod"
+											>{e.product} · {formatGrams(e.packGrams)} za {formatEur(e.price)}</span
+										>
+									</span>
 									<span class="kg">{formatEur(pricePerKg(e))}/kg</span>
 									<span class="tags">
 										{#if e.saleUntil && !stale}<span class="badge tomato sticker"
@@ -271,11 +237,37 @@
 				</li>
 			{/each}
 		</ul>
+		{#if !rows.length}
+			<p class="muted">Takú surovinu nemáme. Skús iné slovo alebo kategóriu.</p>
+		{:else if rows.length > shown}
+			<div class="more">
+				<button class="btn ghost" onclick={() => (shown += PAGE)}>
+					Zobraziť ďalšie ({rows.length - shown})
+				</button>
+			</div>
+		{/if}
+	</section>
+
+	<section class="card box ppe" id="bielkoviny">
+		<h2><Icon name="bean" size={24} /> Najviac bielkovín za euro</h2>
+		<p class="muted small">
+			Gramy bielkovín, ktoré dostaneš za 1 €. Počítané zo suchej váhy, len potraviny, kde bielkoviny
+			tvoria aspoň 15 % energie.
+		</p>
+		<ol>
+			{#each proteinPerEuro as p, i (p.ingredient.id)}
+				<li style:--w="{(p.gramsPerEuro / maxProtein) * 100}%" style:--i={i}>
+					<a class="nm ing" href="/suroviny/{p.ingredient.id}">{p.ingredient.name}</a>
+					<span class="bar"><span></span></span>
+					<strong>{formatNumber(p.gramsPerEuro, 0)} g</strong>
+				</li>
+			{/each}
+		</ol>
 	</section>
 
 	{#if bulk.length}
-		<section class="card box">
-			<h2 id="vo-velkom"><Icon name="package" size={24} /> Vo veľkom a z e-shopov</h2>
+		<section class="card box" id="vo-velkom">
+			<h2><Icon name="package" size={24} /> Vo veľkom a z e-shopov</h2>
 			<p class="muted small">
 				Kilové balenia orechov, strukovín, obilnín a korenín z e-shopov ({onlineStoreNames}) – cena
 				je bez dopravy, takže sa oplatia pri väčšej objednávke alebo s kamarátmi. Pri každom je,
@@ -304,6 +296,43 @@
 			</ul>
 		</section>
 	{/if}
+
+	<section class="card box coverage" id="pokrytie">
+		<h2><Icon name="store" size={24} /> Koľko cien je z obchodov</h2>
+		<div class="meter" role="img" aria-label="{Math.round(knownShare * 100)} % z obchodov">
+			<span style:width="{knownShare * 100}%"></span>
+		</div>
+		<p class="muted small">
+			<strong>{Math.round(knownShare * 100)} %</strong> ceny receptov je z reálnych cien v obchodoch,
+			zvyšok je odhad. Najviac v ňom vážia tieto suroviny:
+		</p>
+		<ul class="missing">
+			{#each missingPrices as i (i.id)}
+				<li><a href="/suroviny/{i.id}">{i.name}</a></li>
+			{/each}
+		</ul>
+	</section>
+
+	<section class="card box sources" id="odkial">
+		<h2><Icon name="info" size={24} /> Odkiaľ ceny berieme</h2>
+		<p>
+			<strong>Každý deň sa samy obnovujú</strong> ceny základných potravín (zelenina, múka,
+			cestoviny, vločky, sójový nápoj…) z Billy, Lidla, Kauflandu, Tesca, Terna a Freshu – preberáme
+			ich z
+			<a href="https://www.cenyslovensko.sk/" rel="noopener">cenyslovensko.sk</a>, porovnávača
+			Ministerstva financií, kam ich reťazce posielajú.
+		</p>
+		<p>
+			<strong>Raz týždenne sa obnovujú</strong> ceny veľkých balení z e-shopov – orechy, semienka,
+			strukoviny, obilniny a koreniny. Sú <a href="#vo-velkom">vyššie na stránke</a> aj pri každej surovine;
+			do nákupu v obchode ich nerátame, lebo k nim treba pripočítať dopravu.
+		</p>
+		<p>
+			<strong>Ostatné ceny sú orientačné.</strong> Tofu, tahini či koreniny porovnávač nesleduje,
+			tak sme ich cenu raz pozreli v obchode. Po {STALE_AFTER_DAYS} dňoch ju už neberieme ako aktuálnu
+			– ostane ako odhad s dátumom, kedy sme ju videli naposledy. Kde nemáme ani to, je odhad len hrubý.
+		</p>
+	</section>
 
 	<details class="card box how">
 		<summary><Icon name="info" size={20} /> Ako sa pridávajú ceny</summary>
@@ -342,6 +371,12 @@
 	.small {
 		font-size: 0.85rem;
 	}
+	.jump {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin-top: 4px;
+	}
 	.meter {
 		height: 12px;
 		margin: 12px 0 10px;
@@ -375,6 +410,7 @@
 	.box {
 		padding: 20px;
 		margin-top: 24px;
+		scroll-margin-top: 84px;
 	}
 	.box h2 {
 		display: flex;
@@ -383,22 +419,35 @@
 		font-size: 1.4rem;
 		margin-bottom: 4px;
 	}
+	.box h2 :global(svg) {
+		flex: none;
+	}
+	.sources p {
+		margin: 10px 0 0;
+		font-size: 0.92rem;
+		color: var(--ink-2);
+	}
 	.ppe ol {
 		list-style: none;
 		padding: 0;
 		margin: 14px 0 0;
 		display: grid;
-		gap: 8px;
+		gap: 10px;
 	}
+	/* Phones: name and grams on one line, the bar under them at full width. */
 	.ppe li {
 		display: grid;
-		grid-template-columns: minmax(120px, 1.2fr) 2fr auto;
-		gap: 12px;
-		align-items: center;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 4px 12px;
+		align-items: baseline;
 		font-size: 0.92rem;
 	}
+	.ppe .bar {
+		grid-column: 1 / -1;
+		grid-row: 2;
+	}
 	.bar {
-		height: 12px;
+		height: 10px;
 		border-radius: 999px;
 		background: var(--paper-2);
 		overflow: hidden;
@@ -422,7 +471,7 @@
 		font-variant-numeric: tabular-nums;
 	}
 	.table-section {
-		margin-top: 32px;
+		margin-top: 24px;
 	}
 	.filters {
 		display: flex;
@@ -441,7 +490,7 @@
 		gap: 8px;
 	}
 	.row {
-		padding: 12px 16px;
+		padding: 12px 14px;
 		border-radius: var(--radius-sm);
 	}
 	.main {
@@ -450,9 +499,14 @@
 		gap: 12px;
 		align-items: center;
 	}
-	.main > div:nth-child(2) {
+	.who {
 		display: flex;
 		flex-direction: column;
+		min-width: 0;
+		overflow-wrap: anywhere;
+	}
+	.who strong {
+		line-height: 1.3;
 	}
 	.dot {
 		width: 14px;
@@ -460,17 +514,36 @@
 		border-radius: 45% 55% 50% 50%;
 		box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
 	}
+	/* Price over the shop on a phone, so a long name keeps most of the row. */
 	.best {
 		display: flex;
-		align-items: center;
-		gap: 8px;
+		flex-direction: column;
+		align-items: flex-end;
+		gap: 3px;
+	}
+	.price {
+		font-size: 1.05rem;
 		font-weight: 700;
 		font-variant-numeric: tabular-nums;
 		white-space: nowrap;
 	}
-	.best small {
+	.price small {
+		margin-left: 3px;
+		font-size: 0.8rem;
 		font-weight: 500;
 		color: var(--muted);
+	}
+	.bulk-hint {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin: 6px 0 0 26px;
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--leaf);
+	}
+	.bulk-hint :global(svg) {
+		flex: none;
 	}
 	.entries {
 		list-style: none;
@@ -481,21 +554,29 @@
 	}
 	.entries li {
 		display: grid;
-		grid-template-columns: auto auto minmax(0, 1fr) auto;
+		grid-template-columns: auto minmax(0, 1fr) auto;
 		gap: 4px 10px;
-		align-items: center;
+		align-items: baseline;
 		font-size: 0.86rem;
-		padding: 6px 8px;
+		padding: 7px 10px;
 		border-radius: 8px;
 		background: var(--paper);
 	}
-	.entries li.stale {
-		opacity: 0.8;
+	/* An old price steps back by colour; fading the whole row made it too faint to read. */
+	.entries li.stale :is(.store, .kg) {
+		color: var(--ink-2);
+		font-weight: 600;
 	}
 	.sdot {
 		width: 10px;
 		height: 10px;
 		border-radius: 3px;
+	}
+	.what {
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		overflow-wrap: anywhere;
 	}
 	.store {
 		font-weight: 700;
@@ -506,6 +587,7 @@
 	.kg {
 		font-weight: 700;
 		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
 	}
 	.tags {
 		grid-column: 2 / -1;
@@ -516,10 +598,10 @@
 	.tags:empty {
 		display: none;
 	}
-	.bulk-hint {
-		display: block;
-		font-weight: 500;
-		color: var(--leaf);
+	.more {
+		display: flex;
+		justify-content: center;
+		margin-top: 16px;
 	}
 	.bulk-price {
 		font-weight: 700;
@@ -527,6 +609,7 @@
 	}
 	.bulk-detail {
 		flex-basis: 100%;
+		overflow-wrap: anywhere;
 	}
 	.bulk {
 		display: grid;
@@ -564,5 +647,28 @@
 	}
 	code {
 		font-size: 0.9em;
+	}
+	@media (min-width: 640px) {
+		.row {
+			padding: 12px 16px;
+		}
+		.best {
+			flex-direction: row;
+			align-items: center;
+			gap: 8px;
+		}
+		.what {
+			flex-flow: row wrap;
+			gap: 0 8px;
+		}
+		.ppe li {
+			grid-template-columns: minmax(160px, 1.2fr) 2fr auto;
+			align-items: center;
+		}
+		.ppe .bar {
+			grid-column: auto;
+			grid-row: auto;
+			height: 12px;
+		}
 	}
 </style>

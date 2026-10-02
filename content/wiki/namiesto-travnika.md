@@ -1,6 +1,6 @@
 ---
 title: Čo namiesto trávnika
-summary: Kvetnatá lúka, ďatelina, materina dúška medzi dlaždicami alebo jedlý záhon. Päť náhrad trávnika, ktoré chcú menej vody a práce – a ako každú založiť.
+summary: Kvetnatá lúka, ďatelina, materina dúška medzi dlaždicami, jedlý záhon alebo mini les. Šesť náhrad trávnika, ktoré chcú menej vody a práce – a ako každú založiť.
 section: pestovanie
 group: techniky-pestovania
 icon: sprout
@@ -21,6 +21,7 @@ Trávnik má zmysel tam, kde sa behá, hrá a leží. Všade inde ho môže nahr
 | Pôdopokryvné rastliny | občas, podľa druhu | žiadne     | podľa druhu       | malé plochy, medzi dlaždice, tieň |
 | Jedlý záhon           | nie                | žiadne     | slnko             | slnečné miesto pri dome           |
 | Kríky a jedlý lem     | nie                | žiadne     | slnko aj polotieň | popri plote, namiesto tují        |
+| Mini les              | nie                | žiadne     | slnko aj polotieň | roh alebo pás, kam sa nechodí     |
 
 ## Kvetnatá lúka
 
@@ -56,6 +57,10 @@ Brečtan a pachysandra plochu pokryjú spoľahlivo, ale hmyzu veľa nedajú a br
 Slnečný kus trávnika pri dome je najlepšie miesto na jedlo. Netreba rýľovať – trávnik prikry kartónom a 15 cm kompostu, ako popisuje návod [Bez rýľovania](/wiki/bez-rylovania), a o pár týždňov sadíš.
 
 Popri plote namiesto tují funguje **jedlý lem**: ríbezle, egreše, josta, drieň, muchovník, lieska. Kvitnú pre včely, rodia pre teba, vtákom dajú úkryt a strihať ich stačí raz za rok. Viac v návode [Lesná záhrada](/wiki/lesna-zahrada).
+
+## Mini les
+
+Kde je miesta viac a nikto tam nechodí, môžu namiesto trávy rásť rovno **stromy a kry** – husto vysadené domáce druhy, ktoré sa za pár rokov zapoja do lesíka a potom už nechcú kosenie ani polievanie. Postup, druhy a na čo si dať pozor sú v návode [Mini les namiesto trávnika](/wiki/mini-les).
 
 ## Ako začať bez veľkej roboty
 
