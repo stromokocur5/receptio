@@ -12,6 +12,7 @@ gf_swap: false
 taste: sladke
 keeps: { fridge: 2, freezer: 3 }
 leftovers: 'Surové gule zamraz, var ich rovno zmrazené o 4 minúty dlhšie.'
+ahead: Zemiaky uvar v šupke vopred (20–25 minút) a nechaj úplne vychladnúť – najlepšie deň vopred. Z teplých je cesto lepivé.
 ingredients:
   - zemiaky: 4 ks | uvarené v šupke a vychladnuté
   - hladka-muka: 150 g

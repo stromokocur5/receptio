@@ -3,7 +3,7 @@ description: Tuniská pálivá pasta zo sušených čili, pečenej papriky, cesn
 cuisine: severoafricka
 meals: [domace]
 categories: [omacky/omacky, domace/zaklady]
-time: 30
+time: 40
 active: 20
 servings: 12
 difficulty: 1
@@ -12,7 +12,7 @@ spicy: 3
 yields: cca 250 ml
 keeps: { fridge: 30 }
 ingredients:
-  - paprika-cervena: 1 ks | pečená a olúpaná
+  - paprika-cervena: 1 ks
   - cili: 2 pl | alebo 10 sušených papričiek namočených v horúcej vode
   - cesnak: 4 ks
   - kmin: 1 čl
@@ -24,6 +24,7 @@ ingredients:
   - sol: 1 čl
   - olivovy-olej: 5 pl | + na zaliatie
 steps:
+  - Papriku opekaj nad plameňom alebo pod rozpáleným grilom v rúre 10–15 minút, otáčaj, kým šupka nesčernie. Daj ju na 10 minút do prikrytej misky zapariť, potom olúp a vyber semienka.
   - Kmín, koriander a rascu nasucho opraž na panvici na strednom ohni 1 minútu, kým nezavoňajú.
   - Všetko rozmixuj v sekáčiku na hustú pastu. Ak je príliš hustá, pridaj lyžicu oleja.
   - Natlač do čistého pohára a zalej tenkou vrstvou oleja – zabráni plesni.

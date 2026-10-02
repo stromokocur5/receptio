@@ -3,7 +3,7 @@ description: Kórejský ohnivý guláš s hodvábnym tofu, hubami a cuketou. Tof
 cuisine: korejska
 meals: [obed, vecera]
 categories: [polievky/azijske]
-time: 25
+time: 30
 active: 15
 servings: 2
 difficulty: 1
@@ -23,6 +23,7 @@ ingredients:
   - jarna-cibulka: 2 ks
   - ryza-sushi: 180 g
 steps:
+  - Ryžu prepláchni, kým voda nie je číra, zalej 230 ml vody, priveď do varu, prikry a var na najmiernejšom ohni 12 minút. Nechaj prikrytú dôjsť.
   - Na oleji na strednom ohni opraž cesnak s cibuľou, pridaj gochugaru a 30 sekúnd miešaj, kým sa olej nezafarbí.
   - Pridaj sójovú omáčku, vývar, huby a cuketu a var na miernom ohni 5 minút.
   - Tofu vyklop lyžicou vo veľkých kusoch do polievky a var ešte 3 minúty. Nemiešaj, len potras.

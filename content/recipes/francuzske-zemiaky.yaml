@@ -3,7 +3,7 @@ description: Vrstvy zemiakov, údeného tofu, kyslých uhoriek a cibule zaliate 
 cuisine: slovenska
 meals: [obed, vecera]
 categories: [hlavne/rura, hlavne/zelenina]
-time: 75
+time: 100
 active: 25
 servings: 4
 difficulty: 1
@@ -11,7 +11,7 @@ tags: [klasika, deti, meal-prep]
 keeps: { fridge: 3, freezer: 2 }
 leftovers: 'Nakrájané na kocky prehrej v rúre na 180 °C, alebo opeč na panvici.'
 ingredients:
-  - zemiaky: 7 ks | uvarené v šupke
+  - zemiaky: 7 ks
   - tofu-udene: 200 g
   - cibula: 1 ks
   - kysle-uhorky: 3 ks
@@ -28,6 +28,7 @@ ingredients:
   - vegansky-syr: 1/2 hrnček | strúhaný, voliteľne
   - petrzlenova-vnat: 2 pl
 steps:
+  - Zemiaky uvar v šupke v osolenej vode 20–25 minút, kým nimi nôž neprejde bez odporu. Sceď a nechaj trochu vychladnúť. Pokojne ich uvar už deň vopred.
   - Rúru predhrej na 190 °C a vymasti zapekaciu misu.
   - Zemiaky ošúp a nakrájaj na kolieska. Tofu nakrájaj na drobné kocky, cibuľu a uhorky nadrobno.
   - Tofu s cibuľou opeč na oleji na strednom ohni 6 minút do zlatista.

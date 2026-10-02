@@ -3,7 +3,7 @@ description: Peruánske ceviche bez rýb – tenké šampiňóny marinované v l
 cuisine: peruanska
 meals: [snack, obed]
 categories: [snacky/party, salaty/prilohove]
-time: 30
+time: 40
 active: 15
 servings: 3
 difficulty: 1
@@ -19,9 +19,10 @@ ingredients:
   - zazvor: 1 čl | nastrúhaný
   - sol: 3/4 čl
   - bylinky-koriander: 3 pl
-  - batat: 1 ks | uvarený, na plátky
-  - kukurica-klas: 1 ks | uvarený, na kolieska
+  - batat: 1 ks
+  - kukurica-klas: 1 ks
 steps:
+  - Batát v šupke var 20–25 minút, kým ním nôž neprejde bez odporu, posledných 8 minút k nemu pridaj kukuricu. Nechaj vychladnúť, batát olúp a nakrájaj na plátky, kukuricu na kolieska.
   - Cibuľu namoč na 10 minút do studenej osolenej vody, zmierni sa.
   - Šampiňóny zalej šťavou z limetiek, pridaj cesnak, zázvor, čili a soľ a nechaj 15 minút marinovať.
   - Pridaj scedenú cibuľu a koriander. Podávaj so studeným batátom a kukuricou a vypi aj „leche de tigre“ – marinádu.

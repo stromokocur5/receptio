@@ -12,6 +12,7 @@ gf_swap: false
 taste: sladke
 keeps: { fridge: 2, freezer: 2 }
 leftovers: 'Opeč na panvici s troškou masla.'
+ahead: Zemiaky uvar v šupke vopred (20–25 minút) a nechaj úplne vychladnúť – najlepšie deň vopred. Z teplých je cesto lepivé.
 ingredients:
   - zemiaky: 5 ks | uvarené v šupke a vychladnuté
   - hladka-muka: 180 g

@@ -1,4 +1,4 @@
-import { arrow, label, sun } from './kit';
+import { arrow, drop, label, sun } from './kit';
 
 /** A bar that grows from the left to `value` of `max`, after `d` seconds. */
 function bar(x: number, y: number, width: number, value: number, max: number, d: number, cls = '') {
@@ -293,5 +293,24 @@ export const NUTRITION_ART: Record<string, () => string> = {
 		label(226, 149, '300 mg pohár') +
 		label(226, 116, '350 mg tofu') +
 		label(226, 81, 'zelenina, tahini') +
-		label(310, 26, 'špenát sa takmer nevstrebe', 'end')
+		label(310, 26, 'špenát sa takmer nevstrebe', 'end'),
+
+	'pitny-rezim': () => {
+		const glass = (x: number, name: string, d: number) =>
+			drop(x + 13, 26, d, 12) +
+			`<path class="ta-glass" d="M${x} 44h26l-3 42h-20Z"/><path class="ta-water" d="M${x + 1.5} 58h23l-2 26h-19Z"/>` +
+			label(x + 13, 102, name, 'middle');
+		return (
+			label(10, 16, 'po pohári cez celý deň, nie liter naraz') +
+			glass(18, 'ráno', 0) +
+			glass(80, 'desiata', 0.4) +
+			glass(142, 'obed', 0.8) +
+			glass(204, 'poobede', 1.2) +
+			glass(266, 'večera', 1.6) +
+			`<circle class="ta-clock-face" cx="44" cy="150" r="20"/><path class="ta-clock-hand ta-spin-slow" style="transform-origin:44px 150px" d="M44 150V135"/><path class="ta-clock-hand" d="M44 150h10"/>` +
+			`<path class="ta-cup" d="M84 142h30v10a15 14 0 0 1-30 0Z"/><path class="ta-steam-mini" d="M93 136c-3-5 3-7 0-12M105 136c-3-5 3-7 0-12"/>` +
+			label(130, 146, 'čaj a káva') +
+			label(130, 160, 'hodinu pred jedlom alebo po ňom')
+		);
+	}
 };

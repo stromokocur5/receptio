@@ -3,7 +3,7 @@ description: Hustý majonézový šalát so zeleninou, uhorkami a kúskami úden
 cuisine: slovenska
 meals: [ranajky, vecera, snack]
 categories: [salaty/prilohove, omacky/dipy, comfort/bufet]
-time: 30
+time: 60
 active: 20
 servings: 6
 difficulty: 1
@@ -11,10 +11,10 @@ tags: [klasika, party]
 keeps: { fridge: 3 }
 related: [oblozene-chlebicky, zemiakovy-salat]
 ingredients:
-  - zemiaky: 2 ks | uvarené v šupke
-  - mrkva: 1 ks | uvarená
-  - petrzlen-koren: 1 ks | uvarený
-  - hrasok: 1/2 hrnček | uvarený
+  - zemiaky: 2 ks
+  - mrkva: 1 ks
+  - petrzlen-koren: 1 ks
+  - hrasok: 1/2 hrnček | mrazený
   - kysle-uhorky: 3 ks
   - tofu-udene: 120 g | alebo pikantná klobása
   - veganska-majoneza: 6 pl
@@ -24,6 +24,7 @@ ingredients:
   - sol: 1/2 čl
   - cierne-korenie: 1 štipka
 steps:
+  - Zemiaky v šupke a ošúpanú mrkvu s petržlenom daj variť do osolenej vody. Mrkvu a petržlen vyber po 15 minútach, zemiaky po 20–25. Hrášok povar 2 minúty a sceď. Všetko nechaj úplne vychladnúť – teplá zelenina majonézu roztopí. Zemiaky ošúp.
   - Zemiaky, mrkvu, petržlen, uhorky a údené tofu nakrájaj na drobné kocky.
   - Majonézu zmiešaj s jogurtom, horčicou, citrónom, soľou a korením.
   - Všetko spolu s hráškom premiešaj a nechaj aspoň hodinu v chladničke.

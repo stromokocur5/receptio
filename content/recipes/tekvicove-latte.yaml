@@ -3,14 +3,14 @@ description: Jesenné latte so skutočnou tekvicou, škoricou, zázvorom a mušk
 cuisine: americka
 meals: [ranajky, snack]
 categories: [napoje/teple]
-time: 10
+time: 20
 active: 10
 servings: 2
 difficulty: 1
 tags: [rychle, zvysky]
 no_equipment: [mixer]
 ingredients:
-  - tekvica-hokkaido: 100 g | upečená alebo uvarená, rozmixovaná
+  - tekvica-hokkaido: 100 g | na malé kocky, alebo 4 lyžice hotového pyré
   - sojove-mlieko: 2 hrnček
   - javorovy-sirup: 2 pl
   - skorica: 1/2 čl
@@ -20,6 +20,7 @@ ingredients:
   - kava: ~2 pl | alebo 2 espressá, voliteľne
   - vanilka: 1/2 čl
 steps:
+  - Tekvicu var v troche vody pod pokrievkou 10 minút domäkka, sceď a roztlač vidličkou na pyré. Hotové pyré zo zvyškov pečenej tekvice tento krok ušetrí.
   - Tekvicové pyré, mlieko, sirup a korenie zohrievaj v hrnci za stáleho miešania, kým sa nezačne pariť. Nevar.
   - Klinček vyber a zmes rozmixuj tyčovým mixérom dopenista.
   - Nalej do hrnčekov a dolej čerstvo uvarenú kávu. Posyp škoricou.

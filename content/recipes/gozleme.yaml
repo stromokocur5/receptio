@@ -3,7 +3,7 @@ description: Tenké nekysnuté placky preložené cez plnku a opečené na suche
 cuisine: turecka
 meals: [ranajky, obed, vecera]
 categories: [prilohy/chlieb, ranajky/slane]
-time: 50
+time: 60
 active: 35
 servings: 4
 difficulty: 2
@@ -16,7 +16,7 @@ ingredients:
   - voda: 170 ml | teplá
   - olivovy-olej: 3 pl
   - sol: 1 čl
-  - zemiaky: 2 ks | uvarené
+  - zemiaky: 2 ks
   - spenat: 200 g
   - cibula: 1 ks
   - vegansky-syr: 1/2 hrnček | strúhaný
@@ -25,6 +25,7 @@ ingredients:
   - rastlinne-maslo: 2 pl | na potretie
 steps:
   - Múku zmiešaj s polovicou soli, vodou a 1 PL oleja a mies 5 minút na mäkké cesto. Prikry a nechaj 20 minút odpočívať.
+  - Zemiaky ošúp, nakrájaj na kocky a uvar v osolenej vode 12–15 minút domäkka. Sceď.
   - Cibuľu nadrobno orestuj na 1 PL oleja na strednom ohni do mäkka, pridaj špenát a dus, kým sa neodparí voda.
   - Zemiaky roztlač, zmiešaj so špenátom, syrom, paprikou, čili a zvyšnou soľou.
   - Cesto rozdeľ na 4 časti a každú vyvaľkaj na veľmi tenký obdĺžnik.

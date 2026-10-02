@@ -13,10 +13,11 @@ keeps: { fridge: 2 }
 ingredients:
   - sojovy-jogurt: 1,5 hrnček | nesladený
   - uhorka: 1 ks | nastrúhaná a vytlačená
-  - kmin: 1/2 čl | opražený a pomletý
+  - kmin: 1/2 čl
   - bylinky-mata: 2 pl
   - sol: 1/2 čl
   - cili: 1 štipka
 steps:
+  - Kmín opraž na suchej panvici na strednom ohni minútu, kým nezavonia, a rozdrv v mažiari alebo dnom pohára.
   - Jogurt rozmiešaj dohladka.
   - Vmiešaj uhorku, kmín, mätu a soľ a posyp čili.

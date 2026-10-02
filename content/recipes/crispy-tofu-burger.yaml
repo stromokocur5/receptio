@@ -1,9 +1,9 @@
 title: Chrumkavý tofu burger
-description: Hrubý plátok tofu v chrumkavom korenenom obale, pikantná majonéza, coleslaw a kyslé uhorky. Ako „chicken“ burger z fastfoodu.
+description: Namarinovaný plátok tofu v chrumkavom korenenom obale, pikantná majonéza, coleslaw a kyslé uhorky. Ako „chicken“ burger z fastfoodu.
 cuisine: americka
 meals: [obed, vecera]
 categories: [comfort/burgre, hlavne/plnene, hlavne/tofu]
-time: 45
+time: 60
 active: 30
 servings: 4
 difficulty: 2
@@ -15,6 +15,8 @@ leftovers: 'Obalené tofu prehrej v rúre na 200 °C, nie v mikrovlnke.'
 related: [coleslaw, kentucky-tofu]
 ingredients:
   - tofu-natural: 400 g | vylisované
+  - sojova-omacka: 2 pl | do marinády
+  - udena-paprika: 1 čl | do marinády
   - sojove-mlieko: 1/2 hrnček
   - ocot: 1 pl
   - horcica: 1 čl
@@ -22,25 +24,29 @@ ingredients:
   - kukuricny-skrob: 2 pl
   - struhanka: 1/2 hrnček
   - sladka-paprika: 2 čl
-  - cesnak: 1 ks | alebo 1/2 ČL sušeného
+  - cesnak: 2 ks | 1 do marinády, 1 do obalu
   - oregano: 1/2 čl
-  - sol: 1 čl
+  - sol: 1/2 čl
   - cierne-korenie: 1/2 čl
   - olej: 6 pl | na vyprážanie
   - hamburgerova-zemla: 4 ks
   - veganska-majoneza: 3 pl
   - sriracha: 1 pl
   - biela-kapusta: 1 hrnček | nadrobno
-  - kysle-uhorky: 2 ks | na plátky
+  - kysle-uhorky: 2 ks | na plátky, nálev odlož
   - salat: 60 g | 4 listy
 steps:
-  - Tofu nakrájaj na 4 hrubé plátky. Ak chceš nepravidelný „mäsový“ okraj, odlom ho rukami.
-  - Mlieko zmiešaj s octom a horčicou, nechaj 5 minút zraziť.
-  - V druhej miske zmiešaj múku, škrob, strúhanku, koreniny a soľ.
+  - Tofu nakrájaj na plátky hrubé najviac 1,5 cm – hrubší plátok ostane vnútri bez chuti, lebo obal ochutí len povrch. Ak chceš nepravidelný „mäsový“ okraj, odlom ho rukami. Do žemle potom daj pokojne dva tenšie plátky.
+  - V plytkej miske zmiešaj sójovú omáčku, štyri lyžice nálevu z kyslých uhoriek, údenú papriku a jeden pretlačený strúčik cesnaku. Tofu v marináde obráť a nechaj aspoň 20 minút, v polovici otoč. Čím dlhšie, tým lepšie – pokojne cez noc v chladničke.
+  - Mlieko zmiešaj s octom, horčicou a marinádou, ktorá ostala v miske. Nechaj 5 minút zraziť.
+  - V druhej miske zmiešaj múku, škrob, strúhanku, sladkú papriku, oregano, čierne korenie, soľ a druhý pretlačený strúčik cesnaku. Ochutnaj štipku zmesi – má byť výrazne slaná a korenistá.
   - Tofu namoč do mlieka, obaľ v múke, znova namoč a znova obaľ. Dvojitý obal je chrumkavejší.
   - Vyprážaj na oleji na strednom ohni 3–4 minúty z každej strany dozlatista. Nechaj odkvapkať.
-  - Majonézu zmiešaj so srirachou. Žemle opeč reznou stranou na suchej panvici.
+  - Majonézu zmiešaj so srirachou. Kapustu premiešaj s lyžicou tejto majonézy a lyžicou nálevu z uhoriek. Žemle opeč reznou stranou na suchej panvici.
   - Poskladaj – žemľa, majonéza, šalát, tofu, kapusta, uhorky, zase majonéza a vrch.
+tips:
+  - Tofu samo nechutí takmer ničím – chuť musí dostať dnu ešte pred obalením. Vylisované (alebo zmrazené a rozmrazené) nasaje marinádu ako špongia.
+  - Ak je hotový plátok stále mdlý, hneď po vybratí z oleja ho jemne posoľ.
 howto: [tofu, vyprazanie]
 variants:
   - name: Ľahšia verzia
