@@ -28,6 +28,21 @@ steps:
 tips:
   - Zvyšnú aquafabu použi na čokoládovú penu.
 variants:
+  - name: Zo suchého cíceru
+    description: Nemáš plechovku, máš suchý cícer – vyjde lacnejšie a hummus je ešte hladší. So sódou sa šupky rozvaria, šúpať netreba. Namiesto vody z plechovky použi vodu z varenia.
+    replace:
+      - { from: cicer-sterilizovany, to: cicer-suchy, amount: '200 g | namočený cez noc' }
+    add:
+      - soda-bikarbona: ~1/2 čl | do vody na varenie
+    time: 75
+    active: 20
+    ahead: Cícer namoč na 12 hodín (cez noc) do trojnásobku vody.
+    steps:
+      - Namočený cícer sceď, zalej čerstvou vodou 3 cm nad zrná a pridaj sódu. Priveď do varu, zober penu a var na miernom ohni 45–60 minút, kým sa zrno medzi prstami nerozpučí úplne bez odporu. V tlakovom hrnci stačí 15 minút.
+      - Odlož si hrnček vody z varenia a cícer sceď. Mixuj ho ešte teplý, vtedy je hummus najhladší.
+      - V mixéri najprv vyšľahaj tahini s citrónovou šťavou asi 1 minútu, kým nezbelie a nezhustne.
+      - Pridaj cesnak, kmín, soľ a cícer a mixuj 3 minúty. Po lyžiciach prilievaj vodu z varenia, kým hummus nie je hladký a nadýchaný.
+      - Dochuť soľou a citrónom, v miske sprav lyžicou vlnky, polej olivovým olejom a posyp paprikou.
   - name: S pečenou paprikou
     description: Pridaj 2 upečené a ošúpané červené papriky (200 °C, 25 min) a čajovú lyžičku údenej papriky. Menej aquafaby, paprika pustí šťavu.
     add:

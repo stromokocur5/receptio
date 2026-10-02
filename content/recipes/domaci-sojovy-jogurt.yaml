@@ -25,3 +25,21 @@ steps:
 tips:
   - Odlož si 3 PL jogurtu ako štartér na ďalšiu várku, funguje to asi 5 generácií.
   - Hustejší „grécky“ jogurt dostaneš, keď ho necháš odkvapkať cez utierku.
+variants:
+  - name: Zo sójových zŕn
+    description: Nemáš mlieko? Uvar si ho zo zŕn, husté tak akurát na jogurt. Ešte teplé len necháš vychladnúť na 43 °C, zohrievať ho už netreba.
+    replace:
+      - { from: sojove-mlieko, to: sojove-zrna, amount: '150 g | namočené cez noc' }
+    add:
+      - voda: 1,25 l
+    time: 55
+    active: 35
+    ahead: Zrná namoč na 12 hodín (cez noc). Jogurt potom kvasí 8–12 hodín v teple (40–43 °C) a 4 hodiny tuhne v chladničke.
+    steps:
+      - Namočené zrná sceď, prepláchni a rozmixuj s vodou 2 minúty na hladkú bielu kašu.
+      - Kašu prelej cez jemnú utierku alebo sáčok na orechové mlieko do veľkého hrnca a dobre vytlač. Okaru, ktorá ostane v utierke, si odlož na placky.
+      - Mlieko priveď do varu – pozor, veľmi pení a rýchlo vykypí – a var na miernom ohni 15–20 minút. Občas premiešaj dno.
+      - Nechaj vychladnúť na 43 °C – prst v ňom vydržíš a je príjemne teplé. Kožku z povrchu zober.
+      - Štartér rozmiešaj s trochou mlieka a cukrom, potom vmiešaj do zvyšku.
+      - Prelej do čistých pohárov a nechaj 8–12 hodín v teple 40–43 °C (jogurtovač, rúra so zapnutým svetlom, termoska). Čím dlhšie, tým kyslejší.
+      - Keď stuhne, daj ho na 4 hodiny do chladničky – vtedy zhustne.

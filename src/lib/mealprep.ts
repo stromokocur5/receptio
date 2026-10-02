@@ -18,6 +18,18 @@ export interface PrepSchedule {
 	oneByOne: number;
 }
 
+/** The recipe as the planned variant is cooked: its own time and preparation ahead, when it has them. */
+export function asPlanned(recipe: RecipeSummary, variantName?: string): RecipeSummary {
+	const variant = variantName ? recipe.variants.find((v) => v.name === variantName) : undefined;
+	if (!variant) return recipe;
+	return {
+		...recipe,
+		time: variant.time ?? recipe.time,
+		activeTime: variant.activeTime ?? recipe.activeTime,
+		ahead: variant.ahead === undefined ? recipe.ahead : (variant.ahead ?? undefined)
+	};
+}
+
 /** Hands-off minutes: simmering, baking, resting. */
 const passive = (r: RecipeSummary) => r.time - r.activeTime;
 

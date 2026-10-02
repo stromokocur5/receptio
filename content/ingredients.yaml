@@ -231,6 +231,9 @@
   uses:
     - 'Tacos a enchiladas – prehrej na suchej panvici'
   storage: 'V chladničke po otvorení týždeň, zamrazené mesiace.'
+  homemade:
+    recipe: tortilly-z-nixtamalu
+    note: 'Z masa hariny sú hotové za pol hodiny, z celých zŕn kukurice je to práca na dva dni.'
 
 - id: ryzovy-papier
   name: Ryžový papier
@@ -2521,6 +2524,7 @@
     - 'Plnené papriky a rýchle omáčky na cestoviny'
   storage: 'Otvorená v chladničke 5 dní.'
   homemade:
+    recipe: domaca-passata
     steps:
       - 'Zrelé paradajky nakrájaj, povar 10 minút a prepasíruj.'
       - 'Var ďalších 10–20 minút, kým trochu nezhustne, a osoľ.'
@@ -3044,6 +3048,20 @@
   uses:
     - 'Pizza, chlieb, kysnuté cestá'
   storage: 'Otvorené v chladničke.'
+
+- id: soda-bikarbona
+  name: Sóda bikarbóna (jedlá sóda)
+  aliases: [jedlá sóda, bikarbóna]
+  category: ine
+  n: { kcal: 0, p: 0, c: 0, f: 0, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0 }
+  units: { čl: 5, pl: 15 }
+  price: 4
+  color: '#f4f4f0'
+  about: 'Hydrogenuhličitan sodný. Kyprí cesto, keď má v ňom kyselinu, a zmäkčuje strukoviny pri varení.'
+  uses:
+    - 'Pol lyžičky do vody k cíceru – zmäkne rýchlejšie a šupky sa rozvaria'
+    - 'S octom alebo citrónom kyprí palacinky a perníky'
+  storage: 'V suchu roky.'
 
 - id: kypriaci-prasok
   name: Prášok do pečiva
@@ -4140,6 +4158,8 @@
   uses:
     - 'Fattoush, k hummusu, falafel'
   storage: 'Zamrazená mesiace.'
+  homemade:
+    recipe: pita-chlieb
 
 - id: kuskus
   name: Kuskus
@@ -5008,6 +5028,24 @@
     - 'Nixtamal, masa na tortilly a tamales, pozole'
   choose: 'Nie sladká ani pukancová. Hľadaj „maíz para pozole“ alebo kukuricu na nixtamal.'
   storage: 'V suchu roky.'
+
+- id: masa-harina
+  name: Masa harina (múka z nixtamalu)
+  aliases: [kukuričná múka na tortilly, harina de maíz]
+  category: obilniny
+  gluten: risk
+  n: { kcal: 363, p: 8.5, c: 76.3, f: 3.7, fib: 6.4, salt: 0, fe: 1.5, ca: 138, zn: 1.8 }
+  units: { hrnček: 115 }
+  price: 8
+  color: '#ecd9a0'
+  about: 'Sušená a zomletá masa – kukurica uvarená s vápnom. Stačí pridať vodu a máš cesto na tortilly.'
+  uses:
+    - 'Kukuričné tortilly, tamales, sopes, gorditas'
+  choose: 'Na obale musí byť „nixtamalizada“ alebo „masa harina“. Obyčajná kukuričná múka ani polenta cesto neudržia.'
+  storage: 'V suchu a tme rok.'
+  homemade:
+    recipe: tortilly-z-nixtamalu
+    note: 'Čerstvú masu si spravíš z celých zŕn kukurice a potravinárskeho vápna.'
 
 - id: vapno-potravinarske
   name: Potravinárske hasené vápno (cal, E526)

@@ -25,5 +25,18 @@ steps:
   - Vmiešaj uhorky, cibuľu a petržlen, dochuť soľou.
   - Nechaj aspoň 30 minút v chladničke, nech sa chute prepoja.
 tips:
-  - Ak chceš domácu majonézu, sprav ju z aquafaby – recept Domáca majonéza.
+  - Domáca majonéza sa zrazí len zo sójového mlieka – ovsené a mandľové neemulgujú.
 related: [domaca-majoneza, vyprazany-syr-tofu, hranolky-z-rury]
+variants:
+  - name: S domácou majonézou
+    description: Nemáš kúpenú majonézu? Vyšľahaj si ju rovno v nádobe zo sójového mlieka a oleja, trvá to minútu. Vyjde o trochu viac omáčky.
+    replace:
+      - { from: veganska-majoneza, to: olej, amount: '100 ml | repkový, bez výraznej chuti' }
+    add:
+      - sojove-mlieko: 50 ml | studené, nesladené
+    active: 15
+    steps:
+      - Do vysokej úzkej nádoby, do ktorej sa ponorný mixér tesne zmestí, daj studené mlieko, horčicu, citrón, cukor a soľ.
+      - Mixér polož až na dno, zapni ho a pomaly prilievaj olej. Mixér pomaly ťahaj nahor – za 30 sekúnd je majonéza hustá. Ak nezhustne, prilej ešte trochu oleja.
+      - Lyžicou vmiešaj jogurt, uhorky, cibuľu a petržlen, dochuť soľou.
+      - Nechaj aspoň 30 minút v chladničke, nech sa chute prepoja.

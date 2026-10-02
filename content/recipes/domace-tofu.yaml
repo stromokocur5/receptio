@@ -28,3 +28,20 @@ tips:
   - Skladuj ponorené vo vode v chladničke, vodu vymieňaj denne.
   - Nigari (chlorid horečnatý) dá klasické japonské tofu. Síran vápenatý (E516) dá mäkšie tofu s veľa vápnika. Núdzovo funguje 4 PL citrónovej šťavy, tofu bude jemne kyslé a menej výdatné.
   - Lis nemusíš kupovať – stačí cedidlo, utierka a hrniec s vodou ako závažie.
+variants:
+  - name: Z hotového sójového mlieka
+    description: Mlieko už máš, domáce alebo kúpené – odpadá namáčanie, mixovanie aj cedenie. Kúpené musí byť len zo sóje a vody a mať aspoň 3 g bielkovín na 100 ml. Nápoje s cukrom a zahusťovadlami sa zrážajú zle a tofu z nich je málo.
+    replace:
+      - { from: sojove-zrna, to: sojove-mlieko, amount: '2,5 l | nesladené, len sója a voda' }
+    remove: [voda]
+    time: 45
+    active: 15
+    ahead: false
+    yields: cca 300–350 g tofu
+    steps:
+      - Mlieko zohrej na strednom ohni tesne pod bod varu, kým sa pri okraji neobjavia prvé bublinky. Miešaj dno, nech sa nepripáli, a stráž ho – pení a rýchlo vykypí. Variť ho netreba, hotové mlieko už uvarené bolo.
+      - Odstav a nechaj vychladnúť na asi 80 °C (keď už nepára tak prudko, 3–4 minúty po odstavení).
+      - Tretinu roztoku nigari vlej za pomalého miešania do tvaru osmičky, potom prestaň miešať. Zvyšok nalej po povrchu a prikry.
+      - Po 10–15 minútach sa mlieko rozdelí na biele hrudky a nažltlú číru srvátku. Ak je srvátka ešte mliečna, pridaj trochu nigari a počkaj.
+      - Do lisu na tofu alebo cedidla vystlaného utierkou opatrne naber hrudky naberačkou, prelož utierku a zaťaž hrncom s vodou (1–2 kilogramy).
+      - Lisuj 15 minút na mäkké, 30–40 minút na pevné tofu. Potom ho vlož na 10 minút do studenej vody, nech stuhne.

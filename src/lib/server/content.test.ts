@@ -80,10 +80,23 @@ describe('content', () => {
 
 	it('spells out every step instead of sending you to another recipe', () => {
 		for (const r of content.recipeDetails.values()) {
-			for (const step of r.steps) {
+			for (const step of [...r.steps, ...r.variants.flatMap((v) => v.steps ?? [])]) {
 				expect(step, r.id).not.toMatch(/podľa receptu|ako v recepte|recept [A-ZÁČĎÉÍĽĹŇÓÔŔŠŤÚÝŽ]/);
 			}
 		}
+	});
+
+	it('lets a variant bring its own steps, time and preparation ahead', () => {
+		const tofu = content.recipeDetails.get('domace-tofu')!;
+		const fromMilk = tofu.variants.find((v) => v.name === 'Z hotového sójového mlieka')!;
+		expect(tofu.ahead).toBeTruthy();
+		expect(fromMilk.ahead).toBeNull();
+		expect(fromMilk.time).toBeLessThan(tofu.time);
+		expect(fromMilk.steps![0]).not.toBe(tofu.steps[0]);
+		expect(fromMilk.lines.map((l) => l.ingredientId)).toEqual(['sojove-mlieko', 'nigari']);
+		// Steps stay out of the summaries that go into catalog.json.
+		const summary = content.recipes.find((r) => r.id === 'domace-tofu')!;
+		expect(summary.variants.every((v) => v.steps === undefined)).toBe(true);
 	});
 
 	it('leaves not-eaten lines out of nutrition', () => {

@@ -4,7 +4,7 @@
 	import { scaleStep } from '$lib/cooking';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
-	import { formatMinutes, prepList, prepSchedule } from '$lib/mealprep';
+	import { asPlanned, formatMinutes, prepList, prepSchedule } from '$lib/mealprep';
 	import { approxPieces } from '$lib/shopping';
 	import { plan, ui } from '$lib/state.svelte';
 
@@ -14,7 +14,9 @@
 	const entries = $derived(
 		plan.current.flatMap((entry, index) => {
 			const recipe = catalog.recipesById.get(entry.recipeId);
-			return recipe ? [{ entry, recipe, key: `${index}-${entry.recipeId}` }] : [];
+			return recipe
+				? [{ entry, recipe: asPlanned(recipe, entry.variant), key: `${index}-${entry.recipeId}` }]
+				: [];
 		})
 	);
 	/** Dishes that don't keep (fridge 0) are cooked on the day, not ahead. */
@@ -32,13 +34,14 @@
 	}
 
 	/** Steps load when a recipe is opened; the catalog doesn't carry them. */
-	let steps = $state<Record<string, string[] | 'error'>>({});
+	type RecipeSteps = { steps: string[]; variants?: Record<string, string[]> };
+	let steps = $state<Record<string, RecipeSteps | 'error'>>({});
 	async function loadSteps(recipeId: string) {
 		if (steps[recipeId]) return;
 		try {
 			const res = await fetch(`/recepty/${recipeId}/kroky.json`);
 			if (!res.ok) throw new Error(String(res.status));
-			steps[recipeId] = ((await res.json()) as { steps: string[] }).steps;
+			steps[recipeId] = (await res.json()) as RecipeSteps;
 		} catch {
 			steps[recipeId] = 'error';
 		}
@@ -157,7 +160,11 @@
 				</p>
 				<ol class="timeline">
 					{#each schedule.slots as slot, i (slot.recipe.id + i)}
-						{@const list = steps[slot.recipe.id]}
+						{@const loaded = steps[slot.recipe.id]}
+						{@const list =
+							!loaded || loaded === 'error'
+								? loaded
+								: (slot.entry.variant && loaded.variants?.[slot.entry.variant]) || loaded.steps}
 						<li>
 							<span class="when">{slot.start ? `+${formatMinutes(slot.start)}` : 'Začni'}</span>
 							<details

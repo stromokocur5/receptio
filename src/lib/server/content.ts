@@ -157,7 +157,14 @@ const variantSchema = z
 			.array(z.object({ from: slug, to: slug, amount: z.string().optional() }).strict())
 			.default([]),
 		add: z.array(ingredientLineSchema).default([]),
-		remove: z.array(slug).default([])
+		remove: z.array(slug).default([]),
+		/** Only when the variant is cooked differently (from ready-made soy milk, from dry beans). */
+		steps: z.array(z.string().min(1)).min(1).optional(),
+		time: z.number().int().positive().optional(),
+		active: z.number().int().positive().optional(),
+		/** false = the variant needs no preparation ahead. */
+		ahead: z.union([z.string().min(1), z.literal(false)]).optional(),
+		yields: z.string().optional()
 	})
 	.strict();
 
@@ -699,6 +706,11 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			return {
 				name: v.name,
 				description: v.description,
+				...(v.steps && { steps: v.steps }),
+				...(v.time && { time: v.time }),
+				...(v.active && { activeTime: v.active }),
+				...(v.ahead !== undefined && { ahead: v.ahead || null }),
+				...(v.yields && { yields: v.yields }),
 				...compute(mergeLines(variantLines), r.servings)
 			};
 		});
@@ -859,7 +871,10 @@ export function compileContent(raw: RawContent, today: Date): Content {
 				swaps: _swaps,
 				leftovers: _leftovers,
 				...summary
-			}) => summary
+			}) => ({
+				...summary,
+				variants: summary.variants.map(({ steps: _variantSteps, ...variant }) => variant)
+			})
 		)
 		.sort((a, b) => a.title.localeCompare(b.title, 'sk'));
 

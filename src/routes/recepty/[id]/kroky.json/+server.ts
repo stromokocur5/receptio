@@ -11,5 +11,8 @@ export const entries: EntryGenerator = () =>
 export const GET: RequestHandler = ({ params }) => {
 	const recipe = getContent().recipeDetails.get(params.id);
 	if (!recipe) error(404, 'Recept neexistuje');
-	return json({ steps: recipe.steps });
+	const variants = Object.fromEntries(
+		recipe.variants.flatMap((v) => (v.steps ? [[v.name, v.steps]] : []))
+	);
+	return json({ steps: recipe.steps, variants });
 };

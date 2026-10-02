@@ -143,6 +143,13 @@ export interface RecipeComputed {
 export interface RecipeVariant extends RecipeComputed {
 	name: string;
 	description: string;
+	/** Set only when the variant is cooked differently from the base recipe. */
+	steps?: string[];
+	time?: number;
+	activeTime?: number;
+	/** null = unlike the base recipe, nothing has to start earlier. */
+	ahead?: string | null;
+	yields?: string;
 }
 
 export interface RecipeSummary extends RecipeComputed {

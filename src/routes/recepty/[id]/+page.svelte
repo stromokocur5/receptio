@@ -86,8 +86,8 @@
 	/** The recipe as currently shown: variant data (lines, nutrition, cost…) over the base recipe. */
 	const recipe = $derived.by(() => {
 		if (!variant) return base;
-		const { name: _name, description: _description, ...computed } = variant;
-		return { ...base, ...computed };
+		const { name: _name, description: _description, ahead, ...computed } = variant;
+		return { ...base, ...computed, ahead: ahead === undefined ? base.ahead : (ahead ?? undefined) };
 	});
 	$effect.pre(() => {
 		void base.id;
@@ -495,8 +495,8 @@
 				{/if}
 			{/if}
 
-			{#if base.ahead}
-				<p class="ahead"><Icon name="clock" size={18} /> <strong>Vopred:</strong> {base.ahead}</p>
+			{#if recipe.ahead}
+				<p class="ahead"><Icon name="clock" size={18} /> <strong>Vopred:</strong> {recipe.ahead}</p>
 			{/if}
 
 			<div class="actions" data-noprint bind:this={actionsEl}>
@@ -759,7 +759,7 @@
 								{#if stepUses[i].length}
 									<span class="uses" data-noprint>
 										<span class="sr-only">Použiješ:</span>
-										{#each stepUses[i] as line (line.ingredientId)}
+										{#each stepUses[i] as line, lineIndex (lineIndex)}
 											{@const amount = formatAmount(
 												line.amount === null ? null : line.amount * factor,
 												line.unit
@@ -922,7 +922,7 @@
 	<CookMode
 		recipeId={base.id}
 		title={base.title}
-		steps={base.steps}
+		steps={recipe.steps}
 		lines={recipe.lines}
 		{servings}
 		recipeServings={recipe.servings}

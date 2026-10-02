@@ -357,7 +357,7 @@
 					</p>
 					{#if needed.length}
 						<ul class="need" aria-label="Suroviny v tomto kroku">
-							{#each needed as line (line.ingredientId)}
+							{#each needed as line, lineIndex (lineIndex)}
 								<li>
 									<strong>{amount(line)}</strong>
 									{catalog.ingredientsById.get(line.ingredientId)?.name}

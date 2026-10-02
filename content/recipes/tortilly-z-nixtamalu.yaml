@@ -28,5 +28,21 @@ steps:
   - Rozpáľ suchú panvicu na vysokom ohni. Tortillu opeč 30 sekúnd, otoč, 1 minútu, otoč znova – má sa nafúknuť. Hotové ukladaj do utierky, zmäknú v pare.
 tips:
   - Ak sa okraje trhajú, pridaj do masy lyžicu vody. Ak sa lepí na fóliu, je príliš mokrá.
-  - Zo sušenej masa harina je rýchla verzia – len zmiešaj s vodou a soľou.
+  - Obyčajná kukuričná múka ani polenta masa harinu nenahradia – nie sú varené s vápnom a cesto z nich nedrží.
   - Hliníkový hrniec nepoužívaj – vápno ho rozpúšťa.
+variants:
+  - name: Z masa hariny
+    description: Masu už máš hotovú v sušenej podobe – odpadá varenie s vápnom, státie cez noc aj mletie. Chuť je o niečo plochšia ako z čerstvej masy, ale tortilly sú na stole za pol hodiny.
+    replace:
+      - { from: kukurica-susena, to: masa-harina, amount: '350 g' }
+    remove: [vapno-potravinarske, voda]
+    add:
+      - voda: '500 ml | teplá, do cesta podľa potreby'
+    time: 35
+    active: 30
+    ahead: false
+    steps:
+      - Masa harinu zmiešaj so soľou, prilej teplú vodu a 2 minúty mies na vláčne cesto (masa), ktoré sa nelepí na ruky a pri stlačení na okrajoch nepraská. Ak praská, pridaj lyžicu vody.
+      - Prikry vlhkou utierkou a nechaj 15 minút napučať.
+      - Z masy urob guľky po 35 g, prikry vlhkou utierkou. Každú stlač medzi dvoma kusmi fólie (lisom na tortilly alebo dnom ťažkej panvice) na placku 15 cm.
+      - Rozpáľ suchú panvicu na vysokom ohni. Tortillu opeč 30 sekúnd, otoč, 1 minútu, otoč znova – má sa nafúknuť. Hotové ukladaj do utierky, zmäknú v pare.
