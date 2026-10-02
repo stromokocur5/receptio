@@ -2,7 +2,7 @@
 	import { fly } from 'svelte/transition';
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
 	import { markOnboarded, onboarding } from '$lib/onboarding.svelte';
-	import { settings } from '$lib/state.svelte';
+	import { avoid, settings } from '$lib/state.svelte';
 	import { connectSync, enableSync, formatCode, syncState } from '$lib/sync.svelte';
 
 	const STEPS = ['vitaj', 'recepty', 'plan', 'viac', 'nastavenia', 'hotovo'] as const;
@@ -361,7 +361,26 @@
 							>
 						</div>
 					</div>
-					<p class="muted small">Zmeniť sa to dá kedykoľvek na stránke Plán.</p>
+					<div class="setting">
+						<span>Čo ti mám ponúkať</span>
+						<div class="chips">
+							<button
+								class="chip"
+								aria-pressed={!avoid.current.treats}
+								onclick={() => (avoid.current = { ...avoid.current, treats: false })}>Všetko</button
+							>
+							<button
+								class="chip"
+								aria-pressed={avoid.current.treats}
+								onclick={() => (avoid.current = { ...avoid.current, treats: true })}
+								>Bez fast foodu a jedál na občas</button
+							>
+						</div>
+						<small class="muted">Skryje kebab, burgre, vyprážané a veľmi sladké.</small>
+					</div>
+					<p class="muted small">
+						Zmeniť sa to dá kedykoľvek – porcie na stránke Plán, výber jedál v Špajzi.
+					</p>
 				{:else}
 					<div class="hello done-art"><Icon name="check" size={40} /></div>
 					<h2>Môžeš začať</h2>
@@ -748,6 +767,9 @@
 		border-radius: var(--radius-sm);
 		background: var(--paper);
 		font-weight: 650;
+	}
+	.setting small {
+		font-weight: 400;
 	}
 	.stepper {
 		display: flex;
