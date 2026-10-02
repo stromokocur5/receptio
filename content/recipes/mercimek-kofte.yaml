@@ -31,7 +31,7 @@ steps:
   - Stiahni z ohňa, vmiešaj bulgur, prikry a nechaj 15 minút napučať.
   - Medzitým orestuj cibuľu na oleji na strednom ohni 6 minút dozlatista, vmiešaj pretlak, papriku, kmín a čili a opekaj minútu.
   - Cibuľu primiešaj k šošovici, osoľ a nechaj trochu vychladnúť.
-  - Vmiešaj nadrobno nakrájanú jarnú cibuľku, petržlen a šťavu z polovice citróna. Zmes rukami dobre premiesi.
+  - Vmiešaj nadrobno nakrájanú jarnú cibuľku, petržlen a šťavu z polovice citróna. Zmes rukami dobre premies.
   - Mokrými rukami tvaruj podlhovasté guľky stlačené v dlani, aby mali odtlačky prstov.
   - Podávaj v listoch šalátu s kúskami citróna.
 tips:
@@ -39,7 +39,7 @@ tips:
 howto: [strukoviny]
 variants:
   - name: Bezlepkovo s quinoou
-    description: Namiesto bulguru vmiešaj 1 hrnček uvarenej quinoi.
+    description: Namiesto bulguru vmiešaj 1 hrnček uvarenej quinoy.
     replace:
       - from: bulgur
         to: quinoa

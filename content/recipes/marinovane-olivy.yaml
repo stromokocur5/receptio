@@ -7,7 +7,7 @@ time: 10
 active: 10
 servings: 6
 difficulty: 1
-tags: [bez-varenia, rychle, party]
+tags: [rychle, party]
 ahead: Najlepšie sú po jednom dni v chladničke.
 keeps: { fridge: 14, freezer: 0 }
 ingredients:

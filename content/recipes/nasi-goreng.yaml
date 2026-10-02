@@ -1,5 +1,5 @@
 title: Nasi goreng
-description: Indonézska smažená ryža s kecap manis, sambalom a tempehom, podávaná s uhorkou a pečenými šalotkami. Najlepšia z včerajšej ryže.
+description: Indonézska smažená ryža s kecap manis, sambalom a tempehom, podávaná s uhorkou a paradajkou. Najlepšia z včerajšej ryže.
 cuisine: indonezska
 meals: [obed, vecera, ranajky]
 categories: [hlavne/ryza]
@@ -11,7 +11,7 @@ tags: [rychle, zvysky]
 spicy: 2
 keeps: { fridge: 2 }
 ingredients:
-  - ryza-jazminova: 250 g | uvarená a vychladnutá
+  - ryza-jazminova: 250 g | váha suchej ryže – uvarená a vychladnutá
   - olej: 3 pl
   - tempeh: 200 g | na kocky
   - cibula: 1 ks | nadrobno

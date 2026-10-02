@@ -86,6 +86,21 @@ describe('content', () => {
 		}
 	});
 
+	it('knows the weight of every cup and spoon a recipe uses', () => {
+		// Without it the amount falls back to the weight of water: a cup of flour became 240 g.
+		const byId = new Map(content.ingredients.map((i) => [i.id, i]));
+		for (const r of content.recipes) {
+			for (const line of [...r.lines, ...r.variants.flatMap((v) => v.lines)]) {
+				if (line.unit !== 'hrnček' && line.unit !== 'pl' && line.unit !== 'čl') continue;
+				const units = byId.get(line.ingredientId)!.units;
+				expect(
+					units[line.unit],
+					`${r.id}: ${line.ingredientId} nemá váhu pre ${line.unit}`
+				).toBeDefined();
+			}
+		}
+	});
+
 	it('lets a variant bring its own steps, time and preparation ahead', () => {
 		const tofu = content.recipeDetails.get('domace-tofu')!;
 		const fromMilk = tofu.variants.find((v) => v.name === 'Z hotového sójového mlieka')!;

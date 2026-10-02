@@ -7,7 +7,7 @@ time: 10
 active: 10
 servings: 4
 difficulty: 1
-tags: [bez-varenia, party, rychle]
+tags: [party, rychle]
 spicy: 1
 keeps: { fridge: 1 }
 ingredients:
@@ -19,6 +19,7 @@ ingredients:
   - cili: 1/4 čl
   - sol: 1 čl
   - kukuricne-tortilly: 6 ks | na domáce chipsy
+  - olej: 1 pl | na chipsy
 steps:
   - Avokádo roztlač vidličkou nahrubo – kúsky sú žiaduce.
   - Primiešaj limetku, cibuľu, paradajku, koriander, čili a soľ. Ochutnaj a dolaď limetkou a soľou.

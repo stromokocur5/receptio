@@ -94,6 +94,28 @@
 		variantName = null;
 	});
 	const cuisine = $derived(catalog.cuisinesById.get(recipe.cuisine));
+	/**
+	 * Calcium and B12 of soy drink and yogurt are what the producer adds. Homemade and plain ones
+	 * have next to none, so the numbers need that said when they lean on it.
+	 */
+	const fortified = $derived.by(() => {
+		const lines = recipe.lines.flatMap((line) => {
+			const ingredient = catalog.ingredientsById.get(line.ingredientId);
+			return ingredient && ingredient.per100g.b12 > 0 && !line.notEaten
+				? [{ ingredient, grams: line.grams / recipe.servings }]
+				: [];
+		});
+		const calcium = lines.reduce(
+			(sum, l) => sum + (l.ingredient.per100g.calcium * l.grams) / 100,
+			0
+		);
+		const b12 = lines.reduce((sum, l) => sum + (l.ingredient.per100g.b12 * l.grams) / 100, 0);
+		if (calcium < 50 && b12 < 0.2) return undefined;
+		return {
+			names: lines.map((l) => l.ingredient.name),
+			calcium: Math.round((calcium * 0.8) / 10) * 10
+		};
+	});
 	/** What each step uses, so the amounts are right there while cooking. */
 	const stepUses = $derived(
 		recipe.steps.map((step) => stepLines(step, recipe.lines, catalog.ingredientsById))
@@ -885,6 +907,15 @@
 						: ['iron', 'calcium', 'zinc', 'ala']}
 				/>
 			</div>
+			{#if fortified}
+				<p class="b12-note">
+					<Icon name="info" size={18} />
+					<span>
+						Vápnik a B12 tu rátame z obohatených surovín: {fortified.names.join(', ')}. S domácimi
+						alebo neobohatenými odrátaj asi {fortified.calcium} mg vápnika a B12 nebude žiadna.
+					</span>
+				</p>
+			{/if}
 			<p class="b12-note">
 				<Icon name="pill" size={18} />
 				<span>

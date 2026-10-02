@@ -1,5 +1,5 @@
 title: Shawarma z hlivy s tahini a nakladanou zeleninou
-description: Hliva opečená v shawarma korení so škoricou a kardamónom, zabalená v lavaši s tahini omáčkou, nakladanou zeleninou a hranolkami.
+description: Hliva opečená v shawarma korení so škoricou a kardamómom, zabalená v tortille s tahini omáčkou a kyslou zeleninou.
 cuisine: libanonska
 meals: [obed, vecera]
 categories: [comfort/kebab, hlavne/plnene, hlavne/zelenina]
@@ -7,7 +7,7 @@ time: 35
 active: 25
 servings: 3
 difficulty: 1
-tags: [rychle, party]
+tags: [party]
 spicy: 1
 keeps: { fridge: 2 }
 related: [durum-hliva, tahini-dresing]
@@ -35,5 +35,5 @@ steps:
   - Hlivu natrhaj na prúžky. Zmiešaj všetky koreniny, 2 prelisované strúčiky cesnaku, šťavu z polovice citróna, 1 PL oleja a soľ a hlivu v tom obaľ.
   - Opekaj na zvyšnom oleji na veľkom ohni 8–10 minút, kým nemá chrumkavé tmavé okraje.
   - Tahini vyšľahaj so šťavou zo zvyšku citróna, posledným cesnakom a vodou dohladka.
-  - Tortillu prehrej, natri tahini, pridaj hlivu, uhorky, redkovku, paradajku a petržlen.
+  - Tortillu prehrej, natri tahini, pridaj hlivu, uhorky, reďkovku, paradajku a petržlen.
   - Pevne zroluj a opeč na suchej panvici švom dole, aby držala.
