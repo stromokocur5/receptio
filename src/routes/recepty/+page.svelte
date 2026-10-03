@@ -34,7 +34,7 @@
 		everydayVersion
 	} from '$lib/nutrition';
 	import { recipeSeason } from '$lib/season';
-	import { rankByPantry, type PantryMatch } from '$lib/pantry';
+	import { isAssumedAtHome, rankByPantry, type PantryMatch } from '$lib/pantry';
 	import { avoidFilter, isAvoiding, missableTools, shortName } from '$lib/avoid';
 	import {
 		LIST_SEARCH_KEY,
@@ -90,6 +90,9 @@
 	let taste = $state<Taste | ''>('');
 	/** Ingredient ids; a recipe is hidden when it uses anything from the same group. */
 	let withoutIngredients = $state<string[]>([]);
+	/** Ingredient ids picked without a pantry; a recipe must use each (in any form). */
+	let withIngredients = $state<string[]>([]);
+	const MAX_WITH = 6;
 	/** Yes/no picks kept in the `rychlo` URL param: how it's cooked, in season, low salt, not a treat. */
 	const QUICK = [
 		'jeden-hrniec',
@@ -153,6 +156,17 @@
 	const excludedGroups = $derived(
 		withoutIngredients.map((id) => catalog.ingredientsById.get(id)?.group ?? id)
 	);
+	const wantedGroups = $derived(
+		withIngredients.map((id) => catalog.ingredientsById.get(id)?.group ?? id)
+	);
+	/** What else a recipe needs beyond the picked ingredients and the basics everyone has. */
+	const extraCount = (r: RecipeSummary) =>
+		new Set(
+			r.lines
+				.map((l) => catalog.ingredientsById.get(l.ingredientId))
+				.filter((i) => i && !wantedGroups.includes(i.group) && !isAssumedAtHome(i))
+				.map((i) => i!.id)
+		).size;
 	const nameOf = (id: string) => shortName(catalog.ingredientsById.get(id)?.name ?? id);
 
 	/** What Špajza says is never at home; one switch turns it off for this visit. */
@@ -231,6 +245,10 @@
 			const groups = recipeGroups.get(r.id)!;
 			if (excludedGroups.some((g) => groups.has(g))) return false;
 		}
+		if (wantedGroups.length) {
+			const groups = recipeGroups.get(r.id)!;
+			if (!wantedGroups.every((g) => groups.has(g))) return false;
+		}
 		for (const q of quick) {
 			if (q === 'sezonne') {
 				if (!recipeSeason(r, catalog.ingredientsById, month).inSeason) return false;
@@ -277,6 +295,8 @@
 		const by: Record<Sort, (a: (typeof list)[number], b: (typeof list)[number]) => number> = {
 			odporucane: (a, b) =>
 				(titleHits.get(b.id) ?? 0) - (titleHits.get(a.id) ?? 0) ||
+				// Picked ingredients: the recipes that need the least on top of them go first.
+				(wantedGroups.length ? extraCount(a) - extraCount(b) : 0) ||
 				(likes.counts[b.id] ?? 0) - (likes.counts[a.id] ?? 0) ||
 				computedTags(b).length - computedTags(a).length,
 			'protein-eur': (a, b) =>
@@ -389,6 +409,11 @@
 		if (minProtein) {
 			add('protein', `aspoň ${minProtein} g bielkovín`, 'strava', () => (minProtein = 0));
 		}
+		for (const id of withIngredients) {
+			add(`with-${id}`, `s: ${nameOf(id)}`, 'doma', () => {
+				withIngredients = withIngredients.filter((x) => x !== id);
+			});
+		}
 		if (onlyPantry) add('pantry', 'Len z toho, čo mám', 'doma', () => (onlyPantry = false));
 		if (avoiding) {
 			const n = avoid.current.ingredients.length + avoid.current.tools.length;
@@ -444,6 +469,7 @@
 		missingTools = [];
 		taste = '';
 		withoutIngredients = [];
+		withIngredients = [];
 		quick = [];
 		subs = 'all';
 		difficulty = 0;
@@ -467,6 +493,7 @@
 		if (minProtein) p.set('bielkoviny', String(minProtein));
 		if (excluded.length) p.set('alergeny', excluded.join(','));
 		if (withoutIngredients.length) p.set('bez', withoutIngredients.join(','));
+		if (withIngredients.length) p.set('s', withIngredients.join(','));
 		if (sort !== 'odporucane') p.set('sort', sort);
 		if (onlyPantry) p.set('spajza', '1');
 		if (subs !== 'all') p.set('nahrady', subs);
@@ -518,6 +545,9 @@
 		withoutIngredients = [
 			...new Set(list(p.get('bez')).filter((id) => catalog.ingredientsById.has(id)))
 		];
+		withIngredients = [
+			...new Set(list(p.get('s')).filter((id) => catalog.ingredientsById.has(id)))
+		].slice(0, MAX_WITH);
 		const s = p.get('sort');
 		if (s && s in SORTS) sort = s as Sort;
 		if (p.get('spajza') === '1') onlyPantry = true;
@@ -920,6 +950,18 @@
 					{#if groupCount('doma')}<span class="count">{groupCount('doma')}</span>{/if}
 				</summary>
 				<div class="group-body">
+					<fieldset>
+						<legend>Chcem v recepte</legend>
+						<IngredientExcluder
+							selected={withIngredients}
+							onchange={(ids) => (withIngredients = ids.slice(0, MAX_WITH))}
+							prefix=""
+							placeholder="cícer, špenát, ryža…"
+							fieldLabel="Surovina, ktorá má byť v recepte"
+							hint="Naklikaj pár surovín bez vypĺňania špajze. Ukážem recepty, v ktorých sú všetky – najprv tie, čo potrebujú najmenej ďalšieho."
+						/>
+					</fieldset>
+
 					<fieldset>
 						<legend>Suroviny</legend>
 						<div class="chips">
