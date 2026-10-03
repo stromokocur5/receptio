@@ -1,5 +1,5 @@
 import { error, json } from '@sveltejs/kit';
-import { getContent } from '$lib/server/content';
+import { isRecipeId } from '$lib/server/content';
 import { ensureDeviceId, readDeviceId, toggleLike, withinLikeLimits } from '$lib/server/likes';
 import type { RequestHandler } from './$types';
 
@@ -16,7 +16,7 @@ export const POST: RequestHandler = async ({
 	// A like is a body-less POST, which browsers send cross-site without a preflight – so only
 	// accept requests from our own pages.
 	if (request.headers.get('origin') !== url.origin) error(403, 'Neplatná požiadavka');
-	if (!getContent().recipeDetails.has(params.id)) error(404, 'Recept neexistuje');
+	if (!isRecipeId(params.id)) error(404, 'Recept neexistuje');
 
 	const env = platform?.env;
 	if (!env?.DB) error(503, 'Lajky nie sú dostupné');

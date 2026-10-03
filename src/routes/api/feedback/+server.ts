@@ -1,5 +1,5 @@
 import { error, json } from '@sveltejs/kit';
-import { getContent } from '$lib/server/content';
+import { isRecipeId } from '$lib/server/content';
 import {
 	MAX_FEEDBACK_BYTES,
 	MAX_FEEDBACK_PER_DAY,
@@ -33,7 +33,7 @@ export const POST: RequestHandler = async ({ request, platform, getClientAddress
 	}
 	const parsed = feedbackSchema.safeParse(raw);
 	if (!parsed.success) error(400, parsed.error.issues[0]?.message ?? 'Neplatná požiadavka');
-	if (!getContent().recipeDetails.has(parsed.data.recipeId)) error(404, 'Recept neexistuje');
+	if (!isRecipeId(parsed.data.recipeId)) error(404, 'Recept neexistuje');
 	if (parsed.data.website) return json({ ok: true });
 
 	const human = await verifyTurnstile({

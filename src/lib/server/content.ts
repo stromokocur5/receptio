@@ -1002,6 +1002,23 @@ export function compileContent(raw: RawContent, today: Date): Content {
 	};
 }
 
+const rawRecipes: Record<string, string> = import.meta.glob('/content/recipes/*.yaml', {
+	query: '?raw',
+	import: 'default',
+	eager: true
+});
+
+let recipeIdSet: Set<string> | undefined;
+
+/**
+ * Recipe ids from file names alone. API routes use this instead of getContent(): compiling
+ * all content on a cold Worker exceeds the CPU limit (error 1102).
+ */
+export function isRecipeId(id: string): boolean {
+	recipeIdSet ??= new Set(Object.keys(rawRecipes).map(fileId));
+	return recipeIdSet.has(id);
+}
+
 let cached: Content | undefined;
 
 export function getContent(): Content {
@@ -1037,11 +1054,7 @@ export function getContent(): Content {
 				import: 'default',
 				eager: true
 			})['/content/prices-eshops.yaml'] as string,
-			recipes: import.meta.glob('/content/recipes/*.yaml', {
-				query: '?raw',
-				import: 'default',
-				eager: true
-			}),
+			recipes: rawRecipes,
 			wiki: import.meta.glob('/content/wiki/*.md', {
 				query: '?raw',
 				import: 'default',
