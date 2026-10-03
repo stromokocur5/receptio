@@ -1,0 +1,35 @@
+title: Hrachová kaša s pečenými zemiakmi, opraženou cibuľou a kyslou uhorkou
+description: Babkina hrachová kaša, hladká a hustá, s horou cibule opraženej do tmavohneda, chrumkavými zemiakmi z rúry a kyslou uhorkou. Lacné, sýte, plné bielkovín.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [hlavne/strukoviny]
+time: 60
+active: 25
+servings: 4
+difficulty: 1
+tags: [zlatica, klasika, lacne]
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Kaša stuhne. Zohrej ju s vodou a miešaj. Zo zvyšku sa dá spraviť nátierka na chlieb.'
+ingredients:
+  - zlty-hrach: 300 g
+  - voda: 1,2 l
+  - bobkovy-list: 1 ks
+  - sol: 1,5 čl
+  - zemiaky: 6 ks
+  - olej: 4 pl | 2 na zemiaky, 2 na cibuľu
+  - cibula: 3 ks
+  - cesnak: 3 ks
+  - majoranka: 1 čl
+  - udena-paprika: 1 čl
+  - ocot: 1 čl
+  - kysle-uhorky: 4 ks
+  - cierne-korenie: 1 štipka
+steps:
+  - Hrach prepláchni, zalej 1,2 l vody, pridaj bobkový list a priveď do varu. Zober penu a var na miernom ohni pod pokrievkou s malou škárou 45–50 minút, občas premiešaj, kým sa hrach nerozpadá. Ak by bolo vody málo, prilej.
+  - Medzitým rúru predhrej na 220 °C. Zemiaky neošúpané nakrájaj na mesiačiky, premiešaj s 2 PL oleja a 1/2 ČL soli a rozlož na plech s papierom v jednej vrstve. Peč 35 minút, v polovici otoč, kým nie sú zlaté a chrumkavé.
+  - Cibuľu nakrájaj na tenké polkolieska. Na panvici rozohrej 2 PL oleja na strednom ohni a cibuľu so štipkou soli opekaj 15–20 minút, kým nie je tmavohnedá a sladká. Prvých 10 minút len občas miešaj, potom častejšie, aby nezhorela. Na konci pridaj prelisovaný cesnak a minútu miešaj. Odstav, vmiešaj údenú papriku.
+  - Z hrachu vyber bobkový list. Pridaj zvyšok soli, majoránku a ocot a rozmixuj tyčovým mixérom dohladka (alebo roztlač metličkou). Ak je príliš hustá, dolej vodu.
+  - Kašu daj na tanier, sprav do nej jamku, nalej do nej cibuľu aj s olejom a podávaj so zemiakmi, kyslými uhorkami a čiernym korením. Kyslá uhorka nie je ozdoba – jej kyselina vyváži ťažkú kašu.
+tips:
+  - Žltý lúpaný hrach netreba namáčať. Ak ho cez noc namočíš, uvarí sa za 30 minút.
+  - V tlakovom hrnci je hrach mäkký za 12 minút.

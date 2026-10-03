@@ -4,6 +4,9 @@ import type { Ingredient, RecipeDetail } from './types';
 
 const minutes = (m: number) => `PT${Math.round(m)}M`;
 
+/** Tags that only make recipes findable in the app search; never published. */
+const SEARCH_ONLY_TAGS = new Set(['zlatica']);
+
 /** Who publishes the site; referenced as author and publisher. */
 export function organizationJsonLd(origin: string) {
 	return {
@@ -90,7 +93,7 @@ export function recipeJsonLd(
 			recipe.gluten === 'free' ? 'bezlepkový recept' : '',
 			cuisineName ? `${cuisineName.toLowerCase()} kuchyňa` : '',
 			...recipe.categories.map(subLabel).map((l) => l.toLowerCase()),
-			...recipe.tags
+			...recipe.tags.filter((t) => !SEARCH_ONLY_TAGS.has(t))
 		]
 			.filter(Boolean)
 			.join(', '),
