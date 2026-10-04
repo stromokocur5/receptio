@@ -5,7 +5,7 @@ import type { Ingredient, RecipeDetail } from './types';
 const minutes = (m: number) => `PT${Math.round(m)}M`;
 
 /** Tags that only make recipes findable in the app search; never published. */
-const SEARCH_ONLY_TAGS = new Set(['zlatica']);
+const SEARCH_ONLY_TAGS = new Set(['zlatica', 'nasarodinka']);
 
 /** Who publishes the site; referenced as author and publisher. */
 export function organizationJsonLd(origin: string) {

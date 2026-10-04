@@ -2879,6 +2879,28 @@
     - 'Toasty a nátierky'
   storage: 'Nakrájaný zamrazený, opekaj rovno mrazený.'
 
+- id: rozok
+  name: Rožok
+  aliases: [rožky, žemľa, pečivo]
+  category: obilniny
+  gluten: contains
+  gf_alternative: pecivo-bezlepkove
+  n: { kcal: 280, p: 9, c: 53, f: 3, fib: 2.5, salt: 1.3, fe: 1.8, ca: 40, zn: 0.8 }
+  units: { ks: 45 }
+  price: 3
+  co2: 1.6
+  color: '#d9a55f'
+  note: 1 ks = jeden bežný rožok (asi 45 g)
+  substitutes:
+    - { to: chlieb, note: '1 rožok ≈ 1 krajec' }
+    - { to: bageta }
+  about: 'Bežný biely rožok – múka, voda, droždie, soľ a trochu oleja, takže väčšinou vegánsky. Maslové a mliečne rožky nie.'
+  uses:
+    - 'Starý rožok na žemľovku, knedľu, krutóny a strúhanku'
+    - 'Cesnakové chrumky z rúry'
+  choose: 'Pozri zloženie – vegánsky je bez mlieka, masla a srvátky.'
+  storage: 'Čerstvý deň. Starý, ešte nie tvrdý ako kameň, je najlepší na žemľovku a knedľu. Úplne vysušený pomeľ na strúhanku.'
+
 - id: bageta
   name: Bageta pšeničná
   category: obilniny

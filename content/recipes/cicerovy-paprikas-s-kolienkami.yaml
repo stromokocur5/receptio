@@ -1,0 +1,37 @@
+title: Cícerový paprikáš s kolienkami
+description: Červený paprikáš na poriadnej cibuli a sladkej paprike, zjemnený mliekom, s cícerom namiesto kuraťa. Chutí ako ten, na ktorý sú všetci zvyknutí, a je hotový za pol hodiny.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [hlavne/kari, hlavne/strukoviny]
+time: 35
+active: 20
+servings: 7
+difficulty: 1
+tags: [nasarodinka, lacne, klasika, vela-bielkovin, deti]
+keeps: { fridge: 3 }
+ingredients:
+  - olej: 3 pl
+  - cibula: 3 ks
+  - cesnak: 3 ks
+  - paprika-cervena: 2 ks
+  - sladka-paprika: 3 pl
+  - paradajkovy-pretlak: 2 pl
+  - voda: 700 ml
+  - cicer-sterilizovany: 3 ks | scedený
+  - sol: 2 čl
+  - hladka-muka: 2 pl
+  - sojove-mlieko: 300 ml | nesladené
+  - citron: 1 pl | šťava
+  - cierne-korenie: 1/4 čl
+  - cestoviny: 600 g | kolienka
+  - sol: ~1 pl | do vody na cestoviny
+steps:
+  - Cibuľu nakrájaj nadrobno a čerstvú papriku na kocky.
+  - V širokom hrnci zohrej olej na strednom ohni a cibuľu opekaj 8 minút za častého miešania dozlatista. Čím viac cibule a čím dlhšie ju opečieš, tým lepší paprikáš.
+  - Pridaj prelisovaný cesnak a čerstvú papriku a opekaj 3 minúty.
+  - Hrniec odstav z ohňa a vmiešaj mletú papriku a pretlak – na ohni by paprika zhorkla. Hneď prilej vodu, pridaj cícer a soľ a vráť na oheň. Var na miernom ohni 10 minút.
+  - Medzitým priveď do varu veľký hrniec vody, osoľ ju a var kolienka podľa obalu. Sceď.
+  - Múku rozšľahaj v studenom mlieku dohladka, vlej do paprikášu a za miešania var 3 minúty, kým omáčka nezhustne. Vmiešaj citrónovú šťavu a korenie a ochutnaj soľ.
+  - Podávaj s kolienkami.
+tips:
+  - Namiesto koleniek sa hodí ryža alebo domáce halušky.

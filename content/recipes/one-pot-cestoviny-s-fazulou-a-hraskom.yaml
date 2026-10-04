@@ -1,0 +1,33 @@
+title: Cestoviny z jedného hrnca s fazuľou a hráškom
+description: Cestoviny sa varia priamo v paradajkovej omáčke, takže je len jeden hrniec na umývanie. Fazuľa a hrášok z nich robia plnohodnotný obed za 25 minút.
+cuisine: talianska
+meals: [obed, vecera]
+categories: [hlavne/cestoviny]
+time: 25
+active: 10
+servings: 7
+difficulty: 1
+tags: [nasarodinka, lacne, one-pot, deti, vela-bielkovin]
+keeps: { fridge: 3 }
+ingredients:
+  - olivovy-olej: 3 pl
+  - cibula: 1 ks
+  - cesnak: 4 ks
+  - paradajky-sterilizovane: 2 ks
+  - voda: 1,2 l
+  - sol: 2 čl
+  - oregano: 2 čl
+  - sladka-paprika: 1 čl
+  - cestoviny: 600 g | kolienka alebo penne
+  - fazula-biela: 2 ks | scedená
+  - hrasok: 300 g | mrazený
+  - vyzivne-drozdie: 3 pl
+  - cierne-korenie: 1/4 čl
+steps:
+  - Cibuľu nakrájaj nadrobno. V širokom hrnci zohrej olej na strednom ohni a cibuľu opekaj 4 minúty. Pridaj prelisovaný cesnak na 30 sekúnd.
+  - Pridaj paradajky, vodu, soľ, oregano a papriku a priveď do varu.
+  - Vsyp cestoviny a var na strednom ohni odokryté 10–12 minút. Miešaj každé 2 minúty aj pri dne, aby sa neprilepili.
+  - Keď sú cestoviny takmer mäkké, pridaj fazuľu a hrášok a var ešte 3 minúty.
+  - Vmiešaj droždie a korenie. Ak je omáčka priveľmi hustá, prilej trochu horúcej vody. Ochutnaj soľ.
+tips:
+  - Omáčka po odstavení ešte zhustne, cestoviny ju nasávajú.

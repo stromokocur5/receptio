@@ -1,0 +1,29 @@
+title: Ryžový nákyp s jablkami a škoricou
+description: Krémová ryža uvarená v mlieku, zapečená s vrstvou škoricových jabĺk. Klasika z detstva s menej cukrom, ktorú zjedia na obed aj na raňajky.
+cuisine: slovenska
+meals: [obed, dezert, ranajky]
+categories: [dezerty/pecene, ranajky/kase]
+time: 55
+active: 20
+servings: 7
+difficulty: 1
+tags: [nasarodinka, deti, lacne, klasika]
+keeps: { fridge: 3 }
+ingredients:
+  - ryza-arborio: 300 g
+  - sojove-mlieko: 1,2 l
+  - sol: 1 štipka
+  - cukor: 4 pl
+  - vanilka: 1 čl
+  - jablko: 5 ks
+  - skorica: 2 čl
+  - citron: 1 pl | šťava
+  - olej: 1 pl | na vymastenie
+steps:
+  - Ryžu nepreplachuj, škrob ju urobí krémovou. V hrnci ju zalej mliekom, pridaj soľ a priveď do varu na strednom ohni.
+  - Stíš na mierny oheň a var 15 minút za častého miešania aj pri dne, kým ryža nezmäkne a nezhustne na kašu. Vmiešaj 2 lyžice cukru a vanilku.
+  - Medzitým predhrej rúru na 180 °C a zapekaciu misu vymasti olejom. Jablká nastrúhaj nahrubo a premiešaj so škoricou, citrónovou šťavou a zvyšným cukrom.
+  - Do misy rozlož polovicu ryže, na ňu jablká a navrch zvyšok ryže.
+  - Peč 25 minút, kým nie je povrch jemne zlatý. Nechaj 10 minút postáť.
+tips:
+  - Ak ryža pri varení príliš zhustne skôr, ako zmäkne, prilej trochu mlieka alebo vody.
