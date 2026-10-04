@@ -146,7 +146,8 @@ export async function sendWaterReminders(
 						authorization: await vapidAuthorization(row.endpoint, privateJwk, now),
 						// A reminder that waited over an hour on an offline phone is worthless.
 						ttl: '3600',
-						urgency: 'normal',
+						// Android holds normal-urgency pushes in Doze until its next maintenance window.
+						urgency: 'high',
 						'content-length': '0'
 					}
 				});

@@ -181,13 +181,16 @@ async function showWaterReminder() {
 		.toISOString()
 		.slice(0, 10);
 	const liters = (ml: number) => (ml / 1000).toLocaleString('sk-SK', { maximumFractionDigits: 2 });
+	// A newer reminder replaces an unread one instead of piling up. Replacing a tagged notification
+	// is silent, so the old one is closed first and the new one buzzes again (Firefox ignores renotify).
+	for (const old of await sw.registration.getNotifications({ tag: 'water' })) old.close();
 	await sw.registration.showNotification('Čas na pohár vody', {
 		body:
 			water?.date === today
 				? `Dnes máš ${liters(water.ml)} l z ${liters(water.goalMl)} l.`
 				: 'Napi sa a zapíš si to do denníka.',
-		// A newer reminder replaces an unread one instead of piling up.
 		tag: 'water',
+		renotify: true,
 		icon: '/icon-192.png',
 		data: { url: '/moje#dennik' }
 	});
