@@ -91,6 +91,19 @@ export async function updateReminders(
 	waterReminder.current = next;
 }
 
+/** Asks the server to push a reminder now. False when the server no longer knows this device. */
+export async function testReminder(): Promise<boolean> {
+	const current = waterReminder.current;
+	if (!current) return false;
+	const res = await send('POST', `/api/push/${current.id}`, { token: current.token });
+	if (res.status === 404) {
+		waterReminder.current = null;
+		return false;
+	}
+	if (!res.ok) throw await failure(res);
+	return true;
+}
+
 export async function disableReminders(): Promise<void> {
 	const current = waterReminder.current;
 	if (!current) return;

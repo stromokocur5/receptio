@@ -1,9 +1,10 @@
 import { error, json } from '@sveltejs/kit';
 import {
 	deleteReminder,
-	reminderDeleteSchema,
 	reminderIdSchema,
+	reminderTokenSchema,
 	reminderUpdateSchema,
+	sendTestReminder,
 	updateReminder
 } from '$lib/server/push';
 import type { RequestEvent, RequestHandler } from './$types';
@@ -19,7 +20,7 @@ async function guard({ platform, params, getClientAddress }: RequestEvent) {
 	if (limit && !limit.success) error(429, 'Príliš veľa požiadaviek, skús to o chvíľu');
 	const id = reminderIdSchema.safeParse(params.id);
 	if (!id.success) error(400, 'Neplatná požiadavka');
-	return { db: env.DB, id: id.data };
+	return { db: env.DB, id: id.data, vapidJwk: env.VAPID_PRIVATE_JWK };
 }
 
 async function readBody(request: Request): Promise<unknown> {
@@ -52,7 +53,7 @@ export const PUT: RequestHandler = async (event) => {
 
 export const DELETE: RequestHandler = async (event) => {
 	const { db, id } = await guard(event);
-	const body = reminderDeleteSchema.safeParse(await readBody(event.request));
+	const body = reminderTokenSchema.safeParse(await readBody(event.request));
 	if (!body.success) error(400, 'Neplatná požiadavka');
 	try {
 		await deleteReminder(db, id, body.data.token);
@@ -60,5 +61,22 @@ export const DELETE: RequestHandler = async (event) => {
 		console.error('push: delete failed', err);
 		error(500, 'Pripomienky sa nepodarilo vypnúť');
 	}
+	return json({ ok: true }, { headers: NO_STORE });
+};
+
+/** A reminder right now, to check that notifications reach this device. */
+export const POST: RequestHandler = async (event) => {
+	const { db, id, vapidJwk } = await guard(event);
+	const body = reminderTokenSchema.safeParse(await readBody(event.request));
+	if (!body.success) error(400, 'Neplatná požiadavka');
+	let result;
+	try {
+		result = await sendTestReminder(db, id, body.data.token, vapidJwk);
+	} catch (err) {
+		console.error('push: test failed', err);
+		error(500, 'Skúšobnú pripomienku sa nepodarilo poslať');
+	}
+	if (result === 'gone') error(404, 'Pripomienky na tomto zariadení už nie sú zapnuté');
+	if (result === 'failed') error(502, 'Služba prehliadača pripomienku neprijala, skús to neskôr');
 	return json({ ok: true }, { headers: NO_STORE });
 };

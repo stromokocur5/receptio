@@ -12,6 +12,7 @@
 		enableReminders,
 		rememberWaterToday,
 		remindersSupported,
+		testReminder,
 		updateReminders
 	} from '$lib/reminders';
 	import { waterReminder } from '$lib/state.svelte';
@@ -30,6 +31,7 @@
 	let supported = $state(false);
 	let busy = $state(false);
 	let message = $state('');
+	let testNote = $state('');
 
 	onMount(() => {
 		supported = remindersSupported();
@@ -65,6 +67,18 @@
 		} finally {
 			busy = false;
 		}
+	}
+
+	async function sendTest() {
+		testNote = '';
+		if (Notification.permission !== 'granted') {
+			message =
+				'Prehliadač má upozornenia pre Receptio vypnuté. Povoľ ich v nastaveniach stránky a skús znova.';
+			return;
+		}
+		if (await testReminder())
+			testNote =
+				'Odoslané. Ak do minúty nepríde, blokuje ju telefón: povolenie upozornení pre prehliadač, úspora batérie alebo režim Nerušiť.';
 	}
 
 	function setSchedule(patch: Partial<ReminderSchedule>) {
@@ -132,6 +146,9 @@
 					{/each}
 				</select>
 			</label>
+			<button class="btn ghost small" disabled={busy} onclick={() => run(sendTest)}>
+				Vyskúšať
+			</button>
 			<button class="btn ghost small" disabled={busy} onclick={() => run(disableReminders)}>
 				Vypnúť
 			</button>
@@ -142,6 +159,7 @@
 				: 'Keď splníš denný cieľ, na zvyšok dňa stíchnu.'}
 		</p>
 	{/if}
+	{#if testNote}<p class="muted small" role="status">{testNote}</p>{/if}
 	{#if message}<p class="msg small" role="alert">{message}</p>{/if}
 </div>
 

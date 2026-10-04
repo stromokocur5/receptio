@@ -49,9 +49,8 @@ export const reminderUpdateSchema = z
 	.strict()
 	.refine(isValidSchedule, 'Neplatný čas');
 
-export const reminderDeleteSchema = z
-	.object({ token: z.string().regex(/^[0-9a-f]{64}$/) })
-	.strict();
+/** Body of a delete or a test push: only the device's token. */
+export const reminderTokenSchema = z.object({ token: z.string().regex(/^[0-9a-f]{64}$/) }).strict();
 
 interface ReminderRow {
 	id: string;
@@ -114,6 +113,35 @@ export function dueReminders(rows: ReminderRow[], at: Date): ReminderRow[] {
 	});
 }
 
+/**
+ * One empty push; returns the push service's status, 0 when it couldn't be reached.
+ * 404/410 mean the browser dropped the subscription.
+ */
+async function sendPush(endpoint: string, privateJwk: JsonWebKey, now: number): Promise<number> {
+	try {
+		const res = await fetch(endpoint, {
+			method: 'POST',
+			headers: {
+				authorization: await vapidAuthorization(endpoint, privateJwk, now),
+				// A reminder that waited over an hour on an offline phone is worthless.
+				ttl: '3600',
+				// Android holds normal-urgency pushes in Doze until its next maintenance window.
+				urgency: 'high',
+				'content-length': '0'
+			}
+		});
+		if (!res.ok && res.status !== 404 && res.status !== 410) {
+			console.error(
+				`push: ${res.status} from ${new URL(endpoint).host}: ${(await res.text()).slice(0, 200)}`
+			);
+		}
+		return res.status;
+	} catch (err) {
+		console.error('push: send failed', err);
+		return 0;
+	}
+}
+
 /** Cron job: sends the reminders due now and forgets devices that unsubscribed or went quiet. */
 export async function sendWaterReminders(
 	db: D1Database,
@@ -137,27 +165,15 @@ export async function sendWaterReminders(
 		console.warn(`push: ${due.length} due, sending ${MAX_SENDS_PER_RUN}`);
 	}
 	const gone: string[] = [];
+	const statuses: number[] = [];
 	await Promise.all(
 		due.slice(0, MAX_SENDS_PER_RUN).map(async (row) => {
-			try {
-				const res = await fetch(row.endpoint, {
-					method: 'POST',
-					headers: {
-						authorization: await vapidAuthorization(row.endpoint, privateJwk, now),
-						// A reminder that waited over an hour on an offline phone is worthless.
-						ttl: '3600',
-						// Android holds normal-urgency pushes in Doze until its next maintenance window.
-						urgency: 'high',
-						'content-length': '0'
-					}
-				});
-				if (res.status === 404 || res.status === 410) gone.push(row.id);
-				else if (!res.ok) console.error(`push: ${res.status} from ${new URL(row.endpoint).host}`);
-			} catch (err) {
-				console.error('push: send failed', err);
-			}
+			const status = await sendPush(row.endpoint, privateJwk, now);
+			statuses.push(status);
+			if (status === 404 || status === 410) gone.push(row.id);
 		})
 	);
+	if (due.length) console.log(`push: sent ${statuses.length}, statuses ${statuses.join(' ')}`);
 	if (gone.length) {
 		await db.batch(
 			gone.map((id) => db.prepare('DELETE FROM push_reminders WHERE id = ?').bind(id))
@@ -229,6 +245,35 @@ export async function updateReminder(
 		)
 		.run();
 	return result.meta.changes > 0;
+}
+
+/**
+ * Sends this device a reminder right away, so its owner can see whether notifications get through.
+ * 'gone' when the row doesn't exist or the push service forgot the subscription (the row goes too).
+ */
+export async function sendTestReminder(
+	db: D1Database,
+	id: string,
+	token: string,
+	privateJwkJson: string | undefined,
+	now = Date.now()
+): Promise<'sent' | 'gone' | 'failed'> {
+	if (!privateJwkJson) {
+		console.error('push: VAPID_PRIVATE_JWK is not set');
+		return 'failed';
+	}
+	const row = await db
+		.prepare('SELECT endpoint FROM push_reminders WHERE id = ? AND token_hash = ?')
+		.bind(id, await sha256Hex(token))
+		.first<{ endpoint: string }>();
+	if (!row) return 'gone';
+	const status = await sendPush(row.endpoint, JSON.parse(privateJwkJson) as JsonWebKey, now);
+	console.log(`push: test to ${new URL(row.endpoint).host}, status ${status}`);
+	if (status === 404 || status === 410) {
+		await db.prepare('DELETE FROM push_reminders WHERE id = ?').bind(id).run();
+		return 'gone';
+	}
+	return status >= 200 && status < 300 ? 'sent' : 'failed';
 }
 
 export async function deleteReminder(db: D1Database, id: string, token: string): Promise<void> {
