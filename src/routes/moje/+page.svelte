@@ -6,6 +6,7 @@
 	import SyncPanel from '$lib/components/SyncPanel.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { formatEur, formatNumber } from '$lib/amounts';
+	import JournalPanel from '$lib/components/JournalPanel.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import { DAILY_REFERENCE, VEGAN_PROTEIN_G_PER_KG } from '$lib/nutrition';
 	import { RATING_LABELS, favorites, history, notes, settings, ui } from '$lib/state.svelte';
@@ -92,7 +93,7 @@
 		<p class="eyebrow">Moje</p>
 		<h1>Moja kuchyňa</h1>
 		<p class="lede">
-			Obľúbené recepty, história varenia a tvoje poznámky. Všetko je uložené len v tomto
+			Obľúbené recepty, história varenia, poznámky a denník jedla. Všetko je uložené len v tomto
 			prehliadači, bez účtu.
 		</p>
 	</header>
@@ -109,6 +110,10 @@
 			</div>
 		{/if}
 	</section>
+
+	{#if ui.loaded}
+		<JournalPanel {targets} />
+	{/if}
 
 	{#if week && week.portions > 0}
 		<section class="card box weekbox">

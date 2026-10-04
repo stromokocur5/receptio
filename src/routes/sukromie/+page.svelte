@@ -73,11 +73,11 @@
 
 		<h2>Čo ostáva len v tvojom prehliadači</h2>
 		<p>
-			Špajza, plán jedál, nákupný zoznam, obľúbené, poznámky, história varenia, nastavenia, záhradka
-			a poloha pre počasie sa ukladajú v úložisku prehliadača (localStorage) na tvojom zariadení. Na
-			server nejdú, pokiaľ nezapneš synchronizáciu. Sú to samotné funkcie, ktoré používaš, preto na
-			ne netreba súhlas. Zmažeš ich vymazaním údajov stránky v nastaveniach prehliadača; predtým si
-			ich môžeš stiahnuť ako súbor na stránke <a href="/moje">Moje</a>.
+			Špajza, plán jedál, nákupný zoznam, obľúbené, poznámky, história varenia, denník jedla a vody,
+			nastavenia, záhradka a poloha pre počasie sa ukladajú v úložisku prehliadača (localStorage) na
+			tvojom zariadení. Na server nejdú, pokiaľ nezapneš synchronizáciu. Sú to samotné funkcie,
+			ktoré používaš, preto na ne netreba súhlas. Zmažeš ich vymazaním údajov stránky v nastaveniach
+			prehliadača; predtým si ich môžeš stiahnuť ako súbor na stránke <a href="/moje">Moje</a>.
 		</p>
 
 		<h2>Čo ide na server</h2>

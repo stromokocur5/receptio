@@ -162,7 +162,7 @@
 		{
 			icon: 'bookmark',
 			title: 'Moje',
-			text: 'Obľúbené, poznámky k receptom, história varenia a záloha dát.',
+			text: 'Obľúbené, poznámky k receptom, história varenia, denník jedla a vody (ak si ho zapneš) a záloha dát.',
 			href: '/moje'
 		}
 	];

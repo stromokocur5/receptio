@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { NO_AVOID, validateAvoid, type Avoid } from './avoid';
+import { NO_JOURNAL, validateJournal, type Journal } from './journal';
 import { consumeFromPantry, type Pantry, type PantryUse } from './pantry';
 import { validatePreserves, type Preserve } from './preserves';
 import type { PlanEntry } from './shopping';
@@ -529,6 +530,9 @@ function migrateSingleGarden() {
 /** Home-made jars and freezer bags, with the date they were made. */
 export const preserves = new Persisted<Preserve[]>('preserves', [], validatePreserves);
 
+/** Food and water diary, off until switched on in Moje. */
+export const journal = new Persisted<Journal>('journal', NO_JOURNAL, validateJournal);
+
 /** Everything kept on this device, for backup/restore. */
 export const ALL_PERSISTED = {
 	pantry,
@@ -545,7 +549,8 @@ export const ALL_PERSISTED = {
 	preserves,
 	avoid,
 	presets,
-	savedWeeks
+	savedWeeks,
+	journal
 };
 
 export const ui = $state({ loaded: false });
