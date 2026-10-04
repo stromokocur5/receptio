@@ -1,0 +1,41 @@
+title: Hrachové tofu
+description: Pôvodné šanské tofu z Barmy zo žltého lúpaného hrachu – namočený hrach sa rozmixuje, precedí a z usadeného mlieka sa uvarí kaša, ktorá stuhne. Lacné, bez sóje a bez zrážadla, z hrachu, ktorý máš v špajzi.
+cuisine: moderna
+meals: [domace]
+categories: [domace/bielkoviny]
+time: 240
+active: 30
+servings: 4
+difficulty: 3
+tags: [urob-si-sam]
+nutrition: false
+yields: cca 700 g tofu (forma 20 × 15 cm)
+ahead: Hrach namoč na 8–12 hodín (cez noc) do trojnásobku vody.
+related: [sanske-tofu, domace-tofu, konopne-tofu]
+keeps: { fridge: 4 }
+ingredients:
+  - zlty-hrach: 200 g | namočený cez noc
+  - voda: 900 ml
+  - sol: 1 čl
+  - kurkuma: 1/4 čl
+  - olej: 1 čl | na vymastenie formy
+steps:
+  - Namočený hrach sceď a prepláchni. Rozmixuj ho so 600 ml vody 2–3 minúty na úplne hladké mlieko.
+  - Prelej ho cez jemnú utierku do misky a dobre vytlač. Dužinu vráť do mixéra, rozmixuj so zvyšnými 300 ml vody a vytlač do tej istej misky.
+  - Mlieko nechaj 2–3 hodiny stáť na linke (alebo cez noc v chladničke). Škrob a bielkoviny sa usadia na dno ako hustá biela vrstva.
+  - Formu (asi 20 × 15 cm) vymasti olejom.
+  - Opatrne zlej riedku vrchnú vodu do hrnca, usadeninu nechaj v miske. Vodu priveď do varu so soľou a kurkumou.
+  - Usadeninu rozmiešaj a za stáleho šľahania ju vlej do vriacej vody. Stíš na mierny oheň.
+  - Miešaj bez prestávky aj dno 8–10 minút, kým kaša nezhustne, nezaleskne sa a nezačne sa odlepovať od stien.
+  - Hneď ju vylej do formy, uhlaď a nechaj 1 hodinu chladnúť na linke a aspoň hodinu v chladničke, kým stuhne.
+  - Vyklop a nakrájaj. Na opekanie kocky osuš a opeč na 3 lyžiciach oleja na stredne silnom ohni z každej strany 3–4 minúty dozlatista.
+tips:
+  - Dužinu z cedenia nevyhadzuj – pridaj ju do hrachovej polievky alebo do placiek.
+  - Ak sa ti kaša zdá po 10 minútach riedka, var ďalej. Nedovarená nestuhne a v strede ostane mazľavá.
+  - Do dlho dusených omáčok ho nedávaj, rozvarí sa. Najlepšie je opečené s omáčkou na namáčanie alebo nakrájané do šalátu s cibuľkou a limetkou.
+  - Mraziť sa nedá – po rozmrazení je zrnité.
+variants:
+  - name: Z lúpaného bôbu
+    description: Rovnaký postup so žltým lúpaným bôbom (fava). Tofu je o niečo hutnejšie a má jemnú orieškovú chuť.
+    replace:
+      - { from: zlty-hrach, to: bob-suchy, amount: '200 g | lúpaný (žltý), namočený cez noc' }

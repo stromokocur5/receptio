@@ -479,7 +479,7 @@
   storage: 'Otvorené v nádobe s vodou v chladničke 5 dní, vodu vymieňaj. Zamrazené zmení textúru na hubovitú – lepšie nasaje marinádu.'
   homemade:
     recipe: domace-tofu
-    note: 'Zo sójových bôbov a zrážadla (nigari). Ako bonus dostaneš okaru.'
+    note: 'Zo sójových bôbov a zrážadla (nigari). Ako bonus dostaneš okaru. Bez sóje sa dá urobiť z cícerovej múky, žltého hrachu alebo konopných semienok.'
 
 - id: tofu-udene
   name: Tofu údené
