@@ -20,15 +20,35 @@ function keyBytes(base64url: string): Uint8Array<ArrayBuffer> {
 	return Uint8Array.from(raw, (c) => c.charCodeAt(0));
 }
 
+/** A phone that can't reach its push service never answers subscribe(); don't spin forever. */
+const SUBSCRIBE_TIMEOUT_MS = 30_000;
+
 async function subscription(): Promise<PushSubscription> {
 	const registration = await navigator.serviceWorker.ready;
-	return (
-		(await registration.pushManager.getSubscription()) ??
-		(await registration.pushManager.subscribe({
-			userVisibleOnly: true,
-			applicationServerKey: keyBytes(VAPID_PUBLIC_KEY)
-		}))
-	);
+	const existing = await registration.pushManager.getSubscription();
+	if (existing) return existing;
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	try {
+		return await Promise.race([
+			registration.pushManager.subscribe({
+				userVisibleOnly: true,
+				applicationServerKey: keyBytes(VAPID_PUBLIC_KEY)
+			}),
+			new Promise<never>((_, reject) => {
+				timer = setTimeout(
+					() =>
+						reject(
+							new Error(
+								'Prehliadač sa nevie prihlásiť na doručovanie upozornení. Skontroluj pripojenie a skús znova.'
+							)
+						),
+					SUBSCRIBE_TIMEOUT_MS
+				);
+			})
+		]);
+	} finally {
+		clearTimeout(timer);
+	}
 }
 
 const timeZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;

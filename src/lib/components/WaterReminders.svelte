@@ -30,6 +30,8 @@
 
 	let supported = $state(false);
 	let busy = $state(false);
+	/** Which button is working, so a slow push registration doesn't look like a frozen button. */
+	let pending = $state<'enable' | 'test' | null>(null);
 	let message = $state('');
 	let testNote = $state('');
 
@@ -57,8 +59,9 @@
 			void run(() => updateReminders({ skipDate: null }));
 	});
 
-	async function run(action: () => Promise<void>) {
+	async function run(action: () => Promise<void>, label: typeof pending = null) {
 		busy = true;
+		pending = label;
 		message = '';
 		try {
 			await action();
@@ -66,6 +69,7 @@
 			message = err instanceof Error ? err.message : 'Niečo sa pokazilo.';
 		} finally {
 			busy = false;
+			pending = null;
 		}
 	}
 
@@ -103,10 +107,17 @@
 		<button
 			class="btn ghost small"
 			disabled={busy}
-			onclick={() => run(() => enableReminders(DEFAULT_SCHEDULE))}
+			aria-busy={pending === 'enable'}
+			onclick={() => run(() => enableReminders(DEFAULT_SCHEDULE), 'enable')}
 		>
-			<Icon name="bell" size={16} /> Pripomínať mi piť
+			<Icon name="bell" size={16} />
+			{pending === 'enable' ? 'Zapínam…' : 'Pripomínať mi piť'}
 		</button>
+		{#if pending === 'enable'}
+			<p class="muted small" role="status">
+				Prehliadač sa prihlasuje na doručovanie upozornení, prvýkrát to trvá aj niekoľko sekúnd.
+			</p>
+		{/if}
 	{:else}
 		{@const s = waterReminder.current.schedule}
 		<div class="row">
@@ -146,8 +157,13 @@
 					{/each}
 				</select>
 			</label>
-			<button class="btn ghost small" disabled={busy} onclick={() => run(sendTest)}>
-				Vyskúšať
+			<button
+				class="btn ghost small"
+				disabled={busy}
+				aria-busy={pending === 'test'}
+				onclick={() => run(sendTest, 'test')}
+			>
+				{pending === 'test' ? 'Posielam…' : 'Vyskúšať'}
 			</button>
 			<button class="btn ghost small" disabled={busy} onclick={() => run(disableReminders)}>
 				Vypnúť
