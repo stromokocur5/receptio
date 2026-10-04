@@ -550,3 +550,18 @@ entries:
     price: 0.99
     date: 2026-09-30
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/220319140
+  # Tesco online, 4. 10. 2026 – bez mlieka podľa zloženia na stránke
+  - ingredient: psenicne-tortilly
+    store: tesco
+    product: 'Grill Master Pšeničné placky tortilla 4 x 62,5 g (250 g)'
+    pack: 250 g
+    price: 0.99
+    date: 2026-10-04
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100429153
+  - ingredient: psenicne-tortilly
+    store: tesco
+    product: 'Aly Originál pšeničná tortilla 4 ks 260 g'
+    pack: 260 g
+    price: 1.69
+    date: 2026-10-04
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/111274589
