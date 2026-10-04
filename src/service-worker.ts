@@ -3,7 +3,14 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 import { build, files, prerendered, version } from '$service-worker';
-import { FROST_SYNC_TAG, FROST_WATCH_KEY, kvGet, type FrostWatch } from '$lib/kv';
+import {
+	FROST_SYNC_TAG,
+	FROST_WATCH_KEY,
+	kvGet,
+	WATER_TODAY_KEY,
+	type FrostWatch,
+	type WaterToday
+} from '$lib/kv';
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
@@ -164,4 +171,28 @@ async function checkFrost() {
 sw.addEventListener('periodicsync', (event) => {
 	const e = event as ExtendableEvent & { tag: string };
 	if (e.tag === FROST_SYNC_TAG) e.waitUntil(checkFrost());
+});
+
+/** Water reminder: the push is empty, the text comes from what the page last wrote to IndexedDB. */
+async function showWaterReminder() {
+	const water = await kvGet<WaterToday>(WATER_TODAY_KEY).catch(() => undefined);
+	const now = new Date();
+	const today = new Date(now.getTime() - now.getTimezoneOffset() * 60_000)
+		.toISOString()
+		.slice(0, 10);
+	const liters = (ml: number) => (ml / 1000).toLocaleString('sk-SK', { maximumFractionDigits: 2 });
+	await sw.registration.showNotification('Čas na pohár vody', {
+		body:
+			water?.date === today
+				? `Dnes máš ${liters(water.ml)} l z ${liters(water.goalMl)} l.`
+				: 'Napi sa a zapíš si to do denníka.',
+		// A newer reminder replaces an unread one instead of piling up.
+		tag: 'water',
+		icon: '/icon-192.png',
+		data: { url: '/moje#dennik' }
+	});
+}
+
+sw.addEventListener('push', (event) => {
+	event.waitUntil(showWaterReminder());
 });

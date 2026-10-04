@@ -9,7 +9,23 @@
 	import JournalPanel from '$lib/components/JournalPanel.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import { DAILY_REFERENCE, VEGAN_PROTEIN_G_PER_KG } from '$lib/nutrition';
-	import { RATING_LABELS, favorites, history, notes, settings, ui } from '$lib/state.svelte';
+	import {
+		RATING_LABELS,
+		collections,
+		createCollection,
+		deleteCollection,
+		favorites,
+		history,
+		likes,
+		MAX_COLLECTION_NAME,
+		MAX_COLLECTIONS,
+		notes,
+		renameCollection,
+		settings,
+		ui
+	} from '$lib/state.svelte';
+	import { CATEGORY_IDS, RECIPE_CATEGORIES, splitCategory } from '$lib/categories';
+	import type { RecipeSummary } from '$lib/types';
 	import { onboarding } from '$lib/onboarding.svelte';
 	import { weekSummary } from '$lib/week';
 
@@ -19,6 +35,53 @@
 	const favoriteRecipes = $derived(
 		ui.loaded ? catalog.recipes.filter((r) => favorites.current[r.id]) : []
 	);
+	/** Which shelf of saved recipes is shown: all, liked, or a collection id. */
+	let shelf = $state<string>('all');
+	const likedRecipes = $derived(
+		ui.loaded ? catalog.recipes.filter((r) => likes.mine.includes(r.id)) : []
+	);
+	const activeCollection = $derived(collections.current.find((c) => c.id === shelf));
+	const shown = $derived.by((): RecipeSummary[] => {
+		if (shelf === 'liked') return likedRecipes;
+		if (activeCollection) {
+			return activeCollection.recipeIds.flatMap((id) => catalog.recipesById.get(id) ?? []);
+		}
+		return favoriteRecipes;
+	});
+	/** A long list of everything saved reads better split by kind of dish. */
+	const groups = $derived.by(() => {
+		if (shelf !== 'all' || shown.length <= 6) return null;
+		const byCategory = new Map<string, RecipeSummary[]>();
+		for (const r of shown) {
+			const category = r.categories[0] ? splitCategory(r.categories[0]).category : '';
+			byCategory.set(category, [...(byCategory.get(category) ?? []), r]);
+		}
+		return [...byCategory]
+			.sort(
+				([a], [b]) =>
+					CATEGORY_IDS.indexOf(a as never) - CATEGORY_IDS.indexOf(b as never) || a.localeCompare(b)
+			)
+			.map(([category, recipes]) => ({
+				label:
+					category in RECIPE_CATEGORIES
+						? RECIPE_CATEGORIES[category as keyof typeof RECIPE_CATEGORIES].label
+						: 'Ostatné',
+				recipes
+			}));
+	});
+	let newCollection = $state<string | null>(null);
+	let renaming = $state<string | null>(null);
+	let confirmDelete = $state(false);
+
+	function addCollection(event: SubmitEvent) {
+		event.preventDefault();
+		const id = createCollection(newCollection ?? '');
+		if (id) {
+			shelf = id;
+			newCollection = null;
+		}
+	}
+
 	const cooked = $derived(
 		ui.loaded
 			? history.current
@@ -102,12 +165,122 @@
 		<h2><Icon name="bookmark" size={24} /> Obľúbené</h2>
 		{#if !ui.loaded}
 			<p class="muted">Načítavam…</p>
-		{:else if favoriteRecipes.length === 0}
-			<p class="muted">Zatiaľ nič. Recept si uložíš ikonou záložky vedľa tlačidla „Do plánu“.</p>
 		{:else}
-			<div class="grid">
-				{#each favoriteRecipes as recipe, i (recipe.id)}<RecipeCard {recipe} index={i} />{/each}
+			<div class="shelves" role="group" aria-label="Čo ukázať">
+				<button class="chip" aria-pressed={shelf === 'all'} onclick={() => (shelf = 'all')}>
+					Všetky uložené ({favoriteRecipes.length})
+				</button>
+				<button class="chip" aria-pressed={shelf === 'liked'} onclick={() => (shelf = 'liked')}>
+					<Icon name="heart" size={13} /> Lajknuté ({likedRecipes.length})
+				</button>
+				{#each collections.current as c (c.id)}
+					<button
+						class="chip"
+						aria-pressed={shelf === c.id}
+						onclick={() => {
+							shelf = c.id;
+							renaming = null;
+							confirmDelete = false;
+						}}
+					>
+						{c.name} ({c.recipeIds.length})
+					</button>
+				{/each}
+				{#if newCollection !== null}
+					<form class="inline-form" onsubmit={addCollection}>
+						<label class="field small-field">
+							<span class="sr-only">Názov kolekcie</span>
+							<!-- svelte-ignore a11y_autofocus -->
+							<input
+								bind:value={newCollection}
+								maxlength={MAX_COLLECTION_NAME}
+								placeholder="Napr. Desiata, Na návštevu"
+								autofocus
+								required
+							/>
+						</label>
+						<button class="btn leaf small" type="submit">Vytvoriť</button>
+						<button class="btn ghost small" type="button" onclick={() => (newCollection = null)}
+							>Zrušiť</button
+						>
+					</form>
+				{:else if collections.current.length < MAX_COLLECTIONS}
+					<button class="chip" onclick={() => (newCollection = '')}>
+						<Icon name="plus" size={13} /> Nová kolekcia
+					</button>
+				{/if}
 			</div>
+
+			{#if activeCollection}
+				<div class="collection-tools">
+					{#if renaming !== null}
+						<form
+							class="inline-form"
+							onsubmit={(e) => {
+								e.preventDefault();
+								renameCollection(activeCollection.id, renaming ?? '');
+								renaming = null;
+							}}
+						>
+							<label class="field small-field">
+								<span class="sr-only">Nový názov</span>
+								<input bind:value={renaming} maxlength={MAX_COLLECTION_NAME} required />
+							</label>
+							<button class="btn leaf small" type="submit">Uložiť</button>
+						</form>
+					{:else}
+						<button class="btn ghost small" onclick={() => (renaming = activeCollection.name)}>
+							<Icon name="pencil" size={15} /> Premenovať
+						</button>
+					{/if}
+					{#if confirmDelete}
+						<button
+							class="btn small danger"
+							onclick={() => {
+								deleteCollection(activeCollection.id);
+								shelf = 'all';
+								confirmDelete = false;
+							}}>Naozaj zmazať kolekciu</button
+						>
+					{:else}
+						<button class="btn ghost small" onclick={() => (confirmDelete = true)}>
+							<Icon name="trash" size={15} /> Zmazať kolekciu
+						</button>
+					{/if}
+					<span class="muted small">Recepty v nej ostanú uložené.</span>
+				</div>
+			{/if}
+
+			{#if shown.length === 0}
+				<p class="muted">
+					{#if shelf === 'liked'}
+						Zatiaľ si nič nelajkol/a. Srdiečko je pri každom recepte.
+					{:else if activeCollection}
+						Kolekcia je prázdna. Recept do nej pridáš na jeho stránke – keď je uložený, pod
+						tlačidlami uvidíš svoje kolekcie.
+					{:else}
+						Zatiaľ nič. Recept si uložíš ikonou záložky vedľa tlačidla „Do plánu“.
+					{/if}
+				</p>
+			{:else if groups}
+				{#each groups as group (group.label)}
+					<h3 class="group-title">
+						{group.label} <span class="muted">({group.recipes.length})</span>
+					</h3>
+					<div class="grid">
+						{#each group.recipes as recipe, i (recipe.id)}<RecipeCard {recipe} index={i} />{/each}
+					</div>
+				{/each}
+			{:else}
+				<div class="grid">
+					{#each shown as recipe, i (recipe.id)}<RecipeCard {recipe} index={i} />{/each}
+				</div>
+			{/if}
+			{#if shelf === 'liked'}
+				<p class="muted small">
+					Lajky sa pamätajú pre toto zariadenie, synchronizácia ich neprenáša.
+				</p>
+			{/if}
 		{/if}
 	</section>
 
@@ -243,6 +416,35 @@
 	}
 	.block {
 		margin: 28px 0;
+	}
+	.shelves,
+	.collection-tools,
+	.inline-form {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px;
+	}
+	.shelves {
+		margin-bottom: 14px;
+	}
+	.collection-tools {
+		margin-bottom: 14px;
+	}
+	.inline-form .field {
+		min-width: 0;
+		flex: 1 1 12em;
+	}
+	.inline-form input {
+		min-width: 0;
+		width: 100%;
+	}
+	.group-title {
+		margin: 18px 0 10px;
+		font-size: 1.1rem;
+	}
+	.danger {
+		background: var(--tomato-soft);
 	}
 	.grid {
 		display: grid;

@@ -42,3 +42,12 @@ export interface FrostWatch {
 	lon: number;
 	name: string;
 }
+
+export const WATER_TODAY_KEY = 'water-today';
+
+/** Today's water, so a reminder can say how far along you are. */
+export interface WaterToday {
+	date: string;
+	ml: number;
+	goalMl: number;
+}

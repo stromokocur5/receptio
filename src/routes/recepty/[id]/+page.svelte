@@ -16,6 +16,7 @@
 	import GlutenBadge from '$lib/components/GlutenBadge.svelte';
 	import Icon, { isIconName } from '$lib/components/Icon.svelte';
 	import LikeButton from '$lib/components/LikeButton.svelte';
+	import CollectionChips from '$lib/components/CollectionChips.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import PlateArt from '$lib/components/PlateArt.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
@@ -598,9 +599,13 @@
 					{#if inPlan}<a class="in-plan" href="/plan">V pláne: {inPlan} porc.</a>{/if}
 				</div>
 			</div>
+			{#if isFavorite}
+				<div data-noprint><CollectionChips recipeId={base.id} /></div>
+			{/if}
 			{#if justLogged}
 				<p class="cooked-line" data-noprint role="status">
-					<Icon name="cup" size={18} /> Porcia je v dnešnom <a href="/moje#dennik">denníku</a>.
+					<Icon name="cup" size={18} /> Porcia je zapísaná.
+					<a href="/moje#dennik">Otvoriť denník</a>
 				</p>
 			{/if}
 			{#if cookedTimes.length}

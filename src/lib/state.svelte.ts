@@ -2,6 +2,7 @@ import { browser } from '$app/environment';
 import { NO_AVOID, validateAvoid, type Avoid } from './avoid';
 import { addItem, localToday, NO_JOURNAL, validateJournal, withDay, type Journal } from './journal';
 import { consumeFromPantry, type Pantry, type PantryUse } from './pantry';
+import { isValidSchedule, type ReminderSchedule } from './push';
 import { validatePreserves, type Preserve } from './preserves';
 import type { PlanEntry } from './shopping';
 import type { GrowPlace, GrowSun, Ingredient, RecipeLine } from './types';
@@ -530,8 +531,74 @@ function migrateSingleGarden() {
 /** Home-made jars and freezer bags, with the date they were made. */
 export const preserves = new Persisted<Preserve[]>('preserves', [], validatePreserves);
 
+/** Named groups of saved recipes ("Desiata", "Na návštevu"). */
+export interface Collection {
+	id: string;
+	name: string;
+	recipeIds: string[];
+}
+export const MAX_COLLECTIONS = 20;
+export const MAX_COLLECTION_NAME = 40;
+const MAX_COLLECTION_RECIPES = 500;
+
+function validateCollections(raw: unknown): Collection[] | undefined {
+	if (!Array.isArray(raw)) return undefined;
+	return raw
+		.filter(
+			(c): c is Collection =>
+				isRecord(c) &&
+				typeof c.id === 'string' &&
+				/^[a-z0-9-]{1,40}$/.test(c.id) &&
+				typeof c.name === 'string' &&
+				c.name.trim().length > 0 &&
+				Array.isArray(c.recipeIds)
+		)
+		.slice(0, MAX_COLLECTIONS)
+		.map((c) => ({
+			id: c.id,
+			name: c.name.trim().slice(0, MAX_COLLECTION_NAME),
+			recipeIds: [
+				...new Set(c.recipeIds.filter((id): id is string => typeof id === 'string'))
+			].slice(0, MAX_COLLECTION_RECIPES)
+		}));
+}
+export const collections = new Persisted<Collection[]>('collections', [], validateCollections);
+
 /** Food and water diary, off until switched on in Moje. */
 export const journal = new Persisted<Journal>('journal', NO_JOURNAL, validateJournal);
+
+/** This device's water reminders on the server; the token proves it's this device's row. */
+export interface WaterReminder {
+	id: string;
+	token: string;
+	schedule: ReminderSchedule;
+	/** Local date the goal was met and reminders were paused for the rest of the day. */
+	skipDate: string | null;
+	/** Last day the server heard from this device (rows idle for months are deleted). */
+	touched: string;
+}
+function validateWaterReminder(raw: unknown): WaterReminder | null | undefined {
+	if (raw === null) return null;
+	if (!isRecord(raw) || !isRecord(raw.schedule)) return undefined;
+	const { id, token, schedule, skipDate, touched } = raw;
+	if (typeof id !== 'string' || !/^[0-9a-f]{32}$/.test(id)) return undefined;
+	if (typeof token !== 'string' || !/^[0-9a-f]{64}$/.test(token)) return undefined;
+	if (!isValidSchedule(schedule as Record<string, unknown> & ReminderSchedule)) return undefined;
+	return {
+		id,
+		token,
+		schedule: schedule as unknown as ReminderSchedule,
+		skipDate: typeof skipDate === 'string' && isDate(skipDate) ? skipDate : null,
+		touched: typeof touched === 'string' && isDate(touched) ? touched : ''
+	};
+}
+/** Device-only: a push subscription belongs to this browser, not to the synced data. */
+export const waterReminder = new Persisted<WaterReminder | null>(
+	'water-reminder',
+	null,
+	validateWaterReminder,
+	true
+);
 
 /** Writes one eaten portion of a recipe into today's diary. */
 export function logPortion(recipeId: string, variant?: string) {
@@ -568,7 +635,8 @@ export const ALL_PERSISTED = {
 	avoid,
 	presets,
 	savedWeeks,
-	journal
+	journal,
+	collections
 };
 
 export const ui = $state({ loaded: false });
@@ -577,12 +645,58 @@ export function loadPersisted() {
 	migrateSingleGarden();
 	for (const store of Object.values(ALL_PERSISTED)) store.load();
 	openGardenId.load();
+	waterReminder.load();
 	ui.loaded = true;
 }
 
 export function toggleFavorite(recipeId: string) {
 	const { [recipeId]: was, ...rest } = favorites.current;
 	favorites.current = was ? rest : { ...rest, [recipeId]: true };
+	// Collections sort saved recipes; a recipe no longer saved leaves them too.
+	if (was && collections.current.some((c) => c.recipeIds.includes(recipeId))) {
+		collections.current = collections.current.map((c) => ({
+			...c,
+			recipeIds: c.recipeIds.filter((id) => id !== recipeId)
+		}));
+	}
+}
+
+/** Creates a collection (optionally with a first recipe) and returns its id, or null when full. */
+export function createCollection(name: string, recipeId?: string): string | null {
+	const clean = name.trim().slice(0, MAX_COLLECTION_NAME);
+	if (!clean || collections.current.length >= MAX_COLLECTIONS) return null;
+	const id = crypto.randomUUID().slice(0, 8);
+	collections.current = [
+		...collections.current,
+		{ id, name: clean, recipeIds: recipeId ? [recipeId] : [] }
+	];
+	if (recipeId && !favorites.current[recipeId]) toggleFavorite(recipeId);
+	return id;
+}
+
+export function renameCollection(id: string, name: string) {
+	const clean = name.trim().slice(0, MAX_COLLECTION_NAME);
+	if (!clean) return;
+	collections.current = collections.current.map((c) => (c.id === id ? { ...c, name: clean } : c));
+}
+
+export function deleteCollection(id: string) {
+	collections.current = collections.current.filter((c) => c.id !== id);
+}
+
+/** Puts a recipe into a collection or takes it out; putting it in also saves it. */
+export function toggleInCollection(id: string, recipeId: string) {
+	collections.current = collections.current.map((c) => {
+		if (c.id !== id) return c;
+		const has = c.recipeIds.includes(recipeId);
+		return {
+			...c,
+			recipeIds: has
+				? c.recipeIds.filter((r) => r !== recipeId)
+				: [...c.recipeIds, recipeId].slice(0, MAX_COLLECTION_RECIPES)
+		};
+	});
+	if (!favorites.current[recipeId]) toggleFavorite(recipeId);
 }
 
 export function setNote(recipeId: string, text: string) {

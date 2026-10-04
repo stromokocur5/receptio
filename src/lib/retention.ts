@@ -4,3 +4,5 @@
 export const SYNC_IDLE_DAYS = 730;
 /** Handled recipe suggestions and feedback are deleted this long after they arrived. */
 export const HANDLED_RETENTION_DAYS = 365;
+/** Water reminders of a device that hasn't opened Receptio for this long stop and are deleted. */
+export const PUSH_IDLE_DAYS = 60;

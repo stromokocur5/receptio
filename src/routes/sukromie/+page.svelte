@@ -1,9 +1,9 @@
 <script lang="ts">
 	import Seo from '$lib/components/Seo.svelte';
-	import { HANDLED_RETENTION_DAYS, SYNC_IDLE_DAYS } from '$lib/retention';
+	import { HANDLED_RETENTION_DAYS, PUSH_IDLE_DAYS, SYNC_IDLE_DAYS } from '$lib/retention';
 
 	const CONTACT = 'gabriel@kohut.xyz';
-	const UPDATED = '27. 9. 2026';
+	const UPDATED = '4. 10. 2026';
 	const syncYears = SYNC_IDLE_DAYS / 365;
 	const handledYears = HANDLED_RETENTION_DAYS / 365;
 
@@ -19,6 +19,13 @@
 			detail: 'Len ak ho vytvoríš: zašifrovaný nákupný zoznam a čo je v ňom odškrtnuté.',
 			why: 'Aby ste mohli nakupovať dvaja naraz. Kľúč je len v odkaze, ktorý pošleš – server zoznam neprečíta.',
 			kept: `Zoznam, ktorý ${syncYears} roky nikto neotvoril, sa zmaže sám.`
+		},
+		{
+			what: 'Pripomienky na vodu',
+			detail:
+				'Len ak ich zapneš: push adresa tvojho prehliadača, časy pripomienok, časové pásmo a deň, keď si už mal/a vypité.',
+			why: 'Aby ti server v nastavený čas poslal upozornenie. Koľko piješ ani čo ješ sa na server neposiela – text upozornenia si zloží tvoj prehliadač.',
+			kept: `Kým ich nevypneš. Ak Receptio na zariadení ${PUSH_IDLE_DAYS} dní neotvoríš, pripomienky sa zmažú samé.`
 		},
 		{
 			what: 'Lajky',

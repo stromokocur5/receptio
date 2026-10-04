@@ -1,0 +1,11 @@
+// Read only by @sveltejs/adapter-cloudflare: where to write the generated worker and assets.
+// Deploys use wrangler.jsonc, whose `main` is /worker.js wrapping that generated worker.
+{
+	"name": "receptio",
+	"compatibility_date": "2026-09-26",
+	"main": ".svelte-kit/cloudflare/_worker.js",
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".svelte-kit/cloudflare"
+	}
+}

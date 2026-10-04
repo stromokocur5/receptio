@@ -1,5 +1,5 @@
 import { addScaled, emptyNutrients, scaleNutrients } from './nutrition';
-import type { Ingredient, Nutrients, RecipeSummary } from './types';
+import { NUTRIENT_KEYS, type Ingredient, type Nutrients, type RecipeSummary } from './types';
 
 /**
  * Food and water diary. Off until the user switches it on; calories stay hidden unless asked for,
@@ -17,18 +17,37 @@ export interface JournalDay {
 	items: JournalItem[];
 }
 
+/** An older day squeezed to its totals, so a year of diary stays small enough to sync. */
+export interface DaySummary {
+	waterMl: number;
+	nutrients: Nutrients;
+	/** How many things were eaten, and for how many of them the values weren't known. */
+	items: number;
+	unknown: number;
+}
+
 export interface Journal {
 	enabled: boolean;
 	showKcal: boolean;
 	waterGoalMl: number;
-	/** ISO date → that day's log. */
+	/** ISO date → that day's log, for the recent days. */
 	days: Record<string, JournalDay>;
+	/** ISO date → totals, for days older than JOURNAL_DETAIL_DAYS. */
+	summaries: Record<string, DaySummary>;
 }
 
-export const NO_JOURNAL: Journal = { enabled: false, showKcal: false, waterGoalMl: 2000, days: {} };
+export const NO_JOURNAL: Journal = {
+	enabled: false,
+	showKcal: false,
+	waterGoalMl: 2000,
+	days: {},
+	summaries: {}
+};
 
-/** How far back days are kept; older ones are dropped on the next save. */
-export const JOURNAL_DAYS_KEPT = 90;
+/** Days kept item by item; older ones become totals. */
+export const JOURNAL_DETAIL_DAYS = 90;
+/** How far back the diary goes at all. */
+export const JOURNAL_DAYS_KEPT = 365;
 export const MAX_ITEMS_PER_DAY = 40;
 export const WATER_STEP_ML = 250;
 const MAX_WATER_ML = 10_000;
@@ -73,23 +92,42 @@ function validateDay(raw: unknown): JournalDay | undefined {
 	};
 }
 
+function validateSummary(raw: unknown): DaySummary | undefined {
+	if (!isRecord(raw) || !isRecord(raw.nutrients)) return undefined;
+	const nutrients = emptyNutrients();
+	for (const key of NUTRIENT_KEYS) {
+		const v = raw.nutrients[key];
+		if (v !== undefined && !num(v, 0, 100_000)) return undefined;
+		nutrients[key] = v ?? 0;
+	}
+	return {
+		waterMl: num(raw.waterMl, 0, MAX_WATER_ML) ? raw.waterMl : 0,
+		nutrients,
+		items: num(raw.items, 0, MAX_ITEMS_PER_DAY) ? Math.round(raw.items) : 0,
+		unknown: num(raw.unknown, 0, MAX_ITEMS_PER_DAY) ? Math.round(raw.unknown) : 0
+	};
+}
+
+function validateDated<T>(raw: unknown, validate: (v: unknown) => T | undefined) {
+	if (!isRecord(raw)) return {};
+	return Object.fromEntries(
+		Object.entries(raw)
+			.filter(([date]) => isDate(date))
+			.flatMap(([date, value]) => {
+				const valid = validate(value);
+				return valid ? [[date, valid] as const] : [];
+			})
+	);
+}
+
 export function validateJournal(raw: unknown): Journal | undefined {
 	if (!isRecord(raw)) return undefined;
-	const days = isRecord(raw.days)
-		? Object.fromEntries(
-				Object.entries(raw.days)
-					.filter(([date]) => isDate(date))
-					.flatMap(([date, day]) => {
-						const valid = validateDay(day);
-						return valid ? [[date, valid] as const] : [];
-					})
-			)
-		: {};
 	return {
 		enabled: raw.enabled === true,
 		showKcal: raw.showKcal === true,
 		waterGoalMl: num(raw.waterGoalMl, 500, 5000) ? raw.waterGoalMl : NO_JOURNAL.waterGoalMl,
-		days
+		days: validateDated(raw.days, validateDay),
+		summaries: validateDated(raw.summaries, validateSummary)
 	};
 }
 
@@ -109,16 +147,88 @@ export function withDay(
 			([d, day]) => d >= oldest && (day.waterMl > 0 || day.items.length > 0)
 		)
 	);
-	return { ...journal, days };
+	const summaries = Object.fromEntries(
+		Object.entries(journal.summaries).filter(([d]) => d >= oldest && !(d in days))
+	);
+	return { ...journal, days, summaries };
+}
+
+const round1 = (v: number) => Math.round(v * 10) / 10;
+
+/**
+ * Turns days older than JOURNAL_DETAIL_DAYS into totals. Needs the catalog, so it runs where the
+ * diary is shown rather than on every save.
+ */
+export function compactJournal(
+	journal: Journal,
+	today: string,
+	recipesById: Map<string, RecipeSummary>,
+	ingredientsById: Map<string, Ingredient>
+): Journal {
+	const detailFrom = shiftDate(today, -(JOURNAL_DETAIL_DAYS - 1));
+	const old = Object.entries(journal.days).filter(([d]) => d < detailFrom);
+	if (!old.length) return journal;
+	const summaries = { ...journal.summaries };
+	for (const [date, day] of old) {
+		const totals = dayTotals(day, recipesById, ingredientsById);
+		summaries[date] = {
+			waterMl: day.waterMl,
+			nutrients: Object.fromEntries(
+				NUTRIENT_KEYS.map((k) => [k, round1(totals.nutrients[k])])
+			) as Nutrients,
+			items: day.items.length,
+			unknown: totals.unknown
+		};
+	}
+	return {
+		...journal,
+		days: Object.fromEntries(Object.entries(journal.days).filter(([d]) => d >= detailFrom)),
+		summaries
+	};
 }
 
 export function addWater(day: JournalDay, ml: number): JournalDay {
 	return { ...day, waterMl: Math.min(MAX_WATER_ML, Math.max(0, day.waterMl + ml)) };
 }
 
+const sameFood = (a: JournalItem, b: JournalItem) =>
+	(a.kind === 'recipe' &&
+		b.kind === 'recipe' &&
+		a.recipeId === b.recipeId &&
+		a.variant === b.variant) ||
+	(a.kind === 'ingredient' && b.kind === 'ingredient' && a.ingredientId === b.ingredientId);
+
+/** Adds food; a second helping of the same recipe or ingredient goes onto its existing line. */
 export function addItem(day: JournalDay, item: JournalItem): JournalDay {
+	const existing = day.items.find((i) => sameFood(i, item));
+	if (existing) {
+		return {
+			...day,
+			items: day.items.map((i) => {
+				if (i !== existing) return i;
+				if (i.kind === 'recipe' && item.kind === 'recipe') {
+					return { ...i, portions: Math.min(20, i.portions + item.portions) };
+				}
+				if (i.kind === 'ingredient' && item.kind === 'ingredient') {
+					return { ...i, grams: Math.min(5000, i.grams + item.grams) };
+				}
+				return i;
+			})
+		};
+	}
 	if (day.items.length >= MAX_ITEMS_PER_DAY) return day;
 	return { ...day, items: [...day.items, item] };
+}
+
+/** Changes how many portions of a recipe line were eaten; zero removes the line. */
+export function setPortions(day: JournalDay, id: string, portions: number): JournalDay {
+	if (portions <= 0) return removeItem(day, id);
+	return {
+		...day,
+		items: day.items.map((i) =>
+			i.id === id && i.kind === 'recipe' ? { ...i, portions: Math.min(20, portions) } : i
+		)
+	};
 }
 
 export function removeItem(day: JournalDay, id: string): JournalDay {

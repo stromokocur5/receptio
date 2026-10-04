@@ -21,7 +21,8 @@ export default defineConfig({
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
-			adapter: adapter(),
+			// The deployed worker is /worker.js (adds the reminder cron), see wrangler.adapter.jsonc.
+			adapter: adapter({ config: 'wrangler.adapter.jsonc' }),
 			// Tabs stay open for days (shopping list, cook mode); notice deploys so they reload onto new code.
 			version: { pollInterval: 5 * 60_000 },
 			// Prerendered pages get this as a <meta> tag; header-only directives (frame-ancestors)

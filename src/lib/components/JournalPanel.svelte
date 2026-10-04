@@ -3,15 +3,19 @@
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
+	import WaterReminders from '$lib/components/WaterReminders.svelte';
 	import {
 		addItem,
 		addWater,
 		dayTotals,
+		compactJournal,
 		EMPTY_DAY,
+		JOURNAL_DAYS_KEPT,
 		itemNutrients,
 		localToday,
 		NO_JOURNAL,
 		removeItem,
+		setPortions,
 		shiftDate,
 		WATER_STEP_ML,
 		withDay,
@@ -20,6 +24,7 @@
 	} from '$lib/journal';
 	import { normalizeSearch, ingredientSearchText } from '$lib/labels';
 	import { history, journal } from '$lib/state.svelte';
+	import { onMount } from 'svelte';
 	import type { Ingredient, NutrientKey, Nutrients, RecipeSummary, Unit } from '$lib/types';
 
 	let { targets }: { targets: Nutrients } = $props();
@@ -33,7 +38,22 @@
 
 	const today = localToday();
 	let date = $state(today);
+	const oldestDate = shiftDate(today, -(JOURNAL_DAYS_KEPT - 1));
 	const day = $derived(journal.current.days[date] ?? EMPTY_DAY);
+	/** Days older than three months only have totals left and can't be edited. */
+	const summary = $derived(
+		journal.current.days[date] ? undefined : journal.current.summaries[date]
+	);
+
+	onMount(() => {
+		const compacted = compactJournal(
+			journal.current,
+			today,
+			catalog.recipesById,
+			catalog.ingredientsById
+		);
+		if (compacted !== journal.current) journal.current = compacted;
+	});
 	const totals = $derived(dayTotals(day, catalog.recipesById, catalog.ingredientsById));
 	const barKeys = $derived<NutrientKey[]>([
 		...(journal.current.showKcal ? (['kcal'] as const) : []),
@@ -211,6 +231,7 @@
 			<button
 				class="btn ghost small"
 				aria-label="Predchádzajúci deň"
+				disabled={date <= oldestDate}
 				onclick={() => (date = shiftDate(date, -1))}><Icon name="arrow-left" size={16} /></button
 			>
 			<strong>{date === today ? 'Dnes' : dayFormat.format(new Date(`${date}T12:00:00`))}</strong>
@@ -222,205 +243,243 @@
 			>
 		</div>
 
-		<div class="water">
-			<div class="water-head">
-				<h3><Icon name="drop" size={18} /> Voda</h3>
-				<p>
-					<strong>{formatNumber(day.waterMl / 1000, 2)} l</strong>
-					<span class="muted">z {formatNumber(journal.current.waterGoalMl / 1000, 1)} l</span>
-				</p>
-			</div>
-			<div class="glasses" aria-hidden="true">
-				{#each { length: Math.max(glasses, fullGlasses) } as _, i (i)}
-					<span class="glass" class:full={i < fullGlasses}></span>
-				{/each}
-			</div>
-			<div class="water-actions">
-				<button
-					class="btn ghost small"
-					disabled={day.waterMl === 0}
-					onclick={() => change((d) => addWater(d, -WATER_STEP_ML))}
-				>
-					<Icon name="minus" size={16} /> Pohár
-				</button>
-				<button class="btn leaf small" onclick={() => change((d) => addWater(d, WATER_STEP_ML))}>
-					<Icon name="plus" size={16} /> Pohár (250 ml)
-				</button>
-			</div>
-		</div>
-
-		<h3><Icon name="bowl" size={18} /> Jedlo</h3>
-		{#if cookedThatDay.length}
-			<div class="chips" role="group" aria-label="Uvarené v ten deň">
-				{#each cookedThatDay as h (`${h.recipeId}|${h.variant ?? ''}`)}
+		{#if summary}
+			<p class="water-old">
+				<Icon name="drop" size={18} /> Voda:
+				<strong>{formatNumber(summary.waterMl / 1000, 2)} l</strong>
+				<span class="muted">· zjedené: {summary.items}×</span>
+			</p>
+			{#if summary.items}
+				<NutrientBars values={summary.nutrients} {targets} keys={barKeys} />
+			{/if}
+			<p class="muted small">
+				Pri dňoch starších ako 3 mesiace si denník pamätá len súčty, aby sa zmestil celý rok.
+			</p>
+		{:else}
+			<div class="water">
+				<div class="water-head">
+					<h3><Icon name="drop" size={18} /> Voda</h3>
+					<p>
+						<strong>{formatNumber(day.waterMl / 1000, 2)} l</strong>
+						<span class="muted">z {formatNumber(journal.current.waterGoalMl / 1000, 1)} l</span>
+					</p>
+				</div>
+				<div class="glasses" aria-hidden="true">
+					{#each { length: Math.max(glasses, fullGlasses) } as _, i (i)}
+						<span class="glass" class:full={i < fullGlasses}></span>
+					{/each}
+				</div>
+				<div class="water-actions">
 					<button
-						class="chip"
-						onclick={() =>
-							change((d) =>
-								addItem(
-									d,
-									h.variant
-										? {
-												id: newId(),
-												kind: 'recipe',
-												recipeId: h.recipeId,
-												variant: h.variant,
-												portions: 1
-											}
-										: { id: newId(), kind: 'recipe', recipeId: h.recipeId, portions: 1 }
-								)
-							)}
+						class="btn ghost small"
+						disabled={day.waterMl === 0}
+						onclick={() => change((d) => addWater(d, -WATER_STEP_ML))}
 					>
-						<Icon name="plus" size={13} />
-						{catalog.recipesById.get(h.recipeId)?.title} · 1 porcia
+						<Icon name="minus" size={16} /> Pohár
 					</button>
-				{/each}
+					<button class="btn leaf small" onclick={() => change((d) => addWater(d, WATER_STEP_ML))}>
+						<Icon name="plus" size={16} /> Pohár (250 ml)
+					</button>
+				</div>
+				<WaterReminders
+					todayMl={journal.current.days[today]?.waterMl ?? 0}
+					goalMl={journal.current.waterGoalMl}
+				/>
 			</div>
-		{/if}
 
-		{#if picked}
-			<div class="picked">
-				<p>
-					<strong>{picked.kind === 'recipe' ? picked.recipe.title : picked.ingredient.name}</strong>
-				</p>
-				<div class="picked-row">
-					{#if picked.kind === 'recipe'}
-						<label class="field small-field">
-							<span>Porcie</span>
-							<input type="number" min="0.25" max="20" step="any" bind:value={portions} />
-						</label>
-					{:else}
-						<label class="field small-field">
-							<span class="sr-only">Množstvo</span>
-							<input type="number" min="0" max="5000" step="any" bind:value={amount} />
-						</label>
-						{#if pickedUnits.length > 1}
+			<h3><Icon name="bowl" size={18} /> Jedlo</h3>
+			{#if cookedThatDay.length}
+				<div class="chips" role="group" aria-label="Uvarené v ten deň">
+					{#each cookedThatDay as h (`${h.recipeId}|${h.variant ?? ''}`)}
+						<button
+							class="chip"
+							onclick={() =>
+								change((d) =>
+									addItem(
+										d,
+										h.variant
+											? {
+													id: newId(),
+													kind: 'recipe',
+													recipeId: h.recipeId,
+													variant: h.variant,
+													portions: 1
+												}
+											: { id: newId(), kind: 'recipe', recipeId: h.recipeId, portions: 1 }
+									)
+								)}
+						>
+							<Icon name="plus" size={13} />
+							{catalog.recipesById.get(h.recipeId)?.title} · 1 porcia
+						</button>
+					{/each}
+				</div>
+			{/if}
+
+			{#if picked}
+				<div class="picked">
+					<p>
+						<strong
+							>{picked.kind === 'recipe' ? picked.recipe.title : picked.ingredient.name}</strong
+						>
+					</p>
+					<div class="picked-row">
+						{#if picked.kind === 'recipe'}
 							<label class="field small-field">
-								<span class="sr-only">Jednotka</span>
-								<select bind:value={unit}>
-									{#each pickedUnits as u (u)}<option value={u}>{u}</option>{/each}
-								</select>
+								<span>Porcie</span>
+								<input type="number" min="0.25" max="20" step="any" bind:value={portions} />
 							</label>
 						{:else}
-							<span>g</span>
+							<label class="field small-field">
+								<span class="sr-only">Množstvo</span>
+								<input type="number" min="0" max="5000" step="any" bind:value={amount} />
+							</label>
+							{#if pickedUnits.length > 1}
+								<label class="field small-field">
+									<span class="sr-only">Jednotka</span>
+									<select bind:value={unit}>
+										{#each pickedUnits as u (u)}<option value={u}>{u}</option>{/each}
+									</select>
+								</label>
+							{:else}
+								<span>g</span>
+							{/if}
 						{/if}
+						<button class="btn leaf small" onclick={addPicked}>Zapísať</button>
+						<button class="btn ghost small" onclick={() => (picked = null)}>Zrušiť</button>
+					</div>
+					{#if picked.kind === 'recipe' && !picked.recipe.showNutrition}
+						<p class="muted small">
+							Pri tomto recepte hodnoty nepoznáme (cedí sa). Zapíš radšej hotový výrobok, napríklad
+							tofu v gramoch.
+						</p>
 					{/if}
-					<button class="btn leaf small" onclick={addPicked}>Zapísať</button>
-					<button class="btn ghost small" onclick={() => (picked = null)}>Zrušiť</button>
 				</div>
-				{#if picked.kind === 'recipe' && !picked.recipe.showNutrition}
-					<p class="muted small">
-						Pri tomto recepte hodnoty nepoznáme (cedí sa). Zapíš radšej hotový výrobok, napríklad
-						tofu v gramoch.
-					</p>
-				{/if}
-			</div>
-		{:else if custom}
-			<form
-				class="picked"
-				onsubmit={(e) => {
-					e.preventDefault();
-					addCustom();
-				}}
-			>
+			{:else if custom}
+				<form
+					class="picked"
+					onsubmit={(e) => {
+						e.preventDefault();
+						addCustom();
+					}}
+				>
+					<label class="field small-field">
+						<span class="sr-only">Čo to bolo</span>
+						<input
+							bind:value={customName}
+							maxlength="60"
+							placeholder="Napr. sezamová tyčinka"
+							required
+						/>
+					</label>
+					<div class="picked-row">
+						<label class="field small-field">
+							<span>Bielkoviny g</span>
+							<input type="number" min="0" max="500" step="any" bind:value={customProtein} />
+						</label>
+						{#if journal.current.showKcal}
+							<label class="field small-field">
+								<span>kcal</span>
+								<input type="number" min="0" max="5000" step="any" bind:value={customKcal} />
+							</label>
+						{/if}
+						<button class="btn leaf small" type="submit">Zapísať</button>
+						<button class="btn ghost small" type="button" onclick={() => (custom = false)}
+							>Zrušiť</button
+						>
+					</div>
+					<p class="muted small">Čísla nájdeš na obale. Ak ich nepoznáš, nechaj prázdne.</p>
+				</form>
+			{:else}
 				<label class="field small-field">
-					<span class="sr-only">Čo to bolo</span>
+					<Icon name="search" size={16} />
+					<span class="sr-only">Hľadaj recept alebo surovinu</span>
 					<input
-						bind:value={customName}
-						maxlength="60"
-						placeholder="Napr. sezamová tyčinka"
-						required
+						type="search"
+						bind:value={query}
+						placeholder="Recept alebo surovina: dal, jablko, tofu…"
+						autocomplete="off"
 					/>
 				</label>
-				<div class="picked-row">
-					<label class="field small-field">
-						<span>Bielkoviny g</span>
-						<input type="number" min="0" max="500" step="any" bind:value={customProtein} />
-					</label>
-					{#if journal.current.showKcal}
-						<label class="field small-field">
-							<span>kcal</span>
-							<input type="number" min="0" max="5000" step="any" bind:value={customKcal} />
-						</label>
-					{/if}
-					<button class="btn leaf small" type="submit">Zapísať</button>
-					<button class="btn ghost small" type="button" onclick={() => (custom = false)}
-						>Zrušiť</button
-					>
-				</div>
-				<p class="muted small">Čísla nájdeš na obale. Ak ich nepoznáš, nechaj prázdne.</p>
-			</form>
-		{:else}
-			<label class="field small-field">
-				<Icon name="search" size={16} />
-				<span class="sr-only">Hľadaj recept alebo surovinu</span>
-				<input
-					type="search"
-					bind:value={query}
-					placeholder="Recept alebo surovina: dal, jablko, tofu…"
-					autocomplete="off"
-				/>
-			</label>
-			{#if results.recipes.length || results.ingredients.length}
-				<ul class="results">
-					{#each results.recipes as r (r.id)}
+				{#if results.recipes.length || results.ingredients.length}
+					<ul class="results">
+						{#each results.recipes as r (r.id)}
+							<li>
+								<button onclick={() => pick({ kind: 'recipe', recipe: r })}>
+									<Icon name="bowl" size={15} />
+									{r.title}
+									<small class="muted">recept</small>
+								</button>
+							</li>
+						{/each}
+						{#each results.ingredients as i (i.id)}
+							<li>
+								<button onclick={() => pick({ kind: 'ingredient', ingredient: i })}>
+									<Icon name="leaf" size={15} />
+									{i.name}
+									<small class="muted">surovina</small>
+								</button>
+							</li>
+						{/each}
+					</ul>
+				{:else if query.trim().length >= 2}
+					<p class="muted small">Nič také nemáme.</p>
+				{/if}
+				<button class="btn ghost small other" onclick={() => (custom = true)}>
+					<Icon name="pencil" size={15} /> Niečo kúpené alebo mimo Receptia
+				</button>
+			{/if}
+
+			{#if day.items.length}
+				<ul class="items">
+					{#each day.items as item (item.id)}
 						<li>
-							<button onclick={() => pick({ kind: 'recipe', recipe: r })}>
-								<Icon name="bowl" size={15} />
-								{r.title}
-								<small class="muted">recept</small>
-							</button>
-						</li>
-					{/each}
-					{#each results.ingredients as i (i.id)}
-						<li>
-							<button onclick={() => pick({ kind: 'ingredient', ingredient: i })}>
-								<Icon name="leaf" size={15} />
-								{i.name}
-								<small class="muted">surovina</small>
+							<span class="name">{itemLabel(item)}</span>
+							<span class="muted small">{itemFacts(item)}</span>
+							{#if item.kind === 'recipe'}
+								<span class="stepper">
+									<button
+										class="icon-btn"
+										aria-label="O pol porcie menej: {itemLabel(item)}"
+										onclick={() => change((d) => setPortions(d, item.id, item.portions - 0.5))}
+									>
+										<Icon name="minus" size={15} />
+									</button>
+									<button
+										class="icon-btn"
+										aria-label="O pol porcie viac: {itemLabel(item)}"
+										onclick={() => change((d) => setPortions(d, item.id, item.portions + 0.5))}
+									>
+										<Icon name="plus" size={15} />
+									</button>
+								</span>
+							{/if}
+							<button
+								class="icon-btn remove"
+								aria-label="Odstrániť: {itemLabel(item)}"
+								onclick={() => change((d) => removeItem(d, item.id))}
+							>
+								<Icon name="x" size={16} />
 							</button>
 						</li>
 					{/each}
 				</ul>
-			{:else if query.trim().length >= 2}
-				<p class="muted small">Nič také nemáme.</p>
-			{/if}
-			<button class="btn ghost small other" onclick={() => (custom = true)}>
-				<Icon name="pencil" size={15} /> Niečo kúpené alebo mimo Receptia
-			</button>
-		{/if}
 
-		{#if day.items.length}
-			<ul class="items">
-				{#each day.items as item (item.id)}
-					<li>
-						<span class="name">{itemLabel(item)}</span>
-						<span class="muted small">{itemFacts(item)}</span>
-						<button
-							class="icon-btn"
-							aria-label="Odstrániť: {itemLabel(item)}"
-							onclick={() => change((d) => removeItem(d, item.id))}
-						>
-							<Icon name="x" size={16} />
-						</button>
-					</li>
-				{/each}
-			</ul>
-
-			<h3>Spolu za deň</h3>
-			<NutrientBars values={totals.nutrients} {targets} keys={barKeys} />
-			{#if totals.unknown || totals.partial}
-				<p class="muted small">
-					{#if totals.unknown}Pri {totals.unknown}
-						{totals.unknown === 1 ? 'položke' : 'položkách'} hodnoty nepoznáme.{/if}
-					{#if totals.partial}Kúpené veci sa rátajú len do bielkovín{journal.current.showKcal
-							? ' a kalórií'
-							: ''}.{/if}
-					Skutočné čísla sú teda vyššie.
-				</p>
+				<h3>Spolu za deň</h3>
+				<NutrientBars values={totals.nutrients} {targets} keys={barKeys} />
+				{#if totals.unknown || totals.partial}
+					<p class="muted small">
+						{#if totals.unknown}Pri {totals.unknown}
+							{totals.unknown === 1 ? 'položke' : 'položkách'} hodnoty nepoznáme.{/if}
+						{#if totals.partial}Kúpené veci sa rátajú len do bielkovín{journal.current.showKcal
+								? ' a kalórií'
+								: ''}.{/if}
+						Skutočné čísla sú teda vyššie.
+					</p>
+				{/if}
+			{:else}
+				<p class="muted">V tento deň zatiaľ nič.</p>
 			{/if}
-		{:else}
-			<p class="muted">V tento deň zatiaľ nič.</p>
 		{/if}
 		<p class="muted small">
 			Hodnoty sú orientačné (USDA, surové suroviny). B12 z jedla nezískaš,
@@ -472,7 +531,10 @@
 					</button>
 				{/if}
 			</div>
-			<p class="muted small">Skrytý denník si záznamy nechá. Uchovávajú sa posledné 3 mesiace.</p>
+			<p class="muted small">
+				Skrytý denník si záznamy nechá. Pamätá si rok: posledné 3 mesiace po položkách, staršie dni
+				ako súčty.
+			</p>
 		</details>
 	{/if}
 </section>
@@ -507,7 +569,9 @@
 	}
 	.daynav strong {
 		text-align: center;
-		text-transform: capitalize;
+	}
+	.daynav strong::first-letter {
+		text-transform: uppercase;
 	}
 	.water-head {
 		display: flex;
@@ -611,8 +675,8 @@
 	}
 	.items li {
 		display: grid;
-		grid-template-columns: 1fr auto;
-		gap: 2px 10px;
+		grid-template-columns: 1fr auto auto;
+		gap: 2px 6px;
 		padding: 8px 0;
 		border-bottom: 1px dashed var(--line);
 	}
@@ -623,10 +687,25 @@
 	.items .muted {
 		grid-row: 2;
 	}
-	.icon-btn {
+	.stepper {
 		grid-row: 1 / span 2;
 		grid-column: 2;
 		align-self: center;
+		display: flex;
+	}
+	.remove {
+		grid-row: 1 / span 2;
+		grid-column: 3;
+		align-self: center;
+	}
+	.water-old {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px;
+		margin: 16px 0;
+	}
+	.icon-btn {
 		display: grid;
 		place-items: center;
 		width: 36px;
@@ -638,6 +717,9 @@
 		cursor: pointer;
 	}
 	.icon-btn:hover {
+		background: var(--paper-2);
+	}
+	.remove:hover {
 		background: var(--tomato-soft);
 	}
 	.prefs {

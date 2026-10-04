@@ -2,10 +2,12 @@ import { describe, expect, it } from 'vitest';
 import {
 	addItem,
 	addWater,
+	compactJournal,
 	dayTotals,
 	localToday,
 	NO_JOURNAL,
 	removeItem,
+	setPortions,
 	shiftDate,
 	validateJournal,
 	withDay,
@@ -74,11 +76,44 @@ describe('dayTotals', () => {
 
 describe('journal days', () => {
 	it('drops empty days and days older than the window', () => {
-		let j: Journal = { ...NO_JOURNAL, days: { '2026-01-01': { waterMl: 500, items: [] } } };
+		let j: Journal = { ...NO_JOURNAL, days: { '2025-09-01': { waterMl: 500, items: [] } } };
 		j = withDay(j, '2026-10-04', (d) => addWater(d, 250), '2026-10-04');
 		expect(Object.keys(j.days)).toEqual(['2026-10-04']);
 		j = withDay(j, '2026-10-04', (d) => addWater(d, -1000), '2026-10-04');
 		expect(j.days).toEqual({});
+	});
+
+	it('puts a second helping on the same line and changes portions', () => {
+		let day = addItem(
+			{ waterMl: 0, items: [] },
+			{ id: 'a', kind: 'recipe', recipeId: 'dal', portions: 1 }
+		);
+		day = addItem(day, { id: 'b', kind: 'recipe', recipeId: 'dal', portions: 1 });
+		day = addItem(day, { id: 'c', kind: 'recipe', recipeId: 'dal', variant: 'Ľahší', portions: 1 });
+		expect(day.items.map((i) => i.id)).toEqual(['a', 'c']);
+		expect(day.items[0]).toMatchObject({ portions: 2 });
+		expect(setPortions(day, 'a', 2.5).items[0]).toMatchObject({ portions: 2.5 });
+		expect(setPortions(day, 'a', 0).items.map((i) => i.id)).toEqual(['c']);
+	});
+
+	it('keeps a year: details for three months, totals before that', () => {
+		let j: Journal = {
+			...NO_JOURNAL,
+			days: {
+				'2026-06-01': {
+					waterMl: 1500,
+					items: [{ id: '1', kind: 'recipe', recipeId: 'dal', portions: 2 }]
+				},
+				'2026-09-30': { waterMl: 500, items: [] }
+			}
+		};
+		j = compactJournal(j, '2026-10-04', recipes, ingredients);
+		expect(Object.keys(j.days)).toEqual(['2026-09-30']);
+		expect(j.summaries['2026-06-01']).toMatchObject({ waterMl: 1500, items: 1, unknown: 0 });
+		expect(j.summaries['2026-06-01'].nutrients.protein).toBe(40);
+		expect(compactJournal(j, '2026-10-04', recipes, ingredients)).toBe(j);
+		j = withDay(j, '2026-10-04', (d) => addWater(d, 250), '2027-06-02');
+		expect(j.summaries).toEqual({});
 	});
 
 	it('adds and removes items', () => {

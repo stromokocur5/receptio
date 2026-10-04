@@ -3,7 +3,7 @@
 	"name": "receptio",
 	"compatibility_date": "2026-09-26",
 	"compatibility_flags": ["nodejs_als"],
-	"main": ".svelte-kit/cloudflare/_worker.js",
+	"main": "worker.js",
 	"assets": {
 		"binding": "ASSETS",
 		"directory": ".svelte-kit/cloudflare"
@@ -35,6 +35,8 @@
 		// Frontend hostnames Turnstile tokens may come from (secret TURNSTILE_SECRET is set on the Worker).
 		"TURNSTILE_HOSTNAMES": "receptio.kohut.xyz,receptio.gabrielkohut3.workers.dev"
 	},
+	// Water reminders: every quarter hour, see src/lib/server/push.ts (secret VAPID_PRIVATE_JWK).
+	"triggers": { "crons": ["*/15 * * * *"] },
 	"routes": [{ "pattern": "receptio.kohut.xyz", "custom_domain": true }],
 	"observability": {
 		"enabled": true
