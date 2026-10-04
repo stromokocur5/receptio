@@ -40,7 +40,9 @@
 		addToPlan,
 		favorites,
 		history,
+		journal,
 		likes,
+		logPortion,
 		LIST_SEARCH_KEY,
 		notes,
 		pantry,
@@ -131,6 +133,15 @@
 			SITE_ORIGIN
 		)
 	]);
+
+	let justLogged = $state(false);
+	let loggedTimer: ReturnType<typeof setTimeout> | undefined;
+	function logEaten() {
+		logPortion(base.id, variantName ?? undefined);
+		justLogged = true;
+		clearTimeout(loggedTimer);
+		loggedTimer = setTimeout(() => (justLogged = false), 2000);
+	}
 
 	let servings = $state(0);
 	$effect.pre(() => {
@@ -558,6 +569,16 @@
 						<Icon name="bookmark" size={19} />
 					</button>
 					<LikeButton recipeId={recipe.id} />
+					{#if ui.loaded && journal.current.enabled && recipe.showNutrition}
+						<button
+							class="icon-btn"
+							onclick={logEaten}
+							aria-label={justLogged ? 'Zapísané do denníka' : 'Zapísať porciu do denníka'}
+							title={justLogged ? 'Zapísané do denníka' : 'Zjedol/a som porciu'}
+						>
+							<Icon name={justLogged ? 'check' : 'cup'} size={19} />
+						</button>
+					{/if}
 					<button
 						class="icon-btn"
 						onclick={share}
@@ -577,6 +598,11 @@
 					{#if inPlan}<a class="in-plan" href="/plan">V pláne: {inPlan} porc.</a>{/if}
 				</div>
 			</div>
+			{#if justLogged}
+				<p class="cooked-line" data-noprint role="status">
+					<Icon name="cup" size={18} /> Porcia je v dnešnom <a href="/moje#dennik">denníku</a>.
+				</p>
+			{/if}
 			{#if cookedTimes.length}
 				<p class="cooked-line" data-noprint>
 					<Icon name="history" size={18} /> Uvarené {cookedTimes.length}×, naposledy

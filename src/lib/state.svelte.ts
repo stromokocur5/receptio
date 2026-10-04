@@ -1,6 +1,6 @@
 import { browser } from '$app/environment';
 import { NO_AVOID, validateAvoid, type Avoid } from './avoid';
-import { NO_JOURNAL, validateJournal, type Journal } from './journal';
+import { addItem, localToday, NO_JOURNAL, validateJournal, withDay, type Journal } from './journal';
 import { consumeFromPantry, type Pantry, type PantryUse } from './pantry';
 import { validatePreserves, type Preserve } from './preserves';
 import type { PlanEntry } from './shopping';
@@ -532,6 +532,24 @@ export const preserves = new Persisted<Preserve[]>('preserves', [], validatePres
 
 /** Food and water diary, off until switched on in Moje. */
 export const journal = new Persisted<Journal>('journal', NO_JOURNAL, validateJournal);
+
+/** Writes one eaten portion of a recipe into today's diary. */
+export function logPortion(recipeId: string, variant?: string) {
+	const today = localToday();
+	const id = crypto.randomUUID().slice(0, 8);
+	journal.current = withDay(
+		journal.current,
+		today,
+		(day) =>
+			addItem(
+				day,
+				variant
+					? { id, kind: 'recipe', recipeId, variant, portions: 1 }
+					: { id, kind: 'recipe', recipeId, portions: 1 }
+			),
+		today
+	);
+}
 
 /** Everything kept on this device, for backup/restore. */
 export const ALL_PERSISTED = {
