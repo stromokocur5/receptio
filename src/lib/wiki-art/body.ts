@@ -81,6 +81,28 @@ const floor = (x1: number, x2: number, y: number) =>
 const dumbbell = `<g class="ta-dumbbell"><path d="M-7 0h14"/><rect x="-10" y="-4" width="4" height="8" rx="1"/><rect x="6" y="-4" width="4" height="8" rx="1"/></g>`;
 
 export const BODY_ART: Record<string, () => string> = {
+	pretazenie: () => {
+		// Load creeps up week by week; every few weeks a lighter one lets the body catch up.
+		const loads = [40, 48, 56, 64, 44, 60, 70, 80];
+		return (
+			floor(30, 300, 150) +
+			loads
+				.map((h, i) => {
+					const light = i === 4;
+					return (
+						`<rect class="ta-bar-v" style="--d:${(i * 0.15).toFixed(2)}s;fill:var(${light ? '--sky' : '--leaf-2'})" x="${44 + i * 32}" y="${150 - h}" width="22" height="${h}" rx="4"/>` +
+						label(55 + i * 32, 166, String(i + 1), 'middle')
+					);
+				})
+				.join('') +
+			arrow(60, 96, 150, 72, 6) +
+			label(40, 30, 'každý týždeň o kúsok viac') +
+			label(40, 44, '+1 opakovanie alebo +1–2,5 kg') +
+			label(183, 100, 'ľahší', 'middle') +
+			label(165, 184, 'týždeň', 'middle')
+		);
+	},
+
 	'drep-klik': () =>
 		floor(10, 310, 160) +
 		// Squat, facing right: hips go back and down, arms forward for balance.

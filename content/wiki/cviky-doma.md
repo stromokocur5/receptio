@@ -31,6 +31,7 @@ Rob cviky za sebou ako okruh. Medzi cvikmi 30 sekúnd pauza, medzi okruhmi 1–2
 - Techniku pred rýchlosťou: chrbát rovný, kolená pri drepe smerujú nad špičky.
 - Svalovica na druhý deň je normálna, ostrá bolesť v kĺbe nie – vtedy prestaň.
 - Pri zdravotných ťažkostiach sa poraď s lekárom.
+- Keď ti vlastná váha prestane stačiť, pokračuj s činkami alebo gumami: **[silový tréning s činkami a gumami](/wiki/silovy-trening)**.
 
 ## Jedlo
 

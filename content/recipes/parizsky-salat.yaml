@@ -1,0 +1,45 @@
+title: Parížsky šalát
+description: Bufetová klasika z lahôdok – rezančeky „salámy“ z opečeného údeného tofu, kyslé uhorky, cibuľa, mrkva s hráškom a majonéza. S rožkom alebo na chlebíčky.
+cuisine: slovenska
+meals: [ranajky, vecera, snack]
+categories: [salaty/prilohove, comfort/bufet]
+time: 45
+active: 25
+servings: 4
+ahead: 'Hotový šalát nechaj aspoň hodinu odležať v chladničke, chute sa spoja.'
+difficulty: 1
+tags: [klasika, party]
+keeps: { fridge: 3 }
+related: [vlassky-salat, oblozene-chlebicky]
+ingredients:
+  - tofu-udene: 200 g
+  - olej: 1 pl
+  - sojova-omacka: 1 pl
+  - udena-paprika: 1/2 čl
+  - mrkva: 2 ks
+  - hrasok: 1/2 hrnček | mrazený
+  - kysle-uhorky: 4 ks | + 2 PL nálevu
+  - cibula: 1 ks | menšia
+  - veganska-majoneza: 6 pl
+  - horcica: 1 čl
+  - sol: 1/4 čl
+  - cierne-korenie: 1 štipka
+steps:
+  - Mrkvu ošúp a celú var v osolenej vode 12–15 minút, kým ju nôž ľahko prepichne. Posledné 2 minúty k nej pridaj hrášok. Sceď, prelej studenou vodou a nechaj úplne vychladnúť – teplá zelenina by majonézu roztopila.
+  - Medzitým tofu osuš papierovou utierkou a nakrájaj na tenké rezančeky ako salámu, asi 4 cm dlhé a 3 mm hrubé. Na panvici rozohrej olej na strednom ohni a rezančeky opekaj 4–5 minút, občas premiešaj, kým nemajú zlaté okraje.
+  - Panvicu odstav, tofu pokvapkaj sójovou omáčkou, posyp údenou paprikou a premiešaj. Nechaj vychladnúť. Opečené tofu chutí ako údená saláma a v majonéze nerozmokne.
+  - Cibuľu nakrájaj nadrobno. Ak je ostrá, zalej ju na 5 minút vriacou vodou a sceď. Uhorky nakrájaj na tenké rezančeky, vychladnutú mrkvu na drobné kocky.
+  - Majonézu zmiešaj s horčicou, 2 PL nálevu z uhoriek, soľou a korením.
+  - Tofu, mrkvu, hrášok, uhorky a cibuľu premiešaj s majonézou. Ochutnaj a podľa potreby pridaj nálev alebo soľ.
+tips:
+  - Bez opekania – tofu len nakrájaj a premiešaj so sójovkou a paprikou. Bude mäkšie, ale hotové za pár minút.
+  - Na chlebíčky ho nakrájaj jemnejšie, nech drží na pečive.
+variants:
+  - name: Ľahšia verzia
+    description: Polovicu majonézy nahradí sójový jogurt – šalát je ľahší a sviežejší.
+    replace:
+      - from: veganska-majoneza
+        to: veganska-majoneza
+        amount: 3 pl
+    add:
+      - sojovy-jogurt: 3 pl
