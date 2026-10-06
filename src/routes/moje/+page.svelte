@@ -573,6 +573,7 @@
 		color: var(--ink-2);
 		font-size: 0.92rem;
 	}
+	.statbox,
 	.weekbox {
 		margin-bottom: 20px;
 	}

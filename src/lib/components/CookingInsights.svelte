@@ -100,12 +100,18 @@
 	<dl class="tiles">
 		<div>
 			<dt>Doma vs. reštaurácia</dt>
-			<dd>{formatEur(meals.cost)}</dd>
-			<dd class="sub">
-				za {meals.portions} obedov a večerí; v reštaurácii ~{formatEur(
-					meals.portions * RESTAURANT_MEAL_EUR
-				)} <span class="badge">odhad</span>
-			</dd>
+			{#if meals.portions}
+				<dd>{formatEur(meals.cost)}</dd>
+				<dd class="sub">
+					za {meals.portions}
+					{meals.portions === 1 ? 'obed či večeru' : 'obedov a večerí'}; v reštaurácii ~{formatEur(
+						meals.portions * RESTAURANT_MEAL_EUR
+					)} <span class="badge">odhad</span>
+				</dd>
+			{:else}
+				<dd>–</dd>
+				<dd class="sub">keď uvaríš obed alebo večeru</dd>
+			{/if}
 		</div>
 		<div>
 			<dt>Ušetrené na akciách</dt>
@@ -118,7 +124,9 @@
 		<div>
 			<dt>Varenie po sebe</dt>
 			<dd>{cookingStreak}</dd>
-			<dd class="sub">{cookingStreak === 1 ? 'deň' : cookingStreak < 5 ? 'dni' : 'dní'}</dd>
+			<dd class="sub">
+				{cookingStreak === 1 ? 'deň' : cookingStreak > 1 && cookingStreak < 5 ? 'dni' : 'dní'}
+			</dd>
 		</div>
 	</dl>
 	<p class="muted small">
@@ -272,6 +280,7 @@
 
 <style>
 	.insights {
+		margin-bottom: 20px;
 		padding: 20px;
 	}
 	.insights h2 {
