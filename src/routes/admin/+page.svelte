@@ -6,7 +6,7 @@
 	let { data } = $props();
 	const catalog = useCatalog();
 
-	let tab = $state<'feedback' | 'suggestions' | 'likes'>('feedback');
+	let tab = $state<'feedback' | 'suggestions' | 'likes' | 'stats'>('feedback');
 	let showDone = $state(false);
 
 	const dateFormat = new Intl.DateTimeFormat('sk-SK', {
@@ -26,6 +26,14 @@
 	const suggestions = $derived(
 		showDone ? data.suggestions : data.suggestions.filter((s) => s.status === 'new')
 	);
+	/** Recipes cooks had trouble with or rated low – the first to fix. */
+	const toFix = $derived(
+		data.perRecipe
+			.filter((r) => r.problems > 0 || (r.rating !== null && r.rating < 3.5))
+			.sort((a, b) => b.problems - a.problems || (a.rating ?? 5) - (b.rating ?? 5))
+	);
+	const dayOf = (unix: number) => new Date(unix * 1000).toLocaleDateString('sk-SK');
+
 	/** Confirmed by a few cooks and not flagged: ready to be marked `tested`. */
 	const readyToMark = $derived(
 		data.perRecipe.filter(
@@ -55,7 +63,10 @@
 		<button class="chip" aria-pressed={tab === 'likes'} onclick={() => (tab = 'likes')}>
 			Lajky
 		</button>
-		{#if tab !== 'likes'}
+		<button class="chip" aria-pressed={tab === 'stats'} onclick={() => (tab = 'stats')}>
+			Štatistiky {#if toFix.length}<span class="count">{toFix.length}</span>{/if}
+		</button>
+		{#if tab === 'feedback' || tab === 'suggestions'}
 			<label class="done-toggle">
 				<input type="checkbox" bind:checked={showDone} /> ukázať aj vybavené
 			</label>
@@ -140,6 +151,95 @@
 			{/each}
 		</ul>
 		<p class="muted small">Recept z návrhu ti prepíšem do YAML – stačí napísať, ktorý.</p>
+	{:else if tab === 'stats'}
+		<dl class="usage">
+			<div>
+				<dt>Synchronizácie a spoločné zoznamy</dt>
+				<dd>{data.usage.sync}</dd>
+			</div>
+			<div>
+				<dt>Pripomienky vody</dt>
+				<dd>{data.usage.water}</dd>
+			</div>
+			<div>
+				<dt>Pripomienky vitamínov</dt>
+				<dd>{data.usage.supplements}</dd>
+			</div>
+			<div>
+				<dt>Lajky</dt>
+				<dd>{data.usage.likes} <small>z {data.usage.likers} zariadení</small></dd>
+			</div>
+			<div>
+				<dt>Spätné väzby</dt>
+				<dd>{data.usage.feedback}</dd>
+			</div>
+		</dl>
+
+		<section class="card box">
+			<h2><Icon name="alert" size={20} /> Na opravu</h2>
+			{#if toFix.length}
+				<p class="muted small">Recepty s nahlásenou chybou alebo hodnotením pod 3,5 ★.</p>
+				<table class="likes">
+					<tbody>
+						{#each toFix as r (r.recipe_id)}
+							<tr>
+								<td><a href="/recepty/{r.recipe_id}">{titleOf(r.recipe_id)}</a></td>
+								<td class="n">{r.problems}× chyba</td>
+								<td class="n"
+									>{r.rating === null ? '–' : `${r.rating.toFixed(1)} ★ (${r.ratings})`}</td
+								>
+							</tr>
+						{/each}
+					</tbody>
+				</table>
+			{:else}
+				<p class="muted">Nič nahlásené.</p>
+			{/if}
+		</section>
+
+		<section class="card box">
+			<h2><Icon name="star" size={20} /> Ako recepty vychádzajú</h2>
+			<table class="likes">
+				<thead
+					><tr
+						><th>Recept</th><th class="n">vyšlo</th><th class="n">chyba</th><th class="n">★</th></tr
+					></thead
+				>
+				<tbody>
+					{#each data.perRecipe as r (r.recipe_id)}
+						<tr>
+							<td><a href="/recepty/{r.recipe_id}">{titleOf(r.recipe_id)}</a></td>
+							<td class="n">{r.worked}</td>
+							<td class="n">{r.problems}</td>
+							<td class="n">{r.rating === null ? '–' : `${r.rating.toFixed(1)} (${r.ratings})`}</td>
+						</tr>
+					{:else}
+						<tr><td class="muted">Zatiaľ nikto nič nenahlásil.</td></tr>
+					{/each}
+				</tbody>
+			</table>
+		</section>
+
+		<section class="card box">
+			<h2><Icon name="search" size={20} /> Hľadali a nenašli</h2>
+			<p class="muted small">
+				Hľadania na Receptoch, ktoré nenašli žiadny recept ani bez filtrov. Kandidáti na nové
+				recepty – stačí mi napísať, ktoré dopísať.
+			</p>
+			<table class="likes">
+				<tbody>
+					{#each data.misses as m (m.term)}
+						<tr>
+							<td><a href="/recepty?q={encodeURIComponent(m.term)}">{m.term}</a></td>
+							<td class="n">{m.count}×</td>
+							<td class="n muted">{dayOf(m.last_at)}</td>
+						</tr>
+					{:else}
+						<tr><td class="muted">Zatiaľ nič.</td></tr>
+					{/each}
+				</tbody>
+			</table>
+		</section>
 	{:else}
 		<table class="likes">
 			<tbody>
@@ -262,5 +362,36 @@
 	.likes .n {
 		text-align: right;
 		font-weight: 700;
+	}
+	.usage {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+		gap: 10px;
+		margin: 0 0 16px;
+	}
+	.usage div {
+		padding: 10px 12px;
+		border-radius: 14px;
+		background: var(--paper-2);
+	}
+	.usage dt {
+		font-size: 0.8rem;
+		color: var(--ink-2);
+	}
+	.usage dd {
+		margin: 2px 0 0;
+		font-size: 1.4rem;
+		font-weight: 700;
+	}
+	.usage small {
+		font-size: 0.8rem;
+		font-weight: 400;
+		color: var(--muted);
+	}
+	.likes th {
+		text-align: left;
+		font-size: 0.8rem;
+		color: var(--muted);
+		font-weight: 600;
 	}
 </style>

@@ -38,14 +38,27 @@ export interface SuggestionRow {
 }
 
 export async function adminData(db: D1Database) {
-	const [feedback, perRecipe, suggestions, likes] = await db.batch([
+	const [feedback, perRecipe, suggestions, likes, misses, usage] = await db.batch([
 		db.prepare("SELECT * FROM feedback ORDER BY status = 'new' DESC, created_at DESC LIMIT 200"),
 		db.prepare(
-			"SELECT recipe_id, SUM(kind = 'worked') AS worked, SUM(kind = 'problem') AS problems FROM feedback GROUP BY recipe_id ORDER BY worked DESC"
+			"SELECT recipe_id, SUM(kind = 'worked') AS worked, SUM(kind = 'problem') AS problems, AVG(rating) AS rating, COUNT(rating) AS ratings FROM feedback GROUP BY recipe_id ORDER BY worked DESC"
 		),
 		db.prepare("SELECT * FROM suggestions ORDER BY status = 'new' DESC, created_at DESC LIMIT 100"),
 		db.prepare(
 			'SELECT recipe_id, COUNT(*) AS n FROM likes GROUP BY recipe_id ORDER BY n DESC LIMIT 30'
+		),
+		db.prepare(
+			'SELECT term, count, last_at FROM search_misses ORDER BY count DESC, last_at DESC LIMIT 60'
+		),
+		// How many devices use each server feature; nothing about who.
+		db.prepare(
+			`SELECT
+				(SELECT COUNT(*) FROM sync) AS sync,
+				(SELECT COUNT(*) FROM push_reminders) AS water,
+				(SELECT COUNT(*) FROM supplement_reminders) AS supplements,
+				(SELECT COUNT(DISTINCT device_id) FROM likes) AS likers,
+				(SELECT COUNT(*) FROM likes) AS likes,
+				(SELECT COUNT(*) FROM feedback) AS feedback`
 		)
 	]);
 	return {
@@ -54,9 +67,20 @@ export async function adminData(db: D1Database) {
 			recipe_id: string;
 			worked: number;
 			problems: number;
+			rating: number | null;
+			ratings: number;
 		}[],
 		suggestions: suggestions.results as unknown as SuggestionRow[],
-		likes: likes.results as unknown as { recipe_id: string; n: number }[]
+		likes: likes.results as unknown as { recipe_id: string; n: number }[],
+		misses: misses.results as unknown as { term: string; count: number; last_at: number }[],
+		usage: usage.results[0] as unknown as {
+			sync: number;
+			water: number;
+			supplements: number;
+			likers: number;
+			likes: number;
+			feedback: number;
+		}
 	};
 }
 

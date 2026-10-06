@@ -31,7 +31,12 @@
 			links: [
 				{ href: '/wiki', label: 'Wiki', hint: 'Základy varenia, suplementy, pohyb', icon: 'book' },
 				{ href: '/kurz', label: 'Kurz varenia', hint: '14 receptov od nuly', icon: 'chef' },
-				{ href: '/ceny', label: 'Ceny a akcie', hint: 'Čo koľko stojí, čo je v zľave', icon: 'tag' },
+				{
+					href: '/ceny',
+					label: 'Ceny a akcie',
+					hint: 'Čo koľko stojí, čo je v zľave',
+					icon: 'tag'
+				},
 				{ href: '/vybavenie', label: 'Vybavenie', hint: 'Čo treba a čím to nahradiť', icon: 'pot' }
 			]
 		},

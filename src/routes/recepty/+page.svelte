@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { cleanSearchTerm } from '$lib/search-miss';
 	import Seo from '$lib/components/Seo.svelte';
 	import { onMount, tick } from 'svelte';
 	import { goto, replaceState } from '$app/navigation';
@@ -346,6 +347,24 @@
 				.sort((a, b) => found(b) - found(a) || byRelevance(a, b))
 				.slice(0, MAX_NEAREST)
 		};
+	});
+
+	// A search no recipe answers, even without filters, tells what to write next. Sent once per
+	// term and only after typing stops, so half-typed words don't count.
+	const reportedMisses = new Set<string>();
+	$effect(() => {
+		if (results.length || nearest.kind === 'filters') return;
+		const term = cleanSearchTerm(q);
+		if (!term || reportedMisses.has(term)) return;
+		const timer = setTimeout(() => {
+			reportedMisses.add(term);
+			void fetch('/api/hladanie', {
+				method: 'POST',
+				headers: { 'content-type': 'application/json' },
+				body: JSON.stringify({ term })
+			}).catch(() => {});
+		}, 2500);
+		return () => clearTimeout(timer);
 	});
 
 	/** Keeps the search, drops everything that narrows it. */
