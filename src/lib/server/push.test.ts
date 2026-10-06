@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dueReminders, vapidAuthorization } from './push';
+import { dueReminders, dueSupplements, vapidAuthorization } from './push';
 import { VAPID_PUBLIC_KEY } from '../push';
 
 const row = {
@@ -20,6 +20,28 @@ describe('dueReminders', () => {
 	});
 	it('skips the day the goal was met', () => {
 		expect(dueReminders([{ ...row, skip_date: '2026-10-04' }], at)).toEqual([]);
+	});
+});
+
+describe('dueSupplements', () => {
+	const supplement = {
+		id: 's',
+		endpoint: 'https://fcm.googleapis.com/fcm/send/y',
+		times: '480,1200',
+		tz: 'Europe/Bratislava',
+		done_date: null as string | null,
+		done_times: ''
+	};
+	// 08:00 in Bratislava.
+	const at = new Date('2026-10-04T06:00:00Z');
+	it('reminds at the set local time', () => {
+		expect(dueSupplements([supplement], at)).toHaveLength(1);
+		expect(dueSupplements([{ ...supplement, times: '1200' }], at)).toEqual([]);
+	});
+	it('stays quiet for a time already ticked off today', () => {
+		const done = { ...supplement, done_date: '2026-10-04', done_times: '480' };
+		expect(dueSupplements([done], at)).toEqual([]);
+		expect(dueSupplements([{ ...done, done_date: '2026-10-03' }], at)).toHaveLength(1);
 	});
 });
 

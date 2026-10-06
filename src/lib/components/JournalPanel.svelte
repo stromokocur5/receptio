@@ -3,6 +3,7 @@
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
+	import SupplementsPanel from '$lib/components/SupplementsPanel.svelte';
 	import WaterReminders from '$lib/components/WaterReminders.svelte';
 	import {
 		addItem,
@@ -11,8 +12,13 @@
 		compactJournal,
 		EMPTY_DAY,
 		JOURNAL_DAYS_KEPT,
+		averageNutrients,
 		itemNutrients,
 		localToday,
+		MIN_DAYS_FOR_GAPS,
+		nutrientGaps,
+		recentTotals,
+		recipesRichIn,
 		NO_JOURNAL,
 		removeItem,
 		setPortions,
@@ -23,7 +29,17 @@
 		type JournalItem
 	} from '$lib/journal';
 	import { normalizeSearch, ingredientSearchText } from '$lib/labels';
-	import { history, journal } from '$lib/state.svelte';
+	import {
+		ACTIVITY_LABELS,
+		ACTIVITY_PROTEIN,
+		dailyTargets,
+		GOAL_KEYS,
+		GOAL_LIMITS,
+		NUTRIENT_META,
+		type Activity,
+		type GoalKey
+	} from '$lib/nutrition';
+	import { history, journal, settings } from '$lib/state.svelte';
 	import { onMount } from 'svelte';
 	import type { Ingredient, NutrientKey, Nutrients, RecipeSummary, Unit } from '$lib/types';
 
@@ -64,6 +80,54 @@
 		'zinc',
 		'ala'
 	]);
+	// ── The last seven days ─────────────────────────────────────
+	const recent = $derived(
+		recentTotals(journal.current, today, catalog.recipesById, catalog.ingredientsById)
+	);
+	const weekAverage = $derived(averageNutrients(recent));
+	const gaps = $derived(
+		recent.length >= MIN_DAYS_FOR_GAPS
+			? nutrientGaps(
+					weekAverage,
+					targets,
+					barKeys.filter((k) => k !== 'kcal')
+				).slice(0, 3)
+			: []
+	);
+	const gapRecipes = $derived.by(() => {
+		const shown = new Set<string>();
+		return gaps.map((key) => {
+			const recipes = recipesRichIn(catalog.recipes, key, 3, shown);
+			for (const r of recipes) shown.add(r.id);
+			return { key, recipes };
+		});
+	});
+
+	// ── Goals ──────────────────────────────────────────────────
+	const goals = $derived(journal.current.goals);
+	/** What each goal would be without the user's own number, shown as the placeholder. */
+	const autoTargets = $derived(
+		dailyTargets(settings.current.weightKg, { activity: goals.activity, custom: {} })
+	);
+	const goalKeys = $derived(GOAL_KEYS.filter((k) => k !== 'kcal' || journal.current.showKcal));
+	function setActivity(activity: Activity) {
+		setPref({ goals: { ...goals, activity } });
+	}
+	function setGoal(key: GoalKey, raw: string) {
+		const { [key]: _old, ...rest } = goals.custom;
+		const [min, max] = GOAL_LIMITS[key];
+		const v = Number(raw.replace(',', '.'));
+		const custom = raw.trim() && v >= min && v <= max ? { ...rest, [key]: v } : rest;
+		setPref({ goals: { ...goals, custom } });
+	}
+	function setWeight(raw: string) {
+		const v = Number(raw.replace(',', '.'));
+		settings.current = {
+			...settings.current,
+			weightKg: raw.trim() && v >= 20 && v <= 250 ? Math.round(v) : null
+		};
+	}
+
 	const glasses = $derived(Math.ceil(journal.current.waterGoalMl / WATER_STEP_ML));
 	const fullGlasses = $derived(Math.floor(day.waterMl / WATER_STEP_ML));
 
@@ -287,6 +351,8 @@
 				/>
 			</div>
 
+			<SupplementsPanel {date} {today} />
+
 			<h3><Icon name="bowl" size={18} /> Jedlo</h3>
 			{#if cookedThatDay.length}
 				<div class="chips" role="group" aria-label="Uvarené v ten deň">
@@ -481,6 +547,59 @@
 				<p class="muted">V tento deň zatiaľ nič.</p>
 			{/if}
 		{/if}
+		{#if recent.length}
+			<div class="week">
+				<h3><Icon name="calendar" size={18} /> Týždeň v denníku</h3>
+				<p class="muted small">
+					Priemer na deň zo {recent.length}
+					{recent.length === 1 ? 'dňa' : 'dní'} so zápisom.
+				</p>
+				<NutrientBars values={weekAverage} {targets} keys={barKeys} />
+				{#if gapRecipes.length}
+					<div class="gaps">
+						<h4>Čo ti chýba</h4>
+						{#each gapRecipes as gap (gap.key)}
+							<div class="gap">
+								<p>
+									<strong>{NUTRIENT_META[gap.key].label}</strong>
+									<span class="muted"
+										>– v priemere {formatNumber(
+											weekAverage[gap.key],
+											weekAverage[gap.key] < 10 ? 1 : 0
+										)}
+										z {formatNumber(targets[gap.key], 0)}
+										{NUTRIENT_META[gap.key].unit}. Veľa ho majú:</span
+									>
+								</p>
+								<div class="chips">
+									{#each gap.recipes as r (r.id)}
+										<a class="chip" href="/recepty/{r.id}"
+											>{r.title}
+											<small
+												>{formatNumber(r.perServing[gap.key], r.perServing[gap.key] < 10 ? 1 : 0)}
+												{NUTRIENT_META[gap.key].unit}</small
+											></a
+										>
+									{/each}
+								</div>
+							</div>
+						{/each}
+						{#if gaps.includes('iron')}
+							<p class="muted small">
+								Železo sa lepšie vstrebe s vitamínom C (paprika, citrón) a horšie s čajom či kávou k
+								jedlu. <a href="/wiki/zelezo">Viac o železe</a>
+							</p>
+						{/if}
+					</div>
+				{:else if recent.length < MIN_DAYS_FOR_GAPS}
+					<p class="muted small">
+						Po {MIN_DAYS_FOR_GAPS} zapísaných dňoch ti tu ukážem, čoho máš dlhodobo málo, a recepty, ktoré
+						to doplnia.
+					</p>
+				{/if}
+			</div>
+		{/if}
+
 		<p class="muted small">
 			Hodnoty sú orientačné (USDA, surové suroviny). B12 z jedla nezískaš,
 			<a href="/wiki/b12">suplementuj</a>. Koľko piť, nájdeš v návode
@@ -511,6 +630,57 @@
 					}}
 				/>
 			</label>
+			<fieldset class="goals">
+				<legend>Ciele na deň</legend>
+				<div class="goal-row">
+					<label class="field small-field">
+						<span>Váha (kg)</span>
+						<input
+							type="number"
+							min="20"
+							max="250"
+							inputmode="numeric"
+							value={settings.current.weightKg ?? ''}
+							placeholder="nevyplnená"
+							onchange={(e) => setWeight(e.currentTarget.value)}
+						/>
+					</label>
+					<label class="field small-field">
+						<span>Pohyb</span>
+						<select
+							value={goals.activity}
+							onchange={(e) => setActivity(e.currentTarget.value as Activity)}
+						>
+							{#each Object.entries(ACTIVITY_LABELS) as [id, name] (id)}
+								<option value={id}
+									>{name} ({formatNumber(ACTIVITY_PROTEIN[id as Activity], 1)} g bielk./kg)</option
+								>
+							{/each}
+						</select>
+					</label>
+				</div>
+				<div class="goal-grid">
+					{#each goalKeys as key (key)}
+						<label class="field small-field">
+							<span>{NUTRIENT_META[key].label} ({NUTRIENT_META[key].unit})</span>
+							<input
+								type="number"
+								min={GOAL_LIMITS[key][0]}
+								max={GOAL_LIMITS[key][1]}
+								step="any"
+								value={goals.custom[key] ?? ''}
+								placeholder={formatNumber(autoTargets[key], autoTargets[key] < 10 ? 1 : 0)}
+								onchange={(e) => setGoal(key, e.currentTarget.value)}
+							/>
+						</label>
+					{/each}
+				</div>
+				<p class="muted small">
+					Prázdne políčko = odporúčaná hodnota (EÚ, bielkoviny podľa váhy a pohybu). Vlastné číslo
+					si nastav, keď ti ho odporučil lekár alebo výživový poradca, alebo keď ideš za konkrétnym
+					cieľom. Ciele platia aj v Pláne a pri receptoch.
+				</p>
+			</fieldset>
 			<div class="pref-actions">
 				<button class="btn ghost small" onclick={() => setPref({ enabled: false })}>
 					Skryť denník
@@ -739,6 +909,49 @@
 	}
 	.goal {
 		max-width: 16em;
+	}
+	.goals {
+		border: 1px solid var(--line);
+		border-radius: 14px;
+		padding: 12px;
+		margin-inline: 0;
+	}
+	.goals legend {
+		font-weight: 650;
+		padding: 0 6px;
+	}
+	.goal-row,
+	.goal-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		gap: 8px;
+		margin-bottom: 8px;
+	}
+	.goal-row {
+		grid-template-columns: minmax(100px, 140px) minmax(0, 1fr);
+	}
+	.goal-row select {
+		min-width: 0;
+		width: 100%;
+	}
+	.week {
+		margin-top: 20px;
+		padding-top: 4px;
+		border-top: 1px dashed var(--line);
+	}
+	.week > p {
+		margin: 0 0 8px;
+	}
+	.gaps h4 {
+		margin: 16px 0 6px;
+		font-size: 1rem;
+	}
+	.gap p {
+		margin: 8px 0 6px;
+	}
+	.gap .chip small {
+		color: var(--muted);
+		margin-left: 4px;
 	}
 	.danger {
 		background: var(--tomato-soft);

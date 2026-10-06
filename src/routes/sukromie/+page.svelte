@@ -21,10 +21,10 @@
 			kept: `Zoznam, ktorý ${syncYears} roky nikto neotvoril, sa zmaže sám.`
 		},
 		{
-			what: 'Pripomienky na vodu',
+			what: 'Pripomienky na vodu a vitamíny',
 			detail:
-				'Len ak ich zapneš: push adresa tvojho prehliadača, časy pripomienok, časové pásmo a deň, keď si už mal/a vypité.',
-			why: 'Aby ti server v nastavený čas poslal upozornenie. Koľko piješ ani čo ješ sa na server neposiela – text upozornenia si zloží tvoj prehliadač.',
+				'Len ak ich zapneš: push adresa tvojho prehliadača, časy pripomienok, časové pásmo, deň, keď máš vodu vypitú, a ktoré dnešné časy vitamínov sú už odškrtnuté.',
+			why: 'Aby ti server v nastavený čas poslal upozornenie. Koľko piješ, čo ješ ani aké vitamíny berieš sa na server neposiela – text upozornenia si zloží tvoj prehliadač.',
 			kept: `Kým ich nevypneš. Ak Receptio na zariadení ${PUSH_IDLE_DAYS} dní neotvoríš, pripomienky sa zmažú samé.`
 		},
 		{

@@ -7,8 +7,14 @@ import {
 	FROST_SYNC_TAG,
 	FROST_WATCH_KEY,
 	kvGet,
+	kvSet,
+	REMINDER_SHOWN_KEY,
+	REMINDER_TEST_KEY,
+	SUPPLEMENTS_TODAY_KEY,
 	WATER_TODAY_KEY,
 	type FrostWatch,
+	type ReminderTest,
+	type SupplementsToday,
 	type WaterToday
 } from '$lib/kv';
 
@@ -196,6 +202,56 @@ async function showWaterReminder() {
 	});
 }
 
+/** Supplement reminder: names what's still to take at this time of day. */
+async function showSupplementReminder(names: string[]) {
+	for (const old of await sw.registration.getNotifications({ tag: 'supplements' })) old.close();
+	await sw.registration.showNotification(
+		names.length ? `Čas na ${names.join(', ')}` : 'Čas na vitamíny',
+		{
+			body: 'Keď ich zoberieš, odškrtni si ich v denníku.',
+			tag: 'supplements',
+			renotify: true,
+			icon: '/icon-192.png',
+			data: { url: '/moje#vitaminy' }
+		}
+	);
+}
+
+/**
+ * The push is empty and water and supplement reminders arrive alike, so the kind comes from the
+ * clock: a supplement time in the last half hour that hasn't had its reminder yet wins.
+ */
+async function showReminder() {
+	const [supplements, shown, test] = await Promise.all([
+		kvGet<SupplementsToday>(SUPPLEMENTS_TODAY_KEY).catch(() => undefined),
+		kvGet<string>(REMINDER_SHOWN_KEY).catch(() => undefined),
+		kvGet<ReminderTest>(REMINDER_TEST_KEY).catch(() => undefined)
+	]);
+	const now = new Date();
+	const today = new Date(now.getTime() - now.getTimezoneOffset() * 60_000)
+		.toISOString()
+		.slice(0, 10);
+	const minute = now.getHours() * 60 + now.getMinutes();
+	const byTime = supplements?.date === today ? supplements.open : supplements?.all;
+
+	if (test && Date.now() - test.at < 2 * 60_000) {
+		await kvSet(REMINDER_TEST_KEY, null).catch(() => {});
+		if (test.kind === 'supplements') {
+			return showSupplementReminder(Object.values(supplements?.all ?? {}).flat());
+		}
+		return showWaterReminder();
+	}
+	const time = Object.keys(byTime ?? {})
+		.map(Number)
+		.find((t) => minute >= t && minute < t + 30);
+	if (byTime && time !== undefined && shown !== `${today}|${time}`) {
+		await kvSet(REMINDER_SHOWN_KEY, `${today}|${time}`).catch(() => {});
+		return showSupplementReminder(byTime[time] ?? []);
+	}
+	if (supplements && !supplements.water) return showSupplementReminder([]);
+	return showWaterReminder();
+}
+
 sw.addEventListener('push', (event) => {
-	event.waitUntil(showWaterReminder());
+	event.waitUntil(showReminder());
 });

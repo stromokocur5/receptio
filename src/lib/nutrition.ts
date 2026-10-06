@@ -27,7 +27,7 @@ export const NUTRIENT_META: Record<NutrientKey, { label: string; unit: string }>
 
 /**
  * Daily reference values for an adult (EU reference intakes / EFSA), salt as WHO upper limit.
- * Protein is replaced by 1.1 g/kg when the user sets their weight.
+ * `dailyTargets` swaps protein for grams per kg of weight and applies the user's own goals.
  */
 export const DAILY_REFERENCE: Nutrients = {
 	kcal: 2000,
@@ -43,7 +43,45 @@ export const DAILY_REFERENCE: Nutrients = {
 	b12: 4
 };
 
-export const VEGAN_PROTEIN_G_PER_KG = 1.1;
+/**
+ * Protein per kg of body weight: plant protein digests a little worse than animal, so the
+ * everyday 0.83 g/kg goes up to 1.1; regular training needs 1.4, strength training 1.6.
+ */
+export const ACTIVITY_PROTEIN = { bezne: 1.1, aktivne: 1.4, silovy: 1.6 } as const;
+export type Activity = keyof typeof ACTIVITY_PROTEIN;
+export const ACTIVITY_LABELS: Record<Activity, string> = {
+	bezne: 'Bežne',
+	aktivne: 'Pravidelne športujem',
+	silovy: 'Silový tréning'
+};
+
+/** Nutrients a user can set their own daily goal for, with sane bounds. */
+export const GOAL_LIMITS = {
+	kcal: [800, 6000],
+	protein: [20, 300],
+	fiber: [10, 80],
+	iron: [5, 40],
+	calcium: [300, 2500],
+	zinc: [4, 40],
+	ala: [0.5, 10]
+} as const satisfies Partial<Record<NutrientKey, readonly [number, number]>>;
+export type GoalKey = keyof typeof GOAL_LIMITS;
+export const GOAL_KEYS = Object.keys(GOAL_LIMITS) as GoalKey[];
+
+export interface NutrientGoals {
+	activity: Activity;
+	/** Numbers the user typed in themselves; they win over everything computed. */
+	custom: Partial<Record<GoalKey, number>>;
+}
+export const DEFAULT_GOALS: NutrientGoals = { activity: 'bezne', custom: {} };
+
+export function dailyTargets(weightKg: number | null, goals: NutrientGoals = DEFAULT_GOALS) {
+	const perKg = ACTIVITY_PROTEIN[goals.activity];
+	const protein = weightKg
+		? weightKg * perKg
+		: (DAILY_REFERENCE.protein * perKg) / ACTIVITY_PROTEIN.bezne;
+	return { ...DAILY_REFERENCE, protein: Math.round(protein), ...goals.custom } as Nutrients;
+}
 
 export const ALLERGEN_LABELS: Record<Allergen, string> = {
 	soy: 'sója',

@@ -8,7 +8,7 @@
 	import { formatEur, formatNumber } from '$lib/amounts';
 	import JournalPanel from '$lib/components/JournalPanel.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
-	import { DAILY_REFERENCE, VEGAN_PROTEIN_G_PER_KG } from '$lib/nutrition';
+	import { dailyTargets } from '$lib/nutrition';
 	import {
 		RATING_LABELS,
 		collections,
@@ -16,6 +16,7 @@
 		deleteCollection,
 		favorites,
 		history,
+		journal,
 		likes,
 		MAX_COLLECTION_NAME,
 		MAX_COLLECTIONS,
@@ -110,12 +111,7 @@
 			? weekSummary(history.current, catalog.recipesById, settings.current.people, new Date())
 			: null
 	);
-	const targets = $derived({
-		...DAILY_REFERENCE,
-		protein: settings.current.weightKg
-			? settings.current.weightKg * VEGAN_PROTEIN_G_PER_KG
-			: DAILY_REFERENCE.protein
-	});
+	const targets = $derived(dailyTargets(settings.current.weightKg, journal.current.goals));
 
 	let showAllHistory = $state(false);
 	let restoreMessage = $state<{ ok: boolean; text: string } | null>(null);

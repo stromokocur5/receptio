@@ -51,3 +51,25 @@ export interface WaterToday {
 	ml: number;
 	goalMl: number;
 }
+
+export const SUPPLEMENTS_TODAY_KEY = 'supplements-today';
+
+/** Today's supplements by reminder time, so a reminder can name what to take. */
+export interface SupplementsToday {
+	date: string;
+	/** Minutes after midnight → names still to take at that time today. */
+	open: Record<number, string[]>;
+	/** Minutes after midnight → every name at that time, for a day the app wasn't opened yet. */
+	all: Record<number, string[]>;
+	/** Whether water reminders are on too, to tell which of two pushes is which. */
+	water: boolean;
+}
+
+/** "date|minute" of the last supplement reminder shown, so the next push in that slot is water. */
+export const REMINDER_SHOWN_KEY = 'reminder-shown';
+/** Set right before a test push, so the service worker knows which kind to show. */
+export const REMINDER_TEST_KEY = 'reminder-test';
+export interface ReminderTest {
+	kind: 'water' | 'supplements';
+	at: number;
+}

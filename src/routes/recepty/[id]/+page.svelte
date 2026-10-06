@@ -26,9 +26,8 @@
 	import {
 		ALLERGEN_LABELS,
 		COMPUTED_TAG_LABELS,
-		DAILY_REFERENCE,
 		SALT_HIGH_G,
-		VEGAN_PROTEIN_G_PER_KG,
+		dailyTargets,
 		computedTags,
 		scaleNutrients,
 		treatText
@@ -193,12 +192,7 @@
 	const inPlan = $derived(ui.loaded ? servingsInPlan(recipe.id) : 0);
 	let justAdded = $state(false);
 
-	const targets = $derived({
-		...DAILY_REFERENCE,
-		protein: settings.current.weightKg
-			? settings.current.weightKg * VEGAN_PROTEIN_G_PER_KG
-			: DAILY_REFERENCE.protein
-	});
+	const targets = $derived(dailyTargets(settings.current.weightKg, journal.current.goals));
 	const tags = $derived(computedTags(recipe));
 
 	const similar = $derived.by(() => {

@@ -2,7 +2,9 @@ import { z } from 'zod';
 import {
 	isDue,
 	isPushEndpoint,
+	isSupplementDue,
 	isValidSchedule,
+	isValidSupplementTimes,
 	isValidTimeZone,
 	localClock,
 	VAPID_PUBLIC_KEY,
@@ -11,8 +13,8 @@ import {
 import { PUSH_IDLE_DAYS } from '../retention';
 
 /**
- * Server side of water reminders. Relative imports only: the cron handler in /worker.js is
- * bundled by wrangler, which doesn't know SvelteKit's `$lib` alias.
+ * Server side of water and supplement reminders. Relative imports only: the cron handler in
+ * /worker.js is bundled by wrangler, which doesn't know SvelteKit's `$lib` alias.
  */
 
 /** Reminder devices across everyone – a flood guard far above real use. */
@@ -142,43 +144,161 @@ async function sendPush(endpoint: string, privateJwk: JsonWebKey, now: number): 
 	}
 }
 
+const REMINDER_TABLES = ['push_reminders', 'supplement_reminders'] as const;
+type ReminderTable = (typeof REMINDER_TABLES)[number];
+
 /** Cron job: sends the reminders due now and forgets devices that unsubscribed or went quiet. */
-export async function sendWaterReminders(
+export async function sendReminders(
 	db: D1Database,
 	privateJwkJson: string | undefined,
 	now = Date.now()
 ): Promise<void> {
-	await db
-		.prepare('DELETE FROM push_reminders WHERE updated_at < ?')
-		.bind(Math.floor(now / 1000) - PUSH_IDLE_DAYS * 86400)
-		.run();
+	const idleBefore = Math.floor(now / 1000) - PUSH_IDLE_DAYS * 86400;
+	await db.batch(
+		REMINDER_TABLES.map((table) =>
+			db.prepare(`DELETE FROM ${table} WHERE updated_at < ?`).bind(idleBefore)
+		)
+	);
 	if (!privateJwkJson) {
 		console.error('push: VAPID_PRIVATE_JWK is not set');
 		return;
 	}
 	const privateJwk = JSON.parse(privateJwkJson) as JsonWebKey;
-	const { results } = await db
-		.prepare('SELECT id, endpoint, from_min, to_min, every_min, tz, skip_date FROM push_reminders')
-		.all<ReminderRow>();
-	const due = dueReminders(results, new Date(now));
+	const [water, supplements] = await Promise.all([
+		db
+			.prepare(
+				'SELECT id, endpoint, from_min, to_min, every_min, tz, skip_date FROM push_reminders'
+			)
+			.all<ReminderRow>(),
+		db
+			.prepare('SELECT id, endpoint, times, tz, done_date, done_times FROM supplement_reminders')
+			.all<SupplementRow>()
+	]);
+	const at = new Date(now);
+	// Vitamins first: there are fewer of them and missing one matters more than a glass of water.
+	const due: { table: ReminderTable; id: string; endpoint: string }[] = [
+		...dueSupplements(supplements.results, at).map((r) => ({
+			table: 'supplement_reminders' as const,
+			...r
+		})),
+		...dueReminders(water.results, at).map((r) => ({ table: 'push_reminders' as const, ...r }))
+	];
 	if (due.length > MAX_SENDS_PER_RUN) {
 		console.warn(`push: ${due.length} due, sending ${MAX_SENDS_PER_RUN}`);
 	}
-	const gone: string[] = [];
+	const gone: { table: ReminderTable; id: string }[] = [];
 	const statuses: number[] = [];
 	await Promise.all(
 		due.slice(0, MAX_SENDS_PER_RUN).map(async (row) => {
 			const status = await sendPush(row.endpoint, privateJwk, now);
 			statuses.push(status);
-			if (status === 404 || status === 410) gone.push(row.id);
+			if (status === 404 || status === 410) gone.push(row);
 		})
 	);
 	if (due.length) console.log(`push: sent ${statuses.length}, statuses ${statuses.join(' ')}`);
 	if (gone.length) {
 		await db.batch(
-			gone.map((id) => db.prepare('DELETE FROM push_reminders WHERE id = ?').bind(id))
+			gone.map(({ table, id }) => db.prepare(`DELETE FROM ${table} WHERE id = ?`).bind(id))
 		);
 	}
+}
+
+// ── Supplements ────────────────────────────────────────────────
+
+interface SupplementRow {
+	id: string;
+	endpoint: string;
+	/** Comma-separated minutes after local midnight. */
+	times: string;
+	tz: string;
+	done_date: string | null;
+	done_times: string;
+}
+
+const parseTimes = (csv: string) => (csv ? csv.split(',').map(Number) : []);
+
+export function dueSupplements(rows: SupplementRow[], at: Date): SupplementRow[] {
+	return rows.filter((row) => {
+		const clock = localClock(at, row.tz);
+		return isSupplementDue(
+			parseTimes(row.times),
+			clock.minute,
+			{ date: row.done_date, times: parseTimes(row.done_times) },
+			clock.date
+		);
+	});
+}
+
+const supplementShape = {
+	times: z.array(z.number().int()).refine(isValidSupplementTimes),
+	tz: z.string().max(64).refine(isValidTimeZone),
+	endpoint: z.string().max(1000).refine(isPushEndpoint)
+};
+
+export const supplementCreateSchema = z.object(supplementShape).strict();
+
+export const supplementUpdateSchema = z
+	.object({
+		token: z.string().regex(/^[0-9a-f]{64}$/),
+		...supplementShape,
+		/** Local date and the reminder times whose supplements were all taken that day. */
+		doneDate: z
+			.string()
+			.regex(/^\d{4}-\d{2}-\d{2}$/)
+			.nullable(),
+		doneTimes: z.array(z.number().int().min(0).max(1439)).max(8)
+	})
+	.strict();
+
+export async function createSupplementReminder(
+	db: D1Database,
+	input: z.infer<typeof supplementCreateSchema>,
+	now = Date.now()
+): Promise<{ id: string; token: string } | 'full'> {
+	const count = await db
+		.prepare('SELECT COUNT(*) AS n FROM supplement_reminders')
+		.first<{ n: number }>();
+	if ((count?.n ?? 0) >= MAX_REMINDERS) return 'full';
+	const id = randomHex(16);
+	const token = randomHex(32);
+	await db
+		.prepare(
+			'INSERT INTO supplement_reminders (id, token_hash, endpoint, times, tz, updated_at) VALUES (?, ?, ?, ?, ?, ?)'
+		)
+		.bind(
+			id,
+			await sha256Hex(token),
+			input.endpoint,
+			input.times.join(','),
+			input.tz,
+			Math.floor(now / 1000)
+		)
+		.run();
+	return { id, token };
+}
+
+export async function updateSupplementReminder(
+	db: D1Database,
+	id: string,
+	input: z.infer<typeof supplementUpdateSchema>,
+	now = Date.now()
+): Promise<boolean> {
+	const result = await db
+		.prepare(
+			'UPDATE supplement_reminders SET endpoint = ?, times = ?, tz = ?, done_date = ?, done_times = ?, updated_at = ? WHERE id = ? AND token_hash = ?'
+		)
+		.bind(
+			input.endpoint,
+			input.times.join(','),
+			input.tz,
+			input.doneDate,
+			input.doneTimes.join(','),
+			Math.floor(now / 1000),
+			id,
+			await sha256Hex(input.token)
+		)
+		.run();
+	return result.meta.changes > 0;
 }
 
 const randomHex = (bytes: number) =>
@@ -256,29 +376,35 @@ export async function sendTestReminder(
 	id: string,
 	token: string,
 	privateJwkJson: string | undefined,
-	now = Date.now()
+	now = Date.now(),
+	table: ReminderTable = 'push_reminders'
 ): Promise<'sent' | 'gone' | 'failed'> {
 	if (!privateJwkJson) {
 		console.error('push: VAPID_PRIVATE_JWK is not set');
 		return 'failed';
 	}
 	const row = await db
-		.prepare('SELECT endpoint FROM push_reminders WHERE id = ? AND token_hash = ?')
+		.prepare(`SELECT endpoint FROM ${table} WHERE id = ? AND token_hash = ?`)
 		.bind(id, await sha256Hex(token))
 		.first<{ endpoint: string }>();
 	if (!row) return 'gone';
 	const status = await sendPush(row.endpoint, JSON.parse(privateJwkJson) as JsonWebKey, now);
 	console.log(`push: test to ${new URL(row.endpoint).host}, status ${status}`);
 	if (status === 404 || status === 410) {
-		await db.prepare('DELETE FROM push_reminders WHERE id = ?').bind(id).run();
+		await db.prepare(`DELETE FROM ${table} WHERE id = ?`).bind(id).run();
 		return 'gone';
 	}
 	return status >= 200 && status < 300 ? 'sent' : 'failed';
 }
 
-export async function deleteReminder(db: D1Database, id: string, token: string): Promise<void> {
+export async function deleteReminder(
+	db: D1Database,
+	id: string,
+	token: string,
+	table: ReminderTable = 'push_reminders'
+): Promise<void> {
 	await db
-		.prepare('DELETE FROM push_reminders WHERE id = ? AND token_hash = ?')
+		.prepare(`DELETE FROM ${table} WHERE id = ? AND token_hash = ?`)
 		.bind(id, await sha256Hex(token))
 		.run();
 }

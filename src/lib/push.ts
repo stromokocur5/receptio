@@ -1,7 +1,7 @@
 /**
- * Water reminders sent as Web Push. Shared by the browser, the API and the cron job. The push
- * carries no payload: the service worker writes the text itself, so nothing needs encrypting
- * and the server never knows how much anyone drank.
+ * Water and supplement reminders sent as Web Push. Shared by the browser, the API and the cron
+ * job. The push carries no payload: the service worker writes the text itself, so nothing needs
+ * encrypting and the server never knows how much anyone drank or which vitamins they take.
  */
 
 /** VAPID public key (P-256, uncompressed, base64url); the private half is the Worker secret VAPID_PRIVATE_JWK. */
@@ -36,6 +36,36 @@ export function isValidSchedule(s: { from: unknown; to: unknown; every: unknown 
 export function isDue(s: ReminderSchedule, minute: number): boolean {
 	const slot = minute - (minute % CRON_STEP_MIN);
 	return slot >= s.from && slot <= s.to && (slot - s.from) % s.every === 0;
+}
+
+/** Supplement reminders: up to this many times a day, each on the half hour. */
+export const MAX_SUPPLEMENT_TIMES = 4;
+
+export function isValidSupplementTimes(times: unknown): times is number[] {
+	return (
+		Array.isArray(times) &&
+		times.length >= 1 &&
+		times.length <= MAX_SUPPLEMENT_TIMES &&
+		new Set(times).size === times.length &&
+		times.every(
+			(t) => typeof t === 'number' && Number.isInteger(t) && t >= 0 && t < 1440 && t % 30 === 0
+		)
+	);
+}
+
+/**
+ * Whether a supplement reminder falls on this quarter hour. `done` are the times already
+ * ticked off on `doneDate`, so a vitamin taken early doesn't get a reminder.
+ */
+export function isSupplementDue(
+	times: number[],
+	minute: number,
+	done: { date: string | null; times: number[] },
+	today: string
+): boolean {
+	const slot = minute - (minute % CRON_STEP_MIN);
+	if (!times.includes(slot)) return false;
+	return !(done.date === today && done.times.includes(slot));
 }
 
 export function isValidTimeZone(tz: string): boolean {

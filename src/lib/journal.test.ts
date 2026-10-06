@@ -2,18 +2,23 @@ import { describe, expect, it } from 'vitest';
 import {
 	addItem,
 	addWater,
+	averageNutrients,
 	compactJournal,
 	dayTotals,
 	localToday,
+	nutrientGaps,
+	recentTotals,
+	recipesRichIn,
 	NO_JOURNAL,
 	removeItem,
 	setPortions,
 	shiftDate,
 	validateJournal,
 	withDay,
-	type Journal
+	type Journal,
+	type JournalDay
 } from './journal';
-import { emptyNutrients } from './nutrition';
+import { dailyTargets, emptyNutrients } from './nutrition';
 import type { Ingredient, RecipeSummary } from './types';
 
 const dal = {
@@ -157,5 +162,71 @@ describe('validateJournal', () => {
 
 	it('rejects non-objects', () => {
 		expect(validateJournal([])).toBeUndefined();
+	});
+});
+
+describe('weekly picture', () => {
+	const recipes = new Map([['dal', dal]]);
+	const ingredients = new Map([['jablko', apple]]);
+	const journalWith = (days: Record<string, JournalDay>): Journal => ({ ...NO_JOURNAL, days });
+
+	it('averages only the days with food in the last week', () => {
+		const j = journalWith({
+			'2026-10-06': {
+				waterMl: 0,
+				items: [{ id: '1', kind: 'recipe', recipeId: 'dal', portions: 1 }]
+			},
+			'2026-10-04': {
+				waterMl: 0,
+				items: [{ id: '2', kind: 'recipe', recipeId: 'dal', portions: 2 }]
+			},
+			'2026-09-20': {
+				waterMl: 0,
+				items: [{ id: '3', kind: 'recipe', recipeId: 'dal', portions: 9 }]
+			}
+		});
+		const days = recentTotals(j, '2026-10-06', recipes, ingredients);
+		expect(days.map((d) => d.date)).toEqual(['2026-10-06', '2026-10-04']);
+		expect(averageNutrients(days).protein).toBe(30);
+	});
+
+	it('finds what falls short, furthest from the goal first', () => {
+		const targets = { ...emptyNutrients(), protein: 60, fiber: 30, iron: 14 };
+		const average = { ...emptyNutrients(), protein: 50, fiber: 10, iron: 7 };
+		expect(nutrientGaps(average, targets, ['protein', 'fiber', 'iron'])).toEqual(['fiber', 'iron']);
+	});
+
+	it('suggests everyday recipes rich in a nutrient, not treats or drinks', () => {
+		const make = (id: string, iron: number, extra: Partial<RecipeSummary> = {}) =>
+			({
+				id,
+				showNutrition: true,
+				treat: [],
+				categories: ['obedy/strukoviny'],
+				perServing: { ...emptyNutrients(), kcal: 500, iron },
+				...extra
+			}) as unknown as RecipeSummary;
+		const list = [
+			make('a', 3),
+			make('b', 9),
+			make('brownies', 12, { treat: ['cukor'] }),
+			make('smoothie', 10, { categories: ['napoje/smoothie'] }),
+			make('c', 6)
+		];
+		expect(recipesRichIn(list, 'iron', 2).map((r) => r.id)).toEqual(['b', 'c']);
+	});
+
+	it('keeps only sane personal goals', () => {
+		const j = validateJournal({
+			goals: { activity: 'silovy', custom: { protein: 140, iron: 9999, b12: 5 } }
+		});
+		expect(j?.goals).toEqual({ activity: 'silovy', custom: { protein: 140 } });
+		expect(validateJournal({ goals: { activity: 'hacker' } })?.goals.activity).toBe('bezne');
+	});
+
+	it('turns weight and activity into a protein goal, own numbers win', () => {
+		expect(dailyTargets(70).protein).toBe(77);
+		expect(dailyTargets(70, { activity: 'silovy', custom: {} }).protein).toBe(112);
+		expect(dailyTargets(null, { activity: 'bezne', custom: { fiber: 40 } }).fiber).toBe(40);
 	});
 });

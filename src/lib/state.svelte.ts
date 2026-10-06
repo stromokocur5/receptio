@@ -600,6 +600,34 @@ export const waterReminder = new Persisted<WaterReminder | null>(
 	true
 );
 
+/** This device's supplement reminders on the server; what's sent is only times of day. */
+export interface SupplementReminder {
+	id: string;
+	token: string;
+	/** What the server last got, so a change of times or a tick-off is sent only once. */
+	sent: string;
+	touched: string;
+}
+function validateSupplementReminder(raw: unknown): SupplementReminder | null | undefined {
+	if (raw === null) return null;
+	if (!isRecord(raw)) return undefined;
+	const { id, token, sent, touched } = raw;
+	if (typeof id !== 'string' || !/^[0-9a-f]{32}$/.test(id)) return undefined;
+	if (typeof token !== 'string' || !/^[0-9a-f]{64}$/.test(token)) return undefined;
+	return {
+		id,
+		token,
+		sent: typeof sent === 'string' ? sent.slice(0, 200) : '',
+		touched: typeof touched === 'string' && isDate(touched) ? touched : ''
+	};
+}
+export const supplementReminder = new Persisted<SupplementReminder | null>(
+	'supplement-reminder',
+	null,
+	validateSupplementReminder,
+	true
+);
+
 /** Writes one eaten portion of a recipe into today's diary. */
 export function logPortion(recipeId: string, variant?: string) {
 	const today = localToday();
@@ -646,6 +674,7 @@ export function loadPersisted() {
 	for (const store of Object.values(ALL_PERSISTED)) store.load();
 	openGardenId.load();
 	waterReminder.load();
+	supplementReminder.load();
 	ui.loaded = true;
 }
 

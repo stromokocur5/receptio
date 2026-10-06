@@ -1,5 +1,21 @@
-import { addScaled, emptyNutrients, scaleNutrients } from './nutrition';
-import { NUTRIENT_KEYS, type Ingredient, type Nutrients, type RecipeSummary } from './types';
+import {
+	ACTIVITY_PROTEIN,
+	addScaled,
+	DEFAULT_GOALS,
+	emptyNutrients,
+	GOAL_LIMITS,
+	scaleNutrients,
+	type Activity,
+	type GoalKey,
+	type NutrientGoals
+} from './nutrition';
+import {
+	NUTRIENT_KEYS,
+	type Ingredient,
+	type NutrientKey,
+	type Nutrients,
+	type RecipeSummary
+} from './types';
 
 /**
  * Food and water diary. Off until the user switches it on; calories stay hidden unless asked for,
@@ -15,7 +31,28 @@ export type JournalItem =
 export interface JournalDay {
 	waterMl: number;
 	items: JournalItem[];
+	/** Supplement ids taken that day. */
+	taken?: string[];
 }
+
+/** A vitamin or supplement taken daily at a set time (minutes after midnight, on the half hour). */
+export interface Supplement {
+	id: string;
+	name: string;
+	time: number;
+}
+
+/** Common picks for plant-based eaters; anything else can be typed in. */
+export const SUPPLEMENT_PRESETS: { name: string; time: number; why: string; wiki: string }[] = [
+	{ name: 'Vitamín B12', time: 8 * 60, why: 'z rastlín ho nezískaš', wiki: 'b12' },
+	{ name: 'Vitamín D', time: 8 * 60, why: 'od októbra do marca', wiki: 'vitamin-d' },
+	{ name: 'Omega-3 z rias', time: 13 * 60, why: 'k jedlu s tukom', wiki: 'omega-3' },
+	{ name: 'Jód', time: 8 * 60, why: 'ak nesolíš jódovanou soľou', wiki: 'jod' },
+	{ name: 'Železo', time: 10 * 60, why: 'len ak ti ho odporučil lekár', wiki: 'zelezo' },
+	{ name: 'Kreatín', time: 13 * 60, why: 'pri silovom tréningu', wiki: 'silovy-trening' }
+];
+export const MAX_SUPPLEMENTS = 8;
+const MAX_SUPPLEMENT_NAME = 40;
 
 /** An older day squeezed to its totals, so a year of diary stays small enough to sync. */
 export interface DaySummary {
@@ -30,6 +67,9 @@ export interface Journal {
 	enabled: boolean;
 	showKcal: boolean;
 	waterGoalMl: number;
+	/** Daily nutrient goals: protein by activity, or numbers the user set. */
+	goals: NutrientGoals;
+	supplements: Supplement[];
 	/** ISO date → that day's log, for the recent days. */
 	days: Record<string, JournalDay>;
 	/** ISO date → totals, for days older than JOURNAL_DETAIL_DAYS. */
@@ -40,6 +80,8 @@ export const NO_JOURNAL: Journal = {
 	enabled: false,
 	showKcal: false,
 	waterGoalMl: 2000,
+	goals: DEFAULT_GOALS,
+	supplements: [],
 	days: {},
 	summaries: {}
 };
@@ -86,10 +128,34 @@ function validateItem(raw: unknown): JournalItem | undefined {
 
 function validateDay(raw: unknown): JournalDay | undefined {
 	if (!isRecord(raw) || !Array.isArray(raw.items)) return undefined;
-	return {
+	const day: JournalDay = {
 		waterMl: num(raw.waterMl, 0, MAX_WATER_ML) ? raw.waterMl : 0,
 		items: raw.items.flatMap((i) => validateItem(i) ?? []).slice(0, MAX_ITEMS_PER_DAY)
 	};
+	const taken = Array.isArray(raw.taken)
+		? raw.taken.filter((t): t is string => typeof t === 'string' && t.length <= 40)
+		: [];
+	if (taken.length) day.taken = [...new Set(taken)].slice(0, MAX_SUPPLEMENTS);
+	return day;
+}
+
+export const isSupplementTime = (v: unknown): v is number =>
+	typeof v === 'number' && Number.isInteger(v) && v >= 0 && v < 1440 && v % 30 === 0;
+
+function validateSupplements(raw: unknown): Supplement[] {
+	if (!Array.isArray(raw)) return [];
+	return raw
+		.filter(
+			(s): s is Supplement =>
+				isRecord(s) &&
+				typeof s.id === 'string' &&
+				s.id.length <= 40 &&
+				typeof s.name === 'string' &&
+				s.name.trim().length > 0 &&
+				isSupplementTime(s.time)
+		)
+		.slice(0, MAX_SUPPLEMENTS)
+		.map(({ id, name, time }) => ({ id, name: name.trim().slice(0, MAX_SUPPLEMENT_NAME), time }));
 }
 
 function validateSummary(raw: unknown): DaySummary | undefined {
@@ -120,12 +186,29 @@ function validateDated<T>(raw: unknown, validate: (v: unknown) => T | undefined)
 	);
 }
 
+function validateGoals(raw: unknown): NutrientGoals {
+	if (!isRecord(raw)) return DEFAULT_GOALS;
+	const activity = (
+		typeof raw.activity === 'string' && raw.activity in ACTIVITY_PROTEIN ? raw.activity : 'bezne'
+	) as Activity;
+	const custom: Partial<Record<GoalKey, number>> = {};
+	if (isRecord(raw.custom)) {
+		for (const [key, [min, max]] of Object.entries(GOAL_LIMITS)) {
+			const v = raw.custom[key];
+			if (num(v, min, max)) custom[key as GoalKey] = v;
+		}
+	}
+	return { activity, custom };
+}
+
 export function validateJournal(raw: unknown): Journal | undefined {
 	if (!isRecord(raw)) return undefined;
 	return {
 		enabled: raw.enabled === true,
 		showKcal: raw.showKcal === true,
 		waterGoalMl: num(raw.waterGoalMl, 500, 5000) ? raw.waterGoalMl : NO_JOURNAL.waterGoalMl,
+		goals: validateGoals(raw.goals),
+		supplements: validateSupplements(raw.supplements),
 		days: validateDated(raw.days, validateDay),
 		summaries: validateDated(raw.summaries, validateSummary)
 	};
@@ -144,7 +227,8 @@ export function withDay(
 	const oldest = shiftDate(today, -(JOURNAL_DAYS_KEPT - 1));
 	const days = Object.fromEntries(
 		Object.entries({ ...journal.days, [date]: next }).filter(
-			([d, day]) => d >= oldest && (day.waterMl > 0 || day.items.length > 0)
+			([d, day]) =>
+				d >= oldest && (day.waterMl > 0 || day.items.length > 0 || (day.taken?.length ?? 0) > 0)
 		)
 	);
 	const summaries = Object.fromEntries(
@@ -185,6 +269,33 @@ export function compactJournal(
 		days: Object.fromEntries(Object.entries(journal.days).filter(([d]) => d >= detailFrom)),
 		summaries
 	};
+}
+
+export function addSupplement(journal: Journal, name: string, time: number): Journal {
+	const clean = name.trim().slice(0, MAX_SUPPLEMENT_NAME);
+	if (!clean || !isSupplementTime(time) || journal.supplements.length >= MAX_SUPPLEMENTS) {
+		return journal;
+	}
+	const id = crypto.randomUUID().slice(0, 8);
+	return { ...journal, supplements: [...journal.supplements, { id, name: clean, time }] };
+}
+
+export function toggleTaken(day: JournalDay, supplementId: string): JournalDay {
+	const taken = day.taken ?? [];
+	return {
+		...day,
+		taken: taken.includes(supplementId)
+			? taken.filter((t) => t !== supplementId)
+			: [...taken, supplementId]
+	};
+}
+
+/** Reminder times still to come today: those with something not yet taken. */
+export function openSupplementTimes(supplements: Supplement[], day: JournalDay): number[] {
+	const taken = new Set(day.taken ?? []);
+	return [...new Set(supplements.filter((s) => !taken.has(s.id)).map((s) => s.time))].sort(
+		(a, b) => a - b
+	);
 }
 
 export function addWater(day: JournalDay, ml: number): JournalDay {
@@ -293,4 +404,72 @@ export function dayTotals(
 		for (const key of Object.keys(nutrients) as (keyof Nutrients)[]) nutrients[key] += n[key];
 	}
 	return { nutrients, unknown, partial };
+}
+
+/** Days with food logged among the last `count` days (today included), with their totals. */
+export function recentTotals(
+	journal: Journal,
+	today: string,
+	recipesById: Map<string, RecipeSummary>,
+	ingredientsById: Map<string, Ingredient>,
+	count = 7
+): { date: string; nutrients: Nutrients; waterMl: number }[] {
+	const out = [];
+	for (let i = 0; i < count; i++) {
+		const date = shiftDate(today, -i);
+		const day = journal.days[date];
+		if (day?.items.length) {
+			const { nutrients } = dayTotals(day, recipesById, ingredientsById);
+			out.push({ date, nutrients, waterMl: day.waterMl });
+		} else if (journal.summaries[date]?.items) {
+			const s = journal.summaries[date];
+			out.push({ date, nutrients: s.nutrients, waterMl: s.waterMl });
+		}
+	}
+	return out;
+}
+
+export function averageNutrients(days: { nutrients: Nutrients }[]): Nutrients {
+	const sum = emptyNutrients();
+	for (const day of days) for (const key of NUTRIENT_KEYS) sum[key] += day.nutrients[key];
+	return scaleNutrients(sum, days.length ? 1 / days.length : 0);
+}
+
+/** A day counts toward the weekly picture only after a few days, one bad day isn't a pattern. */
+export const MIN_DAYS_FOR_GAPS = 3;
+/** Below this share of the goal on average, a nutrient is worth eating more of. */
+export const GAP_SHARE = 0.7;
+
+/** Nutrients that fell short on average, the furthest from the goal first. */
+export function nutrientGaps(
+	average: Nutrients,
+	targets: Nutrients,
+	keys: readonly NutrientKey[]
+): NutrientKey[] {
+	return keys
+		.filter((k) => targets[k] > 0 && average[k] < targets[k] * GAP_SHARE)
+		.sort((a, b) => average[a] / targets[a] - average[b] / targets[b]);
+}
+
+/**
+ * Everyday recipes that bring the most of a nutrient in one portion, for "what to eat more of".
+ * Treats, desserts, comfort food and drinks are left out: nobody should fix iron with brownies.
+ */
+export function recipesRichIn(
+	recipes: RecipeSummary[],
+	key: NutrientKey,
+	count = 3,
+	skip: Set<string> = new Set()
+): RecipeSummary[] {
+	return recipes
+		.filter(
+			(r) =>
+				r.showNutrition &&
+				r.treat.length === 0 &&
+				!skip.has(r.id) &&
+				!/^(napoje|comfort|dezerty)\//.test(r.categories[0] ?? '') &&
+				r.perServing.kcal < 900
+		)
+		.sort((a, b) => b.perServing[key] - a.perServing[key])
+		.slice(0, count);
 }

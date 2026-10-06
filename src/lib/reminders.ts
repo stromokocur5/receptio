@@ -1,9 +1,17 @@
 import { localToday } from './journal';
-import { kvSet, WATER_TODAY_KEY, type WaterToday } from './kv';
+import {
+	kvSet,
+	REMINDER_TEST_KEY,
+	SUPPLEMENTS_TODAY_KEY,
+	WATER_TODAY_KEY,
+	type ReminderTest,
+	type SupplementsToday,
+	type WaterToday
+} from './kv';
 import { VAPID_PUBLIC_KEY, type ReminderSchedule } from './push';
-import { waterReminder } from './state.svelte';
+import { supplementReminder, waterReminder } from './state.svelte';
 
-/** Browser side of water reminders: push subscription and the /api/push calls. */
+/** Browser side of reminders: push subscription and the /api/push and /api/vitaminy calls. */
 
 export function remindersSupported(): boolean {
 	return (
@@ -66,14 +74,18 @@ async function failure(res: Response): Promise<Error> {
 	return new Error(data?.message ?? 'Pripomienky teraz nefungujú, skús to neskôr.');
 }
 
-/** Asks for permission, subscribes and registers the schedule. Throws with a message to show. */
-export async function enableReminders(schedule: ReminderSchedule): Promise<void> {
+async function askPermission(): Promise<void> {
 	const permission = await Notification.requestPermission();
 	if (permission !== 'granted') {
 		throw new Error(
 			'Prehliadač upozornenia nepovolil. Povoľ ich pre túto stránku v nastaveniach prehliadača.'
 		);
 	}
+}
+
+/** Asks for permission, subscribes and registers the schedule. Throws with a message to show. */
+export async function enableReminders(schedule: ReminderSchedule): Promise<void> {
+	await askPermission();
 	const sub = await subscription();
 	const res = await send('POST', '/api/push', {
 		...schedule,
@@ -115,6 +127,7 @@ export async function updateReminders(
 export async function testReminder(): Promise<boolean> {
 	const current = waterReminder.current;
 	if (!current) return false;
+	await markTest('water');
 	const res = await send('POST', `/api/push/${current.id}`, { token: current.token });
 	if (res.status === 404) {
 		waterReminder.current = null;
@@ -130,8 +143,95 @@ export async function disableReminders(): Promise<void> {
 	const res = await send('DELETE', `/api/push/${current.id}`, { token: current.token });
 	if (!res.ok) throw await failure(res);
 	waterReminder.current = null;
+	await unsubscribeIfUnused();
+}
+
+/** The push subscription is shared by water and supplement reminders; drop it with the last. */
+async function unsubscribeIfUnused(): Promise<void> {
+	if (waterReminder.current || supplementReminder.current) return;
 	const registration = await navigator.serviceWorker.getRegistration();
 	await (await registration?.pushManager.getSubscription())?.unsubscribe();
+}
+
+// ── Supplements ────────────────────────────────────────────────
+
+export interface SupplementState {
+	times: number[];
+	doneDate: string | null;
+	doneTimes: number[];
+}
+
+export async function enableSupplementReminders(state: SupplementState): Promise<void> {
+	await askPermission();
+	const sub = await subscription();
+	const res = await send('POST', '/api/vitaminy', {
+		times: state.times,
+		tz: timeZone(),
+		endpoint: sub.endpoint
+	});
+	if (!res.ok) throw await failure(res);
+	const { id, token } = (await res.json()) as { id: string; token: string };
+	supplementReminder.current = { id, token, sent: '', touched: localToday() };
+	await updateSupplementReminders(state);
+}
+
+/**
+ * Sends the times and today's ticked-off ones when they changed (or once a day, so the server
+ * knows the device is in use). With no times left the reminders switch off.
+ */
+export async function updateSupplementReminders(state: SupplementState): Promise<void> {
+	const current = supplementReminder.current;
+	if (!current) return;
+	if (!state.times.length) return disableSupplementReminders();
+	const sent = JSON.stringify(state);
+	if (sent === current.sent && current.touched === localToday()) return;
+	const sub = await subscription();
+	const res = await send('PUT', `/api/vitaminy/${current.id}`, {
+		token: current.token,
+		...state,
+		tz: timeZone(),
+		endpoint: sub.endpoint
+	});
+	if (res.status === 404) {
+		supplementReminder.current = null;
+		return;
+	}
+	if (!res.ok) throw await failure(res);
+	supplementReminder.current = { ...current, sent, touched: localToday() };
+}
+
+export async function testSupplementReminder(): Promise<boolean> {
+	const current = supplementReminder.current;
+	if (!current) return false;
+	await markTest('supplements');
+	const res = await send('POST', `/api/vitaminy/${current.id}`, { token: current.token });
+	if (res.status === 404) {
+		supplementReminder.current = null;
+		return false;
+	}
+	if (!res.ok) throw await failure(res);
+	return true;
+}
+
+export async function disableSupplementReminders(): Promise<void> {
+	const current = supplementReminder.current;
+	if (!current) return;
+	const res = await send('DELETE', `/api/vitaminy/${current.id}`, { token: current.token });
+	if (!res.ok) throw await failure(res);
+	supplementReminder.current = null;
+	await unsubscribeIfUnused();
+}
+
+/** Both kinds of push look the same; this tells the service worker which test is coming. */
+async function markTest(kind: ReminderTest['kind']): Promise<void> {
+	await kvSet(REMINDER_TEST_KEY, { kind, at: Date.now() } satisfies ReminderTest).catch(() => {});
+}
+
+/** What the service worker names in the next supplement reminder. */
+export function rememberSupplementsToday(today: SupplementsToday): void {
+	void kvSet(SUPPLEMENTS_TODAY_KEY, today).catch(() => {
+		// IndexedDB blocked: the reminder shows a generic text.
+	});
 }
 
 /** What the service worker shows in the next reminder. */

@@ -11,12 +11,7 @@
 	import RecipePicker from '$lib/components/RecipePicker.svelte';
 	import SavedWeeks from '$lib/components/SavedWeeks.svelte';
 	import { CATEGORY_LABELS } from '$lib/labels';
-	import {
-		DAILY_REFERENCE,
-		VEGAN_PROTEIN_G_PER_KG,
-		emptyNutrients,
-		scaleNutrients
-	} from '$lib/nutrition';
+	import { ACTIVITY_PROTEIN, dailyTargets, emptyNutrients, scaleNutrients } from '$lib/nutrition';
 	import { compareStores, shelfCost, type ShelfCost, type StorePlan } from '$lib/pricing';
 	import { mealSchedule } from '$lib/schedule';
 	import { encodeSharedPlan } from '$lib/share';
@@ -27,6 +22,7 @@
 		checkedItems,
 		extraItems,
 		type ExtraItem,
+		journal,
 		markCooked,
 		movePlanEntryUp,
 		outOfStock,
@@ -197,12 +193,7 @@
 			? `${e.recipe.title}: zapísané, zo špajze ubudlo ${used.map((u) => u.ingredient.name).join(', ')}.`
 			: `${e.recipe.title}: zapísané do histórie.`;
 	}
-	const targets = $derived({
-		...DAILY_REFERENCE,
-		protein: settings.current.weightKg
-			? settings.current.weightKg * VEGAN_PROTEIN_G_PER_KG
-			: DAILY_REFERENCE.protein
-	});
+	const targets = $derived(dailyTargets(settings.current.weightKg, journal.current.goals));
 
 	const planCost = $derived(entries.reduce((s, e) => s + e.data.costPerServing * e.servings, 0));
 
@@ -586,9 +577,11 @@
 					<p class="muted small">
 						Priemer na osobu a deň len z naplánovaných jedál (raňajky a snacky mimo plánu sa
 						nepočítajú).
-						{settings.current.weightKg
-							? `Cieľ bielkovín: ${formatNumber(targets.protein, 0)} g (1,1 g/kg).`
-							: ''}
+						{journal.current.goals.custom.protein
+							? `Cieľ bielkovín: ${formatNumber(targets.protein, 0)} g (vlastný).`
+							: settings.current.weightKg
+								? `Cieľ bielkovín: ${formatNumber(targets.protein, 0)} g (${formatNumber(ACTIVITY_PROTEIN[journal.current.goals.activity], 1)} g/kg).`
+								: ''}
 					</p>
 					<NutrientBars
 						values={perDay}
