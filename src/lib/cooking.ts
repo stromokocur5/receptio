@@ -223,8 +223,19 @@ const TECHNIQUE_GUIDES: [RegExp, string][] = [
 	[
 		/\b(spen|restuj|orestuj|dus|sced|spar|zredukuj|odstav|prived\w* do varu|prelisuj|vyslahaj|dotiah)/,
 		'slovnik'
-	]
+	],
+	[/\brur|\bplech(?!ov)/, 'rura'],
+	[/nadrobno|na (kocky|platky|kolieska|mesiacik|polkolies|pruzky|tenke)/, 'krajanie'],
+	[/\bwok/, 'liatina-wok'],
+	[/\btlakov/, 'tlakovy-hrniec'],
+	[/\bzamraz/, 'mrazenie']
 ];
+
+/** Guides for techniques a step names, whatever ingredients it uses. */
+export function techniqueGuides(step: string): string[] {
+	const text = normalizeSearch(step);
+	return TECHNIQUE_GUIDES.filter(([re]) => re.test(text)).map(([, slug]) => slug);
+}
 
 /**
  * Guides that help with one step: those of the ingredients it mentions (when the recipe links
@@ -236,12 +247,10 @@ export function stepGuides(
 	byId: Map<string, Ingredient>,
 	recipeGuides: string[]
 ): string[] {
-	const text = normalizeSearch(step);
 	const fromIngredients = needed.flatMap((line) => byId.get(line.ingredientId)?.howto ?? []);
-	const fromTechnique = TECHNIQUE_GUIDES.filter(([re]) => re.test(text)).map(([, slug]) => slug);
 	const wanted = new Set([
 		...fromIngredients.filter((slug) => recipeGuides.includes(slug)),
-		...fromTechnique
+		...techniqueGuides(step)
 	]);
 	return [...wanted];
 }

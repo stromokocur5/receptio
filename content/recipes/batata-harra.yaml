@@ -4,7 +4,7 @@ cuisine: libanonska
 meals: [snack, obed]
 categories: [prilohy/prilohy, snacky/party]
 time: 45
-active: 10
+active: 15
 servings: 4
 difficulty: 1
 tags: [lacne, party]
@@ -20,6 +20,6 @@ ingredients:
   - bylinky-koriander: 4 pl
   - citron: 1 ks
 steps:
-  - Zemiaky premiešaj s 3 PL oleja a soľou a rozlož v jednej vrstve na plech a peč na 220 °C 35 minút dochrumkava, v polovici obráť.
+  - Zemiaky premiešaj s 3 PL oleja a soľou a rozlož v jednej vrstve na plech vystlaný papierom na pečenie a peč na 220 °C 35 minút dochrumkava, v polovici obráť.
   - Na zvyšnom oleji na strednom ohni krátko opraž cesnak s čili a mletým koriandrom.
   - Horúce zemiaky obaľ v cesnakovom oleji, čerstvom koriandri a citróne.

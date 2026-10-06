@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { CATEGORY_IDS, inCategory } from '$lib/categories';
+import { splitStep } from '$lib/cooking';
+import { prepMinutes } from '$lib/preptime';
 import { getContent } from './content';
 
 describe('content', () => {
@@ -84,6 +86,61 @@ describe('content', () => {
 				expect(step, r.id).not.toMatch(/podľa receptu|ako v recepte|recept [A-ZÁČĎÉÍĽĹŇÓÔŔŠŤÚÝŽ]/);
 			}
 		}
+	});
+
+	it('says how to keep food from sticking to the tray or dish', () => {
+		const intoOven = /\b(na|do) (plech|pekáč|zapekac|form)|na plechu/i;
+		const prepared =
+			/papier|vymast|vymaž|vytri|vytret|potri|vystel|silikón|rozpálen|na dn[eo]|olej nalej|netreba (ju|ho) mastiť/i;
+		const unprepared = [...content.recipeDetails.values()].filter((r) =>
+			[r.steps, ...r.variants.map((v) => v.steps ?? [])].some((steps) => {
+				const text = steps.join(' ');
+				return /rúr/i.test(text) && steps.some((s) => intoOven.test(s)) && !prepared.test(text);
+			})
+		);
+		expect(unprepared.map((r) => r.id)).toEqual([]);
+	});
+
+	it('gives each recipe a time that covers the waits in its steps', () => {
+		// Steps run one after another unless they say they run alongside; a wait that `ahead`
+		// already announces (soaking, marinating, setting in the fridge) isn't part of `time`.
+		// "Ak je jogurt riedky…" and "Rýchlejšie za tepla…" are optional ways, not extra steps.
+		const alongside = /^(Medzitým|Kým|Počas|Zatiaľ|Hneď ako|Ak |Rýchlejšie)|pred koncom/;
+		const waiting = /marin|namo[čc]|stuhn|chladničk|mraz|kvas|odst|kysn|lúhu|cez noc/i;
+		const byId = new Map(content.ingredients.map((i) => [i.id, i]));
+		const tooShort: string[] = [];
+		for (const r of content.recipeDetails.values()) {
+			const knifeWork = prepMinutes(r.lines, byId, r.steps);
+			if (r.activeTime < knifeWork - 2)
+				tooShort.push(`${r.id}: ${r.activeTime} min práce, krájanie ${Math.round(knifeWork)}`);
+			const versions = [
+				{ steps: r.steps, time: r.time, ahead: r.ahead },
+				...r.variants
+					.filter((v) => v.steps)
+					.map((v) => ({
+						steps: v.steps!,
+						time: v.time ?? r.time,
+						ahead: v.ahead === undefined ? r.ahead : v.ahead
+					}))
+			];
+			for (const { steps, time, ahead } of versions) {
+				let minutes = 0;
+				for (const step of steps) {
+					if (alongside.test(step) || (ahead && waiting.test(step))) continue;
+					// "…alebo 15 minút vo vriacej vode" is another way, not an extra wait.
+					const timers = splitStep(step.replace(/\balebo\b[^.]*/g, '')).flatMap((s) =>
+						'timer' in s ? [s.timer.seconds / 60] : []
+					);
+					// Waits of an hour or more belong to `ahead` when the recipe has one.
+					minutes += Math.max(0, ...timers.filter((m) => !ahead || m < 60));
+				}
+				// Knife work mostly happens before the heat goes on; half of it overlaps the cooking.
+				const prep = prepMinutes(r.lines, byId, steps);
+				if (minutes + prep / 2 > time + 5)
+					tooShort.push(`${r.id}: ${time} min, kroky ${minutes} + krájanie ${Math.round(prep)}`);
+			}
+		}
+		expect(tooShort).toEqual([]);
 	});
 
 	it('knows the weight of every cup and spoon a recipe uses', () => {

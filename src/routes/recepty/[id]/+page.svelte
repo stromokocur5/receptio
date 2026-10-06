@@ -9,7 +9,7 @@
 		subLabel,
 		vesselFor
 	} from '$lib/categories';
-	import { scaleStep, stepLines } from '$lib/cooking';
+	import { scaleStep, stepGuides, stepLines } from '$lib/cooking';
 	import { flyToPlan } from '$lib/fly';
 	import CookMode from '$lib/components/CookMode.svelte';
 	import { useCatalog } from '$lib/catalog';
@@ -122,6 +122,16 @@
 	/** What each step uses, so the amounts are right there while cooking. */
 	const stepUses = $derived(
 		recipe.steps.map((step) => stepLines(step, recipe.lines, catalog.ingredientsById))
+	);
+	// The glossary fits nearly every step; it stays in "Ako na to" instead of on each one.
+	const stepLinks = $derived(
+		recipe.steps.map((step, i) => {
+			const titles = new Map(recipe.howto.map((h) => [h.slug, h.title] as const));
+			return stepGuides(step, stepUses[i], catalog.ingredientsById, [...titles.keys()]).flatMap(
+				(slug) =>
+					slug !== 'slovnik' && titles.has(slug) ? [{ slug, title: titles.get(slug)! }] : []
+			);
+		})
 	);
 	const jsonLd = $derived([
 		recipeJsonLd(base, catalog.ingredientsById, cuisine?.name, SITE_ORIGIN),
@@ -397,6 +407,7 @@
 						{recipe.time} min
 						{#if recipe.activeTime < recipe.time}<small>z toho {recipe.activeTime} min práce</small
 							>{/if}
+						{#if recipe.ahead}<small><a href="#vopred">+ čakanie vopred</a></small>{/if}
 					</dd>
 				</div>
 				<div>
@@ -530,7 +541,10 @@
 			{/if}
 
 			{#if recipe.ahead}
-				<p class="ahead"><Icon name="clock" size={18} /> <strong>Vopred:</strong> {recipe.ahead}</p>
+				<p class="ahead" id="vopred">
+					<Icon name="clock" size={18} /> <strong>Vopred:</strong>
+					{recipe.ahead}
+				</p>
 			{/if}
 
 			<div class="actions" data-noprint bind:this={actionsEl}>
@@ -827,6 +841,13 @@
 								{/if}</span
 							>
 						</button>
+						{#if stepLinks[i].length}
+							<span class="step-guides" data-noprint>
+								{#each stepLinks[i] as guide (guide.slug)}
+									<a href="/wiki/{guide.slug}"><Icon name="book" size={14} /> {guide.title}</a>
+								{/each}
+							</span>
+						{/if}
 					</li>
 				{/each}
 			</ol>
@@ -1168,6 +1189,7 @@
 		animation: rise 0.3s var(--ease-out);
 	}
 	.ahead {
+		scroll-margin-top: 90px;
 		display: flex;
 		align-items: center;
 		gap: 8px;
@@ -1757,6 +1779,26 @@
 		flex-wrap: wrap;
 		gap: 4px 6px;
 		margin-top: 8px;
+	}
+	.step-guides {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin: -4px 0 8px 58px;
+	}
+	.step-guides a {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		padding: 2px 10px;
+		border-radius: 999px;
+		border: 1px solid var(--line);
+		color: var(--plum);
+		font-size: 0.8rem;
+		text-decoration: none;
+	}
+	.step-guides a:hover {
+		background: var(--paper-2);
 	}
 	.use {
 		padding: 1px 8px;

@@ -3,7 +3,7 @@ description: Vietnamský kapustový šalát s mrkvou, mätou, arašidmi a limetk
 cuisine: vietnamska
 meals: [snack, obed]
 categories: [salaty/prilohove]
-time: 15
+time: 20
 active: 15
 servings: 4
 difficulty: 1
@@ -23,6 +23,6 @@ ingredients:
   - cesnak: 1 ks
   - cili-papricka: 1 ks
 steps:
-  - Kapustu s mrkvou a cibuľou premiešaj.
+  - Kapustu nakrájaj najemno na tenké rezančeky, mrkvu na tenké prúžky a cibuľu na tenké polkolieska. Premiešaj ich v miske.
   - Zmiešaj limetkovú šťavu, cukor, sójovú omáčku, cesnak a papričku.
   - Šalát zalej zálievkou, pridaj bylinky a premiešaj. Posyp arašidmi tesne pred podávaním.

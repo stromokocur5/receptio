@@ -3,8 +3,8 @@ description: Cestoviny sa varia priamo v paradajkovej omáčke, takže je len je
 cuisine: talianska
 meals: [obed, vecera]
 categories: [hlavne/cestoviny]
-time: 25
-active: 10
+time: 30
+active: 15
 servings: 7
 difficulty: 1
 tags: [nasarodinka, lacne, one-pot, deti, vela-bielkovin]

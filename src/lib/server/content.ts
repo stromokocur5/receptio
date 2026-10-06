@@ -11,6 +11,7 @@ import {
 	treatReasons
 } from '$lib/nutrition';
 import { CATEGORY_PATHS, guessTaste } from '$lib/categories';
+import { techniqueGuides } from '$lib/cooking';
 import { ART_NAMES, artFigure } from '$lib/wiki-art';
 import { normalizeSearch } from '$lib/labels';
 import { bestPrice } from '$lib/pricing';
@@ -840,9 +841,13 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			equipmentDetail,
 			steps: r.steps,
 			tips: r.tips,
-			howto: [...new Set([...r.howto, ...[...allUsed].flatMap((i) => byId.get(i)!.howto)])].map(
-				(h) => howtoLink(h, where)
-			),
+			howto: [
+				...new Set([
+					...r.howto,
+					...[...allUsed].flatMap((i) => byId.get(i)!.howto),
+					...[...r.steps, ...variants.flatMap((v) => v.steps ?? [])].flatMap(techniqueGuides)
+				])
+			].map((h) => howtoLink(h, where)),
 			// Resolved below, once every recipe is known.
 			related: r.related.map((relatedId) => ({ id: relatedId, title: '' }))
 		});

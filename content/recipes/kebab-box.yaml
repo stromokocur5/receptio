@@ -3,8 +3,8 @@ description: Krabička ako z kebabárne – chrumkavé hranolky z rúry, pikantn
 cuisine: turecka
 meals: [obed, vecera]
 categories: [comfort/kebab, hlavne/zelenina, hlavne/bowly]
-time: 45
-active: 20
+time: 50
+active: 25
 servings: 3
 difficulty: 1
 tags: [party, deti]
@@ -31,7 +31,7 @@ ingredients:
   - paradajkovy-pretlak: 1 pl
   - sriracha: 1 pl
 steps:
-  - Rúru predhrej na 220 °C. Zemiaky nakrájaj na hranolky, premiešaj s 2 PL oleja a soľou a rozlož na plech v jednej vrstve. Peč 30–35 minút, v polovici otoč.
+  - Rúru predhrej na 220 °C. Zemiaky nakrájaj na hranolky, premiešaj s 2 PL oleja a soľou a rozlož na plech vystlaný papierom na pečenie v jednej vrstve. Peč 30–35 minút, v polovici otoč.
   - Medzitým natrhaj hlivu na prúžky a opekaj ju na zvyšnom oleji na veľkom ohni 6–8 minút dohneda. Pridaj koreniny a sójovú omáčku a opekaj ešte minútu.
   - Biela omáčka. Jogurt zmiešaj s majonézou, cesnakom a štipkou soli.
   - Červená omáčka. Pretlak zmiešaj so srirachou a 2 PL vody.

@@ -354,6 +354,34 @@ export const KITCHEN_ART: Record<string, () => string> = {
 		);
 	},
 
+	rura: () => {
+		// Cross-section: heaters top and bottom, a fan at the back, three shelf heights.
+		const shelf = (y: number) => `<path class="ta-rail" d="M34 ${y}h150"/>`;
+		const fan =
+			`<g class="ta-spin" style="transform-origin:170px 100px"><path class="ta-rail" d="M170 92v16M162 100h16M164 94l12 12M176 94l-12 12"/></g>` +
+			`<circle class="ta-rail" cx="170" cy="100" r="11" fill="none"/>`;
+		return (
+			`<rect class="ta-oven-box" x="20" y="22" width="178" height="150" rx="10"/>` +
+			`<rect class="ta-window" x="30" y="34" width="158" height="126" rx="6"/>` +
+			`<path class="ta-heat" d="M40 44l8 5 8-5 8 5 8-5 8 5 8-5 8 5 8-5 8 5 8-5 8 5 8-5"/>` +
+			`<path class="ta-heat" d="M40 152l8-5 8 5 8-5 8 5 8-5 8 5 8-5 8 5 8-5 8 5 8-5 8 5"/>` +
+			shelf(70) +
+			shelf(102) +
+			shelf(134) +
+			`<rect class="ta-tray" x="44" y="96" width="96" height="6" rx="2"/>` +
+			Array.from(
+				{ length: 5 },
+				(_, i) =>
+					`<rect class="ta-veg-piece ta-roast" style="--d:${i * 0.2}s" x="${50 + i * 18}" y="86" width="11" height="10" rx="3"/>`
+			).join('') +
+			fan +
+			label(206, 72, 'hore – zapečenie') +
+			label(206, 104, 'stred – skoro všetko') +
+			label(206, 136, 'dole – pizza, chlieb') +
+			label(109, 186, 'ventilátor = o 20 °C menej', 'middle')
+		);
+	},
+
 	krajanie: () =>
 		board(14, 132, 170) +
 		// The guiding hand: fingertips tucked in, the blade rides on the knuckles.

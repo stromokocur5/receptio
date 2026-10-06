@@ -4,7 +4,7 @@ cuisine: slovenska
 meals: [obed, vecera]
 categories: [polievky/strukovinove, hlavne/zelenina]
 time: 50
-active: 15
+active: 25
 servings: 4
 difficulty: 1
 tags: [klasika, one-pot]

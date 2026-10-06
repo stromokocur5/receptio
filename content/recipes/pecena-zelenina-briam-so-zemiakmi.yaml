@@ -4,7 +4,7 @@ cuisine: grecka
 meals: [obed, vecera]
 categories: [hlavne/rura, hlavne/zelenina]
 time: 75
-active: 15
+active: 25
 servings: 4
 difficulty: 1
 tags: [zlatica, meal-prep, lacne]
@@ -25,7 +25,7 @@ ingredients:
 steps:
   - Rúru predhrej na 200 °C. Zemiaky ošúp a nakrájaj na plátky 5 mm, cuketu na kolieska 1 cm, cibuľu na pásiky.
   - Štyri paradajky nastrúhaj na hrubom strúhadle do misky, šupky vyhoď. Pridaj prelisovaný cesnak, 1 ČL soli, cukor, oregano, korenie a 3 PL oleja a premiešaj. Zvyšné dve paradajky nakrájaj na plátky.
-  - Do pekáča daj zemiaky, cuketu, cibuľu, posyp 1 ČL soli a polej paradajkovou zmesou. Rukami všetko premiešaj, aby bol každý kúsok obalený. Navrch ulož plátky paradajok a pokvapkaj 2 PL oleja.
+  - Do pekáča (netreba ho mastiť, paradajková zmes pustí šťavu) daj zemiaky, cuketu, cibuľu, posyp 1 ČL soli a polej paradajkovou zmesou. Rukami všetko premiešaj, aby bol každý kúsok obalený. Navrch ulož plátky paradajok a pokvapkaj 2 PL oleja.
   - Prikry alobalom a peč 30 minút. Potom alobal zlož, premiešaj a peč ešte 30–35 minút, kým nie sú zemiaky mäkké, tekutina sa nezmení na hustú omáčku a vrch nemá hnedé okraje. Pod alobalom sa zelenina uvarí, bez neho sa voda odparí a chuť zhustne.
   - Nechaj 10 minút postáť, posyp vňaťou. Chutí s uhorkovým šalátom.
 tips:

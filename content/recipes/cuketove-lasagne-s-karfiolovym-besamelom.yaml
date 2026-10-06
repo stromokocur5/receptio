@@ -3,8 +3,8 @@ description: Lasagne bez cestovín – namiesto plátov opečené plátky cukety
 cuisine: talianska
 meals: [obed, vecera]
 categories: [hlavne/rura, hlavne/zelenina]
-time: 75
-active: 40
+time: 100
+active: 50
 servings: 4
 difficulty: 2
 tags: [zlatica, meal-prep]
