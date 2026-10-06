@@ -25,7 +25,7 @@
 
 	const HEIGHT = 220;
 	const PAD = { top: 12, right: 24, bottom: 28, left: 52 };
-	let width = $state(640);
+	let width = $state(300);
 	let hover = $state<number | null>(null);
 	let showTable = $state(false);
 
@@ -61,7 +61,28 @@
 	const y = (v: number) => PAD.top + plotH - ((v - yDomain[0]) / (yDomain[1] - yDomain[0])) * plotH;
 
 	/** Step line: a price holds until the day it changes; gaps where the shop didn't list it. */
-	function stepPath(series: (number | null)[]): string {
+	/**
+	 * Shops with the same price on a day would draw one line over the other, so the tied lines
+	 * are nudged apart a few pixels (by their legend order) – every shop stays visible.
+	 */
+	const DODGE_PX = 3;
+	const dodge = $derived(
+		lines.map((line, li) =>
+			timeline.days.map((_, i) => {
+				const v = line.regular[i];
+				if (v === null) return 0;
+				const tied = lines
+					.map((l, index) => ({ index, v: l.regular[i] }))
+					.filter((t) => t.v !== null && Math.round(t.v * 100) === Math.round(v * 100));
+				if (tied.length < 2) return 0;
+				const rank = tied.findIndex((t) => t.index === li);
+				return (rank - (tied.length - 1) / 2) * DODGE_PX;
+			})
+		)
+	);
+
+	/** Step line: a price holds until the day it changes; gaps where the shop didn't list it. */
+	function stepPath(series: (number | null)[], offsets: number[]): string {
 		let path = '';
 		let prev: number | null = null;
 		timeline.days.forEach((day, i) => {
@@ -70,7 +91,8 @@
 				prev = null;
 				return;
 			}
-			path += prev === null ? `M${x(day)},${y(v)}` : `H${x(day)}V${y(v)}`;
+			const py = y(v) + offsets[i];
+			path += prev === null ? `M${x(day)},${py}` : `H${x(day)}V${py}`;
 			prev = v;
 		});
 		return path;
@@ -217,13 +239,18 @@
 						y2={PAD.top + plotH}
 					/>
 				{/if}
-				{#each lines as line (line.storeId)}
+				{#each lines as line, li (line.storeId)}
 					{@const slot = slotOf(line.storeId) ?? 'x'}
-					<path class="line s{slot}" d={stepPath(line.regular)} />
+					<path class="line s{slot}" d={stepPath(line.regular, dodge[li])} />
 					{#each line.regular as v, i (i)}
 						<!-- A lone day has no neighbour to draw a line to, so it shows as a point. -->
 						{#if v !== null && line.regular[i - 1] == null && line.regular[i + 1] == null}
-							<circle class="point s{slot}" cx={x(timeline.days[i])} cy={y(v)} r="3" />
+							<circle
+								class="point s{slot}"
+								cx={x(timeline.days[i])}
+								cy={y(v) + dodge[li][i]}
+								r="3"
+							/>
 						{/if}
 					{/each}
 					{#each line.sale as v, i (i)}
@@ -264,13 +291,15 @@
 			{/if}
 		</div>
 		<p class="muted small unit">
-			Cena za {timeline.unit}, najlacnejší produkt v obchode v daný deň.
+			Cena za {timeline.unit}, najlacnejší produkt v obchode v daný deň. Obchody s rovnakou cenou sú
+			od seba mierne odsadené.
 		</p>
 	{/if}
 </figure>
 
 <style>
 	.viz-root {
+		min-width: 0;
 		--s1: #2a78d6;
 		--s2: #eb6834;
 		--s3: #1baf7a;
@@ -367,9 +396,12 @@
 		background: var(--ink-2);
 		box-shadow: 0 0 0 2px var(--card);
 	}
+	/* The SVG is sized from this box, so the box must not size itself from the SVG –
+	   otherwise a wide first render stretches the whole page on a phone. */
 	.plot {
 		position: relative;
 		width: 100%;
+		contain: inline-size;
 	}
 	svg[role='slider'] {
 		display: block;
@@ -452,6 +484,7 @@
 	}
 	.table-wrap {
 		overflow-x: auto;
+		contain: inline-size;
 	}
 	table {
 		border-collapse: collapse;

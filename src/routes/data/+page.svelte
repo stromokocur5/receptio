@@ -274,8 +274,11 @@
 					Najlacnejšie za posledných 90 dní: <strong>{formatEur(lowest.value)}/{lowest.unit}</strong
 					>
 					v
-					{storeName(lowest.storeId)}
-					{lowest.sale ? 'v akcii' : ''} ({fmtDay(lowest.day)}).
+					{lowest.stores
+						.map(
+							(st) => `${storeName(st.storeId)}${st.sale ? ' (akcia)' : ''} od ${fmtDay(st.day)}`
+						)
+						.join(', ')}.
 				{/if}
 				<a href="/suroviny/{selected}">Všetko o surovine</a>
 			</p>

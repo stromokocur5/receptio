@@ -81,14 +81,19 @@ describe('priceChanges and lowestPrice', () => {
 		expect(priceChanges(history, ['lidl', 'fresh'], 7)).toEqual([]);
 	});
 
-	it('finds the lowest price including sales', () => {
+	it('finds the lowest price including sales, with every shop tied at it', () => {
 		expect(lowestPrice(history, 'mrkva', ['lidl', 'fresh'], 90)).toEqual({
 			value: 0.6,
 			unit: 'kg',
-			storeId: 'fresh',
-			day: '2026-09-15',
-			sale: true
+			stores: [{ storeId: 'fresh', day: '2026-09-15', sale: true }]
 		});
+		const tied = compressHistory([
+			row('2026-09-01', 'lidl', 1.49),
+			row('2026-09-02', 'billa', 1.49)
+		]);
+		expect(lowestPrice(tied, 'mrkva', ['lidl', 'billa'], 90)?.stores.map((s) => s.storeId)).toEqual(
+			['lidl', 'billa']
+		);
 	});
 
 	it('lists sales of a day with what they save against the shop’s own price', () => {

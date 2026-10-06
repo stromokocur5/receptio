@@ -215,12 +215,11 @@ export interface LowestPrice {
 	/** Per `unit`, the same unit the ingredient's chart uses. */
 	value: number;
 	unit: 'kg' | 'l';
-	storeId: string;
-	day: string;
-	sale: boolean;
+	/** Every shop that had it at that price, each with the first day it did. */
+	stores: { storeId: string; day: string; sale: boolean }[];
 }
 
-/** The lowest price, sales included, in the last `days` days of data. */
+/** The lowest price, sales included, in the last `days` days of data – with every shop tied at it. */
 export function lowestPrice(
 	history: PriceHistory,
 	ingredientId: string,
@@ -231,21 +230,27 @@ export function lowestPrice(
 	const last = timeline.days.at(-1);
 	if (!last) return null;
 	const from = shiftDate(last, -days);
-	let best: LowestPrice | null = null;
+	const seen: { value: number; storeId: string; day: string; sale: boolean }[] = [];
 	for (const line of timeline.stores) {
 		timeline.days.forEach((day, i) => {
 			if (day < from) return;
-			for (const [value, sale] of [
-				[line.regular[i], false],
-				[line.sale[i], true]
-			] as const) {
-				if (value !== null && (!best || value < best.value)) {
-					best = { value, unit: timeline.unit, storeId: line.storeId, day, sale };
-				}
-			}
+			if (line.regular[i] !== null)
+				seen.push({ value: line.regular[i]!, storeId: line.storeId, day, sale: false });
+			if (line.sale[i] !== null)
+				seen.push({ value: line.sale[i]!, storeId: line.storeId, day, sale: true });
 		});
 	}
-	return best;
+	if (!seen.length) return null;
+	// Cents decide: 1,49 € and 1,4900001 € are the same price on the shelf.
+	const cents = (v: number) => Math.round(v * 100);
+	const min = Math.min(...seen.map((s) => cents(s.value)));
+	const stores = new Map<string, { storeId: string; day: string; sale: boolean }>();
+	for (const s of seen.toSorted((a, b) => a.day.localeCompare(b.day))) {
+		if (cents(s.value) === min && !stores.has(s.storeId)) {
+			stores.set(s.storeId, { storeId: s.storeId, day: s.day, sale: s.sale });
+		}
+	}
+	return { value: min / 100, unit: timeline.unit, stores: [...stores.values()] };
 }
 
 export interface DaySale {
