@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { planCheck } from '$lib/plancheck';
 	import Seo from '$lib/components/Seo.svelte';
 	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
@@ -70,6 +71,9 @@
 			})
 	);
 	const totalServings = $derived(entries.reduce((s, e) => s + e.servings, 0));
+	const balance = $derived(
+		planCheck(entries, catalog.ingredientsById, settings.current.planDays, settings.current.people)
+	);
 
 	const list = $derived(
 		buildShoppingList(
@@ -588,6 +592,16 @@
 						{targets}
 						keys={['kcal', 'protein', 'fiber', 'iron', 'calcium', 'zinc', 'ala', 'salt']}
 					/>
+					{#if balance.length}
+						<ul class="balance">
+							{#each balance as tip (tip.text)}
+								<li class:tip={tip.level === 'tip'}>
+									<Icon name={tip.level === 'ok' ? 'check' : 'info'} size={16} />
+									<span>{tip.text}</span>
+								</li>
+							{/each}
+						</ul>
+					{/if}
 					<p class="b12">
 						<Icon name="pill" size={18} /> B12 a vitamín D pokryje len suplement.
 						<a href="/wiki/b12">Viac</a>
@@ -1660,5 +1674,27 @@
 			max-height: calc(100vh - 100px);
 			overflow: auto;
 		}
+	}
+	.balance {
+		list-style: none;
+		margin: 14px 0 0;
+		padding: 0;
+		display: grid;
+		gap: 6px;
+	}
+	.balance li {
+		display: flex;
+		gap: 8px;
+		align-items: flex-start;
+		font-size: 0.9rem;
+		color: var(--ink-2);
+	}
+	.balance li :global(svg) {
+		flex: none;
+		margin-top: 2px;
+		color: var(--leaf);
+	}
+	.balance li.tip :global(svg) {
+		color: var(--turmeric);
 	}
 </style>
