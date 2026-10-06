@@ -411,3 +411,20 @@ export interface Catalog {
 	stores: Store[];
 	prices: PriceEntry[];
 }
+
+/** The beginners' course (content/kurz.yaml): recipes in order, each teaching one more thing. */
+export interface CourseLesson {
+	recipeId: string;
+	recipeTitle: string;
+	time: number;
+	difficulty: 1 | 2 | 3;
+	title: string;
+	learn: string;
+	guides: { slug: string; title: string }[];
+}
+
+export interface Course {
+	/** Guides worth reading before the first lesson. */
+	intro: { slug: string; title: string }[];
+	lessons: CourseLesson[];
+}

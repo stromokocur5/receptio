@@ -316,6 +316,8 @@ export const avoid = new Persisted<Avoid>('avoid', NO_AVOID, validateAvoid);
 
 /** Recipes cooked, oldest first. */
 export const history = new Persisted<CookedEntry[]>('history', [], validateHistory);
+/** Lessons of the beginners' course ticked off by hand (cooking the recipe ticks one too). */
+export const courseDone = new Persisted<Record<string, boolean>>('course-done', {}, validateFlags);
 export const favorites = new Persisted<Record<string, boolean>>('favorites', {}, validateFlags);
 /** Personal notes per recipe ("next time less salt"). */
 export const notes = new Persisted<Record<string, string>>('notes', {}, validateNotes);
@@ -664,7 +666,8 @@ export const ALL_PERSISTED = {
 	presets,
 	savedWeeks,
 	journal,
-	collections
+	collections,
+	courseDone
 };
 
 export const ui = $state({ loaded: false });

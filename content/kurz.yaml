@@ -1,0 +1,63 @@
+# Kurz varenia pre začiatočníkov: recepty v poradí, každý naučí jednu vec navyše.
+# recipe: id receptu, learn: čo sa pri ňom naučíš, guides: návody z wiki k tomu
+intro:
+  - jednotky
+  - krajanie
+  - bezpecnost
+lekcie:
+  - recipe: tofu-prazenica
+    title: Prvé jedlo na panvici
+    learn: Nakrájať cibuľu, rozohriať panvicu na správnu teplotu a ochutiť tak, aby jedlo nebolo mdlé.
+    guides: [krajanie, tofu, dochucovanie]
+  - recipe: hummus
+    title: Mixovanie a dochucovanie
+    learn: Ako z konzervy cíceru urobiť hladký krém a ako ochutnávať – soľ, kyselina, tuk.
+    guides: [strukoviny, dochucovanie]
+  - recipe: salat-s-fazulovou-mozzarellou
+    title: Šalát, ktorý chutí
+    learn: Osoliť zeleninu, aby pustila vodu, a zašľahať dresing, ktorý drží pokope.
+    guides: [dochucovanie, umyvanie]
+  - recipe: kokosovy-dal
+    title: Cibuľa, korenie a ryža
+    learn: Opražiť korenie v oleji, kým nezavonia, a uvariť ryžu, ktorá sa nelepí.
+    guides: [cibula, korenie, ryza]
+  - recipe: spagety-so-sosovicovym-ragu
+    title: Cestoviny a omáčka
+    learn: Opražiť pretlak, nechať omáčku zhustnúť a uvariť cestoviny akurát.
+    guides: [cestoviny, strukoviny]
+  - recipe: pecene-zemiaky
+    title: Rúra
+    learn: Predhriať rúru, rozložiť zeleninu na plech s papierom a spoznať, kedy je hotová.
+    guides: [rura, pecenie-zeleniny, supanie]
+  - recipe: tekvicova-polievka
+    title: Krémová polievka
+    learn: Zelenina do mäkka, rozmixovať a dochutiť – základ pre stovku iných polievok.
+    guides: [dochucovanie, zahustovanie]
+  - recipe: smazena-ryza
+    title: Rýchlo na veľkom ohni
+    learn: Prečo sa smaží studená ryža a ako nepreplniť panvicu, aby sa jedlo opekalo, nie dusilo.
+    guides: [ryza, liatina-wok]
+  - recipe: teriyaki-tofu
+    title: Chrumkavé tofu
+    learn: Vytlačiť z tofu vodu, opiecť ho dozlatista a zahustiť omáčku na lesklú glazúru.
+    guides: [tofu, zahustovanie]
+  - recipe: japonske-kari
+    title: Zápražka
+    learn: Opražiť múku na tuku a zahustiť ňou omáčku bez hrudiek.
+    guides: [zahustovanie, cibula]
+  - recipe: palacinky
+    title: Cesto na panvici
+    learn: Riedke cesto, správna teplota panvice a kedy obrátiť.
+    guides: [pecenie-bez-vajec]
+  - recipe: bananovy-chlebik
+    title: Prvé pečenie
+    learn: Pečenie bez vajec, forma s papierom a skúška špáradlom.
+    guides: [pecenie-bez-vajec, rura]
+  - recipe: falafel
+    title: Suché strukoviny a vyprážanie
+    learn: Namočiť cícer cez noc a bezpečne vyprážať v oleji s teplomerom.
+    guides: [strukoviny, vyprazanie, bezpecnost]
+  - recipe: pizza
+    title: Kysnuté cesto
+    learn: Vymiesiť cesto, nechať ho vykysnúť a upiecť pizzu na rozpálenom plechu.
+    guides: [kysnute-cesto, rura]

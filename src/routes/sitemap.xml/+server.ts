@@ -12,6 +12,7 @@ const STATIC_PAGES = [
 	'/plan',
 	'/ceny',
 	'/wiki',
+	'/kurz',
 	'/vybavenie',
 	'/sezona',
 	'/pestuj',

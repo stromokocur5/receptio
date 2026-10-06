@@ -28,6 +28,7 @@ import {
 	WIKI_GROUPS,
 	WIKI_SECTIONS,
 	type Catalog,
+	type Course,
 	type Cuisine,
 	type Equipment,
 	type GrowCombo,
@@ -356,6 +357,24 @@ const pricesSchema = z
 
 const syncedPricesSchema = pricesSchema.pick({ entries: true });
 
+const courseSchema = z
+	.object({
+		intro: z.array(slug),
+		lekcie: z
+			.array(
+				z
+					.object({
+						recipe: slug,
+						title: z.string().min(1),
+						learn: z.string().min(1),
+						guides: z.array(slug).default([])
+					})
+					.strict()
+			)
+			.min(1)
+	})
+	.strict();
+
 const wikiFrontmatterSchema = z
 	.object({
 		title: z.string(),
@@ -393,6 +412,7 @@ export interface Content extends Catalog {
 	grow: GrowGuide[];
 	growCombos: GrowCombo[];
 	notGrown: NotGrown[];
+	course: Course;
 }
 
 export interface RawContent {
@@ -407,6 +427,7 @@ export interface RawContent {
 	recipes: Record<string, string>;
 	wiki: Record<string, string>;
 	grow: string;
+	course: string;
 }
 
 export function compileContent(raw: RawContent, today: Date): Content {
@@ -1003,7 +1024,39 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		ingredientSwaps: substitutesById,
 		grow,
 		growCombos,
-		notGrown
+		notGrown,
+		course: compileCourse(raw.course, recipeDetails, wikiBySlug)
+	};
+}
+
+/** The beginners' course, with every recipe and guide checked to exist. */
+function compileCourse(
+	rawCourse: string,
+	recipes: Map<string, RecipeDetail>,
+	wiki: Map<string, WikiPage>
+): Course {
+	const where = 'content/kurz.yaml';
+	const file = parseWith(courseSchema, parseYaml(rawCourse), where);
+	const guide = (slugId: string) => {
+		const page = wiki.get(slugId);
+		if (!page) throw new Error(`${where}: neznámy návod "${slugId}"`);
+		return { slug: page.slug, title: page.title };
+	};
+	return {
+		intro: file.intro.map(guide),
+		lessons: file.lekcie.map((l) => {
+			const recipe = recipes.get(l.recipe);
+			if (!recipe) throw new Error(`${where}: neznámy recept "${l.recipe}"`);
+			return {
+				recipeId: recipe.id,
+				recipeTitle: recipe.title,
+				time: recipe.time,
+				difficulty: recipe.difficulty,
+				title: l.title,
+				learn: l.learn,
+				guides: l.guides.map(guide)
+			};
+		})
 	};
 }
 
@@ -1069,7 +1122,12 @@ export function getContent(): Content {
 				query: '?raw',
 				import: 'default',
 				eager: true
-			})['/content/pestovanie.yaml'] as string
+			})['/content/pestovanie.yaml'] as string,
+			course: import.meta.glob('/content/kurz.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/kurz.yaml'] as string
 		},
 		new Date()
 	);

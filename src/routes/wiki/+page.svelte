@@ -140,7 +140,8 @@
 		<h1>Vedieť, nie hádať</h1>
 		<p class="lede">
 			Krátke a praktické návody – od toho, ako uvariť ryžu, po to, koľko B12 treba. Nie sme lekári,
-			pri zdravotných problémoch sa poraď s odborníkom.
+			pri zdravotných problémoch sa poraď s odborníkom. Začínaš s varením? Skús
+			<a href="/kurz">kurz varenia</a> – 14 receptov, ktoré ťa to postupne naučia.
 		</p>
 		<label class="field search">
 			<Icon name="search" size={20} />
