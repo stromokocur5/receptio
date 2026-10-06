@@ -77,6 +77,47 @@ export function bestPrice(
 	return { perKg: pricePerKg(cheapest), storeId: cheapest.storeId, isEstimate: false };
 }
 
+export interface SaleDeal {
+	entry: PriceEntry;
+	/** Cheapest current regular price of the same thing, when one is known. */
+	regularPerKg: number | null;
+	/** How much cheaper than that regular price (0–1). */
+	discount: number | null;
+}
+
+/**
+ * Sales running today in the shops you walk into, the biggest discounts first. One deal per
+ * ingredient and shop: the cheapest.
+ */
+export function activeSales(prices: PriceEntry[], today: Date): SaleDeal[] {
+	const best = new Map<string, PriceEntry>();
+	for (const p of prices) {
+		if (p.online || !isSaleActive(p, today)) continue;
+		const key = `${p.ingredientId}|${p.storeId}`;
+		const seen = best.get(key);
+		if (!seen || pricePerKg(p) < pricePerKg(seen)) best.set(key, p);
+	}
+	return [...best.values()]
+		.map((entry) => {
+			const regular = prices
+				.filter(
+					(p) =>
+						p.ingredientId === entry.ingredientId &&
+						!p.online &&
+						p.saleUntil === undefined &&
+						!isStale(p, today)
+				)
+				.map(pricePerKg);
+			const regularPerKg = regular.length ? Math.min(...regular) : null;
+			const discount =
+				regularPerKg && regularPerKg > pricePerKg(entry)
+					? 1 - pricePerKg(entry) / regularPerKg
+					: null;
+			return { entry, regularPerKg, discount };
+		})
+		.sort((a, b) => (b.discount ?? 0) - (a.discount ?? 0));
+}
+
 /** The cheapest usable e-shop price per kg – what buying in bulk would cost. */
 export function bestOnlinePrice(
 	ingredient: Ingredient,

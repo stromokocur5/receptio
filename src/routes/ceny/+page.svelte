@@ -8,6 +8,7 @@
 	import {
 		BULK_PACK_GRAMS,
 		STALE_AFTER_DAYS,
+		activeSales,
 		ageInDays,
 		bestOnlinePrice,
 		bestPrice,
@@ -50,6 +51,25 @@
 					.sort((a, b) => pricePerKg(a) - pricePerKg(b))
 			}))
 			.sort((a, b) => a.ingredient.name.localeCompare(b.ingredient.name, 'sk'))
+	);
+
+	/** Sales running now, each with a few everyday recipes that use the ingredient. */
+	const deals = $derived(
+		activeSales(catalog.prices, today)
+			.filter((d) => catalog.ingredientsById.has(d.entry.ingredientId))
+			.map((deal) => {
+				const ingredient = catalog.ingredientsById.get(deal.entry.ingredientId)!;
+				const group = ingredient.group;
+				const recipes = catalog.recipes
+					.filter(
+						(r) =>
+							r.treat.length === 0 &&
+							r.lines.some((l) => catalog.ingredientsById.get(l.ingredientId)?.group === group)
+					)
+					.sort((a, b) => a.costPerServing - b.costPerServing)
+					.slice(0, 3);
+				return { ...deal, ingredient, recipes };
+			})
 	);
 
 	const proteinPerEuro = $derived(
@@ -152,6 +172,48 @@
 			<a class="chip" href="#pokrytie"><Icon name="store" size={14} /> Koľko je z obchodov</a>
 		</nav>
 	</header>
+
+	{#if deals.length}
+		<section class="card box deals" id="akcie">
+			<h2><Icon name="tag" size={24} /> Teraz v akcii</h2>
+			<p class="muted small">
+				Akciové ceny z obchodov (cenyslovensko.sk) a čo z tej suroviny uvariť. Rátajú sa aj do cien
+				receptov, kým akcia trvá.
+			</p>
+			<ul>
+				{#each deals as deal (`${deal.entry.ingredientId}|${deal.entry.storeId}`)}
+					<li>
+						<div class="deal-head">
+							<a href="/suroviny/{deal.ingredient.id}"><strong>{deal.ingredient.name}</strong></a>
+							<span class="badge tomato"
+								>{deal.discount && deal.discount >= 0.05
+									? `−${Math.round(deal.discount * 100)} %`
+									: 'akcia'}</span
+							>
+						</div>
+						<p class="small">
+							{catalog.storesById.get(deal.entry.storeId)?.name ?? deal.entry.storeId} ·
+							{deal.entry.product} ({deal.entry.pack}) za
+							<strong>{formatEur(deal.entry.price)}</strong>
+							<span class="muted"
+								>· {formatEur(pricePerKg(deal.entry))}/kg · do {formatDate(
+									deal.entry.saleUntil!
+								)}</span
+							>
+						</p>
+						{#if deal.recipes.length}
+							<div class="deal-recipes">
+								{#each deal.recipes as r (r.id)}
+									<a class="chip" href="/recepty/{r.id}">{r.title}</a>
+								{/each}
+								<a class="chip more" href="/recepty?s={deal.ingredient.id}">Všetky recepty →</a>
+							</div>
+						{/if}
+					</li>
+				{/each}
+			</ul>
+		</section>
+	{/if}
 
 	<section class="table-section" aria-labelledby="suroviny">
 		<h2 id="suroviny" class="sr-only">Suroviny a ich ceny</h2>
@@ -670,5 +732,35 @@
 			grid-row: auto;
 			height: 12px;
 		}
+	}
+	.deals ul {
+		list-style: none;
+		margin: 12px 0 0;
+		padding: 0;
+		display: grid;
+		gap: 12px;
+	}
+	.deals li {
+		padding-bottom: 12px;
+		border-bottom: 1px dashed var(--line);
+	}
+	.deals li:last-child {
+		border-bottom: 0;
+		padding-bottom: 0;
+	}
+	.deal-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+	}
+	.deals p {
+		margin: 4px 0 8px;
+		overflow-wrap: anywhere;
+	}
+	.deal-recipes {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
 	}
 </style>

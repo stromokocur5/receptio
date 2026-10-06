@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { consumeFromPantry, rankByLeftovers, rankByPantry, useSoon } from './pantry';
 import { buildShoppingList } from './shopping';
-import { bestPrice, compareStores, shelfCost } from './pricing';
+import { activeSales, bestPrice, compareStores, shelfCost } from './pricing';
 import type { Ingredient, PriceEntry, RecipeSummary } from './types';
 
 const zero = {
@@ -405,5 +405,36 @@ describe('bestPrice', () => {
 	it('ignores ended sales and prices older than a year', () => {
 		const prices = [entry('2026-09-26', 3, { saleUntil: '2026-09-30' }), entry('2025-10-01', 4)];
 		expect(bestPrice(tofu, prices, today)).toEqual({ perKg: 2, storeId: null, isEstimate: true });
+	});
+});
+
+describe('activeSales', () => {
+	const price = (storeId: string, price: number, extra: Partial<PriceEntry> = {}): PriceEntry => ({
+		ingredientId: 'zemiaky',
+		storeId,
+		product: 'Zemiaky',
+		pack: '1 kg',
+		packGrams: 1000,
+		price,
+		date: '2026-09-30',
+		...extra
+	});
+	const today = new Date('2026-10-06');
+
+	it('lists running sales with the discount against the cheapest regular price', () => {
+		const deals = activeSales(
+			[
+				price('fresh', 0.88, { saleUntil: '2026-12-31' }),
+				price('fresh', 1.15),
+				price('kaufland', 1.1),
+				price('billa', 0.5, { saleUntil: '2026-10-01' }),
+				price('eshop', 0.4, { saleUntil: '2026-12-31', online: true })
+			],
+			today
+		);
+		expect(deals).toHaveLength(1);
+		expect(deals[0].entry.storeId).toBe('fresh');
+		expect(deals[0].regularPerKg).toBe(1.1);
+		expect(deals[0].discount).toBeCloseTo(0.2);
 	});
 });
