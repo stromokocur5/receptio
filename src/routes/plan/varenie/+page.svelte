@@ -6,7 +6,7 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import { asPlanned, formatMinutes, prepList, prepSchedule } from '$lib/mealprep';
 	import { approxPieces } from '$lib/shopping';
-	import { plan, ui } from '$lib/state.svelte';
+	import { markCooked, plan, ui } from '$lib/state.svelte';
 
 	const catalog = useCatalog();
 
@@ -14,7 +14,8 @@
 	const entries = $derived(
 		plan.current.flatMap((entry, index) => {
 			const recipe = catalog.recipesById.get(entry.recipeId);
-			return recipe
+			// Freezer portions are already cooked.
+			return recipe && !entry.fromFreezer
 				? [{ entry, recipe: asPlanned(recipe, entry.variant), key: `${index}-${entry.recipeId}` }]
 				: [];
 		})
@@ -28,6 +29,38 @@
 	const chopping = $derived(prepList(chosen, catalog.ingredientsById));
 	const aheadNotes = $derived(chosen.filter((e) => e.recipe.ahead));
 	const ovenCount = $derived(chosen.filter((e) => e.recipe.equipment.includes('rura')).length);
+
+	/** When the session starts, so the plan reads in clock times. */
+	let startAt = $state('14:00');
+	const clock = (minutes: number) => {
+		const [h, m] = startAt.split(':').map(Number);
+		const total = (h || 0) * 60 + (m || 0) + Math.round(minutes);
+		return `${Math.floor(total / 60) % 24}:${String(total % 60).padStart(2, '0')}`;
+	};
+
+	let doneMessage = $state('');
+	/** Everything cooked: pantry, history and the freezer get it all at once. */
+	function allCooked() {
+		const titles = [];
+		// Cooking takes the entries off the plan, which changes `chosen` – go through a copy.
+		for (const e of [...chosen]) {
+			const original = catalog.recipesById.get(e.entry.recipeId)!;
+			const variant = e.entry.variant
+				? original.variants.find((v) => v.name === e.entry.variant)
+				: undefined;
+			markCooked(
+				e.entry.recipeId,
+				e.entry.variant,
+				e.entry.servings,
+				(variant ?? original).lines,
+				original.servings,
+				catalog.ingredientsById,
+				original.title
+			);
+			titles.push(original.title);
+		}
+		doneMessage = `Hotovo: ${titles.join(', ')}. Zo špajze ubudlo, čo sa minulo, a porcie na zamrazenie sú v mrazničke.`;
+	}
 
 	function toggle(key: string) {
 		excluded = excluded.includes(key) ? excluded.filter((k) => k !== key) : [...excluded, key];
@@ -109,7 +142,7 @@
 					<span>
 						Spolu asi <strong>{formatMinutes(schedule.total)}</strong>
 						{#if schedule.oneByOne > schedule.total}
-							namiesto {formatMinutes(schedule.oneByOne)}, keby si varil/a jedno po druhom.
+							namiesto {formatMinutes(schedule.oneByOne)} pri varení jedného po druhom.
 						{/if}
 					</span>
 				</p>
@@ -158,6 +191,42 @@
 						bez vypínania.
 					{/if}
 				</p>
+				<label class="start">
+					Začínam o
+					<input type="time" bind:value={startAt} step="900" />
+					<span class="muted small">hotové okolo <strong>{clock(schedule.total)}</strong></span>
+				</label>
+				<div
+					class="gantt"
+					role="img"
+					aria-label="Časová os: {schedule.slots
+						.map((s) => `${s.recipe.title} od ${clock(s.start)} do ${clock(s.end)}`)
+						.join(', ')}"
+				>
+					{#each schedule.slots as slot, i (slot.recipe.id + i)}
+						<div class="gantt-row">
+							<span class="gantt-name">{slot.recipe.title}</span>
+							<span class="gantt-track">
+								<span
+									class="active"
+									style:left="{(slot.start / schedule.total) * 100}%"
+									style:width="{(slot.recipe.activeTime / schedule.total) * 100}%"
+								></span>
+								<span
+									class="passive"
+									style:left="{((slot.start + slot.recipe.activeTime) / schedule.total) * 100}%"
+									style:width="{((slot.recipe.time - slot.recipe.activeTime) / schedule.total) *
+										100}%"
+								></span>
+							</span>
+							<span class="gantt-time">{clock(slot.start)}–{clock(slot.end)}</span>
+						</div>
+					{/each}
+					<p class="legend small">
+						<span><i class="active"></i> robíš ty</span>
+						<span><i class="passive"></i> varí sa / pečie samo</span>
+					</p>
+				</div>
 				<ol class="timeline">
 					{#each schedule.slots as slot, i (slot.recipe.id + i)}
 						{@const loaded = steps[slot.recipe.id]}
@@ -166,7 +235,7 @@
 								? loaded
 								: (slot.entry.variant && loaded.variants?.[slot.entry.variant]) || loaded.steps}
 						<li>
-							<span class="when">{slot.start ? `+${formatMinutes(slot.start)}` : 'Začni'}</span>
+							<span class="when">{clock(slot.start)}</span>
 							<details
 								ontoggle={(ev) => {
 									if ((ev.currentTarget as HTMLDetailsElement).open) void loadSteps(slot.recipe.id);
@@ -210,9 +279,29 @@
 				</p>
 				<ul class="notes">
 					{#each chosen as e (e.key)}
-						<li><strong>{e.recipe.title}:</strong> {keepsText(e.recipe)}</li>
+						<li>
+							<strong>{e.recipe.title}:</strong>
+							{keepsText(e.recipe)}{#if e.entry.freezeExtra}
+								· <strong>{e.entry.freezeExtra} porc. hneď do mrazničky</strong>{/if}
+						</li>
 					{/each}
 				</ul>
+			</section>
+
+			<section class="card box done">
+				{#if doneMessage}
+					<p role="status"><Icon name="check" size={18} /> {doneMessage}</p>
+					<a class="btn ghost" href="/plan">Späť na plán</a>
+				{:else}
+					<p>Keď je všetko v krabičkách:</p>
+					<button class="btn leaf" onclick={allCooked}>
+						<Icon name="check" size={18} /> Všetko uvarené
+					</button>
+					<p class="muted small">
+						Odpočíta suroviny zo špajze, zapíše varenie do histórie a porcie na zamrazenie pridá do
+						mrazničky.
+					</p>
+				{/if}
 			</section>
 		{/if}
 	{/if}
@@ -333,6 +422,80 @@
 		padding-left: 1.3em;
 		margin: 10px 0;
 		display: grid;
+		gap: 6px;
+	}
+	.start {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px;
+		margin: 8px 0 12px;
+		font-weight: 600;
+	}
+	.start input {
+		border: 1.5px solid var(--line);
+		border-radius: 10px;
+		background: var(--paper);
+		color: var(--ink);
+		padding: 4px 8px;
+		font: inherit;
+	}
+	.gantt {
+		display: grid;
+		gap: 6px;
+		margin-bottom: 16px;
+	}
+	.gantt-row {
+		display: grid;
+		grid-template-columns: minmax(90px, 30%) 1fr auto;
+		align-items: center;
+		gap: 8px;
+		font-size: 0.82rem;
+	}
+	.gantt-name {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	.gantt-track {
+		position: relative;
+		height: 14px;
+		border-radius: 999px;
+		background: var(--paper-2);
+	}
+	.gantt-track span {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		border-radius: 999px;
+	}
+	.active {
+		background: var(--leaf);
+	}
+	.passive {
+		background: color-mix(in srgb, var(--leaf) 35%, var(--card));
+	}
+	.gantt-time {
+		font-variant-numeric: tabular-nums;
+		color: var(--ink-2);
+	}
+	.legend {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 16px;
+		margin: 4px 0 0;
+		color: var(--ink-2);
+	}
+	.legend i {
+		display: inline-block;
+		width: 18px;
+		height: 8px;
+		border-radius: 999px;
+		vertical-align: middle;
+	}
+	.done p {
+		display: flex;
+		align-items: center;
 		gap: 6px;
 	}
 </style>
