@@ -70,9 +70,14 @@ export const REMINDER_SHOWN_KEY = 'reminder-shown';
 /** Set right before a test push, so the service worker knows which kind to show. */
 export const REMINDER_TEST_KEY = 'reminder-test';
 export interface ReminderTest {
-	kind: 'water' | 'supplements';
+	kind: 'water' | 'supplements' | 'digest';
 	at: number;
 }
 
 /** Set on the admin's devices: on a push, ask /api/zdravie whether the site is down. */
 export const ADMIN_ALERTS_KEY = 'admin-alerts';
+
+/** Weekly summary and morning overviews the page prepared (src/lib/digest.ts). */
+export const DIGEST_KEY = 'digest';
+/** Which digests were shown, so a late or repeated push doesn't show one twice. */
+export const DIGEST_SHOWN_KEY = 'digest-shown';

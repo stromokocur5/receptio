@@ -33,6 +33,13 @@
 			kept: `Kým ich nevypneš. Ak Receptio na zariadení ${PUSH_IDLE_DAYS} dní neotvoríš, pripomienky sa zmažú samé.`
 		},
 		{
+			what: 'Ranný prehľad a nedeľný súhrn',
+			detail:
+				'Len ak ich zapneš: push adresa tvojho prehliadača, časové pásmo a ktorý z dvoch súhrnov chceš.',
+			why: 'Aby ti server ráno a v nedeľu poslal prázdne upozornenie. Text (čo variť, čísla za týždeň) si zloží tvoj telefón z údajov, ktoré má u seba.',
+			kept: `Kým ich nevypneš. Ak Receptio na zariadení ${PUSH_IDLE_DAYS} dní neotvoríš, zmažú sa samé.`
+		},
+		{
 			what: 'Hľadanie bez výsledku',
 			detail:
 				'Keď na Receptoch hľadáš niečo, čo nemáme ani bez filtrov: len hľadané slová, koľkokrát ich niekto zadal a kedy naposledy. Bez zariadenia, adresy či čohokoľvek o tebe; čísla, e-maily a iné znaky sa vôbec neodosielajú.',

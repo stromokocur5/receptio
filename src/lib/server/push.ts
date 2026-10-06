@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import {
+	isDigestDue,
 	isDue,
 	isPushEndpoint,
 	isSupplementDue,
@@ -148,7 +149,7 @@ export async function sendPush(
 	}
 }
 
-const REMINDER_TABLES = ['push_reminders', 'supplement_reminders'] as const;
+const REMINDER_TABLES = ['push_reminders', 'supplement_reminders', 'digest_reminders'] as const;
 type ReminderTable = (typeof REMINDER_TABLES)[number];
 
 /** Cron job: sends the reminders due now and forgets devices that unsubscribed or went quiet. */
@@ -158,9 +159,14 @@ export async function sendReminders(
 	now = Date.now()
 ): Promise<void> {
 	const idleBefore = Math.floor(now / 1000) - PUSH_IDLE_DAYS * 86400;
-	await db.batch(
+	// One by one: a table that doesn't exist yet (migration not applied) mustn't stop the rest.
+	await Promise.all(
 		REMINDER_TABLES.map((table) =>
-			db.prepare(`DELETE FROM ${table} WHERE updated_at < ?`).bind(idleBefore)
+			db
+				.prepare(`DELETE FROM ${table} WHERE updated_at < ?`)
+				.bind(idleBefore)
+				.run()
+				.catch((err) => console.error(`push: cleanup of ${table} failed`, err))
 		)
 	);
 	if (!privateJwkJson) {
@@ -168,7 +174,7 @@ export async function sendReminders(
 		return;
 	}
 	const privateJwk = JSON.parse(privateJwkJson) as JsonWebKey;
-	const [water, supplements] = await Promise.all([
+	const [water, supplements, digests] = await Promise.all([
 		db
 			.prepare(
 				'SELECT id, endpoint, from_min, to_min, every_min, tz, skip_date FROM push_reminders'
@@ -176,7 +182,15 @@ export async function sendReminders(
 			.all<ReminderRow>(),
 		db
 			.prepare('SELECT id, endpoint, times, tz, done_date, done_times FROM supplement_reminders')
-			.all<SupplementRow>()
+			.all<SupplementRow>(),
+		db
+			.prepare('SELECT id, endpoint, tz, weekly, morning FROM digest_reminders')
+			.all<DigestRow>()
+			// Before migration 0010 the table doesn't exist; water and vitamins still go out.
+			.catch((err) => {
+				console.error('push: digests unavailable', err);
+				return { results: [] as DigestRow[] };
+			})
 	]);
 	const at = new Date(now);
 	// Vitamins first: there are fewer of them and missing one matters more than a glass of water.
@@ -185,6 +199,7 @@ export async function sendReminders(
 			table: 'supplement_reminders' as const,
 			...r
 		})),
+		...dueDigests(digests.results, at).map((r) => ({ table: 'digest_reminders' as const, ...r })),
 		...dueReminders(water.results, at).map((r) => ({ table: 'push_reminders' as const, ...r }))
 	];
 	if (due.length > MAX_SENDS_PER_RUN) {
@@ -411,4 +426,91 @@ export async function deleteReminder(
 		.prepare(`DELETE FROM ${table} WHERE id = ? AND token_hash = ?`)
 		.bind(id, await sha256Hex(token))
 		.run();
+}
+
+// ── Weekly summary and morning overview ────────────────────────
+
+interface DigestRow {
+	id: string;
+	endpoint: string;
+	tz: string;
+	weekly: number;
+	morning: number;
+}
+
+export function dueDigests(rows: DigestRow[], at: Date): DigestRow[] {
+	return rows.filter((row) => {
+		const clock = localClock(at, row.tz);
+		return (
+			(row.weekly === 1 && isDigestDue('weekly', clock)) ||
+			(row.morning === 1 && isDigestDue('morning', clock))
+		);
+	});
+}
+
+const digestShape = {
+	tz: z.string().max(64).refine(isValidTimeZone),
+	endpoint: z.string().max(1000).refine(isPushEndpoint),
+	weekly: z.boolean(),
+	morning: z.boolean()
+};
+
+export const digestCreateSchema = z
+	.object(digestShape)
+	.strict()
+	.refine((d) => d.weekly || d.morning);
+
+export const digestUpdateSchema = z
+	.object({ token: z.string().regex(/^[0-9a-f]{64}$/), ...digestShape })
+	.strict();
+
+export async function createDigestReminder(
+	db: D1Database,
+	input: z.infer<typeof digestCreateSchema>,
+	now = Date.now()
+): Promise<{ id: string; token: string } | 'full'> {
+	const count = await db
+		.prepare('SELECT COUNT(*) AS n FROM digest_reminders')
+		.first<{ n: number }>();
+	if ((count?.n ?? 0) >= MAX_REMINDERS) return 'full';
+	const id = randomHex(16);
+	const token = randomHex(32);
+	await db
+		.prepare(
+			'INSERT INTO digest_reminders (id, token_hash, endpoint, tz, weekly, morning, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)'
+		)
+		.bind(
+			id,
+			await sha256Hex(token),
+			input.endpoint,
+			input.tz,
+			input.weekly ? 1 : 0,
+			input.morning ? 1 : 0,
+			Math.floor(now / 1000)
+		)
+		.run();
+	return { id, token };
+}
+
+export async function updateDigestReminder(
+	db: D1Database,
+	id: string,
+	input: z.infer<typeof digestUpdateSchema>,
+	now = Date.now()
+): Promise<boolean> {
+	const result = await db
+		.prepare(
+			'UPDATE digest_reminders SET endpoint = ?, tz = ?, weekly = ?, morning = ?, updated_at = ? WHERE id = ? AND token_hash = ?'
+		)
+		.bind(
+			input.endpoint,
+			input.tz,
+			input.weekly ? 1 : 0,
+			input.morning ? 1 : 0,
+			Math.floor(now / 1000),
+			id,
+			await sha256Hex(input.token)
+		)
+		.run();
+	return result.meta.changes > 0;
 }

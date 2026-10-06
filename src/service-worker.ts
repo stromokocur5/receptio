@@ -3,8 +3,12 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 import { build, files, prerendered, version } from '$service-worker';
+import type { DigestStore } from '$lib/digest';
+import { isDigestDue } from '$lib/push';
 import {
 	ADMIN_ALERTS_KEY,
+	DIGEST_KEY,
+	DIGEST_SHOWN_KEY,
 	FROST_SYNC_TAG,
 	FROST_WATCH_KEY,
 	kvGet,
@@ -237,11 +241,20 @@ async function showReminder() {
 
 	if (test && Date.now() - test.at < 2 * 60_000) {
 		await kvSet(REMINDER_TEST_KEY, null).catch(() => {});
+		if (test.kind === 'digest') {
+			if (await showDigest(true)) return;
+			return sw.registration.showNotification('Súhrny sú zapnuté', {
+				body: 'Ranný prehľad a nedeľný súhrn prídu sem.',
+				tag: 'digest',
+				icon: '/icon-192.png'
+			});
+		}
 		if (test.kind === 'supplements') {
 			return showSupplementReminder(Object.values(supplements?.all ?? {}).flat());
 		}
 		return showWaterReminder();
 	}
+	if (await showDigest()) return;
 	const time = Object.keys(byTime ?? {})
 		.map(Number)
 		.find((t) => minute >= t && minute < t + 30);
@@ -251,6 +264,35 @@ async function showReminder() {
 	}
 	if (supplements && !supplements.water) return showSupplementReminder([]);
 	return showWaterReminder();
+}
+
+/**
+ * Weekly summary (Sunday evening) or morning overview, when one is due now and wasn't shown yet.
+ * The text was prepared by the page; true when something was shown.
+ */
+async function showDigest(force = false): Promise<boolean> {
+	const store = await kvGet<DigestStore>(DIGEST_KEY).catch(() => undefined);
+	if (!store) return false;
+	const shown = (await kvGet<string[]>(DIGEST_SHOWN_KEY).catch(() => undefined)) ?? [];
+	const now = new Date();
+	const date = new Date(now.getTime() - now.getTimezoneOffset() * 60_000)
+		.toISOString()
+		.slice(0, 10);
+	const clock = { date, minute: now.getHours() * 60 + now.getMinutes() };
+	// A push can arrive late on a sleeping phone; half an hour still counts.
+	const weekly = store.weekly && store.week && (force || isDigestDue('weekly', clock, 30));
+	const key = weekly ? `w${date}` : `m${date}`;
+	const text = weekly ? store.week!.text : store.morning ? store.days[date] : undefined;
+	const due = weekly || force || (store.morning && isDigestDue('morning', clock, 30));
+	if (!text || !due || (!force && shown.includes(key))) return false;
+	await kvSet(DIGEST_SHOWN_KEY, [...shown.slice(-20), key]).catch(() => {});
+	await sw.registration.showNotification(text.title, {
+		body: text.body,
+		tag: 'digest',
+		icon: '/icon-192.png',
+		data: { url: text.url }
+	});
+	return true;
 }
 
 /** On the admin's devices a push may mean the site is down; the health API says which. */

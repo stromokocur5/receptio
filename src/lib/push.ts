@@ -127,3 +127,28 @@ export function isPushEndpoint(raw: string): boolean {
 
 export const minutesToTime = (m: number) =>
 	`${Math.floor(m / 60)}:${String(m % 60).padStart(2, '0')}`;
+
+// ── Weekly summary and morning overview ────────────────────────
+
+/** Sunday 18:00 for the week in numbers, every day 7:00 for what's on today. */
+export const DIGEST_TIMES = {
+	weekly: { weekday: 0, minute: 18 * 60 },
+	morning: { minute: 7 * 60 }
+};
+/** The cron runs every quarter hour; the service worker allows for a late push. */
+const CRON_WINDOW = 15;
+
+export type DigestKind = 'weekly' | 'morning';
+
+/** Whether a digest falls on this local time: `window` minutes from its start. */
+export function isDigestDue(
+	kind: DigestKind,
+	clock: { date: string; minute: number },
+	window = CRON_WINDOW
+): boolean {
+	const time = DIGEST_TIMES[kind];
+	const inWindow = clock.minute >= time.minute && clock.minute < time.minute + window;
+	if (kind === 'morning') return inWindow;
+	const weekday = new Date(`${clock.date}T12:00:00Z`).getUTCDay();
+	return inWindow && weekday === DIGEST_TIMES.weekly.weekday;
+}

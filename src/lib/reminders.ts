@@ -1,6 +1,8 @@
 import { localToday } from './journal';
+import type { DigestStore } from './digest';
 import {
 	ADMIN_ALERTS_KEY,
+	DIGEST_KEY,
 	kvGet,
 	kvSet,
 	REMINDER_TEST_KEY,
@@ -11,7 +13,7 @@ import {
 	type WaterToday
 } from './kv';
 import { VAPID_PUBLIC_KEY, type ReminderSchedule } from './push';
-import { supplementReminder, waterReminder } from './state.svelte';
+import { digestReminder, supplementReminder, waterReminder } from './state.svelte';
 
 /** Browser side of reminders: push subscription and the /api/push and /api/vitaminy calls. */
 
@@ -150,7 +152,7 @@ export async function disableReminders(): Promise<void> {
 
 /** The push subscription is shared by water and supplement reminders; drop it with the last. */
 async function unsubscribeIfUnused(): Promise<void> {
-	if (waterReminder.current || supplementReminder.current) return;
+	if (waterReminder.current || supplementReminder.current || digestReminder.current) return;
 	if (await kvGet<boolean>(ADMIN_ALERTS_KEY).catch(() => false)) return;
 	const registration = await navigator.serviceWorker.getRegistration();
 	await (await registration?.pushManager.getSubscription())?.unsubscribe();
@@ -251,5 +253,69 @@ export function rememberSupplementsToday(today: SupplementsToday): void {
 export function rememberWaterToday(water: WaterToday): void {
 	void kvSet(WATER_TODAY_KEY, water).catch(() => {
 		// IndexedDB blocked (private mode): reminders just show the generic text.
+	});
+}
+
+// ── Weekly summary and morning overview ────────────────────────
+
+export async function enableDigests(kinds: { weekly: boolean; morning: boolean }): Promise<void> {
+	await askPermission();
+	const sub = await subscription();
+	const res = await send('POST', '/api/suhrn', {
+		...kinds,
+		tz: timeZone(),
+		endpoint: sub.endpoint
+	});
+	if (!res.ok) throw await failure(res);
+	const { id, token } = (await res.json()) as { id: string; token: string };
+	digestReminder.current = { id, token, ...kinds, touched: localToday() };
+}
+
+/** Changes which digests come, or just tells the server once a day that the device is in use. */
+export async function updateDigests(kinds: { weekly: boolean; morning: boolean }): Promise<void> {
+	const current = digestReminder.current;
+	if (!current) return;
+	if (!kinds.weekly && !kinds.morning) return disableDigests();
+	const sub = await subscription();
+	const res = await send('PUT', `/api/suhrn/${current.id}`, {
+		token: current.token,
+		...kinds,
+		tz: timeZone(),
+		endpoint: sub.endpoint
+	});
+	if (res.status === 404) {
+		digestReminder.current = null;
+		return;
+	}
+	if (!res.ok) throw await failure(res);
+	digestReminder.current = { ...current, ...kinds, touched: localToday() };
+}
+
+export async function testDigest(): Promise<boolean> {
+	const current = digestReminder.current;
+	if (!current) return false;
+	await markTest('digest');
+	const res = await send('POST', `/api/suhrn/${current.id}`, { token: current.token });
+	if (res.status === 404) {
+		digestReminder.current = null;
+		return false;
+	}
+	if (!res.ok) throw await failure(res);
+	return true;
+}
+
+export async function disableDigests(): Promise<void> {
+	const current = digestReminder.current;
+	if (!current) return;
+	const res = await send('DELETE', `/api/suhrn/${current.id}`, { token: current.token });
+	if (!res.ok) throw await failure(res);
+	digestReminder.current = null;
+	await unsubscribeIfUnused();
+}
+
+/** What the service worker shows when a digest push arrives. */
+export function rememberDigests(store: DigestStore): void {
+	void kvSet(DIGEST_KEY, store).catch(() => {
+		// IndexedDB blocked: the digest push shows nothing new.
 	});
 }

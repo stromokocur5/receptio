@@ -8,8 +8,17 @@
 	import Logo from '$lib/components/Logo.svelte';
 	import MoreMenu, { MORE_MENU_ID, MORE_PATHS } from '$lib/components/MoreMenu.svelte';
 	import Onboarding from '$lib/components/Onboarding.svelte';
+	import DigestWriter from '$lib/components/DigestWriter.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
-	import { changes, loadLikes, loadPersisted, plan, settings } from '$lib/state.svelte';
+	import {
+		changes,
+		digestReminder,
+		loadLikes,
+		loadPersisted,
+		plan,
+		settings,
+		ui
+	} from '$lib/state.svelte';
 	import { initSync, noteChange, syncState } from '$lib/sync.svelte';
 	import { onboarding, shouldOnboard } from '$lib/onboarding.svelte';
 	import { initInstall } from '$lib/install.svelte';
@@ -141,6 +150,7 @@
 {#if !page.state.cooking}<TimerDock floating />{/if}
 
 <Onboarding />
+{#if ui.loaded && digestReminder.current}<DigestWriter />{/if}
 
 <div class="nav-fade" aria-hidden="true" data-noprint></div>
 <nav class="mobile" aria-label="Navigácia" data-noprint>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { dueReminders, dueSupplements, vapidAuthorization } from './push';
+import { dueDigests, dueReminders, dueSupplements, vapidAuthorization } from './push';
 import { VAPID_PUBLIC_KEY } from '../push';
 
 const row = {
@@ -72,5 +72,32 @@ describe('vapidAuthorization', () => {
 			new TextEncoder().encode(`${h}.${c}`)
 		);
 		expect(ok).toBe(true);
+	});
+});
+
+describe('dueDigests', () => {
+	const row = (weekly: number, morning: number) => ({
+		id: `${weekly}${morning}`,
+		endpoint: 'https://push.example/x',
+		tz: 'Europe/Bratislava',
+		weekly,
+		morning
+	});
+	const rows = [row(1, 0), row(0, 1), row(1, 1)];
+
+	it('sends the weekly summary on Sunday at 18:00 local time and the overview every morning at 7', () => {
+		// Sunday 2026-10-11 18:05 in Bratislava is 16:05 UTC.
+		expect(dueDigests(rows, new Date('2026-10-11T16:05:00Z')).map((r) => r.id)).toEqual([
+			'10',
+			'11'
+		]);
+		// Saturday evening: nothing.
+		expect(dueDigests(rows, new Date('2026-10-10T16:05:00Z'))).toEqual([]);
+		// Any morning 7:00 local = 5:00 UTC in summer time.
+		expect(dueDigests(rows, new Date('2026-10-07T05:00:00Z')).map((r) => r.id)).toEqual([
+			'01',
+			'11'
+		]);
+		expect(dueDigests(rows, new Date('2026-10-07T05:20:00Z'))).toEqual([]);
 	});
 });

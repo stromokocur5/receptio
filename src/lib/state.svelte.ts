@@ -678,6 +678,35 @@ export const supplementReminder = new Persisted<SupplementReminder | null>(
 	true
 );
 
+/** This device's weekly summary / morning overview on the server. */
+export interface DigestReminder {
+	id: string;
+	token: string;
+	weekly: boolean;
+	morning: boolean;
+	touched: string;
+}
+function validateDigestReminder(raw: unknown): DigestReminder | null | undefined {
+	if (raw === null) return null;
+	if (!isRecord(raw)) return undefined;
+	const { id, token, weekly, morning, touched } = raw;
+	if (typeof id !== 'string' || !/^[0-9a-f]{32}$/.test(id)) return undefined;
+	if (typeof token !== 'string' || !/^[0-9a-f]{64}$/.test(token)) return undefined;
+	return {
+		id,
+		token,
+		weekly: weekly === true,
+		morning: morning === true,
+		touched: typeof touched === 'string' && isDate(touched) ? touched : ''
+	};
+}
+export const digestReminder = new Persisted<DigestReminder | null>(
+	'digest-reminder',
+	null,
+	validateDigestReminder,
+	true
+);
+
 /** Whether today's diary already has this recipe at this meal. */
 export function portionLogged(recipeId: string, meal: DiaryMeal): boolean {
 	return (journal.current.days[localToday()]?.items ?? []).some(

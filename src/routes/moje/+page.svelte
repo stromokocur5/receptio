@@ -7,6 +7,7 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import { formatEur, formatNumber } from '$lib/amounts';
 	import CookingInsights from '$lib/components/CookingInsights.svelte';
+	import DigestReminders from '$lib/components/DigestReminders.svelte';
 	import JournalPanel from '$lib/components/JournalPanel.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import { dailyTargets } from '$lib/nutrition';
@@ -353,6 +354,10 @@
 
 	{#if stats && stats.total > 0}
 		<CookingInsights {targets} />
+	{/if}
+
+	{#if ui.loaded}
+		<DigestReminders />
 	{/if}
 
 	{#if week && week.portions > 0}
