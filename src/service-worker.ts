@@ -4,6 +4,7 @@
 /// <reference lib="webworker" />
 import { build, files, prerendered, version } from '$service-worker';
 import {
+	ADMIN_ALERTS_KEY,
 	FROST_SYNC_TAG,
 	FROST_WATCH_KEY,
 	kvGet,
@@ -252,6 +253,26 @@ async function showReminder() {
 	return showWaterReminder();
 }
 
+/** On the admin's devices a push may mean the site is down; the health API says which. */
+async function showOutage(): Promise<boolean> {
+	if (!(await kvGet<boolean>(ADMIN_ALERTS_KEY).catch(() => false))) return false;
+	try {
+		const res = await fetch('/api/zdravie', { cache: 'no-store' });
+		const health = res.ok ? ((await res.json()) as { ok: boolean; error: string | null }) : null;
+		if (health?.ok) return false;
+		await sw.registration.showNotification('Receptio: výpadok', {
+			body: health?.error ?? 'Server neodpovedá.',
+			tag: 'outage',
+			icon: '/icon-192.png',
+			data: { url: '/admin' }
+		});
+	} catch {
+		// Can't tell (the phone lost signal right after the push): show the usual reminder.
+		return false;
+	}
+	return true;
+}
+
 sw.addEventListener('push', (event) => {
-	event.waitUntil(showReminder());
+	event.waitUntil(showOutage().then((shown) => (shown ? undefined : showReminder())));
 });

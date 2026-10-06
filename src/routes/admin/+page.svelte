@@ -1,5 +1,9 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import { invalidateAll } from '$app/navigation';
+	import { ADMIN_ALERTS_KEY, kvGet } from '$lib/kv';
+	import { pushEndpoint, remindersSupported, setAdminAlertsHere } from '$lib/reminders';
+	import { onMount } from 'svelte';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 
@@ -26,6 +30,36 @@
 	const suggestions = $derived(
 		showDone ? data.suggestions : data.suggestions.filter((s) => s.status === 'new')
 	);
+	// ── Outage alerts on this device ───────────────────────────
+	let alertsHere = $state(false);
+	let alertsBusy = $state(false);
+	let alertsMessage = $state('');
+	onMount(async () => {
+		alertsHere = (await kvGet<boolean>(ADMIN_ALERTS_KEY).catch(() => false)) === true;
+	});
+	async function toggleAlerts() {
+		alertsBusy = true;
+		alertsMessage = '';
+		try {
+			const form = new FormData();
+			form.set('endpoint', await pushEndpoint());
+			form.set('on', alertsHere ? '0' : '1');
+			const res = await fetch('?/alerts', {
+				method: 'POST',
+				body: form,
+				headers: { 'x-sveltekit-action': 'true' }
+			});
+			if (!res.ok) throw new Error('Server zariadenie neprijal.');
+			alertsHere = !alertsHere;
+			await setAdminAlertsHere(alertsHere);
+			await invalidateAll();
+		} catch (err) {
+			alertsMessage = err instanceof Error ? err.message : 'Nepodarilo sa.';
+		} finally {
+			alertsBusy = false;
+		}
+	}
+
 	/** Recipes cooks had trouble with or rated low – the first to fix. */
 	const toFix = $derived(
 		data.perRecipe
@@ -152,6 +186,37 @@
 		</ul>
 		<p class="muted small">Recept z návrhu ti prepíšem do YAML – stačí napísať, ktorý.</p>
 	{:else if tab === 'stats'}
+		{#if data.status}
+			<section class="card box health" class:down={!data.status.health.ok}>
+				<h2>
+					<Icon name={data.status.health.ok ? 'check' : 'alert'} size={20} />
+					{data.status.health.ok ? 'API odpovedá' : 'API nefunguje'}
+				</h2>
+				<p class="small">
+					{#if !data.status.health.ok && data.status.health.since}
+						Od {when(data.status.health.since)}: {data.status.health.error}.
+					{/if}
+					{#if data.status.health.checkedAt}
+						Posledná kontrola {when(data.status.health.checkedAt)} (cron každých 15 minút).
+					{:else}
+						Cron ešte nič nekontroloval.
+					{/if}
+				</p>
+				{#if remindersSupported()}
+					<button class="btn ghost small" disabled={alertsBusy} onclick={toggleAlerts}>
+						<Icon name="bell" size={16} />
+						{alertsHere
+							? 'Vypnúť upozornenia na tomto zariadení'
+							: 'Upozorniť ma pushom na výpadok'}
+					</button>
+				{/if}
+				<p class="muted small">
+					Upozornenia dostávajú {data.status.alertDevices}
+					{data.status.alertDevices === 1 ? 'zariadenie' : 'zariadenia'}. Push príde raz za výpadok.
+				</p>
+				{#if alertsMessage}<p class="small" role="alert">{alertsMessage}</p>{/if}
+			</section>
+		{/if}
 		<dl class="usage">
 			<div>
 				<dt>Synchronizácie a spoločné zoznamy</dt>
@@ -393,5 +458,17 @@
 		font-size: 0.8rem;
 		color: var(--muted);
 		font-weight: 600;
+	}
+	.health h2 {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		color: var(--leaf);
+	}
+	.health.down {
+		border-color: var(--tomato);
+	}
+	.health.down h2 {
+		color: var(--tomato);
 	}
 </style>

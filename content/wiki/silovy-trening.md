@@ -80,7 +80,7 @@ Do mobilu alebo zošita: cvik, váha, opakovania. Bez zápisu po mesiaci nevieš
 ## Oddych a jedlo
 
 - **Spánok 7–9 hodín.** Svaly rastú, keď oddychuješ, nie keď cvičíš.
-- **Bielkoviny 1,6 g na kg** telesnej hmotnosti denne, rozdelené do 3–4 jedál. Pri 70 kg je to asi 110 g. Koľko zjedáš, ukáže [denník](/moje#dennik) a nastaviť si to môžeš ako cieľ. Kde ich nájsť lacno, je v [lacné bielkoviny](/wiki/lacne-bielkoviny).
+- **Bielkoviny 1,6 g na kg** telesnej hmotnosti denne, rozdelené do 3–4 jedál. Pri 70 kg je to asi 110 g. Koľko zjedáš, ukáže [denník v Moje](/moje) a nastaviť si to môžeš ako cieľ. Kde ich nájsť lacno, je v [lacné bielkoviny](/wiki/lacne-bielkoviny).
 - **Kreatín** (3–5 g denne) je najlepšie preskúmaný doplnok pre silu. Na rastlinnej strave ho máš prirodzene menej, takže môže pomôcť viac. Viac v [jedlo a cvičenie](/wiki/jedlo-a-cvicenie).
 
 ## Časté omyly

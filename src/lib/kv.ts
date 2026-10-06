@@ -73,3 +73,6 @@ export interface ReminderTest {
 	kind: 'water' | 'supplements';
 	at: number;
 }
+
+/** Set on the admin's devices: on a push, ask /api/zdravie whether the site is down. */
+export const ADMIN_ALERTS_KEY = 'admin-alerts';

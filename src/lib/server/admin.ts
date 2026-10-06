@@ -1,5 +1,7 @@
 import { error, type RequestEvent } from '@sveltejs/kit';
 import { dev } from '$app/environment';
+import { isPushEndpoint } from '$lib/push';
+import { readHealth } from './health';
 import { adminEmail } from './access';
 
 /** The signed-in admin's e-mail; anyone else gets 403. In `vite dev` there's no Access, so it's open. */
@@ -82,6 +84,28 @@ export async function adminData(db: D1Database) {
 			feedback: number;
 		}
 	};
+}
+
+export async function adminHealth(db: D1Database) {
+	const [health, alerts] = await Promise.all([
+		readHealth(db),
+		db.prepare('SELECT COUNT(*) AS n FROM admin_alerts').first<{ n: number }>()
+	]);
+	return { health, alertDevices: alerts?.n ?? 0 };
+}
+
+/** Adds or removes a device that gets a push when the health check starts failing. */
+export async function setAdminAlert(db: D1Database, endpoint: string, on: boolean) {
+	if (!isPushEndpoint(endpoint)) return false;
+	await db
+		.prepare(
+			on
+				? 'INSERT OR IGNORE INTO admin_alerts (endpoint) VALUES (?)'
+				: 'DELETE FROM admin_alerts WHERE endpoint = ?'
+		)
+		.bind(endpoint)
+		.run();
+	return true;
 }
 
 export async function setFeedbackStatus(db: D1Database, id: number, status: 'new' | 'done') {

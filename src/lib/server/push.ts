@@ -119,7 +119,11 @@ export function dueReminders(rows: ReminderRow[], at: Date): ReminderRow[] {
  * One empty push; returns the push service's status, 0 when it couldn't be reached.
  * 404/410 mean the browser dropped the subscription.
  */
-async function sendPush(endpoint: string, privateJwk: JsonWebKey, now: number): Promise<number> {
+export async function sendPush(
+	endpoint: string,
+	privateJwk: JsonWebKey,
+	now: number
+): Promise<number> {
 	try {
 		const res = await fetch(endpoint, {
 			method: 'POST',

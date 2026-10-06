@@ -1,5 +1,7 @@
 import { localToday } from './journal';
 import {
+	ADMIN_ALERTS_KEY,
+	kvGet,
 	kvSet,
 	REMINDER_TEST_KEY,
 	SUPPLEMENTS_TODAY_KEY,
@@ -149,8 +151,19 @@ export async function disableReminders(): Promise<void> {
 /** The push subscription is shared by water and supplement reminders; drop it with the last. */
 async function unsubscribeIfUnused(): Promise<void> {
 	if (waterReminder.current || supplementReminder.current) return;
+	if (await kvGet<boolean>(ADMIN_ALERTS_KEY).catch(() => false)) return;
 	const registration = await navigator.serviceWorker.getRegistration();
 	await (await registration?.pushManager.getSubscription())?.unsubscribe();
+}
+
+/** This browser's push address, asking for permission first; for the admin's outage alerts. */
+export async function pushEndpoint(): Promise<string> {
+	await askPermission();
+	return (await subscription()).endpoint;
+}
+
+export async function setAdminAlertsHere(on: boolean): Promise<void> {
+	await kvSet(ADMIN_ALERTS_KEY, on);
 }
 
 // ── Supplements ────────────────────────────────────────────────
