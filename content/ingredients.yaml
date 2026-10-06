@@ -1199,6 +1199,7 @@
   allergens: [soy]
   n: { kcal: 53, p: 8.1, c: 4.9, f: 0.6, fib: 0.8, salt: 14.5, fe: 1.5, ca: 33, zn: 0.4 }
   units: { pl: 16, čl: 6 }
+  density: 1.15
   price: 6
   color: '#4a2a1a'
   substitutes:
@@ -1222,6 +1223,7 @@
   allergens: [soy]
   n: { kcal: 60, p: 10.5, c: 5.6, f: 0.1, fib: 0.8, salt: 14, fe: 2.4, ca: 20, zn: 0.4 }
   units: { pl: 18, čl: 6 }
+  density: 1.2
   price: 15
   color: '#3d2214'
   note: niektoré tamari obsahujú pšenicu, hľadaj označenie bezlepkové
@@ -1285,6 +1287,7 @@
   free_sugar: 0.6
   n: { kcal: 260, p: 0, c: 67, f: 0.1, fib: 0, salt: 0, fe: 0.1, ca: 102, zn: 1.5 }
   units: { pl: 20, čl: 7 }
+  density: 1.32
   price: 25
   co2: 2.5
   color: '#a8561d'
@@ -1939,6 +1942,7 @@
   allergens: [mustard]
   n: { kcal: 560, p: 0.5, c: 3, f: 60, fib: 0, salt: 1.5, fe: 0, ca: 0, zn: 0, ala: 5 }
   units: { pl: 14, čl: 5 }
+  density: 0.93
   price: 8
   co2: 3.5
   color: '#fbf1cf'
@@ -2831,6 +2835,7 @@
   allergens: [sesame]
   n: { kcal: 884, p: 0, c: 0, f: 100, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0, ala: 0.3 }
   units: { pl: 13, čl: 4.5 }
+  density: 0.92
   price: 15
   co2: 4.0
   substitutes:
@@ -4359,6 +4364,7 @@
   allergens: [soy]
   n: { kcal: 280, p: 3, c: 65, f: 0, fib: 0, salt: 12, fe: 1, ca: 20, zn: 0.2 }
   units: { pl: 20, čl: 7 }
+  density: 1.3
   price: 12
   color: '#2b1a12'
   substitutes:

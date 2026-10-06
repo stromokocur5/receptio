@@ -14,6 +14,7 @@
 		bestPrice,
 		isSaleActive,
 		isStale,
+		isUsable,
 		pricePerKg,
 		recipesOnSale,
 		shelfName,
@@ -21,7 +22,12 @@
 	} from '$lib/pricing';
 	import StorePicker from '$lib/components/StorePicker.svelte';
 	import { settings } from '$lib/state.svelte';
-	import { INGREDIENT_CATEGORIES, type IngredientCategory, type PriceEntry } from '$lib/types';
+	import {
+		INGREDIENT_CATEGORIES,
+		type Ingredient,
+		type IngredientCategory,
+		type PriceEntry
+	} from '$lib/types';
 
 	const catalog = useCatalog();
 	const today = new Date();
@@ -44,6 +50,15 @@
 		const { value, unit } = unitPrice(e);
 		return `${formatEur(value)}/${unit}`;
 	};
+	/** A shop's price in the unit the bulk offer is shown in, converting kg ↔ l by density. */
+	function sameUnit(shop: PriceEntry, offer: PriceEntry, ingredient: Ingredient): string {
+		const want = unitPrice(offer).unit;
+		const have = unitPrice(shop);
+		if (have.unit === want) return perUnit(shop);
+		const perKg = pricePerKg(shop);
+		const value = want === 'l' ? perKg * ingredient.density : perKg;
+		return `${formatEur(value)}/${want}`;
+	}
 	const dayWord = (n: number) => (n === 1 ? 'deň' : n < 5 ? 'dni' : 'dní');
 
 	const myStores = $derived(settings.current.myStores);
@@ -161,28 +176,35 @@
 			.map(([id]) => catalog.ingredientsById.get(id)!);
 	});
 
-	/** Big packs and e-shop prices next to what the same thing costs in a shop, best saving first. */
-	const bulk = $derived(
-		catalog.prices
-			.filter((p) => (p.online || p.packGrams >= BULK_PACK_GRAMS) && !isStale(p, today))
+	/**
+	 * The cheapest big pack or e-shop offer of each ingredient, next to what it costs in a shop
+	 * you walk into (your shops, if picked), biggest saving first. Other e-shops are no "shop".
+	 */
+	const bulk = $derived.by(() => {
+		const cheapest = new Map<string, PriceEntry>();
+		for (const p of prices) {
+			if (!(p.online || p.packGrams >= BULK_PACK_GRAMS) || isStale(p, today)) continue;
+			const seen = cheapest.get(p.ingredientId);
+			if (!seen || pricePerKg(p) < pricePerKg(seen)) cheapest.set(p.ingredientId, p);
+		}
+		const inShops = prices.filter((p) => !p.online);
+		return [...cheapest.values()]
 			.map((entry) => {
 				const ingredient = catalog.ingredientsById.get(entry.ingredientId)!;
-				const shop = bestPrice(ingredient, catalog.prices, today);
-				// Without a shop price there is nothing real to compare with.
-				const saving =
-					shop.isEstimate || shop.storeId === entry.storeId
-						? null
-						: 1 - pricePerKg(entry) / shop.perKg;
+				// The shop's own product, so its price reads in the same unit (per l for liquids).
+				const shop = inShops
+					.filter((p) => p.ingredientId === entry.ingredientId && p !== entry && isUsable(p, today))
+					.reduce<PriceEntry | null>((a, b) => (!a || pricePerKg(b) < pricePerKg(a) ? b : a), null);
+				// Without a real shop price there is nothing to compare with.
+				const saving = shop ? 1 - pricePerKg(entry) / pricePerKg(shop) : null;
 				return { entry, ingredient, shop, saving };
 			})
 			.sort(
 				(a, b) =>
 					(b.saving ?? -1) - (a.saving ?? -1) ||
 					a.ingredient.name.localeCompare(b.ingredient.name, 'sk')
-			)
-			// The best offer per ingredient; the rest is in its row of the list above.
-			.filter((row, index, all) => all.findIndex((r) => r.ingredient === row.ingredient) === index)
-	);
+			);
+	});
 	const onlineStoreNames = $derived(
 		catalog.stores
 			.filter((s) => s.online && catalog.prices.some((p) => p.storeId === s.id))
@@ -475,12 +497,17 @@
 						<span class="bulk-price">{perUnit(e)}</span>
 						{#if saving !== null && saving > 0.05}
 							<span class="badge leaf">o {Math.round(saving * 100)} % lacnejšie</span>
+						{:else if saving !== null && saving < -0.05}
+							<span class="badge">v obchode lacnejšie</span>
 						{/if}
 						<span class="muted small bulk-detail">
 							{shelfName(e.product)} · {catalog.storesById.get(e.storeId)?.name}
-							{#if !shop.isEstimate && shop.storeId !== e.storeId}
-								· v obchode od {formatEur(shop.perKg)}/kg ({catalog.storesById.get(shop.storeId!)
-									?.name})
+							{#if shop}
+								· v obchode od {sameUnit(shop, e, ingredient)} ({catalog.storesById.get(
+									shop.storeId
+								)?.name})
+							{:else}
+								· v kamenných obchodoch cenu nepoznáme
 							{/if}
 							{#if e.url}<a href={e.url} rel="noopener noreferrer" target="_blank"
 									>odkaz <Icon name="external" size={14} /></a
