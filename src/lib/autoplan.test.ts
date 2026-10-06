@@ -146,3 +146,31 @@ describe('swapEntry', () => {
 		expect(swapped.entries[1]).toEqual(plan.entries[1]);
 	});
 });
+
+describe('breakfasts', () => {
+	const recipes = [
+		...['a', 'b', 'c'].map((id) => recipe(id)),
+		recipe('kasa', { meals: ['ranajky'], protein: 8 }),
+		recipe('palacinky', { meals: ['ranajky'], protein: 9 }),
+		recipe('praženica', { meals: ['ranajky', 'obed'], protein: 25 })
+	];
+
+	it('adds a breakfast for every day from breakfast-only recipes', () => {
+		const plan = autoPlan(recipes, { ...base, breakfasts: true, minProtein: 15 });
+		const morning = plan.entries.filter((e) => e.breakfast);
+		expect(morning.length).toBeGreaterThan(0);
+		expect(morning.every((e) => ['kasa', 'palacinky'].includes(e.recipeId))).toBe(true);
+		expect(morning.reduce((sum, e) => sum + e.servings, 0)).toBe(base.days * base.people);
+		expect(plan.wanted).toBe(base.days * base.mealsPerDay + base.days);
+		// A main meal's protein floor doesn't apply to breakfasts.
+		expect(plan.minProtein).toBeGreaterThanOrEqual(15);
+	});
+
+	it('swaps a breakfast only for another breakfast', () => {
+		const plan = autoPlan(recipes, { ...base, breakfasts: true });
+		const index = plan.entries.findIndex((e) => e.breakfast);
+		const swapped = swapEntry(recipes, { ...base, breakfasts: true }, plan, index);
+		expect(swapped.entries[index].breakfast).toBe(true);
+		expect(['kasa', 'palacinky']).toContain(swapped.entries[index].recipeId);
+	});
+});

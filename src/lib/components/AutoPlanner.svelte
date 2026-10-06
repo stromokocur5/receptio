@@ -61,6 +61,7 @@
 			days: settings.current.planDays,
 			people: settings.current.people,
 			mealsPerDay: settings.current.mealsPerDay,
+			breakfasts: settings.current.breakfasts,
 			budget: budget && budget > 0 ? budget : null,
 			minProtein,
 			mild,
@@ -233,8 +234,12 @@
 				{/each}
 			</div>
 			<p class="muted small">
-				Plánuje obedy{settings.current.mealsPerDay === 2 ? ' a večere' : ''}. Raňajky a snacky rieš
-				zvlášť.
+				Plánuje {settings.current.breakfasts ? 'raňajky, ' : ''}obedy{settings.current
+					.mealsPerDay === 2
+					? ' a večere'
+					: ''}. {settings.current.breakfasts
+					? 'Snacky rieš zvlášť.'
+					: 'Raňajky zapneš v nastavení plánu („Aj raňajky“), snacky rieš zvlášť.'}
 			</p>
 			<button class="btn leaf" onclick={suggest}><Icon name="sparkle" size={18} /> Navrhnúť</button>
 		</div>
@@ -253,7 +258,8 @@
 							<li>
 								<a href="/recepty/{r.id}">{r.title}</a>
 								<span class="muted">
-									{e.servings} porc.{#if e.variant}
+									{#if e.breakfast}raňajky ·
+									{/if}{e.servings} porc.{#if e.variant}
 										· {e.variant}{/if}
 								</span>
 								<button

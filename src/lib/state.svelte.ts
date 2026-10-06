@@ -1,6 +1,14 @@
 import { browser } from '$app/environment';
 import { NO_AVOID, validateAvoid, type Avoid } from './avoid';
-import { addItem, localToday, NO_JOURNAL, validateJournal, withDay, type Journal } from './journal';
+import {
+	addItem,
+	localToday,
+	mealAt,
+	NO_JOURNAL,
+	validateJournal,
+	withDay,
+	type Journal
+} from './journal';
 import { consumeFromPantry, type Pantry, type PantryUse } from './pantry';
 import { isValidSchedule, type ReminderSchedule } from './push';
 import { validatePreserves, type Preserve } from './preserves';
@@ -105,7 +113,8 @@ function validatePlan(raw: unknown): PlanEntry[] | undefined {
 			typeof e.servings === 'number' &&
 			e.servings > 0 &&
 			e.servings <= 100 &&
-			(e.variant === undefined || typeof e.variant === 'string')
+			(e.variant === undefined || typeof e.variant === 'string') &&
+			(e.breakfast === undefined || typeof e.breakfast === 'boolean')
 	);
 }
 
@@ -174,6 +183,8 @@ export interface Settings {
 	location: { name: string; lat: number; lon: number; elevation: number } | null;
 	/** Shops the user goes to; prices and the shopping plan stick to them. Empty = every shop. */
 	myStores: string[];
+	/** Plan breakfasts too, as a meal of their own each day. */
+	breakfasts: boolean;
 }
 
 const DEFAULT_SETTINGS: Settings = {
@@ -183,7 +194,8 @@ const DEFAULT_SETTINGS: Settings = {
 	mealsPerDay: 1,
 	theme: 'auto',
 	location: null,
-	myStores: []
+	myStores: [],
+	breakfasts: false
 };
 
 const inRange = (v: unknown, min: number, max: number): v is number =>
@@ -214,7 +226,8 @@ function validateSettings(raw: unknown): Settings | undefined {
 			? raw.myStores
 					.filter((id): id is string => typeof id === 'string' && /^[a-z0-9-]{1,30}$/.test(id))
 					.slice(0, 20)
-			: []
+			: [],
+		breakfasts: raw.breakfasts === true
 	};
 }
 
@@ -642,6 +655,7 @@ export const supplementReminder = new Persisted<SupplementReminder | null>(
 export function logPortion(recipeId: string, variant?: string) {
 	const today = localToday();
 	const id = crypto.randomUUID().slice(0, 8);
+	const meal = mealAt(new Date());
 	journal.current = withDay(
 		journal.current,
 		today,
@@ -649,8 +663,8 @@ export function logPortion(recipeId: string, variant?: string) {
 			addItem(
 				day,
 				variant
-					? { id, kind: 'recipe', recipeId, variant, portions: 1 }
-					: { id, kind: 'recipe', recipeId, portions: 1 }
+					? { id, kind: 'recipe', recipeId, variant, portions: 1, meal }
+					: { id, kind: 'recipe', recipeId, portions: 1, meal }
 			),
 		today
 	);
@@ -813,6 +827,11 @@ export function setPlanServings(recipeId: string, variant: string | undefined, s
 		servings <= 0
 			? plan.current.filter((e) => !sameEntry(e, recipeId, variant))
 			: plan.current.map((e) => (sameEntry(e, recipeId, variant) ? { ...e, servings } : e));
+}
+
+/** Marks a plan entry as breakfast or as a lunch/dinner. */
+export function setPlanBreakfast(index: number, breakfast: boolean) {
+	plan.current = plan.current.map((e, i) => (i === index ? { ...e, breakfast } : e));
 }
 
 /** Moves a plan entry one place earlier, so it gets cooked sooner. */

@@ -21,10 +21,15 @@
 		type ShelfCost,
 		type StorePlan
 	} from '$lib/pricing';
-	import { mealSchedule } from '$lib/schedule';
+	import { mealSchedule, type ScheduledMeal } from '$lib/schedule';
 	import { encodeSharedPlan } from '$lib/share';
 	import { LIVE_PREFIX, createLiveList } from '$lib/live-list.svelte';
-	import { approxPieces, buildShoppingList, type ShoppingItem } from '$lib/shopping';
+	import {
+		approxPieces,
+		buildShoppingList,
+		isBreakfastEntry,
+		type ShoppingItem
+	} from '$lib/shopping';
 	import {
 		addExtraItem,
 		checkedItems,
@@ -33,6 +38,7 @@
 		journal,
 		markCooked,
 		movePlanEntryUp,
+		setPlanBreakfast,
 		outOfStock,
 		pantry,
 		plan,
@@ -183,7 +189,11 @@
 			settings.current.people,
 			settings.current.mealsPerDay,
 			settings.current.planDays,
-			(id) => catalog.recipesById.get(id)?.keeps
+			{
+				keeps: (id) => catalog.recipesById.get(id)?.keeps,
+				breakfasts: settings.current.breakfasts,
+				isBreakfast: (e) => isBreakfastEntry(e, catalog.recipesById.get(e.recipeId))
+			}
 		)
 	);
 	const dayLabel = new Intl.DateTimeFormat('sk-SK', {
@@ -434,44 +444,11 @@
 							<li class:today={d === 0}>
 								<span class="day">{dayName(d)}</span>
 								<span class="meals">
+									{#if day.breakfast !== undefined}
+										{@render slot(day.breakfast, 'Raňajky')}
+									{/if}
 									{#each day.meals as meal, m (m)}
-										{#if meal}
-											<span
-												class="meal"
-												class:cook={meal.kind === 'cook'}
-												class:old={meal.freeze || meal.spoils}
-											>
-												{#if meal.kind === 'cook'}
-													{@const r = catalog.recipesById.get(meal.entry.recipeId)}
-													{#if r}
-														<span class="day-plate" aria-hidden="true"
-															><PlateArt
-																seed={r.id}
-																lines={r.lines}
-																byId={catalog.ingredientsById}
-																vessel={vesselFor(r.categories)}
-																animate={false}
-															/></span
-														>
-													{/if}
-												{:else}
-													<span class="leftover-ico" aria-hidden="true"
-														><Icon name="jar" size={16} /></span
-													>
-												{/if}
-												<span class="meal-text">
-													<span class="meal-kind">{meal.kind === 'cook' ? 'Uvariť' : 'Zvyšky'}</span
-													>
-													<a href="/recepty/{meal.entry.recipeId}">{titleOf(meal.entry.recipeId)}</a
-													>
-													{#if meal.freeze}<small>tieto porcie hneď zamraz</small>
-													{:else if meal.spoils}<small>nevydrží – uvar menej alebo neskôr</small
-														>{/if}
-												</span>
-											</span>
-										{:else}
-											<span class="meal empty">nič naplánované</span>
-										{/if}
+										{@render slot(meal)}
 									{/each}
 								</span>
 							</li>
@@ -488,6 +465,15 @@
 							– pridaj recept alebo porcie.
 						{:else}
 							Plán pokryje všetky jedlá.
+						{/if}
+						{#if schedule.unplannedBreakfasts}
+							Raňajky chýbajú na {schedule.unplannedBreakfasts}
+							{schedule.unplannedBreakfasts === 1
+								? 'deň'
+								: schedule.unplannedBreakfasts < 5
+									? 'dni'
+									: 'dní'}
+							– pridaj raňajkový recept (kaša, palacinky, tofu praženica…).
 						{/if}
 						{#if schedule.extraServings}
 							Zvýši {schedule.extraServings} porc. navyše.
@@ -545,6 +531,17 @@
 										<button onclick={() => cooked(e)} title="Uvarené – odpočítať zo špajze">
 											<Icon name="check" size={14} stroke={2.2} /> Uvarené
 										</button>
+										{#if settings.current.breakfasts}
+											{@const morning = isBreakfastEntry(e, e.recipe)}
+											<button
+												aria-pressed={morning}
+												onclick={() => setPlanBreakfast(i, !morning)}
+												title={morning ? 'Presunúť medzi obedy a večere' : 'Jesť na raňajky'}
+											>
+												<Icon name={morning ? 'check' : 'sun'} size={14} stroke={2.2} />
+												Na raňajky
+											</button>
+										{/if}
 									</span>
 								</div>
 								<div class="stepper" role="group" aria-label="Porcie pre {e.recipe.title}">
@@ -898,6 +895,39 @@
 	</div>
 </div>
 
+{#snippet slot(meal: ScheduledMeal | null, label?: string)}
+	{#if meal}
+		<span class="meal" class:cook={meal.kind === 'cook'} class:old={meal.freeze || meal.spoils}>
+			{#if meal.kind === 'cook'}
+				{@const r = catalog.recipesById.get(meal.entry.recipeId)}
+				{#if r}
+					<span class="day-plate" aria-hidden="true"
+						><PlateArt
+							seed={r.id}
+							lines={r.lines}
+							byId={catalog.ingredientsById}
+							vessel={vesselFor(r.categories)}
+							animate={false}
+						/></span
+					>
+				{/if}
+			{:else}
+				<span class="leftover-ico" aria-hidden="true"><Icon name="jar" size={16} /></span>
+			{/if}
+			<span class="meal-text">
+				<span class="meal-kind"
+					>{label ? `${label} · ` : ''}{meal.kind === 'cook' ? 'Uvariť' : 'Zvyšky'}</span
+				>
+				<a href="/recepty/{meal.entry.recipeId}">{titleOf(meal.entry.recipeId)}</a>
+				{#if meal.freeze}<small>tieto porcie hneď zamraz</small>
+				{:else if meal.spoils}<small>nevydrží – uvar menej alebo neskôr</small>{/if}
+			</span>
+		</span>
+	{:else}
+		<span class="meal empty">{label ? `${label}: ` : ''}nič naplánované</span>
+	{/if}
+{/snippet}
+
 {#snippet itemRow(item: ShoppingItem)}
 	{@const checked = !!checkedItems.current[item.ingredient.id]}
 	{@const itemPay = pay.get(item.ingredient.id)}
@@ -1137,6 +1167,11 @@
 		font-size: 0.75rem;
 		font-weight: 650;
 		padding: 2px 8px;
+	}
+	.entry-actions button[aria-pressed='true'] {
+		background: var(--turmeric-soft);
+		border-color: transparent;
+		color: var(--ink);
 	}
 	.entry-actions button:hover {
 		border-color: var(--leaf-2);

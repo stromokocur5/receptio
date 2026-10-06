@@ -25,8 +25,19 @@
 		shiftDate,
 		WATER_STEP_ML,
 		withDay,
+		DIARY_MEALS,
+		DIARY_MEAL_LABELS,
+		LABEL_KEYS,
+		LABEL_MAX,
+		mealAt,
+		removeSavedFood,
+		saveFood,
+		savedFoodItem,
+		type DiaryMeal,
 		type JournalDay,
-		type JournalItem
+		type JournalItem,
+		type LabelValues,
+		type SavedFood
 	} from '$lib/journal';
 	import { normalizeSearch, ingredientSearchText } from '$lib/labels';
 	import {
@@ -154,20 +165,41 @@
 
 	// ── Adding food ────────────────────────────────────────────
 	let query = $state('');
+	/** The meal new entries go to; starts at the one this time of day suggests. */
+	let meal = $state<DiaryMeal>(mealAt(new Date()));
 	type Pick =
-		{ kind: 'recipe'; recipe: RecipeSummary } | { kind: 'ingredient'; ingredient: Ingredient };
+		| { kind: 'recipe'; recipe: RecipeSummary }
+		| { kind: 'ingredient'; ingredient: Ingredient }
+		| { kind: 'saved'; food: SavedFood };
 	let picked = $state<Pick | null>(null);
 	let portions = $state(1);
 	let amount = $state(100);
 	let unit = $state<Unit>('g');
 	let custom = $state(false);
 	let customName = $state('');
-	let customKcal = $state<number | null>(null);
-	let customProtein = $state<number | null>(null);
+	let customPer100g = $state(false);
+	let customGrams = $state(100);
+	let customSave = $state(true);
+	const emptyLabel = (): LabelValues =>
+		Object.fromEntries(LABEL_KEYS.map((k) => [k, null])) as unknown as LabelValues;
+	let customValues = $state(emptyLabel());
+	/** What every label lists; the rest is printed only on some packs. */
+	const MAIN_LABEL: NutrientKey[] = ['kcal', 'protein', 'carbs', 'fat', 'fiber', 'salt'];
+	const labelField = (key: NutrientKey) => ({
+		key,
+		label: key === 'kcal' ? 'kcal' : `${NUTRIENT_META[key].label} ${NUTRIENT_META[key].unit}`,
+		max: LABEL_MAX[key]
+	});
+	const mainFields = $derived(
+		MAIN_LABEL.filter((k) => k !== 'kcal' || journal.current.showKcal).map(labelField)
+	);
+	const extraFields = LABEL_KEYS.filter((k) => !MAIN_LABEL.includes(k)).map(labelField);
+	const savedFoods = $derived(journal.current.foods);
 
 	const results = $derived.by(() => {
 		const q = normalizeSearch(query.trim());
-		if (q.length < 2) return { recipes: [], ingredients: [] };
+		if (q.length < 2) return { foods: [], recipes: [], ingredients: [] };
+		const foods = savedFoods.filter((f) => normalizeSearch(f.name).includes(q)).slice(0, 4);
 		const rank = (name: string) => (name.startsWith(q) ? 0 : 1);
 		const recipes = catalog.recipes
 			.map((r) => ({ r, name: normalizeSearch(r.title) }))
@@ -182,7 +214,7 @@
 			.sort((a, b) => rank(a.name) - rank(b.name))
 			.slice(0, 6)
 			.map(({ i }) => i);
-		return { recipes, ingredients };
+		return { foods, recipes, ingredients };
 	});
 
 	const pickedUnits = $derived(
@@ -197,6 +229,7 @@
 		portions = 1;
 		unit = 'g';
 		amount = 100;
+		if (p.kind === 'saved' && !p.food.per100g) amount = 1;
 		if (p.kind === 'ingredient' && p.ingredient.units.ks) {
 			unit = 'ks';
 			amount = 1;
@@ -205,14 +238,19 @@
 
 	function addPicked() {
 		if (!picked) return;
-		if (picked.kind === 'recipe') {
+		if (picked.kind === 'saved') {
+			const food = picked.food;
+			if (!(amount > 0)) return;
+			change((d) => addItem(d, savedFoodItem(food, Math.min(5000, amount), newId(), meal)));
+		} else if (picked.kind === 'recipe') {
 			if (!(portions > 0)) return;
 			change((d) =>
 				addItem(d, {
 					id: newId(),
 					kind: 'recipe',
 					recipeId: picked!.kind === 'recipe' ? picked!.recipe.id : '',
-					portions: Math.min(20, portions)
+					portions: Math.min(20, portions),
+					meal
 				})
 			);
 		} else {
@@ -220,7 +258,13 @@
 			if (!(grams >= 1)) return;
 			const ingredientId = picked.ingredient.id;
 			change((d) =>
-				addItem(d, { id: newId(), kind: 'ingredient', ingredientId, grams: Math.min(5000, grams) })
+				addItem(d, {
+					id: newId(),
+					kind: 'ingredient',
+					ingredientId,
+					grams: Math.min(5000, grams),
+					meal
+				})
 			);
 		}
 		picked = null;
@@ -229,21 +273,48 @@
 	function addCustom() {
 		const name = customName.trim().slice(0, 60);
 		if (!name) return;
-		const clean = (v: number | null, max: number) =>
-			typeof v === 'number' && Number.isFinite(v) && v >= 0 ? Math.min(v, max) : null;
-		change((d) =>
-			addItem(d, {
-				id: newId(),
-				kind: 'custom',
-				name,
-				kcal: clean(customKcal, 5000),
-				protein: clean(customProtein, 500)
+		const values = Object.fromEntries(
+			LABEL_KEYS.map(labelField).map(({ key, max }) => {
+				const v = customValues[key];
+				return [
+					key,
+					typeof v === 'number' && Number.isFinite(v) && v >= 0 ? Math.min(v, max) : null
+				];
 			})
-		);
+		) as unknown as LabelValues;
+		const food = { name, per100g: customPer100g, ...values };
+		if (customPer100g && !(customGrams > 0)) return;
+		const item: JournalItem = customPer100g
+			? savedFoodItem({ ...food, id: '' }, Math.min(5000, customGrams), newId(), meal)
+			: { id: newId(), kind: 'custom', ...values, name, meal };
+		change((d) => addItem(d, item));
+		if (customSave) journal.current = saveFood(journal.current, food, newId());
 		customName = '';
-		customKcal = null;
-		customProtein = null;
+		customValues = emptyLabel();
+		customGrams = 100;
 		custom = false;
+	}
+
+	/** The day's entries under their meals, in the order of the day; older entries had none. */
+	const mealGroups = $derived.by(() => {
+		const groups: { meal: DiaryMeal | null; items: JournalItem[] }[] = [];
+		for (const m of [...DIARY_MEALS, null]) {
+			const items = day.items.filter((i) => (i.meal ?? null) === m);
+			if (items.length) groups.push({ meal: m, items });
+		}
+		return groups;
+	});
+	function groupFacts(items: JournalItem[]): string {
+		let kcal = 0;
+		let protein = 0;
+		for (const item of items) {
+			const n = itemNutrients(item, catalog.recipesById, catalog.ingredientsById);
+			kcal += n?.kcal ?? 0;
+			protein += n?.protein ?? 0;
+		}
+		return journal.current.showKcal
+			? `${formatNumber(kcal, 0)} kcal · bielk. ${formatNumber(protein, 0)} g`
+			: `bielk. ${formatNumber(protein, 0)} g`;
 	}
 
 	function itemLabel(item: JournalItem): string {
@@ -264,7 +335,8 @@
 		const facts = [];
 		if (journal.current.showKcal) facts.push(`${formatNumber(n.kcal, 0)} kcal`);
 		facts.push(`bielk. ${formatNumber(n.protein, 0)} g`);
-		if (item.kind !== 'custom') facts.push(`vlákn. ${formatNumber(n.fiber)} g`);
+		if (item.kind !== 'custom' || item.fiber !== null)
+			facts.push(`vlákn. ${formatNumber(n.fiber)} g`);
 		return facts.join(' · ');
 	}
 
@@ -354,6 +426,13 @@
 			<SupplementsPanel {date} {today} />
 
 			<h3><Icon name="bowl" size={18} /> Jedlo</h3>
+			<div class="chips meal-pick" role="group" aria-label="Ku ktorému jedlu zapisuješ">
+				{#each DIARY_MEALS as m (m)}
+					<button class="chip" aria-pressed={meal === m} onclick={() => (meal = m)}
+						>{DIARY_MEAL_LABELS[m]}</button
+					>
+				{/each}
+			</div>
 			{#if cookedThatDay.length}
 				<div class="chips" role="group" aria-label="Uvarené v ten deň">
 					{#each cookedThatDay as h (`${h.recipeId}|${h.variant ?? ''}`)}
@@ -369,9 +448,10 @@
 													kind: 'recipe',
 													recipeId: h.recipeId,
 													variant: h.variant,
-													portions: 1
+													portions: 1,
+													meal
 												}
-											: { id: newId(), kind: 'recipe', recipeId: h.recipeId, portions: 1 }
+											: { id: newId(), kind: 'recipe', recipeId: h.recipeId, portions: 1, meal }
 									)
 								)}
 						>
@@ -386,7 +466,11 @@
 				<div class="picked">
 					<p>
 						<strong
-							>{picked.kind === 'recipe' ? picked.recipe.title : picked.ingredient.name}</strong
+							>{picked.kind === 'recipe'
+								? picked.recipe.title
+								: picked.kind === 'saved'
+									? picked.food.name
+									: picked.ingredient.name}</strong
 						>
 					</p>
 					<div class="picked-row">
@@ -395,6 +479,12 @@
 								<span>Porcie</span>
 								<input type="number" min="0.25" max="20" step="any" bind:value={portions} />
 							</label>
+						{:else if picked.kind === 'saved'}
+							<label class="field small-field">
+								<span class="sr-only">Množstvo</span>
+								<input type="number" min="0" max="5000" step="any" bind:value={amount} />
+							</label>
+							<span>{picked.food.per100g ? 'g' : 'ks'}</span>
 						{:else}
 							<label class="field small-field">
 								<span class="sr-only">Množstvo</span>
@@ -438,23 +528,70 @@
 							required
 						/>
 					</label>
-					<div class="picked-row">
-						<label class="field small-field">
-							<span>Bielkoviny g</span>
-							<input type="number" min="0" max="500" step="any" bind:value={customProtein} />
-						</label>
-						{#if journal.current.showKcal}
+					<div class="chips" role="group" aria-label="Hodnoty z obalu sú">
+						<button
+							type="button"
+							class="chip"
+							aria-pressed={!customPer100g}
+							onclick={() => (customPer100g = false)}>Na porciu</button
+						>
+						<button
+							type="button"
+							class="chip"
+							aria-pressed={customPer100g}
+							onclick={() => (customPer100g = true)}>Na 100 g</button
+						>
+					</div>
+					<div class="picked-row label-row">
+						{#if customPer100g}
 							<label class="field small-field">
-								<span>kcal</span>
-								<input type="number" min="0" max="5000" step="any" bind:value={customKcal} />
+								<span>Zjedené g</span>
+								<input type="number" min="1" max="5000" step="any" bind:value={customGrams} />
 							</label>
 						{/if}
+						{#each mainFields as f (f.key)}
+							<label class="field small-field">
+								<span>{f.label}</span>
+								<input
+									type="number"
+									min="0"
+									max={f.max}
+									step="any"
+									bind:value={customValues[f.key]}
+								/>
+							</label>
+						{/each}
+					</div>
+					<details class="more-label">
+						<summary>Ďalšie z obalu (železo, vápnik, B12…)</summary>
+						<div class="picked-row label-row">
+							{#each extraFields as f (f.key)}
+								<label class="field small-field">
+									<span>{f.label}</span>
+									<input
+										type="number"
+										min="0"
+										max={f.max}
+										step="any"
+										bind:value={customValues[f.key]}
+									/>
+								</label>
+							{/each}
+						</div>
+					</details>
+					<label class="check">
+						<input type="checkbox" bind:checked={customSave} /> Uložiť medzi moje potraviny
+					</label>
+					<div class="picked-row">
 						<button class="btn leaf small" type="submit">Zapísať</button>
 						<button class="btn ghost small" type="button" onclick={() => (custom = false)}
 							>Zrušiť</button
 						>
 					</div>
-					<p class="muted small">Čísla nájdeš na obale. Ak ich nepoznáš, nechaj prázdne.</p>
+					<p class="muted small">
+						Čísla nájdeš na obale (výživové údaje na 100 g alebo na porciu). Čo nepoznáš, nechaj
+						prázdne.
+					</p>
 				</form>
 			{:else}
 				<label class="field small-field">
@@ -467,8 +604,17 @@
 						autocomplete="off"
 					/>
 				</label>
-				{#if results.recipes.length || results.ingredients.length}
+				{#if results.foods.length || results.recipes.length || results.ingredients.length}
 					<ul class="results">
+						{#each results.foods as f (f.id)}
+							<li>
+								<button onclick={() => pick({ kind: 'saved', food: f })}>
+									<Icon name="star" size={15} />
+									{f.name}
+									<small class="muted">moje</small>
+								</button>
+							</li>
+						{/each}
 						{#each results.recipes as r (r.id)}
 							<li>
 								<button onclick={() => pick({ kind: 'recipe', recipe: r })}>
@@ -489,57 +635,79 @@
 						{/each}
 					</ul>
 				{:else if query.trim().length >= 2}
-					<p class="muted small">Nič také nemáme.</p>
+					<p class="muted small">Nič také nemáme – zapíš to ako vlastné jedlo nižšie.</p>
+				{:else if savedFoods.length}
+					<div class="chips" role="group" aria-label="Moje potraviny">
+						{#each savedFoods.slice(-8).toReversed() as f (f.id)}
+							<button class="chip" onclick={() => pick({ kind: 'saved', food: f })}>
+								<Icon name="star" size={13} />
+								{f.name}
+							</button>
+						{/each}
+					</div>
 				{/if}
 				<button class="btn ghost small other" onclick={() => (custom = true)}>
-					<Icon name="pencil" size={15} /> Niečo kúpené alebo mimo Receptia
+					<Icon name="pencil" size={15} /> Vlastné jedlo (z obalu, mimo Receptia)
 				</button>
 			{/if}
 
 			{#if day.items.length}
-				<ul class="items">
-					{#each day.items as item (item.id)}
-						<li>
-							<span class="name">{itemLabel(item)}</span>
-							<span class="muted small">{itemFacts(item)}</span>
-							{#if item.kind === 'recipe'}
-								<span class="stepper">
-									<button
-										class="icon-btn"
-										aria-label="O pol porcie menej: {itemLabel(item)}"
-										onclick={() => change((d) => setPortions(d, item.id, item.portions - 0.5))}
-									>
-										<Icon name="minus" size={15} />
-									</button>
-									<button
-										class="icon-btn"
-										aria-label="O pol porcie viac: {itemLabel(item)}"
-										onclick={() => change((d) => setPortions(d, item.id, item.portions + 0.5))}
-									>
-										<Icon name="plus" size={15} />
-									</button>
-								</span>
-							{/if}
-							<button
-								class="icon-btn remove"
-								aria-label="Odstrániť: {itemLabel(item)}"
-								onclick={() => change((d) => removeItem(d, item.id))}
-							>
-								<Icon name="x" size={16} />
-							</button>
-						</li>
-					{/each}
-				</ul>
+				{#each mealGroups as group (group.meal ?? 'other')}
+					<h4 class="meal-head">
+						{group.meal ? DIARY_MEAL_LABELS[group.meal] : 'Ostatné'}
+						<span class="muted small">{groupFacts(group.items)}</span>
+					</h4>
+					<ul class="items">
+						{#each group.items as item (item.id)}
+							<li>
+								<span class="name">{itemLabel(item)}</span>
+								<span class="muted small">{itemFacts(item)}</span>
+								{#if item.kind === 'recipe'}
+									<span class="stepper">
+										<button
+											class="icon-btn"
+											aria-label="O pol porcie menej: {itemLabel(item)}"
+											onclick={() => change((d) => setPortions(d, item.id, item.portions - 0.5))}
+										>
+											<Icon name="minus" size={15} />
+										</button>
+										<button
+											class="icon-btn"
+											aria-label="O pol porcie viac: {itemLabel(item)}"
+											onclick={() => change((d) => setPortions(d, item.id, item.portions + 0.5))}
+										>
+											<Icon name="plus" size={15} />
+										</button>
+									</span>
+								{/if}
+								<button
+									class="icon-btn remove"
+									aria-label="Odstrániť: {itemLabel(item)}"
+									onclick={() => change((d) => removeItem(d, item.id))}
+								>
+									<Icon name="x" size={16} />
+								</button>
+							</li>
+						{/each}
+					</ul>
+				{/each}
 
 				<h3>Spolu za deň</h3>
 				<NutrientBars values={totals.nutrients} {targets} keys={barKeys} />
+				{#if journal.current.showKcal && targets.kcal > 0}
+					{@const left = targets.kcal - totals.nutrients.kcal}
+					<p class="kcal-left">
+						{#if left >= 0}Do cieľa ostáva <strong>{formatNumber(left, 0)} kcal</strong>
+						{:else}Nad cieľom o <strong>{formatNumber(-left, 0)} kcal</strong>{/if}
+						<span class="muted small">(cieľ {formatNumber(targets.kcal, 0)} kcal)</span>
+					</p>
+				{/if}
 				{#if totals.unknown || totals.partial}
 					<p class="muted small">
 						{#if totals.unknown}Pri {totals.unknown}
 							{totals.unknown === 1 ? 'položke' : 'položkách'} hodnoty nepoznáme.{/if}
-						{#if totals.partial}Kúpené veci sa rátajú len do bielkovín{journal.current.showKcal
-								? ' a kalórií'
-								: ''}.{/if}
+						{#if totals.partial}Pri vlastných jedlách rátame len čísla z obalu (bez železa,
+							vápnika…).{/if}
 						Skutočné čísla sú teda vyššie.
 					</p>
 				{/if}
@@ -616,6 +784,34 @@
 				/>
 				Ukazovať kalórie
 			</label>
+			{#if savedFoods.length}
+				<div class="saved-foods">
+					<h4>Moje potraviny</h4>
+					<ul>
+						{#each savedFoods as f (f.id)}
+							<li>
+								<span
+									>{f.name}
+									<small class="muted"
+										>{f.per100g ? 'na 100 g' : 'na kus'}{f.kcal !== null && journal.current.showKcal
+											? ` · ${formatNumber(f.kcal, 0)} kcal`
+											: ''}{f.protein !== null
+											? ` · bielk. ${formatNumber(f.protein)} g`
+											: ''}</small
+									></span
+								>
+								<button
+									class="icon-btn"
+									aria-label="Odstrániť z mojich potravín: {f.name}"
+									onclick={() => (journal.current = removeSavedFood(journal.current, f.id))}
+								>
+									<Icon name="x" size={14} />
+								</button>
+							</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
 			<label class="field small-field goal">
 				<span>Cieľ vody (ml)</span>
 				<input
@@ -962,5 +1158,49 @@
 	a {
 		color: var(--ink);
 		font-weight: 650;
+	}
+	.meal-pick {
+		margin-bottom: 10px;
+	}
+	.meal-head {
+		display: flex;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 8px;
+		margin: 14px 0 4px;
+		font-size: 0.92rem;
+	}
+	.more-label summary {
+		cursor: pointer;
+		font-size: 0.85rem;
+		color: var(--plum);
+		margin: 4px 0;
+	}
+	.label-row {
+		flex-wrap: wrap;
+	}
+	.label-row .field {
+		flex: 1 1 110px;
+	}
+	.kcal-left {
+		margin: 8px 0 0;
+	}
+	.saved-foods h4 {
+		margin: 12px 0 6px;
+		font-size: 0.9rem;
+	}
+	.saved-foods ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 4px;
+	}
+	.saved-foods li {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+		font-size: 0.88rem;
 	}
 </style>

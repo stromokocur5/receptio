@@ -34,7 +34,7 @@ describe('mealSchedule', () => {
 			1,
 			1,
 			6,
-			keeps
+			{ keeps }
 		);
 		const flags = days.map((d) => d.meals[0] && [d.meals[0].freeze, d.meals[0].spoils]);
 		expect(flags).toEqual([
@@ -57,5 +57,37 @@ describe('mealSchedule', () => {
 
 		const long = mealSchedule([{ recipeId: 'cili', servings: 8 }], 1, 1, 3);
 		expect(long.extraServings).toBe(5);
+	});
+});
+
+describe('breakfasts', () => {
+	it('fills a breakfast slot from breakfast entries only, the rest stay lunches', () => {
+		const plan = mealSchedule(
+			[
+				{ recipeId: 'kasa', servings: 2, breakfast: true },
+				{ recipeId: 'dal', servings: 3 }
+			],
+			1,
+			1,
+			3,
+			{ breakfasts: true, isBreakfast: (e) => e.breakfast === true }
+		);
+		expect(
+			plan.days.map((d) => [d.breakfast?.entry.recipeId ?? '-', d.meals[0]?.entry.recipeId])
+		).toEqual([
+			['kasa', 'dal'],
+			['kasa', 'dal'],
+			['-', 'dal']
+		]);
+		expect(plan.unplannedBreakfasts).toBe(1);
+		expect(plan.unplannedMeals).toBe(0);
+	});
+
+	it("treats breakfast entries as ordinary meals when breakfasts aren't planned", () => {
+		const plan = mealSchedule([{ recipeId: 'kasa', servings: 2, breakfast: true }], 1, 1, 2, {
+			isBreakfast: () => true
+		});
+		expect(plan.days.map((d) => d.meals[0]?.entry.recipeId)).toEqual(['kasa', 'kasa']);
+		expect(plan.days[0].breakfast).toBeUndefined();
 	});
 });

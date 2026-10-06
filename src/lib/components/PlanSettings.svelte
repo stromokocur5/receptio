@@ -37,6 +37,14 @@
 			<option value={2}>2 (obed a večera)</option>
 		</select>
 	</label>
+	<label class="check">
+		<input
+			type="checkbox"
+			checked={settings.current.breakfasts}
+			onchange={(e) => update({ breakfasts: e.currentTarget.checked })}
+		/>
+		Aj raňajky
+	</label>
 </div>
 
 <style>
@@ -47,6 +55,11 @@
 		margin-bottom: 8px;
 		font-weight: 600;
 		font-size: 0.92rem;
+	}
+	.check {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
 	}
 	select {
 		border: 1.5px solid var(--line);

@@ -24,6 +24,23 @@ export interface PlanEntry {
 	servings: number;
 	/** Name of the chosen recipe variant; the base recipe when absent. */
 	variant?: string;
+	/** Eaten for breakfast (true) or as a lunch/dinner (false); absent: decided by the recipe. */
+	breakfast?: boolean;
+}
+
+/** A recipe meant only for the morning (porridge, pancakes) – not one also fit for lunch. */
+export function isBreakfastRecipe(recipe: Pick<RecipeSummary, 'meals'>): boolean {
+	return (
+		recipe.meals.includes('ranajky') && !recipe.meals.some((m) => m === 'obed' || m === 'vecera')
+	);
+}
+
+/** Whether a plan entry is eaten for breakfast: the user's choice, else what the recipe is. */
+export function isBreakfastEntry(
+	entry: PlanEntry,
+	recipe: Pick<RecipeSummary, 'meals'> | undefined
+): boolean {
+	return entry.breakfast ?? (recipe ? isBreakfastRecipe(recipe) : false);
 }
 
 export function planLines(recipe: RecipeSummary, variant: string | undefined) {

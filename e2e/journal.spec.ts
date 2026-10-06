@@ -78,3 +78,24 @@ test('the diary has no accessibility violations and fits the screen', async ({ p
 		violations.map((v) => `${v.id}: ${v.nodes.map((n) => n.target.join(' ')).join(' | ')}`)
 	).toEqual([]);
 });
+
+test('own food from a label is logged per 100 g and kept for next time', async ({ page }) => {
+	await visit(page, '/moje');
+	await page.getByRole('button', { name: 'Raňajky', exact: true }).click();
+	await page.getByRole('button', { name: /Vlastné jedlo/ }).click();
+	await page.getByPlaceholder('Napr. sezamová tyčinka').fill('Kváskový chlieb');
+	await page.getByRole('button', { name: 'Na 100 g' }).click();
+	await page.getByRole('spinbutton', { name: 'Zjedené g' }).fill('150');
+	await page.getByRole('spinbutton', { name: 'Bielkoviny g' }).fill('8');
+	await page.getByRole('spinbutton', { name: 'Vláknina g' }).fill('6');
+	await page.getByText('Ďalšie z obalu').click();
+	await page.getByRole('spinbutton', { name: 'Železo mg' }).fill('2');
+	await page.getByRole('button', { name: 'Zapísať' }).click();
+
+	await expect(page.getByText('Kváskový chlieb · 150 g')).toBeVisible();
+	await expect(page.getByText(/bielk\. 12 g · vlákn\. 9 g/)).toBeVisible();
+	await expect(page.getByRole('heading', { name: /^Raňajky/ })).toBeVisible();
+	await expect(page.getByRole('button', { name: 'Kváskový chlieb', exact: true })).toBeVisible();
+	const stored = await page.evaluate(() => JSON.parse(localStorage.getItem('receptio:journal')!));
+	expect(stored.foods[0]).toMatchObject({ name: 'Kváskový chlieb', per100g: true, iron: 2 });
+});

@@ -6,11 +6,15 @@ import {
 	compactJournal,
 	dayTotals,
 	localToday,
+	mealAt,
 	nutrientGaps,
 	recentTotals,
 	recipesRichIn,
 	NO_JOURNAL,
 	removeItem,
+	removeSavedFood,
+	saveFood,
+	savedFoodItem,
 	setPortions,
 	shiftDate,
 	validateJournal,
@@ -19,7 +23,12 @@ import {
 	type JournalDay
 } from './journal';
 import { dailyTargets, emptyNutrients } from './nutrition';
-import type { Ingredient, RecipeSummary } from './types';
+import { NUTRIENT_KEYS, type Ingredient, type RecipeSummary } from './types';
+
+const unknownLabel = Object.fromEntries(NUTRIENT_KEYS.map((k) => [k, null])) as Record<
+	(typeof NUTRIENT_KEYS)[number],
+	null
+>;
 
 const dal = {
 	id: 'dal',
@@ -65,8 +74,8 @@ describe('dayTotals', () => {
 				waterMl: 0,
 				items: [
 					{ id: '1', kind: 'recipe', recipeId: 'tofu', portions: 1 },
-					{ id: '2', kind: 'custom', name: 'Sušienka', kcal: null, protein: null },
-					{ id: '3', kind: 'custom', name: 'Tyčinka', kcal: 200, protein: 10 }
+					{ id: '2', kind: 'custom', name: 'Sušienka', ...unknownLabel },
+					{ id: '3', kind: 'custom', name: 'Tyčinka', ...unknownLabel, kcal: 200, protein: 10 }
 				]
 			},
 			recipes,
@@ -228,5 +237,83 @@ describe('weekly picture', () => {
 		expect(dailyTargets(70).protein).toBe(77);
 		expect(dailyTargets(70, { activity: 'silovy', custom: {} }).protein).toBe(112);
 		expect(dailyTargets(null, { activity: 'bezne', custom: { fiber: 40 } }).fiber).toBe(40);
+	});
+});
+
+describe('meals and saved foods', () => {
+	it('guesses the meal from the time of day', () => {
+		const at = (h: number, m = 0) => mealAt(new Date(2026, 9, 6, h, m));
+		expect([at(7), at(12), at(16), at(19), at(23)]).toEqual([
+			'ranajky',
+			'obed',
+			'snack',
+			'vecera',
+			'snack'
+		]);
+	});
+
+	it('keeps the same food apart when eaten at different meals', () => {
+		let day: JournalDay = { waterMl: 0, items: [] };
+		day = addItem(day, {
+			id: 'a',
+			kind: 'ingredient',
+			ingredientId: 'jablko',
+			grams: 100,
+			meal: 'ranajky'
+		});
+		day = addItem(day, {
+			id: 'b',
+			kind: 'ingredient',
+			ingredientId: 'jablko',
+			grams: 50,
+			meal: 'ranajky'
+		});
+		day = addItem(day, {
+			id: 'c',
+			kind: 'ingredient',
+			ingredientId: 'jablko',
+			grams: 80,
+			meal: 'snack'
+		});
+		expect(day.items.map((i) => [i.meal, i.kind === 'ingredient' && i.grams])).toEqual([
+			['ranajky', 150],
+			['snack', 80]
+		]);
+	});
+
+	it('scales a saved food per 100 g or per piece, unknown values stay unknown', () => {
+		const bread = {
+			...unknownLabel,
+			id: 'f',
+			name: 'Kváskový chlieb',
+			per100g: true,
+			kcal: 240,
+			protein: 8,
+			carbs: 48,
+			fat: 1.5,
+			fiber: null
+		};
+		const item = savedFoodItem(bread, 150, 'x', 'ranajky');
+		expect(item).toMatchObject({
+			kind: 'custom',
+			name: 'Kváskový chlieb · 150 g',
+			kcal: 360,
+			protein: 12,
+			carbs: 72,
+			fat: 2.25,
+			fiber: null,
+			meal: 'ranajky'
+		});
+		const bar = { ...bread, name: 'Tyčinka', per100g: false, kcal: 180 };
+		expect(savedFoodItem(bar, 2, 'y')).toMatchObject({ name: 'Tyčinka · 2 ks', kcal: 360 });
+	});
+
+	it('saves foods by name and survives validation', () => {
+		const food = { name: 'Tyčinka', per100g: false, ...unknownLabel, kcal: 180 };
+		let j = saveFood(NO_JOURNAL, food, '1');
+		j = saveFood(j, { ...food, kcal: 190 }, '2');
+		expect(j.foods.map((f) => [f.id, f.kcal])).toEqual([['2', 190]]);
+		expect(validateJournal(JSON.parse(JSON.stringify(j)))?.foods).toEqual(j.foods);
+		expect(removeSavedFood(j, '2').foods).toEqual([]);
 	});
 });

@@ -23,53 +23,76 @@ export interface ScheduledMeal {
 export interface ScheduleDay {
 	/** One slot per meal of the day; null when the plan has run out. */
 	meals: (ScheduledMeal | null)[];
+	/** Planned only when breakfasts are planned too; null when they ran out. */
+	breakfast?: ScheduledMeal | null;
+}
+
+export interface ScheduleOptions {
+	keeps?: (recipeId: string) => Keeps | undefined;
+	/** Plan a breakfast every day from the entries marked as breakfast. */
+	breakfasts?: boolean;
+	isBreakfast?: (entry: PlanEntry) => boolean;
 }
 
 /**
  * Lays the plan out over days: each entry is cooked once and then eaten as leftovers until its
  * servings run out, `people` servings per meal. Entries go in plan order, so reordering the plan
- * changes what's cooked when.
+ * changes what's cooked when. Breakfasts, when planned, are a queue of their own.
  */
 export function mealSchedule(
 	entries: PlanEntry[],
 	people: number,
 	mealsPerDay: number,
 	days: number,
-	keeps: (recipeId: string) => Keeps | undefined = () => undefined
-): { days: ScheduleDay[]; unplannedMeals: number; extraServings: number } {
-	const queue = entries.map((entry) => ({ entry, left: entry.servings, cookedOn: -1 }));
+	{ keeps = () => undefined, breakfasts = false, isBreakfast = () => false }: ScheduleOptions = {}
+): {
+	days: ScheduleDay[];
+	unplannedMeals: number;
+	unplannedBreakfasts: number;
+	extraServings: number;
+} {
+	const all = entries.map((entry) => ({ entry, left: entry.servings, cookedOn: -1 }));
+	const morning = breakfasts ? all.filter((b) => isBreakfast(b.entry)) : [];
+	const rest = breakfasts ? all.filter((b) => !isBreakfast(b.entry)) : all;
 	const result: ScheduleDay[] = [];
 	let unplannedMeals = 0;
+	let unplannedBreakfasts = 0;
+
+	const serve = (queue: typeof all, day: number): ScheduledMeal | null => {
+		// A meal needs a serving for everyone; a smaller remainder is just a spare portion.
+		const batch = queue.find((b) => b.left >= people);
+		if (!batch) return null;
+		const kind = batch.cookedOn === -1 ? 'cook' : 'leftover';
+		if (kind === 'cook') batch.cookedOn = day;
+		const age = day - batch.cookedOn;
+		const { fridge, freezer } = keeps(batch.entry.recipeId) ?? {
+			fridge: FRIDGE_DAYS,
+			freezer: 0
+		};
+		const tooOld = age > fridge;
+		batch.left -= people;
+		return {
+			entry: batch.entry,
+			kind,
+			age,
+			freeze: tooOld && freezer > 0,
+			spoils: tooOld && freezer === 0
+		};
+	};
 
 	for (let day = 0; day < days; day++) {
-		const meals: (ScheduledMeal | null)[] = [];
-		for (let slot = 0; slot < mealsPerDay; slot++) {
-			// A meal needs a serving for everyone; a smaller remainder is just a spare portion.
-			const batch = queue.find((b) => b.left >= people);
-			if (!batch) {
-				meals.push(null);
-				unplannedMeals++;
-				continue;
-			}
-			const kind = batch.cookedOn === -1 ? 'cook' : 'leftover';
-			if (kind === 'cook') batch.cookedOn = day;
-			const age = day - batch.cookedOn;
-			const { fridge, freezer } = keeps(batch.entry.recipeId) ?? {
-				fridge: FRIDGE_DAYS,
-				freezer: 0
-			};
-			const tooOld = age > fridge;
-			meals.push({
-				entry: batch.entry,
-				kind,
-				age,
-				freeze: tooOld && freezer > 0,
-				spoils: tooOld && freezer === 0
-			});
-			batch.left -= people;
+		const scheduled: ScheduleDay = { meals: [] };
+		if (breakfasts) {
+			scheduled.breakfast = serve(morning, day);
+			if (!scheduled.breakfast) unplannedBreakfasts++;
 		}
-		result.push({ meals });
+		for (let slot = 0; slot < mealsPerDay; slot++) {
+			const meal = serve(rest, day);
+			if (!meal) unplannedMeals++;
+			scheduled.meals.push(meal);
+		}
+		result.push(scheduled);
 	}
-	const extraServings = queue.reduce((sum, b) => sum + Math.max(0, b.left), 0);
-	return { days: result, unplannedMeals, extraServings };
+	const extraServings = all.reduce((sum, b) => sum + Math.max(0, b.left), 0);
+	return { days: result, unplannedMeals, unplannedBreakfasts, extraServings };
 }

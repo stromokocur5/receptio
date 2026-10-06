@@ -359,6 +359,15 @@
 								onclick={() => (settings.current = { ...settings.current, mealsPerDay: 2 })}
 								>Obed aj večeru</button
 							>
+							<button
+								class="chip"
+								aria-pressed={settings.current.breakfasts}
+								onclick={() =>
+									(settings.current = {
+										...settings.current,
+										breakfasts: !settings.current.breakfasts
+									})}>+ raňajky</button
+							>
 						</div>
 					</div>
 					<div class="setting">

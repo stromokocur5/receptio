@@ -22,11 +22,63 @@ import {
  * because counting them isn't the point of the app and isn't healthy for everyone.
  */
 
-export type JournalItem =
+/** Which meal of the day an entry belongs to, so the day reads like a day. */
+export const DIARY_MEALS = ['ranajky', 'obed', 'vecera', 'snack'] as const;
+export type DiaryMeal = (typeof DIARY_MEALS)[number];
+export const DIARY_MEAL_LABELS: Record<DiaryMeal, string> = {
+	ranajky: 'Raňajky',
+	obed: 'Obed',
+	vecera: 'Večera',
+	snack: 'Medzi jedlami'
+};
+
+/** A sensible default for food logged at this time of day. */
+export function mealAt(date: Date): DiaryMeal {
+	const minutes = date.getHours() * 60 + date.getMinutes();
+	if (minutes < 10 * 60 + 30) return 'ranajky';
+	if (minutes < 15 * 60) return 'obed';
+	if (minutes < 17 * 60) return 'snack';
+	if (minutes < 22 * 60) return 'vecera';
+	return 'snack';
+}
+
+/**
+ * What a label (or the user) tells about a food: every nutrient Receptio follows, each of them
+ * possibly unknown. Labels give energy, macros, fibre and salt; minerals and B12 only sometimes.
+ */
+export type LabelValues = Record<NutrientKey, number | null>;
+export const LABEL_KEYS = NUTRIENT_KEYS;
+export const LABEL_MAX: Record<NutrientKey, number> = {
+	kcal: 5000,
+	protein: 500,
+	carbs: 1000,
+	fat: 500,
+	fiber: 200,
+	salt: 100,
+	iron: 200,
+	calcium: 5000,
+	zinc: 200,
+	ala: 100,
+	b12: 1000
+};
+
+export type JournalItem = (
 	| { id: string; kind: 'recipe'; recipeId: string; variant?: string; portions: number }
 	| { id: string; kind: 'ingredient'; ingredientId: string; grams: number }
 	/** Something bought or eaten out, with only what the label or the user knows. */
-	| { id: string; kind: 'custom'; name: string; kcal: number | null; protein: number | null };
+	| ({ id: string; kind: 'custom'; name: string } & LabelValues)
+) & { meal?: DiaryMeal };
+
+/**
+ * Food the user eats often that Receptio doesn't know (a favourite bar, bread from the bakery),
+ * kept to log again with one tap. Values are per 100 g, or per piece when `per100g` is false.
+ */
+export interface SavedFood extends LabelValues {
+	id: string;
+	name: string;
+	per100g: boolean;
+}
+export const MAX_SAVED_FOODS = 60;
 
 export interface JournalDay {
 	waterMl: number;
@@ -70,6 +122,7 @@ export interface Journal {
 	/** Daily nutrient goals: protein by activity, or numbers the user set. */
 	goals: NutrientGoals;
 	supplements: Supplement[];
+	foods: SavedFood[];
 	/** ISO date → that day's log, for the recent days. */
 	days: Record<string, JournalDay>;
 	/** ISO date → totals, for days older than JOURNAL_DETAIL_DAYS. */
@@ -82,6 +135,7 @@ export const NO_JOURNAL: Journal = {
 	waterGoalMl: 2000,
 	goals: DEFAULT_GOALS,
 	supplements: [],
+	foods: [],
 	days: {},
 	summaries: {}
 };
@@ -103,7 +157,26 @@ const num = (v: unknown, min: number, max: number): v is number =>
 const optionalNum = (v: unknown, max: number): number | null | undefined =>
 	v === null || v === undefined ? null : num(v, 0, max) ? v : undefined;
 
+/** Label numbers, each valid or null; undefined when one is out of range. */
+function validateLabel(raw: Record<string, unknown>): LabelValues | undefined {
+	const values = {} as LabelValues;
+	for (const key of LABEL_KEYS) {
+		const v = optionalNum(raw[key], LABEL_MAX[key]);
+		if (v === undefined) return undefined;
+		values[key] = v;
+	}
+	return values;
+}
+
 function validateItem(raw: unknown): JournalItem | undefined {
+	const item = validateFood(raw);
+	if (!item || !isRecord(raw)) return undefined;
+	return DIARY_MEALS.includes(raw.meal as DiaryMeal)
+		? { ...item, meal: raw.meal as DiaryMeal }
+		: item;
+}
+
+function validateFood(raw: unknown): JournalItem | undefined {
 	if (!isRecord(raw) || typeof raw.id !== 'string' || raw.id.length > 40) return undefined;
 	const id = raw.id;
 	if (raw.kind === 'recipe') {
@@ -118,10 +191,9 @@ function validateItem(raw: unknown): JournalItem | undefined {
 	}
 	if (raw.kind === 'custom') {
 		const name = typeof raw.name === 'string' ? raw.name.trim().slice(0, MAX_CUSTOM_NAME) : '';
-		const kcal = optionalNum(raw.kcal, 5000);
-		const protein = optionalNum(raw.protein, 500);
-		if (!name || kcal === undefined || protein === undefined) return undefined;
-		return { id, kind: 'custom', name, kcal, protein };
+		const values = validateLabel(raw);
+		if (!name || !values) return undefined;
+		return { id, kind: 'custom', name, ...values };
 	}
 	return undefined;
 }
@@ -201,6 +273,18 @@ function validateGoals(raw: unknown): NutrientGoals {
 	return { activity, custom };
 }
 
+function validateSavedFoods(raw: unknown): SavedFood[] {
+	if (!Array.isArray(raw)) return [];
+	return raw
+		.flatMap((f): SavedFood[] => {
+			if (!isRecord(f) || typeof f.id !== 'string' || f.id.length > 40) return [];
+			const name = typeof f.name === 'string' ? f.name.trim().slice(0, MAX_CUSTOM_NAME) : '';
+			const values = validateLabel(f);
+			return name && values ? [{ id: f.id, name, per100g: f.per100g === true, ...values }] : [];
+		})
+		.slice(0, MAX_SAVED_FOODS);
+}
+
 export function validateJournal(raw: unknown): Journal | undefined {
 	if (!isRecord(raw)) return undefined;
 	return {
@@ -209,6 +293,7 @@ export function validateJournal(raw: unknown): Journal | undefined {
 		waterGoalMl: num(raw.waterGoalMl, 500, 5000) ? raw.waterGoalMl : NO_JOURNAL.waterGoalMl,
 		goals: validateGoals(raw.goals),
 		supplements: validateSupplements(raw.supplements),
+		foods: validateSavedFoods(raw.foods),
 		days: validateDated(raw.days, validateDay),
 		summaries: validateDated(raw.summaries, validateSummary)
 	};
@@ -303,11 +388,12 @@ export function addWater(day: JournalDay, ml: number): JournalDay {
 }
 
 const sameFood = (a: JournalItem, b: JournalItem) =>
-	(a.kind === 'recipe' &&
+	a.meal === b.meal &&
+	((a.kind === 'recipe' &&
 		b.kind === 'recipe' &&
 		a.recipeId === b.recipeId &&
 		a.variant === b.variant) ||
-	(a.kind === 'ingredient' && b.kind === 'ingredient' && a.ingredientId === b.ingredientId);
+		(a.kind === 'ingredient' && b.kind === 'ingredient' && a.ingredientId === b.ingredientId));
 
 /** Adds food; a second helping of the same recipe or ingredient goes onto its existing line. */
 export function addItem(day: JournalDay, item: JournalItem): JournalDay {
@@ -382,8 +468,8 @@ export function itemNutrients(
 		const ingredient = ingredientsById.get(item.ingredientId);
 		return ingredient ? addScaled(emptyNutrients(), ingredient.per100g, item.grams) : null;
 	}
-	if (item.kcal === null && item.protein === null) return null;
-	return { ...emptyNutrients(), kcal: item.kcal ?? 0, protein: item.protein ?? 0 };
+	if (LABEL_KEYS.every((k) => item[k] == null)) return null;
+	return Object.fromEntries(LABEL_KEYS.map((k) => [k, item[k] ?? 0])) as Nutrients;
 }
 
 export function dayTotals(
@@ -400,7 +486,8 @@ export function dayTotals(
 			unknown++;
 			continue;
 		}
-		if (item.kind === 'custom') partial = true;
+		// A custom food counts only with the numbers its label gave.
+		if (item.kind === 'custom' && LABEL_KEYS.some((k) => item[k] == null)) partial = true;
 		for (const key of Object.keys(nutrients) as (keyof Nutrients)[]) nutrients[key] += n[key];
 	}
 	return { nutrients, unknown, partial };
@@ -472,4 +559,40 @@ export function recipesRichIn(
 		)
 		.sort((a, b) => b.perServing[key] - a.perServing[key])
 		.slice(0, count);
+}
+
+/** A saved food as a diary entry: `amount` grams (per-100 g foods) or pieces. */
+export function savedFoodItem(
+	food: SavedFood,
+	amount: number,
+	id: string,
+	meal?: DiaryMeal
+): JournalItem {
+	const factor = food.per100g ? amount / 100 : amount;
+	const scaled = Object.fromEntries(
+		LABEL_KEYS.map((k) => {
+			const v = food[k];
+			return [k, v == null ? null : Math.min(LABEL_MAX[k], Math.round(v * factor * 100) / 100)];
+		})
+	) as unknown as LabelValues;
+	const label = food.per100g ? `${amount} g` : `${amount} ks`;
+	return {
+		id,
+		kind: 'custom',
+		name: `${food.name} · ${label}`.slice(0, MAX_CUSTOM_NAME),
+		...scaled,
+		...(meal && { meal })
+	};
+}
+
+/** Saves a food for later, replacing one of the same name. */
+export function saveFood(journal: Journal, food: Omit<SavedFood, 'id'>, id: string): Journal {
+	const name = food.name.trim().slice(0, MAX_CUSTOM_NAME);
+	if (!name) return journal;
+	const others = journal.foods.filter((f) => f.name.toLowerCase() !== name.toLowerCase());
+	return { ...journal, foods: [...others, { ...food, name, id }].slice(-MAX_SAVED_FOODS) };
+}
+
+export function removeSavedFood(journal: Journal, id: string): Journal {
+	return { ...journal, foods: journal.foods.filter((f) => f.id !== id) };
 }

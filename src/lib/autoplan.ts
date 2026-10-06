@@ -1,11 +1,13 @@
 import { seededRandom } from './art';
-import type { PlanEntry } from './shopping';
+import { isBreakfastRecipe, type PlanEntry } from './shopping';
 import type { Allergen, RecipeSummary, RecipeVariant } from './types';
 
 export interface AutoPlanOptions {
 	days: number;
 	people: number;
 	mealsPerDay: 1 | 2;
+	/** Plan a breakfast for every day too, from breakfast recipes. */
+	breakfasts?: boolean;
 	/** Whole plan, in €; null = no limit. */
 	budget: number | null;
 	/** Minimum protein per serving (one person's meal), in grams. */
@@ -91,6 +93,19 @@ function pickVersion(r: RecipeSummary, o: AutoPlanOptions): Candidate | null {
 	};
 }
 
+/** Breakfasts are lighter: a third of the protein asked of a main meal is enough. */
+const BREAKFAST_PROTEIN_SHARE = 1 / 3;
+
+export function breakfastCandidates(recipes: RecipeSummary[], o: AutoPlanOptions): Candidate[] {
+	return recipes
+		.filter((r) => isBreakfastRecipe(r) && !r.meals.includes('domace'))
+		.filter((r) => r.showNutrition && (!o.mild || r.spicy === 0))
+		.map((r) => pickVersion(r, o))
+		.filter(
+			(c): c is Candidate => c !== null && c.protein >= o.minProtein * BREAKFAST_PROTEIN_SHARE
+		);
+}
+
 export function candidates(recipes: RecipeSummary[], o: AutoPlanOptions): Candidate[] {
 	return (
 		recipes
@@ -103,10 +118,47 @@ export function candidates(recipes: RecipeSummary[], o: AutoPlanOptions): Candid
 	);
 }
 
+type Chosen = { c: Candidate; meals: number }[];
+
+/** One randomized greedy pass: cheap, protein-rich, varied picks until `wanted` meals are covered. */
+function greedy(
+	pool: Candidate[],
+	wanted: number,
+	rand: () => number,
+	costWeight: number,
+	ctx: AutoPlanContext
+): Chosen {
+	const chosen: Chosen = [];
+	const usedCuisines = new Map<string, number>();
+	let left = wanted;
+	while (left > 0) {
+		const options = pool.filter((c) => !chosen.some((x) => x.c.recipe.id === c.recipe.id));
+		if (!options.length) break;
+		const scored = options.map((c) => {
+			const repeat = usedCuisines.get(c.recipe.cuisine) ?? 0;
+			const score =
+				c.cost * costWeight -
+				c.protein * 0.05 +
+				repeat * 0.8 -
+				(ctx.pantryScore?.(c.recipe) ?? 0) * 1.2 -
+				(ctx.inSeason?.(c.recipe) ? 0.4 : 0) +
+				rand() * 2.5;
+			return { c, score };
+		});
+		scored.sort((a, b) => a.score - b.score);
+		const pick = scored[0].c;
+		const meals = Math.min(left, pick.maxMeals);
+		chosen.push({ c: pick, meals });
+		usedCuisines.set(pick.recipe.cuisine, (usedCuisines.get(pick.recipe.cuisine) ?? 0) + 1);
+		left -= meals;
+	}
+	return chosen;
+}
+
 /**
- * Builds a plan of lunches/dinners: many randomized greedy attempts, each picking cheap,
- * protein-rich, varied recipes (bonus for pantry and season), then keeps the attempt that
- * fits the budget best.
+ * Builds a plan of lunches/dinners (and breakfasts, when asked): many randomized greedy
+ * attempts, each picking cheap, protein-rich, varied recipes (bonus for pantry and season),
+ * then keeps the attempt that fits the budget best.
  */
 export function autoPlan(
 	recipes: RecipeSummary[],
@@ -114,55 +166,38 @@ export function autoPlan(
 	ctx: AutoPlanContext = {}
 ): AutoPlanResult {
 	const pool = candidates(recipes, o);
-	const wanted = o.days * o.mealsPerDay;
+	const morningPool = o.breakfasts ? breakfastCandidates(recipes, o) : [];
+	const wantedMain = o.days * o.mealsPerDay;
+	const wantedMorning = o.breakfasts ? o.days : 0;
+	const wanted = wantedMain + wantedMorning;
 	const rand = seededRandom(o.seed);
 	// With a budget, cheapness only has to fit it; without one, cheaper is simply better.
 	const costWeight = o.budget === null ? 1.5 : 0.35;
 	let best: { result: AutoPlanResult; score: number } | null = null;
 
 	for (let attempt = 0; attempt < ATTEMPTS && pool.length; attempt++) {
-		const chosen: { c: Candidate; meals: number }[] = [];
-		const usedCuisines = new Map<string, number>();
-		let left = wanted;
-		while (left > 0) {
-			const options = pool.filter((c) => !chosen.some((x) => x.c.recipe.id === c.recipe.id));
-			if (!options.length) break;
-			const scored = options.map((c) => {
-				const repeat = usedCuisines.get(c.recipe.cuisine) ?? 0;
-				const score =
-					c.cost * costWeight -
-					c.protein * 0.05 +
-					repeat * 0.8 -
-					(ctx.pantryScore?.(c.recipe) ?? 0) * 1.2 -
-					(ctx.inSeason?.(c.recipe) ? 0.4 : 0) +
-					rand() * 2.5;
-				return { c, score };
-			});
-			scored.sort((a, b) => a.score - b.score);
-			const pick = scored[0].c;
-			const meals = Math.min(left, pick.maxMeals);
-			chosen.push({ c: pick, meals });
-			usedCuisines.set(pick.recipe.cuisine, (usedCuisines.get(pick.recipe.cuisine) ?? 0) + 1);
-			left -= meals;
-		}
-
-		const entries: PlanEntry[] = chosen.map(({ c, meals }) =>
-			c.variant
-				? { recipeId: c.recipe.id, servings: meals * o.people, variant: c.variant }
-				: { recipeId: c.recipe.id, servings: meals * o.people }
-		);
-		const cost = chosen.reduce((sum, { c, meals }) => sum + c.cost * meals * o.people, 0);
-		const meals = chosen.reduce((sum, x) => sum + x.meals, 0);
+		const main = greedy(pool, wantedMain, rand, costWeight, ctx);
+		const morning = greedy(morningPool, wantedMorning, rand, costWeight, ctx);
+		const all = [...main, ...morning];
+		const entry = ({ c, meals }: Chosen[number], breakfast: boolean): PlanEntry => ({
+			recipeId: c.recipe.id,
+			servings: meals * o.people,
+			...(c.variant && { variant: c.variant }),
+			...(breakfast && { breakfast: true })
+		});
+		const entries = [...main.map((x) => entry(x, false)), ...morning.map((x) => entry(x, true))];
+		const cost = all.reduce((sum, { c, meals }) => sum + c.cost * meals * o.people, 0);
+		const meals = all.reduce((sum, x) => sum + x.meals, 0);
 		const result: AutoPlanResult = {
 			entries,
 			cost,
 			meals,
 			wanted,
-			minProtein: Math.min(...chosen.map((x) => x.c.protein)),
+			minProtein: Math.min(...main.map((x) => x.c.protein)),
 			withinBudget: o.budget === null || cost <= o.budget
 		};
 		const over = o.budget === null ? 0 : Math.max(0, cost - o.budget);
-		const cuisines = new Set(chosen.map((x) => x.c.recipe.cuisine)).size;
+		const cuisines = new Set(main.map((x) => x.c.recipe.cuisine)).size;
 		// Within the budget, any fitting plan is fine – prefer variety, then let the seed decide.
 		const score =
 			over * 10 +
@@ -197,9 +232,9 @@ export function swapEntry(
 	index: number,
 	ctx: AutoPlanContext = {}
 ): AutoPlanResult {
-	const pool = candidates(recipes, o);
-	const byId = new Map(pool.map((c) => [c.recipe.id, c]));
 	const current = plan.entries[index];
+	const pool = current?.breakfast ? breakfastCandidates(recipes, o) : candidates(recipes, o);
+	const byId = new Map(pool.map((c) => [c.recipe.id, c]));
 	const old = current && byId.get(current.recipeId);
 	if (!old) return plan;
 	const taken = new Set(plan.entries.map((e) => e.recipeId));
@@ -219,16 +254,26 @@ export function swapEntry(
 	const pick = scored[0]?.c;
 	if (!pick) return plan;
 
-	const entry: PlanEntry = pick.variant
-		? { recipeId: pick.recipe.id, servings: current.servings, variant: pick.variant }
-		: { recipeId: pick.recipe.id, servings: current.servings };
+	const entry: PlanEntry = {
+		recipeId: pick.recipe.id,
+		servings: current.servings,
+		...(pick.variant && { variant: pick.variant }),
+		...(current.breakfast && { breakfast: true })
+	};
 	const entries = plan.entries.map((e, i) => (i === index ? entry : e));
 	const cost = plan.cost + (pick.cost - old.cost) * current.servings;
 	return {
 		...plan,
 		entries,
 		cost,
-		minProtein: Math.min(...entries.map((e) => byId.get(e.recipeId)?.protein ?? Infinity)),
+		// Breakfasts don't count toward the protein floor of main meals.
+		minProtein: current.breakfast
+			? plan.minProtein
+			: Math.min(
+					...entries
+						.filter((e) => !e.breakfast)
+						.map((e) => byId.get(e.recipeId)?.protein ?? Infinity)
+				),
 		withinBudget: o.budget === null || cost <= o.budget
 	};
 }
