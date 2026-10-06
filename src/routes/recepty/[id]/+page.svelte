@@ -10,6 +10,7 @@
 		vesselFor
 	} from '$lib/categories';
 	import { scaleStep, stepGuides, stepLines } from '$lib/cooking';
+	import { stepTerms } from '$lib/glossary';
 	import { flyToPlan } from '$lib/fly';
 	import CookMode from '$lib/components/CookMode.svelte';
 	import { useCatalog } from '$lib/catalog';
@@ -122,6 +123,7 @@
 	const stepUses = $derived(
 		recipe.steps.map((step) => stepLines(step, recipe.lines, catalog.ingredientsById))
 	);
+	const stepWords = $derived(recipe.steps.map((step) => stepTerms(step)));
 	// The glossary fits nearly every step; it stays in "Ako na to" instead of on each one.
 	const stepLinks = $derived(
 		recipe.steps.map((step, i) => {
@@ -835,8 +837,14 @@
 								{/if}</span
 							>
 						</button>
-						{#if stepLinks[i].length}
+						{#if stepLinks[i].length || stepWords[i].length}
 							<span class="step-guides" data-noprint>
+								{#each stepWords[i] as word (word.term)}
+									<details class="term">
+										<summary>{word.term}?</summary>
+										<span>{word.text}</span>
+									</details>
+								{/each}
 								{#each stepLinks[i] as guide (guide.slug)}
 									<a href="/wiki/{guide.slug}"><Icon name="book" size={14} /> {guide.title}</a>
 								{/each}
@@ -1793,6 +1801,31 @@
 	}
 	.step-guides a:hover {
 		background: var(--paper-2);
+	}
+	.term summary {
+		list-style: none;
+		cursor: pointer;
+		padding: 2px 10px;
+		border-radius: 999px;
+		border: 1px dashed var(--line);
+		color: var(--ink-2);
+		font-size: 0.8rem;
+	}
+	.term summary::-webkit-details-marker {
+		display: none;
+	}
+	.term[open] {
+		flex-basis: 100%;
+	}
+	.term[open] summary {
+		display: inline-block;
+		background: var(--paper-2);
+	}
+	.term span {
+		display: block;
+		margin-top: 4px;
+		font-size: 0.86rem;
+		color: var(--ink-2);
 	}
 	.use {
 		padding: 1px 8px;
