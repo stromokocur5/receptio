@@ -29,6 +29,8 @@
 	import type { RecipeSummary } from '$lib/types';
 	import { onboarding } from '$lib/onboarding.svelte';
 	import { weekSummary } from '$lib/week';
+	import { cookingStats, supplementStreak, waterStreak } from '$lib/stats';
+	import { localToday } from '$lib/journal';
 
 	const catalog = useCatalog();
 	const dateFormat = new Intl.DateTimeFormat('sk-SK', { day: 'numeric', month: 'long' });
@@ -111,6 +113,20 @@
 			? weekSummary(history.current, catalog.recipesById, settings.current.people, new Date())
 			: null
 	);
+	const todayIso = localToday();
+	const stats = $derived(
+		ui.loaded ? cookingStats(history.current, catalog.recipesById, todayIso) : null
+	);
+	const streaks = $derived(
+		ui.loaded && journal.current.enabled
+			? {
+					water: waterStreak(journal.current, todayIso),
+					supplements: supplementStreak(journal.current, todayIso)
+				}
+			: null
+	);
+	const dayWord = (n: number) => (n === 1 ? 'deň' : n < 5 ? 'dni' : 'dní');
+
 	const targets = $derived(dailyTargets(settings.current.weightKg, journal.current.goals));
 
 	let showAllHistory = $state(false);
@@ -282,6 +298,56 @@
 
 	{#if ui.loaded}
 		<JournalPanel {targets} />
+	{/if}
+
+	{#if stats && stats.total > 0}
+		<section class="card box statbox">
+			<h2><Icon name="chart" size={24} /> Moje varenie v číslach</h2>
+			<dl class="tiles">
+				<div>
+					<dt>Tento mesiac</dt>
+					<dd>{stats.thisMonth}×</dd>
+					<small>minulý {stats.lastMonth}×</small>
+				</div>
+				<div>
+					<dt>Recepty</dt>
+					<dd>{stats.recipes}</dd>
+					<small>z {catalog.recipes.length}</small>
+				</div>
+				<div>
+					<dt>Kuchyne sveta</dt>
+					<dd>{stats.cuisines}</dd>
+					<small>z {catalog.cuisines.length}</small>
+				</div>
+				<div>
+					<dt>Minuté tento mesiac</dt>
+					<dd>{formatEur(stats.costThisMonth)}</dd>
+					<small>minulý {formatEur(stats.costLastMonth)}</small>
+				</div>
+				<div>
+					<dt>Porcia v priemere</dt>
+					<dd>{formatEur(stats.perPortion)}</dd>
+				</div>
+				{#if streaks && streaks.water > 0}
+					<div>
+						<dt>Voda splnená</dt>
+						<dd>{streaks.water}</dd>
+						<small>{dayWord(streaks.water)} po sebe</small>
+					</div>
+				{/if}
+				{#if streaks && streaks.supplements > 0}
+					<div>
+						<dt>Vitamíny</dt>
+						<dd>{streaks.supplements}</dd>
+						<small>{dayWord(streaks.supplements)} po sebe</small>
+					</div>
+				{/if}
+			</dl>
+			<p class="muted small">
+				Ceny sú za celé uvarené dávky podľa aktuálnych cien, časť z nich je odhad. Rátajú sa len
+				jedlá označené ako uvarené.
+			</p>
+		</section>
 	{/if}
 
 	{#if week && week.portions > 0}
@@ -545,5 +611,30 @@
 			grid-template-columns: 1fr 1fr;
 			align-items: start;
 		}
+	}
+	.tiles {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+		gap: 10px;
+		margin: 0 0 10px;
+	}
+	.tiles div {
+		padding: 10px 12px;
+		border-radius: 14px;
+		background: var(--paper-2);
+	}
+	.tiles dt {
+		font-size: 0.8rem;
+		color: var(--ink-2);
+	}
+	.tiles dd {
+		margin: 2px 0 0;
+		font-size: 1.5rem;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+	}
+	.tiles small {
+		color: var(--muted);
+		font-size: 0.8rem;
 	}
 </style>

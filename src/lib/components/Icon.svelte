@@ -12,6 +12,8 @@
 		basket:
 			'<path d="M3 10h18l-2 9.5a2 2 0 0 1-2 1.5H7a2 2 0 0 1-2-1.5Z"/><path d="M7.5 10 11 4M16.5 10 13 4"/><path d="M9 14v3M12 14v3M15 14v3"/>',
 		tag: '<path d="M3 12V4.5A1.5 1.5 0 0 1 4.5 3H12l9 9-9 9Z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+		chart:
+			'<path d="M4 20h16"/><rect x="5.5" y="11" width="3.5" height="6" rx="1"/><rect x="10.5" y="6" width="3.5" height="11" rx="1"/><rect x="15.5" y="13" width="3.5" height="4" rx="1"/>',
 		book: '<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H19v14H6.5A1.5 1.5 0 0 0 5 18.5Z"/><path d="M5 18.5A1.5 1.5 0 0 0 6.5 20H19v-3"/><path d="M9 7.5h6M9 10.5h4"/>',
 		globe:
 			'<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.8 2.5 4 5.5 4 9s-1.2 6.5-4 9c-2.8-2.5-4-5.5-4-9s1.2-6.5 4-9Z"/>',
