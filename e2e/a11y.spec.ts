@@ -17,7 +17,11 @@ const PAGES = [
 	'/kuchyne',
 	'/ceny',
 	'/wiki/mini-les',
-	'/navrhni'
+	'/navrhni',
+	'/kurz',
+	'/wiki/rura',
+	'/wiki/silovy-trening',
+	'/recepty/kokosovy-dal'
 ];
 
 for (const colorScheme of ['light', 'dark'] as const) {

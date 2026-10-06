@@ -126,6 +126,11 @@
 		flex-wrap: wrap;
 		gap: 6px;
 	}
+	.links .chip {
+		max-width: 100%;
+		white-space: normal;
+		text-align: left;
+	}
 	.lessons {
 		list-style: none;
 		padding: 0;
