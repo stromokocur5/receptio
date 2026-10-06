@@ -71,7 +71,9 @@
 	const EXCLUDABLE: Allergen[] = ['soy', 'peanuts', 'nuts', 'sesame', 'celery', 'mustard'];
 	const TIME_STEPS = [15, 20, 30, 45, 60, 0];
 	const PROTEIN_STEP = 5;
-	const PROTEIN_MAX = 30;
+	const PROTEIN_MAX = 40;
+	/** Calorie caps per serving; the last step means no cap. */
+	const KCAL_STEPS = [300, 400, 500, 600, 700, 800, 0] as const;
 
 	let q = $state('');
 	/** 0 = all, 1 = strictly GF (+ label-check risk), 2 = also GF after swaps */
@@ -86,6 +88,8 @@
 	let spicy = $state<number[]>([]);
 	let maxTimeIndex = $state(TIME_STEPS.length - 1);
 	let minProtein = $state(0);
+	let maxKcalIndex = $state(KCAL_STEPS.length - 1);
+	const maxKcal = $derived(KCAL_STEPS[maxKcalIndex]);
 	let excluded = $state<Allergen[]>([]);
 	let missingTools = $state<string[]>([]);
 	let taste = $state<Taste | ''>('');
@@ -239,6 +243,7 @@
 		if (meal && !r.meals.includes(meal)) return false;
 		if (maxTime && r.time > maxTime) return false;
 		if (r.perServing.protein < minProtein) return false;
+		if (maxKcal && (!r.showNutrition || r.perServing.kcal > maxKcal)) return false;
 		if (excluded.some((a) => r.allergens.includes(a))) return false;
 		if (missingTools.some((t) => r.equipment.includes(t))) return false;
 		if (taste && r.taste !== taste) return false;
@@ -428,6 +433,9 @@
 		if (minProtein) {
 			add('protein', `aspoň ${minProtein} g bielkovín`, 'strava', () => (minProtein = 0));
 		}
+		if (maxKcal) {
+			add('kcal', `do ${maxKcal} kcal`, 'strava', () => (maxKcalIndex = KCAL_STEPS.length - 1));
+		}
 		for (const id of withIngredients) {
 			add(`with-${id}`, `s: ${nameOf(id)}`, 'doma', () => {
 				withIngredients = withIngredients.filter((x) => x !== id);
@@ -484,6 +492,7 @@
 		spicy = [];
 		maxTimeIndex = TIME_STEPS.length - 1;
 		minProtein = 0;
+		maxKcalIndex = KCAL_STEPS.length - 1;
 		excluded = [];
 		missingTools = [];
 		taste = '';
@@ -510,6 +519,7 @@
 		if (spicy.length) p.set('palivost', spicy.join(','));
 		if (maxTime) p.set('cas', String(maxTime));
 		if (minProtein) p.set('bielkoviny', String(minProtein));
+		if (maxKcal) p.set('kcal', String(maxKcal));
 		if (excluded.length) p.set('alergeny', excluded.join(','));
 		if (withoutIngredients.length) p.set('bez', withoutIngredients.join(','));
 		if (withIngredients.length) p.set('s', withIngredients.join(','));
@@ -558,6 +568,8 @@
 		if (protein > 0 && protein <= PROTEIN_MAX && protein % PROTEIN_STEP === 0) {
 			minProtein = protein;
 		}
+		const kcal = KCAL_STEPS.indexOf(Number(p.get('kcal')) as (typeof KCAL_STEPS)[number]);
+		maxKcalIndex = kcal >= 0 && KCAL_STEPS[kcal] ? kcal : KCAL_STEPS.length - 1;
 		excluded = list(p.get('alergeny')).filter((a): a is Allergen =>
 			(EXCLUDABLE as string[]).includes(a)
 		);
@@ -937,6 +949,22 @@
 							bind:value={minProtein}
 							aria-label="Minimum bielkovín"
 							aria-valuetext={minProtein ? `aspoň ${minProtein} gramov na porciu` : 'hocikoľko'}
+						/>
+					</fieldset>
+
+					<fieldset>
+						<legend
+							>Kalórie na porciu: <strong>{maxKcal ? `do ${maxKcal} kcal` : 'hocikoľko'}</strong
+							></legend
+						>
+						<input
+							type="range"
+							min="0"
+							max={KCAL_STEPS.length - 1}
+							step="1"
+							bind:value={maxKcalIndex}
+							aria-label="Najviac kalórií na porciu"
+							aria-valuetext={maxKcal ? `do ${maxKcal} kalórií na porciu` : 'hocikoľko'}
 						/>
 					</fieldset>
 

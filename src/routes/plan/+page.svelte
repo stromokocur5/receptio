@@ -22,6 +22,8 @@
 		type StorePlan
 	} from '$lib/pricing';
 	import { mealSchedule, type ScheduledMeal } from '$lib/schedule';
+	import { localToday, type DiaryMeal } from '$lib/journal';
+	import { budgetStatus, spentThisWeek } from '$lib/budget';
 	import { encodeSharedPlan } from '$lib/share';
 	import { LIVE_PREFIX, createLiveList } from '$lib/live-list.svelte';
 	import {
@@ -39,6 +41,10 @@
 		markCooked,
 		movePlanEntryUp,
 		setPlanBreakfast,
+		logPortion,
+		purchases,
+		recordPurchase,
+		portionLogged,
 		outOfStock,
 		pantry,
 		plan,
@@ -167,6 +173,21 @@
 			])
 		)
 	);
+	/** What the unticked part of the list still costs. */
+	const toBuy = $derived(
+		allItems
+			.filter((i) => !checkedItems.current[i.ingredient.id])
+			.reduce((sum, i) => sum + (pay.get(i.ingredient.id)?.cost ?? 0), 0)
+	);
+	const budget = $derived(
+		settings.current.weeklyBudget === null
+			? null
+			: budgetStatus(
+					settings.current.weeklyBudget,
+					spentThisWeek(purchases.current, localToday()),
+					toBuy
+				)
+	);
 	const payTotal = $derived([...pay.values()].reduce((sum, p) => sum + p.cost, 0));
 	const payHasEstimates = $derived([...pay.values()].some((p) => !p.shelf));
 	/** Shops that have every item with a known price – real one-stop options. */
@@ -224,7 +245,10 @@
 		cookedMessage = used.length
 			? `${e.recipe.title}: zapísané, zo špajze ubudlo ${used.map((u) => u.ingredient.name).join(', ')}.`
 			: `${e.recipe.title}: zapísané do histórie.`;
+		justCooked = { recipeId: e.recipeId, variant: e.variant };
 	}
+	/** The recipe just marked cooked, to log a portion of it right away if it's eaten now. */
+	let justCooked = $state<{ recipeId: string; variant?: string } | null>(null);
 	const targets = $derived(dailyTargets(settings.current.weightKg, journal.current.goals));
 
 	const planCost = $derived(entries.reduce((s, e) => s + e.data.costPerServing * e.servings, 0));
@@ -318,6 +342,11 @@
 	}
 
 	function boughtToPantry() {
+		recordPurchase(
+			allItems
+				.filter((i) => checkedItems.current[i.ingredient.id])
+				.reduce((sum, i) => sum + (pay.get(i.ingredient.id)?.cost ?? 0), 0)
+		);
 		for (const item of allItems) {
 			if (!checkedItems.current[item.ingredient.id]) continue;
 			if (item.restock) setOutOfStock(item.ingredient.id, false);
@@ -445,10 +474,10 @@
 								<span class="day">{dayName(d)}</span>
 								<span class="meals">
 									{#if day.breakfast !== undefined}
-										{@render slot(day.breakfast, 'Raňajky')}
+										{@render slot(day.breakfast, d === 0 ? 'ranajky' : null, 'Raňajky')}
 									{/if}
 									{#each day.meals as meal, m (m)}
-										{@render slot(meal)}
+										{@render slot(meal, d === 0 ? (m === 0 ? 'obed' : 'vecera') : null)}
 									{/each}
 								</span>
 							</li>
@@ -569,6 +598,15 @@
 							<Icon name="check" size={16} />
 							{cookedMessage}
 							<a href="/spajza">Špajza</a>
+							{#if justCooked && journal.current.enabled}
+								<button
+									class="linkish"
+									onclick={() => {
+										logPortion(justCooked!.recipeId, justCooked!.variant);
+										justCooked = null;
+									}}>Porciu jem hneď – zapísať do denníka</button
+								>
+							{/if}
 						</p>
 					{/if}
 					<p class="summary">
@@ -793,6 +831,39 @@
 					<span>Zaplatíš {payHasEstimates ? 'asi' : ''}</span>
 					<strong>{formatEur(payTotal)}</strong>
 				</div>
+				{#if budget}
+					<div class="budget" class:over={budget.left < 0}>
+						<div class="budget-row">
+							<span>Rozpočet na týždeň</span><strong>{formatEur(budget.budget)}</strong>
+						</div>
+						<div class="budget-bar" aria-hidden="true">
+							<span
+								class="spent"
+								style:width="{Math.min(100, (budget.spent / budget.budget) * 100)}%"
+							></span>
+							<span
+								class="tobuy"
+								style:width="{Math.max(
+									0,
+									Math.min(
+										100 - (budget.spent / budget.budget) * 100,
+										(budget.toBuy / budget.budget) * 100
+									)
+								)}%"
+							></span>
+						</div>
+						<p class="small">
+							Minuté od pondelka <strong>{formatEur(budget.spent)}</strong> · ešte kúpiť
+							<strong>{formatEur(budget.toBuy)}</strong> ·
+							{#if budget.left >= 0}
+								ostáva <strong>{formatEur(budget.left)}</strong>
+							{:else}
+								<strong>nad rozpočtom o {formatEur(-budget.left)}</strong> – skús
+								<button class="linkish" onclick={startWithPlanner}>lacnejší návrh</button>
+							{/if}
+						</p>
+					</div>
+				{/if}
 				<p class="muted small used">
 					Za celé balenia{comparison.recommended
 						? ` v obchode ${storeNames(comparison.recommended)}`
@@ -895,7 +966,8 @@
 	</div>
 </div>
 
-{#snippet slot(meal: ScheduledMeal | null, label?: string)}
+<!-- `today` is the diary meal for today's slots, so they can be ticked off as eaten. -->
+{#snippet slot(meal: ScheduledMeal | null, today: DiaryMeal | null, label?: string)}
 	{#if meal}
 		<span class="meal" class:cook={meal.kind === 'cook'} class:old={meal.freeze || meal.spoils}>
 			{#if meal.kind === 'cook'}
@@ -922,6 +994,21 @@
 				{#if meal.freeze}<small>tieto porcie hneď zamraz</small>
 				{:else if meal.spoils}<small>nevydrží – uvar menej alebo neskôr</small>{/if}
 			</span>
+			{#if today && ui.loaded && journal.current.enabled}
+				{@const done = portionLogged(meal.entry.recipeId, today)}
+				<button
+					class="eaten"
+					class:done
+					disabled={done}
+					onclick={() => logPortion(meal.entry.recipeId, meal.entry.variant, today)}
+					aria-label={done
+						? `${titleOf(meal.entry.recipeId)} je v denníku`
+						: `Zjedené: zapísať ${titleOf(meal.entry.recipeId)} do denníka`}
+				>
+					<Icon name={done ? 'check' : 'plus'} size={13} />
+					{done ? 'V denníku' : 'Zjedené'}
+				</button>
+			{/if}
 		</span>
 	{:else}
 		<span class="meal empty">{label ? `${label}: ` : ''}nič naplánované</span>
@@ -1322,6 +1409,76 @@
 	.meal-text {
 		display: grid;
 		line-height: 1.25;
+	}
+	.cooked-msg .linkish {
+		border: 0;
+		background: none;
+		padding: 0;
+		color: var(--plum);
+		font: inherit;
+		font-weight: 600;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+	.budget {
+		margin: 12px 0;
+		padding: 12px 14px;
+		border-radius: var(--radius-sm);
+		background: var(--paper-2);
+	}
+	.budget.over {
+		background: var(--tomato-soft);
+	}
+	.budget-row {
+		display: flex;
+		justify-content: space-between;
+		font-weight: 600;
+	}
+	.budget-bar {
+		display: flex;
+		height: 8px;
+		margin: 8px 0;
+		border-radius: 999px;
+		overflow: hidden;
+		background: var(--card);
+	}
+	.budget-bar .spent {
+		background: var(--leaf);
+	}
+	.budget-bar .tobuy {
+		background: color-mix(in srgb, var(--leaf) 40%, var(--card));
+	}
+	.budget p {
+		margin: 0;
+	}
+	.budget .linkish {
+		border: 0;
+		background: none;
+		padding: 0;
+		color: var(--plum);
+		font: inherit;
+		font-weight: 600;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+	.eaten {
+		display: inline-flex;
+		align-items: center;
+		gap: 3px;
+		margin-left: auto;
+		padding: 2px 9px;
+		border-radius: 999px;
+		border: 1px solid var(--line);
+		background: transparent;
+		color: var(--ink-2);
+		font-size: 0.75rem;
+		font-weight: 650;
+		white-space: nowrap;
+	}
+	.eaten.done {
+		border-color: transparent;
+		background: var(--leaf-soft);
+		color: var(--leaf);
 	}
 	.meal-kind {
 		font-size: 0.72rem;

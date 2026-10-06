@@ -37,6 +37,23 @@
 			<option value={2}>2 (obed a večera)</option>
 		</select>
 	</label>
+	<label>
+		Rozpočet
+		<input
+			class="budget"
+			type="number"
+			min="1"
+			max="1000"
+			step="any"
+			placeholder="–"
+			value={settings.current.weeklyBudget ?? ''}
+			onchange={(e) => {
+				const v = Number(e.currentTarget.value);
+				update({ weeklyBudget: e.currentTarget.value && v >= 1 && v <= 1000 ? v : null });
+			}}
+		/>
+		€ / týždeň
+	</label>
 	<label class="check">
 		<input
 			type="checkbox"
@@ -60,6 +77,16 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
+	}
+	.budget {
+		width: 5em;
+		border: 1.5px solid var(--line);
+		border-radius: 10px;
+		background: var(--paper);
+		color: var(--ink);
+		padding: 4px 8px;
+		margin: 0 4px;
+		font: inherit;
 	}
 	select {
 		border: 1.5px solid var(--line);

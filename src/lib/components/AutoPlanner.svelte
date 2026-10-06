@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { budgetForDays } from '$lib/budget';
 	import { onMount } from 'svelte';
 	import { formatEur, formatNumber } from '$lib/amounts';
 	import {
@@ -39,6 +40,13 @@
 		}
 	});
 	let budget = $state<number | null>(null);
+	/** Without a number of its own, the planner keeps to the weekly budget from the plan settings. */
+	const settingsBudget = $derived(
+		settings.current.weeklyBudget === null
+			? null
+			: Math.round(budgetForDays(settings.current.weeklyBudget, settings.current.planDays) * 100) /
+					100
+	);
 	let minProtein = $state(20);
 	let mild = $state(false);
 	let glutenFree = $state(false);
@@ -62,7 +70,7 @@
 			people: settings.current.people,
 			mealsPerDay: settings.current.mealsPerDay,
 			breakfasts: settings.current.breakfasts,
-			budget: budget && budget > 0 ? budget : null,
+			budget: budget && budget > 0 ? budget : settingsBudget,
 			minProtein,
 			mild,
 			glutenFree,
@@ -185,7 +193,7 @@
 						min="0"
 						step="1"
 						inputmode="decimal"
-						placeholder="bez limitu"
+						placeholder={settingsBudget ? `${settingsBudget} (z rozpočtu)` : 'bez limitu'}
 						value={budget ?? ''}
 						oninput={(e) => {
 							const v = Number(e.currentTarget.value);

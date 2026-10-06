@@ -1,5 +1,6 @@
 import { browser } from '$app/environment';
 import { NO_AVOID, validateAvoid, type Avoid } from './avoid';
+import { MAX_PURCHASES, validatePurchases, type Purchase } from './budget';
 import {
 	addItem,
 	localToday,
@@ -7,6 +8,7 @@ import {
 	NO_JOURNAL,
 	validateJournal,
 	withDay,
+	type DiaryMeal,
 	type Journal
 } from './journal';
 import { consumeFromPantry, type Pantry, type PantryUse } from './pantry';
@@ -185,6 +187,8 @@ export interface Settings {
 	myStores: string[];
 	/** Plan breakfasts too, as a meal of their own each day. */
 	breakfasts: boolean;
+	/** What a week of food may cost, in €; null = no budget. */
+	weeklyBudget: number | null;
 }
 
 const DEFAULT_SETTINGS: Settings = {
@@ -195,7 +199,8 @@ const DEFAULT_SETTINGS: Settings = {
 	theme: 'auto',
 	location: null,
 	myStores: [],
-	breakfasts: false
+	breakfasts: false,
+	weeklyBudget: null
 };
 
 const inRange = (v: unknown, min: number, max: number): v is number =>
@@ -227,7 +232,11 @@ function validateSettings(raw: unknown): Settings | undefined {
 					.filter((id): id is string => typeof id === 'string' && /^[a-z0-9-]{1,30}$/.test(id))
 					.slice(0, 20)
 			: [],
-		breakfasts: raw.breakfasts === true
+		breakfasts: raw.breakfasts === true,
+		weeklyBudget:
+			typeof raw.weeklyBudget === 'number' && raw.weeklyBudget >= 1 && raw.weeklyBudget <= 1000
+				? raw.weeklyBudget
+				: null
 	};
 }
 
@@ -235,6 +244,16 @@ export const pantry = new Persisted<Pantry>('pantry', {}, validatePantry);
 /** When each pantry item was added (ISO date), to remind about fresh food before it spoils. */
 export const pantryAdded = new Persisted<Record<string, string>>('pantry-added', {}, validateDates);
 export const plan = new Persisted<PlanEntry[]>('plan', [], validatePlan);
+/** Shopping trips with what they cost, for the weekly budget. */
+export const purchases = new Persisted<Purchase[]>('purchases', [], validatePurchases);
+
+export function recordPurchase(amount: number) {
+	if (!(amount > 0)) return;
+	purchases.current = [
+		...purchases.current,
+		{ date: localToday(), amount: Math.round(amount * 100) / 100 }
+	].slice(-MAX_PURCHASES);
+}
 export const checkedItems = new Persisted<Record<string, boolean>>('checked', {}, validateFlags);
 /** Things to buy that no recipe needs (toilet paper, coffee), added by hand to the list. */
 export interface ExtraItem {
@@ -651,11 +670,21 @@ export const supplementReminder = new Persisted<SupplementReminder | null>(
 	true
 );
 
+/** Whether today's diary already has this recipe at this meal. */
+export function portionLogged(recipeId: string, meal: DiaryMeal): boolean {
+	return (journal.current.days[localToday()]?.items ?? []).some(
+		(i) => i.kind === 'recipe' && i.recipeId === recipeId && i.meal === meal
+	);
+}
+
 /** Writes one eaten portion of a recipe into today's diary. */
-export function logPortion(recipeId: string, variant?: string) {
+export function logPortion(
+	recipeId: string,
+	variant?: string,
+	meal: DiaryMeal = mealAt(new Date())
+) {
 	const today = localToday();
 	const id = crypto.randomUUID().slice(0, 8);
-	const meal = mealAt(new Date());
 	journal.current = withDay(
 		journal.current,
 		today,
@@ -689,7 +718,8 @@ export const ALL_PERSISTED = {
 	savedWeeks,
 	journal,
 	collections,
-	courseDone
+	courseDone,
+	purchases
 };
 
 export const ui = $state({ loaded: false });
