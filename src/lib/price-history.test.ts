@@ -36,6 +36,7 @@ describe('compressHistory', () => {
 			row('2026-09-30', 'fresh', 0.69, { saleUntil: '2026-10-07' })
 		]);
 		expect(history.days).toEqual(['2026-09-26', '2026-09-27', '2026-09-30']);
+		expect(history.storeDays.fresh).toEqual(['2026-09-26', '2026-09-27', '2026-09-30']);
 		const [regular, sale] = history.series;
 		expect(regular.changes).toEqual([
 			['2026-09-26', 1.15, ''],

@@ -246,6 +246,7 @@
 			{#if bulk.length}
 				<a class="chip" href="#vo-velkom"><Icon name="package" size={14} /> Vo veľkom</a>
 			{/if}
+			<a class="chip" href="/data#kosik"><Icon name="basket" size={14} /> Index košíka</a>
 			<a class="chip" href="/data"><Icon name="chart" size={14} /> Vývoj cien a všetky dáta</a>
 			<a class="chip" href="#pokrytie"><Icon name="store" size={14} /> Koľko je z obchodov</a>
 		</nav>

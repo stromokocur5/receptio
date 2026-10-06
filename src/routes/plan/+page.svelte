@@ -645,7 +645,11 @@
 													title="Vydrží {e.recipe.keeps?.fridge ?? 3} dni v chladničke a {e.recipe
 														.keeps?.freezer} mes. v mrazničke"
 												>
-													<Icon name={e.freezeExtra ? 'check' : 'cube'} size={14} stroke={2.2} />
+													<Icon
+														name={e.freezeExtra ? 'check' : 'snowflake'}
+														size={14}
+														stroke={2.2}
+													/>
 													2× a polovicu zamraziť
 												</button>
 											{/if}
@@ -687,7 +691,7 @@
 					</ul>
 					{#if frozenMeals.length}
 						<div class="freezer">
-							<h3><Icon name="cube" size={16} /> V mrazničke</h3>
+							<h3><Icon name="snowflake" size={16} /> V mrazničke</h3>
 							<ul>
 								{#each frozenMeals as f (f.id)}
 									<li>

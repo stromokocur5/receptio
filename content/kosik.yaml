@@ -1,0 +1,20 @@
+# Vegánsky košík – index cien potravín v slovenských obchodoch.
+# Týždenný nákup základov pre jedného dospelého. Sú v ňom len suroviny, ktorých ceny chodia z
+# obchodov denne (cenyslovensko.sk), aby index nestál na odhadoch. Tofu, strukoviny v plechovke
+# a orechy porovnávač nesleduje, preto tu chýbajú.
+# Zmena zloženia mení index – pri zmene treba zmeniť aj `version`.
+version: 1
+items:
+  - { ingredient: zemiaky, grams: 2000 }
+  - { ingredient: cibula, grams: 500 }
+  - { ingredient: mrkva, grams: 1000 }
+  - { ingredient: jablko, grams: 1000 }
+  - { ingredient: banan, grams: 1000 }
+  - { ingredient: citron, grams: 200 }
+  - { ingredient: chlieb, grams: 1000 }
+  - { ingredient: ovsene-vlocky, grams: 500 }
+  - { ingredient: cestoviny, grams: 500 }
+  - { ingredient: sosovica-hneda, grams: 500 }
+  - { ingredient: hladka-muka, grams: 500 }
+  - { ingredient: olej, grams: 230 }
+  - { ingredient: sojove-mlieko, grams: 2060 }

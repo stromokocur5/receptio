@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
-	import { formatEur, formatNumber } from '$lib/amounts';
+	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import PriceChart from '$lib/components/PriceChart.svelte';
+	import BasketChart from '$lib/components/BasketChart.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { ingredientSearchText, searchMatcher } from '$lib/labels';
 	import {
@@ -241,6 +242,7 @@
 			</div>
 		</dl>
 		<nav class="jump" aria-label="Na tejto stránke">
+			<a class="chip" href="#kosik"><Icon name="basket" size={14} /> Index košíka</a>
 			<a class="chip" href="#vyvoj"><Icon name="chart" size={14} /> Vývoj cien</a>
 			<a class="chip" href="#zmeny"><Icon name="tag" size={14} /> Zdraželo a zlacnelo</a>
 			<a class="chip" href="#vsetky"><Icon name="store" size={14} /> Všetky ceny</a>
@@ -248,6 +250,43 @@
 			<a class="chip" href="#api"><Icon name="package" size={14} /> Otvorené dáta a API</a>
 		</nav>
 	</header>
+
+	{#if data.basketIndex.length}
+		{@const first = data.basketIndex[0]}
+		{@const last = data.basketIndex.at(-1)!}
+		<section class="card box" id="kosik">
+			<h2><Icon name="basket" size={24} /> Index vegánskeho košíka</h2>
+			<p class="headline">
+				Týždenný nákup základov pre jedného stojí <strong>{formatEur(last.cost)}</strong>
+				{#if data.basketIndex.length > 1}
+					<span class:up={last.index > 100} class:down={last.index < 100}
+						>({percent(last.index / 100 - 1)} od {fmtDay(first.date)})</span
+					>
+				{/if}
+			</p>
+			<BasketChart days={data.basketIndex} />
+			<details class="basket-items">
+				<summary>Čo je v košíku ({data.basket.items.length} položiek)</summary>
+				<ul>
+					{#each data.basket.items as item (item.ingredientId)}
+						<li>
+							<a href="/suroviny/{item.ingredientId}">{ingredientName(item.ingredientId)}</a>
+							<span class="muted">{formatGrams(item.grams)}</span>
+						</li>
+					{/each}
+				</ul>
+			</details>
+			<p class="muted small">
+				Cena každej položky je medián najlacnejšej bežnej ceny (bez akcií) v kamenných obchodoch v
+				daný deň. Sú v ňom len potraviny, ktorých ceny obchody posielajú denne – tofu ani strukoviny
+				v plechovke porovnávač nesleduje. Dáta:
+				<a href="{data.apiBase}/index-kosika.csv" download>CSV</a>,
+				<a href="{data.apiBase}/index-kosika.json">JSON</a>, zloženie
+				<a href="{data.apiBase}/kosik.csv" download>kosik.csv</a>. Licencia CC BY 4.0 – môžeš ich
+				použiť aj v článku, uveď zdroj Receptio.
+			</p>
+		</section>
+	{/if}
 
 	<section class="card box" id="vyvoj">
 		<h2><Icon name="chart" size={24} /> Vývoj cien</h2>
@@ -645,6 +684,34 @@ const akcie = data.filter((p) => p.sale_until);`}</code
 	}
 	.small {
 		font-size: 0.86rem;
+	}
+	.headline {
+		font-size: 1.1rem;
+		margin: 0 0 12px;
+	}
+	.headline strong {
+		font-size: 1.4rem;
+	}
+	.basket-items {
+		margin: 12px 0 0;
+	}
+	.basket-items summary {
+		cursor: pointer;
+		color: var(--plum);
+		font-weight: 600;
+	}
+	.basket-items ul {
+		list-style: none;
+		margin: 8px 0 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: 4px 16px;
+	}
+	.basket-items li {
+		display: flex;
+		justify-content: space-between;
+		gap: 8px;
 	}
 	.pick {
 		display: inline-flex;

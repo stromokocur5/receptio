@@ -33,6 +33,8 @@ export interface PriceSeries {
 export interface PriceHistory {
 	/** Every day with any price, oldest first. */
 	days: string[];
+	/** The days each shop reported prices – a day missing here is a day without data. */
+	storeDays: Record<string, string[]>;
 	series: PriceSeries[];
 }
 
@@ -68,8 +70,14 @@ export function compressHistory(rows: HistoryRow[]): PriceHistory {
 		}
 		series.lastSeen = row.date;
 	}
+	const storeDays: Record<string, string[]> = {};
+	for (const row of sorted) {
+		const days = (storeDays[row.storeId] ??= []);
+		if (days.at(-1) !== row.date) days.push(row.date);
+	}
 	return {
 		days: [...new Set(sorted.map((r) => r.date))],
+		storeDays,
 		series: [...byKey.values()]
 	};
 }

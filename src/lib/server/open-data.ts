@@ -3,7 +3,7 @@ import { unitPrice } from '$lib/pricing';
 import { SITE_ORIGIN } from '$lib/site';
 import { NUTRIENT_KEYS, type NutrientKey } from '$lib/types';
 import { getContent } from './content';
-import { historyCsvRows } from './price-history';
+import { getBasket, getBasketIndex, historyCsvRows } from './price-history';
 
 /**
  * Receptio's open data: every resource is published as JSON and CSV under /data/v1/, described
@@ -214,6 +214,47 @@ export const RESOURCES: Resource[] = [
 					sale_until: saleUntil || null,
 					product
 				}))
+	},
+	{
+		name: 'index-kosika',
+		title: 'Index cien vegánskeho košíka',
+		description:
+			'Cena pevného týždenného nákupu základných rastlinných potravín pre jedného dospelého (tabuľka kosik), deň po dni. Cena položky je medián najlacnejšej bežnej ceny naprieč kamennými obchodmi, bez akcií. Index = 100 v prvý deň.',
+		sources: PRICE_SOURCES,
+		primaryKey: ['date'],
+		fields: [
+			{ name: 'date', type: 'date', description: 'Deň' },
+			{ name: 'cost_eur', type: 'number', description: 'Cena košíka v eurách' },
+			{ name: 'index', type: 'number', description: 'Index, prvý deň = 100' },
+			{
+				name: 'carried',
+				type: 'integer',
+				description:
+					'Koľko položiek nemalo v ten deň cenu a vzala sa posledná známa (najviac 7 dní)'
+			},
+			{ name: 'basket_version', type: 'integer', description: 'Verzia zloženia košíka' }
+		],
+		rows: () => {
+			const version = getBasket().version;
+			return getBasketIndex().map((d) => ({
+				date: d.date,
+				cost_eur: d.cost,
+				index: d.index,
+				carried: d.carried,
+				basket_version: version
+			}));
+		}
+	},
+	{
+		name: 'kosik',
+		title: 'Zloženie vegánskeho košíka',
+		description: 'Čo a koľko je v týždennom košíku, z ktorého sa počíta index cien.',
+		foreignKeys: [{ fields: 'ingredient_id', resource: 'suroviny', field: 'id' }],
+		fields: [
+			{ name: 'ingredient_id', type: 'string', description: 'Surovina' },
+			{ name: 'grams', type: 'number', description: 'Gramy na týždeň' }
+		],
+		rows: () => getBasket().items.map((i) => ({ ingredient_id: i.ingredientId, grams: i.grams }))
 	},
 	{
 		name: 'recepty',

@@ -247,9 +247,14 @@ function openApi() {
 	};
 	schemas.PriceHistory = {
 		type: 'object',
-		required: ['days', 'series'],
+		required: ['days', 'storeDays', 'series'],
 		properties: {
 			days: { type: 'array', items: { type: 'string', format: 'date' } },
+			storeDays: {
+				type: 'object',
+				description: 'Obchod → dni, keď poslal ceny',
+				additionalProperties: { type: 'array', items: { type: 'string', format: 'date' } }
+			},
 			series: {
 				type: 'array',
 				items: {
