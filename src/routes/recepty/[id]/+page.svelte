@@ -582,12 +582,12 @@
 					<LikeButton recipeId={recipe.id} />
 					{#if ui.loaded && journal.current.enabled && recipe.showNutrition}
 						<button
-							class="icon-btn"
+							class="btn ghost small"
 							onclick={logEaten}
-							aria-label={justLogged ? 'Zapísané do denníka' : 'Zapísať porciu do denníka'}
-							title={justLogged ? 'Zapísané do denníka' : 'Zjedol/a som porciu'}
+							title="Zapíše jednu porciu do denníka jedla (Moje → Denník)"
 						>
-							<Icon name={justLogged ? 'check' : 'cup'} size={19} />
+							<Icon name={justLogged ? 'check' : 'plus'} size={16} />
+							{justLogged ? 'Zapísané' : 'Zjedená porcia'}
 						</button>
 					{/if}
 					<button
@@ -1786,7 +1786,7 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
-		margin: -4px 0 8px 58px;
+		margin: 2px 0 8px 58px;
 	}
 	.step-guides a {
 		display: inline-flex;
@@ -1843,6 +1843,11 @@
 	}
 	.step:hover {
 		background: color-mix(in srgb, var(--card) 70%, transparent);
+	}
+	/* In dark mode the hover background matches the chips, so they would melt into it. */
+	.step:hover .use {
+		background: var(--paper);
+		box-shadow: inset 0 0 0 1px var(--line);
 	}
 	.num {
 		display: grid;

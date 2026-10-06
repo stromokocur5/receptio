@@ -10,6 +10,30 @@ export function pricePerKg(entry: PriceEntry): number {
 	return (entry.price / entry.packGrams) * 1000;
 }
 
+const LIQUID_PACK = /^(\d+(?:[.,]\d+)?)\s*(ml|l)$/i;
+
+/**
+ * The price per unit as shelf labels show it: per litre for drinks and other liquids sold by
+ * volume, per kilogram for everything else. `pricePerKg` stays the one used for comparing.
+ */
+export function unitPrice(entry: PriceEntry): { value: number; unit: 'kg' | 'l' } {
+	const liquid = LIQUID_PACK.exec(entry.pack.trim());
+	if (!liquid) return { value: pricePerKg(entry), unit: 'kg' };
+	const amount = Number(liquid[1].replace(',', '.'));
+	const litres = liquid[2].toLowerCase() === 'ml' ? amount / 1000 : amount;
+	return { value: entry.price / litres, unit: 'l' };
+}
+
+/** Shop names in capitals ("MRKVA VOĽNÁ") read as shouting; turn those into a sentence. */
+export function shelfName(product: string): string {
+	const letters = product.replace(/[^\p{L}]/gu, '');
+	const capitals = letters.replace(/[^\p{Lu}]/gu, '').length;
+	// Mostly capitals: "CHLIEB BEZLEP. 210g" still shouts despite the unit.
+	if (letters.length < 3 || capitals / letters.length < 0.8) return product;
+	const lower = product.toLocaleLowerCase('sk');
+	return lower.charAt(0).toLocaleUpperCase('sk') + lower.slice(1);
+}
+
 export function ageInDays(isoDate: string, today: Date): number {
 	return Math.floor((today.getTime() - new Date(isoDate).getTime()) / DAY_MS);
 }
@@ -81,8 +105,16 @@ export interface SaleDeal {
 	entry: PriceEntry;
 	/** Cheapest current regular price of the same thing, when one is known. */
 	regularPerKg: number | null;
-	/** How much cheaper than that regular price (0–1). */
+	/** The same shop's regular price per kg – what the sale price is cut from. */
+	storeRegularPerKg: number | null;
+	/**
+	 * How much cheaper (0–1) than the shop's own regular price, or, when the shop has none,
+	 * than the cheapest regular price elsewhere (see `discountInStore`).
+	 */
 	discount: number | null;
+	discountInStore: boolean;
+	/** Days the sale still runs after today; 0 = last day. */
+	daysLeft: number;
 }
 
 /**
@@ -98,24 +130,77 @@ export function activeSales(prices: PriceEntry[], today: Date): SaleDeal[] {
 		if (!seen || pricePerKg(p) < pricePerKg(seen)) best.set(key, p);
 	}
 	return [...best.values()]
-		.map((entry) => {
-			const regular = prices
-				.filter(
-					(p) =>
-						p.ingredientId === entry.ingredientId &&
-						!p.online &&
-						p.saleUntil === undefined &&
-						!isStale(p, today)
-				)
-				.map(pricePerKg);
-			const regularPerKg = regular.length ? Math.min(...regular) : null;
-			const discount =
-				regularPerKg && regularPerKg > pricePerKg(entry)
-					? 1 - pricePerKg(entry) / regularPerKg
-					: null;
-			return { entry, regularPerKg, discount };
+		.map((entry): SaleDeal => {
+			const regular = prices.filter(
+				(p) =>
+					p.ingredientId === entry.ingredientId &&
+					!p.online &&
+					p.saleUntil === undefined &&
+					!isStale(p, today)
+			);
+			const cheapest = (entries: PriceEntry[]) =>
+				entries.length ? Math.min(...entries.map(pricePerKg)) : null;
+			const regularPerKg = cheapest(regular);
+			const storeRegularPerKg = cheapest(regular.filter((p) => p.storeId === entry.storeId));
+			const cutFrom = storeRegularPerKg ?? regularPerKg;
+			const salePerKg = pricePerKg(entry);
+			return {
+				entry,
+				regularPerKg,
+				storeRegularPerKg,
+				discount: cutFrom && cutFrom > salePerKg ? 1 - salePerKg / cutFrom : null,
+				discountInStore: storeRegularPerKg !== null,
+				daysLeft: Math.max(0, -ageInDays(entry.saleUntil!, today))
+			};
 		})
 		.sort((a, b) => (b.discount ?? 0) - (a.discount ?? 0));
+}
+
+/** A pinch of something on sale doesn't make a recipe a sale recipe. */
+const SALE_MIN_GRAMS_PER_SERVING = 20;
+
+export interface SaleRecipe<R> {
+	recipe: R;
+	/** Ingredients of the recipe on sale now, the biggest saving first. */
+	onSale: string[];
+	/** Euros saved per serving against regular prices. */
+	saving: number;
+}
+
+/** Recipes worth cooking this week because their main ingredients are on sale. */
+export function recipesOnSale<
+	R extends { lines: { ingredientId: string; grams: number }[]; servings: number }
+>(recipes: R[], deals: SaleDeal[]): SaleRecipe<R>[] {
+	const savingPerKg = new Map<string, number>();
+	for (const d of deals) {
+		const cutFrom = d.storeRegularPerKg ?? d.regularPerKg;
+		if (cutFrom === null) continue;
+		const saving = cutFrom - pricePerKg(d.entry);
+		if (saving > (savingPerKg.get(d.entry.ingredientId) ?? 0)) {
+			savingPerKg.set(d.entry.ingredientId, saving);
+		}
+	}
+	return recipes
+		.map((recipe) => {
+			const saved = recipe.lines
+				.filter(
+					(l) =>
+						savingPerKg.has(l.ingredientId) &&
+						l.grams / recipe.servings >= SALE_MIN_GRAMS_PER_SERVING
+				)
+				.map((l) => ({
+					id: l.ingredientId,
+					saving: (savingPerKg.get(l.ingredientId)! * l.grams) / recipe.servings / 1000
+				}))
+				.sort((a, b) => b.saving - a.saving);
+			return {
+				recipe,
+				onSale: [...new Set(saved.map((s) => s.id))],
+				saving: saved.reduce((sum, s) => sum + s.saving, 0)
+			};
+		})
+		.filter((r) => r.onSale.length > 0)
+		.sort((a, b) => b.onSale.length - a.onSale.length || b.saving - a.saving);
 }
 
 /** The cheapest usable e-shop price per kg – what buying in bulk would cost. */

@@ -172,6 +172,8 @@ export interface Settings {
 	theme: 'auto' | 'light' | 'dark';
 	/** Where the garden is, for local sowing dates and weather. Stays on the device. */
 	location: { name: string; lat: number; lon: number; elevation: number } | null;
+	/** Shops the user goes to; prices and the shopping plan stick to them. Empty = every shop. */
+	myStores: string[];
 }
 
 const DEFAULT_SETTINGS: Settings = {
@@ -180,7 +182,8 @@ const DEFAULT_SETTINGS: Settings = {
 	people: 1,
 	mealsPerDay: 1,
 	theme: 'auto',
-	location: null
+	location: null,
+	myStores: []
 };
 
 const inRange = (v: unknown, min: number, max: number): v is number =>
@@ -206,7 +209,12 @@ function validateSettings(raw: unknown): Settings | undefined {
 		people: inRange(raw.people, 1, 12) ? raw.people : DEFAULT_SETTINGS.people,
 		mealsPerDay: raw.mealsPerDay === 2 ? 2 : 1,
 		theme: theme === 'light' || theme === 'dark' ? theme : 'auto',
-		location: validateLocation(raw.location)
+		location: validateLocation(raw.location),
+		myStores: Array.isArray(raw.myStores)
+			? raw.myStores
+					.filter((id): id is string => typeof id === 'string' && /^[a-z0-9-]{1,30}$/.test(id))
+					.slice(0, 20)
+			: []
 	};
 }
 

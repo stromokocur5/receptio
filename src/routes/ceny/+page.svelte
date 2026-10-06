@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Seo from '$lib/components/Seo.svelte';
-	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
+	import { formatEur, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import { CATEGORY_LABELS, ingredientSearchText, searchMatcher } from '$lib/labels';
@@ -14,9 +14,14 @@
 		bestPrice,
 		isSaleActive,
 		isStale,
-		pricePerKg
+		pricePerKg,
+		recipesOnSale,
+		shelfName,
+		unitPrice
 	} from '$lib/pricing';
-	import { INGREDIENT_CATEGORIES, type IngredientCategory } from '$lib/types';
+	import StorePicker from '$lib/components/StorePicker.svelte';
+	import { settings } from '$lib/state.svelte';
+	import { INGREDIENT_CATEGORIES, type IngredientCategory, type PriceEntry } from '$lib/types';
 
 	const catalog = useCatalog();
 	const today = new Date();
@@ -35,6 +40,18 @@
 		shown = PAGE;
 	});
 
+	const perUnit = (e: PriceEntry) => {
+		const { value, unit } = unitPrice(e);
+		return `${formatEur(value)}/${unit}`;
+	};
+	const dayWord = (n: number) => (n === 1 ? 'deň' : n < 5 ? 'dni' : 'dní');
+
+	const myStores = $derived(settings.current.myStores);
+	/** Prices in the shops the user picked; e-shops stay, they're compared on their own. */
+	const prices = $derived(
+		catalog.prices.filter((p) => p.online || !myStores.length || myStores.includes(p.storeId))
+	);
+
 	const ingredientNames = catalog.ingredients.map(ingredientSearchText);
 	const matchesName = $derived(searchMatcher(ingredientNames, search));
 	const rows = $derived(
@@ -44,18 +61,32 @@
 			.filter((i) => matchesName(ingredientSearchText(i)))
 			.map((ingredient) => ({
 				ingredient,
-				best: bestPrice(ingredient, catalog.prices, today),
-				online: bestOnlinePrice(ingredient, catalog.prices, today),
-				entries: catalog.prices
+				best: bestPrice(ingredient, prices, today),
+				online: bestOnlinePrice(ingredient, prices, today),
+				entries: prices
 					.filter((p) => p.ingredientId === ingredient.id)
 					.sort((a, b) => pricePerKg(a) - pricePerKg(b))
+			}))
+			.map((row) => ({
+				...row,
+				// Liquids read per litre, like on the shelf label.
+				bestEntry: row.best.isEstimate
+					? undefined
+					: row.entries.find(
+							(e) => e.storeId === row.best.storeId && pricePerKg(e) === row.best.perKg
+						)
 			}))
 			.sort((a, b) => a.ingredient.name.localeCompare(b.ingredient.name, 'sk'))
 	);
 
+	let dealSearch = $state('');
+	let dealSort = $state<'discount' | 'ending' | 'name'>('discount');
+	const DEALS_PAGE = 8;
+	let dealsShown = $state(DEALS_PAGE);
+
 	/** Sales running now, each with a few everyday recipes that use the ingredient. */
-	const deals = $derived(
-		activeSales(catalog.prices, today)
+	const allDeals = $derived(
+		activeSales(prices, today)
 			.filter((d) => catalog.ingredientsById.has(d.entry.ingredientId))
 			.map((deal) => {
 				const ingredient = catalog.ingredientsById.get(deal.entry.ingredientId)!;
@@ -71,6 +102,24 @@
 				return { ...deal, ingredient, recipes };
 			})
 	);
+	const saleRecipes = $derived(
+		recipesOnSale(
+			catalog.recipes.filter((r) => r.treat.length === 0),
+			allDeals
+		).slice(0, 6)
+	);
+	const deals = $derived.by(() => {
+		const matches = searchMatcher(ingredientNames, dealSearch);
+		const found = allDeals.filter(
+			(d) =>
+				matches(ingredientSearchText(d.ingredient)) ||
+				d.entry.product.toLowerCase().includes(dealSearch.trim().toLowerCase())
+		);
+		if (dealSort === 'ending') return found.toSorted((a, b) => a.daysLeft - b.daysLeft);
+		if (dealSort === 'name')
+			return found.toSorted((a, b) => a.ingredient.name.localeCompare(b.ingredient.name, 'sk'));
+		return found;
+	});
 
 	const proteinPerEuro = $derived(
 		catalog.ingredients
@@ -154,8 +203,10 @@
 		<p class="eyebrow">Ceny</p>
 		<h1>Čo koľko stojí</h1>
 		<p class="lede">
-			Ceny porovnávame vždy za kilogram, takže veľké balenie a malé vrecúško sa dajú férovo
-			porovnať. Reálne ceny majú obchod a dátum. Všetko ostatné je <span class="badge">odhad</span>
+			Ceny porovnávame vždy za kilogram (tekutiny za liter), takže veľké balenie a malé vrecúško sa
+			dajú férovo porovnať. Reálne ceny majú obchod a dátum. Všetko ostatné je <span class="badge"
+				>odhad</span
+			>
 			a tak to aj označujeme.
 		</p>
 		<p class="muted small">
@@ -164,7 +215,11 @@
 				: 'Reálne ceny z obchodov zatiaľ nemáme, všetko nižšie je hrubý odhad.'}
 			<a href="#odkial">Odkiaľ ich berieme</a>
 		</p>
+		<div class="card box picker"><StorePicker /></div>
 		<nav class="jump" aria-label="Na tejto stránke">
+			{#if allDeals.length}
+				<a class="chip" href="#akcie"><Icon name="tag" size={14} /> Akcie ({allDeals.length})</a>
+			{/if}
 			<a class="chip" href="#bielkoviny"><Icon name="bean" size={14} /> Bielkoviny za euro</a>
 			{#if bulk.length}
 				<a class="chip" href="#vo-velkom"><Icon name="package" size={14} /> Vo veľkom</a>
@@ -173,46 +228,121 @@
 		</nav>
 	</header>
 
-	{#if deals.length}
+	{#if allDeals.length}
 		<section class="card box deals" id="akcie">
-			<h2><Icon name="tag" size={24} /> Teraz v akcii</h2>
+			<h2>
+				<Icon name="tag" size={24} /> Teraz v akcii <span class="count">{allDeals.length}</span>
+			</h2>
 			<p class="muted small">
 				Akciové ceny z obchodov (cenyslovensko.sk) a čo z tej suroviny uvariť. Rátajú sa aj do cien
-				receptov, kým akcia trvá.
+				receptov a nákupu, kým akcia trvá.
 			</p>
+			{#if saleRecipes.length}
+				<div class="sale-recipes">
+					<h3>Uvar z akcií</h3>
+					<div class="deal-recipes">
+						{#each saleRecipes as { recipe, onSale, saving } (recipe.id)}
+							<a
+								class="chip"
+								href="/recepty/{recipe.id}"
+								title="V akcii: {onSale
+									.map((id) => catalog.ingredientsById.get(id)?.name)
+									.join(', ')}"
+								>{recipe.title}{#if saving >= 0.05}<span class="saved"
+										>−{formatEur(saving)}/porcia</span
+									>{/if}</a
+							>
+						{/each}
+					</div>
+				</div>
+			{/if}
+			<div class="filters deal-filters">
+				<div class="field grow">
+					<Icon name="search" size={20} />
+					<label for="deal-q" class="sr-only">Hľadať v akciách</label>
+					<input
+						id="deal-q"
+						type="search"
+						bind:value={dealSearch}
+						oninput={() => (dealsShown = DEALS_PAGE)}
+						placeholder="Hľadať v akciách…"
+					/>
+				</div>
+				<label class="field">
+					<span class="sr-only">Zoradiť</span>
+					<select bind:value={dealSort}>
+						<option value="discount">Najväčšia zľava</option>
+						<option value="ending">Končí najskôr</option>
+						<option value="name">Podľa názvu</option>
+					</select>
+				</label>
+			</div>
 			<ul>
-				{#each deals as deal (`${deal.entry.ingredientId}|${deal.entry.storeId}`)}
+				{#each deals.slice(0, dealsShown) as deal (`${deal.entry.ingredientId}|${deal.entry.storeId}`)}
+					{@const store = catalog.storesById.get(deal.entry.storeId)}
+					{@const was =
+						deal.storeRegularPerKg !== null && deal.discount
+							? (deal.storeRegularPerKg * deal.entry.packGrams) / 1000
+							: null}
 					<li>
-						<div class="deal-head">
-							<a href="/suroviny/{deal.ingredient.id}"><strong>{deal.ingredient.name}</strong></a>
-							<span class="badge tomato"
-								>{deal.discount && deal.discount >= 0.05
-									? `−${Math.round(deal.discount * 100)} %`
-									: 'akcia'}</span
-							>
-						</div>
-						<p class="small">
-							{catalog.storesById.get(deal.entry.storeId)?.name ?? deal.entry.storeId} ·
-							{deal.entry.product} ({deal.entry.pack}) za
-							<strong>{formatEur(deal.entry.price)}</strong>
-							<span class="muted"
-								>· {formatEur(pricePerKg(deal.entry))}/kg · do {formatDate(
-									deal.entry.saleUntil!
-								)}</span
-							>
-						</p>
-						{#if deal.recipes.length}
-							<div class="deal-recipes">
-								{#each deal.recipes as r (r.id)}
-									<a class="chip" href="/recepty/{r.id}">{r.title}</a>
-								{/each}
-								<a class="chip more" href="/recepty?s={deal.ingredient.id}">Všetky recepty →</a>
+						<span class="off" class:plain={!deal.discount || deal.discount < 0.05}>
+							{deal.discount && deal.discount >= 0.05
+								? `−${Math.round(deal.discount * 100)} %`
+								: 'akcia'}
+						</span>
+						<div class="deal-body">
+							<div class="deal-head">
+								<a href="/suroviny/{deal.ingredient.id}"><strong>{deal.ingredient.name}</strong></a>
+								<span class="deal-price">
+									<strong>{formatEur(deal.entry.price)}</strong>
+									{#if was}<s>{formatEur(was)}</s>{/if}
+								</span>
 							</div>
-						{/if}
+							<p class="small deal-where">
+								<span class="sdot" style:background={store?.color}></span>
+								<strong>{store?.name ?? deal.entry.storeId}</strong>
+								· {shelfName(deal.entry.product)} · {deal.entry.pack} ·
+								<span class="muted">{perUnit(deal.entry)}</span>
+							</p>
+							<p class="small deal-meta">
+								<span class="ends" class:soon={deal.daysLeft <= 1}>
+									<Icon name="clock" size={14} />
+									{deal.daysLeft === 0
+										? 'posledný deň'
+										: `ešte ${deal.daysLeft} ${dayWord(deal.daysLeft)}`}
+									· do {formatDate(deal.entry.saleUntil!)}
+								</span>
+								{#if deal.discount && deal.discount >= 0.05 && !deal.discountInStore}
+									<span class="muted">o {Math.round(deal.discount * 100)} % lacnejšie ako inde</span
+									>
+								{/if}
+							</p>
+							{#if deal.recipes.length}
+								<div class="deal-recipes">
+									{#each deal.recipes as r (r.id)}
+										<a class="chip" href="/recepty/{r.id}">{r.title}</a>
+									{/each}
+									<a class="chip more" href="/recepty?s={deal.ingredient.id}">Všetky recepty →</a>
+								</div>
+							{/if}
+						</div>
 					</li>
 				{/each}
 			</ul>
+			{#if !deals.length}
+				<p class="muted">V akcii taká surovina teraz nie je.</p>
+			{:else if deals.length > dealsShown}
+				<div class="more">
+					<button class="btn ghost" onclick={() => (dealsShown = deals.length)}>
+						Zobraziť všetky akcie ({deals.length})
+					</button>
+				</div>
+			{/if}
 		</section>
+	{:else if myStores.length}
+		<p class="muted no-deals">
+			V tvojich obchodoch teraz nemáme žiadnu akciu na suroviny z receptov.
+		</p>
 	{/if}
 
 	<section class="table-section" aria-labelledby="suroviny">
@@ -234,7 +364,7 @@
 		</div>
 
 		<ul class="rows">
-			{#each rows.slice(0, shown) as { ingredient, best, online, entries } (ingredient.id)}
+			{#each rows.slice(0, shown) as { ingredient, best, bestEntry, online, entries } (ingredient.id)}
 				<li class="row card">
 					<div class="main">
 						<span class="dot" style:background={ingredient.color}></span>
@@ -246,7 +376,10 @@
 							{#if ingredient.byproduct}
 								<span class="badge leaf">zvyšok – zadarmo</span>
 							{:else}
-								<span class="price">{formatEur(best.perKg)}<small>/kg</small></span>
+								{@const shown = bestEntry
+									? unitPrice(bestEntry)
+									: { value: best.perKg, unit: 'kg' }}
+								<span class="price">{formatEur(shown.value)}<small>/{shown.unit}</small></span>
 								{#if best.isEstimate}
 									<span
 										class="badge"
@@ -264,8 +397,7 @@
 					{#if !ingredient.byproduct && online && online.storeId !== best.storeId && pricePerKg(online) < best.perKg}
 						<p class="bulk-hint">
 							<Icon name="package" size={14} />
-							vo veľkom {formatEur(pricePerKg(online))}/kg · {catalog.storesById.get(online.storeId)
-								?.name}
+							vo veľkom {perUnit(online)} · {catalog.storesById.get(online.storeId)?.name}
 						</p>
 					{/if}
 					{#if entries.length}
@@ -278,10 +410,10 @@
 									<span class="what">
 										<span class="store">{store?.name}</span>
 										<span class="prod"
-											>{e.product} · {formatGrams(e.packGrams)} za {formatEur(e.price)}</span
+											>{shelfName(e.product)} · {e.pack} za {formatEur(e.price)}</span
 										>
 									</span>
-									<span class="kg">{formatEur(pricePerKg(e))}/kg</span>
+									<span class="kg">{perUnit(e)}</span>
 									<span class="tags">
 										{#if e.saleUntil && !stale}<span class="badge tomato sticker"
 												>akcia do {new Date(e.saleUntil).toLocaleDateString('sk-SK')}</span
@@ -339,12 +471,12 @@
 				{#each bulk as { entry: e, ingredient, shop, saving }, i (i)}
 					<li>
 						<strong><a class="ing" href="/suroviny/{ingredient.id}">{ingredient.name}</a></strong>
-						<span class="bulk-price">{formatEur(pricePerKg(e))}/kg</span>
+						<span class="bulk-price">{perUnit(e)}</span>
 						{#if saving !== null && saving > 0.05}
 							<span class="badge leaf">o {Math.round(saving * 100)} % lacnejšie</span>
 						{/if}
 						<span class="muted small bulk-detail">
-							{e.product} · {catalog.storesById.get(e.storeId)?.name}
+							{shelfName(e.product)} · {catalog.storesById.get(e.storeId)?.name}
 							{#if !shop.isEstimate && shop.storeId !== e.storeId}
 								· v obchode od {formatEur(shop.perKg)}/kg ({catalog.storesById.get(shop.storeId!)
 									?.name})
@@ -733,34 +865,145 @@
 			height: 12px;
 		}
 	}
+	.picker {
+		margin-top: 16px;
+	}
+	.count {
+		font-size: 0.9rem;
+		font-family: var(--font-body, inherit);
+		padding: 2px 9px;
+		border-radius: 999px;
+		background: var(--tomato-soft);
+		color: color-mix(in srgb, var(--tomato) 60%, var(--ink));
+		vertical-align: middle;
+	}
+	.sale-recipes {
+		margin-top: 12px;
+	}
+	.sale-recipes h3 {
+		font-size: 1rem;
+		margin: 0;
+	}
+	/* Recipe titles are long; on a phone they have to wrap instead of running off the edge. */
+	.deal-recipes .chip {
+		white-space: normal;
+		max-width: 100%;
+	}
+	.saved {
+		color: var(--leaf);
+		font-weight: 700;
+		margin-left: 2px;
+	}
+	.deal-filters {
+		margin-top: 12px;
+	}
+	.no-deals {
+		margin: 16px 0;
+	}
 	.deals ul {
 		list-style: none;
-		margin: 12px 0 0;
+		margin: 4px 0 0;
 		padding: 0;
 		display: grid;
-		gap: 12px;
+		gap: 14px;
 	}
 	.deals li {
-		padding-bottom: 12px;
+		display: grid;
+		grid-template-columns: 64px 1fr;
+		gap: 12px;
+		align-items: start;
+		padding-bottom: 14px;
 		border-bottom: 1px dashed var(--line);
 	}
 	.deals li:last-child {
 		border-bottom: 0;
 		padding-bottom: 0;
 	}
+	/* The discount is the point of the list, so it gets a price-tag of its own. */
+	.off {
+		display: grid;
+		place-items: center;
+		min-height: 48px;
+		padding: 4px;
+		border-radius: 12px 12px 12px 4px;
+		/* Darkened so white stays readable on it in both themes. */
+		background: color-mix(in srgb, var(--tomato) 72%, #000);
+		color: #fff;
+		font-weight: 800;
+		font-size: 1.05rem;
+		font-variant-numeric: tabular-nums;
+		transform: rotate(-4deg);
+	}
+	.off.plain {
+		background: var(--tomato-soft);
+		color: color-mix(in srgb, var(--tomato) 60%, var(--ink));
+		font-size: 0.85rem;
+	}
+	.deal-body {
+		min-width: 0;
+	}
 	.deal-head {
 		display: flex;
 		flex-wrap: wrap;
-		align-items: center;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: 4px 12px;
+	}
+	.deal-head a {
+		font-size: 1.05rem;
+	}
+	.deal-price {
+		display: inline-flex;
+		align-items: baseline;
 		gap: 8px;
+		font-variant-numeric: tabular-nums;
+	}
+	.deal-price strong {
+		font-size: 1.15rem;
+		color: color-mix(in srgb, var(--tomato) 70%, var(--ink));
+	}
+	.deal-price s {
+		color: var(--muted);
+		font-size: 0.9rem;
 	}
 	.deals p {
-		margin: 4px 0 8px;
+		margin: 4px 0 0;
 		overflow-wrap: anywhere;
+	}
+	.deal-where {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 0 6px;
+	}
+	.deal-meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 12px;
+	}
+	.ends {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		color: var(--ink-2);
+	}
+	.ends.soon {
+		color: color-mix(in srgb, var(--tomato) 70%, var(--ink));
+		font-weight: 700;
 	}
 	.deal-recipes {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
+		margin-top: 10px;
+	}
+	@media (max-width: 480px) {
+		.deals li {
+			grid-template-columns: 52px 1fr;
+			gap: 10px;
+		}
+		.off {
+			font-size: 0.92rem;
+		}
 	}
 </style>

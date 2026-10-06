@@ -13,7 +13,14 @@
 	import SavedWeeks from '$lib/components/SavedWeeks.svelte';
 	import { CATEGORY_LABELS } from '$lib/labels';
 	import { ACTIVITY_PROTEIN, dailyTargets, emptyNutrients, scaleNutrients } from '$lib/nutrition';
-	import { compareStores, shelfCost, type ShelfCost, type StorePlan } from '$lib/pricing';
+	import StorePicker from '$lib/components/StorePicker.svelte';
+	import {
+		activeSales,
+		compareStores,
+		shelfCost,
+		type ShelfCost,
+		type StorePlan
+	} from '$lib/pricing';
 	import { mealSchedule } from '$lib/schedule';
 	import { encodeSharedPlan } from '$lib/share';
 	import { LIVE_PREFIX, createLiveList } from '$lib/live-list.svelte';
@@ -120,7 +127,9 @@
 	const comparison = $derived(
 		compareStores(
 			allItems.map((i) => ({ ingredient: i.ingredient, grams: i.buyGrams })),
-			catalog.stores,
+			catalog.stores.filter(
+				(s) => !settings.current.myStores.length || settings.current.myStores.includes(s.id)
+			),
 			catalog.prices,
 			today
 		)
@@ -141,6 +150,15 @@
 					: item.shelf;
 				return [item.ingredient.id, { shelf, cost: shelf?.cost ?? item.cost }];
 			})
+		)
+	);
+	/** ingredientId|storeId → the day a sale there ends, to point it out on the list. */
+	const saleUntil = $derived(
+		new Map(
+			activeSales(catalog.prices, today).map((d) => [
+				`${d.entry.ingredientId}|${d.entry.storeId}`,
+				d.entry.saleUntil!
+			])
 		)
 	);
 	const payTotal = $derived([...pay.values()].reduce((sum, p) => sum + p.cost, 0));
@@ -816,6 +834,7 @@
 					{@const extra = comparison.unpricedCost}
 					<div class="stores">
 						<h3><Icon name="store" size={18} /> Kde nakúpiť</h3>
+						<StorePicker label="Moje obchody" />
 						<p class="rec">
 							{#if rec.storeIds.length > 1}
 								Najlacnejšie vyjde nakúpiť v <strong>{storeNames(rec)}</strong> – ušetríš
@@ -863,6 +882,11 @@
 							</p>
 						{/if}
 					</div>
+				{:else if settings.current.myStores.length}
+					<div class="stores">
+						<StorePicker label="Moje obchody" />
+						<p class="muted small">V týchto obchodoch nemáme ceny ničoho z nákupu.</p>
+					</div>
 				{:else}
 					<p class="muted small">
 						Ceny sú zatiaľ odhady. Keď pribudnú reálne ceny z obchodov, tu uvidíš, kde je nákup
@@ -895,6 +919,13 @@
 								? `, ${storeName(itemPay.shelf.storeId)}`
 								: ''}</span
 						>
+						{@const sale = saleUntil.get(`${item.ingredient.id}|${itemPay.shelf.storeId}`)}
+						{#if sale}<span class="badge tomato"
+								>akcia do {new Date(sale).toLocaleDateString('sk-SK', {
+									day: 'numeric',
+									month: 'numeric'
+								})}</span
+							>{/if}
 					{:else}· cena odhadom{/if}
 				</small>
 			</span>

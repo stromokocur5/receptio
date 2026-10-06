@@ -1,7 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import { consumeFromPantry, rankByLeftovers, rankByPantry, useSoon } from './pantry';
 import { buildShoppingList } from './shopping';
-import { activeSales, bestPrice, compareStores, shelfCost } from './pricing';
+import {
+	activeSales,
+	bestPrice,
+	compareStores,
+	recipesOnSale,
+	shelfCost,
+	shelfName,
+	unitPrice,
+	type SaleDeal
+} from './pricing';
 import type { Ingredient, PriceEntry, RecipeSummary } from './types';
 
 const zero = {
@@ -435,6 +444,89 @@ describe('activeSales', () => {
 		expect(deals).toHaveLength(1);
 		expect(deals[0].entry.storeId).toBe('fresh');
 		expect(deals[0].regularPerKg).toBe(1.1);
-		expect(deals[0].discount).toBeCloseTo(0.2);
+		expect(deals[0].storeRegularPerKg).toBe(1.15);
+		expect(deals[0].discountInStore).toBe(true);
+		expect(deals[0].discount).toBeCloseTo(1 - 0.88 / 1.15);
+		expect(deals[0].daysLeft).toBe(86);
+	});
+
+	it('falls back to the cheapest regular price elsewhere when the shop has none', () => {
+		const [deal] = activeSales(
+			[price('fresh', 0.88, { saleUntil: '2026-10-06' }), price('kaufland', 1.1)],
+			today
+		);
+		expect(deal.discountInStore).toBe(false);
+		expect(deal.discount).toBeCloseTo(0.2);
+		expect(deal.daysLeft).toBe(0);
+	});
+});
+
+describe('unitPrice', () => {
+	const entry = (pack: string, packGrams: number, price: number): PriceEntry => ({
+		ingredientId: 'x',
+		storeId: 'billa',
+		product: 'x',
+		pack,
+		packGrams,
+		price,
+		date: '2026-09-30'
+	});
+
+	it('shows liquids per litre, not per kg of their converted weight', () => {
+		expect(unitPrice(entry('1 l', 1030, 1.39))).toEqual({ value: 1.39, unit: 'l' });
+		expect(unitPrice(entry('250 ml', 250, 0.5))).toEqual({ value: 2, unit: 'l' });
+		expect(unitPrice(entry('500 g', 500, 1))).toEqual({ value: 2, unit: 'kg' });
+		expect(unitPrice(entry('1 ks', 240, 1.2))).toEqual({ value: 5, unit: 'kg' });
+	});
+});
+
+describe('shelfName', () => {
+	it('calms names written in capitals and leaves the rest alone', () => {
+		expect(shelfName('MRKVA VOĽNÁ')).toBe('Mrkva voľná');
+		expect(shelfName('Billa Bio sójový nápoj')).toBe('Billa Bio sójový nápoj');
+		expect(shelfName('CHLIEB BEZLEP. 210g')).toBe('Chlieb bezlep. 210g');
+		expect(shelfName('CLEVER zemiaky')).toBe('CLEVER zemiaky');
+	});
+});
+
+describe('recipesOnSale', () => {
+	const deal = (ingredientId: string, sale: number, regular: number): SaleDeal => ({
+		entry: {
+			ingredientId,
+			storeId: 'fresh',
+			product: ingredientId,
+			pack: '1 kg',
+			packGrams: 1000,
+			price: sale,
+			date: '2026-10-01',
+			saleUntil: '2026-10-10'
+		},
+		regularPerKg: regular,
+		storeRegularPerKg: null,
+		discount: 1 - sale / regular,
+		discountInStore: false,
+		daysLeft: 4
+	});
+	const recipe = (id: string, lines: [string, number][]) => ({
+		id,
+		servings: 2,
+		lines: lines.map(([ingredientId, grams]) => ({ ingredientId, grams }))
+	});
+
+	it('ranks by how many main ingredients are on sale, ignoring pinches', () => {
+		const ranked = recipesOnSale(
+			[
+				recipe('polievka', [['mrkva', 400]]),
+				recipe('salat', [
+					['mrkva', 200],
+					['kapusta', 300]
+				]),
+				recipe('kari', [['kmin', 4]])
+			],
+			[deal('mrkva', 0.7, 1.3), deal('kapusta', 0.5, 0.9), deal('kmin', 10, 30)]
+		);
+		expect(ranked.map((r) => r.recipe.id)).toEqual(['salat', 'polievka']);
+		expect(ranked[0].onSale).toEqual(['mrkva', 'kapusta']);
+		expect(ranked[1].saving).toBeCloseTo(0.12);
 	});
 });

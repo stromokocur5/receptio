@@ -21,6 +21,7 @@
 	import { onboarding } from '$lib/onboarding.svelte';
 	import { avoid, favorites, gardens, likes, pantry, plan, settings, ui } from '$lib/state.svelte';
 	import type { GrowGuide } from '$lib/types';
+	import { activeSales, recipesOnSale } from '$lib/pricing';
 
 	const catalog = useCatalog();
 	const categoryCounts = $derived.by(() => {
@@ -103,6 +104,17 @@
 			).filter((t) => !g.done[t.key]);
 		});
 		return [...new Map(open.map((t) => [t.key, t])).values()];
+	});
+	/** Recipes whose main ingredients are on sale in the user's shops right now. */
+	const onSale = $derived.by(() => {
+		const mine = settings.current.myStores;
+		const deals = activeSales(catalog.prices, new Date()).filter(
+			(d) => !mine.length || mine.includes(d.entry.storeId)
+		);
+		return recipesOnSale(
+			catalog.recipes.filter((r) => r.treat.length === 0),
+			deals
+		).slice(0, 4);
 	});
 	const seasonal = $derived(
 		catalog.recipes
@@ -506,6 +518,28 @@
 		</p>
 		<div class="grid">
 			{#each seasonal as recipe, i (recipe.id)}
+				<RecipeCard {recipe} index={i} />
+			{/each}
+		</div>
+	</section>
+{/if}
+
+{#if onSale.length}
+	<section class="wrap block">
+		<div class="head">
+			<h2>Lacnejšie vďaka akciám</h2>
+			<a class="btn ghost small" href="/ceny#akcie"
+				>Všetky akcie <Icon name="arrow-right" size={16} /></a
+			>
+		</div>
+		<p class="muted season-note">
+			Hlavné suroviny týchto receptov sú teraz v akcii:
+			{[...new Set(onSale.flatMap((s) => s.onSale))]
+				.map((id) => catalog.ingredientsById.get(id)?.name.split(' (')[0].toLowerCase())
+				.join(', ')}.
+		</p>
+		<div class="grid">
+			{#each onSale as { recipe }, i (recipe.id)}
 				<RecipeCard {recipe} index={i} />
 			{/each}
 		</div>
