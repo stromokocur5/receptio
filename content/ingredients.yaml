@@ -2666,6 +2666,8 @@
 - id: susene-marhule
   name: Sušené marhule
   category: ovocie
+  allergens: [sulphites]
+  note: oranžové bývajú sírené (E220, siričitany), tmavohnedé nesírené sú bez nich
   n: { kcal: 241, p: 3.4, c: 62.6, f: 0.5, fib: 7.3, salt: 0, fe: 2.7, ca: 55, zn: 0.4 }
   units: { ks: 8 }
   price: 12
@@ -3506,6 +3508,7 @@
 - id: proso
   name: Proso lúpané (pšeno)
   category: obilniny
+  note: prirodzene bez lepku, ale kupuj s označením bezlepkové (krížová kontaminácia)
   n: { kcal: 378, p: 11, c: 73, f: 4.2, fib: 8.5, salt: 0, fe: 3, ca: 8, zn: 1.7 }
   units: { hrnček: 200 }
   price: 2.5
@@ -3915,6 +3918,7 @@
 - id: cervena-kari-pasta
   name: Červená kari pasta
   category: omacky-pasty
+  gluten: risk
   n: { kcal: 120, p: 2, c: 12, f: 7, fib: 4, salt: 8, fe: 2, ca: 40, zn: 0.4 }
   units: { pl: 18, čl: 6 }
   price: 25
