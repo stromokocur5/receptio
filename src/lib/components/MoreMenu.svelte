@@ -37,6 +37,12 @@
 					hint: 'Čo koľko stojí, čo je v zľave',
 					icon: 'tag'
 				},
+				{
+					href: '/data',
+					label: 'Dáta',
+					hint: 'Vývoj cien, štatistiky, otvorené API',
+					icon: 'chart'
+				},
 				{ href: '/vybavenie', label: 'Vybavenie', hint: 'Čo treba a čím to nahradiť', icon: 'pot' }
 			]
 		},

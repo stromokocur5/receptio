@@ -139,6 +139,27 @@ export function readProduct(html: string): Product | string {
 	return found;
 }
 
+/** Kept apart from price-history.csv, which the daily sync rewrites for its own day. */
+const HISTORY_FILE = 'content/price-history-eshops.csv';
+const HISTORY_HEADER = 'date,ingredient,store,price,pack,sale_until,product';
+const csvField = (value: string) =>
+	/[",\n]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
+
+/** Adds today's prices to the history; re-running the same day replaces that day's rows. */
+function appendHistory(fresh: Entry[], today: string) {
+	const kept = existsSync(HISTORY_FILE)
+		? readFileSync(HISTORY_FILE, 'utf8')
+				.split('\n')
+				.filter((line) => line && line !== HISTORY_HEADER && !line.startsWith(`${today},`))
+		: [];
+	const rows = fresh.map((e) =>
+		[e.date, e.ingredient, e.store, e.price, e.pack, '', e.product]
+			.map((v) => csvField(String(v)))
+			.join(',')
+	);
+	writeFileSync(HISTORY_FILE, [HISTORY_HEADER, ...kept, ...rows].join('\n') + '\n');
+}
+
 async function main() {
 	const mappings = parse(readFileSync('content/eshops.yaml', 'utf8')) as Mapping[];
 	const previous: Entry[] = existsSync(OUT)
@@ -209,6 +230,10 @@ async function main() {
 		'# GENEROVANÉ – neupravuj ručne. Ceny zo stránok produktov v e-shopoch, obnov cez\n' +
 			'# `pnpm prices:eshops`; zoznam produktov je v eshops.yaml.\n' +
 			stringify({ entries }, { lineWidth: 0 })
+	);
+	appendHistory(
+		entries.filter((e) => e.date === today),
+		today
 	);
 	console.log(`${fresh} of ${wanted.length} prices read, ${entries.length} written to ${OUT}.`);
 }

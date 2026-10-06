@@ -6,6 +6,7 @@
 	import SyncPanel from '$lib/components/SyncPanel.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { formatEur, formatNumber } from '$lib/amounts';
+	import CookingInsights from '$lib/components/CookingInsights.svelte';
 	import JournalPanel from '$lib/components/JournalPanel.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import { dailyTargets } from '$lib/nutrition';
@@ -348,6 +349,10 @@
 				jedlá označené ako uvarené.
 			</p>
 		</section>
+	{/if}
+
+	{#if stats && stats.total > 0}
+		<CookingInsights {targets} />
 	{/if}
 
 	{#if week && week.portions > 0}

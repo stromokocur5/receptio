@@ -42,7 +42,7 @@ jobs:
 
       - name: Commitnúť
         run: |
-          git add content/prices-eshops.yaml
+          git add content/prices-eshops.yaml content/price-history-eshops.csv
           if git diff --cached --quiet; then
             echo "Žiadne zmeny."
             exit 0

@@ -11,6 +11,7 @@ const STATIC_PAGES = [
 	'/spajza',
 	'/plan',
 	'/ceny',
+	'/data',
 	'/wiki',
 	'/kurz',
 	'/vybavenie',

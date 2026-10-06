@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { yearsPhrase } from '$lib/garden';
 	import { page } from '$app/state';
-	import { formatEur, parseAmount } from '$lib/amounts';
+	import { formatEur } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import GrowMonths from '$lib/components/GrowMonths.svelte';
 	import Icon from '$lib/components/Icon.svelte';
@@ -13,7 +13,10 @@
 	import { CATEGORY_ICONS } from '$lib/ingredient-icons';
 	import { CATEGORY_LABELS, pluralRecipes } from '$lib/labels';
 	import { ALLERGEN_LABELS, DAILY_REFERENCE } from '$lib/nutrition';
-	import { bestPrice, isUsable, pricePerKg } from '$lib/pricing';
+	import { bestPrice, isUsable, pricePerKg, shelfName, unitPrice } from '$lib/pricing';
+	import { onMount } from 'svelte';
+	import PriceChart from '$lib/components/PriceChart.svelte';
+	import { ingredientTimeline, type PriceHistory } from '$lib/price-history';
 	import { MONTH_NAMES } from '$lib/season';
 	import type { PriceEntry } from '$lib/types';
 	import { pantry, removePantryItem, setPantryItem, ui } from '$lib/state.svelte';
@@ -51,13 +54,30 @@
 	const dayMonth = new Intl.DateTimeFormat('sk', { day: 'numeric', month: 'numeric' });
 
 	/** Liquids compare per litre as on the shelf label, everything else per kg. */
-	function unitPrice(p: PriceEntry): string {
-		const { amount, unit } = parseAmount(p.pack);
-		if (amount && (unit === 'l' || unit === 'ml')) {
-			return `${formatEur(p.price / (unit === 'l' ? amount : amount / 1000))} / l`;
-		}
-		return `${formatEur(pricePerKg(p))} / kg`;
+	function perUnit(p: PriceEntry): string {
+		const { value, unit } = unitPrice(p);
+		return `${formatEur(value)} / ${unit}`;
 	}
+	/** Shop prices over time, fetched once and shared by every ingredient page visited. */
+	let history = $state<PriceHistory | null>(null);
+	onMount(async () => {
+		try {
+			const res = await fetch('/data/v1/historia-serie.json');
+			if (res.ok) history = await res.json();
+		} catch (err) {
+			console.error('ingredient: price history failed', err);
+		}
+	});
+	const walkInShops = catalog.stores.filter((s) => !s.online);
+	const timeline = $derived(
+		history
+			? ingredientTimeline(
+					history,
+					ingredient.id,
+					walkInShops.map((s) => s.id)
+				)
+			: null
+	);
 	const atHome = $derived(ui.loaded && ingredient.id in pantry.current);
 
 	function toggleHome() {
@@ -289,11 +309,11 @@
 									{#if p.saleUntil}<span class="badge tomato"
 											>akcia do {dayMonth.format(new Date(p.saleUntil))}</span
 										>{/if}
-									<small>{p.product} · {p.pack}</small>
+									<small>{shelfName(p.product)} · {p.pack}</small>
 								</span>
 								<span class="pval">
 									{formatEur(p.price)}
-									<small>{unitPrice(p)}</small>
+									<small>{perUnit(p)}</small>
 								</span>
 							</li>
 						{/each}
@@ -302,6 +322,14 @@
 						Ceny z {dayMonth.format(new Date(storePrices[0].date))}, väčšinou z
 						<a href="/ceny">cenyslovensko.sk</a>. Pri zelenine na váhu je cena za kg.
 					</p>
+					{#if timeline && timeline.days.length >= 2}
+						<div class="history">
+							<PriceChart {timeline} stores={walkInShops} title="Vývoj ceny" />
+							<p class="muted small">
+								<a href="/data?s={ingredient.id}#vyvoj">Viac v dátach o cenách</a>
+							</p>
+						</div>
+					{/if}
 				</section>
 			{/if}
 
@@ -597,5 +625,10 @@
 			grid-template-columns: 1.2fr 1fr;
 			gap: 40px;
 		}
+	}
+	.history {
+		margin-top: 18px;
+		padding-top: 14px;
+		border-top: 1px solid var(--line);
 	}
 </style>

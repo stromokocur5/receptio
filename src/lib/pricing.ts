@@ -1,3 +1,4 @@
+import { parseAmount } from './amounts';
 import type { Ingredient, IngredientCategory, PriceEntry, Store } from './types';
 
 export const STALE_AFTER_DAYS = 60;
@@ -10,18 +11,19 @@ export function pricePerKg(entry: PriceEntry): number {
 	return (entry.price / entry.packGrams) * 1000;
 }
 
-const LIQUID_PACK = /^(\d+(?:[.,]\d+)?)\s*(ml|l)$/i;
-
 /**
  * The price per unit as shelf labels show it: per litre for drinks and other liquids sold by
  * volume, per kilogram for everything else. `pricePerKg` stays the one used for comparing.
  */
-export function unitPrice(entry: PriceEntry): { value: number; unit: 'kg' | 'l' } {
-	const liquid = LIQUID_PACK.exec(entry.pack.trim());
-	if (!liquid) return { value: pricePerKg(entry), unit: 'kg' };
-	const amount = Number(liquid[1].replace(',', '.'));
-	const litres = liquid[2].toLowerCase() === 'ml' ? amount / 1000 : amount;
-	return { value: entry.price / litres, unit: 'l' };
+export function unitPrice(entry: Pick<PriceEntry, 'pack' | 'packGrams' | 'price'>): {
+	value: number;
+	unit: 'kg' | 'l';
+} {
+	const { amount, unit } = parseAmount(entry.pack);
+	if (amount && (unit === 'l' || unit === 'ml')) {
+		return { value: entry.price / (unit === 'l' ? amount : amount / 1000), unit: 'l' };
+	}
+	return { value: (entry.price / entry.packGrams) * 1000, unit: 'kg' };
 }
 
 /** Shop names in capitals ("MRKVA VOĽNÁ") read as shouting; turn those into a sentence. */

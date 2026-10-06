@@ -42,7 +42,7 @@
 		{
 			what: 'Lajky',
 			detail: 'Náhodné ID zariadenia a recepty, ktoré sa ti páčia.',
-			why: 'Aby sa lajk počítal raz a dal sa zrušiť.',
+			why: 'Aby sa lajk počítal raz a dal sa zrušiť. Súhrnné počty (koľko lajkov má recept, ktoré recepty lajklo za týždeň aspoň 2 ľudí) sú verejné na stránke Dáta, bez ID.',
 			kept: 'Kým lajk nezrušíš. ID nie je spojené s menom ani e-mailom.'
 		},
 		{

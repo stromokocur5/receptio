@@ -16,6 +16,7 @@ const PAGES = [
 	'/vybavenie',
 	'/kuchyne',
 	'/ceny',
+	'/data',
 	'/wiki/mini-les',
 	'/navrhni',
 	'/kurz',
