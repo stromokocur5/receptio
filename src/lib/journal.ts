@@ -538,6 +538,28 @@ export function nutrientGaps(
 		.sort((a, b) => average[a] / targets[a] - average[b] / targets[b]);
 }
 
+/** Nutrients the diary follows for gaps (energy is a goal, not something to be short of). */
+export const GAP_KEYS: NutrientKey[] = ['protein', 'fiber', 'iron', 'calcium', 'zinc', 'ala'];
+
+/** What the last week of the diary was short of, worst first; nothing until there are enough days. */
+export function diaryGaps(
+	journal: Journal,
+	today: string,
+	recipesById: Map<string, RecipeSummary>,
+	ingredientsById: Map<string, Ingredient>,
+	targets: Nutrients
+): NutrientKey[] {
+	if (!journal.enabled) return [];
+	const recent = recentTotals(journal, today, recipesById, ingredientsById);
+	if (recent.length < MIN_DAYS_FOR_GAPS) return [];
+	return nutrientGaps(averageNutrients(recent), targets, GAP_KEYS);
+}
+
+/** How much a portion helps with the gaps: its share of each missing daily goal, summed. */
+export function gapBonus(perServing: Nutrients, gaps: NutrientKey[], targets: Nutrients): number {
+	return gaps.reduce((sum, k) => sum + Math.min(1, perServing[k] / (targets[k] || 1)), 0);
+}
+
 /**
  * Everyday recipes that bring the most of a nutrient in one portion, for "what to eat more of".
  * Treats, desserts, comfort food and drinks are left out: nobody should fix iron with brownies.

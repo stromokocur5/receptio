@@ -91,3 +91,11 @@ describe('breakfasts', () => {
 		expect(plan.days[0].breakfast).toBeUndefined();
 	});
 });
+
+describe('freezer', () => {
+	it('leaves the frozen half out of the days', () => {
+		const plan = mealSchedule([{ recipeId: 'cili', servings: 8, freezeExtra: 4 }], 2, 1, 3);
+		expect(plan.days.map((d) => d.meals[0]?.entry.recipeId ?? '-')).toEqual(['cili', 'cili', '-']);
+		expect(plan.extraServings).toBe(0);
+	});
+});

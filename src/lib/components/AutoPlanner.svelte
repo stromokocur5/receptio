@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { budgetForDays } from '$lib/budget';
+	import { diaryGaps, gapBonus, localToday } from '$lib/journal';
+	import { dailyTargets, NUTRIENT_META } from '$lib/nutrition';
 	import { onMount } from 'svelte';
 	import { formatEur, formatNumber } from '$lib/amounts';
 	import {
@@ -13,10 +15,19 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import PlanSettings from '$lib/components/PlanSettings.svelte';
 	import { ALLERGEN_LABELS } from '$lib/nutrition';
-	import { matchRecipe, pantryByGroup } from '$lib/pantry';
+	import { matchRecipe, pantryByGroup, useSoon } from '$lib/pantry';
 	import { recipeSeason } from '$lib/season';
 	import { avoidFilter } from '$lib/avoid';
-	import { addToPlan, avoid, pantry, plan, settings } from '$lib/state.svelte';
+	import {
+		addToPlan,
+		avoid,
+		journal,
+		pantry,
+		pantryAdded,
+		plan,
+		settings,
+		ui
+	} from '$lib/state.svelte';
 	import type { Allergen, RecipeSummary } from '$lib/types';
 
 	const catalog = useCatalog();
@@ -40,6 +51,29 @@
 		}
 	});
 	let budget = $state<number | null>(null);
+	const targets = $derived(dailyTargets(settings.current.weightKg, journal.current.goals));
+	/** Fresh food at home that should be cooked before it spoils. */
+	const soonIds = $derived(
+		new Set(
+			ui.loaded
+				? useSoon(pantry.current, pantryAdded.current, catalog.ingredientsById, new Date()).map(
+						(s) => s.ingredient.id
+					)
+				: []
+		)
+	);
+	/** What the diary says the last week lacked, so the plan can make up for it. */
+	const gaps = $derived(
+		ui.loaded
+			? diaryGaps(
+					journal.current,
+					localToday(),
+					catalog.recipesById,
+					catalog.ingredientsById,
+					targets
+				)
+			: []
+	);
 	/** Without a number of its own, the planner keeps to the weekly budget from the plan settings. */
 	const settingsBudget = $derived(
 		settings.current.weeklyBudget === null
@@ -88,7 +122,10 @@
 					usePantry && hasPantry
 						? (r) => matchRecipe(r, groups, catalog.ingredientsById).score
 						: undefined,
-				inSeason: (r) => recipeSeason(r, catalog.ingredientsById, month).inSeason
+				inSeason: (r) => recipeSeason(r, catalog.ingredientsById, month).inSeason,
+				bonus: (r) =>
+					(gaps.length ? gapBonus(r.perServing, gaps, targets) : 0) +
+					r.lines.filter((l) => soonIds.has(l.ingredientId)).length
 			}
 		};
 	}
@@ -249,6 +286,13 @@
 					? 'Snacky rieš zvlášť.'
 					: 'Raňajky zapneš v nastavení plánu („Aj raňajky“), snacky rieš zvlášť.'}
 			</p>
+			{#if gaps.length}
+				<p class="small gaps-note">
+					<Icon name="info" size={15} /> Podľa denníka ti minulý týždeň chýbalo:
+					{gaps.map((k) => NUTRIENT_META[k].label.toLowerCase()).join(', ')}. Uprednostním recepty,
+					ktoré to doplnia.
+				</p>
+			{/if}
 			<button class="btn leaf" onclick={suggest}><Icon name="sparkle" size={18} /> Navrhnúť</button>
 		</div>
 
@@ -447,5 +491,11 @@
 		flex-wrap: wrap;
 		gap: 8px;
 		margin-top: 10px;
+	}
+	.gaps-note {
+		display: flex;
+		gap: 6px;
+		align-items: flex-start;
+		margin: 0;
 	}
 </style>

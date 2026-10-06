@@ -116,7 +116,15 @@ function validatePlan(raw: unknown): PlanEntry[] | undefined {
 			e.servings > 0 &&
 			e.servings <= 100 &&
 			(e.variant === undefined || typeof e.variant === 'string') &&
-			(e.breakfast === undefined || typeof e.breakfast === 'boolean')
+			(e.breakfast === undefined || typeof e.breakfast === 'boolean') &&
+			(e.freezeExtra === undefined ||
+				(typeof e.freezeExtra === 'number' &&
+					Number.isInteger(e.freezeExtra) &&
+					e.freezeExtra > 0 &&
+					e.freezeExtra < (e.servings as number))) &&
+			(e.fromFreezer === undefined || e.fromFreezer === true) &&
+			(e.frozenOn === undefined ||
+				(typeof e.frozenOn === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(e.frozenOn)))
 	);
 }
 
@@ -806,7 +814,9 @@ export function markCooked(
 	servings: number,
 	lines: RecipeLine[],
 	recipeServings: number,
-	byId: Map<string, Ingredient>
+	byId: Map<string, Ingredient>,
+	/** The recipe's name, for the freezer label when part of the batch is frozen. */
+	title = recipeId
 ): PantryUse[] {
 	const { pantry: next, used } = consumeFromPantry(
 		pantry.current,
@@ -821,6 +831,19 @@ export function markCooked(
 		variant ? { recipeId, variant, servings, date } : { recipeId, servings, date }
 	].slice(-MAX_HISTORY);
 	const planned = plan.current.find((e) => sameEntry(e, recipeId, variant));
+	if (planned?.freezeExtra) {
+		preserves.current = [
+			...preserves.current,
+			{
+				id: crypto.randomUUID().slice(0, 8),
+				name: title,
+				count: planned.freezeExtra,
+				made: date,
+				place: 'mraznicka',
+				recipeId
+			}
+		];
+	}
 	if (planned) setPlanServings(recipeId, variant, planned.servings - servings);
 	return used;
 }
@@ -842,8 +865,9 @@ export function removePantryItem(id: string) {
 	pantryAdded.current = dates;
 }
 
+// Portions from the freezer are their own entries: nothing to cook or buy for them.
 const sameEntry = (e: PlanEntry, recipeId: string, variant?: string) =>
-	e.recipeId === recipeId && e.variant === variant;
+	e.recipeId === recipeId && e.variant === variant && !e.fromFreezer;
 
 export function addToPlan(recipeId: string, servings: number, variant?: string) {
 	const existing = plan.current.find((e) => sameEntry(e, recipeId, variant));
@@ -857,6 +881,52 @@ export function setPlanServings(recipeId: string, variant: string | undefined, s
 		servings <= 0
 			? plan.current.filter((e) => !sameEntry(e, recipeId, variant))
 			: plan.current.map((e) => (sameEntry(e, recipeId, variant) ? { ...e, servings } : e));
+}
+
+/** Cooks a batch twice as big and freezes the extra half (or takes that back). */
+export function setPlanFreezeExtra(index: number, double: boolean) {
+	plan.current = plan.current.map((e, i) => {
+		if (i !== index || e.fromFreezer) return e;
+		if (double && !e.freezeExtra)
+			return { ...e, servings: e.servings * 2, freezeExtra: e.servings };
+		if (!double && e.freezeExtra) {
+			const { freezeExtra, ...rest } = e;
+			return { ...rest, servings: e.servings - freezeExtra };
+		}
+		return e;
+	});
+}
+
+/** Takes planned freezer portions off the plan and puts them back in the freezer. */
+export function returnToFreezer(index: number, name: string) {
+	const entry = plan.current[index];
+	if (!entry?.fromFreezer) return;
+	plan.current = plan.current.filter((_, i) => i !== index);
+	preserves.current = [
+		...preserves.current,
+		{
+			id: crypto.randomUUID().slice(0, 8),
+			name,
+			count: entry.servings,
+			made: entry.frozenOn ?? localToday(),
+			place: 'mraznicka',
+			recipeId: entry.recipeId
+		}
+	];
+}
+
+/** Plans portions from the freezer: they're eaten like any meal but cost nothing to buy. */
+export function planFromFreezer(preserveId: string, servings: number) {
+	const frozen = preserves.current.find((p) => p.id === preserveId && p.recipeId);
+	if (!frozen) return;
+	const take = Math.max(1, Math.min(frozen.count, servings));
+	plan.current = [
+		...plan.current,
+		{ recipeId: frozen.recipeId!, servings: take, fromFreezer: true, frozenOn: frozen.made }
+	];
+	preserves.current = preserves.current.flatMap((p) =>
+		p.id !== preserveId ? [p] : p.count > take ? [{ ...p, count: p.count - take }] : []
+	);
 }
 
 /** Marks a plan entry as breakfast or as a lunch/dinner. */

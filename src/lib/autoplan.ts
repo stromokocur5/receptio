@@ -27,6 +27,11 @@ export interface AutoPlanContext {
 	pantryScore?: (recipe: RecipeSummary) => number;
 	/** True when the recipe's produce is in season now. */
 	inSeason?: (recipe: RecipeSummary) => boolean;
+	/**
+	 * Anything else worth steering toward: what the diary says is missing, food at home that
+	 * should be used up soon. 0 = nothing, 1 ≈ one good reason.
+	 */
+	bonus?: (recipe: RecipeSummary) => number;
 }
 
 export interface AutoPlanResult {
@@ -141,7 +146,8 @@ function greedy(
 				c.protein * 0.05 +
 				repeat * 0.8 -
 				(ctx.pantryScore?.(c.recipe) ?? 0) * 1.2 -
-				(ctx.inSeason?.(c.recipe) ? 0.4 : 0) +
+				(ctx.inSeason?.(c.recipe) ? 0.4 : 0) -
+				(ctx.bonus?.(c.recipe) ?? 0) * 1.5 +
 				rand() * 2.5;
 			return { c, score };
 		});

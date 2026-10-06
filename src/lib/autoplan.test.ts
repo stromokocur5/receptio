@@ -174,3 +174,20 @@ describe('breakfasts', () => {
 		expect(['kasa', 'palacinky']).toContain(swapped.entries[index].recipeId);
 	});
 });
+
+describe('diary gaps', () => {
+	it('prefers recipes that bring what the diary is short of', () => {
+		const recipes = ['a', 'b', 'c', 'd', 'e', 'f'].map((id) => recipe(id));
+		const rich = new Set(['e', 'f']);
+		const counts = { rich: 0, other: 0 };
+		for (let seed = 1; seed <= 20; seed++) {
+			const plan = autoPlan(
+				recipes,
+				{ ...base, days: 2, people: 1, seed, batchCooking: false },
+				{ bonus: (r) => (rich.has(r.id) ? 2 : 0) }
+			);
+			for (const e of plan.entries) counts[rich.has(e.recipeId) ? 'rich' : 'other']++;
+		}
+		expect(counts.rich).toBeGreaterThan(counts.other);
+	});
+});

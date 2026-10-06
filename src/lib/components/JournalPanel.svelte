@@ -295,6 +295,18 @@
 		custom = false;
 	}
 
+	/**
+	 * Recipes that fit what's left of the day: the recipe filter's steps, kcal rounded down to
+	 * the nearest cap it offers (300–800), protein down to 5 g.
+	 */
+	const fitsLink = $derived.by(() => {
+		const kcalLeft = targets.kcal - totals.nutrients.kcal;
+		const cap = [800, 700, 600, 500, 400, 300].find((k) => k <= kcalLeft);
+		if (!cap) return null;
+		const protein = Math.min(40, Math.floor((targets.protein - totals.nutrients.protein) / 5) * 5);
+		return `/recepty?kcal=${cap}${protein >= 10 ? `&bielkoviny=${Math.min(protein, 30)}` : ''}`;
+	});
+
 	/** The day's entries under their meals, in the order of the day; older entries had none. */
 	const mealGroups = $derived.by(() => {
 		const groups: { meal: DiaryMeal | null; items: JournalItem[] }[] = [];
@@ -700,6 +712,7 @@
 						{#if left >= 0}Do cieľa ostáva <strong>{formatNumber(left, 0)} kcal</strong>
 						{:else}Nad cieľom o <strong>{formatNumber(-left, 0)} kcal</strong>{/if}
 						<span class="muted small">(cieľ {formatNumber(targets.kcal, 0)} kcal)</span>
+						{#if fitsLink}<a class="small" href={fitsLink}>Recepty, ktoré sa zmestia</a>{/if}
 					</p>
 				{/if}
 				{#if totals.unknown || totals.partial}

@@ -22,6 +22,7 @@
 		type StorePlan
 	} from '$lib/pricing';
 	import { mealSchedule, type ScheduledMeal } from '$lib/schedule';
+	import { useSoon } from '$lib/pantry';
 	import { localToday, type DiaryMeal } from '$lib/journal';
 	import { budgetStatus, spentThisWeek } from '$lib/budget';
 	import { encodeSharedPlan } from '$lib/share';
@@ -41,6 +42,12 @@
 		markCooked,
 		movePlanEntryUp,
 		setPlanBreakfast,
+		addToPlan,
+		pantryAdded,
+		setPlanFreezeExtra,
+		planFromFreezer,
+		returnToFreezer,
+		preserves,
 		logPortion,
 		purchases,
 		recordPurchase,
@@ -86,7 +93,12 @@
 				const recipe = e.recipe!;
 				const variant = e.variant ? recipe.variants.find((v) => v.name === e.variant) : undefined;
 				// `data` holds whatever differs between variants: lines, nutrition, cost.
-				return { ...e, recipe, data: variant ?? recipe, key: `${e.recipeId}|${e.variant ?? ''}` };
+				return {
+					...e,
+					recipe,
+					data: variant ?? recipe,
+					key: `${e.recipeId}|${e.variant ?? ''}|${e.fromFreezer ? `f${e.frozenOn}` : ''}`
+				};
 			})
 	);
 	const totalServings = $derived(entries.reduce((s, e) => s + e.servings, 0));
@@ -227,6 +239,8 @@
 		if (offset === 1) return 'Zajtra';
 		return dayLabel.format(new Date(today.getTime() + offset * 86_400_000));
 	}
+	const shortDay = new Intl.DateTimeFormat('sk-SK', { day: 'numeric', month: 'numeric' });
+	const dateShort = (iso: string) => shortDay.format(new Date(`${iso}T12:00:00`));
 	const titleOf = (recipeId: string) => catalog.recipesById.get(recipeId)?.title ?? recipeId;
 
 	function updateSettings(patch: Partial<Settings>) {
@@ -240,7 +254,8 @@
 			e.servings,
 			e.data.lines,
 			e.recipe.servings,
-			catalog.ingredientsById
+			catalog.ingredientsById,
+			e.recipe.title
 		);
 		cookedMessage = used.length
 			? `${e.recipe.title}: zapísané, zo špajze ubudlo ${used.map((u) => u.ingredient.name).join(', ')}.`
@@ -251,7 +266,38 @@
 	let justCooked = $state<{ recipeId: string; variant?: string } | null>(null);
 	const targets = $derived(dailyTargets(settings.current.weightKg, journal.current.goals));
 
-	const planCost = $derived(entries.reduce((s, e) => s + e.data.costPerServing * e.servings, 0));
+	// Freezer portions were paid for when they were cooked.
+	const planCost = $derived(
+		entries.reduce((s, e) => s + (e.fromFreezer ? 0 : e.data.costPerServing * e.servings), 0)
+	);
+	/** Fresh food at home that should be used soon, each with recipes that use it up. */
+	const useUp = $derived.by(() => {
+		if (!ui.loaded) return [];
+		const planned = new Set(plan.current.map((e) => e.recipeId));
+		return useSoon(pantry.current, pantryAdded.current, catalog.ingredientsById, new Date())
+			.slice(0, 3)
+			.map((s) => ({
+				...s,
+				recipes: catalog.recipes
+					.filter(
+						(r) =>
+							!planned.has(r.id) &&
+							r.treat.length === 0 &&
+							r.lines.some((l) => l.ingredientId === s.ingredient.id)
+					)
+					.sort((a, b) => a.costPerServing - b.costPerServing)
+					.slice(0, 2)
+			}))
+			.filter((s) => s.recipes.length);
+	});
+	/** Cooked dishes waiting in the freezer that can go into the plan. */
+	const frozenMeals = $derived(
+		ui.loaded
+			? preserves.current.filter(
+					(p) => p.place === 'mraznicka' && p.recipeId && catalog.recipesById.has(p.recipeId)
+				)
+			: []
+	);
 
 	function setOutOfStock(id: string, missing: boolean) {
 		const { [id]: _previous, ...rest } = outOfStock.current;
@@ -468,6 +514,26 @@
 						</button>
 					</div>
 					<PlanSettings />
+					{#if useUp.length}
+						<div class="use-up">
+							<p class="small">
+								<Icon name="alert" size={15} /> <strong>Minie sa čoskoro:</strong>
+								{useUp
+									.map(
+										(s) => `${s.ingredient.name.split(' (')[0].toLowerCase()} (${s.days} dní doma)`
+									)
+									.join(', ')}
+							</p>
+							<div class="chips">
+								{#each useUp.flatMap((s) => s.recipes) as r (r.id)}
+									<button class="chip" onclick={() => addToPlan(r.id, r.servings)}>
+										<Icon name="plus" size={13} />
+										{r.title}
+									</button>
+								{/each}
+							</div>
+						</div>
+					{/if}
 					<ol class="days">
 						{#each schedule.days as day, d (d)}
 							<li class:today={d === 0}>
@@ -545,8 +611,12 @@
 								<div class="info">
 									<a href="/recepty/{e.recipe.id}">{e.recipe.title}</a>
 									<span class="muted">
-										{#if e.variant}{e.variant} ·
-										{/if}{formatEur(e.data.costPerServing * e.servings)}
+										{#if e.fromFreezer}<span class="badge sky">z mrazničky</span>
+										{/if}{#if e.variant}{e.variant} ·
+										{/if}{e.fromFreezer
+											? 'už zaplatené'
+											: formatEur(e.data.costPerServing * e.servings)}
+										{#if e.freezeExtra}· z toho {e.freezeExtra} porc. do mrazničky{/if}
 										{#if settings.current.people > 1 || settings.current.mealsPerDay > 1}
 											· {Math.floor(e.servings / settings.current.people)}× jedlo
 										{/if}
@@ -557,9 +627,29 @@
 												<Icon name="arrow-up" size={14} stroke={2.2} /> Skôr
 											</button>
 										{/if}
-										<button onclick={() => cooked(e)} title="Uvarené – odpočítať zo špajze">
-											<Icon name="check" size={14} stroke={2.2} /> Uvarené
-										</button>
+										{#if e.fromFreezer}
+											<button
+												onclick={() => returnToFreezer(i, e.recipe.title)}
+												title="Vrátiť porcie do mrazničky"
+											>
+												<Icon name="arrow-left" size={14} stroke={2.2} /> Späť do mrazničky
+											</button>
+										{:else}
+											<button onclick={() => cooked(e)} title="Uvarené – odpočítať zo špajze">
+												<Icon name="check" size={14} stroke={2.2} /> Uvarené
+											</button>
+											{#if (e.recipe.keeps?.freezer ?? 0) > 0}
+												<button
+													aria-pressed={!!e.freezeExtra}
+													onclick={() => setPlanFreezeExtra(i, !e.freezeExtra)}
+													title="Vydrží {e.recipe.keeps?.fridge ?? 3} dni v chladničke a {e.recipe
+														.keeps?.freezer} mes. v mrazničke"
+												>
+													<Icon name={e.freezeExtra ? 'check' : 'cube'} size={14} stroke={2.2} />
+													2× a polovicu zamraziť
+												</button>
+											{/if}
+										{/if}
 										{#if settings.current.breakfasts}
 											{@const morning = isBreakfastEntry(e, e.recipe)}
 											<button
@@ -573,26 +663,50 @@
 										{/if}
 									</span>
 								</div>
-								<div class="stepper" role="group" aria-label="Porcie pre {e.recipe.title}">
-									<button
-										class="icon-btn"
-										aria-label="Menej porcií"
-										onclick={() => setPlanServings(e.recipeId, e.variant, e.servings - 1)}
-									>
-										<Icon name={e.servings === 1 ? 'trash' : 'minus'} size={16} />
-									</button>
-									<span>{e.servings}</span>
-									<button
-										class="icon-btn"
-										aria-label="Viac porcií"
-										onclick={() => setPlanServings(e.recipeId, e.variant, e.servings + 1)}
-									>
-										<Icon name="plus" size={16} />
-									</button>
-								</div>
+								{#if !e.fromFreezer}
+									<div class="stepper" role="group" aria-label="Porcie pre {e.recipe.title}">
+										<button
+											class="icon-btn"
+											aria-label="Menej porcií"
+											onclick={() => setPlanServings(e.recipeId, e.variant, e.servings - 1)}
+										>
+											<Icon name={e.servings === 1 ? 'trash' : 'minus'} size={16} />
+										</button>
+										<span>{e.servings}</span>
+										<button
+											class="icon-btn"
+											aria-label="Viac porcií"
+											onclick={() => setPlanServings(e.recipeId, e.variant, e.servings + 1)}
+										>
+											<Icon name="plus" size={16} />
+										</button>
+									</div>
+								{/if}
 							</li>
 						{/each}
 					</ul>
+					{#if frozenMeals.length}
+						<div class="freezer">
+							<h3><Icon name="cube" size={16} /> V mrazničke</h3>
+							<ul>
+								{#each frozenMeals as f (f.id)}
+									<li>
+										<a href="/recepty/{f.recipeId}">{f.name}</a>
+										<span class="muted small">{f.count} porc. · od {dateShort(f.made)}</span>
+										<button
+											class="btn ghost small"
+											onclick={() => planFromFreezer(f.id, settings.current.people)}
+										>
+											<Icon name="plus" size={14} /> Do plánu
+										</button>
+									</li>
+								{/each}
+							</ul>
+							<p class="muted small">
+								Na jedlo z mrazničky sa nič nenakupuje. Deň vopred ho presuň do chladničky.
+							</p>
+						</div>
+					{/if}
 					{#if cookedMessage}
 						<p class="cooked-msg" role="status">
 							<Icon name="check" size={16} />
@@ -988,7 +1102,13 @@
 			{/if}
 			<span class="meal-text">
 				<span class="meal-kind"
-					>{label ? `${label} · ` : ''}{meal.kind === 'cook' ? 'Uvariť' : 'Zvyšky'}</span
+					>{label ? `${label} · ` : ''}{meal.entry.fromFreezer
+						? meal.kind === 'cook'
+							? 'Z mrazničky'
+							: 'Zvyšky z mrazničky'
+						: meal.kind === 'cook'
+							? 'Uvariť'
+							: 'Zvyšky'}</span
 				>
 				<a href="/recepty/{meal.entry.recipeId}">{titleOf(meal.entry.recipeId)}</a>
 				{#if meal.freeze}<small>tieto porcie hneď zamraz</small>
@@ -1460,6 +1580,56 @@
 		font-weight: 600;
 		text-decoration: underline;
 		cursor: pointer;
+	}
+	.use-up {
+		margin: 6px 0 12px;
+		padding: 10px 12px;
+		border-radius: var(--radius-sm);
+		background: var(--turmeric-soft);
+	}
+	.use-up p {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px;
+		margin: 0 0 8px;
+	}
+	.use-up .chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+	.use-up .chip {
+		white-space: normal;
+	}
+	.freezer {
+		margin-top: 14px;
+		padding-top: 12px;
+		border-top: 1px solid var(--line);
+	}
+	.freezer h3 {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 0.95rem;
+		margin: 0 0 6px;
+	}
+	.freezer ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 6px;
+	}
+	.freezer li {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px 10px;
+	}
+	.freezer li a {
+		flex: 1;
+		min-width: 0;
 	}
 	.eaten {
 		display: inline-flex;

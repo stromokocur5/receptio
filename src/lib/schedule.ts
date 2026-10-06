@@ -51,7 +51,12 @@ export function mealSchedule(
 	unplannedBreakfasts: number;
 	extraServings: number;
 } {
-	const all = entries.map((entry) => ({ entry, left: entry.servings, cookedOn: -1 }));
+	// Servings cooked to freeze aren't eaten in this plan.
+	const all = entries.map((entry) => ({
+		entry,
+		left: entry.servings - (entry.freezeExtra ?? 0),
+		cookedOn: -1
+	}));
 	const morning = breakfasts ? all.filter((b) => isBreakfast(b.entry)) : [];
 	const rest = breakfasts ? all.filter((b) => !isBreakfast(b.entry)) : all;
 	const result: ScheduleDay[] = [];

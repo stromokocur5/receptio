@@ -26,6 +26,12 @@ export interface PlanEntry {
 	variant?: string;
 	/** Eaten for breakfast (true) or as a lunch/dinner (false); absent: decided by the recipe. */
 	breakfast?: boolean;
+	/** Of `servings`, how many are cooked extra to freeze – not eaten this plan. */
+	freezeExtra?: number;
+	/** Portions taken from the freezer: nothing to buy or cook. */
+	fromFreezer?: boolean;
+	/** For freezer portions: the day they were frozen, kept if they go back. */
+	frozenOn?: string;
 }
 
 /** A recipe meant only for the morning (porridge, pancakes) – not one also fit for lunch. */
@@ -86,7 +92,7 @@ export function buildShoppingList(
 
 	for (const entry of plan) {
 		const recipe = recipesById.get(entry.recipeId);
-		if (!recipe) continue;
+		if (!recipe || entry.fromFreezer) continue;
 		const factor = entry.servings / recipe.servings;
 		for (const line of planLines(recipe, entry.variant)) {
 			const acc = needed.get(line.ingredientId) ?? { grams: 0, usedIn: new Set() };
