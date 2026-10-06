@@ -1,0 +1,10 @@
+[Unit]
+Description=Receptio: denná synchronizácia cien z cenyslovensko.sk
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=%h/receptio/scripts/sync-prices-local.sh
+# The API sometimes doesn't answer at first; the script retries on its own, this is the cap.
+TimeoutStartSec=20min

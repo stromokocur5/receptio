@@ -2,9 +2,9 @@
 # overí ich testami a buildom a commitne. Push na main spustí nasadenie cez Workers Builds.
 name: Ceny
 
+# Plánované spúšťanie je vypnuté: api.cenyslovensko.sk GitHub runnerom neodpovedá (connect
+# timeout od 29. 9. 2026). Ceny každé ráno sťahuje domáci počítač, pozri scripts/systemd/README.md.
 on:
-  schedule:
-    - cron: '30 5 * * *'
   workflow_dispatch:
 
 permissions:

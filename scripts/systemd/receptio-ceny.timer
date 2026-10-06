@@ -1,0 +1,12 @@
+[Unit]
+Description=Receptio: ceny každé ráno
+
+[Timer]
+# Chains send the day's prices by 6:00.
+OnCalendar=*-*-* 06:30
+# A morning with the computer off runs at the next login instead.
+Persistent=true
+RandomizedDelaySec=10min
+
+[Install]
+WantedBy=timers.target
