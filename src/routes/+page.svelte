@@ -142,7 +142,7 @@
 			more: [
 				{ href: '/recepty?gf=1', label: 'Bezlepkové' },
 				{ href: '/recepty?sort=protein-eur', label: 'Najviac bielkovín za euro' },
-				{ href: '/recepty?kategoria=domace', label: 'Urob si sám' }
+				{ href: '/recepty?kategoria=domace', label: 'Urob si doma' }
 			]
 		},
 		{
@@ -175,7 +175,7 @@
 			icon: 'sprout',
 			tone: 'var(--leaf-2)',
 			href: '/pestuj',
-			cta: 'Pestuj si sám',
+			cta: 'Pestuj',
 			more: [{ href: '/wiki/ako-zacat-pestovat', label: 'Ako začať' }]
 		}
 	];
@@ -608,9 +608,11 @@
 		gap: 24px;
 		align-items: center;
 	}
+	/* The italic's last letter leans past its box; the padding keeps it off the next word. */
 	.hl {
 		position: relative;
 		display: inline-block;
+		padding-right: 0.08em;
 		color: var(--leaf);
 		font-style: italic;
 	}
@@ -747,6 +749,7 @@
 	}
 	.cont span {
 		display: grid;
+		text-wrap: balance;
 	}
 	.cont small {
 		color: var(--ink-2);

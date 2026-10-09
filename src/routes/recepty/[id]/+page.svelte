@@ -823,7 +823,7 @@
 					</button>
 				</div>
 			</div>
-			<ul>
+			<ul class="lines">
 				{#each recipe.lines as line, i (i)}
 					{@const ingredient = catalog.ingredientsById.get(line.ingredientId)!}
 					{@const home = hasPantry && isHome(line.ingredientId)}
@@ -1445,6 +1445,7 @@
 		align-items: center;
 		gap: 6px;
 		align-self: center;
+		justify-self: end;
 	}
 	/* "What can I use instead?" – only on what isn't at home. */
 	.swap-btn {
@@ -1619,6 +1620,17 @@
 	}
 	.ingredients li:last-child {
 		border-bottom: 0;
+	}
+	/* One column grid for all rows: the amount column is as wide as the longest amount, so short
+	   ones ("2 pl") leave the name room instead of a fixed 6.6em. */
+	.lines {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		column-gap: 10px;
+	}
+	.lines > li {
+		grid-column: 1 / -1;
+		grid-template-columns: subgrid;
 	}
 	.amount {
 		display: inline-flex;

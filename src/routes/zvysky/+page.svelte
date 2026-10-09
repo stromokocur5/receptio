@@ -67,7 +67,8 @@
 	const nameOf = (id: string) => catalog.ingredientsById.get(id)?.name ?? id;
 	/** A long shopping list in a card hides the point: the first few, then how many more. */
 	function shortList(items: { name: string }[], max = 4): string {
-		const names = items.map((i) => i.name.split(' (')[0]);
+		// Lower case, as in the middle of a sentence – the same as "Chýba: …" on the card.
+		const names = items.map((i) => i.name.split(' (')[0].toLowerCase());
 		const rest = names.length - max;
 		if (rest < 1) return names.join(', ');
 		const more = rest === 1 ? 'ďalšia' : rest < 5 ? 'ďalšie' : 'ďalších';
@@ -142,7 +143,7 @@
 			<div class="chips">
 				{#each chosen as id (id)}
 					<button class="chip on" onclick={() => remove(id)} aria-label="Odobrať {nameOf(id)}">
-						{nameOf(id)}
+						{nameOf(id).split(' (')[0]}
 						<Icon name="x" size={12} stroke={2.4} />
 					</button>
 				{/each}

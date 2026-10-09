@@ -132,8 +132,12 @@
 		return formatAmount(line.amount === null ? null : line.amount * factor, line.unit);
 	}
 
-	function timer(label: string, seconds: number, key: string) {
-		startTimer(`${title} · ${label}`, recipeId, seconds);
+	/**
+	 * The dock already shows the time left, so the label names the step instead of repeating
+	 * "15 minút"; the step goes first because a phone's dock only has room for a few words.
+	 */
+	function timer(seconds: number, key: string) {
+		startTimer(`Krok ${index + 1} · ${title}`, recipeId, seconds);
 		started = [...started, key];
 	}
 
@@ -178,7 +182,7 @@
 			const i = segments.findIndex((s) => 'timer' in s);
 			const segment = segments[i];
 			if (segment && 'timer' in segment) {
-				timer(segment.timer.label, segment.timer.seconds, `${index}:${i}`);
+				timer(segment.timer.seconds, `${index}:${i}`);
 				listener?.pause();
 				speak(`Časovač ${segment.timer.label} beží.`, () => listener?.resume());
 			}
@@ -358,7 +362,7 @@
 								<button
 									class="timer-chip"
 									class:started={started.includes(key)}
-									onclick={() => timer(segment.timer.label, segment.timer.seconds, key)}
+									onclick={() => timer(segment.timer.seconds, key)}
 									aria-label="Spustiť časovač {segment.timer.label}"
 								>
 									<Icon name={started.includes(key) ? 'check' : 'play'} size={16} />
@@ -485,7 +489,11 @@
 
 	{#if showAll}
 		<aside class="sheet" aria-label="Všetky suroviny">
-			<h2>Suroviny <span class="muted">· {servings} porc.</span></h2>
+			<h2>
+				Suroviny <span class="muted"
+					>· {servings} {servings === 1 ? 'porcia' : servings < 5 ? 'porcie' : 'porcií'}</span
+				>
+			</h2>
 			<ul>
 				{#each lines as line, i (i)}
 					{@const piece = catalog.ingredientsById.get(line.ingredientId)?.piece}
@@ -779,9 +787,11 @@
 		gap: 10px;
 		padding: 8px 6px;
 		border-bottom: 1px dashed var(--line);
-		border-radius: var(--radius-xs);
 	}
+	/* Only the highlighted rows are rounded; a dashed line along a rounded edge curls up. */
 	.sheet > ul > li.now {
+		border-bottom-color: transparent;
+		border-radius: var(--radius-xs);
 		background: var(--leaf-soft);
 	}
 	.sheet .tools-title {
