@@ -1,6 +1,8 @@
 import {
 	EMPTY_BODY,
 	MAX_MEMBERS,
+	STALE_OWNER_MS,
+	acceptMember,
 	activeMembers,
 	changeEvents,
 	householdNeeds,
@@ -14,6 +16,7 @@ import {
 	wishKey,
 	withEvents,
 	withLocalChanges,
+	type EatenDay,
 	type Expense,
 	type HouseholdDoc,
 	type HouseholdNeeds,
@@ -23,6 +26,7 @@ import {
 	type SharedView
 } from './household';
 import { localToday, shiftDate } from './journal';
+import { newSigner, signMember, verifyMember, type Signer } from './member-keys';
 import type { Pantry } from './pantry';
 import type { PlanEntry } from './shopping';
 import {
@@ -106,6 +110,8 @@ interface Saved {
 	soloAway: boolean;
 	/** The own data while the household's is on the device; null while planning for oneself. */
 	personal: PersonalPlan | null;
+	/** This phone's key for its own profile. */
+	signer: Signer | null;
 }
 
 export const household = $state<{
@@ -132,6 +138,7 @@ let keys: SyncKeys | null = null;
 /** The shared data as it was after the last sync, to tell what changed here since. */
 let base: SharedView | null = null;
 let personal: PersonalPlan | null = null;
+let signer: Signer | null = null;
 let timer: ReturnType<typeof setTimeout> | undefined;
 let pushTimer: ReturnType<typeof setTimeout> | undefined;
 let running: Promise<void> | null = null;
@@ -269,7 +276,8 @@ function save() {
 				doc: household.doc,
 				solo: household.solo,
 				soloAway: household.soloAway,
-				personal
+				personal,
+				signer
 			} satisfies Saved)
 		);
 	} catch {
@@ -299,6 +307,24 @@ async function fetchDoc(k: SyncKeys): Promise<Remote> {
 	return { doc, version: typeof remote.version === 'number' ? remote.version : undefined };
 }
 
+/**
+ * The other phones' copy, minus profile changes they had no right to make: an owned profile
+ * changes only with its owner's signature. `local` is what this phone trusts already.
+ */
+async function trusted(remote: HouseholdDoc, local: HouseholdDoc | null): Promise<HouseholdDoc> {
+	const now = Date.now();
+	const members = { ...remote.members };
+	for (const theirs of Object.values(remote.members)) {
+		const mine = local?.members[theirs.id];
+		if (mine && theirs.at <= mine.at) continue;
+		const signed = !!theirs.owner && (await verifyMember(theirs));
+		if (acceptMember(mine, theirs, signed, now)) continue;
+		if (mine) members[theirs.id] = mine;
+		else delete members[theirs.id];
+	}
+	return { ...remote, members };
+}
+
 const isConflict = (err: unknown) => err instanceof Error && 'status' in err && err.status === 409;
 /** Someone else saved in between: read their copy, merge again and retry – a few times at most. */
 const MAX_RETRIES = 4;
@@ -314,7 +340,7 @@ async function mergeAndUpload(
 	merged: (doc: HouseholdDoc) => void
 ) {
 	for (let attempt = 0; ; attempt++) {
-		const doc = mergeDocs(remote.doc, local());
+		const doc = mergeDocs(await trusted(remote.doc, household.doc), local());
 		merged(doc);
 		if (same(doc, remote.doc)) return;
 		try {
@@ -426,7 +452,8 @@ export function initHousehold() {
 				doc,
 				solo: raw.solo === true,
 				soloAway: raw.soloAway === true,
-				personal: validatePersonal(raw.personal)
+				personal: validatePersonal(raw.personal),
+				signer: validateSigner(raw.signer)
 			};
 		}
 	} catch {
@@ -439,9 +466,22 @@ export function initHousehold() {
 	household.solo = saved.solo;
 	household.soloAway = saved.soloAway;
 	personal = saved.personal;
+	signer = saved.signer;
 	household.status = 'connecting';
 	base = viewOf(saved.doc);
-	void start(saved.code);
+	void start(saved.code).then(() => {
+		// Picked "this is me" before profiles had owners: make it theirs now.
+		const me = myMember();
+		if (me && !me.owner) void claimMember(me.id);
+	});
+}
+
+function validateSigner(raw: unknown): Signer | null {
+	if (typeof raw !== 'object' || raw === null) return null;
+	const r = raw as Record<string, unknown>;
+	return typeof r.pub === 'string' && typeof r.jwk === 'object' && r.jwk !== null
+		? { pub: r.pub, jwk: r.jwk as JsonWebKey }
+		: null;
 }
 
 /** The stash was written by this app, but storage can be edited – keep only what fits. */
@@ -509,7 +549,8 @@ export async function createHousehold(name: string, myName: string): Promise<str
 	const now = Date.now();
 	const code = generateCode();
 	let doc = newDoc(name, now);
-	const me = myName.trim() ? blankMember(myName, now) : null;
+	if (myName.trim()) signer ??= await newSigner();
+	const me = myName.trim() && signer ? await signMember(blankMember(myName, now), signer) : null;
 	if (me) doc = { ...doc, members: { [me.id]: me } };
 	await upload(await deriveKeys(code), doc);
 	household.code = code;
@@ -537,7 +578,8 @@ export async function joinHousehold(input: string): Promise<string | null> {
 	household.status = 'connecting';
 	let remote: HouseholdDoc;
 	try {
-		remote = (await fetchDoc(await deriveKeys(code))).doc;
+		const fetched = (await fetchDoc(await deriveKeys(code))).doc;
+		remote = await trusted(fetched, household.doc);
 	} catch (err) {
 		household.status = household.code ? before : 'off';
 		if (err instanceof Error && 'status' in err && err.status === 404) {
@@ -572,9 +614,13 @@ export async function leaveHousehold() {
 	while (running) await running;
 	if (k && me && household.doc?.members[me]) {
 		const doc = household.doc;
+		const gone = { ...doc.members[me], removed: true, at: Date.now() };
 		const left = {
 			...doc,
-			members: { ...doc.members, [me]: { ...doc.members[me], removed: true, at: Date.now() } }
+			members: {
+				...doc.members,
+				[me]: gone.owner && signer ? await signMember(gone, signer) : gone
+			}
 		};
 		try {
 			await mergeAndUpload(
@@ -661,25 +707,67 @@ export function addMember(name: string): Member | null {
 	return member;
 }
 
-export function updateMember(id: string, change: Partial<Omit<Member, 'id' | 'at'>>) {
-	updateDoc((doc) =>
-		doc.members[id]
-			? {
-					...doc,
-					members: { ...doc.members, [id]: { ...doc.members[id], ...change, at: Date.now() } }
-				}
-			: doc
-	);
+/** Own profile, or one nobody owns (a child without a phone): this phone may change it. */
+export const canEdit = (m: Member) => !m.owner || (!!signer && m.owner === signer.pub);
+
+/** Someone else's profile can be removed only once its phone has been silent for long. */
+export const canRemove = (m: Member) => canEdit(m) || Date.now() - m.at > STALE_OWNER_MS;
+
+function putMember(member: Member) {
+	updateDoc((doc) => ({ ...doc, members: { ...doc.members, [member.id]: member } }));
+}
+
+/** Shows the change at once, then replaces it with the signed copy the others will accept. */
+async function putSigned(member: Member) {
+	putMember(member);
+	if (!member.owner || !signer) return;
+	const signed = await signMember(member, signer);
+	if (household.doc?.members[member.id]?.at === member.at) putMember(signed);
+}
+
+/** `undefined` in the change clears that field (`eaten` when sharing stops). */
+export function updateMember(
+	id: string,
+	change: Partial<Omit<Member, 'id' | 'at' | 'owner' | 'sig'>>
+) {
+	const current = household.doc?.members[id];
+	if (!current || !canEdit(current)) return;
+	const next: Member = { ...current, ...change, at: Date.now() };
+	for (const [key, value] of Object.entries(change)) {
+		if (value === undefined) delete next[key as keyof Member];
+	}
+	void putSigned(next);
 }
 
 export function removeMember(id: string) {
-	updateMember(id, { removed: true });
+	const current = household.doc?.members[id];
+	if (!current || !canRemove(current)) return;
+	if (canEdit(current)) updateMember(id, { removed: true });
+	// A lost phone's profile: the others accept the removal unsigned, and only the removal.
+	else putMember({ ...current, removed: true, at: Date.now() });
 	if (household.me === id) setMe(null);
 }
 
 export function setMe(id: string | null) {
 	household.me = id;
 	save();
+}
+
+/** "This is me": the profile becomes this phone's – the others see it but can't change it. */
+export async function claimMember(id: string) {
+	const current = household.doc?.members[id];
+	if (!current || current.owner) return;
+	signer ??= await newSigner();
+	setMe(id);
+	await putSigned({ ...current, owner: signer.pub, at: Date.now() });
+}
+
+/** What this person ate the last days, for the others – or null to stop showing it. */
+export function shareEaten(days: EatenDay[] | null) {
+	const me = myMember();
+	if (!me?.owner || !canEdit(me)) return;
+	if (JSON.stringify(me.eaten ?? null) === JSON.stringify(days)) return;
+	updateMember(me.id, { eaten: days ?? undefined });
 }
 
 // ── Planning for oneself ───────────────────────────────────────

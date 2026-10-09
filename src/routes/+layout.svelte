@@ -9,6 +9,7 @@
 	import MoreMenu, { MORE_MENU_ID, MORE_PATHS } from '$lib/components/MoreMenu.svelte';
 	import Onboarding from '$lib/components/Onboarding.svelte';
 	import DigestWriter from '$lib/components/DigestWriter.svelte';
+	import HouseholdEaten from '$lib/components/HouseholdEaten.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
 	import {
 		changes,
@@ -19,7 +20,7 @@
 		settings,
 		ui
 	} from '$lib/state.svelte';
-	import { initHousehold, noteHouseholdChange } from '$lib/household.svelte';
+	import { household, initHousehold, noteHouseholdChange } from '$lib/household.svelte';
 	import { initSync, noteChange, syncState } from '$lib/sync.svelte';
 	import { onboarding, shouldOnboard } from '$lib/onboarding.svelte';
 	import { initInstall } from '$lib/install.svelte';
@@ -156,6 +157,7 @@
 
 <Onboarding />
 {#if ui.loaded && digestReminder.current}<DigestWriter />{/if}
+{#if ui.loaded && household.doc}<HouseholdEaten />{/if}
 
 <div class="nav-fade" aria-hidden="true" data-noprint></div>
 <nav class="mobile" aria-label="Navigácia" data-noprint>

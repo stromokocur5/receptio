@@ -21,7 +21,9 @@
 	import {
 		HOUSEHOLD_PREFIX,
 		addMember,
+		canEdit,
 		changeLink,
+		claimMember,
 		createHousehold,
 		household,
 		inviteLink,
@@ -141,6 +143,17 @@
 			newMember = '';
 			editing = added.id;
 		}
+	}
+
+	let myNewName = $state('');
+	/** Someone who came through the link and isn't among the profiles yet. */
+	async function joinAsNew(event: SubmitEvent) {
+		event.preventDefault();
+		const added = addMember(myNewName);
+		if (!added) return;
+		myNewName = '';
+		await claimMember(added.id);
+		editing = added.id;
 	}
 
 	function newLink() {
@@ -326,6 +339,34 @@
 			</section>
 		{/if}
 
+		{#if household.doc && !household.me && !household.solo}
+			<section class="card box who">
+				<h2><Icon name="users" size={24} /> Kto z vás si ty?</h2>
+				<p>
+					Vyber svoj profil alebo si založ nový. Bude len tvoj – vyplníš si, čo neješ, koľko zješ a
+					kedy si doma, a ostatní to uvidia, ale nezmenia.
+				</p>
+				{#if list.some((m) => !m.owner)}
+					<div class="actions">
+						{#each list.filter((m) => !m.owner) as m (m.id)}
+							<button class="btn ghost" onclick={() => claimMember(m.id)}>Som {m.name}</button>
+						{/each}
+					</div>
+				{/if}
+				<form class="row" onsubmit={joinAsNew}>
+					<input
+						bind:value={myNewName}
+						maxlength="40"
+						aria-label="Tvoje meno"
+						placeholder="Tvoje meno"
+					/>
+					<button class="btn leaf" type="submit" disabled={!myNewName.trim()}>
+						<Icon name="plus" size={18} /> Som tu nový
+					</button>
+				</form>
+			</section>
+		{/if}
+
 		{#if household.solo}
 			<section class="card box solo-on">
 				<h2><Icon name="sun" size={24} /> Plánuješ pre seba</h2>
@@ -341,7 +382,10 @@
 
 		<section class="card box">
 			<h2><Icon name="share" size={24} /> Pozvi ostatných</h2>
-			<p>Pošli odkaz každému, s kým spolu varíte. Kto ho má, vidí a mení plán, zoznam aj špajzu.</p>
+			<p>
+				Pošli odkaz každému, s kým spolu varíte. Kto ho má, vidí a mení spoločný plán, zoznam aj
+				špajzu; svoj profil si vyplní každý sám.
+			</p>
 			<div class="actions">
 				<button class="btn leaf" onclick={share}>
 					<Icon name={copied ? 'check' : 'share'} size={18} />
@@ -394,7 +438,8 @@
 					<li class="member">
 						<div class="member-head">
 							<strong>{member.name}</strong>
-							{#if household.me === member.id}<span class="me">ty</span>{/if}
+							{#if household.me === member.id}<span class="me">ty</span
+								>{:else if !member.owner}<span class="muted small">upraví ktokoľvek</span>{/if}
 							<span class="chips">
 								{#each summary(member) as chip (chip)}<span class="chip">{chip}</span>{:else}<span
 										class="muted small">je všetko</span
@@ -405,8 +450,8 @@
 								aria-expanded={editing === member.id}
 								onclick={() => (editing = editing === member.id ? null : member.id)}
 							>
-								<Icon name="pencil" size={16} />
-								{editing === member.id ? 'Hotovo' : 'Upraviť'}
+								<Icon name={canEdit(member) ? 'pencil' : 'info'} size={16} />
+								{editing === member.id ? 'Hotovo' : canEdit(member) ? 'Upraviť' : 'Pozrieť'}
 							</button>
 						</div>
 						{#if editing === member.id}

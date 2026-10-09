@@ -12,7 +12,16 @@
 		type Member,
 		type PlanMeal
 	} from '$lib/household';
-	import { household, removeMember, setMe, updateMember } from '$lib/household.svelte';
+	import {
+		canEdit,
+		canRemove,
+		claimMember,
+		household,
+		removeMember,
+		shareEaten,
+		updateMember
+	} from '$lib/household.svelte';
+	import MemberCard from '$lib/components/MemberCard.svelte';
 	import { localToday } from '$lib/journal';
 	import { ACTIVITY_LABELS, ALLERGEN_LABELS, type Activity } from '$lib/nutrition';
 	import { journal, settings } from '$lib/state.svelte';
@@ -34,6 +43,7 @@
 	] as const;
 
 	const isMe = $derived(household.me === member.id);
+	const editable = $derived(canEdit(member));
 	const targets = $derived(memberTargets(member.body));
 	const away = $derived(member.away);
 
@@ -71,217 +81,258 @@
 	}
 </script>
 
-<div class="edit">
-	<label class="name-field">
-		Meno
-		<input
-			value={member.name}
-			maxlength="40"
-			onchange={(e) =>
-				e.currentTarget.value.trim() &&
-				updateMember(member.id, { name: e.currentTarget.value.trim() })}
-		/>
-	</label>
-
-	<fieldset>
-		<legend>Je doma</legend>
-		<div class="toggles">
-			{#each PLAN_MEALS as meal (meal)}
-				<button class="toggle" aria-pressed={member.meals[meal]} onclick={() => toggleMeal(meal)}
-					>{MEAL_NAMES[meal]}</button
+{#if !editable}
+	<div class="edit">
+		<MemberCard {member} />
+		<p class="hint">
+			Svoj profil si {member.name} vypĺňa sám vo svojom telefóne – ostatní ho vidia, ale nemenia.
+		</p>
+		{#if canRemove(member)}
+			<p class="hint">Jeho telefón sa dva mesiace neozval, preto ho môžeš odobrať.</p>
+			<div class="actions">
+				<button
+					class="btn ghost small danger"
+					onclick={() => {
+						removeMember(member.id);
+						ondone();
+					}}><Icon name="trash" size={16} /> Odobrať</button
 				>
-			{/each}
-		</div>
-		<p class="hint">Plán varí porcie len pre tých, čo pri danom jedle sedia doma.</p>
-	</fieldset>
-
-	<fieldset>
-		<legend>Preč (dovolenka, služobka)</legend>
-		<div class="dates">
-			<label>
-				od
-				<input
-					type="date"
-					value={away?.from ?? ''}
-					onchange={(e) => setAway(e.currentTarget.value, away?.to ?? null)}
-				/>
-			</label>
-			<label>
-				do
-				<input
-					type="date"
-					value={away?.to ?? ''}
-					min={away?.from ?? localToday()}
-					disabled={!away}
-					onchange={(e) => setAway(away?.from ?? localToday(), e.currentTarget.value || null)}
-				/>
-			</label>
-			{#if away}
-				<button class="btn ghost small" onclick={() => setAway('', null)}>Je doma</button>
-			{/if}
-		</div>
-		{#if away && !away.to}<p class="hint">Bez dátumu „do“ – kým nepovieš, že je späť.</p>{/if}
-	</fieldset>
-
-	<fieldset>
-		<legend>Porcia</legend>
-		<select
-			value={member.portion ?? 'auto'}
-			onchange={(e) =>
-				updateMember(member.id, {
-					portion: e.currentTarget.value === 'auto' ? null : Number(e.currentTarget.value)
-				})}
-		>
-			<option value="auto"
-				>Podľa tela{targets.portion
-					? ` (${formatNumber(targets.portion, 2)}×)`
-					: ' – zatiaľ bežná'}</option
-			>
-			{#each PORTIONS as [value, label] (value)}<option {value}>{label}</option>{/each}
-		</select>
-	</fieldset>
-
-	<fieldset>
-		<legend>Telo a ciele <span class="muted">(nepovinné)</span></legend>
-		<div class="body">
-			<label>
-				Výška
-				<span class="unit"
-					><input
-						inputmode="numeric"
-						placeholder="—"
-						value={member.body.heightCm ?? ''}
-						onchange={(e) => bodyNumber('heightCm', e.currentTarget.value, 50, 250)}
-					/> cm</span
-				>
-			</label>
-			<label>
-				Váha
-				<span class="unit"
-					><input
-						inputmode="numeric"
-						placeholder="—"
-						value={member.body.weightKg ?? ''}
-						onchange={(e) => bodyNumber('weightKg', e.currentTarget.value, 10, 250)}
-					/> kg</span
-				>
-			</label>
-			<label>
-				Vek
-				<span class="unit"
-					><input
-						inputmode="numeric"
-						placeholder="—"
-						value={member.body.age ?? ''}
-						onchange={(e) => bodyNumber('age', e.currentTarget.value, 1, 110)}
-					/> r.</span
-				>
-			</label>
-			<label>
-				Pohlavie
-				<select
-					value={member.body.sex ?? ''}
-					onchange={(e) => setBody({ sex: (e.currentTarget.value || null) as Body['sex'] })}
-				>
-					<option value="">Neuvádzam</option>
-					<option value="f">Žena</option>
-					<option value="m">Muž</option>
-				</select>
-			</label>
-			<label>
-				Pohyb
-				<select
-					value={member.body.activity}
-					onchange={(e) => setBody({ activity: e.currentTarget.value as Activity })}
-				>
-					{#each Object.entries(ACTIVITY_LABELS) as [value, label] (value)}<option {value}
-							>{label}</option
-						>{/each}
-				</select>
-			</label>
-			<label>
-				Cieľ
-				<select
-					value={member.body.goal}
-					onchange={(e) => setBody({ goal: e.currentTarget.value as BodyGoal })}
-				>
-					{#each Object.entries(BODY_GOAL_LABELS) as [value, label] (value)}<option {value}
-							>{label}</option
-						>{/each}
-				</select>
-			</label>
-		</div>
-		{#if targets.kcal || targets.protein}
-			<p class="targets">
-				Denne asi
-				{#if targets.kcal}<strong>{formatNumber(targets.kcal, 0)} kcal</strong
-					>{/if}{#if targets.kcal && targets.protein}
-					a
-				{/if}{#if targets.protein}<strong>{formatNumber(targets.protein, 0)} g bielkovín</strong
-					>{/if}
-				· porcia {formatNumber(portionOf(member), 2)}×
+			</div>
+		{/if}
+	</div>
+{:else}
+	<div class="edit">
+		{#if !member.owner}
+			<p class="hint owner">
+				Tento profil môže upraviť ktokoľvek v domácnosti – hodí sa pre dieťa alebo niekoho bez
+				telefónu. Ak je to tvoj profil, ťukni <strong>Toto som ja</strong>: potom ho budeš meniť len
+				ty a ostatní ho uvidia.
 			</p>
 		{/if}
-		<p class="hint">
-			Vidí to každý v domácnosti; na server ide len šifra. Energia je odhad (Mifflin-St Jeor), deťom
-			do 13 rokov stačí vek.
-		</p>
-		{#if isMe && settings.current.weightKg && member.body.weightKg !== settings.current.weightKg}
-			<button class="btn ghost small" onclick={fromMyProfile}
-				>Prevziať váhu a pohyb z môjho profilu</button
-			>
-		{/if}
-	</fieldset>
+		<label class="name-field">
+			Meno
+			<input
+				value={member.name}
+				maxlength="40"
+				onchange={(e) =>
+					e.currentTarget.value.trim() &&
+					updateMember(member.id, { name: e.currentTarget.value.trim() })}
+			/>
+		</label>
 
-	<fieldset>
-		<legend>Alergie</legend>
-		<div class="toggles">
-			{#each ALLERGENS as allergen (allergen)}
-				<button
-					class="toggle"
-					aria-pressed={member.allergens.includes(allergen)}
-					onclick={() => toggleAllergen(allergen)}>{ALLERGEN_LABELS[allergen]}</button
+		<fieldset>
+			<legend>Je doma</legend>
+			<div class="toggles">
+				{#each PLAN_MEALS as meal (meal)}
+					<button class="toggle" aria-pressed={member.meals[meal]} onclick={() => toggleMeal(meal)}
+						>{MEAL_NAMES[meal]}</button
+					>
+				{/each}
+			</div>
+			<p class="hint">Plán varí porcie len pre tých, čo pri danom jedle sedia doma.</p>
+		</fieldset>
+
+		<fieldset>
+			<legend>Preč (dovolenka, služobka)</legend>
+			<div class="dates">
+				<label>
+					od
+					<input
+						type="date"
+						value={away?.from ?? ''}
+						onchange={(e) => setAway(e.currentTarget.value, away?.to ?? null)}
+					/>
+				</label>
+				<label>
+					do
+					<input
+						type="date"
+						value={away?.to ?? ''}
+						min={away?.from ?? localToday()}
+						disabled={!away}
+						onchange={(e) => setAway(away?.from ?? localToday(), e.currentTarget.value || null)}
+					/>
+				</label>
+				{#if away}
+					<button class="btn ghost small" onclick={() => setAway('', null)}>Je doma</button>
+				{/if}
+			</div>
+			{#if away && !away.to}<p class="hint">Bez dátumu „do“ – kým nepovieš, že je späť.</p>{/if}
+		</fieldset>
+
+		<fieldset>
+			<legend>Porcia</legend>
+			<select
+				value={member.portion ?? 'auto'}
+				onchange={(e) =>
+					updateMember(member.id, {
+						portion: e.currentTarget.value === 'auto' ? null : Number(e.currentTarget.value)
+					})}
+			>
+				<option value="auto"
+					>Podľa tela{targets.portion
+						? ` (${formatNumber(targets.portion, 2)}×)`
+						: ' – zatiaľ bežná'}</option
 				>
-			{/each}
+				{#each PORTIONS as [value, label] (value)}<option {value}>{label}</option>{/each}
+			</select>
+		</fieldset>
+
+		<fieldset>
+			<legend>Telo a ciele <span class="muted">(nepovinné)</span></legend>
+			<div class="body">
+				<label>
+					Výška
+					<span class="unit"
+						><input
+							inputmode="numeric"
+							placeholder="—"
+							value={member.body.heightCm ?? ''}
+							onchange={(e) => bodyNumber('heightCm', e.currentTarget.value, 50, 250)}
+						/> cm</span
+					>
+				</label>
+				<label>
+					Váha
+					<span class="unit"
+						><input
+							inputmode="numeric"
+							placeholder="—"
+							value={member.body.weightKg ?? ''}
+							onchange={(e) => bodyNumber('weightKg', e.currentTarget.value, 10, 250)}
+						/> kg</span
+					>
+				</label>
+				<label>
+					Vek
+					<span class="unit"
+						><input
+							inputmode="numeric"
+							placeholder="—"
+							value={member.body.age ?? ''}
+							onchange={(e) => bodyNumber('age', e.currentTarget.value, 1, 110)}
+						/> r.</span
+					>
+				</label>
+				<label>
+					Pohlavie
+					<select
+						value={member.body.sex ?? ''}
+						onchange={(e) => setBody({ sex: (e.currentTarget.value || null) as Body['sex'] })}
+					>
+						<option value="">Neuvádzam</option>
+						<option value="f">Žena</option>
+						<option value="m">Muž</option>
+					</select>
+				</label>
+				<label>
+					Pohyb
+					<select
+						value={member.body.activity}
+						onchange={(e) => setBody({ activity: e.currentTarget.value as Activity })}
+					>
+						{#each Object.entries(ACTIVITY_LABELS) as [value, label] (value)}<option {value}
+								>{label}</option
+							>{/each}
+					</select>
+				</label>
+				<label>
+					Cieľ
+					<select
+						value={member.body.goal}
+						onchange={(e) => setBody({ goal: e.currentTarget.value as BodyGoal })}
+					>
+						{#each Object.entries(BODY_GOAL_LABELS) as [value, label] (value)}<option {value}
+								>{label}</option
+							>{/each}
+					</select>
+				</label>
+			</div>
+			{#if targets.kcal || targets.protein}
+				<p class="targets">
+					Denne asi
+					{#if targets.kcal}<strong>{formatNumber(targets.kcal, 0)} kcal</strong
+						>{/if}{#if targets.kcal && targets.protein}
+						a
+					{/if}{#if targets.protein}<strong>{formatNumber(targets.protein, 0)} g bielkovín</strong
+						>{/if}
+					· porcia {formatNumber(portionOf(member), 2)}×
+				</p>
+			{/if}
+			<p class="hint">
+				Vidí to každý v domácnosti; na server ide len šifra. Energia je odhad (Mifflin-St Jeor),
+				deťom do 13 rokov stačí vek.
+			</p>
+			{#if isMe && settings.current.weightKg && member.body.weightKg !== settings.current.weightKg}
+				<button class="btn ghost small" onclick={fromMyProfile}
+					>Prevziať váhu a pohyb z môjho profilu</button
+				>
+			{/if}
+		</fieldset>
+
+		<fieldset>
+			<legend>Alergie</legend>
+			<div class="toggles">
+				{#each ALLERGENS as allergen (allergen)}
+					<button
+						class="toggle"
+						aria-pressed={member.allergens.includes(allergen)}
+						onclick={() => toggleAllergen(allergen)}>{ALLERGEN_LABELS[allergen]}</button
+					>
+				{/each}
+			</div>
+		</fieldset>
+		<div class="toggles">
+			<button
+				class="toggle"
+				aria-pressed={member.mild}
+				onclick={() => updateMember(member.id, { mild: !member.mild })}
+				><Icon name="chili" size={16} /> Nepálivo</button
+			>
+			<button
+				class="toggle"
+				aria-pressed={member.glutenFree}
+				onclick={() => updateMember(member.id, { glutenFree: !member.glutenFree })}
+				><Icon name="wheat" size={16} /> Bezlepkovo</button
+			>
 		</div>
-	</fieldset>
-	<div class="toggles">
-		<button
-			class="toggle"
-			aria-pressed={member.mild}
-			onclick={() => updateMember(member.id, { mild: !member.mild })}
-			><Icon name="chili" size={16} /> Nepálivo</button
-		>
-		<button
-			class="toggle"
-			aria-pressed={member.glutenFree}
-			onclick={() => updateMember(member.id, { glutenFree: !member.glutenFree })}
-			><Icon name="wheat" size={16} /> Bezlepkovo</button
-		>
+		<fieldset>
+			<legend>Čo neje alebo nechce jesť</legend>
+			<IngredientExcluder
+				selected={member.avoid}
+				onchange={(ids) => updateMember(member.id, { avoid: ids })}
+				fieldLabel={`Čo ${member.name} neje`}
+				prefix="neje"
+				hint="Recepty s týmito surovinami nebude plán pre domácnosť ponúkať. Celá skupina: „cícer“ vylúči suchý aj sterilizovaný."
+			/>
+		</fieldset>
+		{#if member.owner && isMe}
+			<label class="check">
+				<input
+					type="checkbox"
+					checked={!!member.eaten}
+					onchange={(e) => shareEaten(e.currentTarget.checked ? [] : null)}
+				/>
+				Ukázať ostatným, koľko som zjedol/zjedla – energiu a bielkoviny za posledných 7 dní z môjho
+				<a href="/moje#dennik">denníka</a>
+			</label>
+		{/if}
+		<div class="actions">
+			{#if !member.owner && !household.me}
+				<button class="btn ghost small" onclick={() => claimMember(member.id)}>Toto som ja</button>
+			{/if}
+			{#if !member.owner || !isMe}
+				<button
+					class="btn ghost small danger"
+					onclick={() => {
+						removeMember(member.id);
+						ondone();
+					}}><Icon name="trash" size={16} /> Odobrať</button
+				>
+			{/if}
+		</div>
 	</div>
-	<fieldset>
-		<legend>Čo neje alebo nechce jesť</legend>
-		<IngredientExcluder
-			selected={member.avoid}
-			onchange={(ids) => updateMember(member.id, { avoid: ids })}
-			fieldLabel={`Čo ${member.name} neje`}
-			prefix="neje"
-			hint="Recepty s týmito surovinami nebude plán pre domácnosť ponúkať. Celá skupina: „cícer“ vylúči suchý aj sterilizovaný."
-		/>
-	</fieldset>
-	<div class="actions">
-		<button class="btn ghost small" onclick={() => setMe(isMe ? null : member.id)}>
-			{isMe ? 'Toto nie som ja' : 'Toto som ja'}
-		</button>
-		<button
-			class="btn ghost small danger"
-			onclick={() => {
-				removeMember(member.id);
-				ondone();
-			}}><Icon name="trash" size={16} /> Odobrať</button
-		>
-	</div>
-</div>
+{/if}
 
 <style>
 	.edit {
@@ -377,5 +428,14 @@
 	}
 	.danger {
 		color: var(--tomato);
+	}
+	.owner {
+		margin: 0;
+	}
+	.check {
+		display: flex;
+		gap: 8px;
+		align-items: flex-start;
+		font-size: 0.9rem;
 	}
 </style>

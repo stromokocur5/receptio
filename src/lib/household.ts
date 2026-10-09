@@ -1,3 +1,4 @@
+import { canonical } from './member-keys';
 import { ACTIVITY_PROTEIN, type Activity } from './nutrition';
 import type { PlanEntry } from './shopping';
 import { ALLERGENS, type Allergen, type Ingredient, type RecipeSummary } from './types';
@@ -64,7 +65,24 @@ export interface Member {
 	/** Removed members stay as a tombstone so the removal wins over older copies. */
 	removed: boolean;
 	at: number;
+	/** The phone that owns this profile (its public key); only it can change the profile. */
+	owner?: string;
+	/** The owner's signature over the rest of the profile. */
+	sig?: string;
+	/** What they ate the last days, when they chose to show it to the others. */
+	eaten?: EatenDay[];
 }
+
+/** One day of what a member ate, from their own food diary. */
+export interface EatenDay {
+	date: string;
+	kcal: number;
+	protein: number;
+}
+
+export const MAX_EATEN_DAYS = 7;
+/** A profile its owner hasn't touched for this long can be removed by the others (lost phone). */
+export const STALE_OWNER_MS = 60 * 24 * 60 * 60 * 1000;
 
 /** Money one member put into the household, or a payback from one member to another. */
 export interface Expense {
@@ -127,6 +145,8 @@ const ID_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const MEMBER_ID_RE = /^[a-z0-9]{1,16}$/;
 const ITEM_ID_RE = /^[a-zA-Z0-9-]{1,40}$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+/** A P-256 public key (65 bytes) or signature (64 bytes) in base64url. */
+const KEY_RE = /^[A-Za-z0-9_-]{80,100}$/;
 const LOG_KINDS: LogKind[] = ['plan-add', 'plan-remove', 'bought', 'pantry', 'expense', 'cooked'];
 
 export function newDoc(name: string, now: number): HouseholdDoc {
@@ -196,8 +216,49 @@ function validateMember(raw: unknown): Member | undefined {
 		body: validateBody(raw.body),
 		away: validateAway(raw.away),
 		removed: raw.removed === true,
-		at: raw.at
+		at: raw.at,
+		...(typeof raw.owner === 'string' && KEY_RE.test(raw.owner) && { owner: raw.owner }),
+		...(typeof raw.sig === 'string' && KEY_RE.test(raw.sig) && { sig: raw.sig }),
+		...(Array.isArray(raw.eaten) && { eaten: validateEaten(raw.eaten) })
 	};
+}
+
+function validateEaten(raw: unknown[]): EatenDay[] {
+	const num = (v: unknown, max: number) =>
+		typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= max ? Math.round(v) : null;
+	return raw
+		.flatMap((d) => {
+			if (!isRecord(d) || typeof d.date !== 'string' || !DATE_RE.test(d.date)) return [];
+			const kcal = num(d.kcal, 20_000);
+			const protein = num(d.protein, 1000);
+			return kcal === null || protein === null ? [] : [{ date: d.date, kcal, protein }];
+		})
+		.slice(0, MAX_EATEN_DAYS);
+}
+
+/**
+ * Whether a newer copy of a profile from another phone may replace the one here. An owned
+ * profile changes only with its owner's signature (`signed`: it verified with its own `owner`
+ * key); the others can only remove it once the owner has been gone for long. A profile without
+ * an owner anyone can change – or claim, with a signature.
+ */
+export function acceptMember(
+	mine: Member | undefined,
+	theirs: Member,
+	signed: boolean,
+	now: number
+): boolean {
+	if (!mine?.owner) return !theirs.owner || signed;
+	if (theirs.owner === mine.owner && signed) return true;
+	return (
+		theirs.removed &&
+		theirs.owner === mine.owner &&
+		!mine.removed &&
+		now - mine.at > STALE_OWNER_MS &&
+		// Nothing else changed: the others can't rewrite the profile on the way out.
+		canonical({ ...theirs, removed: false, at: 0, sig: undefined }) ===
+			canonical({ ...mine, at: 0, sig: undefined })
+	);
 }
 
 function validateMemberMeals(raw: unknown): Record<PlanMeal, boolean> {

@@ -43,9 +43,16 @@ test('two phones share the plan, who buys what, the log and the money', async ({
 	await visit(jano, `/domacnost#d=${code}`);
 	await jano.getByRole('button', { name: 'Pripojiť sa' }).click();
 	await expect(jano.getByRole('status')).toContainText('Spojené');
-	await jano.getByLabel('Meno nového člena').fill('Jano');
-	await jano.getByRole('button', { name: 'Pridať', exact: true }).click();
-	await jano.getByRole('button', { name: 'Toto som ja' }).click();
+	await jano.getByLabel('Tvoje meno').fill('Jano');
+	await jano.getByRole('button', { name: 'Som tu nový' }).click();
+	await expect(jano.locator('.member', { hasText: 'Jano' })).toContainText('ty');
+	// Ema's profile is hers: Jano sees it but can't change or remove it.
+	await jano
+		.locator('.member', { hasText: 'Ema' })
+		.getByRole('button', { name: 'Pozrieť' })
+		.click();
+	await expect(jano.getByText('Svoj profil si Ema vypĺňa sám')).toBeVisible();
+	await expect(jano.getByRole('button', { name: 'Odobrať' })).toHaveCount(0);
 
 	await addFalafel(ema);
 	await ema.goto('/plan');
