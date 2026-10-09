@@ -1,4 +1,4 @@
-import { ALL_PERSISTED } from './state.svelte';
+import { ALL_PERSISTED, ASIDE, keptAside, type AsideParts } from './state.svelte';
 
 const APP = 'receptio';
 const VERSION = 1;
@@ -8,9 +8,13 @@ export const MAX_BACKUP_BYTES = 1_000_000;
 type StoreName = keyof typeof ALL_PERSISTED;
 
 export function exportBackup(now = new Date()): string {
-	const data = Object.fromEntries(
-		Object.entries(ALL_PERSISTED).map(([name, store]) => [name, store.current])
-	);
+	// In a household the own plan, list and pantry are the ones kept aside, not the household's.
+	const data = {
+		...Object.fromEntries(
+			Object.entries(ALL_PERSISTED).map(([name, store]) => [name, store.current])
+		),
+		...keptAside.read()
+	};
 	return JSON.stringify(
 		{ app: APP, version: VERSION, exportedAt: now.toISOString(), data },
 		null,
@@ -45,6 +49,15 @@ export function importBackup(text: string): StoreName[] | null {
 	}
 
 	const restored: StoreName[] = [];
+	const aside: Partial<AsideParts> = {};
+	for (const name of ASIDE) {
+		const value = name in parts ? ALL_PERSISTED[name].parse(parts[name]) : undefined;
+		if (value !== undefined) (aside as Record<string, unknown>)[name] = value;
+	}
+	if (keptAside.write(aside)) {
+		restored.push(...(Object.keys(aside) as StoreName[]));
+		for (const name of ASIDE) delete parts[name];
+	}
 	for (const [name, store] of Object.entries(ALL_PERSISTED) as [
 		StoreName,
 		(typeof ALL_PERSISTED)[StoreName]

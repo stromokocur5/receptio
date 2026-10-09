@@ -49,6 +49,7 @@ import {
 	checkedItems,
 	extraItems,
 	gardens,
+	keptAside,
 	mainMeals,
 	MAX_GARDENS,
 	pantry,
@@ -592,8 +593,35 @@ function stop() {
 	keys = null;
 }
 
+/** Backups hold the own plan, list and pantry; restoring one puts them aside again. */
+function keepAsideForBackups() {
+	keptAside.read = () =>
+		household.code && !household.solo && personal
+			? {
+					plan: personal.plan,
+					checkedItems: personal.checked,
+					extraItems: personal.extras,
+					pantry: personal.pantry,
+					pantryAdded: personal.added
+				}
+			: null;
+	keptAside.write = (parts) => {
+		if (!household.code || household.solo || !personal) return false;
+		personal = {
+			plan: parts.plan ?? personal.plan,
+			checked: parts.checkedItems ?? personal.checked,
+			extras: parts.extraItems ?? personal.extras,
+			pantry: parts.pantry ?? personal.pantry,
+			added: parts.pantryAdded ?? personal.added
+		};
+		save();
+		return true;
+	};
+}
+
 /** Once, from the root layout after local data is loaded. */
 export function initHousehold() {
+	keepAsideForBackups();
 	let saved: Saved | null = null;
 	try {
 		const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');

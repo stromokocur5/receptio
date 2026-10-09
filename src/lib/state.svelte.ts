@@ -71,6 +71,11 @@ class Persisted<T> {
 		}
 	}
 
+	/** The value backup data would give, without storing it. */
+	parse(raw: unknown): T | undefined {
+		return this.#validate(raw);
+	}
+
 	/** Replaces the value from backup data; false when it doesn't validate. */
 	restore(raw: unknown): boolean {
 		const parsed = this.#validate(raw);
@@ -647,6 +652,22 @@ export const ALL_PERSISTED = {
 	courseDone,
 	purchases
 };
+
+/** The stores a household puts aside while its own plan, list and pantry are on the device. */
+export const ASIDE = ['plan', 'checkedItems', 'extraItems', 'pantry', 'pantryAdded'] as const;
+export type AsideParts = {
+	[K in (typeof ASIDE)[number]]: (typeof ALL_PERSISTED)[K]['current'];
+};
+
+/**
+ * While the household's plan, list and pantry are on this device, the person's own ones are kept
+ * aside (household.svelte.ts): a backup holds the own ones, and restoring one puts them aside
+ * again instead of over the household's. Null outside a household or while planning alone.
+ */
+export const keptAside: {
+	read: () => AsideParts | null;
+	write: (parts: Partial<AsideParts>) => boolean;
+} = { read: () => null, write: () => false };
 
 export const ui = $state({ loaded: false });
 
