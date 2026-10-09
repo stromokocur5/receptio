@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { afterNavigate, pushState } from '$app/navigation';
 	import { page } from '$app/state';
-	import { formatAmount, formatEur, formatNumber, formatPiece } from '$lib/amounts';
+	import { formatAmount, formatEur, formatGrams, formatNumber, formatPiece } from '$lib/amounts';
 	import {
 		RECIPE_CATEGORIES,
 		SPICY_LABELS,
@@ -696,7 +696,13 @@
 					{:else}
 						Máš {match.have - match.short.length}/{match.needed}.
 						{#if match.missing.length}Chýba: {shortList(match.missing)}.{/if}
-						{#if match.short.length}Málo: {shortList(match.short)}.{/if}
+						{#if match.short.length}Málo: {shortList(
+								match.short.map((i) => ({
+									name: match.shortBy?.[i.id]
+										? `${i.name} (ešte ${formatGrams(match.shortBy[i.id])})`
+										: i.name
+								}))
+							)}.{/if}
 					{/if}
 					{#if match.swaps.length}
 						Použi, čo máš: {match.swaps

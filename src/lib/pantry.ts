@@ -20,6 +20,8 @@ export interface PantryMatch {
 	missing: Ingredient[];
 	/** Present but not in the quantity the recipe needs. */
 	short: Ingredient[];
+	/** For each short ingredient, about how many grams more the recipe needs. */
+	shortBy: Record<string, number>;
 	/** Not at home, but a listed substitute is – cookable, a little different. */
 	swaps: PantrySwap[];
 	score: number;
@@ -79,6 +81,7 @@ export function matchRecipe(
 
 	const missing: Ingredient[] = [];
 	const short: Ingredient[] = [];
+	const shortBy: Record<string, number> = {};
 	const swaps: PantrySwap[] = [];
 	for (const [group, { ingredient, grams }] of neededByGroup) {
 		const available = groups.get(group);
@@ -86,13 +89,17 @@ export function matchRecipe(
 			const use = swapFromPantry(ingredient, groups, byId);
 			if (use) swaps.push({ need: ingredient, use });
 			else missing.push(ingredient);
-		} else if (available < grams) short.push(ingredient);
+		} else if (available < grams) {
+			short.push(ingredient);
+			// Counted in the group's usual form; back to this ingredient's own grams.
+			shortBy[ingredient.id] = Math.ceil((grams - available) / ingredient.groupFactor);
+		}
 	}
 
 	const needed = neededByGroup.size;
 	const have = needed - missing.length;
 	const score = needed === 0 ? 1 : (have - short.length * 0.5 - swaps.length * 0.25) / needed;
-	return { recipe, have, needed, missing, short, swaps, score };
+	return { recipe, have, needed, missing, short, shortBy, swaps, score };
 }
 
 export function rankByPantry(

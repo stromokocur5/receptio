@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatEur, formatNumber } from '$lib/amounts';
+	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import type { PantryMatch } from '$lib/pantry';
 	import type { RecipeSummary } from '$lib/types';
@@ -122,7 +122,11 @@
 					<span class="badge turmeric missing">
 						Chýba: {[...match.missing, ...match.short]
 							.slice(0, 3)
-							.map((i) => i.name.split(' (')[0].toLowerCase())
+							.map(
+								(i) =>
+									i.name.split(' (')[0].toLowerCase() +
+									(match.shortBy?.[i.id] ? ` (ešte ${formatGrams(match.shortBy[i.id])})` : '')
+							)
 							.join(', ')}{match.missing.length + match.short.length > 3 ? '…' : ''}
 					</span>
 				{/if}
