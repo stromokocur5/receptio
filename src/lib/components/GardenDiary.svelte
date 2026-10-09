@@ -17,6 +17,7 @@
 	import { bestPrice } from '$lib/pricing';
 	import { IN_MONTH } from '$lib/season';
 	import { pantry, removeGarden, saveGarden, setPantryItem, settings } from '$lib/state.svelte';
+	import { household, isSharedGarden, shareGarden, unshareGarden } from '$lib/household.svelte';
 	import type { GardenDiary } from '$lib/state.svelte';
 	import type { GrowCombo, GrowGuide } from '$lib/types';
 
@@ -209,11 +210,33 @@
 				}}
 			>
 				<Icon name="trash" size={16} />
-				{confirmDelete ? 'Naozaj zmazať?' : 'Zmazať'}
+				{confirmDelete
+					? isSharedGarden(diary.id)
+						? 'Naozaj? Ostatným v domácnosti ostane.'
+						: 'Naozaj zmazať?'
+					: 'Zmazať'}
 			</button>
 		</div>
 	</header>
 	{#if shareNote}<p class="note" role="status"><Icon name="check" size={16} /> {shareNote}</p>{/if}
+	{#if household.doc}
+		<div class="together">
+			<Icon name="users" size={18} />
+			{#if isSharedGarden(diary.id)}
+				<p>
+					<strong>Pestujete spolu</strong> – {household.doc.name[0]}. Splnené úlohy, úrodu aj záhony
+					vidí a zapisuje každý; kto zváži úrodu, ukáže sa v domácnosti.
+				</p>
+				<button class="btn ghost small" onclick={() => unshareGarden(diary.id)}
+					>Prestať zdieľať</button
+				>
+			{:else}
+				<p>Staráte sa o túto záhradku spolu? Zdieľaj ju s domácnosťou {household.doc.name[0]}.</p>
+				<button class="btn ghost small" onclick={() => shareGarden(diary.id)}>Pestovať spolu</button
+				>
+			{/if}
+		</div>
+	{/if}
 
 	{#if settings.current.location}
 		<WeatherPanel
@@ -612,5 +635,20 @@
 	}
 	.small {
 		font-size: 0.86rem;
+	}
+	.together {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 8px 10px;
+		margin: 12px 0 0;
+		padding: 10px 14px;
+		border-radius: 14px;
+		background: var(--leaf-soft);
+		font-size: 0.9rem;
+	}
+	.together p {
+		flex: 1 1 220px;
+		margin: 0;
 	}
 </style>

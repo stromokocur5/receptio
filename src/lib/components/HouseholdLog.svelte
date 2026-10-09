@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { formatEur } from '$lib/amounts';
+	import { formatEur, formatGrams } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
 	import { logOf, type LogEvent } from '$lib/household';
@@ -17,7 +17,8 @@
 		cooked: 'pot',
 		bought: 'basket',
 		pantry: 'jar',
-		expense: 'euro'
+		expense: 'euro',
+		harvest: 'sprout'
 	};
 
 	const items = (n: number) => (n === 1 ? 'vec' : n < 5 ? 'veci' : 'vecí');
@@ -38,6 +39,8 @@
 				return `do špajze ${n} ${items(n)}`;
 			case 'expense':
 				return `zaplatené ${formatEur(n)}`;
+			case 'harvest':
+				return `úroda: ${formatGrams(n)} ${(e.ref && catalog.ingredientsById.get(e.ref)?.name.split(' (')[0].toLowerCase()) ?? ''}`;
 		}
 	}
 

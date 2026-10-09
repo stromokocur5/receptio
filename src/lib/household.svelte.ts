@@ -33,7 +33,9 @@ import {
 	changes,
 	checkedItems,
 	extraItems,
+	gardens,
 	mainMeals,
+	MAX_GARDENS,
 	pantry,
 	pantryAdded,
 	plan,
@@ -228,19 +230,29 @@ export function eatersAt(day: number, meal: PlanMeal): Member[] {
 
 // ── Sync ───────────────────────────────────────────────────────
 
+/** Gardens grown with the household; the others on this phone stay the person's own. */
+export const isSharedGarden = (id: string) => {
+	const shared = household.doc?.gardens[id];
+	return !!shared && shared[0] !== false;
+};
+
 function currentView(): SharedView {
 	return {
 		plan: plan.current,
 		pantry: pantry.current,
 		checked: checkedItems.current,
-		extras: extraItems.current
+		extras: extraItems.current,
+		gardens: gardens.current.filter((g) => isSharedGarden(g.id))
 	};
 }
 
-/** What this device shares: planning for oneself, nothing – the household's data waits as it was. */
+/**
+ * What this device shares: planning for oneself, only the gardens – the household's plan, list
+ * and pantry wait as they were.
+ */
 function sharedView(): SharedView {
 	if (!household.solo || !base) return currentView();
-	return base;
+	return { ...base, gardens: currentView().gardens };
 }
 
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
@@ -253,8 +265,39 @@ function applyView(view: SharedView) {
 		if (!same(now.extras, view.extras)) extraItems.current = view.extras;
 		if (!same(now.pantry, view.pantry)) pantry.current = view.pantry;
 	}
+	if (!same(now.gardens, view.gardens)) applyGardens(view.gardens);
 	syncPeople();
 	appliedUpTo = changes.count;
+}
+
+/**
+ * Shared gardens replace their copy here or arrive as new ones. One that stopped being shared
+ * stays on every phone as that person's own – nobody loses a diary.
+ */
+function applyGardens(shared: SharedView['gardens']) {
+	const byId = new Map(shared.map((g) => [g.id, g]));
+	const kept = gardens.current.map((g) => byId.get(g.id) ?? g);
+	const known = new Set(kept.map((g) => g.id));
+	gardens.current = [...kept, ...shared.filter((g) => !known.has(g.id))].slice(0, MAX_GARDENS);
+}
+
+/** Starts growing a garden together: the others get it with its diary on their next sync. */
+export function shareGarden(id: string) {
+	const garden = gardens.current.find((g) => g.id === id);
+	if (!garden || !household.doc) return;
+	updateDoc((doc) =>
+		withLocalChanges(
+			doc,
+			{ ...viewOf(doc), gardens: [] },
+			{ ...viewOf(doc), gardens: [garden] },
+			Date.now()
+		)
+	);
+}
+
+/** Stops sharing; everyone keeps a copy of it as their own. */
+export function unshareGarden(id: string) {
+	updateDoc((doc) => ({ ...doc, gardens: { ...doc.gardens, [id]: [false, Date.now()] } }));
 }
 
 /** Everyone in the household eats, so the plan cooks for all of them. */

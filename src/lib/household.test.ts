@@ -21,6 +21,7 @@ import {
 	type SharedView
 } from './household';
 import type { Ingredient, RecipeSummary } from './types';
+import type { GardenDiary } from './garden-diary';
 
 const member = (id: string, extra: Partial<Member> = {}): Member => ({
 	id,
@@ -38,7 +39,7 @@ const member = (id: string, extra: Partial<Member> = {}): Member => ({
 	...extra
 });
 
-const empty: SharedView = { plan: [], pantry: {}, checked: {}, extras: [] };
+const empty: SharedView = { plan: [], pantry: {}, checked: {}, extras: [], gardens: [] };
 
 describe('household sync', () => {
 	it('keeps both phones’ edits when they merge', () => {
@@ -61,7 +62,8 @@ describe('household sync', () => {
 			plan: [],
 			pantry: { mrkva: 500, cicer: null },
 			checked: { tofu: true },
-			extras: [{ id: 'x1', text: 'papier', checked: false }]
+			extras: [{ id: 'x1', text: 'papier', checked: false }],
+			gardens: []
 		});
 	});
 
@@ -278,7 +280,8 @@ describe('household log and cooking turns', () => {
 			],
 			pantry: { ryza: 500 },
 			checked: { tofu: true },
-			extras: []
+			extras: [],
+			gardens: []
 		};
 		const events = changeEvents(before, after, 'a', 7, new Set(['chili']));
 		expect(events.map((e) => [e.kind, e.ref ?? e.n])).toEqual([
@@ -300,5 +303,79 @@ describe('household log and cooking turns', () => {
 			['a', 'b']
 		);
 		expect(plan.map((e) => e.cook)).toEqual(['a', undefined, 'b', 'a']);
+	});
+});
+
+describe('gardens grown together', () => {
+	const garden: GardenDiary = {
+		id: 'balkon1',
+		name: 'Balkón',
+		place: 'balkon',
+		area: 4,
+		sun: 'slnko',
+		level: 1,
+		combos: [],
+		plants: [{ ingredientId: 'paradajky', count: 3 }],
+		done: {},
+		harvests: [],
+		beds: [],
+		savedAt: '2026-05-01'
+	};
+
+	it('keeps harvests and ticks two phones log at the same time', () => {
+		const shared = withLocalChanges(newDoc('Byt', 1), empty, { ...empty, gardens: [garden] }, 2);
+		const view = viewOf(shared);
+		const ema = withLocalChanges(
+			shared,
+			view,
+			{
+				...view,
+				gardens: [
+					{
+						...garden,
+						harvests: [{ ingredientId: 'paradajky', grams: 400, date: '2026-08-01' }],
+						done: { '2026-5-sow-mrkva': '2026-05-03' }
+					}
+				]
+			},
+			3
+		);
+		const jano = withLocalChanges(
+			shared,
+			view,
+			{
+				...view,
+				gardens: [
+					{ ...garden, harvests: [{ ingredientId: 'paradajky', grams: 250, date: '2026-08-01' }] }
+				]
+			},
+			4
+		);
+		const merged = validateDoc(JSON.parse(JSON.stringify(mergeDocs(ema, jano))))!;
+		const [result] = viewOf(merged).gardens;
+		expect(result.harvests.map((h) => h.grams).sort()).toEqual([250, 400]);
+		expect(result.done).toEqual({ '2026-5-sow-mrkva': '2026-05-03' });
+		expect(result.plants).toEqual(garden.plants);
+	});
+
+	it('tells the household who harvested how much', () => {
+		const before = { ...empty, gardens: [garden] };
+		const after = {
+			...empty,
+			gardens: [
+				{
+					...garden,
+					harvests: [
+						{ ingredientId: 'paradajky', grams: 300, date: '2026-08-01' },
+						{ ingredientId: 'paradajky', grams: 200, date: '2026-08-01' }
+					]
+				}
+			]
+		};
+		expect(changeEvents(before, after, 'ema', 5)).toEqual([
+			{ at: 5, who: 'ema', kind: 'harvest', ref: 'paradajky', n: 500 }
+		]);
+		// A garden shared just now brings its old diary – that isn't news.
+		expect(changeEvents(empty, after, 'ema', 5)).toEqual([]);
 	});
 });

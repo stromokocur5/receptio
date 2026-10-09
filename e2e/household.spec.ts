@@ -145,3 +145,51 @@ test('planning alone keeps an own plan and goes back to the shared one', async (
 	await page.waitForLoadState('networkidle');
 	await expect(page.getByText(/falafel/i).first()).toBeVisible();
 });
+
+test('a garden is grown together: the other phone gets it', async ({ browser }) => {
+	test.setTimeout(90_000);
+	const first = await browser.newContext();
+	const ema = await first.newPage();
+	await ema.addInitScript(() => {
+		if (localStorage.getItem('receptio:gardens')) return;
+		localStorage.setItem(
+			'receptio:gardens',
+			JSON.stringify([
+				{
+					id: 'balkon1',
+					name: 'Balkón u nás',
+					place: 'balkon',
+					area: 4,
+					sun: 'slnko',
+					level: 1,
+					combos: [],
+					plants: [{ ingredientId: 'paradajky', count: 3 }],
+					done: {},
+					harvests: [],
+					beds: [],
+					savedAt: '2026-05-01'
+				}
+			])
+		);
+	});
+	await createHousehold(ema, 'Ema');
+	await ema.goto('/pestuj');
+	await ema.waitForLoadState('networkidle');
+	await ema.getByRole('button', { name: 'Pestovať spolu' }).click();
+	await expect(ema.getByText('Pestujete spolu')).toBeVisible();
+	const code = await householdCode(ema);
+	await ema.waitForTimeout(2500);
+
+	const second = await browser.newContext();
+	const jano = await second.newPage();
+	await visit(jano, `/domacnost#d=${code}`);
+	await jano.getByRole('button', { name: 'Pripojiť sa' }).click();
+	await expect(jano.getByRole('status')).toContainText('Spojené');
+	await jano.goto('/pestuj');
+	await jano.waitForLoadState('networkidle');
+	await expect(jano.getByText('Balkón u nás').first()).toBeVisible();
+	await expect(jano.getByText('Pestujete spolu')).toBeVisible();
+
+	await first.close();
+	await second.close();
+});

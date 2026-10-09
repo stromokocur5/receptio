@@ -1,3 +1,4 @@
+import { validateGarden, type GardenDiary } from './garden-diary';
 import { canonical } from './member-keys';
 import { ACTIVITY_PROTEIN, type Activity } from './nutrition';
 import type { PlanEntry } from './shopping';
@@ -94,7 +95,8 @@ export interface Expense {
 	to?: string;
 }
 
-export type LogKind = 'plan-add' | 'plan-remove' | 'bought' | 'pantry' | 'expense' | 'cooked';
+export type LogKind =
+	'plan-add' | 'plan-remove' | 'bought' | 'pantry' | 'expense' | 'cooked' | 'harvest';
 
 /** One line of "who did what" for the others. `ref` is a recipe id, `n` a count or an amount. */
 export interface LogEvent {
@@ -125,7 +127,16 @@ export interface HouseholdDoc {
 	log: Record<string, LogEvent>;
 	/** `member.recipe` → that member would like it cooked. */
 	wishes: Record<string, Stamped<boolean>>;
+	/** Gardens grown together: the plan and beds, false when no longer shared. */
+	gardens: Record<string, Stamped<GardenLayout | false>>;
+	/** `garden|task` → the day it was done, false when unticked. */
+	gardenDone: Record<string, Stamped<string | false>>;
+	/** One harvest each (`garden|date|plant|grams|n`), false when deleted – two people can weigh at once. */
+	harvests: Record<string, Stamped<boolean>>;
 }
+
+/** A garden without its diary (ticked tasks and harvests travel one by one). */
+export type GardenLayout = Omit<GardenDiary, 'done' | 'harvests'>;
 
 /** The shared parts of one device's data, as the rest of the app keeps them. */
 export interface SharedView {
@@ -133,9 +144,13 @@ export interface SharedView {
 	pantry: Record<string, number | null>;
 	checked: Record<string, boolean>;
 	extras: { id: string; text: string; checked: boolean }[];
+	/** The gardens shared with the household, with their diaries. */
+	gardens: GardenDiary[];
 }
 
 export const MAX_MEMBERS = 12;
+/** Ticked tasks and harvests kept in the shared copy, newest first; a garden's own diary keeps more. */
+export const MAX_GARDEN_ENTRIES = 400;
 const MAX_NAME = 40;
 const MAX_ITEMS = 400;
 /** The sync storage holds 400 kB; old money and history go first. */
@@ -145,9 +160,20 @@ const ID_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const MEMBER_ID_RE = /^[a-z0-9]{1,16}$/;
 const ITEM_ID_RE = /^[a-zA-Z0-9-]{1,40}$/;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+const GARDEN_ID_RE = /^[a-z0-9-]{1,40}$/;
+const DONE_KEY_RE = /^[a-z0-9-]{1,40}\|[a-z0-9-]{1,80}$/;
+const HARVEST_KEY_RE = /^[a-z0-9-]{1,40}\|\d{4}-\d{2}-\d{2}\|[a-z0-9-]{1,80}\|\d+(\.\d+)?\|\d+$/;
 /** A P-256 public key (65 bytes) or signature (64 bytes) in base64url. */
 const KEY_RE = /^[A-Za-z0-9_-]{80,100}$/;
-const LOG_KINDS: LogKind[] = ['plan-add', 'plan-remove', 'bought', 'pantry', 'expense', 'cooked'];
+const LOG_KINDS: LogKind[] = [
+	'plan-add',
+	'plan-remove',
+	'bought',
+	'pantry',
+	'expense',
+	'cooked',
+	'harvest'
+];
 
 export function newDoc(name: string, now: number): HouseholdDoc {
 	return {
@@ -162,7 +188,10 @@ export function newDoc(name: string, now: number): HouseholdDoc {
 		expenses: {},
 		money: [false, 0],
 		log: {},
-		wishes: {}
+		wishes: {},
+		gardens: {},
+		gardenDone: {},
+		harvests: {}
 	};
 }
 
@@ -221,6 +250,14 @@ function validateMember(raw: unknown): Member | undefined {
 		...(typeof raw.sig === 'string' && KEY_RE.test(raw.sig) && { sig: raw.sig }),
 		...(Array.isArray(raw.eaten) && { eaten: validateEaten(raw.eaten) })
 	};
+}
+
+function validateLayout(raw: unknown): GardenLayout | undefined {
+	if (!isRecord(raw)) return undefined;
+	const garden = validateGarden({ ...raw, done: {}, harvests: [] });
+	if (!garden || garden.id !== raw.id) return undefined;
+	const { done: _done, harvests: _harvests, ...layout } = garden;
+	return layout;
 }
 
 function validateEaten(raw: unknown[]): EatenDay[] {
@@ -408,6 +445,19 @@ export function validateDoc(raw: unknown): HouseholdDoc | null {
 		log: newest(record(raw.log, ITEM_ID_RE, validateLogEvent), MAX_LOG, (e) => e.at),
 		wishes: record(raw.wishes, /^[a-z0-9]{1,16}\.[a-z0-9]+(-[a-z0-9]+)*$/, (v) =>
 			stamped(v, (x) => (typeof x === 'boolean' ? x : undefined))
+		),
+		gardens: record(raw.gardens, GARDEN_ID_RE, (v) =>
+			stamped(v, (x) => (x === false ? false : validateLayout(x)))
+		),
+		gardenDone: record(raw.gardenDone, DONE_KEY_RE, (v) =>
+			stamped(v, (x) =>
+				x === false || (typeof x === 'string' && DATE_RE.test(x))
+					? (x as string | false)
+					: undefined
+			)
+		),
+		harvests: record(raw.harvests, HARVEST_KEY_RE, (v) =>
+			stamped(v, (x) => (typeof x === 'boolean' ? x : undefined))
 		)
 	};
 }
@@ -448,7 +498,10 @@ export function mergeDocs(a: HouseholdDoc, b: HouseholdDoc): HouseholdDoc {
 		expenses: newest(mergeRecord(a.expenses, b.expenses), MAX_EXPENSES, (e) => e[1]),
 		money: newer(a.money, b.money),
 		log: newest({ ...a.log, ...b.log }, MAX_LOG, (e) => e.at),
-		wishes: mergeRecord(a.wishes, b.wishes)
+		wishes: mergeRecord(a.wishes, b.wishes),
+		gardens: mergeRecord(a.gardens, b.gardens),
+		gardenDone: newest(mergeRecord(a.gardenDone, b.gardenDone), MAX_GARDEN_ENTRIES, (e) => e[1]),
+		harvests: newest(mergeRecord(a.harvests, b.harvests), MAX_GARDEN_ENTRIES, (e) => e[1])
 	};
 }
 
@@ -464,8 +517,40 @@ export function viewOf(doc: HouseholdDoc): SharedView {
 		),
 		extras: Object.entries(doc.extras).flatMap(([id, [v]]) =>
 			v === false ? [] : [{ id, text: v.text, checked: v.checked }]
+		),
+		gardens: Object.values(doc.gardens).flatMap(([layout]) =>
+			layout === false ? [] : [diaryOf(doc, layout)]
 		)
 	};
+}
+
+/** A shared garden as the garden pages keep it: the layout plus its ticked tasks and harvests. */
+function diaryOf(doc: HouseholdDoc, layout: GardenLayout): GardenDiary {
+	const prefix = `${layout.id}|`;
+	const done = Object.fromEntries(
+		Object.entries(doc.gardenDone).flatMap(([key, [date]]) =>
+			key.startsWith(prefix) && date !== false ? [[key.slice(prefix.length), date]] : []
+		)
+	);
+	const harvests = Object.entries(doc.harvests)
+		.flatMap(([key, [kept]]) => {
+			if (!kept || !key.startsWith(prefix)) return [];
+			const [, date, ingredientId, grams] = key.split('|');
+			return [{ ingredientId, grams: Number(grams), date }];
+		})
+		.sort((a, b) => a.date.localeCompare(b.date));
+	return { ...layout, done, harvests };
+}
+
+/** `garden|date|plant|grams|n`: the same harvest twice on a day gets n = 0, 1… */
+function harvestKeys(garden: GardenDiary): string[] {
+	const seen = new Map<string, number>();
+	return garden.harvests.map((h) => {
+		const base = `${garden.id}|${h.date}|${h.ingredientId}|${h.grams}`;
+		const n = seen.get(base) ?? 0;
+		seen.set(base, n + 1);
+		return `${base}|${n}`;
+	});
 }
 
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
@@ -509,7 +594,41 @@ export function withLocalChanges(
 	for (const id of beforeExtras.keys()) {
 		if (!currentExtras.has(id)) next.extras[id] = [false, at];
 	}
+	stampGardens(next, before.gardens, current.gardens, at);
 	return next;
+}
+
+function stampGardens(
+	next: HouseholdDoc,
+	before: GardenDiary[],
+	current: GardenDiary[],
+	at: number
+) {
+	next.gardens = { ...next.gardens };
+	next.gardenDone = { ...next.gardenDone };
+	next.harvests = { ...next.harvests };
+	const layout = ({ done: _d, harvests: _h, ...rest }: GardenDiary): GardenLayout => rest;
+	const was = new Map(before.map((g) => [g.id, g]));
+	const now = new Map(current.map((g) => [g.id, g]));
+	for (const [id, garden] of now) {
+		const old = was.get(id);
+		if (!old || !same(layout(old), layout(garden))) next.gardens[id] = [layout(garden), at];
+	}
+	for (const id of was.keys()) if (!now.has(id)) next.gardens[id] = [false, at];
+	// Tasks and harvests one by one, so two people ticking or weighing at once both count.
+	for (const garden of current) {
+		const old = was.get(garden.id);
+		const oldDone = old?.done ?? {};
+		for (const task of new Set([...Object.keys(oldDone), ...Object.keys(garden.done)])) {
+			if (oldDone[task] !== garden.done[task]) {
+				next.gardenDone[`${garden.id}|${task}`] = [garden.done[task] ?? false, at];
+			}
+		}
+		const oldKeys = new Set(old ? harvestKeys(old) : []);
+		const keys = new Set(harvestKeys(garden));
+		for (const key of keys) if (!oldKeys.has(key)) next.harvests[key] = [true, at];
+		for (const key of oldKeys) if (!keys.has(key)) next.harvests[key] = [false, at];
+	}
 }
 
 // ── Cooking for everyone ───────────────────────────────────────
@@ -613,6 +732,18 @@ export function changeEvents(
 	if (bought) events.push({ at, who, kind: 'bought', n: bought });
 	const added = Object.keys(current.pantry).filter((id) => !(id in before.pantry)).length;
 	if (added) events.push({ at, who, kind: 'pantry', n: added });
+	// Harvests in gardens that were already shared (a newly shared one brings its whole diary).
+	const known = new Set(before.gardens.map((g) => g.id));
+	const harvested = new Set(before.gardens.flatMap(harvestKeys));
+	const grams = new Map<string, number>();
+	for (const garden of current.gardens.filter((g) => known.has(g.id))) {
+		harvestKeys(garden).forEach((key, i) => {
+			if (harvested.has(key)) return;
+			const h = garden.harvests[i];
+			grams.set(h.ingredientId, (grams.get(h.ingredientId) ?? 0) + h.grams);
+		});
+	}
+	for (const [ref, n] of grams) events.push({ at, who, kind: 'harvest', ref, n: Math.round(n) });
 	return events;
 }
 

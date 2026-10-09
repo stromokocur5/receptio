@@ -8,6 +8,7 @@
 	import ComboLayout from '$lib/components/ComboLayout.svelte';
 	import CropSheet from '$lib/components/CropSheet.svelte';
 	import GardenDiary from '$lib/components/GardenDiary.svelte';
+	import { isSharedGarden } from '$lib/household.svelte';
 	import GrowMonths from '$lib/components/GrowMonths.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import LocationPicker from '$lib/components/LocationPicker.svelte';
@@ -491,7 +492,7 @@
 			<div class="gardens" role="group" aria-label="Moje záhradky">
 				{#each gardens.current as g (g.id)}
 					<button class="chip" aria-pressed={g.id === diary.id} onclick={() => switchGarden(g.id)}>
-						<Icon name="sprout" size={14} />
+						<Icon name={isSharedGarden(g.id) ? 'users' : 'sprout'} size={14} />
 						{g.name}
 					</button>
 				{/each}
