@@ -62,6 +62,7 @@ describe('household sync', () => {
 		expect(mergeDocs(b, a)).toEqual(merged);
 		expect(viewOf(merged)).toEqual({
 			plan: [],
+			planIds: [],
 			pantry: { mrkva: 500, cicer: null },
 			checked: { tofu: true },
 			extras: [{ id: 'x1', text: 'papier', checked: false }],
@@ -74,23 +75,126 @@ describe('household sync', () => {
 		const doc = withLocalChanges(newDoc('D', 1), empty, start, 5);
 		const removed = withLocalChanges(doc, start, { ...empty, checked: {} }, 20);
 		const olderEdit = withLocalChanges(doc, start, { ...start, pantry: { mrkva: 300 } }, 15);
-		expect(viewOf(mergeDocs(removed, olderEdit))).toEqual({ ...empty });
+		expect(viewOf(mergeDocs(removed, olderEdit))).toEqual({ ...empty, planIds: [] });
 	});
 
-	it('takes the newer plan as a whole', () => {
-		const one = withLocalChanges(
+	it('keeps meals two people plan at the same time', () => {
+		const start = withLocalChanges(
 			newDoc('D', 1),
 			empty,
 			{ ...empty, plan: [{ recipeId: 'dal', servings: 4 }] },
 			5
 		);
+		const view = viewOf(start);
+		const one = withLocalChanges(
+			start,
+			view,
+			{ ...view, plan: [...view.plan, { recipeId: 'chili', servings: 2 }] },
+			8
+		);
 		const two = withLocalChanges(
-			newDoc('D', 1),
-			empty,
-			{ ...empty, plan: [{ recipeId: 'chili', servings: 2 }] },
+			start,
+			view,
+			{
+				...view,
+				plan: [
+					{ recipeId: 'dal', servings: 6 },
+					{ recipeId: 'pho', servings: 2 }
+				]
+			},
 			9
 		);
-		expect(viewOf(mergeDocs(one, two)).plan).toEqual([{ recipeId: 'chili', servings: 2 }]);
+		const merged = mergeDocs(one, two);
+		expect(mergeDocs(two, one)).toEqual(merged);
+		expect(viewOf(merged).plan).toEqual([
+			{ recipeId: 'dal', servings: 6 },
+			{ recipeId: 'pho', servings: 2 },
+			{ recipeId: 'chili', servings: 2 }
+		]);
+		// Cooked on one phone while the other adds: the cooked one is gone, the new one stays.
+		const cooked = withLocalChanges(
+			merged,
+			viewOf(merged),
+			{ ...viewOf(merged), plan: viewOf(merged).plan.slice(1) },
+			20
+		);
+		const added = withLocalChanges(
+			merged,
+			viewOf(merged),
+			{ ...viewOf(merged), plan: [...viewOf(merged).plan, { recipeId: 'curry', servings: 2 }] },
+			21
+		);
+		expect(viewOf(mergeDocs(cooked, added)).plan.map((e) => e.recipeId)).toEqual([
+			'pho',
+			'chili',
+			'curry'
+		]);
+	});
+
+	it('reads a plan kept as one list by the first version', () => {
+		const doc = validateDoc({
+			...newDoc('D', 1),
+			v: 1,
+			plan: [
+				[
+					{ recipeId: 'dal', servings: 2 },
+					{ recipeId: 'pho', servings: 3 }
+				],
+				7
+			]
+		})!;
+		expect(viewOf(doc).plan).toEqual([
+			{ recipeId: 'dal', servings: 2 },
+			{ recipeId: 'pho', servings: 3 }
+		]);
+	});
+
+	it('counts cooking and shopping from two phones at once', () => {
+		const start = withLocalChanges(
+			newDoc('D', 1),
+			empty,
+			{ ...empty, pantry: { ryza: 500, sol: null } },
+			5
+		);
+		const view = viewOf(start);
+		const cooked = withLocalChanges(
+			start,
+			view,
+			{ ...view, pantry: { ...view.pantry, ryza: 300 } },
+			8,
+			'anna'
+		);
+		const bought = withLocalChanges(
+			start,
+			view,
+			{ ...view, pantry: { ...view.pantry, ryza: 1500 } },
+			9,
+			'jano'
+		);
+		const merged = validateDoc(JSON.parse(JSON.stringify(mergeDocs(cooked, bought))))!;
+		expect(mergeDocs(bought, cooked)).toEqual(mergeDocs(cooked, bought));
+		expect(viewOf(merged).pantry).toEqual({ ryza: 1300, sol: null });
+		// Using it up removes it; buying again brings it back.
+		const usedView = { ...viewOf(merged), pantry: { sol: null } };
+		const empty2 = withLocalChanges(merged, viewOf(merged), usedView, 10, 'anna');
+		expect(viewOf(empty2).pantry).toEqual({ sol: null });
+		const again = withLocalChanges(
+			empty2,
+			viewOf(empty2),
+			{ ...viewOf(empty2), pantry: { sol: null, ryza: 400 } },
+			11,
+			'jano'
+		);
+		expect(viewOf(again).pantry).toEqual({ sol: null, ryza: 400 });
+		// Setting an amount by hand starts over; older changes stop counting.
+		const counted = withLocalChanges(
+			again,
+			viewOf(again),
+			{ ...viewOf(again), pantry: { sol: 200, ryza: 400 } },
+			12,
+			'anna'
+		);
+		expect(viewOf(counted).pantry).toEqual({ sol: 200, ryza: 400 });
 	});
 
 	it('picks the same winner on every phone when two changes share a time', () => {
@@ -117,7 +221,7 @@ describe('household sync', () => {
 		const away = withLocalChanges(shared, start, { ...start, checked: { tofu: true } }, 2000);
 		const merged = mergeDocs(away, deleted);
 		expect(mergeDocs(deleted, away)).toEqual(merged);
-		expect(viewOf(merged)).toEqual({ ...empty, checked: { tofu: true } });
+		expect(viewOf(merged)).toEqual({ ...empty, planIds: [], checked: { tofu: true } });
 		// Something added after the horizon stays.
 		const added = withLocalChanges(
 			away,

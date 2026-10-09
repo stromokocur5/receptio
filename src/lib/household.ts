@@ -11,7 +11,8 @@ import { ALLERGENS, type Allergen, type Ingredient, type RecipeSummary } from '.
  *
  * Everyone edits at once, so every value carries the time it was changed and two copies merge by
  * keeping the newer value per item – a tick on one phone and a new pantry item on another both
- * survive. The plan is one value: plans are rarely edited by two people in the same minute.
+ * survive. The plan merges meal by meal, and pantry amounts as changes: someone cooking from the
+ * rice while someone else buys more both count.
  */
 
 /** A value and when it was set (ms). */
@@ -110,12 +111,23 @@ export interface LogEvent {
 }
 
 export interface HouseholdDoc {
-	v: 1;
+	v: 2;
 	name: Stamped<string>;
 	members: Record<string, Member>;
-	plan: Stamped<PlanEntry[]>;
-	/** Ingredient → grams (null: some, amount unknown), or false when taken out. */
+	/** The plan's meals one by one, false when dropped – two people can plan at once. */
+	plan: Record<string, Stamped<PlanEntry | false>>;
+	/** The order of the plan's meals; meals missing from it go last. */
+	planOrder: Stamped<string[]>;
+	/**
+	 * Ingredient → grams (null: some, amount unknown), or false when taken out. A number is where
+	 * the amount was last set; what each phone used or added since is in `pantryChanges`.
+	 */
 	pantry: Record<string, Stamped<number | null | false>>;
+	/**
+	 * `ingredient.phone` → grams that phone added (+) or used (−) since the amount in `pantry` was
+	 * set at `on`. Each phone writes only its own, so cooking and shopping at once both count.
+	 */
+	pantryChanges: Record<string, Stamped<{ n: number; on: number }>>;
 	/** Shopping list ticks. */
 	checked: Record<string, Stamped<boolean>>;
 	/** Hand-added list items, false when deleted. */
@@ -148,6 +160,8 @@ export type GardenLayout = Omit<GardenDiary, 'done' | 'harvests'>;
 /** The shared parts of one device's data, as the rest of the app keeps them. */
 export interface SharedView {
 	plan: PlanEntry[];
+	/** Which of the household's meals each plan entry is; new entries get theirs when shared. */
+	planIds?: string[];
 	pantry: Record<string, number | null>;
 	checked: Record<string, boolean>;
 	extras: { id: string; text: string; checked: boolean }[];
@@ -169,6 +183,9 @@ export const MAX_LOG = 80;
 const ID_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const MEMBER_ID_RE = /^[a-z0-9]{1,16}$/;
 const ITEM_ID_RE = /^[a-zA-Z0-9-]{1,40}$/;
+const PHONE_ID_RE = /^[a-z0-9]{1,16}$/;
+const PANTRY_CHANGE_RE = /^[a-z0-9]+(-[a-z0-9]+)*\.[a-z0-9]{1,16}$/;
+const MAX_PLAN = 100;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const GARDEN_ID_RE = /^[a-z0-9-]{1,40}$/;
 const DONE_KEY_RE = /^[a-z0-9-]{1,40}\|[a-z0-9-]{1,80}$/;
@@ -187,11 +204,13 @@ const LOG_KINDS: LogKind[] = [
 
 export function newDoc(name: string, now: number): HouseholdDoc {
 	return {
-		v: 1,
+		v: 2,
 		name: [name.trim().slice(0, MAX_NAME) || 'Domácnosť', now],
 		members: {},
-		plan: [[], 0],
+		plan: {},
+		planOrder: [[], 0],
 		pantry: {},
+		pantryChanges: {},
 		checked: {},
 		extras: {},
 		claims: {},
@@ -403,12 +422,39 @@ export function validatePlanEntries(raw: unknown): PlanEntry[] | undefined {
 	});
 }
 
+/** The first version kept the plan as one list; its meals become meals one by one. */
+function planFromList(raw: unknown): Pick<HouseholdDoc, 'plan' | 'planOrder'> | undefined {
+	const list = stamped(raw, validatePlanEntries);
+	if (!list) return undefined;
+	const [entries, at] = list;
+	const ids = entries.map((_, i) => `p${i}`);
+	return {
+		plan: Object.fromEntries(entries.map((e, i) => [ids[i], [e, at]])),
+		planOrder: [ids, at]
+	};
+}
+
+const planEntry = (v: unknown): PlanEntry | false | undefined =>
+	v === false ? false : validatePlanEntries([v])?.[0];
+
 export function validateDoc(raw: unknown): HouseholdDoc | null {
-	if (!isRecord(raw) || raw.v !== 1) return null;
+	if (!isRecord(raw) || (raw.v !== 1 && raw.v !== 2)) return null;
 	const name = stamped(raw.name, (v) =>
 		typeof v === 'string' && v.trim() ? v.trim().slice(0, MAX_NAME) : undefined
 	);
-	const plan = stamped(raw.plan, validatePlanEntries);
+	const plan =
+		raw.v === 1
+			? planFromList(raw.plan)
+			: {
+					plan: record(raw.plan, ITEM_ID_RE, (v) => stamped(v, planEntry)),
+					planOrder: stamped(raw.planOrder, (v) =>
+						Array.isArray(v)
+							? v
+									.filter((id): id is string => typeof id === 'string' && ITEM_ID_RE.test(id))
+									.slice(0, MAX_PLAN * 2)
+							: undefined
+					) ?? [[], 0]
+				};
 	if (!name || !plan) return null;
 	// Everyone still here first, then the newest removals.
 	const members = record(
@@ -419,14 +465,25 @@ export function validateDoc(raw: unknown): HouseholdDoc | null {
 		MAX_MEMBERS * 2
 	);
 	return {
-		v: 1,
+		v: 2,
 		name,
 		members: Object.fromEntries(Object.values(members).map((m) => [m.id, m])),
-		plan,
+		...plan,
 		pantry: record(raw.pantry, ID_RE, (v) =>
 			stamped(v, (x) =>
 				x === false || x === null || (typeof x === 'number' && x >= 0 && x <= 100_000)
 					? (x as number | null | false)
+					: undefined
+			)
+		),
+		pantryChanges: record(raw.pantryChanges, PANTRY_CHANGE_RE, (v) =>
+			stamped(v, (x) =>
+				isRecord(x) &&
+				typeof x.n === 'number' &&
+				Number.isFinite(x.n) &&
+				Math.abs(x.n) <= 100_000 &&
+				isTime(x.on)
+					? { n: x.n, on: x.on }
 					: undefined
 			)
 		),
@@ -532,12 +589,15 @@ const newerMember = (a: Member | undefined, b: Member | undefined) =>
 export function mergeDocs(a: HouseholdDoc, b: HouseholdDoc): HouseholdDoc {
 	const merge = <T>(x: Record<string, Stamped<T>>, y: Record<string, Stamped<T>>) =>
 		mergeRecord(x, y, a.gc, b.gc);
+	const pantry = merge(a.pantry, b.pantry);
 	return {
-		v: 1,
+		v: 2,
 		name: newer(a.name, b.name),
 		members: mergeKeyed(a.members, b.members, a.gc, b.gc, newerMember, (m) => m.at),
-		plan: newer(a.plan, b.plan),
-		pantry: merge(a.pantry, b.pantry),
+		plan: merge(a.plan, b.plan),
+		planOrder: newer(a.planOrder, b.planOrder),
+		pantry,
+		pantryChanges: currentChanges(merge(a.pantryChanges, b.pantryChanges), pantry),
 		checked: merge(a.checked, b.checked),
 		extras: merge(a.extras, b.extras),
 		claims: merge(a.claims, b.claims),
@@ -552,8 +612,25 @@ export function mergeDocs(a: HouseholdDoc, b: HouseholdDoc): HouseholdDoc {
 	};
 }
 
+/** Changes to an amount that was set again since don't count any more. */
+function currentChanges(
+	changes: HouseholdDoc['pantryChanges'],
+	pantry: HouseholdDoc['pantry']
+): HouseholdDoc['pantryChanges'] {
+	return Object.fromEntries(
+		Object.entries(changes).filter(([key, [{ on }]]) => {
+			const set = pantry[ingredientOf(key)];
+			return !!set && typeof set[0] === 'number' && set[1] === on;
+		})
+	);
+}
+
+const ingredientOf = (changeKey: string) => changeKey.slice(0, changeKey.lastIndexOf('.'));
+
 const RECORDS = [
+	'plan',
 	'pantry',
+	'pantryChanges',
 	'checked',
 	'extras',
 	'claims',
@@ -592,7 +669,7 @@ export function latestStamp(doc: HouseholdDoc, notAfter = Infinity): number {
 		if (at > latest && at <= notAfter) latest = at;
 	};
 	see(doc.name[1]);
-	see(doc.plan[1]);
+	see(doc.planOrder[1]);
 	see(doc.money[1]);
 	for (const m of Object.values(doc.members)) see(m.at);
 	for (const name of RECORDS) for (const [, at] of Object.values(doc[name])) see(at);
@@ -601,11 +678,11 @@ export function latestStamp(doc: HouseholdDoc, notAfter = Infinity): number {
 
 /** What the household document means for one device's plan, pantry and list. */
 export function viewOf(doc: HouseholdDoc): SharedView {
+	const planIds = planOrderOf(doc);
 	return {
-		plan: doc.plan[0],
-		pantry: Object.fromEntries(
-			Object.entries(doc.pantry).flatMap(([id, [v]]) => (v === false ? [] : [[id, v]]))
-		),
+		plan: planIds.map((id) => doc.plan[id][0] as PlanEntry),
+		planIds,
+		pantry: pantryOf(doc),
 		checked: Object.fromEntries(
 			Object.entries(doc.checked).flatMap(([id, [v]]) => (v ? [[id, true]] : []))
 		),
@@ -617,6 +694,72 @@ export function viewOf(doc: HouseholdDoc): SharedView {
 		)
 	};
 }
+
+/** The plan's meals in order: as last arranged, then meals added meanwhile by time. */
+function planOrderOf(doc: HouseholdDoc): string[] {
+	const live = new Set(Object.keys(doc.plan).filter((id) => doc.plan[id][0] !== false));
+	const ordered = [...new Set(doc.planOrder[0])].filter((id) => live.has(id));
+	const placed = new Set(ordered);
+	const rest = [...live]
+		.filter((id) => !placed.has(id))
+		.sort((a, b) => doc.plan[a][1] - doc.plan[b][1] || (a < b ? -1 : 1));
+	return [...ordered, ...rest].slice(0, MAX_PLAN);
+}
+
+const roundGrams = (n: number) => Math.round(n * 1000) / 1000;
+
+/** The pantry: each amount as set, plus what the phones added or used since. */
+function pantryOf(doc: HouseholdDoc): Record<string, number | null> {
+	const changed = new Map<string, number>();
+	for (const [key, [{ n }]] of Object.entries(currentChanges(doc.pantryChanges, doc.pantry))) {
+		const id = ingredientOf(key);
+		changed.set(id, (changed.get(id) ?? 0) + n);
+	}
+	return Object.fromEntries(
+		Object.entries(doc.pantry).flatMap(([id, [v]]): [string, number | null][] => {
+			if (v === false) return [];
+			if (v === null) return [[id, null]];
+			if (!changed.has(id)) return [[id, v]];
+			const total = roundGrams(v + changed.get(id)!);
+			// Used up: gone from the pantry until someone adds some.
+			return total > 0 ? [[id, total]] : [];
+		})
+	);
+}
+
+/**
+ * Which household meal each entry of a plan is: the same entry keeps its id, an edited one (more
+ * portions, another variant) keeps the id of an entry with that recipe, and the rest are new.
+ */
+export function planIdsFor(
+	before: { plan: PlanEntry[]; planIds: string[] },
+	current: PlanEntry[],
+	newId: () => string = randomPlanId
+): string[] {
+	const used = new Set<number>();
+	const ids: (string | undefined)[] = current.map(() => undefined);
+	const take = (i: number, j: number) => {
+		ids[i] = before.planIds[j];
+		used.add(j);
+	};
+	current.forEach((e, i) => {
+		if (i < before.plan.length && same(before.plan[i], e)) take(i, i);
+	});
+	const passes = [
+		(a: PlanEntry, b: PlanEntry) => same(a, b),
+		(a: PlanEntry, b: PlanEntry) => a.recipeId === b.recipeId
+	];
+	for (const matches of passes) {
+		current.forEach((e, i) => {
+			if (ids[i]) return;
+			const j = before.plan.findIndex((b, j) => !used.has(j) && matches(b, e));
+			if (j >= 0) take(i, j);
+		});
+	}
+	return ids.map((id) => id ?? newId());
+}
+
+const randomPlanId = () => crypto.randomUUID().replace(/-/g, '').slice(0, 12);
 
 /** A shared garden as the garden pages keep it: the layout plus its ticked tasks and harvests. */
 function diaryOf(doc: HouseholdDoc, layout: GardenLayout): GardenDiary {
@@ -647,7 +790,8 @@ function harvestKeys(garden: GardenDiary): string[] {
 	});
 }
 
-const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
+/** Same content, whatever order the keys came in. */
+const same = (a: unknown, b: unknown) => canonical(a) === canonical(b);
 
 /**
  * Stamps what changed on this device since the last sync (`before` → `now`) into the document,
@@ -657,21 +801,34 @@ export function withLocalChanges(
 	doc: HouseholdDoc,
 	before: SharedView,
 	current: SharedView,
-	at: number
+	at: number,
+	/** This phone, for its own pantry changes. */
+	phone = 'here'
 ): HouseholdDoc {
 	const next: HouseholdDoc = {
 		...doc,
+		plan: { ...doc.plan },
 		pantry: { ...doc.pantry },
+		pantryChanges: { ...doc.pantryChanges },
 		checked: { ...doc.checked },
 		extras: { ...doc.extras }
 	};
-	if (!same(before.plan, current.plan)) next.plan = [current.plan, at];
+	stampPlan(next, before, current, at);
 	for (const id of new Set([...Object.keys(before.pantry), ...Object.keys(current.pantry)])) {
-		const had = id in before.pantry;
-		const has = id in current.pantry;
-		if (has && (!had || before.pantry[id] !== current.pantry[id])) {
-			next.pantry[id] = [current.pantry[id], at];
-		} else if (had && !has) next.pantry[id] = [false, at];
+		const was = before.pantry[id];
+		const is = current.pantry[id];
+		if (was === is) continue;
+		const set = doc.pantry[id];
+		const amounts =
+			(was === undefined || typeof was === 'number') &&
+			(is === undefined || typeof is === 'number');
+		if (set && typeof set[0] === 'number' && amounts && PHONE_ID_RE.test(phone)) {
+			// More or less of it: told as a change, so someone else's change at the same time counts too.
+			const key = `${id}.${phone}`;
+			const mine = next.pantryChanges[key];
+			const sofar = mine && mine[0].on === set[1] ? mine[0].n : 0;
+			next.pantryChanges[key] = [{ n: roundGrams(sofar + (is ?? 0) - (was ?? 0)), on: set[1] }, at];
+		} else next.pantry[id] = [is === undefined ? false : is, at];
 	}
 	for (const id of new Set([...Object.keys(before.checked), ...Object.keys(current.checked)])) {
 		if (!!before.checked[id] !== !!current.checked[id])
@@ -690,6 +847,22 @@ export function withLocalChanges(
 	}
 	stampGardens(next, before.gardens, current.gardens, at);
 	return next;
+}
+
+function stampPlan(next: HouseholdDoc, before: SharedView, current: SharedView, at: number) {
+	const beforeIds = before.planIds ?? before.plan.map(() => randomPlanId());
+	const ids =
+		current.planIds?.length === current.plan.length
+			? current.planIds
+			: planIdsFor({ plan: before.plan, planIds: beforeIds }, current.plan);
+	const was = new Map(beforeIds.map((id, i) => [id, before.plan[i]]));
+	ids.forEach((id, i) => {
+		const old = was.get(id);
+		if (!old || !same(old, current.plan[i])) next.plan[id] = [current.plan[i], at];
+	});
+	const kept = new Set(ids);
+	for (const id of beforeIds) if (!kept.has(id)) next.plan[id] = [false, at];
+	if (!same(beforeIds, ids)) next.planOrder = [ids, at];
 }
 
 function stampGardens(

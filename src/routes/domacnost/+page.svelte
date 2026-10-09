@@ -15,6 +15,7 @@
 		hasNeeds,
 		isAway,
 		portionOf,
+		viewOf,
 		wishesOf,
 		type Member
 	} from '$lib/household';
@@ -73,7 +74,7 @@
 
 	/** The household's plan: this device's, or the shared one waiting while planning alone. */
 	const sharedPlan = $derived(
-		!ui.loaded || !household.doc ? [] : household.solo ? household.doc.plan[0] : plan.current
+		!ui.loaded || !household.doc ? [] : household.solo ? viewOf(household.doc).plan : plan.current
 	);
 	const cookOf = (id: string | undefined) => list.find((m) => m.id === id)?.name;
 	const wishes = $derived(

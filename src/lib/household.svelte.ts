@@ -12,6 +12,7 @@ import {
 	logId,
 	mergeDocs,
 	newDoc,
+	planIdsFor,
 	portionsAt,
 	validateDoc,
 	validatePlanEntries,
@@ -130,6 +131,8 @@ interface Saved {
 	personal: PersonalPlan | null;
 	/** This phone's key for its own profile. */
 	signer: Signer | null;
+	/** This phone among the household's, for its own pantry changes. */
+	phone: string;
 }
 
 export const household = $state<{
@@ -157,6 +160,7 @@ let keys: SyncKeys | null = null;
 let base: SharedView | null = null;
 let personal: PersonalPlan | null = null;
 let signer: Signer | null = null;
+let phone = newPhoneId();
 let timer: ReturnType<typeof setTimeout> | undefined;
 let pushTimer: ReturnType<typeof setTimeout> | undefined;
 let running: Promise<void> | null = null;
@@ -357,7 +361,8 @@ function save() {
 				solo: household.solo,
 				soloAway: household.soloAway,
 				personal,
-				signer
+				signer,
+				phone
 			} satisfies Saved)
 		);
 	} catch {
@@ -477,22 +482,26 @@ function commitLocal() {
 	// Another device's backup replaced the data here: that isn't an edit to share.
 	if (restores.count !== seenRestores) {
 		seenRestores = restores.count;
-		base = currentView();
+		const restored = currentView();
+		base = { ...restored, planIds: planIdsFor(withIds(viewOf(household.doc)), restored.plan) };
 	}
 	const view = sharedView();
+	view.planIds = planIdsFor(withIds(base), view.plan);
 	const events = [
 		...pendingEvents,
 		...changeEvents(base, view, household.me, Date.now(), cookedSinceSync)
 	];
 	pendingEvents = [];
 	cookedSinceSync.clear();
-	const doc = withEvents(withLocalChanges(household.doc, base, view, stamp()), events);
+	const doc = withEvents(withLocalChanges(household.doc, base, view, stamp(), phone), events);
 	if (!same(doc, household.doc)) {
 		setDoc(doc);
 		save();
 	}
 	base = view;
 }
+
+const withIds = (view: SharedView) => ({ plan: view.plan, planIds: view.planIds ?? [] });
 
 async function syncOnce() {
 	if (!keys || !household.doc || !base) return;
@@ -598,7 +607,11 @@ export function initHousehold() {
 				solo: raw.solo === true,
 				soloAway: raw.soloAway === true,
 				personal: validatePersonal(raw.personal),
-				signer: validateSigner(raw.signer)
+				signer: validateSigner(raw.signer),
+				phone:
+					typeof raw.phone === 'string' && /^[a-z0-9]{1,16}$/.test(raw.phone)
+						? raw.phone
+						: newPhoneId()
 			};
 		}
 	} catch {
@@ -612,6 +625,7 @@ export function initHousehold() {
 	household.soloAway = saved.soloAway;
 	personal = saved.personal;
 	signer = saved.signer;
+	phone = saved.phone;
 	household.status = 'connecting';
 	base = viewOf(saved.doc);
 	void start(saved.code).then(async () => {
@@ -684,6 +698,9 @@ export function noteCooked(recipeId: string) {
 }
 
 const newMemberId = () => crypto.randomUUID().replace(/-/g, '').slice(0, 10);
+function newPhoneId() {
+	return crypto.randomUUID().replace(/-/g, '').slice(0, 12);
+}
 
 function blankMember(name: string, at: number): Member {
 	return {
