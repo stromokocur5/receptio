@@ -7,7 +7,7 @@
 		"dev": "vite dev",
 		"build": "wrangler types && vite build",
 		"deploy": "wrangler d1 migrations apply receptio --remote && wrangler deploy",
-		"preview": "wrangler dev .svelte-kit/cloudflare/_worker.js --port 4173",
+		"preview": "wrangler dev --port 4173",
 		"prepare": "(svelte-kit sync && wrangler types) || echo ''",
 		"check": "wrangler types && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",

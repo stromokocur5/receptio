@@ -7,6 +7,7 @@ import {
 	syncPutSchema,
 	writeSync
 } from '$lib/server/sync';
+import { announce } from '$lib/server/household-room';
 import type { RequestEvent, RequestHandler } from './$types';
 
 export const prerender = false;
@@ -48,6 +49,15 @@ export const GET: RequestHandler = async (event) => {
 		error(500, 'Nepodarilo sa načítať zálohu');
 	}
 	if (!found) error(404, 'Pre tento kód tu nie sú žiadne dáta');
+	// The phone has this version already: no need to send the whole copy again.
+	const known = Number(event.url.searchParams.get('known'));
+	if (
+		found.version !== undefined &&
+		event.url.searchParams.has('known') &&
+		known === found.version
+	) {
+		return json({ unchanged: true, version: found.version }, { headers: NO_STORE });
+	}
 	return json(found, { headers: NO_STORE });
 };
 
@@ -72,6 +82,9 @@ export const PUT: RequestHandler = async (event) => {
 	if (outcome.result === 'forbidden') error(403, 'Tento kód patrí inej zálohe');
 	if (outcome.result === 'full') error(429, 'Dnes už vzniklo priveľa nových záloh, skús zajtra');
 	if (outcome.result === 'conflict') error(409, 'Medzitým to zmenil niekto iný');
+	if (body.data.announce && outcome.version !== undefined) {
+		event.platform?.ctx?.waitUntil(announce(event.platform.env, id, outcome.version));
+	}
 	return json({ updatedAt: outcome.updatedAt, version: outcome.version }, { headers: NO_STORE });
 };
 

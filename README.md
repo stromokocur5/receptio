@@ -11,13 +11,13 @@ pnpm exec wrangler d1 migrations apply receptio --local   # lokálna DB pre lajk
 pnpm dev                                                  # http://localhost:5173
 ```
 
-| Príkaz          | Čo robí                                                             |
-| --------------- | ------------------------------------------------------------------- |
-| `pnpm test`     | unit testy + validácia celého obsahu (neznáme suroviny, jednotky …) |
-| `pnpm check`    | typecheck                                                           |
-| `pnpm build`    | produkčný build (všetky stránky sa prerenderujú)                    |
-| `pnpm preview`  | build v reálnom Workers runtime (`wrangler dev`)                    |
-| `pnpm test:e2e` | testy v prehliadači (Playwright): sprievodca, plán, záhradka, sync  |
+| Príkaz          | Čo robí                                                                   |
+| --------------- | ------------------------------------------------------------------------- |
+| `pnpm test`     | unit testy + validácia celého obsahu (neznáme suroviny, jednotky …)       |
+| `pnpm check`    | typecheck                                                                 |
+| `pnpm build`    | produkčný build (všetky stránky sa prerenderujú)                          |
+| `pnpm preview`  | build v reálnom Workers runtime (`wrangler dev`, vrátane Durable Objects) |
+| `pnpm test:e2e` | testy v prehliadači (Playwright): sprievodca, plán, záhradka, sync        |
 
 ## Ako to funguje
 
@@ -30,6 +30,11 @@ pnpm dev                                                  # http://localhost:517
 - **Synchronizácia bez účtu:** prehliadač vytvorí náhodný kód na obnovenie (20 znakov), odvodí z neho ID
   záznamu, zapisovací token a AES kľúč a na server (`/api/sync/[id]`, tabuľka `sync`) posiela len šifru.
   Druhé zariadenie sa pripojí tým istým kódom. Bez kódu dáta neprečíta nikto, ani správca.
+- **Domácnosť** (`/domacnost`) beží na tej istej šifrovanej synchronizácii. Telefóny zlučujú zmeny po položkách
+  (plán po jedlách, špajza ako pridané/minuté gramy každého telefónu), takže sa nič nestratí, ani keď dvaja
+  upravujú naraz. Otvorené telefóny držia WebSocket v Durable Objecte `HouseholdRoom` (jeden na domácnosť,
+  `src/lib/server/household-room-object.ts`); po uložení im server pošle len číslo verzie a oni si zmenu stiahnu.
+  Bez neho (napr. `pnpm dev`) sa telefóny pýtajú každých 15 s.
 - **Sprievodca pri prvej návšteve** (`Onboarding.svelte`) najprv ponúkne synchronizáciu, potom ukáže, ako appka
   funguje (recepty → plán → nákup → špajza), a nastaví počet ľudí. Nezobrazí sa tým, kto prišiel cez zdieľaný
   odkaz; znova sa spúšťa na stránke Moje.

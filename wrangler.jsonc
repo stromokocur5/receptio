@@ -16,6 +16,12 @@
 			"migrations_dir": "migrations"
 		}
 	],
+	// Households' live rooms: phones keep a WebSocket, a saved change tells them at once.
+	// SQLite-backed, as the Workers Free plan requires.
+	"durable_objects": {
+		"bindings": [{ "name": "HOUSEHOLD_ROOM", "class_name": "HouseholdRoom" }]
+	},
+	"migrations": [{ "tag": "v1", "new_sqlite_classes": ["HouseholdRoom"] }],
 	// Per-IP limits (the key is the client IP). Periods can only be 10 or 60 s.
 	"ratelimits": [
 		{ "name": "LIKE_LIMITER", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } },

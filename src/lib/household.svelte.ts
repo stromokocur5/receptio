@@ -89,6 +89,10 @@ export const HOUSEHOLD_PREFIX = 'd=';
 const STORAGE_KEY = 'receptio:household';
 /** Visible tab only; a few phones on one home connection plus the live list stay under 60 a minute. */
 const POLL_MS = 15_000;
+/** With the live connection open, changes are announced; this only catches a missed one. */
+const LIVE_POLL_MS = 120_000;
+/** The connection is a WebSocket the server's quiet otherwise; this keeps it from timing out. */
+const KEEP_ALIVE_MS = 45_000;
 const PUSH_DELAY_MS = 1500;
 /** A phone whose clock runs further ahead than this doesn't drag everyone's times with it. */
 const MAX_AHEAD_MS = 24 * 60 * 60 * 1000;
@@ -374,13 +378,19 @@ function save() {
 	}
 }
 
-/** `ifVersion`: write only over the copy this phone merged with; creating a new copy has none. */
+/**
+ * `ifVersion`: write only over the copy this phone merged with; creating a new copy has none.
+ * The other phones with the household open hear about it at once.
+ */
 async function upload(k: SyncKeys, doc: HouseholdDoc | Forward, ifVersion?: number) {
-	await request(k, 'PUT', {
+	const saved = await request(k, 'PUT', {
 		token: k.token,
 		data: await encrypt(k.key, JSON.stringify(doc)),
+		announce: true,
 		...(ifVersion !== undefined && { ifVersion })
 	});
+	const version = typeof saved.version === 'number' ? saved.version : undefined;
+	if (!('moved' in doc)) lastRemote = { id: k.id, doc, version };
 }
 
 /** What stays under a changed link: the new one, sealed for each phone that stays. */
@@ -414,14 +424,22 @@ interface Remote {
 	version?: number;
 }
 
+/** The server's copy as last read or written, so an unchanged one needn't come again. */
+let lastRemote: (Remote & { id: string }) | null = null;
+
 async function fetchDoc(k: SyncKeys): Promise<Remote> {
-	const remote = await request(k, 'GET');
+	const known = lastRemote?.id === k.id ? lastRemote : null;
+	const query = known?.version !== undefined ? `?known=${known.version}` : '';
+	const remote = await request(k, 'GET', undefined, query);
+	if (remote.unchanged === true && known && remote.version === known.version) return known;
 	const raw = JSON.parse(await decrypt(k.key, remote.data as string));
 	const moved = raw && typeof raw === 'object' && 'moved' in raw && validateSealed(raw.moved);
 	if (moved) throw new Moved(moved);
 	const doc = validateDoc(raw);
 	if (!doc) throw new Error('corrupt');
-	return { doc, version: typeof remote.version === 'number' ? remote.version : undefined };
+	const version = typeof remote.version === 'number' ? remote.version : undefined;
+	lastRemote = { id: k.id, doc, version };
+	return { doc, version };
 }
 
 /**
@@ -565,14 +583,70 @@ async function sync(): Promise<void> {
 	if (keys && household.status !== 'missing' && document.visibilityState === 'visible') {
 		// Another sync may have finished meanwhile and set its own: only one poll waits.
 		clearTimeout(timer);
-		timer = setTimeout(() => void sync(), POLL_MS);
+		const connected = socket?.readyState === WebSocket.OPEN;
+		timer = setTimeout(() => void sync(), connected ? LIVE_POLL_MS : POLL_MS);
 	}
+}
+
+// ── Live: the server says when another phone saved ─────────────
+
+let socket: WebSocket | null = null;
+let socketRetry: ReturnType<typeof setTimeout> | undefined;
+let keepAlive: ReturnType<typeof setInterval> | undefined;
+/** Attempts in a row that never connected; where there's no live server (dev), polling does. */
+let socketFailures = 0;
+
+function openLive() {
+	if (!keys || socket || socketFailures >= 3 || typeof WebSocket === 'undefined') return;
+	if (document.visibilityState !== 'visible') return;
+	const id = keys.id;
+	const scheme = location.protocol === 'https:' ? 'wss' : 'ws';
+	const ws = new WebSocket(`${scheme}://${location.host}/api/live/${id}`);
+	let opened = false;
+	socket = ws;
+	ws.onopen = () => {
+		opened = true;
+		socketFailures = 0;
+		keepAlive = setInterval(() => ws.send('ping'), KEEP_ALIVE_MS);
+		// Anything saved while this phone wasn't listening.
+		void sync();
+	};
+	ws.onmessage = (event) => {
+		if (event.data === 'pong' || keys?.id !== id) return;
+		try {
+			const { v } = JSON.parse(event.data as string) as { v: unknown };
+			if (typeof v === 'number' && v !== lastRemote?.version) void sync();
+		} catch {
+			// Not ours.
+		}
+	};
+	ws.onclose = () => {
+		clearInterval(keepAlive);
+		if (socket !== ws) return;
+		socket = null;
+		if (!opened) socketFailures++;
+		if (keys?.id === id && document.visibilityState === 'visible') {
+			socketRetry = setTimeout(openLive, Math.min(2000 * 2 ** socketFailures, 60_000));
+		}
+	};
+}
+
+function closeLive() {
+	clearTimeout(socketRetry);
+	clearInterval(keepAlive);
+	const ws = socket;
+	socket = null;
+	ws?.close();
 }
 
 function onVisibility() {
 	if (!keys) return;
-	if (document.visibilityState === 'visible') void sync();
-	else {
+	if (document.visibilityState === 'visible') {
+		socketFailures = 0;
+		openLive();
+		void sync();
+	} else {
+		closeLive();
 		clearTimeout(timer);
 		if (pushTimer) {
 			clearTimeout(pushTimer);
@@ -589,6 +663,8 @@ async function start(code: string) {
 	document.addEventListener('visibilitychange', onVisibility);
 	addEventListener('online', onVisibility);
 	await sync();
+	socketFailures = 0;
+	openLive();
 }
 
 function stop() {
@@ -597,7 +673,9 @@ function stop() {
 	pushTimer = undefined;
 	document.removeEventListener('visibilitychange', onVisibility);
 	removeEventListener('online', onVisibility);
+	closeLive();
 	keys = null;
+	lastRemote = null;
 }
 
 /** Backups hold the own plan, list and pantry; restoring one puts them aside again. */

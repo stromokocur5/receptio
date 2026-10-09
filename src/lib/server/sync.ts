@@ -18,7 +18,9 @@ export const syncPutSchema = z
 			.max(MAX_SYNC_BYTES)
 			.regex(/^[A-Za-z0-9+/]+=*\.[A-Za-z0-9+/]+=*$/),
 		/** Write only over this version (what the household phone merged with). */
-		ifVersion: z.number().int().min(0).optional()
+		ifVersion: z.number().int().min(0).optional(),
+		/** A household: tell its other phones at once. */
+		announce: z.boolean().optional()
 	})
 	.strict();
 
