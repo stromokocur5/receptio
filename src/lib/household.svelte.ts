@@ -74,6 +74,7 @@ import {
 	restores,
 	type SyncKeys
 } from './sync.svelte';
+import { joinRoom, type Room } from './room';
 import { onSyncStart, onSyncStop, tab } from './tabs.svelte';
 
 /**
@@ -92,8 +93,6 @@ const STORAGE_KEY = 'receptio:household';
 const POLL_MS = 15_000;
 /** With the live connection open, changes are announced; this only catches a missed one. */
 const LIVE_POLL_MS = 120_000;
-/** The connection is a WebSocket the server's quiet otherwise; this keeps it from timing out. */
-const KEEP_ALIVE_MS = 45_000;
 const PUSH_DELAY_MS = 1500;
 /** A phone whose clock runs further ahead than this doesn't drag everyone's times with it. */
 const MAX_AHEAD_MS = 24 * 60 * 60 * 1000;
@@ -587,70 +586,39 @@ async function sync(): Promise<void> {
 	if (keys && household.status !== 'missing' && document.visibilityState === 'visible') {
 		// Another sync may have finished meanwhile and set its own: only one poll waits.
 		clearTimeout(timer);
-		const connected = socket?.readyState === WebSocket.OPEN;
-		timer = setTimeout(() => void sync(), connected ? LIVE_POLL_MS : POLL_MS);
+		timer = setTimeout(() => void sync(), room?.open ? LIVE_POLL_MS : POLL_MS);
 	}
 }
 
 // ── Live: the server says when another phone saved ─────────────
 
-let socket: WebSocket | null = null;
-let socketRetry: ReturnType<typeof setTimeout> | undefined;
-let keepAlive: ReturnType<typeof setInterval> | undefined;
-/** Attempts in a row that never connected; where there's no live server (dev), polling does. */
-let socketFailures = 0;
+let room: Room | null = null;
 /** The newest version announced while a sync was running (often this phone's own save). */
 let announced = -1;
 
 function openLive() {
-	if (!keys || socket || socketFailures >= 3 || typeof WebSocket === 'undefined') return;
-	if (document.visibilityState !== 'visible') return;
+	if (!keys || room) return;
 	const id = keys.id;
-	const scheme = location.protocol === 'https:' ? 'wss' : 'ws';
-	const ws = new WebSocket(`${scheme}://${location.host}/api/live/${id}`);
-	let opened = false;
-	socket = ws;
-	ws.onopen = () => {
-		opened = true;
-		socketFailures = 0;
-		keepAlive = setInterval(() => ws.send('ping'), KEEP_ALIVE_MS);
-		// Anything saved while this phone wasn't listening.
-		void sync();
-	};
-	ws.onmessage = (event) => {
-		if (event.data === 'pong' || keys?.id !== id) return;
-		try {
-			const { v } = JSON.parse(event.data as string) as { v: unknown };
-			if (typeof v !== 'number' || v <= (lastRemote?.version ?? -1)) return;
+	room = joinRoom(
+		id,
+		(v) => {
+			if (keys?.id !== id || v <= (lastRemote?.version ?? -1)) return;
 			if (running) announced = Math.max(announced, v);
 			else void sync();
-		} catch {
-			// Not ours.
-		}
-	};
-	ws.onclose = () => {
-		clearInterval(keepAlive);
-		if (socket !== ws) return;
-		socket = null;
-		if (!opened) socketFailures++;
-		if (keys?.id === id && document.visibilityState === 'visible') {
-			socketRetry = setTimeout(openLive, Math.min(2000 * 2 ** socketFailures, 60_000));
-		}
-	};
+		},
+		// Anything saved while this phone wasn't listening.
+		() => void sync()
+	);
 }
 
 function closeLive() {
-	clearTimeout(socketRetry);
-	clearInterval(keepAlive);
-	const ws = socket;
-	socket = null;
-	ws?.close();
+	room?.close();
+	room = null;
 }
 
 function onOnline() {
 	if (!keys) return;
-	socketFailures = 0;
-	openLive();
+	room?.retry();
 	void sync();
 }
 
@@ -662,7 +630,6 @@ async function start(code: string) {
 	seenRestores = restores.count;
 	addEventListener('online', onOnline);
 	await sync();
-	socketFailures = 0;
 	openLive();
 }
 

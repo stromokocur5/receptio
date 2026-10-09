@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onDestroy, onMount } from 'svelte';
 	import { planCheck } from '$lib/plancheck';
 	import PlanScope from '$lib/components/PlanScope.svelte';
 	import Seo from '$lib/components/Seo.svelte';
@@ -27,7 +28,17 @@
 	import { localToday, type DiaryMeal } from '$lib/journal';
 	import { budgetStatus, spentThisWeek } from '$lib/budget';
 	import { encodeSharedPlan } from '$lib/share';
-	import { LIVE_PREFIX, createLiveList } from '$lib/live-list.svelte';
+	import {
+		LIVE_PREFIX,
+		createLiveList,
+		joinLiveList,
+		leaveLiveList,
+		live,
+		ownLiveCode,
+		replaceLiveList,
+		stopOwnLive,
+		tickLive
+	} from '$lib/live-list.svelte';
 	import { memberTargets, portionOf, shareCooking, type PlanMeal } from '$lib/household';
 	import {
 		claimItem,
@@ -388,12 +399,57 @@
 	}
 	/** Unticks everything; bought extras are done with and go away. */
 	function clearChecked() {
+		if (following) {
+			for (const id of Object.keys(checkedItems.current)) tickLive(id, false);
+		}
 		checkedItems.current = {};
 		extraItems.current = extraItems.current.filter((x) => !x.checked);
 	}
 
 	function toggleChecked(id: string) {
-		checkedItems.current = { ...checkedItems.current, [id]: !checkedItems.current[id] };
+		const done = !checkedItems.current[id];
+		checkedItems.current = { ...checkedItems.current, [id]: done };
+		if (following) tickLive(id, done);
+	}
+
+	/**
+	 * Shopping together, from the side that shared the list: what the other one ticks shows here
+	 * (and goes to the pantry with "bought"), what's ticked here shows there, and a changed plan
+	 * updates their list.
+	 */
+	let following = $state(false);
+	onMount(() => {
+		const code = ownLiveCode();
+		if (!code) return;
+		following = true;
+		together = { status: 'idle', url: `${location.origin}/zoznam#${LIVE_PREFIX}${code}` };
+		void joinLiveList(code);
+	});
+	onDestroy(() => {
+		if (following) leaveLiveList();
+	});
+	$effect(() => {
+		if (!following || !live.data) return;
+		const ticks = live.data.ticks;
+		const ids = new Set(allItems.map((i) => i.ingredient.id));
+		const changes = Object.entries(ticks).filter(
+			([id, [done]]) => ids.has(id) && !!checkedItems.current[id] !== done
+		);
+		if (changes.length) {
+			checkedItems.current = {
+				...checkedItems.current,
+				...Object.fromEntries(changes.map(([id, [done]]) => [id, done]))
+			};
+		}
+	});
+	$effect(() => {
+		if (following && live.status === 'live') replaceLiveList(listFragment());
+	});
+
+	function endTogether() {
+		following = false;
+		together = { status: 'idle', url: '' };
+		stopOwnLive();
 	}
 
 	const pieces = (item: ShoppingItem) => approxPieces(item.ingredient, item.buyGrams);
@@ -447,6 +503,8 @@
 		together = { status: 'creating', url: '' };
 		try {
 			const code = await createLiveList(listFragment());
+			following = true;
+			void joinLiveList(code);
 			const url = `${location.origin}/zoznam#${LIVE_PREFIX}${code}`;
 			together = { status: 'idle', url };
 			if (navigator.share) await navigator.share({ title: 'Nakupujeme spolu · Receptio', url });
@@ -476,6 +534,8 @@
 		}
 		checkedItems.current = {};
 		extraItems.current = extraItems.current.filter((x) => !x.checked);
+		// Bought and put away: the shopping trip is over.
+		if (following) endTogether();
 	}
 
 	function clearPlan() {
@@ -1138,14 +1198,16 @@
 
 				<div class="together">
 					<p>
-						<strong>Nakupujete dvaja?</strong> Pošli spoločný zoznam. Čo jeden odškrtne, druhý hneď vidí
-						– aj keď ste každý v inej uličke.
+						<strong>Nakupujete dvaja?</strong> Pošli spoločný zoznam. Čo jeden odškrtne, druhý hneď
+						vidí – aj keď ste každý v inej uličke.{#if planFromHousehold()}
+							Domácnosť tento zoznam vidí aj tak; toto je pre niekoho mimo nej.{/if}
 					</p>
 					{#if together.url}
 						<p class="small">
-							Pošli tento odkaz tomu, s kým nakupuješ, a otvor ho aj u seba:
-							<a href={together.url}>spoločný zoznam</a>
+							Pošli tento odkaz tomu, s kým nakupuješ: <a href={together.url}>spoločný zoznam</a>.
+							Čo odškrtne, uvidíš aj tu a pôjde do špajze s tvojím „Nakúpené“.
 						</p>
+						<button class="btn ghost small" onclick={endTogether}>Ukončiť spoločný nákup</button>
 					{:else}
 						<button
 							class="btn ghost small"
