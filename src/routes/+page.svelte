@@ -222,7 +222,7 @@
 <section class="hero">
 	<div class="wrap hero-grid">
 		<div class="copy rise">
-			<p class="eyebrow">Vegánske · bezlepkové · zadarmo</p>
+			<p class="eyebrow">Vegánske · aj bez lepku · zadarmo</p>
 			<h1>
 				Rastlinné jedlo,<br />ktoré <span class="hl">sedí<Squiggle width={130} /></span> telu aj peňaženke.
 			</h1>
