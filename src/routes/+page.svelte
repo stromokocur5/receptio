@@ -17,7 +17,8 @@
 	import { pluralRecipes } from '$lib/labels';
 	import { IN_MONTH, recipeSeason } from '$lib/season';
 	import { bedPlants, localizeGuide, monthTasks, seasonDelayWeeks } from '$lib/garden';
-	import { acceptInstall, dismissInstall, install } from '$lib/install.svelte';
+	import { install } from '$lib/install.svelte';
+	import InstallCard from '$lib/components/InstallCard.svelte';
 	import { onboarding } from '$lib/onboarding.svelte';
 	import { avoid, favorites, gardens, likes, pantry, plan, settings, ui } from '$lib/state.svelte';
 	import type { GrowGuide } from '$lib/types';
@@ -367,25 +368,7 @@
 
 {#if install.offer}
 	<section class="wrap install-wrap">
-		<div class="card install">
-			<span class="i-icon"><Icon name="download" size={24} /></span>
-			<div>
-				<strong>Pridaj si Receptio na plochu</strong>
-				<p>
-					{install.prompt
-						? 'Otvorí sa ako appka, bez panela prehliadača, a recepty aj plán máš aj offline.'
-						: install.hint === 'ios'
-							? 'Ťukni na Zdieľať a potom na „Pridať na plochu“. Recepty aj plán máš potom aj offline.'
-							: 'Otvor menu prehliadača (⋮) a ťukni na „Pridať na plochu“ alebo „Inštalovať“. Recepty aj plán máš potom aj offline.'}
-				</p>
-			</div>
-			<div class="i-actions">
-				{#if install.prompt}
-					<button class="btn leaf small" onclick={acceptInstall}>Pridať</button>
-				{/if}
-				<button class="btn ghost small" onclick={dismissInstall}>Nie, ďakujem</button>
-			</div>
-		</div>
+		<InstallCard />
 	</section>
 {/if}
 
@@ -821,36 +804,6 @@
 
 	.install-wrap {
 		margin-top: 16px;
-	}
-	.install {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 12px 16px;
-		padding: 14px 16px;
-		border-left: 4px solid var(--leaf);
-		animation: rise 0.5s var(--ease-out) both;
-	}
-	.install > div:first-of-type {
-		flex: 1 1 220px;
-	}
-	.install p {
-		margin: 2px 0 0;
-		font-size: 0.9rem;
-		color: var(--ink-2);
-	}
-	.i-icon {
-		display: grid;
-		place-items: center;
-		width: 44px;
-		height: 44px;
-		border-radius: 14px;
-		background: var(--leaf-soft);
-		color: var(--leaf);
-	}
-	.i-actions {
-		display: flex;
-		gap: 8px;
 	}
 	.continue {
 		display: grid;

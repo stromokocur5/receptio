@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
+	import InstallCard from '$lib/components/InstallCard.svelte';
+	import { install } from '$lib/install.svelte';
 	import { planCheck } from '$lib/plancheck';
 	import PlanScope from '$lib/components/PlanScope.svelte';
 	import Seo from '$lib/components/Seo.svelte';
@@ -989,6 +991,15 @@
 			{/if}
 		</div>
 
+		{#if allItems.length && install.offer}
+			<!-- The moment it pays off: in the shop, with no signal. -->
+			<div class="install-slot">
+				<InstallCard
+					title="Nákupný zoznam aj bez signálu"
+					why="zoznam sa v obchode otvorí aj bez internetu"
+				/>
+			</div>
+		{/if}
 		<section class="card box shop" id="nakup">
 			<div class="box-head">
 				<h2><Icon name="basket" size={24} /> Nákupný zoznam</h2>
@@ -1455,6 +1466,9 @@
 </dialog>
 
 <style>
+	.install-slot {
+		margin-bottom: 16px;
+	}
 	.household-note {
 		display: flex;
 		flex-wrap: wrap;
