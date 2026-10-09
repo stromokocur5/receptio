@@ -27,7 +27,18 @@
 	import { budgetStatus, spentThisWeek } from '$lib/budget';
 	import { encodeSharedPlan } from '$lib/share';
 	import { LIVE_PREFIX, createLiveList } from '$lib/live-list.svelte';
-	import { household } from '$lib/household.svelte';
+	import { memberTargets, portionOf, shareCooking, type PlanMeal } from '$lib/household';
+	import {
+		claimItem,
+		claims,
+		household,
+		members,
+		noteCooked,
+		notePurchase,
+		planFromHousehold,
+		planNeed,
+		planSlots
+	} from '$lib/household.svelte';
 	import {
 		approxPieces,
 		buildShoppingList,
@@ -43,6 +54,7 @@
 		markCooked,
 		movePlanEntryUp,
 		setPlanBreakfast,
+		setPlanCook,
 		addToPlan,
 		pantryAdded,
 		setPlanFreezeExtra,
@@ -215,8 +227,45 @@
 			const n = e.data.perServing;
 			for (const key of Object.keys(total) as (keyof typeof total)[]) total[key] += n[key] * factor;
 		}
-		return scaleNutrients(total, 1 / (settings.current.planDays * settings.current.people));
+		return scaleNutrients(total, 1 / Math.max(personDays, 1));
 	});
+	/**
+	 * Days of one adult eating every planned meal: the plan's food divided by this is "per person
+	 * a day". In a household, children's smaller portions and days away count less.
+	 */
+	const personDays = $derived.by(() => {
+		const slots = planSlots(settings.current);
+		const mealsADay = mainMeals(settings.current).length + (settings.current.breakfasts ? 1 : 0);
+		if (!slots || !mealsADay) return settings.current.planDays * settings.current.people;
+		return (slots.mainPortions + slots.morningPortions) / mealsADay;
+	});
+	/** Portions a lunch or dinner takes, on average over the plan. */
+	const perMeal = $derived.by(() => {
+		const slots = planSlots(settings.current);
+		return slots?.main ? slots.mainPortions / slots.main : settings.current.people;
+	});
+	const cooks = $derived(ui.loaded && planFromHousehold() ? members() : []);
+	const cookName = (id: string | undefined) => cooks.find((m) => m.id === id)?.name;
+	/** What each member gets from the plan a day, by their portion and the meals they eat at home. */
+	const perMember = $derived.by(() => {
+		const planned: PlanMeal[] = [
+			...(settings.current.breakfasts ? (['ranajky'] as const) : []),
+			...mainMeals(settings.current)
+		];
+		if (!planned.length) return [];
+		return cooks.map((m) => {
+			const share =
+				(portionOf(m) * planned.filter((meal) => m.meals[meal]).length) / planned.length;
+			const goal = memberTargets(m.body);
+			return {
+				member: m,
+				kcal: perDay.kcal * share,
+				protein: perDay.protein * share,
+				goal
+			};
+		});
+	});
+	const itemClaims = $derived(ui.loaded ? claims() : new Map());
 
 	const schedule = $derived(
 		mealSchedule(
@@ -226,6 +275,7 @@
 			settings.current.planDays,
 			{
 				keeps: (id) => catalog.recipesById.get(id)?.keeps,
+				need: planNeed(settings.current),
 				breakfasts: settings.current.breakfasts,
 				isBreakfast: (e) => isBreakfastEntry(e, catalog.recipesById.get(e.recipeId))
 			}
@@ -263,6 +313,7 @@
 			? `${e.recipe.title}: zapísané, zo špajze ubudlo ${used.map((u) => u.ingredient.name).join(', ')}.`
 			: `${e.recipe.title}: zapísané do histórie.`;
 		justCooked = { recipeId: e.recipeId, variant: e.variant };
+		noteCooked(e.recipeId);
 	}
 	/** The recipe just marked cooked, to log a portion of it right away if it's eaten now. */
 	let justCooked = $state<{ recipeId: string; variant?: string } | null>(null);
@@ -390,11 +441,11 @@
 	}
 
 	function boughtToPantry() {
-		recordPurchase(
-			allItems
-				.filter((i) => checkedItems.current[i.ingredient.id])
-				.reduce((sum, i) => sum + (pay.get(i.ingredient.id)?.cost ?? 0), 0)
-		);
+		const paid = allItems
+			.filter((i) => checkedItems.current[i.ingredient.id])
+			.reduce((sum, i) => sum + (pay.get(i.ingredient.id)?.cost ?? 0), 0);
+		recordPurchase(paid);
+		notePurchase(paid);
 		for (const item of allItems) {
 			if (!checkedItems.current[item.ingredient.id]) continue;
 			if (item.restock) setOutOfStock(item.ingredient.id, false);
@@ -462,9 +513,25 @@
 			<p class="household-note">
 				<Icon name="users" size={18} />
 				<span
-					>Spoločný plán domácnosti <a href="/domacnost">{household.doc.name[0]}</a> – zmeny vidia
-					všetci{household.status === 'offline' ? ' (teraz offline)' : ''}.</span
+					>{#if household.solo}Plánuješ sám – spoločný plán domácnosti <a href="/domacnost"
+							>{household.doc.name[0]}</a
+						> na teba počká.{:else}Spoločný plán domácnosti <a href="/domacnost"
+							>{household.doc.name[0]}</a
+						>
+						– zmeny vidia všetci{household.status === 'offline'
+							? ' (teraz offline)'
+							: ''}.{/if}</span
 				>
+				{#if cooks.length > 1 && entries.length}
+					<button
+						class="link-btn"
+						onclick={() =>
+							(plan.current = shareCooking(
+								plan.current,
+								cooks.filter((m) => m.meals.obed || m.meals.vecera).map((m) => m.id)
+							))}>Rozdeliť varenie</button
+					>
+				{/if}
 			</p>
 		{/if}
 	</header>
@@ -628,8 +695,8 @@
 											? 'už zaplatené'
 											: formatEur(e.data.costPerServing * e.servings)}
 										{#if e.freezeExtra}· z toho {e.freezeExtra} porc. do mrazničky{/if}
-										{#if settings.current.people > 1 || mainMeals(settings.current).length > 1}
-											· {Math.floor(e.servings / settings.current.people)}× jedlo
+										{#if perMeal !== 1 || mainMeals(settings.current).length > 1}
+											· {Math.floor(e.servings / perMeal + 1e-9)}× jedlo
 										{/if}
 									</span>
 									<span class="entry-actions">
@@ -677,6 +744,19 @@
 											</button>
 										{/if}
 									</span>
+									{#if cooks.length > 1 && !e.fromFreezer}
+										<label class="cook-pick">
+											<Icon name="pot" size={14} />
+											<span class="sr-only">Kto varí {e.recipe.title}</span>
+											<select
+												value={e.cook ?? ''}
+												onchange={(ev) => setPlanCook(i, ev.currentTarget.value || undefined)}
+											>
+												<option value="">Varí ktokoľvek</option>
+												{#each cooks as m (m.id)}<option value={m.id}>Varí {m.name}</option>{/each}
+											</select>
+										</label>
+									{/if}
 								</div>
 								{#if !e.fromFreezer}
 									<div class="stepper" role="group" aria-label="Porcie pre {e.recipe.title}">
@@ -774,6 +854,28 @@
 						{targets}
 						keys={['kcal', 'protein', 'fiber', 'iron', 'calcium', 'zinc', 'ala', 'salt']}
 					/>
+					{#if perMember.length > 1}
+						<h3 class="per-member-title">Pre každého v domácnosti</h3>
+						<ul class="per-member">
+							{#each perMember as p (p.member.id)}
+								<li>
+									<strong>{p.member.name}</strong>
+									<span>
+										{formatNumber(p.kcal, 0)}{p.goal.kcal
+											? ` z ${formatNumber(p.goal.kcal, 0)}`
+											: ''} kcal · {formatNumber(p.protein, 0)}{p.goal.protein
+											? ` z ${formatNumber(p.goal.protein, 0)}`
+											: ''} g bielkovín
+									</span>
+								</li>
+							{/each}
+						</ul>
+						<p class="muted small">
+							Podľa porcie a jedál, ktoré je doma. Ciele z výšky, váhy a veku nastavíš v <a
+								href="/domacnost">domácnosti</a
+							>.
+						</p>
+					{/if}
 					{#if balance.length}
 						<ul class="balance">
 							{#each balance as tip (tip.text)}
@@ -1096,7 +1198,7 @@
 </div>
 
 <!-- `today` is the diary meal for today's slots, so they can be ticked off as eaten. -->
-{#snippet slot(meal: ScheduledMeal | null, today: DiaryMeal | null, label?: string)}
+{#snippet slot(meal: ScheduledMeal | null | false, today: DiaryMeal | null, label?: string)}
 	{#if meal}
 		<span class="meal" class:cook={meal.kind === 'cook'} class:old={meal.freeze || meal.spoils}>
 			{#if meal.kind === 'cook'}
@@ -1126,6 +1228,9 @@
 							: 'Zvyšky'}</span
 				>
 				<a href="/recepty/{meal.entry.recipeId}">{titleOf(meal.entry.recipeId)}</a>
+				{#if meal.kind === 'cook' && cookName(meal.entry.cook)}<small
+						>varí {cookName(meal.entry.cook)}</small
+					>{/if}
 				{#if meal.freeze}<small>tieto porcie hneď zamraz</small>
 				{:else if meal.spoils}<small>nevydrží – uvar menej alebo neskôr</small>{/if}
 			</span>
@@ -1145,6 +1250,8 @@
 				</button>
 			{/if}
 		</span>
+	{:else if meal === false}
+		<span class="meal empty">{label ? `${label}: ` : ''}nikto nie je doma</span>
 	{:else}
 		<span class="meal empty">{label ? `${label}: ` : ''}nič naplánované</span>
 	{/if}
@@ -1183,6 +1290,7 @@
 			</span>
 			<span class="price" class:est={!itemPay?.shelf}>{formatEur(itemPay?.cost ?? item.cost)}</span>
 		</label>
+		{@render claim(item.ingredient.id, item.ingredient.name, checked)}
 		{#if item.restock}
 			<button
 				class="undo"
@@ -1196,6 +1304,28 @@
 	</li>
 {/snippet}
 
+<!-- In a household: who'll buy this, so two people don't bring the same thing. -->
+{#snippet claim(id: string, name: string, checked: boolean)}
+	{@const by = itemClaims.get(id)}
+	{#if !checked && household.me && planFromHousehold()}
+		<button
+			class="claim"
+			class:mine={by?.id === household.me}
+			aria-pressed={by?.id === household.me}
+			aria-label={by?.id === household.me
+				? `Nekúpim: ${name}`
+				: by
+					? `Kúpim ja namiesto ${by.name}: ${name}`
+					: `Kúpim ja: ${name}`}
+			onclick={() => claimItem(id, by?.id !== household.me)}
+		>
+			{by ? (by.id === household.me ? 'beriem ja' : `berie ${by.name}`) : 'beriem'}
+		</button>
+	{:else if !checked && by}
+		<span class="claim">berie {by.name}</span>
+	{/if}
+{/snippet}
+
 {#snippet extraRow(x: ExtraItem)}
 	<li class:checked={x.checked}>
 		<label>
@@ -1203,6 +1333,7 @@
 			<span class="box-ui" aria-hidden="true"><Icon name="check" size={14} stroke={3} /></span>
 			<span class="nm">{x.text}</span>
 		</label>
+		{@render claim(x.id, x.text, x.checked)}
 		<button class="undo" aria-label="Odstrániť: {x.text}" onclick={() => removeExtra(x.id)}>
 			<Icon name="x" size={14} />
 		</button>
@@ -1229,9 +1360,69 @@
 <style>
 	.household-note {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		gap: 8px;
 		font-weight: 600;
+	}
+	.household-note .link-btn {
+		display: inline;
+		margin: 0;
+	}
+	.cook-pick {
+		display: flex;
+		margin-top: 6px;
+		max-width: 100%;
+		align-items: center;
+		gap: 4px;
+		font-size: 0.82rem;
+	}
+	.cook-pick select {
+		min-width: 0;
+		max-width: 100%;
+		border: 1.5px solid var(--line);
+		border-radius: 999px;
+		background: var(--paper);
+		color: var(--ink);
+		padding: 2px 8px;
+		font: inherit;
+	}
+	.claim {
+		flex: none;
+		padding: 3px 9px;
+		border: 1.5px solid var(--line);
+		border-radius: 999px;
+		background: var(--paper);
+		color: var(--muted);
+		font: inherit;
+		font-size: 0.78rem;
+		font-weight: 650;
+		white-space: nowrap;
+	}
+	button.claim {
+		cursor: pointer;
+	}
+	.claim.mine {
+		border-color: var(--leaf);
+		background: var(--leaf);
+		color: var(--paper);
+	}
+	.per-member-title {
+		margin: 18px 0 6px;
+		font-size: 1rem;
+	}
+	.per-member {
+		display: grid;
+		gap: 4px;
+		padding: 0;
+		margin: 0 0 6px;
+		list-style: none;
+	}
+	.per-member li {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 4px 12px;
 	}
 	.page {
 		padding-top: 28px;

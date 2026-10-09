@@ -32,6 +32,8 @@ export interface PlanEntry {
 	fromFreezer?: boolean;
 	/** For freezer portions: the day they were frozen, kept if they go back. */
 	frozenOn?: string;
+	/** Household member who cooks it. */
+	cook?: string;
 }
 
 /** A recipe meant only for the morning (porridge, pancakes) – not one also fit for lunch. */

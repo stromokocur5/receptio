@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { mealSchedule } from './schedule';
+import { mealSchedule, type ScheduledMeal } from './schedule';
+
+/** The recipe eaten at a meal, '-' when the plan ran out, 'away' when nobody eats at home. */
+const id = (meal: ScheduledMeal | null | false | undefined) =>
+	meal === false ? 'away' : (meal?.entry.recipeId ?? '-');
 
 const summary = (days: ReturnType<typeof mealSchedule>['days']) =>
 	days.map((d) =>
@@ -72,9 +76,7 @@ describe('breakfasts', () => {
 			3,
 			{ breakfasts: true, isBreakfast: (e) => e.breakfast === true }
 		);
-		expect(
-			plan.days.map((d) => [d.breakfast?.entry.recipeId ?? '-', d.meals[0]?.entry.recipeId])
-		).toEqual([
+		expect(plan.days.map((d) => [id(d.breakfast), id(d.meals[0])])).toEqual([
 			['kasa', 'dal'],
 			['kasa', 'dal'],
 			['-', 'dal']
@@ -87,7 +89,7 @@ describe('breakfasts', () => {
 		const plan = mealSchedule([{ recipeId: 'kasa', servings: 2, breakfast: true }], 1, 1, 2, {
 			isBreakfast: () => true
 		});
-		expect(plan.days.map((d) => d.meals[0]?.entry.recipeId)).toEqual(['kasa', 'kasa']);
+		expect(plan.days.map((d) => id(d.meals[0]))).toEqual(['kasa', 'kasa']);
 		expect(plan.days[0].breakfast).toBeUndefined();
 	});
 });
@@ -95,7 +97,21 @@ describe('breakfasts', () => {
 describe('freezer', () => {
 	it('leaves the frozen half out of the days', () => {
 		const plan = mealSchedule([{ recipeId: 'cili', servings: 8, freezeExtra: 4 }], 2, 1, 3);
-		expect(plan.days.map((d) => d.meals[0]?.entry.recipeId ?? '-')).toEqual(['cili', 'cili', '-']);
+		expect(plan.days.map((d) => id(d.meals[0]))).toEqual(['cili', 'cili', '-']);
+		expect(plan.extraServings).toBe(0);
+	});
+});
+
+describe('portions by meal', () => {
+	it('serves each meal what the people at home eat, and skips meals nobody is home for', () => {
+		// Day 0: two adults and a child (2.5) at lunch; day 1: nobody home; day 2: one adult.
+		const portions = [2.5, 0, 1];
+		const plan = mealSchedule([{ recipeId: 'dal', servings: 4 }], 1, 1, 3, {
+			need: (day) => portions[day]
+		});
+		expect(plan.days.map((d) => id(d.meals[0]))).toEqual(['dal', 'away', 'dal']);
+		expect(plan.days[2].meals[0]).toMatchObject({ kind: 'leftover', age: 2 });
+		expect(plan.unplannedMeals).toBe(0);
 		expect(plan.extraServings).toBe(0);
 	});
 });

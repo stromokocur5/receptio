@@ -21,10 +21,10 @@ export interface ScheduledMeal {
 }
 
 export interface ScheduleDay {
-	/** One slot per meal of the day; null when the plan has run out. */
-	meals: (ScheduledMeal | null)[];
+	/** One slot per meal of the day; null when the plan has run out, false when nobody eats at home. */
+	meals: (ScheduledMeal | null | false)[];
 	/** Planned only when breakfasts are planned too; null when they ran out. */
-	breakfast?: ScheduledMeal | null;
+	breakfast?: ScheduledMeal | null | false;
 }
 
 export interface ScheduleOptions {
@@ -32,11 +32,13 @@ export interface ScheduleOptions {
 	/** Plan a breakfast every day from the entries marked as breakfast. */
 	breakfasts?: boolean;
 	isBreakfast?: (entry: PlanEntry) => boolean;
+	/** Portions eaten at a meal (a main meal's slot index, or breakfast); `people` when not given. */
+	need?: (day: number, meal: number | 'ranajky') => number;
 }
 
 /**
  * Lays the plan out over days: each entry is cooked once and then eaten as leftovers until its
- * servings run out, `people` servings per meal. Entries go in plan order, so reordering the plan
+ * servings run out, `people` servings per meal (or what `need` says). Entries go in plan order, so reordering the plan
  * changes what's cooked when. Breakfasts, when planned, are a queue of their own.
  */
 export function mealSchedule(
@@ -44,7 +46,12 @@ export function mealSchedule(
 	people: number,
 	mealsPerDay: number,
 	days: number,
-	{ keeps = () => undefined, breakfasts = false, isBreakfast = () => false }: ScheduleOptions = {}
+	{
+		keeps = () => undefined,
+		breakfasts = false,
+		isBreakfast = () => false,
+		need = () => people
+	}: ScheduleOptions = {}
 ): {
 	days: ScheduleDay[];
 	unplannedMeals: number;
@@ -63,9 +70,9 @@ export function mealSchedule(
 	let unplannedMeals = 0;
 	let unplannedBreakfasts = 0;
 
-	const serve = (queue: typeof all, day: number): ScheduledMeal | null => {
+	const serve = (queue: typeof all, day: number, portions: number): ScheduledMeal | null => {
 		// A meal needs a serving for everyone; a smaller remainder is just a spare portion.
-		const batch = queue.find((b) => b.left >= people);
+		const batch = queue.find((b) => b.left >= portions - 1e-9);
 		if (!batch) return null;
 		const kind = batch.cookedOn === -1 ? 'cook' : 'leftover';
 		if (kind === 'cook') batch.cookedOn = day;
@@ -75,7 +82,7 @@ export function mealSchedule(
 			freezer: 0
 		};
 		const tooOld = age > fridge;
-		batch.left -= people;
+		batch.left -= portions;
 		return {
 			entry: batch.entry,
 			kind,
@@ -88,16 +95,19 @@ export function mealSchedule(
 	for (let day = 0; day < days; day++) {
 		const scheduled: ScheduleDay = { meals: [] };
 		if (breakfasts) {
-			scheduled.breakfast = serve(morning, day);
-			if (!scheduled.breakfast) unplannedBreakfasts++;
+			const portions = need(day, 'ranajky');
+			scheduled.breakfast = portions > 0 && serve(morning, day, portions);
+			if (scheduled.breakfast === null) unplannedBreakfasts++;
 		}
 		for (let slot = 0; slot < mealsPerDay; slot++) {
-			const meal = serve(rest, day);
-			if (!meal) unplannedMeals++;
+			const portions = need(day, slot);
+			const meal = portions > 0 && serve(rest, day, portions);
+			if (meal === null) unplannedMeals++;
 			scheduled.meals.push(meal);
 		}
 		result.push(scheduled);
 	}
-	const extraServings = all.reduce((sum, b) => sum + Math.max(0, b.left), 0);
+	// Children's smaller portions leave fractions; only whole servings count as extra.
+	const extraServings = Math.floor(all.reduce((sum, b) => sum + Math.max(0, b.left), 0) + 1e-9);
 	return { days: result, unplannedMeals, unplannedBreakfasts, extraServings };
 }

@@ -21,6 +21,11 @@ export interface AutoPlanOptions {
 	batchCooking: boolean;
 	/** Different seed = a different, equally valid plan. */
 	seed: number;
+	/**
+	 * When not everyone eats every meal (a household with children, someone away): how many meals
+	 * to plan and how many portions they take in all. Without it: `days` × meals × `people`.
+	 */
+	slots?: { main: number; mainPortions: number; morning: number; morningPortions: number };
 }
 
 export interface AutoPlanContext {
@@ -174,8 +179,14 @@ export function autoPlan(
 ): AutoPlanResult {
 	const pool = candidates(recipes, o);
 	const morningPool = o.breakfasts ? breakfastCandidates(recipes, o) : [];
-	const wantedMain = o.days * o.mealsPerDay;
-	const wantedMorning = o.breakfasts ? o.days : 0;
+	const wantedMain = o.slots?.main ?? o.days * o.mealsPerDay;
+	const wantedMorning = o.breakfasts ? (o.slots?.morning ?? o.days) : 0;
+	// Portions per meal, on average over the plan.
+	const perMain = o.slots && o.slots.main ? o.slots.mainPortions / o.slots.main : o.people;
+	const perMorning =
+		o.slots && o.slots.morning ? o.slots.morningPortions / o.slots.morning : o.people;
+	const portions = (meals: number, breakfast: boolean) =>
+		meals * (breakfast ? perMorning : perMain);
 	const wanted = wantedMain + wantedMorning;
 	const rand = seededRandom(o.seed);
 	// With a budget, cheapness only has to fit it; without one, cheaper is simply better.
@@ -188,12 +199,14 @@ export function autoPlan(
 		const all = [...main, ...morning];
 		const entry = ({ c, meals }: Chosen[number], breakfast: boolean): PlanEntry => ({
 			recipeId: c.recipe.id,
-			servings: meals * o.people,
+			servings: Math.ceil(portions(meals, breakfast) - 1e-9),
 			...(c.variant && { variant: c.variant }),
 			...(breakfast && { breakfast: true })
 		});
 		const entries = [...main.map((x) => entry(x, false)), ...morning.map((x) => entry(x, true))];
-		const cost = all.reduce((sum, { c, meals }) => sum + c.cost * meals * o.people, 0);
+		const cost =
+			main.reduce((sum, { c, meals }) => sum + c.cost * portions(meals, false), 0) +
+			morning.reduce((sum, { c, meals }) => sum + c.cost * portions(meals, true), 0);
 		const meals = all.reduce((sum, x) => sum + x.meals, 0);
 		const result: AutoPlanResult = {
 			entries,

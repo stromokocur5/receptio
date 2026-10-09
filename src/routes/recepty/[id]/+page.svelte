@@ -59,8 +59,8 @@
 	import { breadcrumbJsonLd, recipeJsonLd } from '$lib/structured-data';
 	import { jarsFromYield } from '$lib/preserves';
 	import { shortName } from '$lib/avoid';
-	import { recipeConflicts } from '$lib/household';
-	import { members } from '$lib/household.svelte';
+	import { recipeConflicts, wishesOf } from '$lib/household';
+	import { household, tableMembers, toggleWish } from '$lib/household.svelte';
 
 	let { data } = $props();
 	const catalog = useCatalog();
@@ -102,7 +102,7 @@
 	const cuisine = $derived(catalog.cuisinesById.get(recipe.cuisine));
 	/** Who at the household's table can't eat this version, and a version they all can. */
 	const table = $derived.by(() => {
-		const people = ui.loaded ? members() : [];
+		const people = ui.loaded ? tableMembers() : [];
 		if (!people.length) return null;
 		const conflictsOf = (r: typeof recipe) =>
 			recipeConflicts(r, people, catalog.ingredientsById, ALLERGEN_LABELS);
@@ -111,6 +111,12 @@
 			? base.variants.find((v) => !conflictsOf({ ...base, ...v, ahead: base.ahead }).length)
 			: undefined;
 		return { conflicts, fits, names: people.map((m) => m.name).join(', ') };
+	});
+	/** Who in the household would like this cooked; null outside one. */
+	const wishes = $derived.by(() => {
+		if (!ui.loaded || !household.doc || household.solo) return null;
+		const wanted = wishesOf(household.doc, tableMembers()).get(base.id) ?? [];
+		return { names: wanted.map((m) => m.name), mine: wanted.some((m) => m.id === household.me) };
 	});
 	/**
 	 * Calcium and B12 of soy drink and yogurt are what the producer adds. Homemade and plain ones
@@ -701,6 +707,21 @@
 				<div class="warning info">
 					<Icon name="users" size={20} />
 					<span>Môže jesť každý z domácnosti ({table.names}).</span>
+				</div>
+			{/if}
+			{#if wishes && (wishes.names.length || household.me)}
+				<div class="warning info">
+					<Icon name="heart" size={20} />
+					<span>
+						{#if wishes.names.length}Chce to: {wishes.names.join(', ')}.{/if}
+						{#if household.me}
+							<button class="linkish" aria-pressed={wishes.mine} onclick={() => toggleWish(base.id)}
+								>{wishes.mine
+									? 'Už to nechcem'
+									: 'Chcem to – nech to automatický plán zaradí'}</button
+							>
+						{/if}
+					</span>
 				</div>
 			{/if}
 		</section>

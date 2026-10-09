@@ -124,7 +124,8 @@ function validatePlan(raw: unknown): PlanEntry[] | undefined {
 					e.freezeExtra < (e.servings as number))) &&
 			(e.fromFreezer === undefined || e.fromFreezer === true) &&
 			(e.frozenOn === undefined ||
-				(typeof e.frozenOn === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(e.frozenOn)))
+				(typeof e.frozenOn === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(e.frozenOn))) &&
+			(e.cook === undefined || (typeof e.cook === 'string' && /^[a-z0-9]{1,16}$/.test(e.cook)))
 	);
 }
 
@@ -987,6 +988,15 @@ export function planFromFreezer(preserveId: string, servings: number) {
 /** Marks a plan entry as breakfast or as a lunch/dinner. */
 export function setPlanBreakfast(index: number, breakfast: boolean) {
 	plan.current = plan.current.map((e, i) => (i === index ? { ...e, breakfast } : e));
+}
+
+/** Who in the household cooks this entry; undefined = anyone. */
+export function setPlanCook(index: number, cook: string | undefined) {
+	plan.current = plan.current.map((e, i) => {
+		if (i !== index) return e;
+		const { cook: _old, ...rest } = e;
+		return cook ? { ...rest, cook } : rest;
+	});
 }
 
 /** Moves a plan entry one place earlier, so it gets cooked sooner. */

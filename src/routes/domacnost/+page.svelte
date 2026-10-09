@@ -2,28 +2,41 @@
 	import { afterNavigate, replaceState } from '$app/navigation';
 	import { shortName } from '$lib/avoid';
 	import { useCatalog } from '$lib/catalog';
+	import { formatNumber } from '$lib/amounts';
+	import HouseholdLog from '$lib/components/HouseholdLog.svelte';
+	import HouseholdMember from '$lib/components/HouseholdMember.svelte';
+	import HouseholdMoney from '$lib/components/HouseholdMoney.svelte';
 	import Icon from '$lib/components/Icon.svelte';
-	import IngredientExcluder from '$lib/components/IngredientExcluder.svelte';
 	import Seo from '$lib/components/Seo.svelte';
-	import { MAX_MEMBERS, householdFilter, hasNeeds, type Member } from '$lib/household';
+	import {
+		MAX_MEMBERS,
+		PLAN_MEALS,
+		householdFilter,
+		hasNeeds,
+		isAway,
+		portionOf,
+		wishesOf,
+		type Member
+	} from '$lib/household';
 	import {
 		HOUSEHOLD_PREFIX,
 		addMember,
+		changeLink,
 		createHousehold,
 		household,
 		inviteLink,
 		joinHousehold,
 		leaveHousehold,
 		members,
-		removeMember,
+		myMember,
 		renameHousehold,
-		setMe,
-		tableNeeds,
-		updateMember
+		startSolo,
+		stopSolo,
+		tableNeeds
 	} from '$lib/household.svelte';
+	import { localToday } from '$lib/journal';
 	import { ALLERGEN_LABELS } from '$lib/nutrition';
-	import { ui } from '$lib/state.svelte';
-	import { ALLERGENS } from '$lib/types';
+	import { plan, ui } from '$lib/state.svelte';
 
 	const catalog = useCatalog();
 
@@ -38,6 +51,11 @@
 	let newMember = $state('');
 	let editing = $state<string | null>(null);
 	let confirmLeave = $state(false);
+	let confirmNewLink = $state(false);
+	/** Someone was just removed: their old link still works until it's changed. */
+	let removedSomeone = $state(false);
+	let soloAway = $state(true);
+	let soloUntil = $state('');
 
 	const list = $derived(ui.loaded ? members() : []);
 	const needs = $derived(household.doc ? tableNeeds() : null);
@@ -47,6 +65,22 @@
 			: catalog.recipes.length
 	);
 	const time = new Intl.DateTimeFormat('sk-SK', { hour: '2-digit', minute: '2-digit' });
+	const shortDate = new Intl.DateTimeFormat('sk-SK', { day: 'numeric', month: 'numeric' });
+	const today = localToday();
+
+	/** The household's plan: this device's, or the shared one waiting while planning alone. */
+	const sharedPlan = $derived(
+		!ui.loaded || !household.doc ? [] : household.solo ? household.doc.plan[0] : plan.current
+	);
+	const cookOf = (id: string | undefined) => list.find((m) => m.id === id)?.name;
+	const wishes = $derived(
+		household.doc
+			? [...wishesOf(household.doc, list)]
+					.map(([id, who]) => ({ recipe: catalog.recipesById.get(id), who }))
+					.filter((w) => w.recipe)
+			: []
+	);
+	const me = $derived(ui.loaded ? myMember() : null);
 
 	afterNavigate(() => {
 		const fragment = location.hash.slice(1);
@@ -109,16 +143,38 @@
 		}
 	}
 
-	function toggleAllergen(member: Member, allergen: (typeof ALLERGENS)[number]) {
-		updateMember(member.id, {
-			allergens: member.allergens.includes(allergen)
-				? member.allergens.filter((a) => a !== allergen)
-				: [...member.allergens, allergen]
+	function newLink() {
+		if (!confirmNewLink) {
+			confirmNewLink = true;
+			return;
+		}
+		confirmNewLink = false;
+		void run(async () => {
+			await changeLink();
+			removedSomeone = false;
+			await share();
 		});
 	}
 
+	const MEAL_SHORT = { ranajky: 'raňajky', obed: 'obedy', vecera: 'večere' } as const;
+	const dateText = (iso: string) => shortDate.format(new Date(`${iso}T12:00`));
+
 	function summary(member: Member): string[] {
+		const eats = PLAN_MEALS.filter((m) => member.meals[m]);
+		const portion = portionOf(member);
+		const away = member.away;
 		return [
+			...(away && (isAway(member, today) || away.from > today)
+				? [
+						away.from > today
+							? `preč od ${dateText(away.from)}${away.to ? ` do ${dateText(away.to)}` : ''}`
+							: `preč${away.to ? ` do ${dateText(away.to)}` : ''}`
+					]
+				: []),
+			...(eats.length < PLAN_MEALS.length
+				? [`doma: ${eats.map((m) => MEAL_SHORT[m]).join(', ')}`]
+				: []),
+			...(portion !== 1 ? [`porcia ${formatNumber(portion, 2)}×`] : []),
 			...member.allergens.map((a) => `bez: ${ALLERGEN_LABELS[a]}`),
 			...member.avoid.map(
 				(id) => `bez: ${shortName(catalog.ingredientsById.get(id)?.name ?? id).toLowerCase()}`
@@ -237,11 +293,51 @@
 			{:else if household.status === 'connecting'}
 				Pripájam…
 			{:else if household.status === 'missing'}
-				Táto domácnosť na serveri už nie je. Môžeš z nej odísť a založiť novú.
+				Pod týmto odkazom už domácnosť nie je – buď ste ho vymenili, alebo zanikla.
 			{:else}
 				Offline – zmeny sa pošlú, keď bude internet
 			{/if}
 		</p>
+
+		{#if household.status === 'missing'}
+			<section class="card box">
+				<h2><Icon name="users" size={24} /> Máš nový odkaz?</h2>
+				<p>Popros niekoho z domácnosti o nový odkaz a vlož ho sem. Tvoj plán a zoznam ostanú.</p>
+				<form
+					class="row"
+					onsubmit={(e) => {
+						e.preventDefault();
+						join(joinInput);
+					}}
+				>
+					<input
+						bind:value={joinInput}
+						aria-label="Nový odkaz domácnosti"
+						placeholder="https://…/domacnost#d=…"
+						autocomplete="off"
+						spellcheck="false"
+					/>
+					<button class="btn leaf" type="submit" disabled={busy || !joinInput.trim()}
+						>Pripojiť sa</button
+					>
+				</form>
+				{#if error}<p class="msg" role="alert"><Icon name="alert" size={18} /> {error}</p>{/if}
+			</section>
+		{/if}
+
+		{#if household.solo}
+			<section class="card box solo-on">
+				<h2><Icon name="sun" size={24} /> Plánuješ sám</h2>
+				<p>
+					Máš vlastný plán a nákupný zoznam. Spoločný plán domácnosti na teba počká, špajza ostáva
+					spoločná.{#if household.soloAway && me?.away}
+						Ostatní vidia, že nie si doma{me.away.to ? ` do ${dateText(me.away.to)}` : ''}.{/if}
+				</p>
+				<button class="btn leaf" disabled={busy} onclick={() => void run(() => stopSolo())}>
+					<Icon name="users" size={18} /> Späť k spoločnému plánu
+				</button>
+			</section>
+		{/if}
 
 		<section class="card box">
 			<h2><Icon name="share" size={24} /> Pozvi ostatných</h2>
@@ -262,6 +358,20 @@
 					onchange={(e) => renameHousehold(e.currentTarget.value)}
 				/>
 			</label>
+			<div class="new-link" class:alert={removedSomeone}>
+				<p>
+					<Icon name="shield" size={18} />
+					{#if removedSomeone}
+						<strong>Kto odišiel, má stále starý odkaz.</strong> Vymeň ho, aby sa už nedostal dnu.
+					{:else}
+						Odsťahoval sa niekto alebo odkaz unikol? Vymeň ho – starý prestane fungovať.
+					{/if}
+				</p>
+				<button class="btn ghost small" disabled={busy || !household.code} onclick={newLink}>
+					{confirmNewLink ? 'Naozaj? Ostatným pošleš nový odkaz.' : 'Vymeniť odkaz'}
+				</button>
+				{#if error}<p class="msg" role="alert"><Icon name="alert" size={18} /> {error}</p>{/if}
+			</div>
 		</section>
 
 		<section class="card box">
@@ -269,7 +379,8 @@
 			{#if list.length}
 				<p class="muted">
 					Plán varí pre {list.length}
-					{list.length === 1 ? 'človeka' : 'ľudí'}.
+					{list.length === 1 ? 'človeka' : 'ľudí'} – porcie podľa toho, kto je pri ktorom jedle doma a
+					koľko zje.
 					{#if needs && hasNeeds(needs)}
 						Všetci môžu jesť <a href="/recepty?domacnost=1">{fitCount} receptov</a>.
 					{/if}
@@ -299,66 +410,13 @@
 							</button>
 						</div>
 						{#if editing === member.id}
-							<div class="edit">
-								<label class="rename">
-									Meno
-									<input
-										value={member.name}
-										maxlength="40"
-										onchange={(e) =>
-											e.currentTarget.value.trim() &&
-											updateMember(member.id, { name: e.currentTarget.value.trim() })}
-									/>
-								</label>
-								<fieldset>
-									<legend>Alergie</legend>
-									<div class="toggles">
-										{#each ALLERGENS as allergen (allergen)}
-											<button
-												class="toggle"
-												aria-pressed={member.allergens.includes(allergen)}
-												onclick={() => toggleAllergen(member, allergen)}
-												>{ALLERGEN_LABELS[allergen]}</button
-											>
-										{/each}
-									</div>
-								</fieldset>
-								<div class="toggles">
-									<button
-										class="toggle"
-										aria-pressed={member.mild}
-										onclick={() => updateMember(member.id, { mild: !member.mild })}
-										><Icon name="chili" size={16} /> Nepálivo</button
-									>
-									<button
-										class="toggle"
-										aria-pressed={member.glutenFree}
-										onclick={() => updateMember(member.id, { glutenFree: !member.glutenFree })}
-										><Icon name="wheat" size={16} /> Bezlepkovo</button
-									>
-								</div>
-								<IngredientExcluder
-									selected={member.avoid}
-									onchange={(ids) => updateMember(member.id, { avoid: ids })}
-									fieldLabel={`Čo ${member.name} neje`}
-									hint="Celá skupina: „cícer“ vylúči suchý aj sterilizovaný."
-								/>
-								<div class="actions">
-									<button
-										class="btn ghost small"
-										onclick={() => setMe(household.me === member.id ? null : member.id)}
-									>
-										{household.me === member.id ? 'Toto nie som ja' : 'Toto som ja'}
-									</button>
-									<button
-										class="btn ghost small danger"
-										onclick={() => {
-											removeMember(member.id);
-											editing = null;
-										}}><Icon name="trash" size={16} /> Odobrať</button
-									>
-								</div>
-							</div>
+							<HouseholdMember
+								{member}
+								ondone={() => {
+									editing = null;
+									removedSomeone = true;
+								}}
+							/>
 						{/if}
 					</li>
 				{/each}
@@ -378,6 +436,87 @@
 				</form>
 			{/if}
 		</section>
+
+		<section class="card box">
+			<h2><Icon name="pot" size={24} /> Kto varí a čo by ste chceli</h2>
+			{#if sharedPlan.length}
+				<ul class="cooking">
+					{#each sharedPlan as e, i (i)}
+						<li>
+							<a href="/recepty/{e.recipeId}"
+								>{catalog.recipesById.get(e.recipeId)?.title ?? e.recipeId}</a
+							>
+							<span class="muted"
+								>{e.fromFreezer ? 'z mrazničky' : (cookOf(e.cook) ?? 'ktokoľvek')}</span
+							>
+						</li>
+					{/each}
+				</ul>
+				<p class="hint">
+					Kto varí, nastavíš pri jedle v <a href="/plan">pláne</a> – alebo tam ťukni „Rozdeliť varenie“.
+				</p>
+			{:else}
+				<p class="muted">Plán je zatiaľ prázdny.</p>
+			{/if}
+			<h3>Želania</h3>
+			{#if wishes.length}
+				<ul class="cooking">
+					{#each wishes as w (w.recipe!.id)}
+						<li>
+							<a href="/recepty/{w.recipe!.id}">{w.recipe!.title}</a>
+							<span class="muted">{w.who.map((m) => m.name).join(', ')}</span>
+						</li>
+					{/each}
+				</ul>
+			{:else}
+				<p class="muted">
+					Pri recepte ťukni „Chcem to“ (keď si vyberieš, ktorý člen si) – automatický plán ho potom
+					zaradí skôr.
+				</p>
+			{/if}
+		</section>
+
+		<section class="card box">
+			<h2><Icon name="clock" size={24} /> Čo sa deje</h2>
+			<HouseholdLog />
+		</section>
+
+		<section class="card box">
+			<h2><Icon name="euro" size={24} /> Kto koľko zaplatil</h2>
+			<HouseholdMoney />
+		</section>
+
+		{#if !household.solo}
+			<section class="card box">
+				<h2><Icon name="sun" size={24} /> Plánovať sám</h2>
+				<p>
+					Ideš na dovolenku, varíš si obedy do práce alebo chceš chvíľu vlastný plán? Dostaneš
+					vlastný plán a nákupný zoznam, spoločný na teba počká. Špajza ostáva spoločná.
+				</p>
+				{#if me}
+					<label class="check">
+						<input type="checkbox" bind:checked={soloAway} />
+						Medzitým nejem doma – nech domácnosť varí bezo mňa
+					</label>
+					{#if soloAway}
+						<label class="until">
+							do
+							<input type="date" bind:value={soloUntil} min={today} />
+							<span class="muted small">(nepovinné)</span>
+						</label>
+					{/if}
+				{:else}
+					<p class="hint">Vyber pri sebe „Toto som ja“, aby ostatní videli, že nie si doma.</p>
+				{/if}
+				<button
+					class="btn ghost"
+					disabled={busy}
+					onclick={() => void run(() => startSolo(soloAway, soloUntil || null))}
+				>
+					<Icon name="sun" size={18} /> Plánovať sám
+				</button>
+			</section>
+		{/if}
 
 		<section class="leave">
 			<button
@@ -527,45 +666,58 @@
 		font-size: 0.78rem;
 		font-weight: 700;
 	}
-	.edit {
-		display: grid;
-		gap: 12px;
-		margin-top: 12px;
-	}
-	fieldset {
-		border: 0;
-		padding: 0;
-		margin: 0;
-	}
-	legend {
-		font-weight: 650;
-		margin-bottom: 6px;
-	}
-	.toggles {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
-	.toggle {
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
-		padding: 6px 12px;
-		border: 1.5px solid var(--line);
-		border-radius: 999px;
-		background: var(--paper);
-		color: var(--ink);
-		font: inherit;
-		font-size: 0.9rem;
-		cursor: pointer;
-	}
-	.toggle[aria-pressed='true'] {
-		border-color: var(--leaf);
-		background: var(--leaf);
-		color: var(--paper);
-	}
 	.leave {
 		margin-top: 28px;
+	}
+	.new-link {
+		margin-top: 16px;
+		padding: 12px 14px;
+		border-radius: var(--radius-sm);
+		background: var(--paper-2);
+	}
+	.new-link.alert {
+		background: var(--tomato-soft);
+	}
+	.new-link p {
+		display: flex;
+		gap: 8px;
+		align-items: flex-start;
+		margin: 0 0 10px;
+	}
+	.solo-on {
+		border: 2px solid var(--leaf);
+	}
+	.cooking {
+		display: grid;
+		gap: 6px;
+		padding: 0;
+		margin: 10px 0;
+		list-style: none;
+	}
+	.cooking li {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		gap: 2px 12px;
+	}
+	.box h3 {
+		margin: 18px 0 4px;
+		font-size: 1.05rem;
+	}
+	.hint {
+		color: var(--muted);
+		font-size: 0.86rem;
+	}
+	.check,
+	.until {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin: 10px 0;
+		font-weight: 600;
+	}
+	.check input {
+		flex: none;
 	}
 	.danger {
 		color: var(--tomato);

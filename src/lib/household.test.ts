@@ -1,6 +1,14 @@
 import { describe, expect, it } from 'vitest';
 import {
+	EMPTY_BODY,
+	balances,
+	changeEvents,
 	householdFilter,
+	isAway,
+	memberTargets,
+	portionsAt,
+	settleUp,
+	shareCooking,
 	householdNeeds,
 	mergeDocs,
 	newDoc,
@@ -21,6 +29,10 @@ const member = (id: string, extra: Partial<Member> = {}): Member => ({
 	avoid: [],
 	mild: false,
 	glutenFree: false,
+	meals: { ranajky: true, obed: true, vecera: true },
+	portion: null,
+	body: EMPTY_BODY,
+	away: null,
 	removed: false,
 	at: 1,
 	...extra
@@ -162,5 +174,131 @@ describe('household filter', () => {
 		expect(ok(recipe({ lines: [{ ingredientId: 'cicer-sterilizovany' }] as never }))).toBe(false);
 		expect(ok(recipe({ gluten: 'contains' }))).toBe(false);
 		expect(ok(recipe({ gluten: 'contains', gfSwappable: true }))).toBe(true);
+	});
+});
+
+describe('who eats what', () => {
+	it('counts portions of the people at home for that meal', () => {
+		const people = [
+			member('a'),
+			member('b', { meals: { ranajky: false, obed: false, vecera: true } }),
+			member('kid', { portion: 0.5 }),
+			member('trip', { away: { from: '2026-10-10', to: '2026-10-12' } })
+		];
+		expect(portionsAt(people, '2026-10-09', 'obed')).toBe(2.5);
+		expect(portionsAt(people, '2026-10-09', 'vecera')).toBe(3.5);
+		expect(portionsAt(people, '2026-10-11', 'vecera')).toBe(2.5);
+		expect(isAway(member('x', { away: { from: '2026-10-01', to: null } }), '2030-01-01')).toBe(
+			true
+		);
+	});
+
+	it('sizes a portion from the body, children by age', () => {
+		const adult = memberTargets({
+			...EMPTY_BODY,
+			heightCm: 180,
+			weightKg: 80,
+			age: 30,
+			sex: 'm',
+			activity: 'aktivne'
+		});
+		expect(adult.kcal).toBe(2850);
+		expect(adult.protein).toBe(112);
+		expect(adult.portion).toBe(1.45);
+		expect(memberTargets({ ...EMPTY_BODY, age: 5 }).portion).toBe(0.5);
+		expect(memberTargets({ ...EMPTY_BODY, weightKg: 60 })).toEqual({
+			kcal: null,
+			protein: 66,
+			portion: null
+		});
+	});
+
+	it('keeps the new member fields through validation and fills them in for older copies', () => {
+		const doc = validateDoc({
+			...newDoc('D', 1),
+			members: { a: { id: 'a', name: 'A', at: 1, portion: 9, meals: { obed: false } } }
+		})!;
+		expect(doc.members.a).toMatchObject({
+			portion: null,
+			meals: { ranajky: true, obed: false, vecera: true },
+			body: EMPTY_BODY,
+			away: null
+		});
+		expect(doc.expenses).toEqual({});
+	});
+});
+
+describe('household money', () => {
+	const people = [member('a'), member('b'), member('c')];
+
+	it('splits shared costs evenly and counts paybacks', () => {
+		const owed = balances(
+			[
+				{ by: 'a', amount: 30, date: '2026-10-01', note: '' },
+				{ by: 'b', amount: 6, date: '2026-10-02', note: '' },
+				{ by: 'c', amount: 5, date: '2026-10-03', note: '', to: 'a' }
+			],
+			people
+		);
+		expect(Object.fromEntries(owed)).toEqual({ a: 13, b: -6, c: -7 });
+		expect(settleUp(owed)).toEqual([
+			{ from: 'c', to: 'a', amount: 7 },
+			{ from: 'b', to: 'a', amount: 6 }
+		]);
+	});
+
+	it('survives a merge and drops junk amounts', () => {
+		const a = {
+			...newDoc('D', 1),
+			expenses: { x1: [{ by: 'a', amount: 12.345, date: '2026-10-01', note: 'Nákup' }, 5] }
+		};
+		const b = {
+			...newDoc('D', 1),
+			expenses: { x2: [{ by: 'b', amount: -3, date: '2026-10-01', note: '' }, 6] }
+		};
+		const merged = mergeDocs(validateDoc(a)!, validateDoc(b)!);
+		expect(Object.keys(merged.expenses)).toEqual(['x1']);
+		expect(merged.expenses.x1[0]).toMatchObject({ amount: 12.35 });
+	});
+});
+
+describe('household log and cooking turns', () => {
+	it('tells what changed, but a cooked recipe is not "dropped"', () => {
+		const before: SharedView = {
+			...empty,
+			plan: [
+				{ recipeId: 'dal', servings: 2 },
+				{ recipeId: 'chili', servings: 2 }
+			]
+		};
+		const after: SharedView = {
+			plan: [
+				{ recipeId: 'dal', servings: 2 },
+				{ recipeId: 'curry', servings: 2 }
+			],
+			pantry: { ryza: 500 },
+			checked: { tofu: true },
+			extras: []
+		};
+		const events = changeEvents(before, after, 'a', 7, new Set(['chili']));
+		expect(events.map((e) => [e.kind, e.ref ?? e.n])).toEqual([
+			['plan-add', 'curry'],
+			['bought', 1],
+			['pantry', 1]
+		]);
+		expect(changeEvents(before, after, 'a', 7).some((e) => e.kind === 'plan-remove')).toBe(true);
+	});
+
+	it('hands out cooking in turns, skipping freezer portions', () => {
+		const plan = shareCooking(
+			[
+				{ recipeId: 'dal', servings: 2 },
+				{ recipeId: 'cili', servings: 2, fromFreezer: true },
+				{ recipeId: 'curry', servings: 2 },
+				{ recipeId: 'pho', servings: 2 }
+			],
+			['a', 'b']
+		);
+		expect(plan.map((e) => e.cook)).toEqual(['a', undefined, 'b', 'a']);
 	});
 });

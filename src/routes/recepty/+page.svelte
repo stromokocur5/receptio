@@ -38,7 +38,7 @@
 	import { isAssumedAtHome, rankByPantry, type PantryMatch } from '$lib/pantry';
 	import { avoidFilter, isAvoiding, missableTools, shortName } from '$lib/avoid';
 	import { hasNeeds, householdFilter } from '$lib/household';
-	import { household, members, tableNeeds } from '$lib/household.svelte';
+	import { household, tableMembers, tableNeeds } from '$lib/household.svelte';
 	import {
 		LIST_SEARCH_KEY,
 		MAX_PRESETS,
@@ -1057,7 +1057,7 @@
 							<legend>Domácnosť</legend>
 							<div class="chips">
 								<button class="chip" aria-pressed={forTable} onclick={() => (forTable = !forTable)}>
-									Môže jesť každý ({members()
+									Môže jesť každý ({tableMembers()
 										.map((m) => m.name)
 										.join(', ')})
 								</button>

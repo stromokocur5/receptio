@@ -18,8 +18,14 @@
 	import { matchRecipe, pantryByGroup, useSoon } from '$lib/pantry';
 	import { recipeSeason } from '$lib/season';
 	import { avoidFilter } from '$lib/avoid';
-	import { hasNeeds, householdFilter } from '$lib/household';
-	import { members, tableNeeds } from '$lib/household.svelte';
+	import { hasNeeds, householdFilter, wishesOf } from '$lib/household';
+	import {
+		household,
+		planFromHousehold,
+		planSlots,
+		tableMembers,
+		tableNeeds
+	} from '$lib/household.svelte';
 	import {
 		addToPlan,
 		avoid,
@@ -124,11 +130,14 @@
 			noSubstitutes,
 			excludeAllergens,
 			batchCooking,
-			seed
+			seed,
+			slots: planSlots(settings.current)
 		};
 		const allowed = avoidFilter(avoid.current, catalog.ingredientsById);
 		const needs = tableNeeds();
 		const atTable = needs ? householdFilter(needs, catalog.ingredientsById) : () => true;
+		const wished =
+			household.doc && !household.solo ? wishesOf(household.doc, tableMembers()) : new Map();
 		return {
 			recipes: catalog.recipes.filter((r) => allowed(r) && atTable(r)),
 			options,
@@ -140,7 +149,9 @@
 				inSeason: (r) => recipeSeason(r, catalog.ingredientsById, month).inSeason,
 				bonus: (r) =>
 					(gaps.length ? gapBonus(r.perServing, gaps, targets) : 0) +
-					r.lines.filter((l) => soonIds.has(l.ingredientId)).length
+					r.lines.filter((l) => soonIds.has(l.ingredientId)).length +
+					// Someone at home asked for it: a strong reason, more with every person asking.
+					Math.min(3, (wished.get(r.id)?.length ?? 0) * 1.5)
 			}
 		};
 	}
@@ -295,13 +306,15 @@
 			</div>
 			{#if tableNeeds() && hasNeeds(tableNeeds()!)}
 				<p class="small">
-					<Icon name="users" size={16} /> Len jedlá, ktoré môže jesť každý z domácnosti ({members()
+					<Icon name="users" size={16} /> Len jedlá, ktoré môže jesť každý z domácnosti ({tableMembers()
 						.map((m) => m.name)
 						.join(', ')}). <a href="/domacnost">Upraviť</a>
 				</p>
 			{/if}
 			<p class="muted small">
-				Plánuje {plannedMeals}. Snacky rieš zvlášť.
+				Plánuje {plannedMeals}{planFromHousehold()
+					? ' – porcie podľa toho, kto je doma a koľko zje'
+					: ''}. Snacky rieš zvlášť.
 			</p>
 			{#if gaps.length}
 				<p class="small gaps-note">
@@ -342,8 +355,8 @@
 					</ul>
 					<p class="sum">
 						Spolu <strong>{formatEur(result.cost)}</strong>
-						({formatEur(result.cost / (result.meals * settings.current.people))} / porcia) · bielkoviny
-						od {formatNumber(result.minProtein, 0)} g na porciu
+						({formatEur(result.cost / result.entries.reduce((sum, e) => sum + e.servings, 0))} / porcia)
+						· bielkoviny od {formatNumber(result.minProtein, 0)} g na porciu
 					</p>
 					{#if !result.withinBudget}
 						<p class="warn">

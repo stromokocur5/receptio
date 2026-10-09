@@ -1,0 +1,110 @@
+import { expect, test, type Page } from '@playwright/test';
+import { visit } from './helpers';
+
+test.skip(({ isMobile }) => isMobile, 'the sync is the same on every screen');
+// The phones share one address and so the sync's rate limit.
+test.describe.configure({ mode: 'serial' });
+
+async function createHousehold(page: Page, me: string) {
+	await visit(page, '/domacnost');
+	await page.getByLabel('Ako sa voláte').fill('Byt 4B');
+	await page.getByLabel(/Tvoje meno/).fill(me);
+	await page.getByRole('button', { name: 'Založiť' }).click();
+	await expect(page.getByRole('status')).toContainText('Spojené');
+}
+
+const householdCode = (page: Page) =>
+	page.evaluate(
+		() => JSON.parse(localStorage.getItem('receptio:household') ?? '{}').code as string
+	);
+
+async function addFalafel(page: Page) {
+	await visit(page, '/recepty/falafel');
+	await page
+		.getByRole('button', { name: /^Do plánu/ })
+		.first()
+		.click();
+	await expect(page.getByRole('button', { name: /Pridané/ }).first()).toBeVisible();
+}
+
+/** The other phone sees a change with its next sync (every 15 s while visible). */
+const SYNCED = { timeout: 25_000 };
+
+test('two phones share the plan, who buys what, the log and the money', async ({ browser }) => {
+	// Two phones waiting on each other's sync.
+	test.setTimeout(120_000);
+	const first = await browser.newContext();
+	const ema = await first.newPage();
+	await createHousehold(ema, 'Ema');
+	const code = await householdCode(ema);
+
+	const second = await browser.newContext();
+	const jano = await second.newPage();
+	await visit(jano, `/domacnost#d=${code}`);
+	await jano.getByRole('button', { name: 'Pripojiť sa' }).click();
+	await expect(jano.getByRole('status')).toContainText('Spojené');
+	await jano.getByLabel('Meno nového člena').fill('Jano');
+	await jano.getByRole('button', { name: 'Pridať', exact: true }).click();
+	await jano.getByRole('button', { name: 'Toto som ja' }).click();
+
+	await addFalafel(ema);
+	await ema.goto('/plan');
+	await ema.waitForLoadState('networkidle');
+	await ema
+		.getByRole('button', { name: /^Kúpim ja: Cícer/ })
+		.first()
+		.click();
+	await expect(ema.getByText('beriem ja').first()).toBeVisible();
+
+	await jano.goto('/plan');
+	await expect(jano.getByText('berie Ema').first()).toBeVisible(SYNCED);
+
+	await jano.goto('/domacnost');
+	await expect(jano.getByText(/do plánu: .*falafel/i)).toBeVisible(SYNCED);
+	await jano.getByLabel('Koľko €').fill('12');
+	await jano.getByRole('button', { name: 'Zapísať' }).click();
+	await expect(jano.locator('.paybacks')).toContainText(/Ema → Jano\s*6,00/);
+
+	// A new link locks the old one out. One phone at a time: both share the sync's rate limit.
+	await jano.close();
+	await ema.goto('/domacnost');
+	await ema.waitForLoadState('networkidle');
+	await ema.getByRole('button', { name: 'Vymeniť odkaz' }).click();
+	await ema.getByRole('button', { name: /Naozaj\?/ }).click();
+	await expect(ema.locator('.new-link .msg')).toHaveCount(0);
+	await expect.poll(() => householdCode(ema), SYNCED).not.toBe(code);
+	await ema.close();
+	const janoAgain = await second.newPage();
+	await visit(janoAgain, '/domacnost');
+	await expect(janoAgain.getByRole('status')).toContainText(
+		'Pod týmto odkazom už domácnosť nie je',
+		SYNCED
+	);
+
+	await first.close();
+	await second.close();
+});
+
+test('planning alone keeps an own plan and goes back to the shared one', async ({ page }) => {
+	await createHousehold(page, 'Ema');
+	await addFalafel(page);
+
+	await page.goto('/domacnost');
+	await page.waitForLoadState('networkidle');
+	await page.getByRole('button', { name: 'Plánovať sám' }).click();
+	await expect(page.getByRole('heading', { name: 'Plánuješ sám' })).toBeVisible();
+	await expect(page.locator('.member').first()).toContainText('preč');
+
+	await page.goto('/plan');
+	await page.waitForLoadState('networkidle');
+	await expect(page.getByText(/Plánuješ sám/)).toBeVisible();
+	await expect(page.getByText(/falafel/i)).toHaveCount(0);
+
+	await page.goto('/domacnost');
+	await page.waitForLoadState('networkidle');
+	await page.getByRole('button', { name: 'Späť k spoločnému plánu' }).click();
+	await expect(page.locator('.member').first()).not.toContainText('preč');
+	await page.goto('/plan');
+	await page.waitForLoadState('networkidle');
+	await expect(page.getByText(/falafel/i).first()).toBeVisible();
+});

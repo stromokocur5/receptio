@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { household, members } from '$lib/household.svelte';
+	import { planFromHousehold } from '$lib/household.svelte';
 	import { chosenMeals, MEAL_SETTINGS, settings, type Settings } from '$lib/state.svelte';
 
 	/** In a household the plan cooks for everyone in it. */
-	const fromHousehold = $derived(!!household.doc && members().length > 0);
+	const fromHousehold = $derived(planFromHousehold());
 
 	function update(patch: Partial<Settings>) {
 		settings.current = { ...settings.current, ...patch };

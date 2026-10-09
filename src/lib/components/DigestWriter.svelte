@@ -2,13 +2,14 @@
 	import { budgetForDays, spentThisWeek, weekStart } from '$lib/budget';
 	import { useCatalog } from '$lib/catalog';
 	import { morningDigest, weeklyDigest, type DigestStore, type DigestText } from '$lib/digest';
+	import { planNeed } from '$lib/household.svelte';
 	import { localToday, shiftDate } from '$lib/journal';
 	import { MEAL_LABELS } from '$lib/labels';
 	import { dailyTargets } from '$lib/nutrition';
 	import { useSoon } from '$lib/pantry';
 	import { activeSales } from '$lib/pricing';
 	import { rememberDigests } from '$lib/reminders';
-	import { mealSchedule } from '$lib/schedule';
+	import { mealSchedule, type ScheduledMeal } from '$lib/schedule';
 	import { isBreakfastEntry } from '$lib/shopping';
 	import {
 		digestReminder,
@@ -75,6 +76,7 @@
 			settings.current.planDays,
 			{
 				keeps: (id) => catalog.recipesById.get(id)?.keeps,
+				need: planNeed(settings.current),
 				breakfasts: settings.current.breakfasts,
 				isBreakfast: (e) => isBreakfastEntry(e, catalog.recipesById.get(e.recipeId))
 			}
@@ -112,8 +114,8 @@
 			const next = schedule.days[d + 1];
 			const thaw = next
 				? [next.breakfast, ...next.meals]
-						.filter((m) => m?.entry.fromFreezer && m.kind === 'cook')
-						.map((m) => titleOf(m!.entry.recipeId))
+						.filter((m): m is ScheduledMeal => !!m && !!m.entry.fromFreezer && m.kind === 'cook')
+						.map((m) => titleOf(m.entry.recipeId))
 				: [];
 			const text = morningDigest({
 				meals,

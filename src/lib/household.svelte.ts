@@ -1,18 +1,40 @@
 import {
+	EMPTY_BODY,
 	MAX_MEMBERS,
 	activeMembers,
+	changeEvents,
 	householdNeeds,
+	logId,
 	mergeDocs,
 	newDoc,
+	portionsAt,
 	validateDoc,
+	validatePlanEntries,
 	viewOf,
+	wishKey,
+	withEvents,
 	withLocalChanges,
+	type Expense,
 	type HouseholdDoc,
 	type HouseholdNeeds,
+	type LogEvent,
 	type Member,
+	type PlanMeal,
 	type SharedView
 } from './household';
-import { changes, checkedItems, extraItems, pantry, plan, settings } from './state.svelte';
+import { localToday, shiftDate } from './journal';
+import type { PlanEntry } from './shopping';
+import {
+	changes,
+	checkedItems,
+	extraItems,
+	mainMeals,
+	pantry,
+	plan,
+	settings,
+	type ExtraItem,
+	type Settings
+} from './state.svelte';
 import {
 	decrypt,
 	deriveKeys,
@@ -28,13 +50,24 @@ import {
  * The household on this device: the shared plan, pantry and list stay in their usual stores, and
  * this loop merges them with everyone else's copy on the encrypted sync storage. The code lives
  * only on the device and in the invite link's fragment (/domacnost#d=CODE).
+ *
+ * "Planning alone" (on holiday, a week of lunches at work) gives this device its own plan and
+ * shopping list for a while; the pantry stays shared and the household's plan waits in the
+ * document until they're back.
  */
 
 export const HOUSEHOLD_PREFIX = 'd=';
 const STORAGE_KEY = 'receptio:household';
-/** Visible tab only; with the live list both stay well under 30 requests a minute. */
+/** Visible tab only; a few phones on one home connection plus the live list stay under 60 a minute. */
 const POLL_MS = 15_000;
 const PUSH_DELAY_MS = 1500;
+
+/** One person's own plan and list, kept aside while they plan with the household. */
+interface PersonalPlan {
+	plan: PlanEntry[];
+	checked: Record<string, boolean>;
+	extras: ExtraItem[];
+}
 
 interface Saved {
 	code: string;
@@ -42,6 +75,10 @@ interface Saved {
 	me: string | null;
 	/** As of the last sync, so its view tells what changed here since. */
 	doc: HouseholdDoc;
+	solo: boolean;
+	/** Planning alone marked them away; coming back clears it. */
+	soloAway: boolean;
+	personal: PersonalPlan | null;
 }
 
 export const household = $state<{
@@ -51,28 +88,104 @@ export const household = $state<{
 	doc: HouseholdDoc | null;
 	/** Last successful sync, ms. */
 	syncedAt: number | null;
-}>({ status: 'off', code: null, me: null, doc: null, syncedAt: null });
+	/** This device plans on its own for now. */
+	solo: boolean;
+	soloAway: boolean;
+}>({
+	status: 'off',
+	code: null,
+	me: null,
+	doc: null,
+	syncedAt: null,
+	solo: false,
+	soloAway: false
+});
 
 let keys: SyncKeys | null = null;
 /** The shared data as it was after the last sync, to tell what changed here since. */
 let base: SharedView | null = null;
+let personal: PersonalPlan | null = null;
 let timer: ReturnType<typeof setTimeout> | undefined;
 let pushTimer: ReturnType<typeof setTimeout> | undefined;
 let running: Promise<void> | null = null;
 let seenRestores = 0;
 /** Changes up to this count came from the household itself – nothing new to share. */
 let appliedUpTo = 0;
+/** Told to the others with the next sync. */
+let pendingEvents: LogEvent[] = [];
+const cookedSinceSync = new Set<string>();
 
+/** Everyone in the household, alone-planning or not. */
 export const members = (): Member[] => (household.doc ? activeMembers(household.doc) : []);
+
+/** Who the plan cooks for: the household, or only this person while they plan alone. */
+export function tableMembers(): Member[] {
+	if (!household.solo) return members();
+	return members().filter((m) => m.id === household.me);
+}
+
+/** True when the household decides how many eat (not the "cook for" setting). */
+export const planFromHousehold = () => !household.solo && members().length > 0;
 
 /** What the whole table has to leave out; null outside a household or when nobody has needs. */
 export function tableNeeds(): HouseholdNeeds | null {
-	const list = members();
+	const list = tableMembers();
 	return list.length ? householdNeeds(list) : null;
 }
 
+export const myMember = (): Member | null =>
+	(household.me && members().find((m) => m.id === household.me)) || null;
+
 export const inviteLink = (code: string) =>
 	`${location.origin}/domacnost#${HOUSEHOLD_PREFIX}${code}`;
+
+// ── Portions for the plan ──────────────────────────────────────
+
+/**
+ * Portions eaten at each meal of the plan (day 0 = today), from who's home and how much they eat;
+ * undefined outside a household, where every meal is "cook for" people.
+ */
+export function planNeed(
+	s: Settings
+): ((day: number, meal: number | 'ranajky') => number) | undefined {
+	if (!planFromHousehold()) return undefined;
+	const list = members();
+	const slots = mainMeals(s);
+	const today = localToday();
+	return (day, meal) =>
+		portionsAt(list, shiftDate(today, day), meal === 'ranajky' ? 'ranajky' : slots[meal]);
+}
+
+/** The plan's meals and portions in all, for the automatic plan. */
+export function planSlots(s: Settings) {
+	const need = planNeed(s);
+	if (!need) return undefined;
+	const slots = { main: 0, mainPortions: 0, morning: 0, morningPortions: 0 };
+	for (let day = 0; day < s.planDays; day++) {
+		mainMeals(s).forEach((_, slot) => {
+			const portions = need(day, slot);
+			if (portions > 0) {
+				slots.main++;
+				slots.mainPortions += portions;
+			}
+		});
+		const morning = s.breakfasts ? need(day, 'ranajky') : 0;
+		if (morning > 0) {
+			slots.morning++;
+			slots.morningPortions += morning;
+		}
+	}
+	return slots;
+}
+
+/** Who eats at this meal on this plan day, for the schedule. */
+export function eatersAt(day: number, meal: PlanMeal): Member[] {
+	if (!planFromHousehold()) return [];
+	const date = shiftDate(localToday(), day);
+	return members().filter((m) => portionsAt([m], date, meal) > 0);
+}
+
+// ── Sync ───────────────────────────────────────────────────────
 
 function currentView(): SharedView {
 	return {
@@ -83,14 +196,22 @@ function currentView(): SharedView {
 	};
 }
 
+/** What this device shares: alone, only the pantry – the plan and list are its own. */
+function sharedView(): SharedView {
+	if (!household.solo || !base) return currentView();
+	return { ...base, pantry: pantry.current };
+}
+
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
 
 function applyView(view: SharedView) {
 	const now = currentView();
-	if (!same(now.plan, view.plan)) plan.current = view.plan;
+	if (!household.solo) {
+		if (!same(now.plan, view.plan)) plan.current = view.plan;
+		if (!same(now.checked, view.checked)) checkedItems.current = view.checked;
+		if (!same(now.extras, view.extras)) extraItems.current = view.extras;
+	}
 	if (!same(now.pantry, view.pantry)) pantry.current = view.pantry;
-	if (!same(now.checked, view.checked)) checkedItems.current = view.checked;
-	if (!same(now.extras, view.extras)) extraItems.current = view.extras;
 	syncPeople();
 	appliedUpTo = changes.count;
 }
@@ -98,7 +219,7 @@ function applyView(view: SharedView) {
 /** Everyone in the household eats, so the plan cooks for all of them. */
 function syncPeople() {
 	const count = members().length;
-	if (count && count !== settings.current.people) {
+	if (!household.solo && count && count !== settings.current.people) {
 		settings.current = { ...settings.current, people: Math.min(count, 12) };
 	}
 }
@@ -111,7 +232,10 @@ function save() {
 			JSON.stringify({
 				code: household.code,
 				me: household.me,
-				doc: household.doc
+				doc: household.doc,
+				solo: household.solo,
+				soloAway: household.soloAway,
+				personal
 			} satisfies Saved)
 		);
 	} catch {
@@ -119,12 +243,8 @@ function save() {
 	}
 }
 
-async function upload(doc: HouseholdDoc) {
-	if (!keys) return;
-	await request(keys, 'PUT', {
-		token: keys.token,
-		data: await encrypt(keys.key, JSON.stringify(doc))
-	});
+async function upload(k: SyncKeys, doc: HouseholdDoc) {
+	await request(k, 'PUT', { token: k.token, data: await encrypt(k.key, JSON.stringify(doc)) });
 }
 
 async function fetchDoc(k: SyncKeys): Promise<HouseholdDoc> {
@@ -143,12 +263,20 @@ async function syncOnce() {
 			seenRestores = restores.count;
 			base = currentView();
 		}
-		const local = withLocalChanges(household.doc, base, currentView(), Date.now());
+		const now = Date.now();
+		const view = sharedView();
+		const events = [
+			...pendingEvents,
+			...changeEvents(base, view, household.me, now, cookedSinceSync)
+		];
+		const local = withEvents(withLocalChanges(household.doc, base, view, now), events);
+		pendingEvents = [];
+		cookedSinceSync.clear();
 		const merged = mergeDocs(remote, local);
 		household.doc = merged;
 		base = viewOf(merged);
 		applyView(base);
-		if (!same(merged, remote)) await upload(merged);
+		if (!same(merged, remote)) await upload(keys, merged);
 		household.status = 'live';
 		household.syncedAt = Date.now();
 		save();
@@ -187,11 +315,21 @@ function onVisibility() {
 }
 
 async function start(code: string) {
+	stop();
 	keys = await deriveKeys(code);
 	seenRestores = restores.count;
 	document.addEventListener('visibilitychange', onVisibility);
 	addEventListener('online', onVisibility);
 	await sync();
+}
+
+function stop() {
+	clearTimeout(timer);
+	clearTimeout(pushTimer);
+	pushTimer = undefined;
+	document.removeEventListener('visibilitychange', onVisibility);
+	removeEventListener('online', onVisibility);
+	keys = null;
 }
 
 /** Once, from the root layout after local data is loaded. */
@@ -201,7 +339,16 @@ export function initHousehold() {
 		const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');
 		const doc = raw && validateDoc(raw.doc);
 		const code = raw && typeof raw.code === 'string' ? normalizeCode(raw.code) : null;
-		if (doc && code) saved = { code, me: typeof raw.me === 'string' ? raw.me : null, doc };
+		if (doc && code) {
+			saved = {
+				code,
+				me: typeof raw.me === 'string' ? raw.me : null,
+				doc,
+				solo: raw.solo === true,
+				soloAway: raw.soloAway === true,
+				personal: validatePersonal(raw.personal)
+			};
+		}
 	} catch {
 		saved = null;
 	}
@@ -209,9 +356,33 @@ export function initHousehold() {
 	household.code = saved.code;
 	household.me = saved.me;
 	household.doc = saved.doc;
+	household.solo = saved.solo;
+	household.soloAway = saved.soloAway;
+	personal = saved.personal;
 	household.status = 'connecting';
 	base = viewOf(saved.doc);
 	void start(saved.code);
+}
+
+/** The stash was written by this app, but storage can be edited – keep only what fits. */
+function validatePersonal(raw: unknown): PersonalPlan | null {
+	if (typeof raw !== 'object' || raw === null) return null;
+	const r = raw as Record<string, unknown>;
+	const checked = typeof r.checked === 'object' && r.checked !== null ? r.checked : {};
+	return {
+		plan: validatePlanEntries(r.plan) ?? [],
+		checked: Object.fromEntries(Object.entries(checked).filter(([, v]) => typeof v === 'boolean')),
+		extras: Array.isArray(r.extras)
+			? r.extras.filter(
+					(x): x is ExtraItem =>
+						typeof x === 'object' &&
+						x !== null &&
+						typeof x.id === 'string' &&
+						typeof x.text === 'string' &&
+						typeof x.checked === 'boolean'
+				)
+			: []
+	};
 }
 
 /** Saved changes on this device: share them after a short pause. */
@@ -224,6 +395,13 @@ export function noteHouseholdChange() {
 	}, PUSH_DELAY_MS);
 }
 
+/** A recipe from the shared plan was cooked: the others hear that, not "dropped from the plan". */
+export function noteCooked(recipeId: string) {
+	if (!keys || household.solo) return;
+	cookedSinceSync.add(recipeId);
+	pendingEvents.push({ at: Date.now(), who: household.me, kind: 'cooked', ref: recipeId });
+}
+
 const newMemberId = () => crypto.randomUUID().replace(/-/g, '').slice(0, 10);
 
 function blankMember(name: string, at: number): Member {
@@ -234,6 +412,10 @@ function blankMember(name: string, at: number): Member {
 		avoid: [],
 		mild: false,
 		glutenFree: false,
+		meals: { ranajky: true, obed: true, vecera: true },
+		portion: null,
+		body: EMPTY_BODY,
+		away: null,
 		removed: false,
 		at
 	};
@@ -246,11 +428,13 @@ export async function createHousehold(name: string, myName: string): Promise<str
 	let doc = withLocalChanges(newDoc(name, now), viewOf(newDoc('', 0)), currentView(), now);
 	const me = myName.trim() ? blankMember(myName, now) : null;
 	if (me) doc = { ...doc, members: { [me.id]: me } };
-	const k = await deriveKeys(code);
-	await request(k, 'PUT', { token: k.token, data: await encrypt(k.key, JSON.stringify(doc)) });
+	await upload(await deriveKeys(code), doc);
 	household.code = code;
 	household.me = me?.id ?? null;
 	household.doc = doc;
+	household.solo = false;
+	household.soloAway = false;
+	personal = null;
 	household.status = 'connecting';
 	base = viewOf(doc);
 	save();
@@ -265,24 +449,30 @@ export async function createHousehold(name: string, myName: string): Promise<str
 export async function joinHousehold(input: string): Promise<string | null> {
 	const code = normalizeCode(input);
 	if (!code) return 'Odkaz je neúplný – skús ho skopírovať znova.';
+	const before = household.status;
 	household.status = 'connecting';
 	let remote: HouseholdDoc;
 	try {
 		remote = await fetchDoc(await deriveKeys(code));
 	} catch (err) {
-		household.status = household.code ? household.status : 'off';
+		household.status = household.code ? before : 'off';
 		if (err instanceof Error && 'status' in err && err.status === 404) {
 			return 'Táto domácnosť už neexistuje.';
 		}
 		return 'Nepodarilo sa spojiť so serverom.';
 	}
+	// A new link to the same household (after it was changed) keeps who this phone is.
+	const sameHousehold = household.doc && household.me && remote.members[household.me];
+	if (household.solo) await stopSolo(false);
 	const shared = viewOf(remote);
 	const ownPantry = Object.fromEntries(
 		Object.entries(pantry.current).filter(([id]) => !(id in shared.pantry))
 	);
 	household.code = code;
-	household.me = null;
+	household.me = sameHousehold ? household.me : null;
 	household.doc = remote;
+	household.solo = false;
+	household.soloAway = false;
 	base = shared;
 	applyView(shared);
 	if (Object.keys(ownPantry).length) pantry.current = { ...shared.pantry, ...ownPantry };
@@ -305,19 +495,24 @@ export async function leaveHousehold() {
 			members: { ...doc.members, [me]: { ...doc.members[me], removed: true, at: Date.now() } }
 		};
 		try {
-			await request(k, 'PUT', {
-				token: k.token,
-				data: await encrypt(k.key, JSON.stringify(mergeDocs(await fetchDoc(k), left)))
-			});
+			await upload(k, mergeDocs(await fetchDoc(k), left));
 		} catch {
 			// The others still see this person; they can remove them by hand.
 		}
 	}
-	document.removeEventListener('visibilitychange', onVisibility);
-	removeEventListener('online', onVisibility);
-	keys = null;
+	stop();
 	base = null;
-	Object.assign(household, { status: 'off', code: null, me: null, doc: null, syncedAt: null });
+	personal = null;
+	pendingEvents = [];
+	Object.assign(household, {
+		status: 'off',
+		code: null,
+		me: null,
+		doc: null,
+		syncedAt: null,
+		solo: false,
+		soloAway: false
+	});
 	try {
 		localStorage.removeItem(STORAGE_KEY);
 	} catch {
@@ -325,12 +520,44 @@ export async function leaveHousehold() {
 	}
 }
 
+/**
+ * A new link for the same household: the data moves to a new code and the old one is deleted,
+ * so whoever still has the old link (someone who moved out) can't get in any more. Everyone
+ * staying needs the new link.
+ */
+export async function changeLink(): Promise<string> {
+	if (!keys || !household.doc) throw new Error('no household');
+	await sync();
+	clearTimeout(timer);
+	clearTimeout(pushTimer);
+	while (running) await running;
+	const old = keys;
+	const code = generateCode();
+	const next = await deriveKeys(code);
+	await upload(next, household.doc);
+	household.code = code;
+	save();
+	try {
+		await request(old, 'DELETE', { token: old.token });
+	} catch {
+		// The old copy stays readable until it expires; the new one already works.
+	}
+	await start(code);
+	return code;
+}
+
 function updateDoc(change: (doc: HouseholdDoc) => HouseholdDoc) {
 	if (!household.doc) return;
 	household.doc = change(household.doc);
 	save();
 	syncPeople();
-	noteHouseholdChange();
+	if (keys) {
+		clearTimeout(pushTimer);
+		pushTimer = setTimeout(() => {
+			pushTimer = undefined;
+			void sync();
+		}, PUSH_DELAY_MS);
+	}
 }
 
 export function renameHousehold(name: string) {
@@ -364,4 +591,107 @@ export function removeMember(id: string) {
 export function setMe(id: string | null) {
 	household.me = id;
 	save();
+}
+
+// ── Planning alone ─────────────────────────────────────────────
+
+/**
+ * This device gets its own plan and shopping list (the one from last time, or empty); the
+ * household's wait in the shared document. `away` also tells the others this person isn't
+ * eating at home, from today until `until` (null: until they're back).
+ */
+export async function startSolo(away: boolean, until: string | null) {
+	if (household.solo || !household.doc) return;
+	if (keys) await sync();
+	const own = personal ?? { plan: [], checked: {}, extras: [] };
+	personal = null;
+	household.solo = true;
+	plan.current = own.plan;
+	checkedItems.current = own.checked;
+	extraItems.current = own.extras;
+	appliedUpTo = changes.count;
+	settings.current = { ...settings.current, people: 1 };
+	const me = myMember();
+	household.soloAway = away && !!me;
+	if (me && away) updateMember(me.id, { away: { from: localToday(), to: until } });
+	save();
+}
+
+/** Back to the household's plan and list; this person's own are kept for next time. */
+export async function stopSolo(resync = true) {
+	if (!household.solo || !household.doc) return;
+	// The pantry changed while alone is shared first, or the household's copy would undo it.
+	if (resync && keys) await sync();
+	personal = {
+		plan: plan.current,
+		checked: checkedItems.current,
+		extras: extraItems.current
+	};
+	household.solo = false;
+	const me = myMember();
+	if (me && household.soloAway) updateMember(me.id, { away: null });
+	household.soloAway = false;
+	base = viewOf(household.doc);
+	applyView(base);
+	save();
+	if (resync && keys) await sync();
+}
+
+// ── Shopping, money, wishes ────────────────────────────────────
+
+/** Who'll buy each shopping list item. */
+export function claims(): Map<string, Member> {
+	const doc = household.doc;
+	if (!doc || household.solo) return new Map();
+	const byId = new Map(members().map((m) => [m.id, m]));
+	return new Map(
+		Object.entries(doc.claims).flatMap(([item, [who]]) => {
+			const member = who === false ? undefined : byId.get(who);
+			return member ? [[item, member] as const] : [];
+		})
+	);
+}
+
+export function claimItem(itemId: string, mine: boolean) {
+	const me = household.me;
+	if (!me) return;
+	updateDoc((doc) => ({
+		...doc,
+		claims: { ...doc.claims, [itemId]: [mine ? me : false, Date.now()] }
+	}));
+}
+
+export function addExpense(expense: Omit<Expense, 'date'> & { date?: string }) {
+	if (!(expense.amount > 0)) return;
+	const at = Date.now();
+	const clean: Expense = {
+		...expense,
+		amount: Math.round(expense.amount * 100) / 100,
+		note: expense.note.trim().slice(0, 60),
+		date: expense.date ?? localToday()
+	};
+	updateDoc((doc) =>
+		withEvents(
+			{ ...doc, expenses: { ...doc.expenses, [logId(at)]: [clean, at] } },
+			clean.to ? [] : [{ at, who: clean.by, kind: 'expense', n: clean.amount }]
+		)
+	);
+}
+
+export function removeExpense(id: string) {
+	updateDoc((doc) => ({ ...doc, expenses: { ...doc.expenses, [id]: [false, Date.now()] } }));
+}
+
+/** A shopping trip paid from this phone counts as this person's household expense. */
+export function notePurchase(amount: number) {
+	if (household.solo || !household.me || !household.doc || !(amount > 0)) return;
+	addExpense({ by: household.me, amount, note: 'Nákup' });
+}
+
+export function toggleWish(recipeId: string) {
+	const me = household.me;
+	if (!me || !household.doc) return;
+	const key = wishKey(me, recipeId);
+	const wanted = household.doc.wishes[key]?.[0] ?? false;
+	updateDoc((doc) => ({ ...doc, wishes: { ...doc.wishes, [key]: [!wanted, Date.now()] } }));
 }
