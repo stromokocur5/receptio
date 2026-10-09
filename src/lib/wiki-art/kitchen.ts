@@ -1,4 +1,4 @@
-import { arrow, drop, label, snow } from './kit';
+import { arrow, drop, label, leader, snow } from './kit';
 
 /** A pot sitting on (x, y) — the bottom centre — `w` wide and `h` tall, with liquid. */
 export function pot(x: number, y: number, w: number, h: number, liquid = 'ta-water', fill = 0.7) {
@@ -49,6 +49,39 @@ export const board = (x: number, y: number, w: number) =>
 	`<rect class="ta-board-kitchen" x="${x}" y="${y}" width="${w}" height="12" rx="5"/>`;
 
 export const KITCHEN_ART: Record<string, () => string> = {
+	pizza: () =>
+		// A pizza from above (pressed centre, untouched rim) and an oven heating a steel for 45 min.
+		`<circle class="ta-dough" cx="78" cy="96" r="58"/>` +
+		`<circle class="ta-sauce" cx="78" cy="96" r="44"/>` +
+		[
+			[60, 80],
+			[94, 76],
+			[70, 112],
+			[100, 108],
+			[82, 94]
+		]
+			.map(([x, y]) => `<circle class="ta-tortilla" cx="${x}" cy="${y}" r="7"/>`)
+			.join('') +
+		`<path class="ta-leaf" d="M88 120c-8-2-10-8-8-12 6 0 9 5 8 12ZM56 98c-2-8 2-12 7-12 1 6-2 10-7 12Z"/>` +
+		[
+			[38, 64],
+			[118, 72],
+			[124, 120],
+			[44, 132]
+		]
+			.map(([x, y]) => `<circle class="ta-bubble-hole" cx="${x}" cy="${y}" r="3.5"/>`)
+			.join('') +
+		leader(130, 150, 120, 128) +
+		label(78, 172, 'okraj 2 cm nestláčaj', 'middle') +
+		`<rect class="ta-oven-box" x="170" y="40" width="136" height="104" rx="8"/>` +
+		`<path class="ta-rack" d="M182 108h112"/>` +
+		`<rect class="ta-metal" x="186" y="100" width="104" height="8" rx="2"/>` +
+		`<g class="ta-heat"><path d="M204 94c-4-6 4-8 0-14M238 94c-4-6 4-8 0-14M272 94c-4-6 4-8 0-14"/></g>` +
+		`<path class="ta-heat" style="animation-delay:0.6s" d="M200 56h76"/>` +
+		label(238, 160, 'oceľ či plech 45 min', 'middle') +
+		label(238, 174, 'na maxime rúry', 'middle') +
+		label(238, 32, 'na konci gril', 'middle'),
+
 	bezpecnost: () =>
 		// Burning oil: the lid goes on, the flames die. Never water.
 		`<path class="ta-hob" d="M30 150h130"/>` +

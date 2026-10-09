@@ -1,0 +1,31 @@
+title: Domáce pšeničné tortilly
+description: Mäkké tortilly z múky, vody, oleja a soli za pol hodiny – asi za desatinu ceny kúpených. Na burritá, wrapy aj quesadilly a dajú sa zamraziť.
+cuisine: mexicka
+meals: [domace]
+categories: [prilohy/chlieb, domace/zaklady]
+time: 45
+active: 30
+servings: 8
+difficulty: 1
+tags: [lacne, urob-si-sam, meal-prep, tortilla-na-tyzden]
+yields: 8 tortíl s priemerom asi 22 cm
+keeps: { fridge: 5, freezer: 3 }
+related: [ranajkove-burrito-do-mraznicky, tortilly-z-nixtamalu, burrito]
+ingredients:
+  - hladka-muka: 300 g | + na podsypanie
+  - kypriaci-prasok: 1 čl
+  - sol: 1 čl
+  - voda: 180 ml | teplá
+  - olej: 3 pl
+steps:
+  - V mise zmiešaj múku, prášok do pečiva a soľ. Prilej teplú vodu a olej a premiešaj vidličkou.
+  - Mies rukami 3 minúty, kým nie je cesto hladké a mäkké. Prikry miskou a nechaj 20 minút odpočinúť – potom sa dá tenko rozvaľkať a nesťahuje sa.
+  - Rozdeľ na 8 guliek a prikry ich utierkou, nech nevysychajú.
+  - Suchú panvicu rozpáľ na stredne vysokom ohni. Guľku na pomúčenej doske rozvaľkaj na tenkú placku s priemerom 22 cm.
+  - Peč ju na suchej panvici 30–45 sekúnd, kým sa nenafúknu bubliny, otoč a peč ešte 30 sekúnd. Ďalšiu rozvaľkaj, kým sa prvá pečie.
+  - Hotové hneď ukladaj do utierky a zakry ich – v pare zmäknú a ostanú ohybné.
+tips:
+  - Nesmú sa piecť dlho – vysušia sa a pri zvinutí prasknú. Hnedé bodky stačia.
+  - Zamraz ich vychladnuté, preložené papierom na pečenie. Rozmrazená tortilla sa zohreje na suchej panvici za 20 sekúnd.
+  - Celozrnná verzia – polovicu múky vymeň za celozrnnú a pridaj 2 PL vody.
+gf_swap: false

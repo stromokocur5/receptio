@@ -1,0 +1,43 @@
+title: Polievka zo zachránenej zeleniny pre 25 ľudí
+description: Hustá zeleninová polievka so šošovicou, do ktorej ide, čo zostalo na trhu – mrkva, zemiaky, kapusta, cuketa. Šošovica ju zahustí a dodá bielkoviny, chlieb k nej zasýti.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [polievky/zeleninove, polievky/strukovinove]
+time: 90
+active: 70
+servings: 25
+difficulty: 1
+tags: [pre-vela-ludi, lacne, polievka, zvysky, one-pot]
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Zamraz po porciách. Pri prehrievaní prilej trochu vody.'
+related: [dal-pre-dvadsat, zemiakovy-gulas-pre-vela-ludi]
+ingredients:
+  - olej: 10 pl
+  - cibula: 5 ks
+  - mrkva: 1 kg
+  - zemiaky: 2 kg
+  - biela-kapusta: 1 kg
+  - cuketa: 4 ks
+  - cesnak: 8 ks
+  - sladka-paprika: 2 pl
+  - sosovica-cervena: 800 g
+  - paradajky-sterilizovane: 3 ks
+  - voda: 10 l
+  - bobkovy-list: 5 ks
+  - majoranka: 3 pl
+  - sol: 2 pl
+  - cierne-korenie: 1 čl
+  - petrzlenova-vnat: 1 hrnček
+  - chlieb: 25 ks | aj zachránený, k polievke
+steps:
+  - Zeleninu umy. Zemiaky a mrkvu ošúp a nakrájaj na kocky 1,5 cm, kapustu a cuketu na kúsky, cibuľu nadrobno. Ak máš inú zeleninu, nakrájaj ju podobne – tvrdú ako mrkvu, mäkkú ako cuketu.
+  - Vo veľkom hrnci (aspoň 20 l) rozohrej olej na strednom ohni a opekaj cibuľu 8 minút. Pridaj mrkvu a kapustu a opekaj ďalších 5 minút.
+  - Odstav, vmiešaj prelisovaný cesnak a papriku (na ohni by zhorkla) a hneď zalej vodou.
+  - Pridaj zemiaky, prepláchnutú šošovicu, paradajky a bobkový list, priveď do varu a var na miernom ohni 15 minút.
+  - Pridaj cuketu a var ďalších 10 minút, kým nie sú zemiaky mäkké a šošovica rozvarená.
+  - Osoľ, okoreň, vmiešaj majoránku rozdrvenú v dlaniach a petržlenovú vňať. Podávaj s chlebom.
+tips:
+  - So štyrmi ľuďmi pri doskách je krájanie hotové za 15 minút. Sám počítaj s hodinou.
+  - Zachránenú zeleninu prever – nahnité miesta vykroj, plesnivú (aj mäkké ovocie a paradajky s plesňou) vyhoď celú.
+  - Kto nemôže lepok, dostane polievku bez chleba – polievka sama je bezlepková, ak je bezlepková aj paprika.
+howto: [strukoviny, varenie-pre-vela-ludi]

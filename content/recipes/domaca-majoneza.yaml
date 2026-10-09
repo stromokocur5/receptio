@@ -7,6 +7,7 @@ time: 5
 active: 5
 servings: 12
 difficulty: 1
+oat_swap: false
 tags: [urob-si-sam, rychle]
 yields: cca 300 ml
 keeps: { fridge: 5 }

@@ -1,0 +1,47 @@
+title: Neapolská margherita
+description: Mäkké, nadýchané okraje s pľuzgiermi, tenký stred, surová paradajková omáčka, roztopená mozzarella a bazalka. Cesto zreje deň v chladničke – práca je to pár minút, chuť ako z pizzerie.
+cuisine: talianska
+meals: [obed, vecera]
+categories: [hlavne/cesto, comfort/burgre]
+time: 90
+active: 35
+servings: 4
+difficulty: 3
+tags: [pizza, party, klasika]
+ahead: Cesto vymiesi deň vopred – 24 hodín zreje v chladničke (stačí aj 8 hodín, chuť bude slabšia).
+keeps: { fridge: 2 }
+leftovers: 'Prehrej na suchej panvici pod pokrievkou 3–4 minúty – okraj ostane mäkký, spodok chrumkavý.'
+related: [tapiokova-mozzarella, pizzova-omacka, pizza-new-york, cesnakove-uzliky]
+ingredients:
+  - hladka-muka: 500 g | typ 00 alebo hladká
+  - voda: 320 ml | studená
+  - sol: 2,5 čl
+  - drozdie: 1/3 čl | asi 1 g
+  - paradajky-sterilizovane: 1 ks | celé lúpané, alebo 1 hrnček passaty
+  - olivovy-olej: 3 pl
+  - vegansky-syr: 1,5 hrnček | alebo tapioková mozzarella
+  - bazalka: 1 hrnček
+  - kukuricna-krupica: 2 pl | alebo múka na podsypanie
+steps:
+  - Cesto deň vopred. V mise rozmiešaj droždie v studenej vode, pridaj múku a premiešaj, kým nezmizne suchá múka. Nechaj 20 minút odpočívať – múka nasaje vodu a potom sa mesí ľahšie.
+  - Pridaj soľ a mies 10 minút, kým nie je cesto hladké a pružné (na doske, nie v mise). Je mäkké a mierne lepkavé, múku nepridávaj.
+  - Rozdeľ na 4 kusy (na jednu pizzu asi 210 gramov) a každý vytvaruj do napnutej gule – okraje podvíjaj pod spodok. Daj do vymastenej krabičky s vekom alebo na tanier prikrytý fóliou a na 24 hodín do chladničky.
+  - Na pečenie vyber gule z chladničky 2 hodiny vopred, nech zmäknú a dokysnú pri izbovej teplote.
+  - Rúru s plechom otočeným hore dnom (alebo s pizza kameňom či oceľou) v hornej tretine rozpáľ na maximum aspoň 45 minút. Čím teplejší povrch, tým nadýchanejší okraj.
+  - Omáčka. Paradajky rozdrv rukami alebo ponorným mixérom nahrubo, pridaj štipku soli a 1 PL oleja. Nevar ju – pizza sa pečie krátko a surová chutí sviežo.
+  - Guľu polož na dosku posypanú krupicou. Prstami ju stlač od stredu k okraju, 2 cm pri kraji nechaj nestlačené – z neho bude nadýchaný okraj. Potom ju preložiac cez chrbty rúk roztiahni na placku 28 cm. Valček nepoužívaj, vytlačil by vzduch.
+  - Placku presuň na papier na pečenie, na každú natri tenkú vrstvu omáčky (2–3 lyžice), natrhaj syr a pokvapkaj olejom.
+  - Stiahni ju aj s papierom na rozpálený plech a peč 6–8 minút. Posledné 2 minúty zapni gril (horný ohrev), kým okraje nezhnednú a nevytvoria sa tmavé bodky. Navrch daj bazalku.
+tips:
+  - Rýchly trik bez rúry na maximum – liatinovú panvicu rozpáľ na sporáku do dyma, polož do nej placku s oblohou, 2 minúty peč na sporáku a potom daj panvicu pod rozpálený gril rúry na 3–4 minúty.
+  - Cesto v chladničke vydrží až 3 dni a chutí každým dňom lepšie. Gule sa dajú aj zamraziť – rozmrazuj ich cez noc v chladničke.
+  - Viac paradajkovej omáčky ako 3 lyžice spraví stred mokrý. Menej je tu viac.
+howto: [kysnute-cesto, pizzeria-doma]
+gf_swap: false
+variants:
+  - name: Marinara
+    description: Najstaršia neapolská pizza bez syra – omáčka, plátky cesnaku, oregano a olivový olej. Lacnejšia a bez náhrad.
+    remove: [vegansky-syr]
+    add:
+      - cesnak: 3 ks | na tenké plátky
+      - oregano: 1 čl

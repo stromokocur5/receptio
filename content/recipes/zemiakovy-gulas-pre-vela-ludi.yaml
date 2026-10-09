@@ -1,0 +1,40 @@
+title: Zemiakový guláš so šošovicou pre 25 ľudí
+description: Poctivý paprikový guláš zo zemiakov, cibule a hnedej šošovice s rascou a majoránkou. Slovenská klasika, ktorá zasýti v zime aj vonku.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [polievky/strukovinove, hlavne/zelenina]
+time: 95
+active: 65
+servings: 25
+difficulty: 1
+tags: [pre-vela-ludi, lacne, klasika, one-pot]
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Zhustne – pri prehrievaní prilej vodu.'
+related: [zeleninova-polievka-zo-zachranenej-zeleniny, dal-pre-dvadsat]
+ingredients:
+  - olej: 12 pl
+  - cibula: 8 ks
+  - cesnak: 10 ks
+  - sladka-paprika: 4 pl
+  - udena-paprika: 2 čl
+  - rasca: 3 čl
+  - paradajkovy-pretlak: 6 pl
+  - zemiaky: 4 kg
+  - sosovica-hneda: 800 g
+  - voda: 7 l
+  - bobkovy-list: 4 ks
+  - majoranka: 3 pl
+  - sol: 2 pl
+  - cierne-korenie: 1 čl
+  - chlieb: 25 ks
+steps:
+  - Zemiaky ošúp a nakrájaj na kocky 2 cm, cibuľu nadrobno. Šošovicu prepláchni.
+  - Vo veľkom hrnci (aspoň 20 l) rozohrej olej na strednom ohni a opekaj cibuľu 12 minút do zlatista – čím viac zhnedne, tým lepší guláš.
+  - Pridaj rascu a pretlak a miešaj 2 minúty. Odstav, vmiešaj obe papriky a prelisovaný cesnak a hneď zalej trochou vody, aby paprika nezhorkla.
+  - Pridaj šošovicu, zvyšnú vodu a bobkový list a var na miernom ohni 15 minút.
+  - Pridaj zemiaky a var ďalších 20 minút, kým nie sú mäkké a šošovica tiež. Pár zemiakov roztlač o stenu hrnca, guláš zhustne.
+  - Osoľ, okoreň a vmiešaj majoránku rozdrvenú v dlaniach. Podávaj s chlebom.
+tips:
+  - Zemiaky ošúpte vo viacerých – ako jediná práca zaberie sama asi 40 minút.
+  - Šošovica hnedá sa nerozvarí, ostane v guláši ako kúsky. Červená by guláš zahustila na kašu.
+howto: [strukoviny, varenie-pre-vela-ludi]

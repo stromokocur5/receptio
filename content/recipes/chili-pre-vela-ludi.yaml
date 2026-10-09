@@ -1,0 +1,43 @@
+title: Chili sin carne pre 25 ľudí
+description: Chili zo suchej červenej fazule, papriky, mrkvy a kukurice s kakaom a údenou paprikou, k tomu ryža. Suchá fazuľa vyjde na tretinu ceny plechoviek.
+cuisine: mexicka
+meals: [obed, vecera]
+categories: [hlavne/strukoviny, hlavne/kari]
+time: 120
+active: 55
+servings: 25
+difficulty: 2
+tags: [pre-vela-ludi, lacne, vela-bielkovin, meal-prep]
+spicy: 1
+ahead: Fazuľu namoč cez noc do trojnásobku studenej vody.
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Na druhý deň je ešte lepšie. Zamraz po porciách.'
+related: [dal-pre-dvadsat, cestoviny-s-fazulovou-omackou-pre-vela-ludi]
+ingredients:
+  - fazula-cervena-sucha: 1,5 kg | namočená cez noc
+  - olej: 12 pl
+  - cibula: 6 ks
+  - cesnak: 12 ks
+  - mrkva: 600 g
+  - paprika-cervena: 6 ks
+  - kmin: 6 čl
+  - udena-paprika: 6 čl
+  - cili: 2 čl | menej pre deti
+  - kakao: 2 pl
+  - paradajkovy-pretlak: 6 pl
+  - paradajky-sterilizovane: 6 ks
+  - kukurica: 4 ks
+  - sol: 2 pl
+  - ryza-basmati: 2,5 kg
+  - limetka: 4 ks | alebo 2 PL octu
+steps:
+  - Namočenú fazuľu sceď, prepláchni, zalej čerstvou vodou na 5 cm nad fazuľu a priveď do varu. Var ju 10 minút prudko – len tak sa zničí lektín, ktorý je v surovej červenej fazuli jedovatý. Potom stíš oheň a var 50 minút do mäkka. Nesoľ ju, tvrdla by.
+  - Kým sa fazuľa varí, v druhom veľkom hrnci rozohrej olej na strednom ohni a opekaj nakrájanú cibuľu, mrkvu na malé kocky a papriku 12 minút.
+  - Pridaj prelisovaný cesnak, kmín, údenú papriku, čili, kakao a pretlak a miešaj 2 minúty. Pridaj paradajky.
+  - Uvarenú fazuľu sceď (odlož si 1 l vody z nej) a pridaj ju k zelenine s kukuricou a odloženou vodou. Var na miernom ohni 30 minút za občasného miešania, kým nezhustne. Osoľ a dochuť limetkou.
+  - Kým sa chili dusí, ryžu prepláchni a uvar po dávkach – do každého hrnca 1 kg ryže, 1,8 l vody a štipku soli. Priveď do varu, prikry a var na najmenšom ohni 15 minút, potom 10 minút nechaj dôjsť.
+tips:
+  - V tlakovom hrnci je namočená fazuľa mäkká za 20 minút – aj tak ju najprv 10 minút var odokrytú.
+  - Fazuľu nikdy nevar len v pomalom hrnci (slow cooker) na nízkom stupni, teplota nemusí lektín zničiť.
+  - Vedľa daj nakrájanú cibuľu, koriander a čili omáčku, nech si každý dochutí.
+howto: [strukoviny, ryza, varenie-pre-vela-ludi]

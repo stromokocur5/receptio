@@ -428,6 +428,41 @@
     - 'Chili sin carne, fazuľová polievka, guláš'
   storage: 'Otvorená v chladničke 3 dni.'
 
+- id: fazula-cervena-sucha
+  name: Červená fazuľa suchá
+  howto: [strukoviny]
+  category: strukoviny
+  group: fazula-cervena
+  group_factor: 2.4
+  n: { kcal: 333, p: 23.6, c: 60, f: 0.8, fib: 15.2, salt: 0, fe: 8.2, ca: 143, zn: 2.8, ala: 0.2 }
+  units: { hrnček: 185 }
+  price: 3
+  color: '#8e2f2a'
+  substitutes:
+    - { to: fazula-cervena, note: '2,4× viac podľa hmotnosti, bez namáčania a varenia' }
+  about: 'Asi tretinová cena oproti plechovke. Treba ju namočiť cez noc a variť do mäkka.'
+  uses:
+    - 'Chili, guláš, fazuľová polievka – keď sa varí veľa'
+  storage: 'Suchá rok. Uvarenú zamraz po porciách aj s trochou vody.'
+  warn: 'Surová a nedovarená červená fazuľa je jedovatá (lektín fytohemaglutinín). Vždy ju aspoň 10 minút poriadne var, nie len dus či pomalý hrniec na nízkej teplote.'
+
+- id: fazula-biela-sucha
+  name: Biela fazuľa suchá
+  howto: [strukoviny]
+  category: strukoviny
+  group: fazula-biela
+  group_factor: 2.4
+  n: { kcal: 337, p: 22, c: 61, f: 1.5, fib: 15.5, salt: 0, fe: 5.5, ca: 175, zn: 2.5, ala: 0.2 }
+  units: { hrnček: 185 }
+  price: 2.8
+  color: '#efe6d2'
+  substitutes:
+    - { to: fazula-biela, note: '2,4× viac podľa hmotnosti, bez namáčania a varenia' }
+  about: 'Najlacnejšia bielkovina v obchode. Namočená cez noc sa uvarí za 60–90 minút, v tlakovom hrnci za 20.'
+  uses:
+    - 'Fazuľová polievka, guláš, nátierka, omáčka na cestoviny'
+  storage: 'Suchá rok. Uvarenú zamraz po porciách.'
+
 - id: fazula-biela
   name: Biela fazuľa sterilizovaná (scedená)
   howto: [strukoviny]
@@ -1154,7 +1189,9 @@
   color: '#f7f1e3'
   note: hodnoty vápnika a B12 platia len pre obohatené nápoje
   substitutes:
-    - { note: 'ovsený alebo iný rastlinný nápoj s vápnikom (menej bielkovín)' }
+    - { to: ovseny-napoj, note: 'v rovnakom množstve; menej bielkovín, sladší' }
+    - { note: 'mandľový, ryžový či hrachový nápoj s vápnikom – pozri Rastlinné mlieká' }
+  howto: [rastlinne-mlieka]
   about: 'Rastlinný nápoj s najviac bielkovinami – podobne ako kravské mlieko. S vápnikom je nutrične najbližšie.'
   uses:
     - 'Kaša, palacinky, bešamel, cestíčka'
@@ -1164,6 +1201,48 @@
   homemade:
     recipe: domace-sojove-mlieko
     note: 'Vychádza oveľa lacnejšie ako kúpené a zvyšnú okaru využiješ do placiek.'
+
+- id: ovseny-napoj
+  name: Ovsený nápoj s vápnikom
+  aliases: [ovsené mlieko, oat milk, ovsený nápoj]
+  category: rastlinne-mlieka
+  gluten: risk
+  note: bežný ovos býva kontaminovaný pšenicou, pri celiakii len s označením bez lepku; vápnik a B12 len v obohatených
+  n:
+    {
+      kcal: 46,
+      p: 1,
+      c: 6.7,
+      f: 1.5,
+      fib: 0.8,
+      salt: 0.1,
+      fe: 0.1,
+      ca: 120,
+      zn: 0.1,
+      ala: 0.1,
+      b12: 0.38
+    }
+  units: { hrnček: 240, pl: 15 }
+  density: 1.03
+  price: 1.6
+  co2: 0.4
+  color: '#efe4c8'
+  substitutes:
+    - { to: sojove-mlieko, note: 'viac bielkovín, menej sladké' }
+  howto: [rastlinne-mlieka]
+  about: 'Najobľúbenejšie rastlinné mlieko na kávu a kašu. Jemne sladké – enzýmy pri výrobe premenia škrob z ovsa na cukor. Bielkovín má trikrát menej ako sójové.'
+  kinds:
+    - 'Klasický s vápnikom – na všetko'
+    - '„Barista“ – s trochou oleja, peny do kávy drží najlepšie'
+    - 'Bez lepku – z certifikovaného ovsa, pri celiakii'
+  uses:
+    - 'Káva, kaša, palacinky, koláče, smoothie'
+    - 'Bešamel a krémové polievky – prilievaj postupne, zhustne'
+  choose: 'S vápnikom a B12, bez pridaného cukru. „Bez pridaného cukru“ je aj tak sladký, cukor vzniká z ovsa.'
+  storage: 'Neotvorený mesiace, otvorený v chladničke 5 dní.'
+  homemade:
+    recipe: domace-ovsene-mlieko
+    note: 'Za pár centov, ale bez vápnika a B12 – tie treba dobrať inde.'
 
 - id: kokosove-mlieko
   name: Kokosové mlieko (plechovka)
@@ -1808,7 +1887,7 @@
   name: Kukuričná krupica (polenta)
   category: obilniny
   n: { kcal: 370, p: 8.1, c: 79, f: 1.6, fib: 4, salt: 0, fe: 1.1, ca: 3, zn: 0.7 }
-  units: { hrnček: 160 }
+  units: { hrnček: 160, pl: 10 }
   price: 2
   co2: 1.7
   color: '#f2c94c'
@@ -4046,6 +4125,22 @@
     - 'Pão de queijo, tapioca palacinky, zahustenie'
   storage: 'Suchý rok.'
 
+- id: psyllium
+  name: Psyllium (mletá šupka babky indickej)
+  aliases: [babka indická, psyllium husk, šupky psyllia]
+  category: obilniny
+  n: { kcal: 200, p: 1.5, c: 85, f: 0.5, fib: 80, salt: 0.1, fe: 1, ca: 50, zn: 0.2 }
+  units: { pl: 6, čl: 2 }
+  price: 15
+  color: '#d9cbb0'
+  about: 'Takmer čistá vláknina. S vodou sa zmení na pružný gél, ktorý v bezlepkovom ceste robí prácu lepku – cesto sa dá miesiť, naťahovať a kysne.'
+  uses:
+    - 'Bezlepkové cesto na pizzu, chlieb a placky'
+    - 'Viaže fašírky a placky namiesto vajca'
+  choose: 'Mletá šupka (prášok) – celé šupky treba pred použitím pomlieť v mlynčeku. Bez prísad.'
+  storage: 'Suchý a dobre uzavretý rok, ťahá vlhkosť.'
+  warn: 'Vždy s dostatkom vody – suchý prášok napučí až v tele.'
+
 - id: maniokova-muka
   name: Manioková múka (farinha)
   category: obilniny
@@ -4249,6 +4344,9 @@
     - 'Dürüm kebab, burrito, quesadilla'
   choose: 'Pozri zloženie – niektoré obsahujú bravčovú masť alebo mliečnu srvátku.'
   storage: 'Po otvorení v chladničke týždeň, zamrazené mesiace.'
+  homemade:
+    recipe: domace-psenicne-tortilly
+    note: 'Múka, voda, olej a soľ za pol hodiny – vyjdú asi na desatinu ceny kúpených a dajú sa zamraziť.'
 
 - id: nori
   name: Nori (morská riasa, plát)

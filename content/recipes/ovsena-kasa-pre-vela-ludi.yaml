@@ -1,0 +1,32 @@
+title: Ovsená kaša pre 20 ľudí
+description: Teplé raňajky pre celú skupinu za 20 minút – krémová kaša z vločiek s prezretými banánmi, arašidovým maslom a škoricou. Zasýti do obeda a na rozdávanie vyjde asi na 40 centov.
+cuisine: moderna
+meals: [ranajky]
+categories: [ranajky/kase]
+time: 25
+active: 20
+servings: 20
+difficulty: 1
+tags: [pre-vela-ludi, lacne, ranajky, rychle]
+keeps: { fridge: 3 }
+leftovers: 'Studená stuhne – prilej vodu alebo mlieko a prehrej za stáleho miešania.'
+related: [chlebovy-nakyp-pre-vela-ludi, overnight-oats]
+ingredients:
+  - ovsene-vlocky: 1,6 kg
+  - voda: 4 l
+  - sojove-mlieko: 2 l
+  - sol: 1 čl
+  - skorica: 3 čl
+  - banan: 10 ks | aj prezreté
+  - arasidove-maslo: 10 pl
+  - jablko: 5 ks
+steps:
+  - Vo veľkom hrnci (aspoň 10 l) priveď do varu vodu a mlieko so soľou a škoricou. Pozor, mlieko rado vykypí.
+  - Vsyp vločky, stíš oheň a var 8–10 minút, často a aj pri dne miešaj, kým kaša nezhustne. Ak je priveľmi hustá, prilej vodu.
+  - Medzitým banány roztlač vidličkou a jablká nastrúhaj nahrubo.
+  - Banány vmiešaj do kaše – osladia ju bez cukru. Pri podávaní na každú porciu daj lyžičku arašidového masla a nastrúhané jablko.
+tips:
+  - Pri celiakii použi certifikované bezlepkové vločky, bežné bývajú kontaminované pšenicou.
+  - Arašidové maslo podávaj zvlášť a ohlás ho – arašidy sú častý alergén.
+  - V termoporte vydrží kaša teplá aj 2 hodiny, len zhustne. Vezmi so sebou fľašu horúcej vody na zriedenie.
+howto: [varenie-pre-vela-ludi]

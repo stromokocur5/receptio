@@ -1,0 +1,35 @@
+title: Cesnakové uzlíky
+description: Mäkké uzlíky z pizzového cesta obalené v cesnakovom oleji s petržlenovou vňaťou. Príloha k polievke, k pizzi alebo na párty – a spôsob, ako využiť cesto, ktoré zvýšilo.
+cuisine: americka
+meals: [snack, obed]
+categories: [prilohy/chlieb, snacky/party]
+time: 120
+active: 25
+servings: 6
+difficulty: 1
+tags: [pizza, party, pecenie]
+keeps: { fridge: 2, freezer: 2 }
+leftovers: 'Prehrej v rúre na 180 °C 5 minút.'
+related: [pizza-new-york, pizzova-omacka, focaccia]
+ingredients:
+  - hladka-muka: 300 g
+  - drozdie: 1 čl
+  - cukor: 1 čl
+  - voda: 190 ml | vlažná
+  - olivovy-olej: 5 pl
+  - sol: 1 čl
+  - cesnak: 5 ks
+  - petrzlenova-vnat: 3 pl | nasekaná
+  - vyzivne-drozdie: 1 pl | nepovinné
+steps:
+  - Zmiešaj múku, droždie, cukor, vodu, 1 PL oleja a soľ a mies 8 minút do hladka. Nechaj kysnúť prikryté hodinu, kým nezdvojnásobí objem.
+  - Plech vystel papierom na pečenie. Cesto rozdeľ na 12 kúskov, každý vyvaľkaj rukami na šúľok dlhý 20 cm a zaviaž ho na voľný uzol.
+  - Ulož na plech s medzerami a nechaj 15 minút dokysnúť. Medzitým rozpáľ rúru na 200 °C.
+  - Peč 13–15 minút dozlatista.
+  - Medzitým zohrej zvyšný olej s prelisovaným cesnakom na miernom ohni 1 minútu, odstav a vmiešaj petržlenovú vňať, výživné droždie a štipku soli.
+  - Horúce uzlíky hneď premiešaj v cesnakovom oleji v mise, nech ho nasajú.
+tips:
+  - Z pizzového cesta, ktoré ostalo, ich urobíš rovnako – stačí ho rozdeliť na kúsky veľké ako vlašský orech a šúľky zaviazať.
+  - S pizzovou omáčkou na namáčanie sú z nich „pizza uzlíky“.
+howto: [kysnute-cesto]
+gf_swap: false

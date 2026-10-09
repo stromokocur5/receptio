@@ -1,0 +1,38 @@
+title: Sfincione – sicílska pizza z plechu
+description: Hrubá mäkká pizza z Palerma, ktorá sa predáva na uliciach. Navrch sladkastá omáčka z dusenej cibule a paradajok a chrumkavá strúhanka s oreganom namiesto syra.
+cuisine: talianska
+meals: [obed, vecera, snack]
+categories: [hlavne/cesto, snacky/party]
+time: 150
+active: 35
+servings: 6
+difficulty: 2
+tags: [pizza, lacne, party]
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Chutí aj vlažná alebo studená. Prehrej v rúre na 180 °C 8 minút.'
+related: [pizza-bianca-zemiaky-rozmarin, focaccia, pizzova-omacka]
+ingredients:
+  - hladka-muka: 500 g
+  - drozdie: 1 ks
+  - cukor: 1 čl
+  - voda: 350 ml | vlažná
+  - olivovy-olej: 8 pl
+  - sol: 2 čl
+  - cibula: 3 ks
+  - paradajky-sterilizovane: 2 ks | krájané alebo celé
+  - oregano: 2 čl
+  - struhanka: 1/2 hrnček
+  - cierne-korenie: 1/4 čl
+steps:
+  - Cesto. Zmiešaj múku, droždie a cukor, prilej vodu a 2 PL oleja, pridaj 1,5 ČL soli a mies 10 minút. Je mäkké a lepkavé, to je správne. Prikry a nechaj kysnúť 60 minút.
+  - Kým cesto kysne, cibuľu nakrájaj na tenké polkolieska a na 3 PL oleja ju na miernom ohni dus pod pokrievkou 15 minút, kým nie je mäkká a sladká – nemá zhnednúť.
+  - Pridaj paradajky, 1 ČL oregana, štipku cukru, zvyšnú soľ a korenie a var odokryté 20 minút, kým nie je omáčka hustá. Nechaj vychladnúť.
+  - Plech asi 30 × 40 cm vymasti 2 PL oleja. Cesto naň vyklop a prstami roztiahni do rohov. Prikry a nechaj kysnúť ešte 30 minút.
+  - Rúru rozpáľ na 220 °C. Strúhanku zmiešaj so zvyšným olejom a oreganom.
+  - Prstami urob v ceste jamky, rozotri naň omáčku a posyp strúhankou.
+  - Peč v strednej polohe 25–30 minút, kým nie je strúhanka zlatá a spodok chrumkavý. Nechaj 5 minút postáť a nakrájaj na štvorce.
+tips:
+  - V Palerme sa do omáčky pridávajú ančovičky. Slanú hĺbku jej dodá aj 1 PL kapár alebo lyžička miso.
+  - Cibuľu nešetri – sladká dusená cibuľa je to, čo robí sfincione sfincione.
+howto: [kysnute-cesto, pizzeria-doma, cibula]
+gf_swap: false

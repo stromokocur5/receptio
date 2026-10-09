@@ -3,6 +3,35 @@ import { arrow, drop, label, plant } from './kit';
 
 /** Fermenting, sprouting, kitchen gear and cooking without a stove. */
 export const DIY_ART: Record<string, () => string> = {
+	'rastlinne-mlieka': () => {
+		// Protein per 100 ml, the one number that tells plant drinks apart. Milk rises to it.
+		const drinks: [string, number, string][] = [
+			['sójové', 3.3, '#f4ecd6'],
+			['hrachové', 2.5, '#eef0d8'],
+			['ovsené', 1, '#efe4c8'],
+			['mandľové', 0.5, '#f3e6da'],
+			['ryžové', 0.1, '#f6f2ea']
+		];
+		const top = 50;
+		const bottom = 140;
+		return (
+			label(10, 20, 'Bielkoviny v 100 ml') +
+			drinks
+				.map(([name, protein, color], i) => {
+					const x = 26 + i * 60;
+					const h = Math.max(3, (protein / 3.5) * (bottom - top - 6));
+					return (
+						`<path class="ta-glass" d="M${x} ${top}h40l-4 ${bottom - top}h-32Z"/>` +
+						`<rect class="ta-bar-v" style="--d:${(i * 0.15).toFixed(2)}s;fill:${color}" x="${x + 5}" y="${(bottom - 2 - h).toFixed(1)}" width="30" height="${h.toFixed(1)}" rx="2"/>` +
+						label(x + 20, 158, name, 'middle') +
+						label(x + 20, 172, `${String(protein).replace('.', ',')} g`, 'middle')
+					);
+				})
+				.join('') +
+			label(310, 20, 'kravské ~3,4 g', 'end')
+		);
+	},
+
 	aquafaba: () =>
 		// Can → bowl being whipped → foam that stays put in an upside-down bowl.
 		`<rect class="ta-can-tin" x="16" y="70" width="44" height="56" rx="4"/><path class="ta-can-band" d="M16 90h44"/>` +

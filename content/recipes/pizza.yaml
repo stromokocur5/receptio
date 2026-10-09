@@ -7,7 +7,7 @@ time: 100
 active: 30
 servings: 4
 difficulty: 3
-tags: [party]
+tags: [party, pizza]
 gf_swap: false
 keeps: { fridge: 3, freezer: 2 }
 leftovers: 'Prehrej na suchej panvici pod pokrievkou, spodok bude chrumkavý.'
@@ -34,10 +34,29 @@ steps:
   - Cesto rozdeľ na dve časti a rukami roztiahni na tenké placky priamo na papieri na pečenie. Okraje nechaj hrubšie.
   - Natri omáčkou, posyp syrom a zeleninou, vytiahni rozpálený plech a placku naň stiahni aj s papierom. Peč 8–10 minút. Po upečení pridaj bazalku.
 tips:
-  - Na bezlepkovú pizzu nestačí ryžová múka – kúp hotovú bezlepkovú zmes na pizzu.
+  - Bez lepku a bez hotovej zmesi – prepni na verziu „Bezlepkové cesto“. Drží ho psyllium, samotná ryžová múka by sa rozpadla.
   - Cesto uložené v chladničke 24–72 hodín bude ešte chutnejšie.
-howto: [kysnute-cesto]
+howto: [kysnute-cesto, pizzeria-doma]
 variants:
   - name: Marinara (bez náhrad)
     description: Neapolská klasika bez syra – omáčka, cesnak, oregano a olivový olej. Zelenina podľa chuti.
     remove: [vegansky-syr]
+  - name: Bezlepkové cesto
+    description: Cesto z ryžovej múky, tapiokového škrobu a psyllia namiesto pšeničnej múky. Placky sa pred obložením predpečú.
+    replace:
+      - { from: hladka-muka, to: ryzova-muka, amount: 250 g }
+      - { from: voda, to: voda, amount: 490 ml | vlažná }
+    add:
+      - tapiokovy-skrob: 180 g
+      - psyllium: 25 g | mletá šupka
+    time: 100
+    active: 30
+    steps:
+      - Gél. Do misy nalej vlažnú vodu, vmiešaj droždie a cukor. Za stáleho miešania metličkou prisyp psyllium a nechaj 5 minút napučať, kým nevznikne hustý gél.
+      - Pridaj ryžovú múku, tapiokový škrob, soľ a 2 PL oleja a rukami mies 3 minúty do hladkej gule. Ak lepí, primiesi 1 PL ryžovej múky.
+      - Prikry a nechaj kysnúť na teplom mieste 45 minút.
+      - Omáčka. Passatu zmiešaj s prelisovaným cesnakom, oreganom, zvyškom oleja a štipkou soli. Nevar ju, dopečie sa.
+      - Rúru rozpáľ na maximum (250 °C) aj s plechom vo vnútri.
+      - Cesto rozdeľ na dve časti, každú polož na papier na pečenie a naolejovanými rukami roztlač na placku hrubú asi 5 mm. Okraje nechaj hrubšie.
+      - Placku stiahni aj s papierom na rozpálený plech a predpeč 8 minút bez oblohy.
+      - Natri omáčkou, posyp syrom a zeleninou a peč ďalších 8–10 minút. Po upečení pridaj bazalku.

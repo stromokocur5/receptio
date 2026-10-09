@@ -1,0 +1,38 @@
+title: Cestoviny s fazuľovo-paradajkovou omáčkou pre 20 ľudí
+description: Penne v hustej paradajkovej omáčke s bielou fazuľou a špenátom. Chutí deťom aj dospelým, zasýti a stojí pár desiatok centov na porciu.
+cuisine: talianska
+meals: [obed, vecera]
+categories: [hlavne/cestoviny, hlavne/strukoviny]
+time: 105
+active: 40
+servings: 20
+difficulty: 1
+tags: [pre-vela-ludi, lacne, deti, vela-bielkovin]
+ahead: Fazuľu namoč cez noc do trojnásobku studenej vody.
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Omáčku a cestoviny skladuj zvlášť, ak sa dá. Zvyšky sa hodia na zapekanie.'
+related: [chili-pre-vela-ludi, pasta-e-ceci]
+ingredients:
+  - fazula-biela-sucha: 800 g | namočená cez noc
+  - olej: 10 pl
+  - cibula: 5 ks
+  - cesnak: 15 ks
+  - passata: 3 l
+  - paradajkovy-pretlak: 4 pl
+  - oregano: 6 čl
+  - cukor: 2 čl
+  - sol: 2 pl | + na cestoviny
+  - spenat: 1 kg | čerstvý alebo mrazený
+  - cestoviny: 2 kg | penne alebo kolienka
+  - vyzivne-drozdie: 8 pl | na posypanie, nepovinné
+steps:
+  - Namočenú fazuľu sceď, zalej čerstvou vodou a var na miernom ohni 60–75 minút do mäkka. Nesoľ ju, kým nie je mäkká.
+  - Kým sa fazuľa varí, vo veľkom hrnci rozohrej olej na strednom ohni a opekaj nakrájanú cibuľu 8 minút. Pridaj prelisovaný cesnak na 1 minútu.
+  - Pridaj passatu, pretlak, oregano, cukor a 1 PL soli a var na miernom ohni 20 minút.
+  - Uvarenú fazuľu sceď a vmiešaj do omáčky so špenátom. Var 5 minút, kým špenát nezvädne. Dochuť soľou.
+  - Cestoviny var po dávkach – na 1 kg cestovín aspoň 8 l vody s 3 PL soli. Var o minútu kratšie, ako píše obal, odober hrnček vody z varenia a sceď.
+  - Cestoviny premiešaj s omáčkou a trochou vody z varenia. Na tanieri posyp výživným droždím.
+tips:
+  - Ak treba aj bezlepkovú verziu, uvar zvlášť jeden hrniec bezlepkových cestovín a daj ich do iného hrnca s inou naberačkou.
+  - Pri rozdávaní von nechaj cestoviny v omáčke radšej redšie – v termoporte dosiahnu.
+howto: [strukoviny, cestoviny, varenie-pre-vela-ludi]

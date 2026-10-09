@@ -1,0 +1,36 @@
+title: Biela pizza so zemiakmi a rozmarínom
+description: Rímska pizza z plechu bez omáčky a bez syra – tenké plátky zemiakov, rozmarín, olivový olej a hrubá soľ. Lacná, vegánska bez náhrad a chutí aj studená.
+cuisine: talianska
+meals: [obed, vecera, snack]
+categories: [hlavne/cesto, snacky/party]
+time: 190
+active: 30
+servings: 4
+difficulty: 2
+tags: [pizza, lacne, party]
+keeps: { fridge: 2, freezer: 2 }
+leftovers: 'Chutí aj studená do krabičky. Teplú ju oživíš na suchej panvici pod pokrievkou.'
+related: [focaccia, pizza-margherita-neapolska, sfincione]
+ingredients:
+  - hladka-muka: 400 g | ideálne chlebová
+  - voda: 320 ml | vlažná
+  - drozdie: 1 čl
+  - sol: 2 čl
+  - olivovy-olej: 6 pl
+  - zemiaky: 400 g | menšie, pevné
+  - rozmarin: 3 ks
+  - cierne-korenie: 1/4 čl
+  - cibula-cervena: 1/2 ks | nepovinné
+steps:
+  - Cesto. Múku, droždie a vodu premiešaj varechou na lepkavé cesto bez suchej múky. Prikry a nechaj 20 minút.
+  - Pridaj 1 ČL soli a mokrou rukou cesto v mise 4× prelož – zdvihni okraj a prelož na stred. Opakuj ešte 2× po 30 minútach.
+  - Plech vymasti 3 PL oleja, cesto naň vyklop a prikryté nechaj 30 minút. Potom ho prstami roztiahni do rohov a nechaj kysnúť ešte 45 minút.
+  - Medzitým zemiaky umy a nakrájaj na plátky tenké ako papier (najlepšie na strúhadle s plátkovačom), šúpať ich netreba. Premiešaj s ½ ČL soli a nechaj 10 minút pustiť vodu.
+  - Rúru rozpáľ na 250 °C. Zemiaky vytlač v utierke, premiešaj s 2 PL oleja, otrhaným rozmarínom, korením a cibuľou.
+  - Do cesta prstami urob jamky a zemiaky naň rozlož v tenkej vrstve, plátky sa môžu prekrývať. Pokvapkaj zvyšným olejom a posyp zvyšnou soľou.
+  - Peč v najnižšej polohe rúry 25 minút, kým nie sú zemiaky na krajoch hnedé a spodok chrumkavý. Nakrájaj na obdĺžniky.
+tips:
+  - Zemiaky musia byť naozaj tenké, inak sa za 25 minút neupečú. Hrubšie plátky najprv 5 minút povar.
+  - Podávaj so šalátom alebo fazuľovým krémom – sama pizza má málo bielkovín.
+howto: [kysnute-cesto, pizzeria-doma]
+gf_swap: false

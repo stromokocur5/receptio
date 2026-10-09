@@ -1,0 +1,41 @@
+title: Calzone so špenátom a tofu ricottou
+description: Zložená pizza ako veľká taška, plná krémovej „ricotty“ z tofu s citrónom, špenátu a opečených šampiňónov. Do ruky aj do krabičky.
+cuisine: talianska
+meals: [obed, vecera]
+categories: [hlavne/cesto, hlavne/rura]
+time: 110
+active: 40
+servings: 4
+difficulty: 2
+tags: [pizza, do-krabicky, vela-bielkovin]
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Prehrej v rúre na 180 °C 12 minút alebo v mikrovlnke a potom minútu na suchej panvici.'
+related: [pizza, pizzova-omacka, tofu-prazenica]
+ingredients:
+  - hladka-muka: 500 g
+  - drozdie: 1 ks
+  - cukor: 1 čl
+  - voda: 320 ml | vlažná
+  - olivovy-olej: 5 pl
+  - sol: 2 čl
+  - tofu-natural: 400 g
+  - citron: 1 ks
+  - vyzivne-drozdie: 3 pl
+  - cesnak: 3 ks
+  - sampinony: 250 g | na plátky
+  - spenat: 300 g | čerstvý, alebo mrazený rozmrazený
+  - oregano: 1 čl
+  - passata: 1 hrnček | na namáčanie
+steps:
+  - Cesto. Zmiešaj múku, droždie a cukor, prilej vodu a 2 PL oleja, pridaj 1,5 ČL soli a mies 10 minút do hladka. Nechaj kysnúť prikryté hodinu, kým nezdvojnásobí objem.
+  - Kým cesto kysne, šampiňóny opeč na 1 PL oleja na veľkom ohni 6 minút dohneda. Pridaj 2 prelisované strúčiky cesnaku a špenát a miešaj 2 minúty, kým nezvädne. Daj do sitka a vytlač vodu – mokrá plnka by premočila cesto.
+  - Ricotta. Tofu rozdrob vidličkou nadrobno a zmiešaj so šťavou z citróna, výživným droždím, 1 PL oleja, oreganom a zvyšnou soľou. Vmiešaj špenát so šampiňónmi.
+  - Rúru rozpáľ na 230 °C, plech vystel papierom na pečenie.
+  - Cesto rozdeľ na 4 kusy a každý roztiahni na kruh asi 22 cm. Na polovicu kruhu daj štvrtinu plnky, 2 cm od okraja nechaj voľné.
+  - Preklop druhú polovicu, okraje pritlač a zatoč prstami ako šnúrku, aby sa pri pečení neotvorili. Navrchu nožom urob malý zárez na paru a potri olejom.
+  - Peč 16–18 minút dozlatista. Passatu zohrej so zvyšným cesnakom a štipkou soli a podávaj ju na namáčanie.
+tips:
+  - Upečené calzone zamraz – v rúre na 190 °C sa z mrazu prehreje za 25 minút.
+  - Plnka je výborná aj na cestoviny – zmiešaj ju s horúcimi cestovinami a trochou vody z nich.
+howto: [kysnute-cesto, pizzeria-doma, tofu]
+gf_swap: false

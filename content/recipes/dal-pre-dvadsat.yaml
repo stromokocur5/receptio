@@ -1,0 +1,41 @@
+title: Červený dal pre 20 ľudí
+description: Hustý šošovicový dal s paradajkami, zázvorom a kari a k nemu ryža. Jedno z najlacnejších sýtych jedál na rozdávanie – asi 60 centov za porciu, bez náhrad a bez lepku.
+cuisine: indicka-sever
+meals: [obed, vecera]
+categories: [hlavne/strukoviny, hlavne/kari]
+time: 80
+active: 35
+servings: 20
+difficulty: 1
+tags: [pre-vela-ludi, lacne, one-pot, vela-bielkovin]
+keeps: { fridge: 4, freezer: 3 }
+leftovers: 'Pri prehrievaní prilej vodu, dal v chladničke zhustne. Zvyšok zamraz v krabičkách.'
+related: [chili-pre-vela-ludi, zeleninova-polievka-zo-zachranenej-zeleniny]
+ingredients:
+  - olej: 12 pl
+  - cibula: 6 ks
+  - cesnak: 15 ks
+  - zazvor: 60 g | nastrúhaný
+  - kari-korenie: 4 pl
+  - kurkuma: 2 čl
+  - kmin: 3 čl
+  - cili: 1 čl | podľa chuti, menej pre deti
+  - sosovica-cervena: 1,5 kg
+  - paradajky-sterilizovane: 4 ks
+  - voda: 6 l
+  - sol: 2 pl
+  - citron: 3 ks
+  - ryza-basmati: 2 kg
+  - bylinky-koriander: 1 hrnček | alebo petržlenová vňať, nepovinné
+steps:
+  - Šošovicu prepláchni v sitku (po častiach), kým voda netečie číra – inak veľmi pení.
+  - Vo veľkom hrnci (aspoň 15 l) rozohrej 10 PL oleja na strednom ohni a opekaj nakrájanú cibuľu 10 minút, kým nezmäkne a nezačne zlatnúť.
+  - Pridaj prelisovaný cesnak, zázvor, kari, kurkumu, kmín a čili a miešaj 1 minútu, kým korenie nezavonia. Nesmie pripáliť.
+  - Pridaj šošovicu, paradajky a vodu, priveď do varu a var na miernom ohni 25–30 minút, kým sa šošovica nerozvarí na hustý krém. Miešaj aj pri dne každých 5 minút, šošovica sa rada prichytí.
+  - Kým sa dal varí, ryžu prepláchni a uvar po dávkach – do každého hrnca 1 kg ryže, 1,8 l vody, 1 PL oleja a štipku soli. Priveď do varu, prikry a var na najmenšom ohni 15 minút, potom 10 minút nechaj dôjsť bez otvárania.
+  - Dal osoľ, vmiešaj citrónovú šťavu a ochutnaj. Ak je hustý, prilej vodu. Podávaj s ryžou a koriandrom.
+tips:
+  - Na rozdávanie drž dal horúci (nad 60 °C) v hrnci s pokrievkou alebo v termoportoch. Čo vychladne, dávaj rýchlo do chladničky.
+  - Ostrosť nechaj miernu a vedľa polož čili omáčku – každý si pridá.
+  - Pridať sa dá akákoľvek zachránená zelenina – špenát na konci, mrkva a tekvica na kocky hneď so šošovicou.
+howto: [strukoviny, ryza, varenie-pre-vela-ludi]

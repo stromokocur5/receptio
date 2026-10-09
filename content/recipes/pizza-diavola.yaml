@@ -1,0 +1,49 @@
+title: Pizza diavola s pikantným tofu
+description: Ostrá pizza s „salámou“ z údeného tofu v údenej paprike a čili, čerstvými papričkami a olivami. Cesto stihneš v ten istý deň.
+cuisine: talianska
+meals: [obed, vecera]
+categories: [comfort/burgre, hlavne/cesto]
+time: 100
+active: 35
+servings: 4
+difficulty: 2
+tags: [pizza, party]
+spicy: 3
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Prehrej na suchej panvici pod pokrievkou 4 minúty.'
+related: [pizza-new-york, pizzova-omacka, pizza-margherita-neapolska]
+ingredients:
+  - hladka-muka: 500 g | typ 00 alebo hladká
+  - drozdie: 1 ks
+  - cukor: 1 čl
+  - voda: 320 ml | vlažná
+  - olivovy-olej: 5 pl
+  - sol: 1,5 čl
+  - tofu-udene: 200 g
+  - udena-paprika: 2 čl
+  - cili: 1 čl
+  - cesnak: 2 ks
+  - passata: 1 hrnček
+  - oregano: 1 čl
+  - vegansky-syr: 1,5 hrnček
+  - cili-papricka: 2 ks | na kolieska
+  - olivy: 12 ks
+steps:
+  - Cesto. Zmiešaj múku, droždie a cukor, prilej vodu a 2 PL oleja, pridaj soľ a mies 10 minút do hladka. Nechaj kysnúť prikryté na teplom mieste hodinu, kým nezdvojnásobí objem.
+  - Medzitým priprav „salámu“. Údené tofu nakrájaj na tenké kolieska alebo plátky (asi 2 mm). Zmiešaj 2 PL oleja, údenú papriku, čili a 1 prelisovaný strúčik cesnaku, tofu v tom obaľ a nechaj nasiaknuť.
+  - Omáčka. Passatu zmiešaj so zvyšným cesnakom, oreganom a štipkou soli. Nevar ju.
+  - Rúru rozpáľ na maximum (250 °C) aj s plechom vo vnútri aspoň 30 minút.
+  - Cesto rozdeľ na 2 časti a rukami roztiahni na tenké placky priamo na papieri na pečenie, okraje nechaj hrubšie.
+  - Natri omáčkou, posyp syrom, rozlož tofu, papričky a olivy a pokvapkaj zvyšným olejom z marinády.
+  - Stiahni placku aj s papierom na rozpálený plech a peč 8–10 minút, kým nie sú okraje zlaté a tofu na krajoch chrumkavé. Druhú upeč rovnako.
+tips:
+  - Nakoniec pokvapkaj čili olejom – ostrosť sa tak dá pridať každému podľa chuti.
+  - Pre deti nechaj jednu pizzu bez čili a papričiek, tofu len s údenou paprikou.
+howto: [kysnute-cesto, pizzeria-doma, tofu]
+gf_swap: false
+variants:
+  - name: Ľahšia verzia
+    description: Bez vegánskeho syra, s cuketou navyše. Ostrá chuť zostane, pizza je o tretinu ľahšia.
+    remove: [vegansky-syr]
+    add:
+      - cuketa: 1 ks | na tenké plátky

@@ -1,0 +1,50 @@
+title: Bezlepková pizza z domáceho cesta
+description: Pizza bez lepku a bez hotovej zmesi – z ryžovej múky, tapiokového škrobu a psyllia. Cesto sa dá miesiť a ťahať, okraje sú chrumkavé a stred mäkký.
+cuisine: talianska
+meals: [obed, vecera]
+categories: [hlavne/cesto, comfort/burgre]
+time: 95
+active: 30
+servings: 4
+difficulty: 2
+tags: [pizza, party]
+keeps: { fridge: 2, freezer: 2 }
+leftovers: 'Prehrej na suchej panvici pod pokrievkou 4 minúty, spodok zostane chrumkavý.'
+related: [pizza, tapiokova-mozzarella, pizzova-omacka]
+ingredients:
+  - voda: 400 ml | vlažná
+  - drozdie: 1 ks
+  - cukor: 1 čl
+  - psyllium: 20 g | mletá šupka
+  - ryzova-muka: 200 g | + trochu na ruky
+  - tapiokovy-skrob: 150 g | alebo zemiakový škrob
+  - sol: 1,5 čl
+  - olivovy-olej: 4 pl
+  - passata: 1 hrnček
+  - cesnak: 1 ks
+  - oregano: 1 čl
+  - vegansky-syr: 1,5 hrnček | alebo tapioková mozzarella
+  - sampinony: 150 g | na plátky
+  - olivy: 12 ks
+  - bazalka: 1/2 hrnček
+steps:
+  - Gél. Do misy nalej vlažnú vodu, vmiešaj droždie a cukor. Za stáleho miešania metličkou prisyp psyllium a nechaj 5 minút napučať – vznikne hustý, pružný gél. Ten v ceste nahradí lepok.
+  - Pridaj ryžovú múku, tapiokový škrob, soľ a 2 PL oleja. Najprv miešaj varechou, potom rukami mies 3 minúty do hladkej gule. Cesto je mäkšie ako pšeničné, ale nemá lepiť – ak lepí, primiesi 1 PL ryžovej múky.
+  - Prikry a nechaj kysnúť na teplom mieste 45 minút. Nezdvojnásobí objem ako pšeničné, len trochu nakysne a zmäkne.
+  - Medzitým rozpáľ rúru na maximum (250 °C) aj s plechom vo vnútri. Omáčku zmiešaj z passaty, prelisovaného cesnaku, oregana, 1 PL oleja a štipky soli – nevar ju.
+  - Cesto rozdeľ na 2 časti. Každú polož na papier na pečenie, potri trochou oleja a naolejovanými rukami roztlač na placku hrubú asi 5 mm. Okraj nechaj o trochu hrubší.
+  - Predpeč. Placku stiahni aj s papierom na rozpálený plech a peč 8 minút bez oblohy, kým nie je spodok pevný. Bez predpečenia sa bezlepkové cesto pod omáčkou nedopečie.
+  - Predpečenú placku natri omáčkou, posyp syrom, šampiňónmi a olivami a peč ďalších 8–10 minút, kým syr nezmäkne a okraje nezhnednú. Druhú pizzu peč rovnako. Navrch natrhaj bazalku.
+tips:
+  - Psyllium kúpiš v drogérii, bio obchode alebo lekárni ako „mletú šupku babky indickej“. Bez neho sa bezlepkové cesto rozpadá – ryžová múka sama nedrží.
+  - Celé šupky psyllia pomeľ v mlynčeku na kávu, inak cesto ostane zrnité.
+  - Predpečené placky (bez oblohy) zamraz preložené papierom. Peč ich zamrazené rovno s oblohou na 250 °C asi 12 minút.
+  - Pri celiakii kontroluj označenie bez lepku na ryžovej múke, škrobe aj vegánskom syre.
+howto: [kysnute-cesto, pizzeria-doma, bezlepkovo]
+variants:
+  - name: Ľahšia verzia
+    description: Bez vegánskeho syra, s cuketou a paprikou navyše. Ako marinara – omáčka, cesnak, olej a zelenina.
+    remove: [vegansky-syr]
+    add:
+      - cuketa: 1 ks | na tenké plátky
+      - paprika-cervena: 1 ks | na prúžky

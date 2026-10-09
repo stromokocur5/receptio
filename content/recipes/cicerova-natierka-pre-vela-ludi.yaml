@@ -1,0 +1,33 @@
+title: Chlebíčky s cícerovou nátierkou pre 30 ľudí
+description: Krémová nátierka zo suchého cíceru s cesnakom a citrónom na chlieb, k tomu mrkva. Nič sa nemusí ohrievať, takže sa hodí na rozdávanie aj tam, kde nie je sporák.
+cuisine: libanonska
+meals: [snack, obed]
+categories: [omacky/dipy, snacky/na-cesty]
+time: 110
+active: 45
+servings: 30
+difficulty: 1
+tags: [pre-vela-ludi, lacne, vela-bielkovin, bez-varenia]
+ahead: Cícer namoč cez noc do trojnásobku studenej vody.
+keeps: { fridge: 4, freezer: 3 }
+related: [hummus, dal-pre-dvadsat]
+ingredients:
+  - cicer-suchy: 1 kg | namočený cez noc
+  - citron: 6 ks
+  - cesnak: 8 ks
+  - olej: 10 pl | alebo olivový
+  - kmin: 2 čl
+  - sol: 1 pl
+  - sladka-paprika: 2 čl | na posypanie
+  - chlieb: 60 ks | krajce, aj zachránený
+  - mrkva: 1 kg
+steps:
+  - Namočený cícer sceď, zalej čerstvou vodou a var na miernom ohni 60–80 minút, kým sa nedá ľahko roztlačiť medzi prstami. Pred scedením odober 1 l vody z varenia.
+  - Kým sa cícer varí, mrkvu ošúp a nakrájaj na tyčinky.
+  - Cícer po dávkach rozmixuj s citrónovou šťavou, prelisovaným cesnakom, olejom, kmínom a soľou. Prilievaj vodu z varenia, kým nie je nátierka hladká a krémová.
+  - Ochutnaj, dosoľ a nechaj vychladnúť. Natieraj na chlieb hrubo, posyp paprikou a podávaj s mrkvou.
+tips:
+  - Bez mixéra roztlač teplý cícer pučidlom na zemiaky – bude hrubší, ale rovnako dobrý.
+  - Nátierka vydrží mimo chladničky asi 2 hodiny. Na dlhšie rozdávanie ju nos v chladiacej taške a natieraj priebežne.
+  - Pre ľudí bez lepku maj zvlášť bezlepkový chlieb alebo podávaj nátierku s mrkvou.
+howto: [strukoviny, varenie-pre-vela-ludi]

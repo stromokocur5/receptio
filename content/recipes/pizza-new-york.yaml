@@ -1,0 +1,54 @@
+title: Pizza New York
+description: Veľká tenká pizza, ktorú zložíš napoly a ješ z ruky. Cesto s olejom a štipkou cukru je ohybné a chrumkavé zároveň, omáčka varená s cesnakom a oreganom.
+cuisine: americka
+meals: [obed, vecera]
+categories: [comfort/burgre, hlavne/cesto]
+time: 90
+active: 35
+servings: 4
+difficulty: 2
+tags: [pizza, party]
+ahead: Cesto vymiesi deň až tri dni vopred a nechaj ho v chladničke.
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Kúsok prehrej na suchej panvici 2 minúty, potom kvapni pár kvapiek vody vedľa, prikry a nechaj ešte minútu – syr sa roztopí, spodok ostane chrumkavý.'
+related: [pizza-margherita-neapolska, pizza-detroit, pizzova-omacka, cesnakove-uzliky]
+ingredients:
+  - hladka-muka: 500 g | ideálne chlebová (viac bielkovín)
+  - voda: 310 ml | studená
+  - drozdie: 1/2 čl
+  - cukor: 1 pl
+  - olivovy-olej: 4 pl
+  - sol: 2 čl
+  - passata: 1,5 hrnček
+  - cesnak: 3 ks
+  - oregano: 2 čl
+  - vegansky-syr: 2 hrnček
+  - cili: 1/2 čl | vločky alebo mleté, nepovinné
+steps:
+  - Cesto. Zmiešaj múku, droždie a cukor, prilej vodu a 2 PL oleja a premiešaj. Pridaj 1,5 ČL soli a mies 8 minút do hladka.
+  - Rozdeľ na 2 gule, daj ich do vymastenej krabičky s vekom a nechaj 24 hodín (až 3 dni) v chladničke.
+  - 2 hodiny pred pečením vyber cesto z chladničky, nech zmäkne.
+  - Omáčka. Na 1 PL oleja na miernom ohni opeč prelisovaný cesnak 30 sekúnd, pridaj passatu, oregano a zvyšnú soľ a var 15 minút, kým nezhustne. Nechaj vychladnúť.
+  - Rúru s plechom otočeným hore dnom v najvyššej polohe rozpáľ na maximum (250 °C aj viac) aspoň 45 minút.
+  - Guľu stlač prstami na placku a potom ju naťahuj na päste do kruhu 35 cm. Okraj má byť len o trochu hrubší ako stred.
+  - Placku polož na papier na pečenie, natri tenkou vrstvou omáčky až 2 cm od kraja, posyp polovicou syra a pokvapkaj zvyšným olejom.
+  - Stiahni ju aj s papierom na rozpálený plech a peč 8–10 minút, kým nie je spodok zlatý a syr v bublinkách. Posyp čili. Druhú upeč rovnako.
+  - Nechaj 2 minúty postáť, nakrájaj na 8 trojuholníkov – kúsok sa dá zložiť napoly a jesť z ruky.
+tips:
+  - Plnené okraje – pozri verziu nižšie. Kúsky syra alebo tapiokovej mozzarelly polož po obvode placky a okraj cez ne prelož a pritlač.
+  - Omáčky vyjde viac, ako treba. Zvyšok zamraz v tvorítku na ľad – kocka je presne na jednu pizzu-toast.
+howto: [kysnute-cesto, pizzeria-doma]
+gf_swap: false
+variants:
+  - name: Plnené okraje
+    description: Okraj zavinutý okolo prúžku syra. Po obvode placky polož syr, prelož cez neň 2 cm cesta, pritlač a okraj potri olejom.
+    add:
+      - vegansky-syr: 1 hrnček | do okrajov
+  - name: Ľahšia verzia
+    description: Polovica syra a navrch hrsť zeleniny – papriky, šampiňóny a cibuľa. Pizza je stále poriadna, len nie taká mastná.
+    replace:
+      - { from: vegansky-syr, to: vegansky-syr, amount: 1 hrnček }
+    add:
+      - paprika-cervena: 1 ks | na prúžky
+      - sampinony: 150 g | na plátky
+      - cibula-cervena: 1/2 ks | na tenké kolieska

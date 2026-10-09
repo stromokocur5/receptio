@@ -1,0 +1,36 @@
+title: Jablkový nákyp zo starého pečiva pre 20 ľudí
+description: Tvrdé rožky a chlieb, ktoré by inak skončili v koši, nasiaknuté škoricovým mliekom s jablkami a hrozienkami, upečené na dvoch plechoch. Sladké jedlo alebo raňajky pre celú skupinu.
+cuisine: slovenska
+meals: [ranajky, snack, obed]
+categories: [dezerty/pecene, ranajky/kase]
+time: 80
+active: 25
+servings: 20
+difficulty: 1
+tags: [pre-vela-ludi, lacne, zvysky, deti]
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Chutí aj studený. Teplý ho oživíš v rúre na 160 °C 10 minút.'
+related: [zemlovka-z-rozkov, ovsena-kasa-pre-vela-ludi]
+ingredients:
+  - rozok: 30 ks | starý, alebo 1,4 kg chleba či vianočky
+  - sojove-mlieko: 2,5 l
+  - cukor: 250 g
+  - kukuricny-skrob: 6 pl
+  - skorica: 4 čl
+  - vanilka: 2 čl | nepovinné
+  - sol: 1 štipka
+  - jablko: 2 kg | aj otlačené
+  - hrozienka: 1 hrnček
+  - olej: 6 pl
+steps:
+  - Pečivo nakrájaj na kocky 2 cm (tvrdé ide najľahšie zúbkovaným nožom).
+  - Vo veľkej mise vyšľahaj mlieko, cukor, škrob, škoricu, vanilku a soľ, aby v škrobe neostali hrudky.
+  - Pečivo zalej mliekom, premiešaj a nechaj 15 minút nasiaknuť. Občas ho pritlač, aby nasiaklo celé.
+  - Rúru rozpáľ na 180 °C a dva plechy s vyšším okrajom (alebo gastronádoby) vymasti olejom.
+  - Jablká umy, otlačené miesta vykroj, nastrúhaj ich nahrubo aj so šupkou a vmiešaj do pečiva s hrozienkami.
+  - Rozotri na plechy v rovnakej vrstve a pokvapkaj zvyšným olejom.
+  - Peč 40 minút, kým nie je povrch zlatý a chrumkavý a stred pevný. Nechaj 10 minút postáť a nakrájaj na kocky.
+tips:
+  - Ide aj starý chlieb, bagety či vianočka – čím rôznejšie pečivo, tým lepšie. Plesnivé pečivo vyhoď celé, nie len kúsok.
+  - Namiesto jabĺk zachránené hrušky, slivky alebo banány – banány sa nestrúhajú, len roztlačia.
+howto: [varenie-pre-vela-ludi]

@@ -1,0 +1,51 @@
+title: Detroit pizza z plechu
+description: Hrubá nadýchaná pizza z vysokého plechu s chrumkavým, do tmava opečeným syrovým okrajom. Omáčka sa dáva navrch v pásoch až po upečení. Cesto sa takmer nemiesi.
+cuisine: americka
+meals: [obed, vecera]
+categories: [comfort/burgre, hlavne/cesto, hlavne/rura]
+time: 180
+active: 30
+servings: 4
+difficulty: 2
+tags: [pizza, party]
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Kúsky prehrej na suchej panvici pod pokrievkou 5 minút – spodok aj syrový okraj znova chrumknú.'
+related: [pizza-new-york, pizzova-omacka, tapiokova-mozzarella]
+ingredients:
+  - hladka-muka: 400 g | ideálne chlebová
+  - voda: 300 ml | vlažná
+  - drozdie: 1 čl
+  - sol: 1,5 čl
+  - olivovy-olej: 4 pl
+  - tofu-udene: 180 g
+  - udena-paprika: 1 čl
+  - cili: 1/2 čl
+  - vegansky-syr: 2,5 hrnček
+  - passata: 1,5 hrnček
+  - cesnak: 2 ks
+  - oregano: 1 čl
+  - cukor: 1/2 čl
+steps:
+  - Cesto. Zmiešaj múku, droždie a vodu varechou na lepkavé cesto bez suchej múky. Prikry a nechaj 20 minút.
+  - Pridaj 1 ČL soli a mokrou rukou cesto v mise 4× prelož – zdvihni okraj a prelož na stred. Prikry a nechaj 30 minút, potom prelož ešte raz.
+  - Vysoký plech alebo formu asi 25 × 35 cm vymasti 2 PL oleja. Cesto do nej vyklop, otoč, aby bolo celé v oleji, a roztiahni ho, kam pôjde. Nechaj 20 minút a dotiahni do rohov.
+  - Prikry a nechaj kysnúť 90 minút, kým cesto nie je nadýchané a nezdvojnásobí sa.
+  - Medzitým priprav „pepperoni“ – údené tofu nakrájaj na čo najtenšie plátky a premiešaj s 1 PL oleja, údenou paprikou a čili.
+  - Kým cesto kysne, urob omáčku. Na zvyšnom oleji na miernom ohni opeč prelisovaný cesnak 30 sekúnd, pridaj passatu, oregano, cukor a zvyšnú soľ a var 15 minút, kým nezhustne.
+  - Rúru rozpáľ na 250 °C. Na cesto rozlož plátky tofu a potom ho celé zasyp syrom – až k stenám formy, aj tesne pri nich. Z neho vznikne chrumkavý tmavý okraj.
+  - Peč v najnižšej polohe rúry 15 minút, kým nie je syr pri stenách tmavohnedý a spodok zlatý.
+  - Nožom obíď okraje, pizzu vyber na dosku a navrch daj omáčku v dvoch-troch pásoch. Nakrájaj na štvorce.
+tips:
+  - Najlepší je oceľový alebo hliníkový vysoký plech. V sklenenej zapekacej mise bude spodok bledší, peč ju o 5 minút dlhšie.
+  - Do syra zmiešaj polovicu tapiokovej mozzarelly – okraj bude ťahavejší.
+howto: [kysnute-cesto, pizzeria-doma]
+gf_swap: false
+variants:
+  - name: Ľahšia verzia
+    description: Polovica syra, namiesto údeného tofu opečené šampiňóny a paprika. Okraj nebude taký syrový, ale pizza zostane nadýchaná.
+    remove: [tofu-udene]
+    replace:
+      - { from: vegansky-syr, to: vegansky-syr, amount: '1,25 hrnček' }
+    add:
+      - sampinony: 250 g | na plátky
+      - paprika-cervena: 1 ks | na kocky
