@@ -39,8 +39,12 @@ export default defineConfig({
 					'img-src': ['self', 'data:'],
 					'font-src': ['self'],
 					// Weather, place search and elevation for the garden come from Open-Meteo (no key, no cookies).
+					// The live rooms (households, shopping together) are WebSockets to this site; older
+					// Safari doesn't count wss: as 'self', so the hosts are named too.
 					'connect-src': [
 						'self',
+						'wss://receptio.kohut.xyz',
+						'wss://*.gabrielkohut3.workers.dev',
 						'https://api.open-meteo.com',
 						'https://geocoding-api.open-meteo.com'
 					],
