@@ -1,0 +1,27 @@
+title: Kávové smoothie s banánom a ovsom
+description: Raňajky a káva v jednom pohári – mrazený banán, studená káva, vločky, arašidové maslo a kakao. Hustý, sladký bez cukru a zasýti na celé dopoludnie.
+cuisine: moderna
+meals: [ranajky, snack]
+categories: [napoje/smoothie, ranajky/kase]
+time: 5
+active: 5
+servings: 1
+difficulty: 1
+tags: [rychle, ranajky, vela-bielkovin]
+related: [cold-brew, cokoladovy-shake, jahodove-smoothie]
+ingredients:
+  - banan: 1 ks | nakrájaný a zamrazený
+  - kava: 1 pl | ako studená káva alebo 1/2 hrnčeka cold brew
+  - voda: 1/2 hrnček
+  - sojove-mlieko: 1/2 hrnček
+  - ovsene-vlocky: 3 pl
+  - arasidove-maslo: 1 pl
+  - kakao: 1 čl
+  - skorica: 1 štipka
+steps:
+  - Kávu uvar s vodou vopred a nechaj vychladnúť (alebo použi zvyšok z rána či cold brew).
+  - Všetko daj do mixéra a mixuj 1 minútu dohladka. Ak je priveľmi husté, prilej mlieko.
+tips:
+  - Banány nakrájaj na kolieska a zamraz do zásoby – smoothie bude husté ako mliečny koktail bez ľadu.
+  - Bez kofeínu ho urob s kávou bez kofeínu alebo s cikóriovou kávovinou.
+howto: [kava]

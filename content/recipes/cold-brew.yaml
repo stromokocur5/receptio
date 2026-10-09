@@ -1,0 +1,29 @@
+title: Cold brew – káva lúhovaná za studena
+description: Káva lúhovaná cez noc v studenej vode. Je jemná, sladkastá, takmer bez horkosti a kyslosti a v chladničke vydrží týždeň – ráno ju len zriediš a zaleješ ľadom.
+cuisine: moderna
+meals: [ranajky, snack]
+categories: [napoje/limonady]
+time: 10
+active: 10
+servings: 8
+difficulty: 1
+tags: [rychle, meal-prep, bez-varenia]
+taste: neutralne
+ahead: Kávu lúhuj 12–18 hodín v chladničke.
+yields: cca 900 ml koncentrátu – 8 pohárov
+keeps: { fridge: 7 }
+related: [kava-latte, kavove-smoothie, vietnamska-ladova-kava]
+ingredients:
+  - kava: 100 g | hrubo mletá, ako na francúzsky lis
+  - voda: 1 l | studená
+  - ovseny-napoj: 2 hrnček | na podávanie, nepovinné
+steps:
+  - Kávu zalej studenou vodou v pohári alebo džbáne a premiešaj, aby bola celá mokrá.
+  - Prikry a nechaj 12–18 hodín v chladničke. Kratšie je slabé, dlhšie horkne.
+  - Preceď cez sitko a potom ešte cez papierový filter alebo utierku – bez kalu vydrží dlhšie a chutí čistejšie.
+  - Na pohár daj ľad, nalej koncentrát do polovice a dolej rovnakým množstvom vody alebo mlieka.
+tips:
+  - Jemne mletá káva upchá filter a nápoj bude kalný – mletie má byť hrubé ako morská soľ.
+  - Koncentrát je silný – pohár zriedený napoly má kofeínu asi ako šálka prekvapkávanej kávy.
+  - Zriedený horúcou vodou je z neho teplá káva, menej kyslá – dobrá pre citlivý žalúdok.
+howto: [kava]

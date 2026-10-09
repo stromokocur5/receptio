@@ -5077,6 +5077,7 @@
 
 - id: kava
   name: Káva mletá
+  howto: [kava]
   category: ine
   n: { kcal: 2, p: 0.1, c: 0, f: 0, fib: 0, salt: 0, fe: 0, ca: 2, zn: 0 }
   units: { pl: 6, čl: 2 }
@@ -5088,6 +5089,20 @@
     - 'Latte, café de olla, ľadová káva, do tiramisu'
   choose: 'Na moka kanvičku a džezvu jemnejšia, na francúzsky lis a filter hrubšia. Mel čerstvo, ak môžeš.'
   storage: 'Otvorenú v tesnej dóze v tme, spotrebuj do mesiaca.'
+
+- id: instantna-kava
+  name: Instantná káva
+  howto: [kava]
+  category: ine
+  n: { kcal: 2, p: 0.1, c: 0.3, f: 0, fib: 0, salt: 0, fe: 0, ca: 1, zn: 0 }
+  units: { pl: 4, čl: 1.5 }
+  price: 25
+  color: '#4a2a1a'
+  about: 'Vysušený kávový nápoj, rozpustí sa aj v studenej vode. Nutričné hodnoty sú pre rozpustený nápoj.'
+  uses:
+    - 'Dalgona (našľahaná káva), rýchla ľadová káva, do koláčov a krémov'
+  choose: 'Mrazom sušená (freeze-dried, granule) chutí lepšie ako sprejom sušený prášok.'
+  storage: 'Tesne zatvorenú v suchu, inak stvrdne na kameň.'
 
 - id: zeleny-caj
   name: Zelený čaj (sypaný alebo vrecúška)

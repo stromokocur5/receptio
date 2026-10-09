@@ -49,6 +49,34 @@ export const board = (x: number, y: number, w: number) =>
 	`<rect class="ta-board-kitchen" x="${x}" y="${y}" width="${w}" height="12" rx="5"/>`;
 
 export const KITCHEN_ART: Record<string, () => string> = {
+	kava: () => {
+		// Caffeine from a morning cup halves about every 5 hours – a third is still there at night.
+		const hours: [string, number][] = [
+			['8:00', 100],
+			['13:00', 50],
+			['18:00', 25],
+			['23:00', 12]
+		];
+		return (
+			`<path class="ta-mug" d="M22 70h52v56a10 10 0 0 1-10 10H32a10 10 0 0 1-10-10Z"/>` +
+			`<path class="ta-mug" d="M74 82h8a10 10 0 0 1 0 20h-8"/>` +
+			`<rect class="ta-cup" x="26" y="76" width="44" height="8" rx="3"/>` +
+			`<g class="ta-steam-lines"><path d="M36 62c-5-7 5-10 0-18M50 58c-5-7 5-10 0-18M62 62c-5-7 5-10 0-18"/></g>` +
+			label(48, 156, 'do 400 mg', 'middle') +
+			label(48, 170, 'denne', 'middle') +
+			label(118, 24, 'Kofeín z rannej kávy v tele') +
+			hours
+				.map(
+					([time, share], i) =>
+						`<rect class="ta-bar-bg" x="${124 + i * 48}" y="40" width="26" height="100" rx="5"/>` +
+						`<rect class="ta-bar-v ${share > 30 ? 'ta-q2' : 'ta-q3'}" style="--d:${(i * 0.2).toFixed(1)}s" x="${124 + i * 48}" y="${140 - share}" width="26" height="${share}" rx="5"/>` +
+						label(137 + i * 48, 156, time, 'middle') +
+						label(137 + i * 48, 170, `${share} %`, 'middle')
+				)
+				.join('')
+		);
+	},
+
 	pizza: () =>
 		// A pizza from above (pressed centre, untouched rim) and an oven heating a steel for 45 min.
 		`<circle class="ta-dough" cx="78" cy="96" r="58"/>` +

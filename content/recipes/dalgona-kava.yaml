@@ -1,0 +1,26 @@
+title: Dalgona – našľahaná káva
+description: Kórejská káva z internetu – instantná káva, cukor a horúca voda vyšľahané na hustú karamelovú penu, ktorá pláva na studenom mlieku. Bez kávovaru za 5 minút.
+cuisine: korejska
+meals: [snack]
+categories: [napoje/limonady]
+time: 8
+active: 8
+servings: 2
+difficulty: 1
+tags: [rychle]
+related: [cold-brew, kava-latte, frappe-z-kavovych-kociek]
+ingredients:
+  - instantna-kava: 2 pl
+  - cukor: 2 pl
+  - voda: 2 pl | horúca
+  - ovseny-napoj: 1,5 hrnček | studený
+steps:
+  - Do misky daj instantnú kávu, cukor a horúcu vodu v rovnakom pomere.
+  - Šľahaj elektrickým šľahačom 2–3 minúty (metličkou rukou asi 5 minút), kým nie je pena svetlohnedá, hustá a drží špičky.
+  - Do pohárov daj ľad a nalej mlieko do troch štvrtín.
+  - Navrch lyžicou navrstvi penu. Pred pitím premiešaj.
+tips:
+  - Funguje len s instantnou kávou – mletá sa nenašľahá. Bez cukru pena nedrží.
+  - Menej sladká verzia – 2 PL kávy, 1 PL cukru, 2 PL vody, šľahaj dlhšie.
+  - Na pene posyp kakao alebo škoricu.
+howto: [kava]
