@@ -10,7 +10,9 @@
 	import { avoidFilter, missableTools } from '$lib/avoid';
 	import IngredientExcluder from '$lib/components/IngredientExcluder.svelte';
 	import {
+		addExtraItem,
 		avoid,
+		extraItems,
 		pantry,
 		pantryAdded,
 		removePantryItem,
@@ -154,6 +156,16 @@
 		setPantryItem(id, value.trim() === '' || !Number.isFinite(grams) || grams < 0 ? null : grams);
 	}
 
+	let ranOut = $state<string | null>(null);
+	/** Ran out: off the pantry and onto the shopping list in one tap. */
+	function useUp(ingredient: Ingredient) {
+		removePantryItem(ingredient.id);
+		if (!extraItems.current.some((x) => !x.checked && x.text === ingredient.name))
+			addExtraItem(ingredient.name);
+		ranOut = ingredient.name;
+		setTimeout(() => (ranOut = null), 2500);
+	}
+
 	function clearAll() {
 		if (!confirmClear) {
 			confirmClear = true;
@@ -188,6 +200,13 @@
 			</span>
 			<Icon name="arrow-right" size={18} />
 		</a>
+		<nav class="jump" aria-label="Na stránke">
+			<a class="chip" href="#moja-spajza"><Icon name="jar" size={15} /> Moja špajza</a>
+			<a class="chip" href="#zavaraniny"
+				><Icon name="snowflake" size={15} /> Zaváraniny a mraznička</a
+			>
+			<a class="chip" href="#nemam"><Icon name="x" size={15} /> Čo nemám a nejem</a>
+		</nav>
 	</header>
 
 	{#if suggestions.length}
@@ -296,7 +315,7 @@
 					>
 				</section>
 			{/if}
-			<section class="card mine">
+			<section class="card mine" id="moja-spajza">
 				<div class="mine-head">
 					<h2><Icon name="jar" size={24} /> Moja špajza</h2>
 					{#if items.length}
@@ -337,11 +356,19 @@
 									<input
 										inputmode="decimal"
 										value={grams ?? ''}
-										placeholder="dosť"
+										placeholder="—"
 										onchange={(e) => setGrams(ingredient.id, e.currentTarget.value)}
 									/>
 									<span class="unit">g</span>
 								</label>
+								<button
+									class="rm buy"
+									aria-label="Došlo – do nákupu: {ingredient.name}"
+									title="Došlo – do nákupného zoznamu"
+									onclick={() => useUp(ingredient)}
+								>
+									<Icon name="basket" size={16} />
+								</button>
 								<button
 									class="rm"
 									aria-label="Odstrániť {ingredient.name}"
@@ -352,6 +379,14 @@
 							</li>
 						{/each}
 					</ul>
+					{#if ranOut}<p class="ran-out" role="status">
+							<Icon name="check" size={15} />
+							{ranOut} je v <a href="/plan#nakup">nákupnom zozname</a>.
+						</p>{/if}
+					<p class="muted small">
+						Množstvo v gramoch je nepovinné – prázdne znamená, že máš dosť. Košík: došlo, daj do
+						nákupu.
+					</p>
 					<p class="muted small">
 						Tip: 1 plechovka cícera ≈ {formatGrams(240)} scedeného, hrnček ryže ≈ {formatGrams(
 							185
@@ -626,9 +661,9 @@
 	}
 	.mine li {
 		display: grid;
-		grid-template-columns: auto 1fr auto auto;
+		grid-template-columns: auto 1fr auto auto auto;
 		align-items: center;
-		gap: 10px;
+		gap: 8px;
 		padding: 8px 0;
 		border-bottom: 1px dashed var(--line);
 		animation: rise 0.35s var(--ease-out);
@@ -673,6 +708,27 @@
 	.rm:hover {
 		background: var(--tomato-soft);
 		color: var(--tomato);
+	}
+	.buy:hover {
+		background: var(--leaf-soft);
+		color: var(--leaf);
+	}
+	.ran-out {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin: 10px 0 0;
+		font-size: 0.9rem;
+		color: var(--leaf);
+	}
+	.jump {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin-top: 14px;
+	}
+	.jump .chip {
+		text-decoration: none;
 	}
 	.empty {
 		display: grid;

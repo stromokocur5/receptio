@@ -9,9 +9,6 @@ export const PRESERVE_PLACE_LABELS: Record<PreservePlace, string> = {
 	chladnicka: 'Chladnička'
 };
 
-/** Months after which a preserve is past its best (safe canning, freezing and fridge advice). */
-const BEST_MONTHS: Record<PreservePlace, number> = { pivnica: 12, mraznicka: 10, chladnicka: 1 };
-
 export interface Preserve {
 	id: string;
 	name: string;
@@ -20,34 +17,110 @@ export interface Preserve {
 	made: string;
 	place: PreservePlace;
 	recipeId?: string;
+	/** ISO date it came out of the freezer into the fridge. */
+	thawed?: string;
 }
 
 export type PreserveAge = 'fresh' | 'soon' | 'old';
 
-/** Whole months between two ISO dates (the day of month counts, like a person would). */
-export function monthsBetween(from: string, to: string): number {
-	const [fy, fm, fd] = from.split('-').map(Number);
-	const [ty, tm, td] = to.split('-').map(Number);
-	return (ty - fy) * 12 + (tm - fm) - (td < fd ? 1 : 0);
+/** Months it's at its best by kind (safe canning and freezing advice); the first match wins. */
+const KINDS: { match: RegExp; months: Partial<Record<PreservePlace, number>> }[] = [
+	{ match: /lekv|d[žz]em|marmel|povidl|konfit/, months: { pivnica: 24 } },
+	{ match: /kompót|kompot|sirup|šťav/, months: { pivnica: 12 } },
+	{ match: /kimči|kimchi|kapust|kvas|nakladan|uhor/, months: { pivnica: 12, chladnicka: 6 } },
+	{ match: /chlieb|pečiv|rožk|koláč|buchty|cesto|pizz|tortil/, months: { mraznicka: 3 } },
+	{ match: /pesto|bylink|pažítk|petržlen|bazalk/, months: { mraznicka: 6 } },
+	{
+		match: /polievk|vývar|omáčk|guláš|kari|dal|chili|ragú|lasagn|burrito|halušk|knedl|tofu/,
+		months: { mraznicka: 4 }
+	}
+];
+const DEFAULT_MONTHS: Record<PreservePlace, number> = { pivnica: 12, mraznicka: 10, chladnicka: 1 };
+/** A thawed dish keeps a day or two in the fridge, however long it was frozen. */
+const THAWED_DAYS = 2;
+
+/** How a recipe says it keeps, when the entry comes from one. */
+export type Keeps = { fridge: number; freezer: number } | undefined;
+
+const lower = (name: string) => name.toLocaleLowerCase('sk');
+const utc = (iso: string) => Date.UTC(+iso.slice(0, 4), +iso.slice(5, 7) - 1, +iso.slice(8, 10));
+const isoOf = (ms: number) => new Date(ms).toISOString().slice(0, 10);
+
+function addMonths(iso: string, months: number): string {
+	const [y, m, d] = iso.split('-').map(Number);
+	const lastDay = new Date(Date.UTC(y, m - 1 + months + 1, 0)).getUTCDate();
+	return isoOf(Date.UTC(y, m - 1 + months, Math.min(d, lastDay)));
 }
 
-/** fresh, soon (the last month or two of its best time) or old (past it – check before eating). */
-export function preserveAge(p: Pick<Preserve, 'made' | 'place'>, today: string): PreserveAge {
-	const months = monthsBetween(p.made, today);
-	const best = BEST_MONTHS[p.place];
-	if (months >= best) return 'old';
-	if (months >= best - (p.place === 'chladnicka' ? 0 : 2)) return 'soon';
-	return 'fresh';
+/** Months it keeps where it is now: the recipe's own word first, then its kind, then the place. */
+export function bestMonths(p: Pick<Preserve, 'name' | 'place'>, keeps?: Keeps): number {
+	if (p.place === 'mraznicka' && keeps?.freezer) return keeps.freezer;
+	const name = lower(p.name);
+	const kind = KINDS.find((k) => k.match.test(name) && k.months[p.place]);
+	return kind?.months[p.place] ?? DEFAULT_MONTHS[p.place];
 }
 
-/** Oldest first within each place, so what should be eaten first is on top. */
-export function sortPreserves(list: Preserve[]): Preserve[] {
+/** ISO date until which it's at its best. */
+export function bestBefore(p: Pick<Preserve, 'name' | 'place' | 'made' | 'thawed'>, keeps?: Keeps) {
+	if (p.place === 'chladnicka' && p.thawed) {
+		const days = Math.min(THAWED_DAYS, keeps?.fridge || THAWED_DAYS);
+		return isoOf(utc(p.thawed) + days * 86_400_000);
+	}
+	if (p.place === 'chladnicka' && keeps?.fridge && !KINDS.some((k) => k.match.test(lower(p.name))))
+		return isoOf(utc(p.made) + keeps.fridge * 86_400_000);
+	return addMonths(p.made, bestMonths(p, keeps));
+}
+
+/** Days from today to the best-before date; negative once it's past. */
+export function daysLeft(
+	p: Pick<Preserve, 'name' | 'place' | 'made' | 'thawed'>,
+	today: string,
+	keeps?: Keeps
+): number {
+	return Math.round((utc(bestBefore(p, keeps)) - utc(today)) / 86_400_000);
+}
+
+/** fresh, soon (the last weeks of its best time; the last day in the fridge) or old (check first). */
+export function preserveAge(
+	p: Pick<Preserve, 'name' | 'place' | 'made' | 'thawed'>,
+	today: string,
+	keeps?: Keeps
+): PreserveAge {
+	const left = daysLeft(p, today, keeps);
+	if (left < 0) return 'old';
+	return left <= (p.place === 'chladnicka' ? 1 : 45) ? 'soon' : 'fresh';
+}
+
+/** Within each place, what should be eaten first is on top. */
+export function sortPreserves(list: Preserve[], keepsOf: (p: Preserve) => Keeps = () => undefined) {
 	return [...list].sort(
 		(a, b) =>
 			PRESERVE_PLACES.indexOf(a.place) - PRESERVE_PLACES.indexOf(b.place) ||
+			bestBefore(a, keepsOf(a)).localeCompare(bestBefore(b, keepsOf(b))) ||
 			a.made.localeCompare(b.made)
 	);
 }
+
+/** Common things people put up, for the name field's suggestions. */
+export const PRESERVE_SUGGESTIONS = [
+	'Lečo',
+	'Marhuľový lekvár',
+	'Slivkový lekvár',
+	'Jahodový džem',
+	'Kompót',
+	'Kyslé uhorky',
+	'Kyslá kapusta',
+	'Sterilizovaná paprika',
+	'Paradajková omáčka',
+	'Bazový sirup',
+	'Mrazená zelenina',
+	'Fazuľky',
+	'Hrášok',
+	'Lesné ovocie',
+	'Pesto',
+	'Polievka',
+	'Chlieb'
+];
 
 /** "cca 8 pohárov po 0,5 l" → 8; a recipe that doesn't say gets 1. */
 export function jarsFromYield(yields: string | undefined): number {
@@ -87,6 +160,7 @@ export function validatePreserves(raw: unknown): Preserve[] | undefined {
 			place: p.place as PreservePlace,
 			...(typeof p.recipeId === 'string' && /^[a-z0-9-]{1,80}$/.test(p.recipeId)
 				? { recipeId: p.recipeId }
-				: {})
+				: {}),
+			...(p.place === 'chladnicka' && isDate(p.thawed) ? { thawed: p.thawed } : {})
 		}));
 }

@@ -259,12 +259,16 @@
 			><Icon name="wheat" size={16} /> Bezlepkovo</button
 		>
 	</div>
-	<IngredientExcluder
-		selected={member.avoid}
-		onchange={(ids) => updateMember(member.id, { avoid: ids })}
-		fieldLabel={`Čo ${member.name} neje`}
-		hint="Celá skupina: „cícer“ vylúči suchý aj sterilizovaný."
-	/>
+	<fieldset>
+		<legend>Čo neje alebo nechce jesť</legend>
+		<IngredientExcluder
+			selected={member.avoid}
+			onchange={(ids) => updateMember(member.id, { avoid: ids })}
+			fieldLabel={`Čo ${member.name} neje`}
+			prefix="neje"
+			hint="Recepty s týmito surovinami nebude plán pre domácnosť ponúkať. Celá skupina: „cícer“ vylúči suchý aj sterilizovaný."
+		/>
+	</fieldset>
 	<div class="actions">
 		<button class="btn ghost small" onclick={() => setMe(isMe ? null : member.id)}>
 			{isMe ? 'Toto nie som ja' : 'Toto som ja'}
