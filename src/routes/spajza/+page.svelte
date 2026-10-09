@@ -457,7 +457,7 @@
 					onchange={(ids) => (avoid.current = { ...avoid.current, ingredients: ids })}
 					prefix="nemám"
 					placeholder="Napr. huby, tofu, koriander…"
-					hint="Čo nejete, na čo je niekto alergický, alebo čo u vás nekúpiš. Platí aj pre iné podoby (sušený aj varený cícer)."
+					hint="Čo nejedávaš, na čo je niekto alergický alebo čo v obchode nekúpiš. Platí aj pre iné podoby (sušený aj varený cícer)."
 				/>
 			</div>
 			<div>

@@ -85,10 +85,10 @@
 	<div class="edit">
 		<MemberCard {member} />
 		<p class="hint">
-			Svoj profil si {member.name} vypĺňa sám vo svojom telefóne – ostatní ho vidia, ale nemenia.
+			Profil si {member.name} vypĺňa vo svojom telefóne – ostatní ho vidia, ale nemenia.
 		</p>
 		{#if canRemove(member)}
-			<p class="hint">Jeho telefón sa dva mesiace neozval, preto ho môžeš odobrať.</p>
+			<p class="hint">Tento telefón sa dva mesiace neozval, preto profil môžeš odobrať.</p>
 			<div class="actions">
 				<button
 					class="btn ghost small danger"
@@ -105,8 +105,7 @@
 		{#if !member.owner}
 			<p class="hint owner">
 				Tento profil môže upraviť ktokoľvek v domácnosti – hodí sa pre dieťa alebo niekoho bez
-				telefónu. Ak je to tvoj profil, ťukni <strong>Toto som ja</strong>: potom ho budeš meniť len
-				ty a ostatní ho uvidia.
+				telefónu.
 			</p>
 		{/if}
 		<label class="name-field">
@@ -154,7 +153,7 @@
 					/>
 				</label>
 				{#if away}
-					<button class="btn ghost small" onclick={() => setAway('', null)}>Je doma</button>
+					<button class="btn ghost small" onclick={() => setAway('', null)}>Už je doma</button>
 				{/if}
 			</div>
 			{#if away && !away.to}<p class="hint">Bez dátumu „do“ – kým nepovieš, že je späť.</p>{/if}
@@ -312,8 +311,10 @@
 					checked={!!member.eaten}
 					onchange={(e) => shareEaten(e.currentTarget.checked ? [] : null)}
 				/>
-				Ukázať ostatným, koľko som zjedol/zjedla – energiu a bielkoviny za posledných 7 dní z môjho
-				<a href="/moje#dennik">denníka</a>
+				<span
+					>Ukázať ostatným energiu a bielkoviny, ktoré mám za posledných 7 dní v
+					<a href="/moje#dennik">denníku</a></span
+				>
 			</label>
 		{/if}
 		<div class="actions">

@@ -28,7 +28,7 @@
 		{
 			what: 'Domácnosť',
 			detail:
-				'Len ak ju založíš alebo sa pripojíš: zašifrovaný spoločný plán, špajza, nákupný zoznam a členovia – mená, ktoré zadáte, alergie, čo kto neje, „nepálivo“ a bezlepková strava.',
+				'Len ak ju založíš alebo sa pripojíš: zašifrovaný spoločný plán, špajza, nákupný zoznam, kto čo kupuje a varí, a členovia – mená, ktoré zadáte, alergie, čo kto neje, „nepálivo“, bezlepková strava, výška, váha, vek, pohlavie, aktivita a cieľ (pre veľkosť porcií), kedy kto nie je doma a recepty, ktoré kto chce. Ak to zapnete: výdavky s poznámkou a kto ich zaplatil, a koľko kto za posledných 7 dní zjedol energie a bielkovín. A krátky záznam, kto čo kedy zmenil.',
 			why: 'Aby ste mali doma jeden plán a nákup a recepty vedeli, čo môže jesť každý pri stole. Kľúč je len v pozývacom odkaze – server nevidí mená ani alergie, len šifru.',
 			kept: `Kým domácnosť niekto používa. Domácnosť, ktorú ${syncYears} roky nikto neotvoril, sa zmaže sama. Kto odíde, zmizne zo zoznamu členov.`
 		},
@@ -168,8 +168,9 @@
 		<ul>
 			<li>
 				Synchronizácia, spoločný nákup a domácnosť: poskytnutie služby, o ktorú žiadaš (čl. 6 ods. 1
-				písm. b GDPR). Alergie a bezlepková strava členov domácnosti sú údaje o zdraví – zadávaš ich
-				dobrovoľne, ostávajú zašifrované a správca ich nevidí (čl. 9 ods. 2 písm. a GDPR).
+				písm. b GDPR). Alergie, bezlepková strava, telesné údaje a zjedená energia členov domácnosti
+				sú údaje o zdraví – zadávate ich dobrovoľne, každý údaj je nepovinný, ostávajú zašifrované a
+				správca ich nevidí (čl. 9 ods. 2 písm. a GDPR).
 			</li>
 			<li>
 				Lajky, formuláre a ochrana pred zneužitím: oprávnený záujem prevádzkovať stránku a chrániť

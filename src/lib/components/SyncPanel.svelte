@@ -184,10 +184,14 @@
 			>
 		{/if}
 		{#if persisted}
-			<Icon name="check" size={16} /> Prehliadač tieto dáta sám nezmaže ani pri nedostatku miesta.
+			<span
+				><Icon name="check" size={16} /> Prehliadač tieto dáta sám nezmaže ani pri nedostatku miesta.</span
+			>
 		{:else if persisted === false}
-			<button class="linkish" onclick={protect}>Požiadať prehliadač, aby dáta nemazal</button>
-			<span class="muted"> – bez toho ich môže pri nedostatku miesta upratať.</span>
+			<span
+				><button class="linkish" onclick={protect}>Požiadať prehliadač, aby dáta nemazal</button>
+				<span class="muted">– bez toho ich môže pri nedostatku miesta upratať.</span></span
+			>
 		{/if}
 	</p>
 </section>

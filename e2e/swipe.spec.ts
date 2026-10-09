@@ -23,7 +23,7 @@ test('two people swiping right on the same recipe get a match, one tap from the 
 	const phone = { viewport: { width: 412, height: 860 }, hasTouch: true, isMobile: true };
 	const ema = await (await browser.newContext(phone)).newPage();
 	await visit(ema, '/domacnost');
-	await ema.getByLabel('Ako sa voláte').fill('Byt 4B');
+	await ema.getByLabel('Názov domácnosti').fill('Byt 4B');
 	await ema.getByLabel(/Tvoje meno/).fill('Ema');
 	await ema.getByRole('button', { name: 'Založiť' }).click();
 	await expect(ema.getByRole('status')).toContainText('Spojené');
@@ -59,7 +59,7 @@ test('two people swiping right on the same recipe get a match, one tap from the 
 	const hers = ema.getByRole('dialog', { name: 'Čo budeme jesť?' });
 	await expect(hers.locator('.card-face:not(.back) h3')).toHaveText(title!);
 	await expect(hers.getByText('Chce to aj Jano')).toBeVisible();
-	await hers.getByRole('button', { name: 'Dal by som si' }).click();
+	await hers.getByRole('button', { name: 'Chcem', exact: true }).click();
 	await expect(hers.getByText('Zhoda!')).toBeVisible();
 	if (SHOTS) await ema.screenshot({ path: `${SHOTS}/swipe-match.png` });
 	await hers.getByRole('button', { name: 'Do plánu' }).click();

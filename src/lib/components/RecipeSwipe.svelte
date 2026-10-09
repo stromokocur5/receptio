@@ -148,9 +148,7 @@
 			<Icon name="x" size={22} />
 		</button>
 	</header>
-	<p class="muted hint">
-		Doprava, čo by si si dal, doľava, čo teraz nie. Čo chcete všetci, je zhoda.
-	</p>
+	<p class="muted hint">Doprava „chcem“, doľava „teraz nie“. Čo chcete všetci, je zhoda.</p>
 
 	<div class="stack">
 		{#if card}
@@ -180,9 +178,7 @@
 					onpointercancel={onpointerup}
 					aria-live="polite"
 				>
-					<span class="stamp yes" style:opacity={Math.max(0, Math.min(1, dx / THROW))}
-						>Dal by som si</span
-					>
+					<span class="stamp yes" style:opacity={Math.max(0, Math.min(1, dx / THROW))}>Chcem</span>
 					<span class="stamp no" style:opacity={Math.max(0, Math.min(1, -dx / THROW))}
 						>Teraz nie</span
 					>
@@ -214,7 +210,7 @@
 		{:else}
 			<div class="done">
 				<Icon name="check" size={32} />
-				<p><strong>Prešiel si všetky recepty.</strong></p>
+				<p><strong>To sú všetky recepty.</strong></p>
 				<p class="muted">Čo si chcel, ostáva ako želanie. Tie „teraz nie“ môžeš prejsť znova.</p>
 				<button class="btn" onclick={restart}>Prejsť znova</button>
 			</div>
@@ -229,7 +225,7 @@
 			<button class="round undo" aria-label="Späť" disabled={!history.length} onclick={undo}>
 				<Icon name="undo" size={20} />
 			</button>
-			<button class="round yes" aria-label="Dal by som si" onclick={() => decide(true)}>
+			<button class="round yes" aria-label="Chcem" onclick={() => decide(true)}>
 				<Icon name="heart" size={28} />
 			</button>
 		</div>

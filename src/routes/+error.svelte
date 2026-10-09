@@ -31,8 +31,15 @@
 		/>
 	</svg>
 	<h1>{page.status === 404 ? 'Tento tanier je prázdny' : 'Niečo sa pripálilo'}</h1>
-	<p class="muted">{page.error?.message}</p>
-	<a class="btn" href="/"><Icon name="home" size={18} /> Domov</a>
+	<p class="muted">
+		{page.status === 404
+			? 'Táto stránka neexistuje alebo sa presunula.'
+			: 'Chyba je na našej strane. Skús to o chvíľu znova.'}
+	</p>
+	<div class="ways">
+		<a class="btn leaf" href="/recepty"><Icon name="search" size={18} /> Hľadať recept</a>
+		<a class="btn ghost" href="/"><Icon name="home" size={18} /> Domov</a>
+	</div>
 </div>
 
 <style>
@@ -42,5 +49,12 @@
 		text-align: center;
 		padding-top: 60px;
 		gap: 8px;
+	}
+	.ways {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 8px;
+		margin-top: 8px;
 	}
 </style>

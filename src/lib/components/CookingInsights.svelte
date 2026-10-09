@@ -104,9 +104,12 @@
 				<dd>{formatEur(meals.cost)}</dd>
 				<dd class="sub">
 					za {meals.portions}
-					{meals.portions === 1 ? 'obed či večeru' : 'obedov a večerí'}; v reštaurácii ~{formatEur(
-						meals.portions * RESTAURANT_MEAL_EUR
-					)} <span class="badge">odhad</span>
+					{meals.portions === 1
+						? 'obed či večeru'
+						: meals.portions < 5
+							? 'obedy a večere'
+							: 'obedov a večerí'}; v reštaurácii ~{formatEur(meals.portions * RESTAURANT_MEAL_EUR)}
+					<span class="badge">odhad</span>
 				</dd>
 			{:else}
 				<dd>–</dd>
@@ -241,7 +244,7 @@
 				</ol>
 				{#if tryNext.length}
 					<p class="small">
-						Ešte neuvarené s {name(top[0].ingredientId).toLowerCase()}:
+						Ešte neuvarené ({name(top[0].ingredientId).toLowerCase()}):
 						{#each tryNext as r, i (r.id)}{i ? ', ' : ''}<a href="/recepty/{r.id}">{r.title}</a
 							>{/each}.
 					</p>

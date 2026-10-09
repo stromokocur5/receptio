@@ -7,7 +7,7 @@ test.describe.configure({ mode: 'serial' });
 
 async function createHousehold(page: Page, me: string) {
 	await visit(page, '/domacnost');
-	await page.getByLabel('Ako sa voláte').fill('Byt 4B');
+	await page.getByLabel('Názov domácnosti').fill('Byt 4B');
 	await page.getByLabel(/Tvoje meno/).fill(me);
 	await page.getByRole('button', { name: 'Založiť' }).click();
 	await expect(page.getByRole('status')).toContainText('Spojené');

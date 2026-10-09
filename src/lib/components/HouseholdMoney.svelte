@@ -29,10 +29,16 @@
 	let by = $state(household.me ?? '');
 	let amount = $state('');
 	let note = $state('');
-	/** Who shares this one; starts as whoever is home today. */
+	/**
+	 * Who shares this one; starts as whoever is home today and has their own phone (a child's
+	 * profile is added by hand), or everyone at home when nobody has.
+	 */
 	const today = localToday();
 	let shares = $state<string[] | null>(null);
-	const sharing = $derived(shares ?? list.filter((m) => !isAway(m, today)).map((m) => m.id));
+	const home = $derived(list.filter((m) => !isAway(m, today)));
+	const sharing = $derived(
+		shares ?? (home.some((m) => m.owner) ? home.filter((m) => m.owner) : home).map((m) => m.id)
+	);
 	function toggleShare(id: string) {
 		const now = sharing.includes(id) ? sharing.filter((x) => x !== id) : [...sharing, id];
 		if (now.length) shares = now;
@@ -92,7 +98,7 @@
 		</label>
 		<label>
 			Koľko €
-			<input bind:value={amount} inputmode="decimal" placeholder="0,00" required />
+			<input class="amount" bind:value={amount} inputmode="decimal" placeholder="0,00" required />
 		</label>
 		<label class="grow">
 			Za čo
@@ -195,7 +201,7 @@
 		font-weight: 650;
 		font-size: 0.9rem;
 	}
-	.add label:nth-child(2) input {
+	.add .amount {
 		width: 7em;
 	}
 	.grow {

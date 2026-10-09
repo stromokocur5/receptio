@@ -457,6 +457,7 @@
 		stopOwnLive();
 	}
 
+	const things = (n: number) => `${n} ${n === 1 ? 'vec' : n < 5 ? 'veci' : 'vecí'}`;
 	const pieces = (item: ShoppingItem) => approxPieces(item.ingredient, item.buyGrams);
 
 	async function copyList() {
@@ -1192,7 +1193,7 @@
 								{/if}
 							{/if}
 							{#if rec.missing}
-								{rec.missing === 1 ? '1 vec' : `${rec.missing} veci`} tam nemajú, kúp ich inde.
+								{things(rec.missing)} tam nemajú, kúp {rec.missing === 1 ? 'ju' : 'ich'} inde.
 							{/if}
 						</p>
 						<ul>
@@ -1222,8 +1223,9 @@
 						{/if}
 						{#if comparison.unpriced}
 							<p class="muted small">
-								{comparison.unpriced === 1 ? '1 vec' : `${comparison.unpriced} veci`} z nákupu zatiaľ
-								nemá cenu zo žiadneho obchodu, rátame ju odhadom.
+								{things(comparison.unpriced)} z nákupu zatiaľ
+								{comparison.unpriced > 1 && comparison.unpriced < 5 ? 'nemajú' : 'nemá'} cenu zo žiadneho
+								obchodu, rátame {comparison.unpriced === 1 ? 'ju' : 'ich'} odhadom.
 							</p>
 						{/if}
 					</div>

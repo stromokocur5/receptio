@@ -280,7 +280,7 @@
 			</p>
 			<form class="form" onsubmit={create}>
 				<label>
-					Ako sa voláte
+					Názov domácnosti
 					<input
 						bind:value={householdName}
 						maxlength="40"
@@ -288,7 +288,7 @@
 					/>
 				</label>
 				<label>
-					Tvoje meno <span class="muted">(nepovinné)</span>
+					<span>Tvoje meno <span class="muted">(nepovinné)</span></span>
 					<input bind:value={myName} maxlength="40" placeholder="Napr. Miška" />
 				</label>
 				<button class="btn leaf" type="submit" disabled={busy}>
@@ -404,275 +404,280 @@
 					</button>
 				</form>
 			</section>
-		{/if}
+		{:else}
+			<!-- Until they pick who they are, a newcomer sees only that question (and how to leave). -->
 
-		{#if household.solo}
-			<section class="card box solo-on">
-				<h2><Icon name="sun" size={24} /> Plánuješ pre seba</h2>
-				<p>
-					Máš svoj vlastný plán, nákupný zoznam a špajzu. Spoločné na teba počkajú, ako sú.{#if household.soloAway && me?.away}
-						Ostatní vidia, že nie si doma{me.away.to ? ` do ${dateText(me.away.to)}` : ''}.{/if}
-				</p>
-				<button class="btn leaf" disabled={busy} onclick={() => void run(() => stopSolo())}>
-					<Icon name="users" size={18} /> Späť k domácnosti
-				</button>
-			</section>
-		{/if}
-
-		{#if !household.solo && list.length}
-			<section class="card box">
-				<h2><Icon name="pot" size={24} /> Dnes doma</h2>
-				<HouseholdToday />
-			</section>
-		{/if}
-
-		<section class="card box">
-			<h2><Icon name="share" size={24} /> Pozvi ostatných</h2>
-			<p>
-				Pošli odkaz každému, s kým spolu varíte. Kto ho má, vidí a mení spoločný plán, zoznam aj
-				špajzu; svoj profil si vyplní každý sám.
-			</p>
-			<div class="actions">
-				<button class="btn leaf" onclick={share}>
-					<Icon name={copied ? 'check' : 'share'} size={18} />
-					{copied ? 'Odkaz skopírovaný' : 'Poslať odkaz'}
-				</button>
-				<button class="btn ghost" aria-expanded={showQr} onclick={() => (showQr = !showQr)}>
-					<Icon name="qr" size={18} />
-					{showQr ? 'Skryť QR kód' : 'QR kód'}
-				</button>
-				<a class="btn ghost" href="/plan">Spoločný plán</a>
-				<a class="btn ghost" href="/plan#nakup">Nákupný zoznam</a>
-			</div>
-			{#if showQr && household.code}
-				<InviteQr url={inviteLink(household.code)} />
-				<p class="muted small">Stačí ho namieriť fotoaparátom druhého telefónu.</p>
+			{#if household.solo}
+				<section class="card box solo-on">
+					<h2><Icon name="sun" size={24} /> Plánuješ pre seba</h2>
+					<p>
+						Máš svoj vlastný plán, nákupný zoznam a špajzu. Spoločné na teba počkajú, ako sú.{#if household.soloAway && me?.away}
+							Ostatní vidia, že nie si doma{me.away.to ? ` do ${dateText(me.away.to)}` : ''}.{/if}
+					</p>
+					<button class="btn leaf" disabled={busy} onclick={() => void run(() => stopSolo())}>
+						<Icon name="users" size={18} /> Späť k domácnosti
+					</button>
+				</section>
 			{/if}
-			<label class="rename">
-				Názov
-				<input
-					value={household.doc?.name[0] ?? ''}
-					maxlength="40"
-					onchange={(e) => renameHousehold(e.currentTarget.value)}
-				/>
-			</label>
-			<div class="new-link" class:alert={removedSomeone}>
+
+			{#if !household.solo && list.length}
+				<section class="card box">
+					<h2><Icon name="pot" size={24} /> Dnes doma</h2>
+					<HouseholdToday />
+				</section>
+			{/if}
+
+			<section class="card box">
+				<h2><Icon name="share" size={24} /> Pozvi ostatných</h2>
 				<p>
-					<Icon name="shield" size={18} />
-					{#if removedSomeone}
-						<strong>Kto odišiel, má stále starý odkaz.</strong> Vymeň ho, aby sa už nedostal dnu.
-					{:else}
-						Odsťahoval sa niekto alebo odkaz unikol? Odober ho a vymeň odkaz – starý prestane
-						fungovať. Kto tu má svoj profil, prepojí sa sám.
-					{/if}
+					Pošli odkaz každému, s kým spolu varíte. Kto ho má, vidí a mení spoločný plán, zoznam aj
+					špajzu; svoj profil si vyplní každý sám.
 				</p>
-				{#if confirmNewLink && sendTo.length}
-					<p class="muted small">
-						Nový odkaz potom pošli: {sendTo.map((m) => m.name).join(', ')} (ak majú telefón).
+				<div class="actions">
+					<button class="btn leaf" onclick={share}>
+						<Icon name={copied ? 'check' : 'share'} size={18} />
+						{copied ? 'Odkaz skopírovaný' : 'Poslať odkaz'}
+					</button>
+					<button class="btn ghost" aria-expanded={showQr} onclick={() => (showQr = !showQr)}>
+						<Icon name="qr" size={18} />
+						{showQr ? 'Skryť QR kód' : 'QR kód'}
+					</button>
+					<a class="btn ghost" href="/plan">Spoločný plán</a>
+					<a class="btn ghost" href="/plan#nakup">Nákupný zoznam</a>
+				</div>
+				{#if showQr && household.code}
+					<InviteQr url={inviteLink(household.code)} />
+					<p class="muted small">Stačí ho namieriť fotoaparátom druhého telefónu.</p>
+				{/if}
+				<label class="rename">
+					Názov
+					<input
+						value={household.doc?.name[0] ?? ''}
+						maxlength="40"
+						onchange={(e) => renameHousehold(e.currentTarget.value)}
+					/>
+				</label>
+				<div class="new-link" class:alert={removedSomeone}>
+					<p>
+						<Icon name="shield" size={18} />
+						{#if removedSomeone}
+							<strong>Kto odišiel, má stále starý odkaz.</strong> Vymeň ho, aby sa už nedostal dnu.
+						{:else}
+							Odsťahoval sa niekto alebo odkaz unikol? Odober ho a vymeň odkaz – starý prestane
+							fungovať. Kto tu má svoj profil, prepojí sa sám.
+						{/if}
+					</p>
+					{#if confirmNewLink && sendTo.length}
+						<p class="muted small">
+							Nový odkaz potom pošli {sendTo.length === 1 ? 'tomuto členovi' : 'týmto členom'}, ak
+							{sendTo.length === 1 ? 'má' : 'majú'} telefón: {sendTo.map((m) => m.name).join(', ')}.
+						</p>
+					{/if}
+					<button class="btn ghost small" disabled={busy || !household.code} onclick={newLink}>
+						{confirmNewLink ? 'Naozaj vymeniť?' : 'Vymeniť odkaz'}
+					</button>
+					{#if error}<p class="msg" role="alert"><Icon name="alert" size={18} /> {error}</p>{/if}
+				</div>
+			</section>
+
+			<section class="card box">
+				<h2><Icon name="users" size={24} /> Kto je pri stole</h2>
+				{#if list.length}
+					<p class="muted">
+						Plán varí pre {list.length}
+						{list.length === 1 ? 'človeka' : 'ľudí'} – porcie podľa toho, kto je pri ktorom jedle doma
+						a koľko zje.
+						{#if needs && hasNeeds(needs)}
+							Všetci môžu jesť <a href="/recepty?domacnost=1">{fitCount} receptov</a>.
+						{/if}
+					</p>
+				{:else}
+					<p class="muted">Pridaj ľudí, s ktorými ješ – aj deti, čo nemajú telefón.</p>
+				{/if}
+
+				<ul class="members">
+					{#each list as member (member.id)}
+						<li class="member">
+							<div class="member-head">
+								<strong>{member.name}</strong>
+								{#if household.me === member.id}<span class="me">ty</span
+									>{:else if !member.owner}<span class="muted small">upraví ktokoľvek</span>{/if}
+								<span class="chips">
+									{#each summary(member) as chip (chip)}<span class="chip">{chip}</span>{:else}<span
+											class="muted small">je všetko</span
+										>{/each}
+								</span>
+								<button
+									class="btn ghost small"
+									aria-expanded={editing === member.id}
+									onclick={() => (editing = editing === member.id ? null : member.id)}
+								>
+									<Icon name={canEdit(member) ? 'pencil' : 'info'} size={16} />
+									{editing === member.id ? 'Hotovo' : canEdit(member) ? 'Upraviť' : 'Pozrieť'}
+								</button>
+							</div>
+							{#if editing === member.id}
+								<HouseholdMember
+									{member}
+									ondone={() => {
+										editing = null;
+										removedSomeone = true;
+									}}
+								/>
+							{/if}
+						</li>
+					{/each}
+				</ul>
+
+				{#if list.length < MAX_MEMBERS}
+					<form class="row" onsubmit={addNew}>
+						<input
+							bind:value={newMember}
+							maxlength="40"
+							aria-label="Meno nového člena"
+							placeholder="Meno, napr. Ema"
+						/>
+						<button class="btn ghost" type="submit" disabled={!newMember.trim()}>
+							<Icon name="plus" size={18} /> Pridať
+						</button>
+					</form>
+				{/if}
+			</section>
+
+			<section class="card box">
+				<h2><Icon name="pot" size={24} /> Kto varí a čo by ste chceli</h2>
+				{#if sharedPlan.length}
+					<ul class="cooking">
+						{#each sharedPlan as e, i (i)}
+							<li>
+								<a href="/recepty/{e.recipeId}"
+									>{catalog.recipesById.get(e.recipeId)?.title ?? e.recipeId}</a
+								>
+								<span class="muted"
+									>{e.fromFreezer ? 'z mrazničky' : (cookOf(e.cook) ?? 'ktokoľvek')}</span
+								>
+							</li>
+						{/each}
+					</ul>
+					<p class="hint">
+						Kto varí, nastavíš pri jedle v <a href="/plan">pláne</a> – alebo tam ťukni „Rozdeliť varenie“.
+					</p>
+				{:else}
+					<p class="muted">Plán je zatiaľ prázdny.</p>
+				{/if}
+				<h3>Želania</h3>
+				<button class="btn swipe-btn" onclick={() => (swiping = true)}>
+					<Icon name="heart" size={18} /> Čo budeme jesť? Poťahaj recepty
+				</button>
+				{#if matched.length}
+					<ul class="cooking matches" aria-label="Zhody">
+						{#each matched as recipe (recipe.id)}
+							<li>
+								<a href="/recepty/{recipe.id}"><strong>{recipe.title}</strong></a>
+								<span class="muted">chcete všetci</span>
+								<button class="btn small leaf" onclick={() => addToPlan(recipe.id, recipe.servings)}
+									>Do plánu</button
+								>
+							</li>
+						{/each}
+					</ul>
+				{/if}
+				{#if nearly.some((a) => a.missing.id === me?.id)}
+					<p class="hint">
+						Ostatní chcú {nearly
+							.filter((a) => a.missing.id === me?.id)
+							.slice(0, 3)
+							.map((a) => catalog.recipesById.get(a.id)?.title)
+							.join(', ')} – chýba už len tvoje áno.
 					</p>
 				{/if}
-				<button class="btn ghost small" disabled={busy || !household.code} onclick={newLink}>
-					{confirmNewLink ? 'Naozaj vymeniť?' : 'Vymeniť odkaz'}
-				</button>
-				{#if error}<p class="msg" role="alert"><Icon name="alert" size={18} /> {error}</p>{/if}
-			</div>
-		</section>
-
-		<section class="card box">
-			<h2><Icon name="users" size={24} /> Kto je pri stole</h2>
-			{#if list.length}
-				<p class="muted">
-					Plán varí pre {list.length}
-					{list.length === 1 ? 'človeka' : 'ľudí'} – porcie podľa toho, kto je pri ktorom jedle doma a
-					koľko zje.
-					{#if needs && hasNeeds(needs)}
-						Všetci môžu jesť <a href="/recepty?domacnost=1">{fitCount} receptov</a>.
-					{/if}
-				</p>
-			{:else}
-				<p class="muted">Pridaj ľudí, s ktorými ješ – aj deti, čo nemajú telefón.</p>
-			{/if}
-
-			<ul class="members">
-				{#each list as member (member.id)}
-					<li class="member">
-						<div class="member-head">
-							<strong>{member.name}</strong>
-							{#if household.me === member.id}<span class="me">ty</span
-								>{:else if !member.owner}<span class="muted small">upraví ktokoľvek</span>{/if}
-							<span class="chips">
-								{#each summary(member) as chip (chip)}<span class="chip">{chip}</span>{:else}<span
-										class="muted small">je všetko</span
-									>{/each}
-							</span>
-							<button
-								class="btn ghost small"
-								aria-expanded={editing === member.id}
-								onclick={() => (editing = editing === member.id ? null : member.id)}
-							>
-								<Icon name={canEdit(member) ? 'pencil' : 'info'} size={16} />
-								{editing === member.id ? 'Hotovo' : canEdit(member) ? 'Upraviť' : 'Pozrieť'}
-							</button>
-						</div>
-						{#if editing === member.id}
-							<HouseholdMember
-								{member}
-								ondone={() => {
-									editing = null;
-									removedSomeone = true;
-								}}
-							/>
-						{/if}
-					</li>
-				{/each}
-			</ul>
-
-			{#if list.length < MAX_MEMBERS}
-				<form class="row" onsubmit={addNew}>
-					<input
-						bind:value={newMember}
-						maxlength="40"
-						aria-label="Meno nového člena"
-						placeholder="Meno, napr. Ema"
-					/>
-					<button class="btn ghost" type="submit" disabled={!newMember.trim()}>
-						<Icon name="plus" size={18} /> Pridať
-					</button>
-				</form>
-			{/if}
-		</section>
-
-		<section class="card box">
-			<h2><Icon name="pot" size={24} /> Kto varí a čo by ste chceli</h2>
-			{#if sharedPlan.length}
-				<ul class="cooking">
-					{#each sharedPlan as e, i (i)}
-						<li>
-							<a href="/recepty/{e.recipeId}"
-								>{catalog.recipesById.get(e.recipeId)?.title ?? e.recipeId}</a
-							>
-							<span class="muted"
-								>{e.fromFreezer ? 'z mrazničky' : (cookOf(e.cook) ?? 'ktokoľvek')}</span
-							>
-						</li>
-					{/each}
-				</ul>
-				<p class="hint">
-					Kto varí, nastavíš pri jedle v <a href="/plan">pláne</a> – alebo tam ťukni „Rozdeliť varenie“.
-				</p>
-			{:else}
-				<p class="muted">Plán je zatiaľ prázdny.</p>
-			{/if}
-			<h3>Želania</h3>
-			<button class="btn swipe-btn" onclick={() => (swiping = true)}>
-				<Icon name="heart" size={18} /> Čo budeme jesť? Poťahaj recepty
-			</button>
-			{#if matched.length}
-				<ul class="cooking matches" aria-label="Zhody">
-					{#each matched as recipe (recipe.id)}
-						<li>
-							<a href="/recepty/{recipe.id}"><strong>{recipe.title}</strong></a>
-							<span class="muted">chcete všetci</span>
-							<button class="btn small leaf" onclick={() => addToPlan(recipe.id, recipe.servings)}
-								>Do plánu</button
-							>
-						</li>
-					{/each}
-				</ul>
-			{/if}
-			{#if nearly.some((a) => a.missing.id === me?.id)}
-				<p class="hint">
-					Ostatní chcú {nearly
-						.filter((a) => a.missing.id === me?.id)
-						.slice(0, 3)
-						.map((a) => catalog.recipesById.get(a.id)?.title)
-						.join(', ')} – chýba už len tvoje áno.
-				</p>
-			{/if}
-			{#if wishes.length}
-				<ul class="cooking">
-					{#each wishes as w (w.recipe!.id)}
-						<li>
-							<a href="/recepty/{w.recipe!.id}">{w.recipe!.title}</a>
-							<span class="muted">{w.who.map((m) => m.name).join(', ')}</span>
-						</li>
-					{/each}
-				</ul>
-			{:else}
-				<p class="muted">
-					Poťahaj recepty alebo pri recepte ťukni „Chcem to“ – čo chcete všetci, je zhoda, a
-					automatický plán želania zaradí skôr.
-				</p>
-			{/if}
-		</section>
-
-		<section class="card box">
-			<h2><Icon name="clock" size={24} /> Čo sa deje</h2>
-			<HouseholdLog />
-			{#if pushSupported}
-				<label class="news">
-					<input
-						type="checkbox"
-						checked={household.news}
-						disabled={newsBusy}
-						onchange={(e) => toggleNews(e.currentTarget.checked)}
-					/>
-					<span>
-						Upozorniť ma, keď ostatní niečo pridajú do plánu, nakúpia alebo zaplatia – aj keď mám
-						Receptio zavreté. <span class="muted small"
-							>Najviac raz za 10 minút; čo sa zmenilo, si telefón prečíta sám, server text nevidí.</span
-						>
-					</span>
-				</label>
-				{#if newsError}<p class="msg" role="alert">
-						<Icon name="alert" size={18} />
-						{newsError}
-					</p>{/if}
-			{/if}
-		</section>
-
-		<section class="card box">
-			<h2>
-				<Icon name="euro" size={24} /> Kto koľko zaplatil <span class="optional">nepovinné</span>
-			</h2>
-			<HouseholdMoney />
-		</section>
-
-		{#if !household.solo}
-			<section class="card box">
-				<h2><Icon name="sun" size={24} /> Plánovať pre seba</h2>
-				<p>
-					Ideš na dovolenku, varíš si obedy do práce alebo chceš chvíľu vlastný plán? Prepneš sa na
-					svoj vlastný plán, nákupný zoznam a špajzu – tie sa so spoločnými nikdy nemiešajú. Rovnako
-					sa prepneš aj cez <strong>Len môj</strong> v pláne či v špajzi.
-				</p>
-				<p class="hint">
-					Len občas niečo pre seba? Pri recepte ťukni <strong>Len pre mňa</strong> – nakúpi sa so spoločným
-					zoznamom, ale nepočíta sa do spoločných jedál.
-				</p>
-				{#if me}
-					<label class="check">
-						<input type="checkbox" bind:checked={soloAway} />
-						Medzitým nejem doma – nech domácnosť varí bezo mňa
-					</label>
-					{#if soloAway}
-						<label class="until">
-							do
-							<input type="date" bind:value={soloUntil} min={today} />
-							<span class="muted small">(nepovinné)</span>
-						</label>
-					{/if}
+				{#if wishes.length}
+					<ul class="cooking">
+						{#each wishes as w (w.recipe!.id)}
+							<li>
+								<a href="/recepty/{w.recipe!.id}">{w.recipe!.title}</a>
+								<span class="muted">{w.who.map((m) => m.name).join(', ')}</span>
+							</li>
+						{/each}
+					</ul>
 				{:else}
-					<p class="hint">Vyber pri sebe „Toto som ja“, aby ostatní videli, že nie si doma.</p>
+					<p class="muted">
+						Poťahaj recepty alebo pri recepte ťukni „Chcem to“ – čo chcete všetci, je zhoda, a
+						automatický plán želania zaradí skôr.
+					</p>
 				{/if}
-				<button
-					class="btn ghost"
-					disabled={busy}
-					onclick={() => void run(() => startSolo(soloAway, soloUntil || null))}
-				>
-					<Icon name="sun" size={18} /> Plánovať pre seba
-				</button>
 			</section>
+
+			<section class="card box">
+				<h2><Icon name="clock" size={24} /> Čo sa deje</h2>
+				<HouseholdLog />
+				{#if pushSupported}
+					<label class="news">
+						<input
+							type="checkbox"
+							checked={household.news}
+							disabled={newsBusy}
+							onchange={(e) => toggleNews(e.currentTarget.checked)}
+						/>
+						<span>
+							Upozorniť ma, keď ostatní niečo pridajú do plánu, nakúpia alebo zaplatia – aj keď mám
+							Receptio zavreté. <span class="muted small"
+								>Najviac raz za 10 minút; čo sa zmenilo, si telefón prečíta sám, server text nevidí.</span
+							>
+						</span>
+					</label>
+					{#if newsError}<p class="msg" role="alert">
+							<Icon name="alert" size={18} />
+							{newsError}
+						</p>{/if}
+				{/if}
+			</section>
+
+			<section class="card box">
+				<h2>
+					<Icon name="euro" size={24} /> Kto koľko zaplatil <span class="optional">nepovinné</span>
+				</h2>
+				<HouseholdMoney />
+			</section>
+
+			{#if !household.solo}
+				<section class="card box">
+					<h2><Icon name="sun" size={24} /> Plánovať pre seba</h2>
+					<p>
+						Ideš na dovolenku, varíš si obedy do práce alebo chceš chvíľu vlastný plán? Prepneš sa
+						na svoj vlastný plán, nákupný zoznam a špajzu – tie sa so spoločnými nikdy nemiešajú.
+						Rovnako sa prepneš aj cez <strong>Len môj</strong> v pláne či v špajzi.
+					</p>
+					<p class="hint">
+						Len občas niečo pre seba? Pri recepte ťukni <strong>Len pre mňa</strong> – nakúpi sa so spoločným
+						zoznamom, ale nepočíta sa do spoločných jedál.
+					</p>
+					{#if me}
+						<label class="check">
+							<input type="checkbox" bind:checked={soloAway} />
+							Medzitým nejem doma – nech domácnosť varí bezo mňa
+						</label>
+						{#if soloAway}
+							<label class="until">
+								do
+								<input type="date" bind:value={soloUntil} min={today} />
+								<span class="muted small">(nepovinné)</span>
+							</label>
+						{/if}
+					{:else}
+						<p class="hint">
+							Najprv si hore vyber svoj profil, aby ostatní videli, že nie si doma.
+						</p>
+					{/if}
+					<button
+						class="btn ghost"
+						disabled={busy}
+						onclick={() => void run(() => startSolo(soloAway, soloUntil || null))}
+					>
+						<Icon name="sun" size={18} /> Plánovať pre seba
+					</button>
+				</section>
+			{/if}
 		{/if}
 
 		<section class="leave">
