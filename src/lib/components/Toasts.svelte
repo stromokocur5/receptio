@@ -27,18 +27,13 @@
 	.toasts {
 		position: fixed;
 		left: 50%;
-		bottom: calc(96px + env(safe-area-inset-bottom));
+		bottom: calc(var(--nav-h) + 16px);
 		z-index: 60;
 		display: grid;
 		gap: 8px;
 		width: min(440px, calc(100vw - 2 * var(--gutter)));
 		transform: translateX(-50%);
 		pointer-events: none;
-	}
-	@media (min-width: 900px) {
-		.toasts {
-			bottom: 24px;
-		}
 	}
 	.toast {
 		display: flex;

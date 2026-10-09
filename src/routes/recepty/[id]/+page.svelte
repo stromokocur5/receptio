@@ -1719,7 +1719,7 @@
 		left: var(--gutter);
 		right: var(--gutter);
 		/* Above the floating navigation (its height, plus its own and this bar's gap). */
-		bottom: calc(80px + var(--sp-3) + env(safe-area-inset-bottom));
+		bottom: calc(var(--nav-h) + var(--sp-3));
 		z-index: 45;
 		display: grid;
 		grid-template-columns: 1fr 1.4fr;

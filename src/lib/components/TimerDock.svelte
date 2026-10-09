@@ -98,7 +98,7 @@
 		right: 12px;
 		left: 12px;
 		/* Above the floating navigation (its height, plus a gap). */
-		bottom: calc(80px + var(--sp-3) + env(safe-area-inset-bottom));
+		bottom: calc(var(--nav-h) + var(--sp-3));
 		z-index: 60;
 		max-width: 380px;
 		margin-left: auto;
