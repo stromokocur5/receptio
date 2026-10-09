@@ -1,0 +1,36 @@
+title: Mozzarella na pizzu na strúhanie
+description: Pevný blok, ktorý nastrúhaš ako syr z obchodu. V rúre sa roztopí a navrchu jemne zhnedne. Z kokosového oleja, kešu a dvoch škrobov.
+cuisine: talianska
+meals: [domace]
+categories: [domace/syry]
+time: 250
+active: 15
+servings: 8
+difficulty: 2
+tags: [urob-si-sam]
+ahead: Kešu namoč na 4 hodiny (alebo 15 minút do vriacej vody). Syr potom tuhne 4 hodiny v chladničke.
+yields: blok cca 500 g
+keeps: { fridge: 10, freezer: 3 }
+related: [pizza-al-taglio, mozzarella-gulky, tapiokova-mozzarella, lasagne]
+ingredients:
+  - kesu: 50 g | namočené, scedené
+  - voda: 1,5 hrnček
+  - kokosovy-olej: 5 pl | rafinovaný, roztopený
+  - tapiokovy-skrob: 3 pl
+  - kukuricny-skrob: 2 pl
+  - agar: 2 čl
+  - vyzivne-drozdie: 1 pl
+  - citron: 1 pl
+  - sol: 1,5 čl
+equipment: [mixer]
+steps:
+  - Krabičku alebo misku asi na pol litra vymasti olejom.
+  - Všetko mixuj dohladka, aspoň minútu.
+  - Prelej do hrnca a na strednom ohni stále miešaj. Najprv zhustne na hrudky, po 5–6 minútach je hladká, hustá a lesklá. Var a miešaj ešte 2 minúty – agar musí prejsť varom, inak blok nestuhne.
+  - Hneď ju vylej do krabičky a zarovnaj. Keď vychladne, zakry a daj aspoň na 4 hodiny do chladničky.
+  - Strúhaj studenú na hrubom strúhadle alebo krájaj na plátky.
+tips:
+  - Na pizzu daj nastrúhanú od začiatku pečenia. Topí sa mäkko a zhnedne len trochu – ťahať sa ako tapioková nebude, zato nevytečie a nezhorí.
+  - Nastrúhanú ju môžeš zamraziť vo vrecku a dávať na pizzu rovno z mrazničky.
+  - Keď sa ti blok pri strúhaní láme, je moc teplý – daj ho na 20 minút do mrazničky.
+  - Údenú verziu urobíš s ½ ČL údenej papriky – hodí sa na toasty a burgre.

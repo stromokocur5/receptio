@@ -63,6 +63,7 @@ Pec v neapolskej pizzerii má cez 400 °C, domáca rúra asi 250 °C. Rozdiel do
 
 - **Kúpený vegánsky syr na zapekanie** sa topí, ale má takmer len tuk a škrob. Pridaj ho skôr menej a nechaj ho zhnednúť pod grilom.
 - **[Tapioková mozzarella](/recepty/tapiokova-mozzarella)** je ťahavá – dávaj ju na pizzu až na posledných 5 minút.
+- **[Mozzarella v guľkách](/recepty/mozzarella-gulky)** sa trhá ako čerstvá a **[mozzarella na strúhanie](/recepty/mozzarella-na-pizzu)** ide na pizzu od začiatku. Veľa mozzarelly unesie [rímska pizza na plechu](/recepty/pizza-al-taglio).
 - **Bez syra:** marinara (cesnak, oregano, olej), [biela so zemiakmi](/recepty/pizza-bianca-zemiaky-rozmarin) alebo [sicílska so strúhankou](/recepty/sfincione). Sú lacnejšie a ľahšie.
 - **Bielkoviny navrch:** údené tofu na tenké plátky ako saláma, bielu fazuľu rozmixovanú s cesnakom ako krém na bielu pizzu.
 

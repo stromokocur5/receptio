@@ -1,0 +1,41 @@
+title: Mozzarella v guľkách
+description: Mäkké biele guľky v slanom náleve ako čerstvá mozzarella. Krájaš ich na caprese, trháš na pizzu a v rúre sa roztopia. Z kešu, sójového jogurtu a tapioky.
+cuisine: talianska
+meals: [domace]
+categories: [domace/syry]
+time: 40
+active: 20
+servings: 6
+difficulty: 2
+tags: [urob-si-sam, party]
+ahead: Kešu namoč na 4 hodiny (alebo 15 minút do vriacej vody).
+yields: 6–8 guliek, cca 400 g
+keeps: { fridge: 5 }
+related: [pizza-al-taglio, tapiokova-mozzarella, mozzarella-na-pizzu, kesu-syr]
+ingredients:
+  - kesu: 100 g | namočené, scedené
+  - sojovy-jogurt: 4 pl | nesladený, dodá kyslosť ako pri syre
+  - voda: 1 hrnček
+  - tapiokovy-skrob: 4 pl
+  - agar: 1 čl
+  - kokosovy-olej: 2 pl | rafinovaný, bez kokosovej chuti
+  - citron: 1 čl
+  - sol: 3 čl | 1 do syra, 2 do nálevu
+equipment: [mixer]
+steps:
+  - Pripráv nálev – misku s 1 litrom studenej vody, 2 ČL soli a hrsťou ľadu. Bez ľadu sa guľky roztečú.
+  - Kešu, jogurt, vodu, škrob, agar, olej, citrónovú šťavu a 1 ČL soli mixuj úplne dohladka, aspoň minútu. Zrnká kešu by v syre ostali ako piesok.
+  - Prelej do hrnca a na strednom ohni nepretržite miešaj silikónovou stierkou. Po 3–4 minútach sa zrazí na hrudky – nepanikár a miešaj ďalej.
+  - Po 6–8 minútach je z toho hustá, lesklá a ťahavá hmota, ktorá sa drží pokope a odlepí od hrnca. Var ešte minútu, aby sa agar rozpustil celý.
+  - Naber horúcu hmotu naoleovanou lyžicou alebo naberačkou na zmrzlinu (asi 2 lyžice na guľku) a hneď ju spusti do ľadového nálevu. Nechaj 20 minút stuhnúť.
+  - Guľky ulož do krabičky aj s nálevom a daj do chladničky. Najlepšie sú na druhý deň, keď úplne stuhnú.
+tips:
+  - Na pizzu ich natrhaj a daj na ňu od začiatku – roztopia sa do mäkkých bielych škvŕn ako mozzarella, len menej ťahajú.
+  - Na caprese ich krájaj studené z chladničky, pokvapkaj olejom a posyp soľou a čiernym korením. Nálev je slaný, guľky už nesoľ veľa.
+  - Malé guľky (ako cherry) urobíš lyžičkou – hodia sa do šalátu a na špízy s paradajkami.
+  - Pevnejšie budú s ďalšou ½ ČL agaru, mäkšie a krémovejšie bez neho – vtedy ich ale nevyberaj z misky, mazanú „burratu“ naberaj lyžicou.
+variants:
+  - name: Bez orechov
+    description: Namiesto kešu namočené slnečnicové semienka. Chuť je trochu výraznejšia, farba sivšia.
+    replace:
+      - { from: kesu, to: slnecnicove-semienka }

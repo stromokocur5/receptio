@@ -1975,7 +1975,7 @@
     - 'Pizza, lasagne, zapekanie'
   storage: 'V chladničke podľa obalu.'
   homemade:
-    recipe: tapiokova-mozzarella
+    recipe: mozzarella-na-pizzu
 
 - id: sojovy-jogurt
   name: Sójový jogurt nesladený

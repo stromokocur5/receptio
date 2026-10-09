@@ -1,0 +1,48 @@
+title: Rímska pizza na plechu s mozzarellou
+description: Pizza al taglio ako z rímskeho bistra – vysoké, ľahké a chrumkavé cesto na celom plechu, paradajková omáčka a veľa mozzarelly, čo sa v rúre roztopí. Krája sa na obdĺžniky.
+cuisine: talianska
+meals: [obed, vecera]
+categories: [hlavne/cesto, hlavne/rura, comfort/burgre]
+time: 120
+active: 30
+servings: 4
+difficulty: 2
+tags: [pizza, party]
+ahead: Cesto zamiešaj deň vopred – 24 hodín zreje v chladničke a skoro sa nemiesi. Mozzarellu urob aspoň 4 hodiny vopred.
+gf_swap: false
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Studená je dobrá aj do krabičky. Teplú ju prehrej 4–5 minút na suchej panvici pod pokrievkou alebo v rúre na 220 °C.'
+related: [mozzarella-gulky, mozzarella-na-pizzu, pizza-margherita-neapolska, focaccia]
+ingredients:
+  - hladka-muka: 500 g | ideálne chlebová alebo typ 00
+  - voda: 400 ml | studená
+  - drozdie: 1 čl | sušené
+  - sol: 2,5 čl
+  - olivovy-olej: 6 pl
+  - passata: 1,5 hrnček
+  - cesnak: 1 ks
+  - oregano: 1 čl
+  - vegansky-syr: 3 hrnček | domáca mozzarella v guľkách alebo na strúhanie
+  - paradajky: 200 g | cherry, nepovinné
+  - bazalka: 1 hrnček
+howto: [kysnute-cesto, pizzeria-doma]
+steps:
+  - Cesto deň vopred. V mise zmiešaj múku, droždie a 350 ml vody, kým nezmizne suchá múka. Nechaj 20 minút odpočívať.
+  - Pridaj 2 ČL soli a zvyšnú vodu a stláčaj prstami, kým ju cesto nevpije. Pridaj 2 PL oleja a prelož ho v mise 10× zo strán do stredu. Je veľmi mäkké a lepkavé, múku nepridávaj.
+  - Nechaj 30 minút a mokrou rukou ho znova prelož 4× – zdvihni okraj a prelož na stred. Zopakuj ešte raz po 30 minútach. Prikry a daj na 24 hodín do chladničky.
+  - V deň pečenia vyber cesto 3 hodiny vopred. Plech (asi 30 × 40 cm) vymasti 2 PL oleja, cesto naň vyklop a nechaj ho 30 minút povoliť.
+  - Mokrými prstami ho roztlač do rohov – tlač zhora končekmi prstov, neťahaj ho. Keď sa vracia, nechaj ho ešte 10 minút. Potom nechaj kysnúť 1–1,5 hodiny, kým nie je nadýchané a plné bublín.
+  - Rúru rozpáľ na 250 °C (horný a spodný ohrev). Omáčka – passatu zmiešaj s prelisovaným cesnakom, oreganom, ½ ČL soli a 1 PL oleja. Nevar ju.
+  - Cesto natri omáčkou, nechaj 1 cm okraj. Peč v spodnej tretine rúry 12 minút, kým spodok nie je zlatý.
+  - Vyber, posyp mozzarellou (guľky natrhaj, blok nastrúhaj) a rozpolené cherry paradajky, pokvapkaj zvyšným olejom a peč ďalších 8–10 minút v strednej časti rúry, kým sa syr neroztopí.
+  - Navrch daj bazalku, nechaj 5 minút na mriežke, aby spodok nezmäkol, a krájaj nožnicami na obdĺžniky.
+tips:
+  - Omáčka sa pečie najprv sama – cesto tak prepečie a nezmokne a mozzarella sa nespáli.
+  - Tapiokovú mozzarellu daj až na posledných 5 minút, inak zhnedne.
+  - Na ďalší deň chutí výborne aj studená, ako v Ríme, kde sa predáva na váhu.
+variants:
+  - name: Bianca s mozzarellou
+    description: Bez paradajkovej omáčky – len mozzarella, rozmarín a cesnakový olej.
+    remove: [passata, oregano, paradajky]
+    add:
+      - rozmarin: 2 ks

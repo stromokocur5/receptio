@@ -11,7 +11,7 @@ tags: [urob-si-sam, party]
 ahead: Kešu namoč na 4 hodiny (alebo 15 minút do vriacej vody).
 yields: cca 400 g
 keeps: { fridge: 5 }
-related: [korbaciky, kesu-syr, pizza]
+related: [mozzarella-gulky, mozzarella-na-pizzu, pizza-al-taglio, lasagne]
 ingredients:
   - kesu: 50 g | namočené, scedené
   - voda: 1 hrnček
@@ -28,4 +28,14 @@ steps:
 tips:
   - Na pizzu ju pridaj do rúry posledných 5 minút pečenia, inak zhnedne.
   - Pevnejšia na krájanie bude s 1 ČL agaru, ktorý sa varí spolu s ostatným.
-  - Bez orechov – kešu nahraď 2 PL namočených slnečnicových semienok.
+  - Ťahavá je, len kým je teplá. Zo stuhnutej v chladničke ju znova roztopíš na panvici s lyžicou vody.
+  - Ktorá mozzarella na čo – táto na lasagne, toasty a ťahavý okraj pizze; guľky v náleve na caprese a margheritu; blok na strúhanie, keď chceš syr na pizzu dať od začiatku.
+variants:
+  - name: Bez orechov
+    description: Namiesto kešu namočené slnečnicové semienka. Trochu výraznejšia a sivšia.
+    replace:
+      - { from: kesu, to: slnecnicove-semienka }
+  - name: Údená
+    description: S údenou paprikou, ako údený syr na toasty a burgre.
+    add:
+      - udena-paprika: 1/2 čl
