@@ -96,7 +96,12 @@ export interface Expense {
 	note: string;
 	/** A payback: `by` gave the money to this member. */
 	to?: string;
+	/** Who shares the cost (who was home then); everyone in the household for older entries. */
+	for?: string[];
 }
+
+/** Member → what they're owed (+) or owe (−). */
+export type Balance = Record<string, number>;
 
 export type LogKind =
 	'plan-add' | 'plan-remove' | 'bought' | 'pantry' | 'expense' | 'cooked' | 'harvest';
@@ -135,6 +140,12 @@ export interface HouseholdDoc {
 	/** Shopping list item → the member who'll buy it. */
 	claims: Record<string, Stamped<string | false>>;
 	expenses: Record<string, Stamped<Expense | false>>;
+	/**
+	 * Expenses entered over a year ago, summed up per month they were entered (`2026-03`): what
+	 * they left everyone owed. Every phone sums the same entries the same way, so two phones doing
+	 * it at once agree, and the entries themselves can go.
+	 */
+	settled: Record<string, Stamped<Balance>>;
 	/** Whether the household keeps track of who paid what; off until someone turns it on. */
 	money: Stamped<boolean>;
 	/** Recent changes, newest kept. Events never change, so a merge is a union. */
@@ -178,7 +189,10 @@ const MAX_ITEMS = 1000;
 /** Deletions are kept this long, so every phone hears about them before they're forgotten. */
 export const FORGET_AFTER_MS = 30 * 24 * 60 * 60 * 1000;
 /** The sync storage holds 400 kB; old money and history go first. */
-export const MAX_EXPENSES = 200;
+export const MAX_EXPENSES = 1000;
+/** Expenses are summed up by month once they were entered this long ago. */
+export const SUM_UP_AFTER_MS = 400 * 24 * 60 * 60 * 1000;
+const MONTH_RE = /^\d{4}-\d{2}$/;
 export const MAX_LOG = 80;
 const ID_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
 const MEMBER_ID_RE = /^[a-z0-9]{1,16}$/;
@@ -215,6 +229,7 @@ export function newDoc(name: string, now: number): HouseholdDoc {
 		extras: {},
 		claims: {},
 		expenses: {},
+		settled: {},
 		money: [false, 0],
 		log: {},
 		wishes: {},
@@ -376,6 +391,13 @@ function validateExpense(raw: unknown): Expense | undefined {
 	};
 	if (typeof raw.to === 'string' && MEMBER_ID_RE.test(raw.to) && raw.to !== raw.by) {
 		expense.to = raw.to;
+	} else if (Array.isArray(raw.for)) {
+		const shares = [
+			...new Set(
+				raw.for.filter((id): id is string => typeof id === 'string' && MEMBER_ID_RE.test(id))
+			)
+		].slice(0, MAX_MEMBERS * 2);
+		if (shares.length) expense.for = shares;
 	}
 	return expense;
 }
@@ -517,6 +539,7 @@ export function validateDoc(raw: unknown): HouseholdDoc | null {
 			undefined,
 			MAX_EXPENSES
 		),
+		settled: record(raw.settled, MONTH_RE, (v) => stamped(v, validateBalance)),
 		money: stamped(raw.money, (x) => (typeof x === 'boolean' ? x : undefined)) ?? [false, 0],
 		log: record(raw.log, ITEM_ID_RE, validateLogEvent, (e) => e.at, MAX_LOG),
 		wishes: record(raw.wishes, /^[a-z0-9]{1,16}\.[a-z0-9]+(-[a-z0-9]+)*$/, (v) =>
@@ -601,7 +624,8 @@ export function mergeDocs(a: HouseholdDoc, b: HouseholdDoc): HouseholdDoc {
 		checked: merge(a.checked, b.checked),
 		extras: merge(a.extras, b.extras),
 		claims: merge(a.claims, b.claims),
-		expenses: newest(merge(a.expenses, b.expenses), MAX_EXPENSES, (e) => e[1]),
+		// Month sums are old by nature; they're never forgotten like deletions.
+		...mergeMoney(merge(a.expenses, b.expenses), mergeRecord(a.settled, b.settled, 0, 0)),
 		money: newer(a.money, b.money),
 		log: newest({ ...a.log, ...b.log }, MAX_LOG, (e) => e.at),
 		wishes: merge(a.wishes, b.wishes),
@@ -610,6 +634,53 @@ export function mergeDocs(a: HouseholdDoc, b: HouseholdDoc): HouseholdDoc {
 		harvests: newest(merge(a.harvests, b.harvests), MAX_GARDEN_ENTRIES, (e) => e[1]),
 		gc: Math.max(a.gc, b.gc)
 	};
+}
+
+const monthOf = (at: number) => new Date(at).toISOString().slice(0, 7);
+
+/** Entries of a month that's already summed up are in the sum; the rest stay. */
+function mergeMoney(
+	expenses: HouseholdDoc['expenses'],
+	settled: HouseholdDoc['settled']
+): Pick<HouseholdDoc, 'expenses' | 'settled'> {
+	const open = Object.fromEntries(
+		Object.entries(expenses).filter(([, [, at]]) => !(monthOf(at) in settled))
+	);
+	return { expenses: newest(open, MAX_EXPENSES, (e) => e[1]), settled };
+}
+
+function validateBalance(raw: unknown): Balance | undefined {
+	if (!isRecord(raw)) return undefined;
+	const entries = Object.entries(raw).filter(
+		(e): e is [string, number] =>
+			MEMBER_ID_RE.test(e[0]) &&
+			typeof e[1] === 'number' &&
+			Number.isFinite(e[1]) &&
+			Math.abs(e[1]) <= 1e6
+	);
+	return Object.fromEntries(entries.slice(0, MAX_MEMBERS * 4));
+}
+
+/**
+ * Sums up the expenses of every month that ended before `before` (entered then, by their
+ * stamp) into `settled`; balances stay exactly what they were.
+ */
+export function sumUpOldExpenses(doc: HouseholdDoc, before: number): HouseholdDoc {
+	const last = monthOf(before);
+	const months = new Map<string, Expense[]>();
+	for (const [, [e, at]] of Object.entries(doc.expenses)) {
+		const month = monthOf(at);
+		if (month >= last || month in doc.settled) continue;
+		months.set(month, [...(months.get(month) ?? []), ...(e === false ? [] : [e])]);
+	}
+	if (!months.size) return doc;
+	const everyone = activeMembers(doc);
+	const settled = { ...doc.settled };
+	for (const [month, list] of months) {
+		// Stamped with the month itself, so phones summing it up at different times agree.
+		settled[month] = [Object.fromEntries(balances(list, everyone)), Date.parse(`${month}-01`)];
+	}
+	return { ...doc, ...mergeMoney(doc.expenses, settled) };
 }
 
 /** Changes to an amount that was set again since don't count any more. */
@@ -671,6 +742,7 @@ export function latestStamp(doc: HouseholdDoc, notAfter = Infinity): number {
 	see(doc.name[1]);
 	see(doc.planOrder[1]);
 	see(doc.money[1]);
+	for (const [, at] of Object.values(doc.settled)) see(at);
 	for (const m of Object.values(doc.members)) see(m.at);
 	for (const name of RECORDS) for (const [, at] of Object.values(doc[name])) see(at);
 	return latest;
@@ -1095,17 +1167,35 @@ export const expensesOf = (doc: HouseholdDoc) =>
  * What each member is owed (+) or owes (−). Shared costs split evenly among `members`; a
  * payback moves money from one member to another.
  */
-export function balances(expenses: Expense[], members: Member[]): Map<string, number> {
+export function balances(
+	expenses: Expense[],
+	members: Member[],
+	settled: Balance[] = []
+): Map<string, number> {
 	const out = new Map(members.map((m) => [m.id, 0]));
 	const add = (id: string, amount: number) => out.set(id, (out.get(id) ?? 0) + amount);
+	for (const sum of settled) for (const [id, amount] of Object.entries(sum)) add(id, amount);
+	const everyone = members.map((m) => m.id);
 	for (const e of expenses) {
 		add(e.by, e.amount);
-		if (e.to) add(e.to, -e.amount);
-		else for (const m of members) add(m.id, -e.amount / members.length);
+		if (e.to) {
+			add(e.to, -e.amount);
+			continue;
+		}
+		const shares = e.for?.length ? e.for : everyone;
+		for (const id of shares) add(id, -e.amount / shares.length);
 	}
 	for (const [id, v] of out) out.set(id, Math.round(v * 100) / 100);
 	return out;
 }
+
+/** The doc's balances: open expenses, plus the months already summed up. */
+export const householdBalances = (doc: HouseholdDoc, members: Member[]) =>
+	balances(
+		expensesOf(doc),
+		members,
+		Object.values(doc.settled).map(([sum]) => sum)
+	);
 
 /** The fewest paybacks that settle everyone: the biggest debtor pays the biggest creditor. */
 export function settleUp(

@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { formatEur } from '$lib/amounts';
 	import Icon from '$lib/components/Icon.svelte';
-	import { balances, expensesOf, settleUp } from '$lib/household';
+	import { expensesOf, householdBalances, isAway, settleUp } from '$lib/household';
+	import { localToday } from '$lib/journal';
 	import {
 		addExpense,
 		household,
@@ -14,24 +15,40 @@
 	const SHOWN = 8;
 
 	const list = $derived(members());
-	const nameOf = (id: string) => list.find((m) => m.id === id)?.name ?? 'bývalý člen';
+	/** Someone who left still shows by name, so their old payments and debts make sense. */
+	const nameOf = (id: string) => {
+		const m = household.doc?.members[id];
+		return !m ? 'bývalý člen' : m.removed ? `${m.name} (už nie je v domácnosti)` : m.name;
+	};
 	const expenses = $derived(household.doc ? expensesOf(household.doc) : []);
-	const owed = $derived(balances(expenses, list));
+	const owed = $derived(household.doc ? householdBalances(household.doc, list) : new Map());
+	const summedUp = $derived(Object.keys(household.doc?.settled ?? {}).length);
 	const paybacks = $derived(settleUp(owed));
 	let showAll = $state(false);
 
 	let by = $state(household.me ?? '');
 	let amount = $state('');
 	let note = $state('');
+	/** Who shares this one; starts as whoever is home today. */
+	const today = localToday();
+	let shares = $state<string[] | null>(null);
+	const sharing = $derived(shares ?? list.filter((m) => !isAway(m, today)).map((m) => m.id));
+	function toggleShare(id: string) {
+		const now = sharing.includes(id) ? sharing.filter((x) => x !== id) : [...sharing, id];
+		if (now.length) shares = now;
+	}
+	const sharedBy = (ids: string[] | undefined) =>
+		!ids || list.every((m) => ids.includes(m.id)) ? '' : ids.map(nameOf).join(', ');
 	const date = new Intl.DateTimeFormat('sk-SK', { day: 'numeric', month: 'numeric' });
 
 	function add(event: SubmitEvent) {
 		event.preventDefault();
 		const value = Number(amount.replace(',', '.'));
 		if (!by || !(value > 0) || value > 10_000) return;
-		addExpense({ by, amount: value, note });
+		addExpense({ by, amount: value, note, for: sharing });
 		amount = '';
 		note = '';
+		shares = null;
 	}
 </script>
 
@@ -81,13 +98,26 @@
 			Za čo
 			<input bind:value={note} maxlength="60" placeholder="Napr. Lidl, olej a ryža" />
 		</label>
+		<fieldset class="grow shares">
+			<legend>Za koho</legend>
+			{#each list as m (m.id)}
+				<label class="chip">
+					<input
+						type="checkbox"
+						checked={sharing.includes(m.id)}
+						onchange={() => toggleShare(m.id)}
+					/>
+					{m.name}
+				</label>
+			{/each}
+		</fieldset>
 		<button class="btn leaf" type="submit" disabled={!by || !amount.trim()}>
 			<Icon name="plus" size={18} /> Zapísať
 		</button>
 	</form>
 	<p class="hint">
-		Delí sa rovnakým dielom medzi všetkých. Kto pri nákupe ťukne „Nakúpené → do špajze“ a vybral si,
-		ktorý člen je, má nákup zapísaný sám.
+		Delí sa rovnakým dielom medzi tých, za koho sa platilo – kto je preč, nákup v tom čase neplatí.
+		Kto pri nákupe ťukne „Nakúpené → do špajze“ a vybral si, ktorý člen je, má nákup zapísaný sám.
 	</p>
 
 	{#if expenses.length}
@@ -99,6 +129,7 @@
 						<strong>{nameOf(e.by)}</strong>
 						{#if e.to}→ {nameOf(e.to)}{/if}
 						{#if e.note}<span class="muted">· {e.note}</span>{/if}
+						{#if sharedBy(e.for)}<span class="muted">· za {sharedBy(e.for)}</span>{/if}
 					</span>
 					<span class="sum">{formatEur(e.amount)}</span>
 					<button
@@ -111,6 +142,12 @@
 				</li>
 			{/each}
 		</ul>
+		{#if summedUp}
+			<p class="hint">
+				Výdavky staršie ako rok sú zhrnuté po mesiacoch – v súčtoch hore ostávajú, jednotlivo sa už
+				neukazujú.
+			</p>
+		{/if}
 		{#if expenses.length > SHOWN}
 			<button class="btn ghost small" onclick={() => (showAll = !showAll)}>
 				{showAll ? 'Menej' : `Všetky (${expenses.length})`}
@@ -163,6 +200,29 @@
 	}
 	.grow {
 		flex: 1 1 180px;
+	}
+	.shares {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		border: 0;
+		margin: 0;
+		padding: 0;
+	}
+	.shares legend {
+		font-weight: 650;
+		font-size: 0.9rem;
+		margin-bottom: 4px;
+	}
+	.add .shares label {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		font-weight: 500;
+	}
+	.shares input {
+		padding: 0;
+		accent-color: var(--leaf);
 	}
 	input,
 	select {

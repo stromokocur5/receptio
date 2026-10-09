@@ -9,10 +9,13 @@ import {
 	FORGET_AFTER_MS,
 	latestStamp,
 	householdNeeds,
+	isAway,
 	logId,
 	mergeDocs,
 	newDoc,
 	planIdsFor,
+	SUM_UP_AFTER_MS,
+	sumUpOldExpenses,
 	portionsAt,
 	validateDoc,
 	validatePlanEntries,
@@ -460,7 +463,11 @@ async function mergeAndUpload(
 ) {
 	for (let attempt = 0; ; attempt++) {
 		const fresh = await trusted(remote.doc, household.doc);
-		const doc = collect(mergeDocs(fresh, local()), Date.now() - FORGET_AFTER_MS);
+		const now = Date.now();
+		const doc = sumUpOldExpenses(
+			collect(mergeDocs(fresh, local()), now - FORGET_AFTER_MS),
+			now - SUM_UP_AFTER_MS
+		);
 		merged(doc);
 		if (same(doc, remote.doc)) return;
 		try {
@@ -1065,11 +1072,16 @@ export function claimItem(itemId: string, mine: boolean) {
 export function addExpense(expense: Omit<Expense, 'date'> & { date?: string }) {
 	if (!(expense.amount > 0)) return;
 	const at = stamp();
+	const date = expense.date ?? localToday();
+	// Shared by whoever was home that day, unless said otherwise; a payback is between two.
+	const home = members().filter((m) => !isAway(m, date));
+	const shares = expense.for ?? (home.length ? home : members()).map((m) => m.id);
 	const clean: Expense = {
 		...expense,
 		amount: Math.round(expense.amount * 100) / 100,
 		note: expense.note.trim().slice(0, 60),
-		date: expense.date ?? localToday()
+		date,
+		...(!expense.to && shares.length && { for: shares })
 	};
 	updateDoc((doc) =>
 		withEvents(

@@ -4,6 +4,8 @@ import {
 	balances,
 	changeEvents,
 	collect,
+	householdBalances,
+	sumUpOldExpenses,
 	latestStamp,
 	householdFilter,
 	isAway,
@@ -404,6 +406,39 @@ describe('household money', () => {
 			{ from: 'c', to: 'a', amount: 7 },
 			{ from: 'b', to: 'a', amount: 6 }
 		]);
+	});
+
+	it('splits a cost only among those it was for, so someone new owes nothing for it', () => {
+		const owed = balances(
+			[{ by: 'a', amount: 100, date: '2026-01-01', note: '', for: ['a', 'b'] }],
+			[...people, member('d')]
+		);
+		expect(Object.fromEntries(owed)).toEqual({ a: 50, b: -50, c: 0, d: 0 });
+	});
+
+	it('sums up old months without changing who owes what', () => {
+		const month = Date.parse('2025-01-10');
+		const doc = {
+			...newDoc('D', 1),
+			members: { a: member('a'), b: member('b'), c: member('c') },
+			expenses: {
+				x1: [{ by: 'a', amount: 90, date: '2025-01-10', note: '', for: ['a', 'b', 'c'] }, month],
+				x2: [{ by: 'b', amount: 10, date: '2025-01-11', note: '', to: 'a' }, month + 1],
+				x3: [
+					{ by: 'c', amount: 30, date: '2026-10-01', note: '', for: ['b', 'c'] },
+					Date.parse('2026-10-01')
+				]
+			}
+		} as HouseholdDoc;
+		const before = householdBalances(doc, people);
+		const summed = sumUpOldExpenses(doc, Date.parse('2025-09-01'));
+		expect(Object.keys(summed.expenses)).toEqual(['x3']);
+		expect(Object.keys(summed.settled)).toEqual(['2025-01']);
+		expect(householdBalances(summed, people)).toEqual(before);
+		// The other phone still has the entries: merged, they aren't counted twice.
+		const merged = mergeDocs(doc, summed);
+		expect(mergeDocs(summed, doc)).toEqual(merged);
+		expect(householdBalances(merged, people)).toEqual(before);
 	});
 
 	it('survives a merge and drops junk amounts', () => {
