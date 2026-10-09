@@ -5,142 +5,142 @@ entries:
     store: billa
     product: CLEVER zemiaky žlté neskoré konzumné prané typ B
     pack: 5 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 4.49
   - ingredient: zemiaky
     store: fresh
     product: ZEMIAKY KONZ. NESKORÉ
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.15
   - ingredient: zemiaky
     store: fresh
     product: ZEMIAKY KONZ. NESKORÉ
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.88
     sale_until: 2026-12-31
   - ingredient: zemiaky
     store: kaufland
     product: Zemiaky konzumné varný typ B
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.89
   - ingredient: zemiaky
     store: kaufland
     product: Zemiaky konzumné varný typ B
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.59
     sale_until: 2026-10-14
   - ingredient: zemiaky
     store: lidl
     product: Zemiaky konzumné neskoré B
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 0.99
   - ingredient: zemiaky
     store: terno
-    product: Zemiaky Colomba/Riviera konzumné skoré voľné
+    product: Zemiaky Colomba/Larissa konz. nesk. voľné
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.19
   - ingredient: zemiaky
     store: tesco
     product: Zemiaky volne konzumne neskore
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002006711681
     price: 0.99
   - ingredient: cibula
     store: billa
     product: CLEVER cibuľa
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.79
   - ingredient: cibula
     store: fresh
-    product: CIBUĽA VOĽNÁ
+    product: CIBUĽA ŽLTÁ 1kg BALENÁ FRESH
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.85
   - ingredient: cibula
     store: kaufland
     product: ZLT Cibuľa žltá 5kg
     pack: 5 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 4.29
   - ingredient: cibula
     store: lidl
     product: Cibuľa 5kg
     pack: 5 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 2.49
   - ingredient: cibula
     store: terno
     product: Cibuľa žltá voľná
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.99
   - ingredient: cibula
     store: tesco
     product: Cibuľa voľná
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002006556237
     price: 0.89
   - ingredient: cibula-cervena
     store: billa
     product: CHUTE SLOVENSKA Cibuľa červená
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.79
   - ingredient: cibula-cervena
     store: fresh
     product: CIBUĽA ČERVENÁ SUCHÁ
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.35
   - ingredient: cibula-cervena
     store: fresh
     product: CIBUĽA ČERVENÁ SUCHÁ
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.95
     sale_until: 2026-10-21
   - ingredient: cibula-cervena
     store: kaufland
     product: Cibuľa červená
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.49
   - ingredient: cibula-cervena
     store: lidl
     product: Červená cibuľa 500g
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 0.69
   - ingredient: cibula-cervena
     store: terno
     product: Cibuľa červená voľná
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.49
   - ingredient: cibula-cervena
     store: tesco
     product: Cibuľa červená voľná
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002006556244
     price: 1.39
   - ingredient: cibula-cervena
     store: tesco
     product: Cibuľa červená voľná
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002006556244
     price: 0.99
     sale_until: 2026-10-13
@@ -148,39 +148,39 @@ entries:
     store: billa
     product: CLEVER Mrkva
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.29
   - ingredient: mrkva
     store: fresh
     product: MRKVA VOĽNÁ
     pack: 1 kg
-    date: 2026-10-08
-    price: 1.35
+    date: 2026-10-09
+    price: 1.25
   - ingredient: mrkva
     store: kaufland
     product: Mrkva 1kg
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.29
   - ingredient: mrkva
     store: kaufland
     product: Mrkva 1kg
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.89
     sale_until: 2026-10-14
   - ingredient: mrkva
     store: lidl
     product: Mrkva 2kg
     pack: 2 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 2.49
   - ingredient: mrkva
     store: lidl
     product: Mrkva 2kg
     pack: 2 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 1.49
     sale_until: 2026-10-11
@@ -188,20 +188,20 @@ entries:
     store: terno
     product: Mrkva voľná
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.29
   - ingredient: mrkva
     store: tesco
     product: Mrkva voľná
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002006558378
     price: 1.29
   - ingredient: mrkva
     store: tesco
     product: EX Tesco mrkva balená 1 kg
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121135555
     price: 0.79
     sale_until: 2026-10-13
@@ -209,90 +209,97 @@ entries:
     store: billa
     product: CHUTE SLOVENSKA Petržlen praný
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 2.99
   - ingredient: petrzlen-koren
     store: fresh
     product: PETRŽLEN VOĽNÝ
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 2.65
   - ingredient: petrzlen-koren
     store: kaufland
     product: Petržlen praný
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 2.69
   - ingredient: petrzlen-koren
     store: kaufland
     product: Petržlen praný
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.79
     sale_until: 2026-10-14
   - ingredient: petrzlen-koren
     store: lidl
     product: Petržlen
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 2.69
   - ingredient: petrzlen-koren
     store: terno
     product: Petržlen voľný
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 2.99
   - ingredient: petrzlen-koren
     store: tesco
-    product: Petrzlen volny
+    product: EX Petrzlen volny
     pack: 1 kg
-    date: 2026-10-08
-    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120297387
+    date: 2026-10-09
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002121135296
     price: 2.69
   - ingredient: citron
     store: billa
     product: CLEVER citróny odroda uvedená na etikete
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.89
   - ingredient: citron
     store: fresh
     product: CITRÓNY
     pack: 1 kg
-    date: 2026-10-08
-    price: 2.55
+    date: 2026-10-09
+    price: 2.95
+  - ingredient: citron
+    store: fresh
+    product: CITRÓNY 0,5kg BAL.
+    pack: 500 g
+    date: 2026-10-09
+    price: 1.29
+    sale_until: 2026-10-21
   - ingredient: citron
     store: kaufland
-    product: Citróny 500g
-    pack: 500 g
-    date: 2026-10-08
-    price: 1.49
+    product: Citróny
+    pack: 1 kg
+    date: 2026-10-09
+    price: 2.55
   - ingredient: citron
     store: lidl
     product: Citróny 500g
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 1.29
   - ingredient: citron
     store: terno
     product: Citróny voľné Eureka/Mayer I.tr
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 2.79
   - ingredient: citron
     store: tesco
     product: Citróny, voľné
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002006556329
     price: 2.99
   - ingredient: citron
     store: tesco
     product: Tesco citróny 500 g
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002006948957
     price: 0.79
     sale_until: 2026-10-13
@@ -300,52 +307,52 @@ entries:
     store: billa
     product: Banány Bonvia
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.59
   - ingredient: banan
     store: fresh
     product: BANÁNY
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.59
   - ingredient: banan
     store: kaufland
     product: Banány
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.59
   - ingredient: banan
     store: kaufland
     product: Banány
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.29
     sale_until: 2026-10-14
   - ingredient: banan
     store: lidl
     product: Banány
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 1.59
   - ingredient: banan
     store: terno
     product: Banány voľné
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.59
   - ingredient: banan
     store: tesco
     product: Banány voľné
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002006555926
     price: 1.59
   - ingredient: banan
     store: tesco
     product: Banány voľné
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002006555926
     price: 1.19
     sale_until: 2026-10-13
@@ -353,508 +360,508 @@ entries:
     store: billa
     product: CLEVER jablká červené,odroda uvedená na etikete
     pack: 2 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 2.49
   - ingredient: jablko
     store: billa
     product: Jablká červené
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.65
     sale_until: 2026-10-13
   - ingredient: jablko
     store: fresh
     product: JABLKÁ ČERVENÉ
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.25
   - ingredient: jablko
     store: fresh
     product: JABLKÁ ČERVENÉ
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.75
     sale_until: 2026-10-14
   - ingredient: jablko
     store: kaufland
-    product: Jablko Golden Delicious
+    product: Jablko červené
     pack: 1 kg
-    date: 2026-10-08
-    price: 0.79
+    date: 2026-10-09
+    price: 1.39
   - ingredient: jablko
     store: kaufland
     product: Jablko červené
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.65
     sale_until: 2026-10-14
   - ingredient: jablko
     store: lidl
     product: Červené jablká sypané
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 1.39
   - ingredient: jablko
     store: terno
     product: Jablká červené voľné II.tr.
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.39
   - ingredient: jablko
     store: tesco
     product: GH Jablká červené, balené 2 kg
     pack: 2 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002013071297
     price: 2.49
   - ingredient: jablko
     store: tesco
-    product: Jablká Gala ukladané
-    pack: 1 kg
-    date: 2026-10-08
-    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002006634041
-    price: 0.99
-    sale_until: 2026-10-13
+    product: GH Jablká zelené, balené 2 kg
+    pack: 2 kg
+    date: 2026-10-09
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002013071273
+    price: 1.59
+    sale_until: 2026-10-11
   - ingredient: hladka-muka
     store: billa
     product: Clever múka Hladká špeciál 00 Extra
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.5
   - ingredient: hladka-muka
     store: fresh
-    product: MÚKA HLADKÁ T650 1kg FRESH
+    product: MÚKA HLADKÁ 00 EXTRA 1kg FRESH
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.65
   - ingredient: hladka-muka
     store: fresh
-    product: MÚKA HLADKÁ T650 1kg FRESH
+    product: MÚKA HLADKÁ 00 EXTRA 1kg FRESH
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.45
     sale_until: 2026-12-31
   - ingredient: hladka-muka
     store: kaufland
     product: Z lásky k tradícií Pšeničná múka hladká špecial 00 Extra 1 kg
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.45
   - ingredient: hladka-muka
     store: lidl
     product: Belbake Pšeničná múka hladká, svetlá, extra 00
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 0.45
   - ingredient: hladka-muka
     store: terno
     product: TERKA Pšeničná múka hladká 00 EXTRA 1kg
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.59
   - ingredient: hladka-muka
     store: tesco
     product: TS Múka hladká 1kg
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120725141
     price: 0.5
   - ingredient: cukor
     store: billa
     product: Kryštálový cukor Biely
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.89
   - ingredient: cukor
     store: kaufland
     product: Cukor kryštálový biely 1 kg
     pack: 1 kg
-    date: 2026-10-08
-    price: 0.67
+    date: 2026-10-09
+    price: 0.75
   - ingredient: cukor
     store: lidl
     product: Belbake Kryštálový cukor
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 0.79
   - ingredient: cukor
     store: terno
     product: HANÁCKY Cukor kryštál 1kg
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.25
   - ingredient: cukor
     store: tesco
     product: TS Kryštálový cukor 1kg
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120602160
     price: 0.87
   - ingredient: sosovica-hneda
     store: billa
     product: Clever Šošovica veľkozrnná
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.19
   - ingredient: sosovica-hneda
     store: fresh
     product: ŠOŠ. ZELENÁ VEĽKOZRNNÁ 500g FRESH
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.29
   - ingredient: sosovica-hneda
     store: fresh
     product: ŠOŠ. ZELENÁ VEĽKOZRNNÁ 500g FRESH
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.98
     sale_until: 2026-12-31
   - ingredient: sosovica-hneda
     store: kaufland
     product: K Classic Šošovica zelená veľkozrnná 500 g
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.19
   - ingredient: sosovica-hneda
     store: lidl
     product: Campo Largo Šošovica zelená
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 0.99
   - ingredient: sosovica-hneda
     store: tesco
     product: TESCO SOSOVICA 500 G
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005100547234
     price: 1.19
   - ingredient: ovsene-vlocky
     store: billa
     product: Clever ovsené vločky Celozrnné, jemné
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.65
   - ingredient: ovsene-vlocky
     store: fresh
     product: VLOČKY BIO OVSENÉ CELOZRNNÉ JEMNÉ 500g
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.05
   - ingredient: ovsene-vlocky
     store: kaufland
     product: K Classic Ovsené vločky jemné 500g
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.65
   - ingredient: ovsene-vlocky
     store: lidl
     product: Crownfield Ovsené vločky jemné
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 0.65
   - ingredient: ovsene-vlocky
     store: terno
     product: EMCO Ovsené vločky jemné s vlákninou 500g
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.79
   - ingredient: ovsene-vlocky
     store: tesco
     product: TESCO OV. VLOCKY JEMNE 500 G
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005100501440
     price: 0.65
   - ingredient: ovsene-vlocky-bezlepkove
     store: billa
     product: Bonavita ovs.vločky Celé bez lepku
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.69
   - ingredient: ovsene-vlocky-bezlepkove
     store: fresh
     product: VLOČKY OVSENÉ JEMNÉ BEZLEPKOVÉ 500g
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.69
   - ingredient: ovsene-vlocky-bezlepkove
     store: kaufland
     product: Ovsené vločky jemné bezgluténové 250 g
     pack: 250 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.38
   - ingredient: ovsene-vlocky-bezlepkove
     store: terno
     product: RAVITA Ovsené vločky bezglutenové hrubé 350g
     pack: 350 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.89
   - ingredient: ovsene-vlocky-bezlepkove
     store: tesco
     product: TFF Vlocky ovsene jemne bezglut. 500 g
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005100771110
     price: 2.39
   - ingredient: cestoviny
     store: billa
     product: Clever kolienka stredné bezvaječné
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.55
   - ingredient: cestoviny
     store: fresh
     product: CEST KOL SEKANÉ 400g BEZVAJEČNÉ FRESH
     pack: 400 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.55
   - ingredient: cestoviny
     store: fresh
     product: CEST KOL SEKANÉ 400g BEZVAJEČNÉ FRESH
     pack: 400 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.44
     sale_until: 2026-12-31
   - ingredient: cestoviny
     store: kaufland
     product: K Classic Kolienka bezvaječné 500 g
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.55
   - ingredient: cestoviny
     store: lidl
     product: Tiradell Kolienka z mäkkej pšenice
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 0.44
   - ingredient: cestoviny
     store: terno
     product: IDEÁL Kolienka veľké bezvaječné 400g
     pack: 400 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.79
   - ingredient: cestoviny
     store: tesco
     product: Hearty Food Co. Spagety 1 kg
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005105298715
     price: 1.09
   - ingredient: cestoviny-bezlepkove
     store: billa
     product: 500g SAM MILLS kukuričné kolienka
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.79
   - ingredient: cestoviny-bezlepkove
     store: fresh
     product: CEST. KOLIENKA RYŽ. 300g LUCKA BEZLEP.
     pack: 300 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.99
   - ingredient: cestoviny-bezlepkove
     store: kaufland
     product: Kfree Špagety bezlepkové 500 g
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.15
   - ingredient: cestoviny-bezlepkove
     store: terno
     product: Panzani Gluten Free COQUILLETTES 400g
     pack: 400 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 2.89
   - ingredient: cestoviny-bezlepkove
     store: tesco
     product: TFF SPAGHETTI 500g
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005100242164
     price: 2.15
   - ingredient: olej
     store: billa
     product: Clever olej Repkový
     pack: 1 l
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.49
   - ingredient: olej
     store: fresh
     product: OLEJ SLNEČNICOVÝ 1l 100% FRESH
     pack: 1 l
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.99
   - ingredient: olej
     store: fresh
     product: OLEJ SLNEČNICOVÝ 1l 100% FRESH
     pack: 1 l
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.78
     sale_until: 2026-12-31
   - ingredient: olej
     store: kaufland
     product: K Classic Repkový olej 1 l
     pack: 1 l
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.99
   - ingredient: olej
     store: kaufland
     product: K Classic Slnečnicový olej 1 l
     pack: 1 l
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.59
     sale_until: 2026-10-14
   - ingredient: olej
     store: lidl
     product: Bell Rastlinný olej repkový
     pack: 1 l
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 1.49
   - ingredient: olej
     store: terno
     product: Olej Slnečnicový BELL 1l
     pack: 1 l
-    date: 2026-10-08
+    date: 2026-10-09
     price: 2.39
   - ingredient: olej
     store: tesco
     product: TS SLNECNICOVY OLEJ 1 l
     pack: 1 l
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002120023539
     price: 1.79
   - ingredient: chlieb
     store: billa
     product: CHLIEB PŠENIČNO-RAŽNÝ 1000g chlieb voľný, LZ TRADEMARK
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.55
   - ingredient: chlieb
     store: fresh
     product: CHLIEB SVETLÝ PŠEN. 1kg
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.75
   - ingredient: chlieb
     store: fresh
     product: CHLIEB SVETLÝ PŠEN. 1kg
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.54
     sale_until: 2026-10-31
   - ingredient: chlieb
     store: kaufland
-    product: Chlieb konzumný 1000 g, NELAPEK s.r.o.
+    product: Chlieb konzumný 1000 g, VAMEX, a.s., Košice
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.59
   - ingredient: chlieb
     store: lidl
     product: Chlieb konzumný bez E
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 1.59
   - ingredient: chlieb
     store: terno
-    product: Chlieb pšenično-ražný 1000g DRAHOVCE
+    product: Chlieb pšenično-ražný 1000g PENAM
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.79
   - ingredient: chlieb
     store: tesco
     product: Chlieb pšenično - ražný konzumný 1kg
     pack: 1 kg
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002008382308
     price: 1.59
   - ingredient: chlieb-bezlepkovy
     store: billa
     product: CHLIEB ČIERNY CELOZRNNÝ 320g BEZGLUTÉNOVÝ, Novalim spol.s r.o.
     pack: 320 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 3.15
   - ingredient: chlieb-bezlepkovy
     store: fresh
     product: CHLIEB BOSNIAK BEZLEP. 300g
     pack: 300 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.69
   - ingredient: chlieb-bezlepkovy
     store: fresh
     product: CHLIEB BEZLEP. 210g
     pack: 210 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 0.59
-    sale_until: 2027-01-15
+    sale_until: 2027-01-16
   - ingredient: chlieb-bezlepkovy
     store: kaufland
-    product: K free Bezgluténový kukurično-ryžový chlieb semienkový krájaný 350 g
+    product: K free Bezgluténový kukurično-ryžový chlieb svetlý krájaný 350 g
     pack: 350 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 2.49
   - ingredient: chlieb-bezlepkovy
     store: lidl
     product: Tastino Bezgluténový chlieb krájaný, viaczrnný
     pack: 250 g
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 1.75
   - ingredient: chlieb-bezlepkovy
     store: tesco
     product: TS Free From bezglutén.chl. tmavý 250 g
     pack: 250 g
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005100547400
     price: 1.55
   - ingredient: sojove-mlieko
     store: billa
     product: Billa Bio sojóvý nápoj natural
     pack: 1 l
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.59
   - ingredient: sojove-mlieko
     store: lidl
     product: Vemondo Bio Sójový nápoj
     pack: 1 l
-    date: 2026-10-08
+    date: 2026-10-09
     url: https://www.lidl.sk
     price: 1.39
   - ingredient: sojove-mlieko
     store: tesco
-    product: TS Sojovy napoj nesladeny 1 l
+    product: TS Sójový nápoj sladeny 1 l
     pack: 1 l
-    date: 2026-10-08
-    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005100766339
+    date: 2026-10-09
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005100766337
     price: 1.39
   - ingredient: sojovy-jogurt
     store: fresh
     product: JOG. SÓJ. VÝROBOK 400g BIELY BEZ CUKRU ALPRO
     pack: 400 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 2.89
   - ingredient: sojovy-jogurt
     store: kaufland
     product: K Veggie Sojagurt natur 500 g
     pack: 500 g
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.68
   - ingredient: rastlinna-smotana
     store: billa
     product: Rajo Vegan krém na varenie 15%
     pack: 250 ml
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.79
   - ingredient: rastlinna-smotana
     store: billa
-    product: Alpro sójová smotana na varenie
+    product: Alpro ryžová smotana na varenie
     pack: 250 ml
-    date: 2026-10-08
+    date: 2026-10-09
     price: 1.393
     sale_until: 2026-10-13
