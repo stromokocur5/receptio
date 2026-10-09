@@ -127,6 +127,13 @@ export function tableMembers(): Member[] {
 /** True when the household decides how many eat (not the "cook for" setting). */
 export const planFromHousehold = () => !household.solo && members().length > 0;
 
+/**
+ * Cooked by one member just for themselves: bought with the rest, but not one of the shared
+ * meals. Outside the household (or once they've left it) it's an ordinary entry.
+ */
+export const isPersonal = (e: PlanEntry) =>
+	!!e.only && planFromHousehold() && members().some((m) => m.id === e.only);
+
 /** What the whole table has to leave out; null outside a household or when nobody has needs. */
 export function tableNeeds(): HouseholdNeeds | null {
 	const list = tableMembers();
@@ -682,9 +689,15 @@ export function removeExpense(id: string) {
 	updateDoc((doc) => ({ ...doc, expenses: { ...doc.expenses, [id]: [false, Date.now()] } }));
 }
 
-/** A shopping trip paid from this phone counts as this person's household expense. */
+export const moneyOn = () => !!household.doc?.money[0];
+
+export function setMoney(on: boolean) {
+	updateDoc((doc) => ({ ...doc, money: [on, Date.now()] }));
+}
+
+/** With money tracking on, a shopping trip paid from this phone is this person's expense. */
 export function notePurchase(amount: number) {
-	if (household.solo || !household.me || !household.doc || !(amount > 0)) return;
+	if (household.solo || !household.me || !moneyOn() || !(amount > 0)) return;
 	addExpense({ by: household.me, amount, note: 'Nákup' });
 }
 

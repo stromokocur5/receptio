@@ -125,7 +125,8 @@ function validatePlan(raw: unknown): PlanEntry[] | undefined {
 			(e.fromFreezer === undefined || e.fromFreezer === true) &&
 			(e.frozenOn === undefined ||
 				(typeof e.frozenOn === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(e.frozenOn))) &&
-			(e.cook === undefined || (typeof e.cook === 'string' && /^[a-z0-9]{1,16}$/.test(e.cook)))
+			(e.cook === undefined || (typeof e.cook === 'string' && /^[a-z0-9]{1,16}$/.test(e.cook))) &&
+			(e.only === undefined || (typeof e.only === 'string' && /^[a-z0-9]{1,16}$/.test(e.only)))
 	);
 }
 
@@ -922,21 +923,28 @@ export function removePantryItem(id: string) {
 }
 
 // Portions from the freezer are their own entries: nothing to cook or buy for them.
-const sameEntry = (e: PlanEntry, recipeId: string, variant?: string) =>
-	e.recipeId === recipeId && e.variant === variant && !e.fromFreezer;
+/** The same recipe and version, shared or just for the same person. */
+const sameEntry = (e: PlanEntry, recipeId: string, variant?: string, only?: string) =>
+	e.recipeId === recipeId && e.variant === variant && !e.fromFreezer && e.only === only;
 
-export function addToPlan(recipeId: string, servings: number, variant?: string) {
-	const existing = plan.current.find((e) => sameEntry(e, recipeId, variant));
+/** `only`: a household member cooking it just for themselves. */
+export function addToPlan(recipeId: string, servings: number, variant?: string, only?: string) {
+	const existing = plan.current.find((e) => sameEntry(e, recipeId, variant, only));
 	plan.current = existing
 		? plan.current.map((e) => (e === existing ? { ...e, servings: e.servings + servings } : e))
-		: [...plan.current, variant ? { recipeId, servings, variant } : { recipeId, servings }];
+		: [...plan.current, { recipeId, servings, ...(variant && { variant }), ...(only && { only }) }];
 }
 
-export function setPlanServings(recipeId: string, variant: string | undefined, servings: number) {
+export function setPlanServings(
+	recipeId: string,
+	variant: string | undefined,
+	servings: number,
+	only?: string
+) {
 	plan.current =
 		servings <= 0
-			? plan.current.filter((e) => !sameEntry(e, recipeId, variant))
-			: plan.current.map((e) => (sameEntry(e, recipeId, variant) ? { ...e, servings } : e));
+			? plan.current.filter((e) => !sameEntry(e, recipeId, variant, only))
+			: plan.current.map((e) => (sameEntry(e, recipeId, variant, only) ? { ...e, servings } : e));
 }
 
 /** Cooks a batch twice as big and freezes the extra half (or takes that back). */

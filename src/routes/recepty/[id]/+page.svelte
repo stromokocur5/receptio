@@ -60,7 +60,7 @@
 	import { jarsFromYield } from '$lib/preserves';
 	import { shortName } from '$lib/avoid';
 	import { recipeConflicts, wishesOf } from '$lib/household';
-	import { household, tableMembers, toggleWish } from '$lib/household.svelte';
+	import { household, planFromHousehold, tableMembers, toggleWish } from '$lib/household.svelte';
 
 	let { data } = $props();
 	const catalog = useCatalog();
@@ -247,6 +247,17 @@
 
 	function toggleStep(i: number) {
 		doneSteps = doneSteps.includes(i) ? doneSteps.filter((s) => s !== i) : [...doneSteps, i];
+	}
+
+	/** In a household: a dish just for me, outside the shared meals. */
+	const canPlanForMe = $derived(ui.loaded && planFromHousehold() && !!household.me);
+	let justAddedForMe = $state(false);
+
+	function planForMe() {
+		if (!household.me) return;
+		addToPlan(recipe.id, 1, variantName ?? undefined, household.me);
+		justAddedForMe = true;
+		setTimeout(() => (justAddedForMe = false), 1600);
 	}
 
 	function plan(event: MouseEvent) {
@@ -576,6 +587,16 @@
 							{servings === 1 ? 'porcia' : servings < 5 ? 'porcie' : 'porcií'})
 						{/if}
 					</button>
+					{#if canPlanForMe}
+						<button
+							class="btn ghost"
+							onclick={planForMe}
+							title="Do plánu len pre mňa – nakúpi sa so zoznamom, ale nepočíta sa do spoločných jedál"
+						>
+							<Icon name={justAddedForMe ? 'check' : 'plus'} size={18} />
+							{justAddedForMe ? 'Pridané pre teba' : 'Len pre mňa'}
+						</button>
+					{/if}
 					<button class="btn ghost" onclick={startCooking}>
 						<Icon name="pot" size={18} /> Variť
 					</button>

@@ -61,6 +61,7 @@ test('two phones share the plan, who buys what, the log and the money', async ({
 
 	await jano.goto('/domacnost');
 	await expect(jano.getByText(/do plánu: .*falafel/i)).toBeVisible(SYNCED);
+	await jano.getByRole('button', { name: 'Zapnúť počítanie výdavkov' }).click();
 	await jano.getByLabel('Koľko €').fill('12');
 	await jano.getByRole('button', { name: 'Zapísať' }).click();
 	await expect(jano.locator('.paybacks')).toContainText(/Ema → Jano\s*6,00/);
@@ -87,7 +88,16 @@ test('two phones share the plan, who buys what, the log and the money', async ({
 
 test('planning alone keeps an own plan and goes back to the shared one', async ({ page }) => {
 	await createHousehold(page, 'Ema');
+	await page.getByLabel('Meno nového člena').fill('Jano');
+	await page.getByRole('button', { name: 'Pridať', exact: true }).click();
 	await addFalafel(page);
+
+	// Now and then something just for one person, without leaving the shared plan.
+	await visit(page, '/recepty/dal-makhani');
+	await page.getByRole('button', { name: 'Len pre mňa' }).click();
+	await page.goto('/plan');
+	await page.waitForLoadState('networkidle');
+	await expect(page.locator('.personal')).toContainText('Dal makhani (Ema, 1 porc.)');
 
 	await page.goto('/domacnost');
 	await page.waitForLoadState('networkidle');

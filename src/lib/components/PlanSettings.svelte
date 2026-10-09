@@ -21,19 +21,24 @@
 		</select>
 		{settings.current.planDays === 1 ? 'deň' : settings.current.planDays < 5 ? 'dni' : 'dní'}
 	</label>
-	<label>
-		Varím pre
-		<select
-			value={settings.current.people}
-			disabled={fromHousehold}
-			onchange={(e) => update({ people: Number(e.currentTarget.value) })}
-		>
-			{#each Array.from({ length: 12 }, (_, i) => i + 1) as p (p)}<option value={p}>{p}</option
-				>{/each}
-		</select>
-		{settings.current.people === 1 ? 'osobu' : settings.current.people < 5 ? 'osoby' : 'osôb'}
-		{#if fromHousehold}<a class="from-household" href="/domacnost">podľa domácnosti</a>{/if}
-	</label>
+	{#if fromHousehold}
+		<p class="household">
+			Varím pre <a href="/domacnost">domácnosť</a> – porcie podľa toho, kto je pri ktorom jedle doma a
+			koľko zje
+		</p>
+	{:else}
+		<label>
+			Varím pre
+			<select
+				value={settings.current.people}
+				onchange={(e) => update({ people: Number(e.currentTarget.value) })}
+			>
+				{#each Array.from({ length: 12 }, (_, i) => i + 1) as p (p)}<option value={p}>{p}</option
+					>{/each}
+			</select>
+			{settings.current.people === 1 ? 'osobu' : settings.current.people < 5 ? 'osoby' : 'osôb'}
+		</label>
+	{/if}
 	<fieldset class="meals">
 		<legend>Varím</legend>
 		{#each MEAL_SETTINGS as { key, label } (key)}
@@ -69,8 +74,9 @@
 </div>
 
 <style>
-	.from-household {
-		font-size: 0.86rem;
+	.household {
+		margin: 0;
+		align-self: center;
 	}
 	.settings {
 		display: flex;

@@ -34,6 +34,8 @@ export interface PlanEntry {
 	frozenOn?: string;
 	/** Household member who cooks it. */
 	cook?: string;
+	/** Just for this household member, outside the shared meals (bought with the rest). */
+	only?: string;
 }
 
 /** A recipe meant only for the morning (porridge, pancakes) – not one also fit for lunch. */

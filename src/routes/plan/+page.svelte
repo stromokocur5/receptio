@@ -32,6 +32,7 @@
 		claimItem,
 		claims,
 		household,
+		isPersonal,
 		members,
 		noteCooked,
 		notePurchase,
@@ -223,6 +224,7 @@
 	const perDay = $derived.by(() => {
 		const total = emptyNutrients();
 		for (const e of entries) {
+			if (isPersonal(e)) continue;
 			const factor = e.servings;
 			const n = e.data.perServing;
 			for (const key of Object.keys(total) as (keyof typeof total)[]) total[key] += n[key] * factor;
@@ -246,6 +248,8 @@
 	});
 	const cooks = $derived(ui.loaded && planFromHousehold() ? members() : []);
 	const cookName = (id: string | undefined) => cooks.find((m) => m.id === id)?.name;
+	/** Dishes one member makes just for themselves, outside the shared meals. */
+	const personal = $derived(ui.loaded ? entries.filter((e) => isPersonal(e)) : []);
 	/** What each member gets from the plan a day, by their portion and the meals they eat at home. */
 	const perMember = $derived.by(() => {
 		const planned: PlanMeal[] = [
@@ -269,7 +273,7 @@
 
 	const schedule = $derived(
 		mealSchedule(
-			plan.current,
+			plan.current.filter((e) => !isPersonal(e)),
 			settings.current.people,
 			mainMeals(settings.current).length,
 			settings.current.planDays,
@@ -627,6 +631,14 @@
 							</li>
 						{/each}
 					</ol>
+					{#if personal.length}
+						<p class="small personal">
+							<Icon name="users" size={16} /> Mimo spoločných jedál:
+							{personal
+								.map((e) => `${e.recipe.title} (${cookName(e.only) ?? ''}, ${e.servings} porc.)`)
+								.join(' · ')}
+						</p>
+					{/if}
 					<p class="muted small">
 						{#if schedule.unplannedMeals}
 							Chýba ešte {schedule.unplannedMeals}
@@ -689,13 +701,14 @@
 								<div class="info">
 									<a href="/recepty/{e.recipe.id}">{e.recipe.title}</a>
 									<span class="muted">
-										{#if e.fromFreezer}<span class="badge sky">z mrazničky</span>
+										{#if isPersonal(e)}<span class="badge">iba {cookName(e.only)}</span>
+										{/if}{#if e.fromFreezer}<span class="badge sky">z mrazničky</span>
 										{/if}{#if e.variant}{e.variant} ·
 										{/if}{e.fromFreezer
 											? 'už zaplatené'
 											: formatEur(e.data.costPerServing * e.servings)}
 										{#if e.freezeExtra}· z toho {e.freezeExtra} porc. do mrazničky{/if}
-										{#if perMeal !== 1 || mainMeals(settings.current).length > 1}
+										{#if !isPersonal(e) && (perMeal !== 1 || mainMeals(settings.current).length > 1)}
 											· {Math.floor(e.servings / perMeal + 1e-9)}× jedlo
 										{/if}
 									</span>
@@ -763,7 +776,7 @@
 										<button
 											class="icon-btn"
 											aria-label="Menej porcií"
-											onclick={() => setPlanServings(e.recipeId, e.variant, e.servings - 1)}
+											onclick={() => setPlanServings(e.recipeId, e.variant, e.servings - 1, e.only)}
 										>
 											<Icon name={e.servings === 1 ? 'trash' : 'minus'} size={16} />
 										</button>
@@ -771,7 +784,7 @@
 										<button
 											class="icon-btn"
 											aria-label="Viac porcií"
-											onclick={() => setPlanServings(e.recipeId, e.variant, e.servings + 1)}
+											onclick={() => setPlanServings(e.recipeId, e.variant, e.servings + 1, e.only)}
 										>
 											<Icon name="plus" size={16} />
 										</button>
@@ -1406,6 +1419,11 @@
 		border-color: var(--leaf);
 		background: var(--leaf);
 		color: var(--paper);
+	}
+	.personal {
+		display: flex;
+		gap: 6px;
+		align-items: flex-start;
 	}
 	.per-member-title {
 		margin: 18px 0 6px;

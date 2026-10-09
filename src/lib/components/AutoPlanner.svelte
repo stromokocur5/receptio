@@ -219,9 +219,13 @@
 			<small>
 				Podľa rozpočtu, bielkovín a toho, čo máš doma – na {settings.current.planDays}
 				{settings.current.planDays === 1 ? 'deň' : settings.current.planDays < 5 ? 'dni' : 'dní'},
-				pre
-				{settings.current.people}
-				{settings.current.people === 1 ? 'osobu' : settings.current.people < 5 ? 'osoby' : 'osôb'}
+				{#if planFromHousehold()}pre domácnosť{:else}pre
+					{settings.current.people}
+					{settings.current.people === 1
+						? 'osobu'
+						: settings.current.people < 5
+							? 'osoby'
+							: 'osôb'}{/if}
 			</small>
 		</span>
 		<Icon name={open ? 'minus' : 'plus'} size={18} />

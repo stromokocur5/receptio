@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
+	import { planFromHousehold } from '$lib/household.svelte';
 	import { markOnboarded, onboarding } from '$lib/onboarding.svelte';
 	import { avoid, chosenMeals, journal, MEAL_SETTINGS, settings } from '$lib/state.svelte';
 	import { connectSync, enableSync, formatCode, syncState } from '$lib/sync.svelte';
@@ -152,6 +153,18 @@
 			title: 'Pestuj si sám',
 			text: 'Plánovač pre okno, balkón aj záhradu s kalendárom a zápisom úrody.',
 			href: '/pestuj'
+		},
+		{
+			icon: 'users',
+			title: 'Domácnosť',
+			text: 'Varíte spolu? Jeden plán, nákup a špajza pre všetkých. Porcie podľa toho, kto je doma a koľko zje, kto varí, kto čo kúpi. A kedykoľvek si naplánuješ aj niečo len pre seba.',
+			href: '/domacnost'
+		},
+		{
+			icon: 'package',
+			title: 'Meal prep',
+			text: 'Navar v jedno popoludnie na viac dní: čo nakrájať naraz, v akom poradí variť, ako zabaliť a čo zamraziť.',
+			href: '/wiki/meal-prep'
 		},
 		{
 			icon: 'book',
@@ -324,26 +337,40 @@
 					<p class="kicker"><Icon name="users" size={18} /> 4 · Pre koho varíš</p>
 					<h2>Nastav si plán</h2>
 					<p>Podľa toho sa prepočítajú porcie v pláne a množstvá v nákupnom zozname.</p>
-					<div class="setting">
-						<span>Koľko ľudí je pri stole</span>
-						<div class="stepper">
-							<button
-								onclick={() => setPeople(settings.current.people - 1)}
-								disabled={settings.current.people <= 1}
-								aria-label="Menej"><Icon name="minus" size={18} /></button
-							>
-							{#key settings.current.people}
-								<output class="num" in:fly={{ y: -10, duration: reduceMotion ? 0 : 200 }}
-									>{settings.current.people}</output
-								>
-							{/key}
-							<button
-								onclick={() => setPeople(settings.current.people + 1)}
-								disabled={settings.current.people >= 12}
-								aria-label="Viac"><Icon name="plus" size={18} /></button
+					{#if planFromHousehold()}
+						<div class="setting">
+							<span>Kto je pri stole</span>
+							<small class="muted"
+								>Varíš pre domácnosť – porcie sa rátajú podľa toho, kto je pri ktorom jedle doma a
+								koľko zje. Nastavíš v <a href="/domacnost" onclick={finish}>Domácnosti</a>.</small
 							>
 						</div>
-					</div>
+					{:else}
+						<div class="setting">
+							<span>Koľko ľudí je pri stole</span>
+							<div class="stepper">
+								<button
+									onclick={() => setPeople(settings.current.people - 1)}
+									disabled={settings.current.people <= 1}
+									aria-label="Menej"><Icon name="minus" size={18} /></button
+								>
+								{#key settings.current.people}
+									<output class="num" in:fly={{ y: -10, duration: reduceMotion ? 0 : 200 }}
+										>{settings.current.people}</output
+									>
+								{/key}
+								<button
+									onclick={() => setPeople(settings.current.people + 1)}
+									disabled={settings.current.people >= 12}
+									aria-label="Viac"><Icon name="plus" size={18} /></button
+								>
+							</div>
+							<small class="muted"
+								>Varíte spolu viacerí? V <a href="/domacnost" onclick={finish}>Domácnosti</a> nastavíš
+								každého zvlášť – kto je kedy doma a koľko zje.</small
+							>
+						</div>
+					{/if}
 					<div class="setting">
 						<span>Čo varíš</span>
 						<div class="chips">

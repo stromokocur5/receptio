@@ -101,6 +101,8 @@ export interface HouseholdDoc {
 	/** Shopping list item → the member who'll buy it. */
 	claims: Record<string, Stamped<string | false>>;
 	expenses: Record<string, Stamped<Expense | false>>;
+	/** Whether the household keeps track of who paid what; off until someone turns it on. */
+	money: Stamped<boolean>;
 	/** Recent changes, newest kept. Events never change, so a merge is a union. */
 	log: Record<string, LogEvent>;
 	/** `member.recipe` → that member would like it cooked. */
@@ -138,6 +140,7 @@ export function newDoc(name: string, now: number): HouseholdDoc {
 		extras: {},
 		claims: {},
 		expenses: {},
+		money: [false, 0],
 		log: {},
 		wishes: {}
 	};
@@ -281,6 +284,7 @@ export function validatePlanEntries(raw: unknown): PlanEntry[] | undefined {
 			entry.frozenOn = e.frozenOn;
 		}
 		if (typeof e.cook === 'string' && MEMBER_ID_RE.test(e.cook)) entry.cook = e.cook;
+		if (typeof e.only === 'string' && MEMBER_ID_RE.test(e.only)) entry.only = e.only;
 		return [entry];
 	});
 }
@@ -339,6 +343,7 @@ export function validateDoc(raw: unknown): HouseholdDoc | null {
 			MAX_EXPENSES,
 			(e) => e[1]
 		),
+		money: stamped(raw.money, (x) => (typeof x === 'boolean' ? x : undefined)) ?? [false, 0],
 		log: newest(record(raw.log, ITEM_ID_RE, validateLogEvent), MAX_LOG, (e) => e.at),
 		wishes: record(raw.wishes, /^[a-z0-9]{1,16}\.[a-z0-9]+(-[a-z0-9]+)*$/, (v) =>
 			stamped(v, (x) => (typeof x === 'boolean' ? x : undefined))
@@ -380,6 +385,7 @@ export function mergeDocs(a: HouseholdDoc, b: HouseholdDoc): HouseholdDoc {
 		extras: mergeRecord(a.extras, b.extras),
 		claims: mergeRecord(a.claims, b.claims),
 		expenses: newest(mergeRecord(a.expenses, b.expenses), MAX_EXPENSES, (e) => e[1]),
+		money: newer(a.money, b.money),
 		log: newest({ ...a.log, ...b.log }, MAX_LOG, (e) => e.at),
 		wishes: mergeRecord(a.wishes, b.wishes)
 	};

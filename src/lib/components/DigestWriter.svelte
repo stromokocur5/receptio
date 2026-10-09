@@ -2,7 +2,7 @@
 	import { budgetForDays, spentThisWeek, weekStart } from '$lib/budget';
 	import { useCatalog } from '$lib/catalog';
 	import { morningDigest, weeklyDigest, type DigestStore, type DigestText } from '$lib/digest';
-	import { planNeed } from '$lib/household.svelte';
+	import { isPersonal, planNeed } from '$lib/household.svelte';
 	import { localToday, shiftDate } from '$lib/journal';
 	import { MEAL_LABELS } from '$lib/labels';
 	import { dailyTargets } from '$lib/nutrition';
@@ -70,7 +70,7 @@
 
 		// ── Each coming morning ──
 		const schedule = mealSchedule(
-			plan.current,
+			plan.current.filter((e) => !isPersonal(e)),
 			settings.current.people,
 			mainMeals(settings.current).length,
 			settings.current.planDays,

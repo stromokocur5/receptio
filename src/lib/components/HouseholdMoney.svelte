@@ -2,7 +2,14 @@
 	import { formatEur } from '$lib/amounts';
 	import Icon from '$lib/components/Icon.svelte';
 	import { balances, expensesOf, settleUp } from '$lib/household';
-	import { addExpense, household, members, removeExpense } from '$lib/household.svelte';
+	import {
+		addExpense,
+		household,
+		members,
+		moneyOn,
+		removeExpense,
+		setMoney
+	} from '$lib/household.svelte';
 
 	const SHOWN = 8;
 
@@ -28,7 +35,15 @@
 	}
 </script>
 
-{#if list.length < 2}
+{#if !moneyOn()}
+	<p>
+		Nepovinné. Kto chce, môže si tu zapisovať, kto koľko zaplatil za nákup, a Receptio spočíta, kto
+		komu koľko dlží. Kým to nezapnete, nič sa nepočíta – ani nákupy z nákupného zoznamu.
+	</p>
+	<button class="btn ghost" onclick={() => setMoney(true)}>
+		<Icon name="euro" size={18} /> Zapnúť počítanie výdavkov
+	</button>
+{:else if list.length < 2}
 	<p class="muted">Keď vás bude viac, uvidíš tu, kto koľko zaplatil a kto komu dlží.</p>
 {:else}
 	{#if paybacks.length}
@@ -102,6 +117,11 @@
 			</button>
 		{/if}
 	{/if}
+{/if}
+{#if moneyOn()}
+	<button class="off" onclick={() => setMoney(false)}>
+		Vypnúť počítanie výdavkov (zapísané platby ostanú)
+	</button>
 {/if}
 
 <style>
@@ -186,6 +206,18 @@
 		border-radius: 50%;
 		background: transparent;
 		color: var(--muted);
+		cursor: pointer;
+	}
+	.off {
+		display: block;
+		margin-top: 14px;
+		border: 0;
+		padding: 0;
+		background: none;
+		color: var(--ink-2);
+		font: inherit;
+		font-size: 0.86rem;
+		text-decoration: underline;
 		cursor: pointer;
 	}
 	.remove:hover {

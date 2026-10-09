@@ -482,7 +482,9 @@
 		</section>
 
 		<section class="card box">
-			<h2><Icon name="euro" size={24} /> Kto koľko zaplatil</h2>
+			<h2>
+				<Icon name="euro" size={24} /> Kto koľko zaplatil <span class="optional">nepovinné</span>
+			</h2>
 			<HouseholdMoney />
 		</section>
 
@@ -492,6 +494,10 @@
 				<p>
 					Ideš na dovolenku, varíš si obedy do práce alebo chceš chvíľu vlastný plán? Dostaneš
 					vlastný plán a nákupný zoznam, spoločný na teba počká. Špajza ostáva spoločná.
+				</p>
+				<p class="hint">
+					Len občas niečo pre seba? Pri recepte ťukni <strong>Len pre mňa</strong> – nakúpi sa so spoločným
+					zoznamom, ale nepočíta sa do spoločných jedál.
 				</p>
 				{#if me}
 					<label class="check">
@@ -668,6 +674,15 @@
 	}
 	.leave {
 		margin-top: 28px;
+	}
+	.optional {
+		padding: 2px 10px;
+		border-radius: 999px;
+		background: var(--paper-2);
+		font-family: inherit;
+		font-size: 0.8rem;
+		font-weight: 600;
+		color: var(--ink-2);
 	}
 	.new-link {
 		margin-top: 16px;
