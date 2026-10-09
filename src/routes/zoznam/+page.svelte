@@ -6,11 +6,13 @@
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
+	import ShoppingRow from '$lib/components/ShoppingRow.svelte';
+	import { toast } from '$lib/toast.svelte';
 	import { CATEGORY_LABELS } from '$lib/labels';
 	import { decodeSharedPlan, type SharedPlan } from '$lib/share';
 	import { LIVE_PREFIX, joinLiveList, leaveLiveList, live, tickLive } from '$lib/live-list.svelte';
 	import { approxPieces } from '$lib/shopping';
-	import { plan, settings, storeOrder } from '$lib/state.svelte';
+	import { plan, settings, storeOrder, ui } from '$lib/state.svelte';
 	import { noteTick, orderAisles } from '$lib/store-order';
 	import { INGREDIENT_CATEGORIES } from '$lib/types';
 
@@ -38,7 +40,6 @@
 			? Object.fromEntries(Object.entries(live.data?.ticks ?? {}).map(([id, [done]]) => [id, done]))
 			: localChecked
 	);
-	let confirmReplace = $state(false);
 
 	const groups = $derived.by(() => {
 		if (!shared) return [];
@@ -56,6 +57,17 @@
 		return orderAisles(aisles, storeOrder.current, mine.length === 1 ? mine[0] : '');
 	});
 	const doneCount = $derived(shared ? shared.buy.filter(([id]) => checked[id]).length : 0);
+	const remaining = $derived(shared ? shared.buy.length - doneCount : 0);
+	const things = (n: number) => `${n} ${n === 1 ? 'vec' : n > 1 && n < 5 ? 'veci' : 'vecí'}`;
+	const title = $derived(
+		isLive
+			? 'Spoločný nákup'
+			: status === 'ok' || status === 'loading'
+				? 'Nákupný zoznam'
+				: status === 'empty'
+					? 'Tu nie je žiadny zoznam'
+					: 'Odkaz nefunguje'
+	);
 
 	onMount(() => {
 		const fragment = location.hash.slice(1);
@@ -109,15 +121,17 @@
 		}
 	}
 
+	/** Takes the plan over at once; the own plan can come back from the message on /plan. */
 	async function adoptPlan() {
 		if (!shared) return;
-		if (plan.current.length && !confirmReplace) {
-			confirmReplace = true;
-			setTimeout(() => (confirmReplace = false), 3000);
-			return;
-		}
+		const before = { plan: plan.current, settings: settings.current };
 		plan.current = shared.plan;
 		settings.current = { ...settings.current, people: shared.people, planDays: shared.days };
+		if (before.plan.length)
+			toast('Plán je prevzatý', () => {
+				plan.current = before.plan;
+				settings.current = before.settings;
+			});
 		await goto('/plan');
 	}
 </script>
@@ -130,7 +144,7 @@
 <div class="wrap page">
 	<header class="rise">
 		<p class="eyebrow">{isLive ? 'Nakupujeme spolu' : 'Zdieľaný zoznam'}</p>
-		<h1>{isLive ? 'Spoločný nákup' : 'Nákup od kamaráta'}</h1>
+		<h1>{title}</h1>
 		{#if isLive}
 			<p class="live-status" data-status={live.status} role="status">
 				<span class="dot" aria-hidden="true"></span>
@@ -146,7 +160,8 @@
 	{#if status === 'loading' || (isLive && live.status === 'connecting' && !live.data)}
 		<p class="muted">Načítavam…</p>
 	{:else if isLive && live.status === 'missing'}
-		<section class="card box">
+		<section class="card box empty">
+			<Icon name="basket" size={32} />
 			<p>
 				Tento spoločný zoznam už neexistuje alebo je odkaz neúplný. Popros o nový – v Pláne cez
 				„Nakupovať spolu“.
@@ -154,10 +169,11 @@
 			<a class="btn leaf" href="/plan"><Icon name="calendar" size={18} /> Môj plán</a>
 		</section>
 	{:else if status !== 'ok' || !shared}
-		<section class="card box">
+		<section class="card box empty">
+			<Icon name="basket" size={32} />
 			<p>
 				{status === 'empty'
-					? 'Tento odkaz neobsahuje žiadny zoznam.'
+					? 'Sem sa dostaneš cez odkaz na nákupný zoznam, ktorý ti niekto pošle z Receptia. Svoj vlastný zoznam máš v Pláne.'
 					: 'Odkaz je poškodený alebo neúplný. Popros o nový.'}
 			</p>
 			<a class="btn leaf" href="/plan"><Icon name="calendar" size={18} /> Môj plán</a>
@@ -166,41 +182,35 @@
 		<div class="layout">
 			<section class="card box">
 				<div class="box-head">
-					<h2><Icon name="basket" size={24} /> Kúpiť</h2>
-					<span class="muted">{doneCount}/{shared.buy.length}</span>
+					<h2 class="section-title"><Icon name="basket" size={24} /> Kúpiť</h2>
+					{#if shared.buy.length}
+						<span class="muted"
+							>{remaining ? `Ešte kúpiť ${things(remaining)}` : 'Všetko v košíku'}</span
+						>
+					{/if}
 				</div>
 				{#if shared.buy.length === 0}
-					<p class="muted">Netreba nič kupovať.</p>
+					<p class="notice ok"><Icon name="check" size={18} /> Netreba nič kupovať.</p>
 				{/if}
 				{#each groups as [category, items] (category)}
 					<div class="cat">
-						<h3>{CATEGORY_LABELS[category]}</h3>
+						<h3 class="eyebrow">{CATEGORY_LABELS[category]}</h3>
 						<ul>
 							{#each items as item (item.ingredient.id)}
-								{@const on = !!checked[item.ingredient.id]}
-								<li class:on>
-									<label>
-										<input
-											type="checkbox"
-											checked={on}
-											onchange={() => toggle(item.ingredient.id)}
-										/>
-										<span class="box-ui" aria-hidden="true"
-											><Icon name="check" size={14} stroke={3} /></span
-										>
-										<span class="nm">
-											{item.ingredient.name}
-											<small
-												>{formatGrams(item.grams)}{approxPieces(item.ingredient, item.grams)}</small
-											>
-										</span>
-									</label>
-								</li>
+								<ShoppingRow
+									name={item.ingredient.name}
+									checked={!!checked[item.ingredient.id]}
+									ontoggle={() => toggle(item.ingredient.id)}
+								>
+									{#snippet note()}
+										{formatGrams(item.grams)}{approxPieces(item.ingredient, item.grams)}
+									{/snippet}
+								</ShoppingRow>
 							{/each}
 						</ul>
 					</div>
 				{/each}
-				<p class="muted small">
+				<p class="hint footnote">
 					Zoznam už nezahŕňa to, čo má odosielateľ doma.
 					{isLive
 						? 'Zaškrtnutia vidia všetci, ktorí majú tento odkaz. Server ich má len zašifrované.'
@@ -209,8 +219,8 @@
 			</section>
 
 			<section class="card box">
-				<h2><Icon name="calendar" size={24} /> Recepty v pláne</h2>
-				<ul class="recipes">
+				<h2 class="section-title"><Icon name="calendar" size={24} /> Recepty v pláne</h2>
+				<ul class="recipes divided">
 					{#each shared.plan as entry (entry.recipeId + (entry.variant ?? ''))}
 						<li>
 							<a href="/recepty/{entry.recipeId}"
@@ -224,108 +234,52 @@
 					{/each}
 				</ul>
 				<button class="btn ghost" onclick={adoptPlan}>
-					<Icon name="download" size={18} />
-					{confirmReplace ? 'Nahradiť môj plán?' : 'Prevziať plán ku mne'}
+					<Icon name="download" size={18} /> Prevziať plán ku mne
 				</button>
+				{#if ui.loaded && plan.current.length}
+					<p class="hint">Nahradí tvoj terajší plán. Ak si to rozmyslíš, vrátiš ho späť.</p>
+				{/if}
 			</section>
 		</div>
 	{/if}
 </div>
 
 <style>
-	.page {
-		padding-top: 28px;
-	}
 	.layout {
 		display: grid;
 		gap: 20px;
 	}
-	.box {
-		padding: 20px;
-	}
 	.box-head {
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: space-between;
 		align-items: center;
+		gap: var(--sp-2);
 	}
-	h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.4rem;
-		margin: 0 0 12px;
-	}
-	.box-head h2 {
+	.box-head .section-title {
 		margin: 0;
 	}
 	.cat {
-		margin-top: 16px;
+		margin-top: var(--sp-4);
 	}
 	.cat h3 {
+		margin: 0;
 		font-family: var(--font-body);
-		font-size: 0.78rem;
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-		color: var(--muted);
-		margin-bottom: 4px;
 	}
 	ul {
 		list-style: none;
 		margin: 0;
 		padding: 0;
 	}
-	.cat label {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		align-items: center;
-		gap: 12px;
-		padding: 9px 0;
-		cursor: pointer;
-	}
-	.cat input {
-		position: absolute;
-		opacity: 0;
-		pointer-events: none;
-	}
-	.box-ui {
-		display: grid;
-		place-items: center;
-		width: 26px;
-		height: 26px;
-		border-radius: 8px;
-		border: 2px solid var(--line);
-		color: transparent;
-		transition:
-			background 0.2s,
-			transform 0.3s var(--ease-spring);
-	}
-	.cat input:focus-visible + .box-ui {
-		outline: 3px solid var(--turmeric);
-		outline-offset: 2px;
-	}
-	.on .box-ui {
-		background: var(--leaf);
-		border-color: var(--leaf);
-		color: var(--paper);
-		transform: rotate(-6deg);
-	}
-	.nm {
-		display: flex;
-		flex-direction: column;
-	}
-	.nm small {
-		color: var(--muted);
-	}
-	.on .nm {
-		opacity: 0.5;
-		text-decoration: line-through;
+	.footnote {
+		margin-top: var(--sp-4);
 	}
 	.live-status {
 		display: inline-flex;
 		align-items: center;
-		gap: 8px;
-		margin: 8px 0 0;
-		font-size: 0.9rem;
+		gap: var(--sp-2);
+		margin: var(--sp-2) 0 0;
+		font-size: var(--fs-md);
 		font-weight: 600;
 		color: var(--ink-2);
 	}
@@ -352,23 +306,27 @@
 			animation: none;
 		}
 	}
-	.small {
-		font-size: 0.84rem;
-		margin: 16px 0 0;
-	}
 	.recipes {
-		margin-bottom: 16px;
+		margin-bottom: var(--sp-4);
 	}
 	.recipes li {
 		display: flex;
 		justify-content: space-between;
 		gap: 10px;
-		padding: 8px 0;
-		border-bottom: 1px dashed var(--line);
+		padding: var(--sp-2) 0;
 	}
 	.recipes a {
 		font-weight: 650;
 		color: var(--ink);
+	}
+	.recipes .muted {
+		white-space: nowrap;
+	}
+	.empty {
+		color: var(--ink-2);
+	}
+	.empty > :global(svg) {
+		color: var(--leaf);
 	}
 	@media (min-width: 900px) {
 		.layout {

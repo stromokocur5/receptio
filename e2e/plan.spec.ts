@@ -52,3 +52,18 @@ test('a mis-tapped "cooked" can be taken back', async ({ page }) => {
 	const history = await page.evaluate(() => localStorage.getItem('receptio:history'));
 	expect(JSON.parse(history ?? '[]')).toEqual([]);
 });
+
+test('clearing the plan goes at once and can be taken back', async ({ page }) => {
+	await visit(page, '/recepty/falafel');
+	await page
+		.getByRole('button', { name: /^Do plánu/ })
+		.first()
+		.click();
+	await page.goto('/plan');
+	await page.waitForLoadState('networkidle');
+	await page.getByRole('button', { name: 'Vymazať plán' }).click();
+	await expect(page.getByRole('heading', { name: 'Ako chceš začať?' })).toBeVisible();
+	await page.getByRole('button', { name: 'Vrátiť' }).click();
+	await expect(page.getByRole('heading', { name: 'Tvoj týždeň' })).toBeVisible();
+	await expect(page.getByText(/falafel/i).first()).toBeVisible();
+});

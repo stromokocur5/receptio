@@ -38,6 +38,7 @@
 		mainMeals
 	} from '$lib/state.svelte';
 	import type { Allergen, RecipeSummary } from '$lib/types';
+	import { toast } from '$lib/toast.svelte';
 
 	const catalog = useCatalog();
 	const EXCLUDABLE: Allergen[] = ['soy', 'peanuts', 'nuts', 'sesame'];
@@ -59,6 +60,16 @@
 			.replace(/, ([^,]*)$/, ' a $1')
 	);
 	const PRESET_PARAM = 'rozpocet';
+	/** For how long and whom; only once the saved settings are in, so defaults don't flash. */
+	const scope = $derived.by(() => {
+		if (!ui.loaded) return '';
+		const { planDays: d, people: p } = settings.current;
+		const days = `${d} ${d === 1 ? 'deň' : d < 5 ? 'dni' : 'dní'}`;
+		const who = planFromHousehold()
+			? 'pre domácnosť'
+			: `pre ${p} ${p === 1 ? 'osobu' : p < 5 ? 'osoby' : 'osôb'}`;
+		return ` – na ${days}, ${who}`;
+	});
 
 	// Links like "Navrhni mi týždeň" land here already opened; /plan?rozpocet=25 also proposes.
 	onMount(() => {
@@ -109,7 +120,6 @@
 	let batchCooking = $state(false);
 	let seed = $state(1);
 	let result = $state<AutoPlanResult | null>(null);
-	let confirmReplace = $state(false);
 
 	function planInput(): {
 		recipes: RecipeSummary[];
@@ -170,7 +180,6 @@
 	function suggest() {
 		const { recipes, options, ctx } = planInput();
 		result = autoPlan(recipes, options, ctx);
-		confirmReplace = false;
 	}
 
 	/** Just one recipe doesn't appeal: swap it for a similar one, keep the rest. */
@@ -186,15 +195,17 @@
 		suggest();
 	}
 
+	/** Replaces at once; the old plan can come back from the message below. */
 	function replace() {
 		if (!result) return;
-		if (plan.current.length && !confirmReplace) {
-			confirmReplace = true;
-			return;
-		}
+		const before = plan.current;
 		plan.current = result.entries;
 		result = null;
 		open = false;
+		if (before.length)
+			toast('Návrh je v pláne', () => {
+				plan.current = before;
+			});
 	}
 
 	function append() {
@@ -215,17 +226,9 @@
 	<button class="head" onclick={() => (open = !open)} aria-expanded={open}>
 		<Icon name="sparkle" size={22} />
 		<span>
-			<strong>Navrhni mi plán</strong>
+			<strong>Navrhni mi týždeň</strong>
 			<small>
-				Podľa rozpočtu, bielkovín a toho, čo máš doma – na {settings.current.planDays}
-				{settings.current.planDays === 1 ? 'deň' : settings.current.planDays < 5 ? 'dni' : 'dní'},
-				{#if planFromHousehold()}pre domácnosť{:else}pre
-					{settings.current.people}
-					{settings.current.people === 1
-						? 'osobu'
-						: settings.current.people < 5
-							? 'osoby'
-							: 'osôb'}{/if}
+				Podľa rozpočtu, bielkovín a toho, čo máš doma{scope}
 			</small>
 		</span>
 		<Icon name={open ? 'minus' : 'plus'} size={18} />
@@ -234,7 +237,7 @@
 	{#if open}
 		<div class="form">
 			<div class="presets">
-				<p class="small"><strong>Hotový týždeň za:</strong></p>
+				<p class="label">Hotový týždeň za:</p>
 				<div class="chips">
 					{#each BUDGET_PRESETS as perWeek (perWeek)}
 						<button
@@ -246,16 +249,17 @@
 						</button>
 					{/each}
 				</div>
-				<p class="muted small">
+				<p class="hint">
 					Za suroviny, ktoré recepty spotrebujú. Pri nákupe celých balení zaplatíš viac, zvyšok ti
 					ostane doma.
 				</p>
 			</div>
 			<PlanSettings />
-			<label>
+			<label class="row">
 				Rozpočet na celý plán
 				<span class="inline">
 					<input
+						class="input sm"
 						type="number"
 						min="0"
 						step="1"
@@ -269,9 +273,9 @@
 					/> €
 				</span>
 			</label>
-			<label>
+			<label class="row">
 				Bielkoviny na porciu aspoň
-				<select bind:value={minProtein}>
+				<select class="input sm" bind:value={minProtein}>
 					{#each [10, 15, 20, 25, 30] as g (g)}<option value={g}>{g} g</option>{/each}
 				</select>
 			</label>
@@ -309,19 +313,19 @@
 				{/each}
 			</div>
 			{#if tableNeeds() && hasNeeds(tableNeeds()!)}
-				<p class="small">
+				<p class="small with-icon">
 					<Icon name="users" size={16} /> Len jedlá, ktoré môže jesť každý z domácnosti ({tableMembers()
 						.map((m) => m.name)
 						.join(', ')}). <a href="/domacnost">Upraviť</a>
 				</p>
 			{/if}
-			<p class="muted small">
+			<p class="hint">
 				Plánuje {plannedMeals}{planFromHousehold()
 					? ' – porcie podľa toho, kto je doma a koľko zje'
 					: ''}. Snacky rieš zvlášť.
 			</p>
 			{#if gaps.length}
-				<p class="small gaps-note">
+				<p class="small with-icon">
 					<Icon name="info" size={15} /> Podľa denníka ti minulý týždeň chýbalo:
 					{gaps.map((k) => NUTRIENT_META[k].label.toLowerCase()).join(', ')}. Uprednostním recepty,
 					ktoré to doplnia.
@@ -338,21 +342,23 @@
 						filter.
 					</p>
 				{:else}
-					<ul>
+					<ul class="divided">
 						{#each result.entries as e, i (e.recipeId + (e.variant ?? ''))}
 							{@const r = catalog.recipesById.get(e.recipeId)!}
 							<li>
-								<a href="/recepty/{r.id}">{r.title}</a>
-								<span class="muted">
-									{#if e.breakfast}raňajky ·
-									{/if}{e.servings} porc.{#if e.variant}
-										· {e.variant}{/if}
+								<span class="title">
+									<a href="/recepty/{r.id}">{r.title}</a>
+									<small class="muted">
+										{#if e.breakfast}raňajky ·
+										{/if}{e.servings} porc.{#if e.variant}
+											· {e.variant}{/if}
+									</small>
 								</span>
 								<button
-									class="swap"
+									class="chip swap"
 									onclick={() => swap(i)}
 									aria-label="Vymeniť {r.title} za iný recept"
-									title="Iný recept"><Icon name="history" size={15} /> Iný</button
+									title="Iný recept"><Icon name="history" size={14} /> Iný</button
 								>
 							</li>
 						{/each}
@@ -363,21 +369,20 @@
 						· bielkoviny od {formatNumber(result.minProtein, 0)} g na porciu
 					</p>
 					{#if !result.withinBudget}
-						<p class="warn">
-							<Icon name="alert" size={16} /> Do rozpočtu sa to nezmestí – toto je najlacnejšie, čo ide
+						<p class="notice warn">
+							<Icon name="alert" size={18} /> Do rozpočtu sa to nezmestí – toto je najlacnejšie, čo ide
 							pri týchto podmienkach.
 						</p>
 					{/if}
 					{#if result.meals < result.wanted}
-						<p class="warn">
-							<Icon name="alert" size={16} /> Pokryje len {result.meals} z {result.wanted} jedál – málo
+						<p class="notice warn">
+							<Icon name="alert" size={18} /> Pokryje len {result.meals} z {result.wanted} jedál – málo
 							receptov spĺňa podmienky.
 						</p>
 					{/if}
 					<div class="actions">
 						<button class="btn leaf small" onclick={replace}>
-							<Icon name="check" size={16} />
-							{confirmReplace ? 'Naozaj nahradiť?' : 'Použiť ako plán'}
+							<Icon name="check" size={16} /> Použiť ako plán
 						</button>
 						<button class="btn ghost small" onclick={append}>
 							<Icon name="plus" size={16} /> Pridať k plánu
@@ -393,15 +398,13 @@
 </section>
 
 <style>
-	.box {
-		padding: 16px 20px;
-	}
 	.head {
 		display: grid;
 		grid-template-columns: auto 1fr auto;
 		align-items: center;
-		gap: 12px;
+		gap: var(--sp-3);
 		width: 100%;
+		min-height: var(--tap);
 		border: 0;
 		background: none;
 		padding: 0;
@@ -409,127 +412,104 @@
 		text-align: left;
 		cursor: pointer;
 	}
+	.head > :global(svg:first-child) {
+		color: var(--leaf);
+	}
 	.head strong {
 		display: block;
 		font-family: var(--font-display);
-		font-size: 1.2rem;
+		font-size: var(--fs-lg);
 	}
 	.head small {
+		display: block;
 		color: var(--muted);
+		font-size: var(--fs-sm);
+		line-height: 1.4;
 	}
 	.form {
 		display: grid;
-		gap: 12px;
-		margin-top: 16px;
+		gap: var(--sp-3);
+		margin-top: var(--sp-4);
 	}
-	label {
+	.form p {
+		margin: 0;
+	}
+	.label {
+		font-weight: 650;
+		font-size: var(--fs-md);
+	}
+	.row {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
 		justify-content: space-between;
-		gap: 8px;
+		gap: var(--sp-2);
 		font-weight: 600;
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 	}
 	.inline {
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
 	}
-	input,
-	select {
-		border: 1.5px solid var(--line);
-		border-radius: 10px;
-		background: var(--paper);
-		color: var(--ink);
-		padding: 5px 8px;
-		font: inherit;
-	}
-	input {
-		width: 7em;
-	}
-	.chips {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
-	.small {
-		font-size: 0.84rem;
-		margin: 0;
+	.row input {
+		width: 9em;
 	}
 	.presets {
 		display: grid;
-		gap: 6px;
-		padding-bottom: 12px;
+		gap: var(--sp-2);
+		padding-bottom: var(--sp-3);
 		border-bottom: 1px dashed var(--line);
+	}
+	.presets .hint {
+		margin: 0;
+	}
+	.with-icon {
+		display: flex;
+		gap: 6px;
+		align-items: flex-start;
+	}
+	.with-icon > :global(svg) {
+		flex: none;
+		margin-top: 3px;
 	}
 	.form > .btn {
 		justify-self: start;
 	}
-	.result li a {
-		flex: 1;
-	}
-	.swap {
-		flex: none;
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
-		padding: 2px 10px;
-		border: 1.5px solid var(--line);
-		border-radius: 999px;
-		background: var(--card);
-		color: var(--ink-2);
-		font: inherit;
-		font-size: 0.8rem;
-		font-weight: 650;
-		cursor: pointer;
-	}
-	.swap:hover {
-		border-color: var(--leaf-2);
-	}
 	.result {
-		margin-top: 16px;
+		margin-top: var(--sp-4);
 		padding-top: 14px;
 		border-top: 1px dashed var(--line);
-	}
-	.result ul {
-		list-style: none;
-		margin: 0;
-		padding: 0;
 	}
 	.result li {
 		display: flex;
 		align-items: center;
 		gap: 10px;
-		padding: 6px 0;
-		border-bottom: 1px dashed var(--line);
+		padding: var(--sp-2) 0;
 	}
-	.result a {
+	.title {
+		flex: 1;
+		min-width: 0;
+		display: grid;
+	}
+	.title a {
 		color: var(--ink);
 		font-weight: 650;
 	}
+	.title small {
+		font-size: var(--fs-sm);
+	}
+	.swap {
+		flex: none;
+	}
 	.sum {
 		margin: 10px 0;
-		font-size: 0.92rem;
-	}
-	.warn {
-		display: flex;
-		align-items: center;
-		gap: 6px;
-		margin: 6px 0;
-		font-size: 0.88rem;
-		color: color-mix(in srgb, var(--turmeric) 55%, var(--ink));
+		font-size: var(--fs-md);
 	}
 	.actions {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 8px;
-		margin-top: 10px;
-	}
-	.gaps-note {
-		display: flex;
-		gap: 6px;
-		align-items: flex-start;
-		margin: 0;
+		gap: var(--sp-2);
+		margin-top: var(--sp-3);
 	}
 </style>

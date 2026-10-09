@@ -115,23 +115,13 @@
 		display: grid;
 		gap: 10px;
 	}
-	.chips {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
+	/* Long names wrap instead of pushing out of the card. */
 	.chip {
 		max-width: 100%;
 		white-space: normal;
 		text-align: left;
 	}
-	.small-field input {
-		padding-block: 8px;
-		font-size: 0.9rem;
-	}
 	.hint {
-		font-size: 0.82rem;
-		color: var(--muted);
 		margin: 0;
 	}
 </style>

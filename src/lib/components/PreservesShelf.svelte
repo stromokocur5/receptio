@@ -14,6 +14,7 @@
 		type PreservePlace
 	} from '$lib/preserves';
 	import { planFromFreezer, preserves, settings, ui } from '$lib/state.svelte';
+	import { toast } from '$lib/toast.svelte';
 
 	const catalog = useCatalog();
 	const today = localToday();
@@ -80,9 +81,11 @@
 		preserves.current = preserves.current.map((p) => (p.id === id ? { ...p, ...change } : p));
 	}
 
-	function remove(id: string) {
-		preserves.current = preserves.current.filter((p) => p.id !== id);
+	function remove(item: Preserve) {
+		const before = preserves.current;
+		preserves.current = before.filter((p) => p.id !== item.id);
 		editing = null;
+		toast(`${item.name}: odstránené`, () => (preserves.current = before));
 	}
 
 	/** Takes one jar out; the entry goes away with the last one. */
@@ -127,33 +130,35 @@
 	}
 </script>
 
-<section class="card shelf" id="zavaraniny" aria-labelledby="shelf-title">
-	<h2 id="shelf-title"><Icon name="snowflake" size={22} /> Zaváraniny a mraznička</h2>
-	<p class="muted small">
+<section class="card box shelf" id="zavaraniny" aria-labelledby="shelf-title">
+	<h2 class="section-title" id="shelf-title">
+		<Icon name="snowflake" size={24} /> Zaváraniny a mraznička
+	</h2>
+	<p class="hint intro">
 		Čo máš zavarené, zamrazené a rozmrazené. Hore je to, čo treba zjesť skôr – podľa druhu (lekvár
 		vydrží dlhšie ako lečo, chlieb v mrazničke kratšie ako fazuľky).
 	</p>
 	{#if ui.loaded && totals.length}
 		<p class="summary">
 			{totals.map(([where, n]) => `${PRESERVE_PLACE_LABELS[where]}: ${n}`).join(' · ')}
-			{#if old}<strong class="warn">· {old} po čase</strong>{/if}
+			{#if old}<strong class="old-text">· {old} po čase</strong>{/if}
 			{#if soon}<strong class="soon-text">· {soon} zjesť čoskoro</strong>{/if}
 		</p>
 	{/if}
-	{#if planned}<p class="done" role="status">
-			<Icon name="check" size={16} />
-			{planned} je v <a href="/plan">pláne</a>.
+	{#if planned}<p class="notice ok" role="status">
+			<Icon name="check" size={18} />
+			<span>{planned} je v <a href="/plan">pláne</a>.</span>
 		</p>{/if}
 
 	{#if ui.loaded && list.length}
 		{#each PRESERVE_PLACES as where (where)}
 			{@const items = list.filter((p) => p.place === where)}
 			{#if items.length}
-				<h3>{PRESERVE_PLACE_LABELS[where]}</h3>
-				<ul>
+				<h3 class="eyebrow">{PRESERVE_PLACE_LABELS[where]}</h3>
+				<ul class="items">
 					{#each items as p (p.id)}
 						{@const age = ageOf(p)}
-						<li class={age}>
+						<li class="sunk {age}">
 							<div class="row">
 								<span class="nm">
 									{#if p.recipeId}<a href="/recepty/{p.recipeId}">{p.name}</a>{:else}{p.name}{/if}
@@ -167,14 +172,22 @@
 										>{p.count} kusov</span
 									></span
 								>
-								<button class="step" aria-label="Pridať kus: {p.name}" onclick={() => addOne(p.id)}>
+								<button
+									class="icon-btn step"
+									aria-label="Pridať kus: {p.name}"
+									onclick={() => addOne(p.id)}
+								>
 									<Icon name="plus" size={16} />
 								</button>
-								<button class="step" aria-label="Zobrať kus: {p.name}" onclick={() => useOne(p.id)}>
+								<button
+									class="icon-btn step"
+									aria-label="Zobrať kus: {p.name}"
+									onclick={() => useOne(p.id)}
+								>
 									<Icon name="minus" size={16} />
 								</button>
 								<button
-									class="step"
+									class="icon-btn step"
 									aria-label="Upraviť: {p.name}"
 									aria-expanded={editing === p.id}
 									onclick={() => (editing = editing === p.id ? null : p.id)}
@@ -186,11 +199,11 @@
 								<div class="acts">
 									{#if p.recipeId && catalog.recipesById.has(p.recipeId)}
 										<button class="btn ghost small" onclick={() => plan(p)}
-											><Icon name="calendar" size={14} /> Do plánu</button
+											><Icon name="calendar" size={16} /> Do plánu</button
 										>
 									{/if}
 									<button class="btn ghost small" onclick={() => thawOne(p)}
-										><Icon name="fridge" size={14} /> Rozmraziť 1 do chladničky</button
+										><Icon name="fridge" size={16} /> Rozmraziť 1 do chladničky</button
 									>
 								</div>
 							{/if}
@@ -199,6 +212,7 @@
 									<label>
 										Čo
 										<input
+											class="input"
 											value={p.name}
 											maxlength="80"
 											onchange={(e) =>
@@ -209,6 +223,7 @@
 									<label>
 										Kde
 										<select
+											class="input"
 											value={p.place}
 											onchange={(e) => {
 												const to = e.currentTarget.value as PreservePlace;
@@ -226,6 +241,7 @@
 									<label>
 										Kedy zavarené / zamrazené
 										<input
+											class="input"
 											type="date"
 											value={p.made}
 											max={today}
@@ -234,8 +250,8 @@
 												update(p.id, { made: e.currentTarget.value })}
 										/>
 									</label>
-									<button class="btn ghost small danger" onclick={() => remove(p.id)}
-										><Icon name="trash" size={14} /> Odstrániť všetky</button
+									<button class="btn danger small" onclick={() => remove(p)}
+										><Icon name="trash" size={16} /> Odstrániť všetky</button
 									>
 								</div>
 							{/if}
@@ -245,7 +261,7 @@
 			{/if}
 		{/each}
 	{:else if ui.loaded}
-		<p class="muted small empty">
+		<p class="hint empty-note">
 			Zatiaľ nič. Pri receptoch na zaváranie ťukni „Zapísať do zásob“ a poháre sa sem pridajú samy.
 			Zvyšné porcie, ktoré v pláne navaríš navyše na zamrazenie, sa sem po uvarení zapíšu samy.
 		</p>
@@ -255,6 +271,7 @@
 		<label class="grow">
 			Čo
 			<input
+				class="input"
 				bind:value={name}
 				list="preserve-names"
 				maxlength="80"
@@ -267,11 +284,11 @@
 		</datalist>
 		<label class="num">
 			Koľko
-			<input type="number" bind:value={count} min="1" max="999" step="1" />
+			<input class="input" type="number" bind:value={count} min="1" max="999" step="1" />
 		</label>
 		<label>
 			Kde
-			<select bind:value={place}>
+			<select class="input" bind:value={place}>
 				{#each PRESERVE_PLACES as where (where)}
 					<option value={where}>{PRESERVE_PLACE_LABELS[where]}</option>
 				{/each}
@@ -279,11 +296,11 @@
 		</label>
 		<label>
 			Kedy
-			<input type="date" bind:value={made} max={today} />
+			<input class="input" type="date" bind:value={made} max={today} />
 		</label>
-		<button class="btn small"><Icon name="plus" size={16} /> Pridať</button>
+		<button class="btn leaf"><Icon name="plus" size={18} /> Pridať</button>
 	</form>
-	<p class="muted small">
+	<p class="hint">
 		Ako zavárať a mraziť: <a href="/wiki/zavaranie">Zaváranie</a> ·
 		<a href="/wiki/mrazenie-urody">Mrazenie úrody</a> ·
 		<a href="/wiki/mrazenie">Chladnička a mraznička</a> ·
@@ -292,74 +309,50 @@
 </section>
 
 <style>
-	.shelf {
-		padding: 18px;
-		margin-top: 18px;
-	}
-	h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.3rem;
-		margin: 0 0 6px;
+	.intro {
+		margin: 0;
 	}
 	h3 {
-		font-size: 0.9rem;
-		margin: 14px 0 6px;
-		color: var(--muted);
-	}
-	.small {
-		font-size: 0.85rem;
-		margin: 0;
+		margin: var(--sp-4) 0 6px;
+		font-family: var(--font-body);
 	}
 	.summary {
 		margin: 10px 0 0;
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 	}
-	.warn,
-	.danger {
-		color: var(--tomato);
+	.old-text {
+		color: color-mix(in srgb, var(--tomato) 80%, var(--ink));
 	}
 	.soon-text {
-		color: var(--turmeric-ink, var(--ink));
+		color: color-mix(in srgb, var(--turmeric) 40%, var(--ink));
 	}
-	.done {
-		display: flex;
-		align-items: center;
-		gap: 6px;
-		margin: 10px 0 0;
-		font-size: 0.9rem;
-		color: var(--leaf);
+	.empty-note {
+		margin-top: var(--sp-3);
 	}
-	.empty {
-		margin-top: 12px;
-	}
-	ul {
+	.items {
 		list-style: none;
 		margin: 0;
 		padding: 0;
 		display: grid;
 		gap: 6px;
 	}
-	li {
+	.items li {
 		display: grid;
-		gap: 8px;
-		padding: 8px 10px;
-		border-radius: 12px;
-		background: var(--paper-2);
+		gap: var(--sp-2);
+		padding: var(--sp-2) 6px var(--sp-2) var(--sp-3);
 		animation: rise 0.3s var(--ease-out);
 	}
-	li.soon {
-		background: color-mix(in srgb, var(--turmeric) 16%, var(--paper-2));
+	.items li.soon {
+		background: color-mix(in srgb, var(--turmeric) 16%, var(--sunk));
 	}
-	li.old {
-		background: color-mix(in srgb, var(--tomato) 16%, var(--paper-2));
+	.items li.old {
+		background: color-mix(in srgb, var(--tomato) 16%, var(--sunk));
 	}
 	.row {
 		display: grid;
-		grid-template-columns: 1fr auto auto auto auto;
+		grid-template-columns: minmax(0, 1fr) auto auto auto auto;
 		align-items: center;
-		gap: 6px;
+		gap: var(--sp-1);
 	}
 	.nm {
 		display: grid;
@@ -369,25 +362,18 @@
 	.nm small {
 		font-weight: 500;
 		color: var(--muted);
-		font-size: 0.78rem;
+		font-size: var(--fs-sm);
 	}
 	.count {
+		padding: 0 var(--sp-1);
 		font-weight: 700;
 		font-variant-numeric: tabular-nums;
 	}
 	.step {
-		display: grid;
-		place-items: center;
-		width: 30px;
-		height: 30px;
-		border: 1.5px solid var(--line);
-		border-radius: 50%;
 		background: var(--card);
-		color: var(--ink);
-		cursor: pointer;
 	}
 	.step[aria-expanded='true'] {
-		border-color: var(--leaf);
+		box-shadow: inset 0 0 0 2px var(--leaf);
 	}
 	.acts {
 		display: flex;
@@ -398,37 +384,38 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
 		align-items: end;
-		gap: 8px;
+		gap: var(--sp-2);
+		padding-right: 6px;
 	}
 	.edit label,
 	.add label {
 		display: grid;
-		gap: 4px;
-		font-size: 0.8rem;
+		gap: var(--sp-1);
+		font-size: var(--fs-sm);
 		font-weight: 650;
 		color: var(--muted);
 	}
-	input,
-	select {
-		border: 1.5px solid var(--line);
-		border-radius: var(--radius-sm);
-		background: var(--card);
-		color: var(--ink);
-		padding: 8px 10px;
-		font: inherit;
+	.edit .input,
+	.add .input {
 		min-width: 0;
+		width: 100%;
 	}
 	.add {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: end;
-		gap: 8px;
-		margin: 16px 0 10px;
+		gap: var(--sp-2);
+		margin: var(--sp-4) 0 10px;
 	}
 	.grow {
 		flex: 1 1 180px;
 	}
 	.num {
 		flex: 0 0 76px;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.items li {
+			animation: none;
+		}
 	}
 </style>

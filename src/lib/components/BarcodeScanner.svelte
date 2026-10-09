@@ -139,6 +139,7 @@
 			>
 				<label class="sr-only" for="barcode-code">Číslo pod čiarovým kódom</label>
 				<input
+					class="input"
 					id="barcode-code"
 					inputmode="numeric"
 					autocomplete="off"
@@ -147,8 +148,8 @@
 				/>
 				<button class="btn ghost small" type="submit" disabled={!isBarcode(code)}>Hľadať</button>
 			</form>
-			<button class="btn ghost small" onclick={close} aria-label="Zavrieť">
-				<Icon name="x" size={16} />
+			<button class="icon-btn plain close" onclick={close} aria-label="Zavrieť">
+				<Icon name="x" size={18} />
 			</button>
 		</div>
 
@@ -159,11 +160,14 @@
 		{:else if status === 'looking'}
 			<p class="muted">Hľadám produkt…</p>
 		{:else if status === 'unknown'}
-			<p>
-				Tento kód v otvorenej databáze potravín zatiaľ nie je. Surovinu nájdeš aj vyhľadávaním hore.
+			<p class="notice warn">
+				<Icon name="info" size={18} /> Tento kód v otvorenej databáze potravín zatiaľ nie je. Surovinu
+				nájdeš aj vyhľadávaním hore.
 			</p>
 		{:else if status === 'error'}
-			<p>Fotoaparát alebo databáza teraz nejde. Skús zadať číslo pod kódom.</p>
+			<p class="notice danger" role="alert">
+				<Icon name="alert" size={18} /> Fotoaparát alebo databáza teraz nejde. Skús zadať číslo pod kódom.
+			</p>
 		{:else if status === 'found' && product}
 			<p>
 				<strong>{product.name || 'Produkt bez názvu'}</strong>
@@ -171,7 +175,12 @@
 			</p>
 			<label class="amount">
 				Koľko gramov pridať
-				<input inputmode="decimal" bind:value={grams} placeholder="nevieš – nechaj prázdne" />
+				<input
+					class="input"
+					inputmode="decimal"
+					bind:value={grams}
+					placeholder="nevieš – nechaj prázdne"
+				/>
 			</label>
 			<p class="small">Ktorá surovina to je?</p>
 			<div class="picks">
@@ -183,7 +192,14 @@
 					<span class="muted small">Nič podobné – nájdi ju:</span>
 				{/each}
 			</div>
-			<input class="other" type="search" placeholder="Iná surovina…" bind:value={other} />
+			<label class="sr-only" for="barcode-other">Iná surovina</label>
+			<input
+				id="barcode-other"
+				class="input"
+				type="search"
+				placeholder="Iná surovina…"
+				bind:value={other}
+			/>
 			{#if others.length}
 				<div class="picks">
 					{#each others as i (i.id)}
@@ -193,11 +209,9 @@
 			{/if}
 		{/if}
 		{#if added}
-			<p class="done" role="status"><Icon name="check" size={16} /> V špajzi: {added}</p>
+			<p class="notice ok" role="status"><Icon name="check" size={18} /> V špajzi: {added}</p>
 		{/if}
-		<p class="muted small">
-			Údaje o produktoch sú z Open Food Facts; posiela sa im len číslo kódu.
-		</p>
+		<p class="hint">Údaje o produktoch sú z Open Food Facts; posiela sa im len číslo kódu.</p>
 	</div>
 {/if}
 
@@ -213,27 +227,24 @@
 	.picks {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 8px;
+		gap: var(--sp-2);
 		align-items: center;
 	}
 	.code {
 		flex: 1 1 200px;
 	}
-	input {
-		border: 1.5px solid var(--line);
-		border-radius: var(--radius-sm);
-		background: var(--paper);
-		color: var(--ink);
-		padding: 8px 10px;
-		font: inherit;
-		min-width: 0;
+	.code input {
 		flex: 1 1 140px;
+		min-width: 0;
+	}
+	.close {
+		margin-left: auto;
 	}
 	.amount {
 		display: grid;
-		gap: 4px;
+		gap: var(--sp-1);
 		font-weight: 650;
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 	}
 	video {
 		width: 100%;
@@ -243,9 +254,5 @@
 	}
 	p {
 		margin: 0;
-	}
-	.done {
-		color: var(--leaf);
-		font-weight: 650;
 	}
 </style>

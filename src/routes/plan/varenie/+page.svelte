@@ -32,6 +32,14 @@
 
 	/** When the session starts, so the plan reads in clock times. */
 	let startAt = $state('14:00');
+	/**
+	 * Quarter hours through the day: a list instead of a time field, which shows AM/PM in
+	 * browsers set to English.
+	 */
+	const START_TIMES = Array.from({ length: (22 - 6) * 4 + 1 }, (_, i) => {
+		const minutes = 6 * 60 + i * 15;
+		return `${Math.floor(minutes / 60)}:${String(minutes % 60).padStart(2, '0')}`;
+	});
 	const clock = (minutes: number) => {
 		const [h, m] = startAt.split(':').map(Number);
 		const total = (h || 0) * 60 + (m || 0) + Math.round(minutes);
@@ -109,7 +117,7 @@
 
 <div class="wrap page">
 	<header class="rise">
-		<a class="back" href="/plan"><Icon name="arrow-left" size={16} /> Plán a nákup</a>
+		<a class="back" href="/plan"><Icon name="arrow-left" size={18} /> Plán a nákup</a>
 		<p class="eyebrow">Meal prep</p>
 		<h1>Navar naraz, jedz celý týždeň</h1>
 		<p class="lede">
@@ -122,17 +130,22 @@
 		<p class="muted">Načítavam…</p>
 	{:else if entries.length === 0}
 		<section class="card box">
-			<p>V pláne zatiaľ nič nie je. Pridaj recepty a potom sa sem vráť.</p>
-			<a class="btn leaf" href="/plan#navrh"><Icon name="sparkle" size={18} /> Navrhni mi týždeň</a>
+			<div class="empty">
+				<Icon name="pot" size={32} />
+				<p>V pláne zatiaľ nič nie je. Pridaj recepty a potom sa sem vráť.</p>
+				<a class="btn leaf" href="/plan#navrh"
+					><Icon name="sparkle" size={18} /> Navrhni mi týždeň</a
+				>
+			</div>
 		</section>
 	{:else}
 		<section class="card box">
-			<h2><Icon name="check" size={22} /> Čo navaríš</h2>
-			<ul class="pick">
+			<h2 class="section-title"><Icon name="check" size={24} /> Čo navaríš</h2>
+			<ul class="pick divided">
 				{#each entries as e (e.key)}
 					{@const ahead = keepsAhead(e.recipe)}
 					<li>
-						<label class:off={!ahead}>
+						<label class="check" class:off={!ahead}>
 							<input
 								type="checkbox"
 								checked={ahead && !excluded.includes(e.key)}
@@ -151,7 +164,7 @@
 				{/each}
 			</ul>
 			{#if chosen.length > 1}
-				<p class="saving">
+				<p class="notice ok saving">
 					<Icon name="clock" size={20} />
 					<span>
 						Spolu asi <strong>{formatMinutes(schedule.total)}</strong>
@@ -166,8 +179,8 @@
 		{#if chosen.length}
 			{#if aheadNotes.length}
 				<section class="card box">
-					<h2><Icon name="moon" size={22} /> Deň vopred</h2>
-					<ul class="notes">
+					<h2 class="section-title"><Icon name="moon" size={24} /> Deň vopred</h2>
+					<ul class="notes divided">
 						{#each aheadNotes as e (e.key)}
 							<li><strong>{e.recipe.title}:</strong> {e.recipe.ahead}</li>
 						{/each}
@@ -177,15 +190,17 @@
 
 			{#if chopping.length}
 				<section class="card box">
-					<h2><Icon name="knife" size={22} /> Najprv všetko umy a nakrájaj</h2>
-					<p class="muted small">
+					<h2 class="section-title">
+						<Icon name="knife" size={24} /> Najprv všetko umy a nakrájaj
+					</h2>
+					<p class="hint lead">
 						Rozlož si misky. Čo ide do viacerých jedál, krájaj naraz a rozdeľ.
 					</p>
-					<ul class="chop">
+					<ul class="chop divided">
 						{#each chopping as c (c.ingredient.id)}
 							<li>
-								<span class="dot" style:--c={c.ingredient.color}></span>
-								<span>
+								<span class="swatch" style:--c={c.ingredient.color}></span>
+								<span class="chop-name">
 									<strong>{c.ingredient.name}</strong>
 									<small>{c.usedIn.join(' · ')}</small>
 								</span>
@@ -197,19 +212,23 @@
 			{/if}
 
 			<section class="card box">
-				<h2><Icon name="pot" size={22} /> V tomto poradí</h2>
-				<p class="muted small">
+				<h2 class="section-title"><Icon name="pot" size={24} /> V tomto poradí</h2>
+				<p class="hint lead">
 					Najdlhšie veci idú prvé – kým sa dusia alebo pečú, pripravíš ďalšie.
 					{#if ovenCount > 1}
 						{ovenCount} jedlá idú do rúry: peč ich naraz, ak majú podobnú teplotu, alebo jedno po druhom
 						bez vypínania.
 					{/if}
 				</p>
-				<label class="start">
-					Začínam o
-					<input type="time" bind:value={startAt} step="900" />
-					<span class="muted small">hotové okolo <strong>{clock(schedule.total)}</strong></span>
-				</label>
+				<div class="start">
+					<label>
+						Začínam o
+						<select class="input sm" bind:value={startAt}>
+							{#each START_TIMES as time (time)}<option value={time}>{time}</option>{/each}
+						</select>
+					</label>
+					<span class="muted">hotové okolo <strong>{clock(schedule.total)}</strong></span>
+				</div>
 				<div
 					class="gantt"
 					role="img"
@@ -241,7 +260,7 @@
 						<span><i class="passive"></i> varí sa / pečie samo</span>
 					</p>
 				</div>
-				<ol class="timeline">
+				<ol class="timeline divided">
 					{#each schedule.slots as slot, i (slot.recipe.id + i)}
 						{@const loaded = steps[slot.recipe.id]}
 						{@const list =
@@ -256,18 +275,21 @@
 								}}
 							>
 								<summary>
-									<strong>{slot.recipe.title}</strong>
-									<small>
-										{slot.recipe.activeTime} min práce{#if slot.recipe.time > slot.recipe.activeTime},
-											potom
-											{slot.recipe.time - slot.recipe.activeTime} min samo{/if} · hotové o {formatMinutes(
-											slot.end
-										)}
-									</small>
+									<span class="summary-text">
+										<strong>{slot.recipe.title}</strong>
+										<small>
+											{slot.recipe.activeTime} min práce{#if slot.recipe.time > slot.recipe.activeTime},
+												potom
+												{slot.recipe.time - slot.recipe.activeTime} min samo{/if} · hotové o {clock(
+												slot.end
+											)}
+										</small>
+									</span>
 								</summary>
 								{#if list === 'error'}
-									<p class="muted small">
-										Kroky sa nenačítali. <a href="/recepty/{slot.recipe.id}">Otvor recept</a>.
+									<p class="notice danger">
+										<Icon name="alert" size={18} /> Kroky sa nenačítali.
+										<a href="/recepty/{slot.recipe.id}">Otvor recept</a>.
 									</p>
 								{:else if list}
 									<ol class="steps">
@@ -277,7 +299,7 @@
 									</ol>
 									<a class="small" href="/recepty/{slot.recipe.id}">Celý recept a režim varenia</a>
 								{:else}
-									<p class="muted small">Načítavam kroky…</p>
+									<p class="muted small loading">Načítavam kroky…</p>
 								{/if}
 							</details>
 						</li>
@@ -286,12 +308,12 @@
 			</section>
 
 			<section class="card box">
-				<h2><Icon name="fridge" size={22} /> Do krabičiek</h2>
-				<p class="muted small">
+				<h2 class="section-title"><Icon name="fridge" size={24} /> Do krabičiek</h2>
+				<p class="hint lead">
 					Nechaj vychladnúť najviac 2 hodiny a hneď do chladničky. Čo nezješ do troch dní, zamraz
 					hneď, nie až keď sa minie čas.
 				</p>
-				<ul class="notes">
+				<ul class="notes divided">
 					{#each chosen as e (e.key)}
 						{@const tips = tipsFor(e.recipe)}
 						<li>
@@ -306,7 +328,7 @@
 						</li>
 					{/each}
 				</ul>
-				<p class="muted small">
+				<p class="hint">
 					Na každú krabičku papierovú pásku: čo to je a dátum. Do práce na dlhšiu cestu chladiacu
 					tašku s vreckom ľadu. Viac v <a href="/wiki/meal-prep">návode na meal prep</a>.
 				</p>
@@ -314,17 +336,19 @@
 
 			<section class="card box done">
 				{#if doneMessage}
-					<p role="status"><Icon name="check" size={18} /> {doneMessage}</p>
+					<p class="notice ok" role="status"><Icon name="check" size={18} /> {doneMessage}</p>
 					<div class="actions">
-						<a class="btn ghost" href="/plan">Späť na plán</a>
+						<a class="btn leaf" href="/plan">Späť na plán</a>
 						<button class="btn ghost" onclick={uncookAll}>Vrátiť – ešte nie je uvarené</button>
 					</div>
 				{:else}
-					<p>Keď je všetko v krabičkách:</p>
-					<button class="btn leaf" onclick={allCooked}>
-						<Icon name="check" size={18} /> Všetko uvarené
-					</button>
-					<p class="muted small">
+					<h2 class="section-title"><Icon name="check" size={24} /> Všetko v krabičkách?</h2>
+					<div class="actions">
+						<button class="btn leaf" onclick={allCooked}>
+							<Icon name="check" size={18} /> Všetko uvarené
+						</button>
+					</div>
+					<p class="hint">
 						Odpočíta suroviny zo špajze, zapíše varenie do histórie a porcie na zamrazenie pridá do
 						mrazničky.
 					</p>
@@ -336,31 +360,12 @@
 
 <style>
 	.page {
-		padding-top: 28px;
 		display: grid;
 		gap: 20px;
 		max-width: 820px;
 	}
-	.back {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		font-weight: 600;
-		font-size: 0.9rem;
-	}
-	.lede {
-		color: var(--ink-2);
-		max-width: 44em;
-	}
-	.box {
-		padding: 20px;
-	}
-	h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.35rem;
-		margin: 0 0 10px;
+	.page > header > .back {
+		margin-bottom: var(--sp-2);
 	}
 	ul,
 	ol {
@@ -368,116 +373,68 @@
 		padding: 0;
 		list-style: none;
 	}
-	.pick label {
-		display: flex;
-		align-items: flex-start;
-		gap: 12px;
-		padding: 8px 0;
-		cursor: pointer;
+	small {
+		color: var(--muted);
+		font-size: var(--fs-sm);
 	}
-	.pick input {
-		width: 20px;
-		height: 20px;
-		margin-top: 2px;
-		accent-color: var(--leaf);
+	.lead {
+		margin: 0 0 var(--sp-3);
 	}
-	.pick span,
-	.chop span:not(.dot):not(.amt),
-	summary {
+	.check > span {
 		display: flex;
 		flex-direction: column;
 	}
-	small {
-		color: var(--muted);
-	}
 	.off {
-		opacity: 0.6;
 		cursor: default;
 	}
-	.saving {
-		display: flex;
-		align-items: center;
-		gap: 10px;
-		margin: 12px 0 0;
-		padding: 12px 14px;
-		border-radius: var(--radius-sm);
-		background: color-mix(in srgb, var(--leaf) 12%, var(--card));
+	.off strong {
+		color: var(--ink-2);
 	}
-	.small {
-		font-size: 0.86rem;
+	.saving > :global(svg) {
+		color: var(--leaf);
 	}
 	.notes li {
-		padding: 6px 0;
-		border-bottom: 1px dashed var(--line);
+		padding: var(--sp-2) 0;
 	}
 	.chop li {
 		display: grid;
-		grid-template-columns: auto 1fr auto;
+		grid-template-columns: auto minmax(0, 1fr) auto;
 		align-items: center;
-		gap: 12px;
-		padding: 8px 0;
-		border-bottom: 1px dashed var(--line);
+		gap: var(--sp-3);
+		padding: var(--sp-2) 0;
 	}
-	.dot {
-		width: 12px;
-		height: 12px;
-		border-radius: 50%;
-		background: var(--c);
+	.chop-name {
+		display: flex;
+		flex-direction: column;
 	}
 	.amt {
 		font-weight: 650;
 		white-space: nowrap;
 	}
-	.timeline > li {
-		display: grid;
-		grid-template-columns: 5.5em 1fr;
-		gap: 12px;
-		padding: 10px 0;
-		border-bottom: 1px dashed var(--line);
-	}
-	.when {
-		font-weight: 700;
-		color: var(--leaf);
-		font-size: 0.9rem;
-		padding-top: 2px;
-	}
-	summary {
-		cursor: pointer;
-	}
-	.steps {
-		list-style: decimal;
-		padding-left: 1.3em;
-		margin: 10px 0;
-		display: grid;
-		gap: 6px;
-	}
 	.start {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px;
-		margin: 8px 0 12px;
-		font-weight: 600;
+		gap: var(--sp-2) var(--sp-4);
+		margin: var(--sp-2) 0 var(--sp-3);
 	}
-	.start input {
-		border: 1.5px solid var(--line);
-		border-radius: 10px;
-		background: var(--paper);
-		color: var(--ink);
-		padding: 4px 8px;
-		font: inherit;
+	.start label {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--sp-2);
+		font-weight: 600;
 	}
 	.gantt {
 		display: grid;
 		gap: 6px;
-		margin-bottom: 16px;
+		margin-bottom: var(--sp-4);
 	}
 	.gantt-row {
 		display: grid;
 		grid-template-columns: minmax(90px, 30%) 1fr auto;
 		align-items: center;
-		gap: 8px;
-		font-size: 0.82rem;
+		gap: var(--sp-2);
+		font-size: var(--fs-sm);
 	}
 	.gantt-name {
 		overflow: hidden;
@@ -509,8 +466,8 @@
 	.legend {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 4px 16px;
-		margin: 4px 0 0;
+		gap: var(--sp-1) var(--sp-4);
+		margin: var(--sp-1) 0 0;
 		color: var(--ink-2);
 	}
 	.legend i {
@@ -520,24 +477,92 @@
 		border-radius: 999px;
 		vertical-align: middle;
 	}
-	.done p {
+	.timeline > li {
+		display: grid;
+		grid-template-columns: 4em minmax(0, 1fr);
+		gap: var(--sp-3);
+		padding: 6px 0;
+	}
+	.when {
+		font-weight: 700;
+		color: var(--leaf);
+		font-size: var(--fs-md);
+		font-variant-numeric: tabular-nums;
+		padding-top: 10px;
+	}
+	/* A whole row to tap, with a chevron that says it opens. */
+	summary {
 		display: flex;
 		align-items: center;
+		gap: var(--sp-3);
+		min-height: var(--tap);
+		padding: 4px 0;
+		cursor: pointer;
+		list-style: none;
+	}
+	summary::-webkit-details-marker {
+		display: none;
+	}
+	.summary-text {
+		flex: 1;
+		min-width: 0;
+		display: flex;
+		flex-direction: column;
+	}
+	summary::after {
+		content: '';
+		flex: none;
+		width: 8px;
+		height: 8px;
+		margin: 0 6px 4px 0;
+		border-right: 2px solid var(--ink-2);
+		border-bottom: 2px solid var(--ink-2);
+		transform: rotate(45deg);
+		transition: transform 0.2s var(--ease-out);
+	}
+	details[open] > summary::after {
+		margin: 4px 6px 0 0;
+		transform: rotate(-135deg);
+	}
+	summary:hover strong {
+		text-decoration: underline;
+		text-decoration-thickness: 1.5px;
+		text-underline-offset: 3px;
+	}
+	.steps {
+		list-style: decimal;
+		padding-left: 1.3em;
+		margin: 10px 0;
+		display: grid;
 		gap: 6px;
 	}
-	.pack {
-		margin: 4px 0 0;
-		padding-left: 18px;
-		color: var(--ink-2);
-		font-size: 0.9rem;
+	.loading {
+		margin: var(--sp-2) 0;
 	}
-	.notes .pack li {
+	.pack {
+		margin: var(--sp-1) 0 0;
+		padding-left: 18px;
+		list-style: disc;
+		color: var(--ink-2);
+		font-size: var(--fs-md);
+	}
+	.pack li {
 		padding: 2px 0;
-		border: 0;
+	}
+	.done .notice {
+		margin: 0 0 var(--sp-3);
+	}
+	.done .hint {
+		margin-top: var(--sp-3);
 	}
 	.done .actions {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 8px;
+		gap: var(--sp-2);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		summary::after {
+			transition: none;
+		}
 	}
 </style>

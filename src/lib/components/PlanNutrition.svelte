@@ -62,11 +62,12 @@
 </script>
 
 <section class="card box" id="ziviny">
-	<h2><Icon name="bean" size={24} /> Živiny na deň</h2>
+	<h2 class="section-title"><Icon name="bean" size={24} /> Živiny na deň</h2>
 	<div class="settings">
 		<label>
 			Moja váha
 			<input
+				class="input sm"
 				inputmode="numeric"
 				placeholder="—"
 				value={settings.current.weightKg ?? ''}
@@ -78,7 +79,7 @@
 			kg
 		</label>
 	</div>
-	<p class="muted small">
+	<p class="hint">
 		Priemer na osobu a deň len z naplánovaných jedál (raňajky a snacky mimo plánu sa nepočítajú).
 		{journal.current.goals.custom.protein
 			? `Cieľ bielkovín: ${formatNumber(targets.protein, 0)} g (vlastný).`
@@ -106,7 +107,7 @@
 				</li>
 			{/each}
 		</ul>
-		<p class="muted small">
+		<p class="hint">
 			Podľa porcie a jedál, ktoré je doma. Ciele z výšky, váhy a veku nastavíš v <a
 				href="/domacnost">domácnosti</a
 			>.
@@ -122,26 +123,16 @@
 			{/each}
 		</ul>
 	{/if}
-	<p class="b12">
-		<Icon name="pill" size={18} /> B12 a vitamín D pokryje len suplement.
-		<a href="/wiki/b12">Viac</a>
+	<p class="notice">
+		<Icon name="pill" size={18} />
+		<span>B12 a vitamín D pokryje len suplement. <a href="/wiki/b12">Viac</a></span>
 	</p>
 </section>
 
 <style>
-	/* The plan page's cards: same padding and heading as its other sections. */
-	.box {
-		padding: 20px;
-	}
-	.box h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.4rem;
-		margin: 0 0 12px;
-	}
+	/* Below the sticky header and the plan page's jump bar. */
 	#ziviny {
-		scroll-margin-top: 120px;
+		scroll-margin-top: calc(var(--header-h) + 64px);
 	}
 	.per-member-title {
 		margin: 18px 0 6px;
@@ -160,29 +151,18 @@
 		justify-content: space-between;
 		gap: 4px 12px;
 	}
-	.settings {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 14px;
-		margin-bottom: 8px;
+	.settings label {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--sp-2);
 		font-weight: 600;
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 	}
 	.settings input {
-		border: 1.5px solid var(--line);
-		border-radius: 10px;
-		background: var(--paper);
-		padding: 4px 8px;
-		margin: 0 4px;
-		width: 4.5em;
+		width: 5em;
 	}
-	.b12 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		margin: 16px 0 0;
-		font-size: 0.88rem;
-		color: var(--sky);
+	.hint {
+		margin-bottom: var(--sp-3);
 	}
 	.balance {
 		list-style: none;
@@ -195,7 +175,7 @@
 		display: flex;
 		gap: 8px;
 		align-items: flex-start;
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 		color: var(--ink-2);
 	}
 	.balance li :global(svg) {
@@ -205,8 +185,5 @@
 	}
 	.balance li.tip :global(svg) {
 		color: var(--turmeric);
-	}
-	.small {
-		font-size: 0.84rem;
 	}
 </style>

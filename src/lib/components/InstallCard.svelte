@@ -10,7 +10,7 @@
 </script>
 
 {#if install.offer}
-	<div class="card install">
+	<div class="card install accent-edge">
 		<span class="i-icon"><Icon name="download" size={24} /></span>
 		<div>
 			<strong>{title}</strong>
@@ -36,9 +36,8 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 12px 16px;
-		padding: 14px 16px;
-		border-left: 4px solid var(--leaf);
+		gap: var(--sp-3) var(--sp-4);
+		padding: 14px var(--sp-4) 14px 20px;
 		animation: rise 0.5s var(--ease-out) both;
 	}
 	.install > div:first-of-type {
@@ -46,20 +45,28 @@
 	}
 	.install p {
 		margin: 2px 0 0;
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 		color: var(--ink-2);
 	}
 	.i-icon {
 		display: grid;
 		place-items: center;
+		flex: none;
 		width: 44px;
 		height: 44px;
-		border-radius: 14px;
+		border-radius: var(--radius-sm);
 		background: var(--leaf-soft);
 		color: var(--leaf);
 	}
 	.i-actions {
 		display: flex;
-		gap: 8px;
+		flex-wrap: wrap;
+		gap: var(--sp-2);
+		margin-left: auto;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.install {
+			animation: none;
+		}
 	}
 </style>

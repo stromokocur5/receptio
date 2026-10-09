@@ -25,6 +25,7 @@
 	import { INGREDIENT_CATEGORIES, type Ingredient } from '$lib/types';
 	import { enableDigests, remindersSupported, updateDigests } from '$lib/reminders';
 	import { onMount } from 'svelte';
+	import { toast } from '$lib/toast.svelte';
 
 	/** The morning overview tells what's about to spoil and what to cook with it. */
 	let canRemind = $state(false);
@@ -47,7 +48,6 @@
 	const catalog = useCatalog();
 
 	let search = $state('');
-	let confirmClear = $state(false);
 
 	const ingredientNames = catalog.ingredients.map(ingredientSearchText);
 	const matchesName = $derived(searchMatcher(ingredientNames, search));
@@ -166,8 +166,11 @@
 			? useSoon(pantry.current, pantryAdded.current, catalog.ingredientsById, new Date())
 			: []
 	);
-	const daysAgo = (days: number) =>
-		days < 14 ? `${days} dňami` : `${Math.round(days / 7)} týždňami`;
+	const daysAgo = (days: number) => {
+		if (days === 1) return 'včera';
+		if (days < 14) return `pred ${days} dňami`;
+		return `pred ${Math.round(days / 7)} týždňami`;
+	};
 
 	function toggle(ingredient: Ingredient) {
 		if (ingredient.id in pantry.current) removePantryItem(ingredient.id);
@@ -179,25 +182,42 @@
 		setPantryItem(id, value.trim() === '' || !Number.isFinite(grams) || grams < 0 ? null : grams);
 	}
 
-	let ranOut = $state<string | null>(null);
 	let scanning = $state(false);
+
+	/** Takes a change back: the pantry, its dates and (for "ran out") the shopping list. */
+	function snapshot() {
+		const before = {
+			pantry: pantry.current,
+			added: pantryAdded.current,
+			extras: extraItems.current
+		};
+		return () => {
+			pantry.current = before.pantry;
+			pantryAdded.current = before.added;
+			extraItems.current = before.extras;
+		};
+	}
+
 	/** Ran out: off the pantry and onto the shopping list in one tap. */
 	function useUp(ingredient: Ingredient) {
+		const undo = snapshot();
 		removePantryItem(ingredient.id);
 		if (!extraItems.current.some((x) => !x.checked && x.text === ingredient.name))
 			addExtraItem(ingredient.name);
-		ranOut = ingredient.name;
-		setTimeout(() => (ranOut = null), 2500);
+		toast(`${ingredient.name}: v nákupnom zozname`, undo);
+	}
+
+	function remove(ingredient: Ingredient) {
+		const undo = snapshot();
+		removePantryItem(ingredient.id);
+		toast(`${ingredient.name}: preč zo špajze`, undo);
 	}
 
 	function clearAll() {
-		if (!confirmClear) {
-			confirmClear = true;
-			setTimeout(() => (confirmClear = false), 3000);
-			return;
-		}
+		const undo = snapshot();
 		pantry.current = {};
-		confirmClear = false;
+		pantryAdded.current = {};
+		toast('Špajza je prázdna', undo);
 	}
 </script>
 
@@ -215,23 +235,25 @@
 			presnejší nákupný zoznam. Všetko ostáva len v tvojom prehliadači.
 		</p>
 		<PlanScope />
-		<a class="leftovers-link card draw-host" href="/zvysky">
-			<Icon name="jar" size={22} />
-			<span>
-				<strong>Treba minúť len pár vecí?</strong>
-				<small
-					>Pol cukety, ryža zo včera – nájdi recept zo zvyškov bez vypĺňania celej špajze.</small
+		<div class="intro-links">
+			<a class="leftovers-link card draw-host" href="/zvysky">
+				<Icon name="jar" size={22} />
+				<span>
+					<strong>Treba minúť len pár vecí?</strong>
+					<small
+						>Pol cukety, ryža zo včera – nájdi recept zo zvyškov bez vypĺňania celej špajze.</small
+					>
+				</span>
+				<Icon name="arrow-right" size={18} />
+			</a>
+			<nav class="chips jump" aria-label="Na stránke">
+				<a class="chip" href="#moja-spajza"><Icon name="jar" size={16} /> Moja špajza</a>
+				<a class="chip" href="#zavaraniny"
+					><Icon name="snowflake" size={16} /> Zaváraniny a mraznička</a
 				>
-			</span>
-			<Icon name="arrow-right" size={18} />
-		</a>
-		<nav class="jump" aria-label="Na stránke">
-			<a class="chip" href="#moja-spajza"><Icon name="jar" size={15} /> Moja špajza</a>
-			<a class="chip" href="#zavaraniny"
-				><Icon name="snowflake" size={15} /> Zaváraniny a mraznička</a
-			>
-			<a class="chip" href="#nemam"><Icon name="x" size={15} /> Čo nemám a nejem</a>
-		</nav>
+				<a class="chip" href="#nemam"><Icon name="x" size={16} /> Čo nemám a nejem</a>
+			</nav>
+		</div>
 	</header>
 
 	{#if suggestions.length}
@@ -269,7 +291,7 @@
 					placeholder="Hľadaj surovinu – cícer, huby…"
 				/>
 				<button
-					class="scan"
+					class="icon-btn plain scan"
 					aria-label="Pridať podľa čiarového kódu"
 					title="Pridať podľa čiarového kódu"
 					aria-expanded={scanning}
@@ -292,7 +314,8 @@
 						>
 							<Icon name={missing ? bundle.icon : 'check'} size={15} />
 							{bundle.label}
-							{#if missing && missing < bundle.ids.length}<small>+{missing}</small>{/if}
+							{#if missing && missing < bundle.ids.length}<small class="more">+{missing}</small
+								>{/if}
 						</button>
 					{/each}
 				</div>
@@ -302,19 +325,14 @@
 					{@const picked = ui.loaded ? list.filter((i) => i.id in pantry.current).length : 0}
 					<details class="cat" open={!!search.trim()}>
 						<summary>
-							<h3>{CATEGORY_LABELS[category]}</h3>
+							<h3 class="eyebrow">{CATEGORY_LABELS[category]}</h3>
 							<span class="cat-n">{picked ? `${picked} z ${list.length}` : list.length}</span>
 						</summary>
 						<div class="chips">
 							{#each list as ingredient (ingredient.id)}
 								{@const on = ui.loaded && ingredient.id in pantry.current}
-								<button
-									class="chip pick"
-									aria-pressed={on}
-									onclick={() => toggle(ingredient)}
-									style:--c={ingredient.color}
-								>
-									<span class="dot"></span>
+								<button class="chip pick" aria-pressed={on} onclick={() => toggle(ingredient)}>
+									<span class="swatch" style:--c={ingredient.color}></span>
 									{ingredient.name}
 									{#if on}<Icon name="check" size={14} stroke={2.6} draw />{/if}
 								</button>
@@ -329,20 +347,22 @@
 
 		<div class="side">
 			{#if soon.length}
-				<section class="card soon" aria-labelledby="soon-title">
-					<h2 id="soon-title"><Icon name="clock" size={20} /> Minúť čoskoro</h2>
-					<p class="muted small">Čerstvé veci, ktoré máš v špajzi už pár dní.</p>
+				<section class="card box soon" aria-labelledby="soon-title">
+					<h2 class="section-title" id="soon-title">
+						<Icon name="clock" size={24} /> Minúť čoskoro
+					</h2>
+					<p class="hint">Čerstvé veci, ktoré máš v špajzi už pár dní.</p>
 					<ul>
 						{#each soon.slice(0, 5) as { ingredient, days } (ingredient.id)}
 							<li>
-								<span class="dot" style:--c={ingredient.color}></span>
-								{ingredient.name}
-								<small class="muted">pred {daysAgo(days)}</small>
+								<span class="swatch" style:--c={ingredient.color}></span>
+								<span class="soon-name">{ingredient.name}</span>
+								<small class="muted">{daysAgo(days)}</small>
 							</li>
 						{/each}
 					</ul>
 					<a
-						class="btn small"
+						class="btn leaf small"
 						href="/zvysky?s={soon
 							.slice(0, 5)
 							.map((s) => s.ingredient.id)
@@ -352,19 +372,21 @@
 						<button class="btn ghost small" disabled={remindBusy} onclick={remindMornings}>
 							<Icon name="bell" size={16} /> Pripomeň mi to ráno
 						</button>
-						{#if remindError}<p class="muted small" role="alert">{remindError}</p>{/if}
+						{#if remindError}<p class="notice danger" role="alert">
+								<Icon name="alert" size={18} />
+								{remindError}
+							</p>{/if}
 					{:else if digestReminder.current?.morning}
-						<p class="muted small">Ráno o 7:00 ti pripomenieme, čo sa minie, aj s receptom.</p>
+						<p class="hint">Ráno o 7:00 ti pripomenieme, čo sa minie, aj s receptom.</p>
 					{/if}
 				</section>
 			{/if}
-			<section class="card mine" id="moja-spajza">
+			<section class="card box mine" id="moja-spajza">
 				<div class="mine-head">
-					<h2><Icon name="jar" size={24} /> Moja špajza</h2>
-					{#if items.length}
-						<button class="btn ghost small" onclick={clearAll}>
-							<Icon name="trash" size={16} />
-							{confirmClear ? 'Naozaj?' : 'Vyprázdniť'}
+					<h2 class="section-title"><Icon name="jar" size={24} /> Moja špajza</h2>
+					{#if ui.loaded && items.length}
+						<button class="btn danger small" onclick={clearAll}>
+							<Icon name="trash" size={16} /> Vyprázdniť
 						</button>
 					{/if}
 				</div>
@@ -386,17 +408,18 @@
 							<rect x="20" y="8" width="40" height="14" rx="4" fill="var(--leaf-2)" />
 							<path d="M24 50h32" stroke="var(--line)" stroke-width="3" stroke-linecap="round" />
 						</svg>
-						<p class="muted">Zatiaľ prázdne. Ťukni na suroviny vľavo.</p>
+						<p>Zatiaľ prázdne. Ťukni na suroviny v zozname alebo pridaj celú sadu naraz.</p>
 					</div>
 				{:else}
-					<ul>
+					<ul class="divided items">
 						{#each items as { ingredient, grams } (ingredient.id)}
 							<li>
-								<span class="dot" style:--c={ingredient.color}></span>
+								<span class="swatch" style:--c={ingredient.color}></span>
 								<span class="nm">{ingredient.name}</span>
 								<label class="qty">
 									<span class="sr-only">Množstvo v gramoch pre {ingredient.name}</span>
 									<input
+										class="input sm"
 										inputmode="decimal"
 										value={grams ?? ''}
 										placeholder="—"
@@ -405,32 +428,28 @@
 									<span class="unit">g</span>
 								</label>
 								<button
-									class="rm buy"
+									class="icon-btn plain buy"
 									aria-label="Došlo – do nákupu: {ingredient.name}"
 									title="Došlo – do nákupného zoznamu"
 									onclick={() => useUp(ingredient)}
 								>
-									<Icon name="basket" size={16} />
+									<Icon name="basket" size={18} />
 								</button>
 								<button
-									class="rm"
+									class="icon-btn plain rm"
 									aria-label="Odstrániť {ingredient.name}"
-									onclick={() => removePantryItem(ingredient.id)}
+									onclick={() => remove(ingredient)}
 								>
-									<Icon name="x" size={16} />
+									<Icon name="x" size={18} />
 								</button>
 							</li>
 						{/each}
 					</ul>
-					{#if ranOut}<p class="ran-out" role="status">
-							<Icon name="check" size={15} />
-							{ranOut} je v <a href="/plan#nakup">nákupnom zozname</a>.
-						</p>{/if}
-					<p class="muted small">
+					<p class="hint">
 						Množstvo v gramoch je nepovinné – prázdne znamená, že máš dosť. Košík: došlo, daj do
-						nákupu.
+						<a href="/plan#nakup">nákupu</a>.
 					</p>
-					<p class="muted small">
+					<p class="hint">
 						Tip: 1 plechovka cícera ≈ {formatGrams(240)} scedeného, hrnček ryže ≈ {formatGrams(
 							185
 						)}.
@@ -441,9 +460,9 @@
 		</div>
 	</div>
 
-	<section class="card never" id="nemam" aria-labelledby="nemam-title">
+	<section class="card box never" id="nemam" aria-labelledby="nemam-title">
 		<div class="never-head">
-			<h2 id="nemam-title">Čo nemám a nejem</h2>
+			<h2 class="section-title" id="nemam-title"><Icon name="x" size={24} /> Čo nemám a nejem</h2>
 			<p class="muted">
 				Recepty s týmito vecami ti Receptio nebude ponúkať – v receptoch, v návrhu týždňa ani tu. V
 				receptoch sa to dá na chvíľu vypnúť.
@@ -473,7 +492,7 @@
 						</button>
 					{/each}
 				</div>
-				<p class="muted small">
+				<p class="hint">
 					Ťukni na to, čo doma nemáš. <a href="/vybavenie">Čím to nahradiť</a>
 				</p>
 			</div>
@@ -489,7 +508,7 @@
 					Neukazovať fast food a jedlá na občas
 				</button>
 			</div>
-			<p class="muted small">
+			<p class="hint">
 				Skryje kebab, burgre, vyprážané a všetko so štítkom „Na občas“ – veľa tuku alebo cukru.
 				Recepty nezmiznú, cez odkaz alebo vyhľadanie v receptoch s vypnutým filtrom ich otvoríš
 				stále.
@@ -499,31 +518,21 @@
 </div>
 
 <style>
-	.scan {
-		display: grid;
-		place-items: center;
-		flex: none;
-		width: 38px;
-		height: 38px;
-		border: 0;
-		border-radius: 999px;
-		background: transparent;
-		color: var(--ink-2);
-		cursor: pointer;
-	}
-	.scan:hover,
-	.scan[aria-expanded='true'] {
-		background: var(--leaf-soft);
-		color: var(--leaf);
+	.intro-links {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--sp-3) var(--sp-5);
+		margin-top: 14px;
 	}
 	.leftovers-link {
+		flex: 1 1 320px;
+		max-width: 560px;
 		display: grid;
 		grid-template-columns: auto 1fr auto;
 		align-items: center;
-		gap: 12px;
-		max-width: 560px;
-		margin-top: 14px;
-		padding: 12px 16px;
+		gap: var(--sp-3);
+		padding: var(--sp-3) var(--sp-4);
 		color: var(--ink);
 		text-decoration: none;
 		transition: transform 0.25s var(--ease-spring);
@@ -536,18 +545,15 @@
 	}
 	.leftovers-link small {
 		color: var(--ink-2);
+		font-size: var(--fs-sm);
 	}
-	.page {
-		padding-top: 28px;
-	}
-	.lede {
-		max-width: 44em;
-		color: var(--ink-2);
+	.jump {
+		flex: 1 1 280px;
 	}
 	.layout {
 		display: grid;
 		gap: 20px;
-		margin-top: 12px;
+		margin-top: var(--sp-3);
 	}
 	.picker {
 		padding: 18px;
@@ -555,67 +561,38 @@
 	.cats {
 		display: grid;
 		gap: 2px;
-		margin-top: 12px;
+		margin-top: var(--sp-3);
 		max-height: 70vh;
 		overflow: auto;
-		padding-right: 4px;
-	}
-	.cat h3 {
-		font-size: 0.8rem;
-		font-family: var(--font-body);
-		text-transform: uppercase;
-		letter-spacing: 0.1em;
-		color: var(--ink-2);
+		padding-right: var(--sp-1);
 	}
 	.cat .chips {
-		padding: 4px 0 14px;
-	}
-	.chips {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
+		padding: var(--sp-1) 0 14px;
 	}
 	.pick {
 		white-space: normal;
 		text-align: left;
 	}
-	.pick[aria-pressed='true'] {
-		background: var(--leaf);
-		border-color: var(--leaf);
-		color: var(--paper);
-	}
-	.dot {
-		flex: none;
-		width: 12px;
-		height: 12px;
-		border-radius: 45% 55% 50% 50%;
-		background: var(--c);
-		box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
-	}
-	.mine {
-		padding: 18px;
-	}
 	.bundles {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 6px;
-		margin: 14px 0 4px;
+		gap: var(--sp-2);
+		margin: 14px 0 var(--sp-1);
 	}
 	.bundles-label {
-		font-size: 0.85rem;
+		font-size: var(--fs-sm);
 		font-weight: 650;
 		color: var(--muted);
-		margin-right: 2px;
 	}
-	.bundles small {
+	.more {
 		opacity: 0.7;
 	}
 	.cat summary {
 		display: flex;
-		align-items: baseline;
-		gap: 8px;
-		padding: 8px 0;
+		align-items: center;
+		gap: var(--sp-2);
+		min-height: var(--tap);
 		cursor: pointer;
 		list-style: none;
 	}
@@ -624,7 +601,6 @@
 	}
 	.cat summary::before {
 		content: '';
-		align-self: center;
 		width: 7px;
 		height: 7px;
 		border-right: 2px solid currentColor;
@@ -637,26 +613,25 @@
 	}
 	.cat summary h3 {
 		margin: 0;
+		font-family: var(--font-body);
+		color: var(--ink-2);
 	}
 	.cat-n {
-		font-size: 0.8rem;
+		font-size: var(--fs-sm);
 		color: var(--muted);
+	}
+	.side {
+		display: grid;
+		gap: 18px;
+		align-content: start;
 	}
 	.soon {
 		display: grid;
-		gap: 8px;
-		padding: 18px;
-		margin-bottom: 18px;
+		gap: var(--sp-2);
 		background: var(--turmeric-soft);
 		border-color: transparent;
 	}
-	.soon h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		margin: 0;
-		font-size: 1.2rem;
-	}
+	.soon .section-title,
 	.soon p {
 		margin: 0;
 	}
@@ -665,32 +640,93 @@
 		padding: 0;
 		list-style: none;
 		display: grid;
-		gap: 4px;
+		gap: var(--sp-1);
 	}
 	.soon li {
 		display: flex;
 		align-items: center;
-		gap: 8px;
+		gap: var(--sp-2);
+	}
+	.soon-name {
+		min-width: 0;
+	}
+	.soon li small {
+		margin-left: auto;
+		font-size: var(--fs-sm);
+		white-space: nowrap;
 	}
 	.soon .btn {
 		justify-self: start;
+		white-space: normal;
+	}
+	.mine-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--sp-2);
+	}
+	.mine-head .section-title {
+		margin: 0;
+	}
+	.items {
+		margin-top: var(--sp-3);
+	}
+	.items li {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+		align-items: center;
+		gap: var(--sp-2);
+		padding: 6px 0;
+		animation: rise 0.35s var(--ease-out);
+	}
+	.nm {
+		font-size: var(--fs-md);
+	}
+	.qty {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--sp-1);
+	}
+	.qty input {
+		width: 4.8em;
+		text-align: right;
+	}
+	.qty input::placeholder {
+		text-align: right;
+	}
+	.unit {
+		font-size: var(--fs-sm);
+		color: var(--muted);
+	}
+	.rm {
+		color: var(--muted);
+	}
+	.rm:hover {
+		background: var(--tomato-soft);
+		color: var(--tomato);
+	}
+	.buy {
+		color: var(--muted);
+	}
+	.buy:hover {
+		background: var(--leaf-soft);
+		color: var(--leaf);
 	}
 	.never {
 		display: grid;
-		gap: 16px;
-		margin-top: 22px;
-		padding: 20px;
+		gap: var(--sp-4);
+		margin-top: var(--sp-5);
 	}
-	.never-head h2 {
-		margin: 0 0 4px;
-		font-size: 1.4rem;
+	.never-head .section-title {
+		margin: 0 0 var(--sp-1);
 	}
 	.never-head p {
 		margin: 0;
 	}
 	.never h3 {
-		margin: 0 0 8px;
-		font-size: 1rem;
+		margin: 0 0 var(--sp-2);
+		font-size: var(--fs-base);
 	}
 	.never-cols {
 		display: grid;
@@ -701,107 +737,8 @@
 			grid-template-columns: 1fr 1fr;
 		}
 	}
-	.mine-head {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		gap: 8px;
-	}
-	.mine-head h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.4rem;
-		margin: 0;
-	}
-	.mine ul {
-		list-style: none;
-		margin: 14px 0 0;
-		padding: 0;
-	}
-	.mine li {
-		display: grid;
-		grid-template-columns: auto 1fr auto auto auto;
-		align-items: center;
-		gap: 8px;
-		padding: 8px 0;
-		border-bottom: 1px dashed var(--line);
-		animation: rise 0.35s var(--ease-out);
-	}
-	.nm {
-		font-size: 0.95rem;
-	}
-	.qty {
-		display: inline-flex;
-		align-items: center;
-		gap: 4px;
-		background: var(--paper);
-		border-radius: 10px;
-		padding: 2px 8px;
-	}
-	.qty input {
-		width: 4.2em;
-		border: 0;
-		background: transparent;
-		text-align: right;
-		padding: 4px 0;
-		outline: none;
-	}
-	.qty:focus-within {
-		outline: 3px solid var(--turmeric);
-		outline-offset: 1px;
-	}
-	.unit {
-		font-size: 0.8rem;
-		color: var(--muted);
-	}
-	.rm {
-		border: 0;
-		background: transparent;
-		color: var(--muted);
-		display: grid;
-		place-items: center;
-		width: 28px;
-		height: 28px;
-		border-radius: 50%;
-	}
-	.rm:hover {
-		background: var(--tomato-soft);
-		color: var(--tomato);
-	}
-	.buy:hover {
-		background: var(--leaf-soft);
-		color: var(--leaf);
-	}
-	.ran-out {
-		display: flex;
-		align-items: center;
-		gap: 6px;
-		margin: 10px 0 0;
-		font-size: 0.9rem;
-		color: var(--leaf);
-	}
-	.jump {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-		margin-top: 14px;
-	}
-	.jump .chip {
-		text-decoration: none;
-	}
-	.empty {
-		display: grid;
-		justify-items: center;
-		padding: 24px 0 8px;
-		text-align: center;
-	}
-	.small {
-		font-size: 0.82rem;
-		margin: 12px 0 0;
-	}
 	.cook {
-		margin: 26px 0 30px;
+		margin: var(--sp-5) 0 var(--sp-6);
 	}
 	.cook-head {
 		display: flex;
@@ -817,14 +754,15 @@
 		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 		gap: 18px;
 	}
+	@media (prefers-reduced-motion: reduce) {
+		.items li {
+			animation: none;
+		}
+	}
 	@media (min-width: 960px) {
 		.layout {
 			grid-template-columns: 1.3fr 1fr;
 			align-items: start;
-		}
-		.side {
-			position: sticky;
-			top: 84px;
 		}
 	}
 </style>

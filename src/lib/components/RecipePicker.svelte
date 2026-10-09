@@ -124,7 +124,7 @@
 			Ďalšie recepty ({results.length - shown.length})
 		</button>
 	{/if}
-	<p class="hint muted">
+	<p class="hint">
 		{results.length} receptov · pridá sa celý recept, porcie upravíš v zozname.
 	</p>
 </div>
@@ -137,15 +137,6 @@
 	.more {
 		justify-self: center;
 	}
-	.chips {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
-	.chips .chip {
-		font-size: 0.78rem;
-		padding: 0.3em 0.75em;
-	}
 	.results {
 		list-style: none;
 		margin: 0;
@@ -153,7 +144,7 @@
 		max-height: 330px;
 		overflow: auto;
 		border-radius: var(--radius-sm);
-		background: var(--paper);
+		background: var(--sunk);
 	}
 	.results li {
 		display: grid;
@@ -161,7 +152,7 @@
 		align-items: center;
 		gap: 10px;
 		padding: 6px 8px;
-		border-radius: 12px;
+		border-radius: var(--radius-xs);
 	}
 	.results li:hover {
 		background: var(--card);
@@ -177,7 +168,7 @@
 	.info a {
 		color: var(--ink);
 		font-weight: 650;
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 		text-decoration: none;
 		overflow: hidden;
 		text-overflow: ellipsis;
@@ -187,7 +178,7 @@
 		text-decoration: underline;
 	}
 	.meta {
-		font-size: 0.78rem;
+		font-size: var(--fs-xs);
 		color: var(--muted);
 	}
 	.in {
@@ -197,8 +188,8 @@
 	.add {
 		display: grid;
 		place-items: center;
-		width: 34px;
-		height: 34px;
+		width: 38px;
+		height: 38px;
 		border: 0;
 		border-radius: 50%;
 		background: var(--leaf);
@@ -214,13 +205,26 @@
 		background: var(--turmeric);
 		transform: scale(1.15);
 	}
+	@media (pointer: coarse) {
+		.add {
+			width: var(--tap);
+			height: var(--tap);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.add,
+		.add:hover,
+		.add.done {
+			transition: none;
+			transform: none;
+		}
+	}
 	.none {
 		display: block !important;
-		padding: 12px;
+		padding: var(--sp-3);
 		text-align: center;
 	}
 	.hint {
-		font-size: 0.78rem;
 		margin: 0;
 	}
 </style>

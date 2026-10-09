@@ -4,6 +4,7 @@
 	import {
 		MAX_SAVED_WEEKS,
 		applySavedWeek,
+		checkedItems,
 		deleteSavedWeek,
 		plan,
 		saveWeek,
@@ -12,13 +13,12 @@
 		type SavedWeek
 	} from '$lib/state.svelte';
 	import Icon from './Icon.svelte';
+	import { toast } from '$lib/toast.svelte';
 
 	const catalog = useCatalog();
 
 	let name = $state('');
 	let saving = $state(false);
-	/** Putting a week back replaces a plan in progress, so that takes a second tap. */
-	let confirming = $state('');
 	let applied = $state('');
 
 	/** Recipes removed from the site since the week was saved are skipped. */
@@ -39,23 +39,30 @@
 		saving = false;
 	}
 
+	/** Replaces the plan in progress at once; the message below can bring it back. */
 	function apply(week: SavedWeek) {
-		if (plan.current.length && confirming !== week.name) {
-			confirming = week.name;
-			setTimeout(() => (confirming = ''), 3000);
-			return;
-		}
+		const before = { plan: plan.current, checked: checkedItems.current };
 		applySavedWeek(week);
-		confirming = '';
 		applied = week.name;
-		setTimeout(() => (applied = ''), 2500);
+		setTimeout(() => (applied = ''), 2000);
+		if (before.plan.length)
+			toast(`${week.name}: v pláne`, () => {
+				plan.current = before.plan;
+				checkedItems.current = before.checked;
+			});
+	}
+
+	function remove(week: SavedWeek) {
+		const before = savedWeeks.current;
+		deleteSavedWeek(week.name);
+		toast(`${week.name}: zmazané`, () => (savedWeeks.current = before));
 	}
 </script>
 
 {#if ui.loaded && (weeks.length || plan.current.length)}
 	<section class="card box weeks" id="tyzdne">
 		<div class="box-head">
-			<h2><Icon name="star" size={24} /> Uložené týždne</h2>
+			<h2 class="section-title"><Icon name="star" size={24} /> Uložené týždne</h2>
 			{#if plan.current.length && !saving}
 				<button class="btn ghost small" onclick={() => (saving = true)}>
 					<Icon name="plus" size={16} /> Uložiť tento týždeň
@@ -67,6 +74,7 @@
 				<label class="sr-only" for="week-name">Názov týždňa</label>
 				<!-- svelte-ignore a11y_autofocus -->
 				<input
+					class="input"
 					id="week-name"
 					bind:value={name}
 					maxlength="40"
@@ -80,7 +88,7 @@
 					>Zrušiť</button
 				>
 				{#if isFull && !replaces}
-					<p class="muted small note">
+					<p class="hint note">
 						Zmestí sa {MAX_SAVED_WEEKS} týždňov – uložením nového zmizne najstarší.
 					</p>
 				{/if}
@@ -89,7 +97,7 @@
 		{#if weeks.length}
 			<ul>
 				{#each weeks as { week, titles } (week.name)}
-					<li>
+					<li class="sunk">
 						<div class="info">
 							<strong>{week.name}</strong>
 							<small class="muted">
@@ -99,31 +107,25 @@
 									: ''}
 							</small>
 						</div>
-						<button
-							class="btn small"
-							class:leaf={applied !== week.name}
-							onclick={() => apply(week)}
-						>
+						<button class="btn leaf small" onclick={() => apply(week)}>
 							{#if applied === week.name}
 								<Icon name="check" size={16} /> V pláne
-							{:else if confirming === week.name}
-								Nahradiť plán?
 							{:else}
 								Nasadiť
 							{/if}
 						</button>
 						<button
-							class="remove"
+							class="icon-btn plain"
 							aria-label="Zmazať uložený týždeň {week.name}"
-							onclick={() => deleteSavedWeek(week.name)}
+							onclick={() => remove(week)}
 						>
-							<Icon name="x" size={16} />
+							<Icon name="x" size={18} />
 						</button>
 					</li>
 				{/each}
 			</ul>
 		{:else if !saving}
-			<p class="muted small">
+			<p class="hint">
 				Väčšina z nás točí pár overených jedál. Ulož si týždeň, ktorý sa osvedčil, a nabudúce ho
 				nasadíš jedným ťuknutím – aj s nákupným zoznamom.
 			</p>
@@ -132,40 +134,27 @@
 {/if}
 
 <style>
-	.weeks {
-		padding: 20px;
-	}
 	.box-head {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
 		justify-content: space-between;
-		gap: 8px;
-		margin-bottom: 12px;
+		gap: var(--sp-2);
+		margin-bottom: var(--sp-3);
 	}
-	h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.4rem;
+	.box-head .section-title {
 		margin: 0;
 	}
 	.save {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 8px;
+		gap: var(--sp-2);
 		align-items: center;
-		margin-bottom: 12px;
+		margin-bottom: var(--sp-3);
 	}
 	.save input {
 		flex: 1 1 200px;
 		min-width: 0;
-		border: 1.5px solid var(--line);
-		border-radius: 12px;
-		background: var(--paper);
-		color: var(--ink);
-		padding: 8px 12px;
-		font: inherit;
 	}
 	.note {
 		flex-basis: 100%;
@@ -176,15 +165,13 @@
 		margin: 0;
 		padding: 0;
 		display: grid;
-		gap: 8px;
+		gap: var(--sp-2);
 	}
 	li {
 		display: flex;
 		align-items: center;
-		gap: 8px;
-		padding: 10px 12px;
-		border-radius: 14px;
-		background: var(--paper-2);
+		gap: var(--sp-2);
+		padding: 10px 6px 10px 14px;
 	}
 	.info {
 		flex: 1;
@@ -195,22 +182,15 @@
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+		font-size: var(--fs-sm);
 	}
-	.remove {
-		display: grid;
-		place-items: center;
-		width: 32px;
-		height: 32px;
-		flex: none;
-		border: 0;
-		border-radius: 50%;
-		background: none;
+	.icon-btn {
 		color: var(--muted);
 	}
-	.remove:hover {
+	.icon-btn:hover {
 		color: var(--tomato);
 	}
-	p {
+	.hint {
 		margin: 0;
 	}
 </style>

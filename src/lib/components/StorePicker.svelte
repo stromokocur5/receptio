@@ -26,7 +26,7 @@
 	<div class="chips">
 		{#each shops as shop (shop.id)}
 			<button class="chip" aria-pressed={mine.includes(shop.id)} onclick={() => toggle(shop.id)}>
-				<span class="sdot" style:background={shop.color}></span>
+				<span class="swatch" style:--c={shop.color}></span>
 				{shop.name}
 			</button>
 		{/each}
@@ -39,7 +39,7 @@
 			</button>
 		{/if}
 	</div>
-	<p class="muted small">
+	<p class="hint">
 		{mine.length
 			? 'Ceny a nákup rátame len v týchto obchodoch. Zapamätá sa to.'
 			: 'Ťukni na obchody, kam chodíš – ceny a nákup sa prispôsobia.'}
@@ -55,24 +55,10 @@
 	}
 	legend {
 		font-weight: 700;
-		margin-bottom: 8px;
+		margin-bottom: var(--sp-2);
 		padding: 0;
-	}
-	.chips {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
-	.sdot {
-		width: 10px;
-		height: 10px;
-		border-radius: 50%;
-		flex: none;
 	}
 	.ghost {
 		border-style: dashed;
-	}
-	p {
-		margin: 8px 0 0;
 	}
 </style>
