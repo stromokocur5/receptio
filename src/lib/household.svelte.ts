@@ -57,6 +57,7 @@ import {
 	pantry,
 	pantryAdded,
 	plan,
+	saveToStorage,
 	settings,
 	validateDates,
 	validatePantry,
@@ -73,6 +74,7 @@ import {
 	restores,
 	type SyncKeys
 } from './sync.svelte';
+import { onSyncStart, onSyncStop, tab } from './tabs.svelte';
 
 /**
  * The household on this device: the shared plan, pantry and list stay in their usual stores, and
@@ -140,6 +142,8 @@ interface Saved {
 	signer: Signer | null;
 	/** This phone among the household's, for its own pantry changes. */
 	phone: string;
+	/** Last successful sync, for the other tabs to show. */
+	syncedAt: number | null;
 }
 
 export const household = $state<{
@@ -358,23 +362,21 @@ function syncPeople() {
 
 function save() {
 	if (!household.code || !household.doc || !base) return;
-	try {
-		localStorage.setItem(
-			STORAGE_KEY,
-			JSON.stringify({
-				code: household.code,
-				me: household.me,
-				doc: household.doc,
-				solo: household.solo,
-				soloAway: household.soloAway,
-				personal,
-				signer,
-				phone
-			} satisfies Saved)
-		);
-	} catch {
-		// Works for this session; the next visit asks for the link again.
-	}
+	// Full storage works for this visit; the layout warns about it.
+	saveToStorage(
+		STORAGE_KEY,
+		JSON.stringify({
+			code: household.code,
+			me: household.me,
+			doc: household.doc,
+			solo: household.solo,
+			soloAway: household.soloAway,
+			personal,
+			signer,
+			phone,
+			syncedAt: household.syncedAt
+		} satisfies Saved)
+	);
 }
 
 /**
@@ -645,29 +647,20 @@ function closeLive() {
 	ws?.close();
 }
 
-function onVisibility() {
+function onOnline() {
 	if (!keys) return;
-	if (document.visibilityState === 'visible') {
-		socketFailures = 0;
-		openLive();
-		void sync();
-	} else {
-		closeLive();
-		clearTimeout(timer);
-		if (pushTimer) {
-			clearTimeout(pushTimer);
-			pushTimer = undefined;
-			void sync();
-		}
-	}
+	socketFailures = 0;
+	openLive();
+	void sync();
 }
 
+/** Syncs under `code` – only in the tab in front (tabs.svelte.ts); the others follow its saves. */
 async function start(code: string) {
 	stop();
+	if (!tab.syncs) return;
 	keys = await deriveKeys(code);
 	seenRestores = restores.count;
-	document.addEventListener('visibilitychange', onVisibility);
-	addEventListener('online', onVisibility);
+	addEventListener('online', onOnline);
 	await sync();
 	socketFailures = 0;
 	openLive();
@@ -677,11 +670,96 @@ function stop() {
 	clearTimeout(timer);
 	clearTimeout(pushTimer);
 	pushTimer = undefined;
-	document.removeEventListener('visibilitychange', onVisibility);
-	removeEventListener('online', onVisibility);
+	removeEventListener('online', onOnline);
 	closeLive();
 	keys = null;
 	lastRemote = null;
+}
+
+/** This tab goes to the background: what's pending goes out, then another tab takes over. */
+async function handOver() {
+	if (!keys) return;
+	clearTimeout(timer);
+	if (pushTimer) {
+		clearTimeout(pushTimer);
+		pushTimer = undefined;
+		await sync();
+	}
+	while (running) await running;
+	stop();
+}
+
+/** Reads what this app saved; null when it isn't a household (left, or never joined). */
+function parseSaved(text: string | null): Saved | null {
+	try {
+		const raw = JSON.parse(text ?? 'null');
+		const doc = raw && validateDoc(raw.doc);
+		const code = raw && typeof raw.code === 'string' ? normalizeCode(raw.code) : null;
+		if (!doc || !code) return null;
+		return {
+			code,
+			me: typeof raw.me === 'string' ? raw.me : null,
+			doc,
+			solo: raw.solo === true,
+			soloAway: raw.soloAway === true,
+			personal: validatePersonal(raw.personal),
+			signer: validateSigner(raw.signer),
+			phone:
+				typeof raw.phone === 'string' && /^[a-z0-9]{1,16}$/.test(raw.phone)
+					? raw.phone
+					: newPhoneId(),
+			syncedAt: typeof raw.syncedAt === 'number' ? raw.syncedAt : null
+		};
+	} catch {
+		return null;
+	}
+}
+
+/**
+ * Another tab saved the household: created, joined, left, switched to planning alone, or just
+ * synced or changed a profile. This tab takes it over; the documents merge, so nothing either
+ * tab did is lost. Plan, list and pantry follow on their own (state.svelte.ts).
+ */
+function fromOtherTab(text: string | null) {
+	const saved = parseSaved(text);
+	if (!saved) {
+		if (!household.code) return;
+		stop();
+		base = null;
+		personal = null;
+		pendingEvents = [];
+		Object.assign(household, {
+			status: 'off',
+			code: null,
+			me: null,
+			doc: null,
+			syncedAt: null,
+			solo: false,
+			soloAway: false
+		});
+		return;
+	}
+	const moved = saved.code !== household.code;
+	household.code = saved.code;
+	household.me = saved.me;
+	household.solo = saved.solo;
+	household.soloAway = saved.soloAway;
+	household.syncedAt = saved.syncedAt ?? household.syncedAt;
+	personal = saved.personal;
+	signer = saved.signer ?? signer;
+	phone = saved.phone;
+	setDoc(household.doc && !moved ? mergeDocs(household.doc, saved.doc) : saved.doc);
+	if (moved || !base) base = viewOf(household.doc!);
+	if (!keys) household.status = saved.syncedAt ? 'live' : 'connecting';
+	if (!tab.syncs) return;
+	if (moved || !keys) void start(saved.code);
+	else {
+		clearTimeout(pushTimer);
+		pushTimer = setTimeout(() => {
+			pushTimer = undefined;
+			void sync();
+		}, PUSH_DELAY_MS);
+	}
 }
 
 /** Backups hold the own plan, list and pantry; restoring one puts them aside again. */
@@ -713,51 +791,50 @@ function keepAsideForBackups() {
 /** Once, from the root layout after local data is loaded. */
 export function initHousehold() {
 	keepAsideForBackups();
-	let saved: Saved | null = null;
+	addEventListener('storage', (event) => {
+		if (event.key === STORAGE_KEY) fromOtherTab(event.newValue);
+	});
+	onSyncStart(() => {
+		if (household.code && !keys) void start(household.code).then(upgradeProfile);
+	});
+	onSyncStop(handOver);
+	let raw: string | null = null;
 	try {
-		const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? 'null');
-		const doc = raw && validateDoc(raw.doc);
-		const code = raw && typeof raw.code === 'string' ? normalizeCode(raw.code) : null;
-		if (doc && code) {
-			saved = {
-				code,
-				me: typeof raw.me === 'string' ? raw.me : null,
-				doc,
-				solo: raw.solo === true,
-				soloAway: raw.soloAway === true,
-				personal: validatePersonal(raw.personal),
-				signer: validateSigner(raw.signer),
-				phone:
-					typeof raw.phone === 'string' && /^[a-z0-9]{1,16}$/.test(raw.phone)
-						? raw.phone
-						: newPhoneId()
-			};
-		}
+		raw = localStorage.getItem(STORAGE_KEY);
 	} catch {
-		saved = null;
+		return;
 	}
+	const saved = parseSaved(raw);
 	if (!saved) return;
 	household.code = saved.code;
 	household.me = saved.me;
 	setDoc(saved.doc);
 	household.solo = saved.solo;
 	household.soloAway = saved.soloAway;
+	household.syncedAt = saved.syncedAt;
 	personal = saved.personal;
 	signer = saved.signer;
 	phone = saved.phone;
 	household.status = 'connecting';
 	base = viewOf(saved.doc);
-	void start(saved.code).then(async () => {
-		const me = myMember();
-		// Picked "this is me" before profiles had owners: make it theirs now.
-		if (me && !me.owner) return claimMember(me.id);
-		// Owned before profiles carried an inbox: without one a changed link can't find this phone.
-		if (me && signer && canEdit(me) && (!signer.inbox || me.inbox !== signer.inbox.pub)) {
-			signer.inbox ??= await newInbox();
-			save();
-			await putSigned({ ...me, at: stamp() });
-		}
-	});
+	if (tab.syncs) void start(saved.code).then(upgradeProfile);
+}
+
+let upgraded = false;
+
+/** Profiles from older versions of the app, once a visit. */
+async function upgradeProfile() {
+	if (upgraded || !keys) return;
+	upgraded = true;
+	const me = myMember();
+	// Picked "this is me" before profiles had owners: make it theirs now.
+	if (me && !me.owner) return claimMember(me.id);
+	// Owned before profiles carried an inbox: without one a changed link can't find this phone.
+	if (me && signer && canEdit(me) && (!signer.inbox || me.inbox !== signer.inbox.pub)) {
+		signer.inbox ??= await newInbox();
+		save();
+		await putSigned({ ...me, at: stamp() });
+	}
 }
 
 function validateKeyPair(raw: unknown): KeyPair | null {

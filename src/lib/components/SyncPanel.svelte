@@ -9,7 +9,6 @@
 		isPersisted,
 		pushNow,
 		requestPersistence,
-		resolveConflict,
 		syncState
 	} from '$lib/sync.svelte';
 
@@ -141,27 +140,6 @@
 			{/if}
 		</p>
 
-		{#if syncState.status === 'conflict'}
-			<div class="conflict">
-				<p>
-					<strong>Na inom zariadení sú novšie zmeny</strong> a v tomto prehliadači si medzitým tiež niečo
-					zmenil/a. Ktoré dáta chceš ponechať?
-				</p>
-				<div class="actions">
-					<button
-						class="btn leaf"
-						disabled={busy}
-						onclick={() => run(() => resolveConflict('remote'))}>Z iného zariadenia</button
-					>
-					<button
-						class="btn ghost"
-						disabled={busy}
-						onclick={() => run(() => resolveConflict('local'))}>Tieto tu</button
-					>
-				</div>
-			</div>
-		{/if}
-
 		<div class="actions">
 			<button class="btn ghost small" disabled={busy} onclick={() => run(pushNow)}>
 				<Icon name="upload" size={16} /> Synchronizovať teraz
@@ -255,11 +233,6 @@
 		align-items: center;
 		flex-wrap: wrap;
 		gap: 6px;
-	}
-	.conflict {
-		padding: 14px;
-		border-radius: var(--radius-sm);
-		background: var(--turmeric-soft);
 	}
 	.msg {
 		display: flex;

@@ -18,8 +18,10 @@
 		loadPersisted,
 		plan,
 		settings,
+		storageTrouble,
 		ui
 	} from '$lib/state.svelte';
+	import { initTabs } from '$lib/tabs.svelte';
 	import { household, initHousehold, noteHouseholdChange } from '$lib/household.svelte';
 	import { initSync, noteChange, syncState } from '$lib/sync.svelte';
 	import { onboarding, shouldOnboard } from '$lib/onboarding.svelte';
@@ -41,7 +43,7 @@
 
 	const planCount = $derived(plan.current.length);
 	/** Sync needs the user's attention (failed upload or two devices disagree). */
-	const syncTrouble = $derived(syncState.status === 'error' || syncState.status === 'conflict');
+	const syncTrouble = $derived(syncState.status === 'error');
 	const isActive = (href: string) =>
 		page.url.pathname === href || page.url.pathname.startsWith(`${href}/`);
 	const moreActive = $derived(MORE_PATHS.some(isActive));
@@ -52,6 +54,8 @@
 		void loadLikes();
 		initSync();
 		initHousehold();
+		// After both are listening: the tab in front starts syncing.
+		initTabs();
 		initInstall();
 		if (shouldOnboard(page.url)) onboarding.open = true;
 	});
@@ -137,6 +141,16 @@
 </header>
 
 <main id="main">
+	{#if storageTrouble.full}
+		<div class="wrap storage-full" role="alert">
+			<Icon name="alert" size={18} />
+			<p>
+				<strong>Prehliadač nemá miesto na ďalšie dáta.</strong> Čo zmeníš teraz, po zatvorení
+				zmizne.
+				<a href="/moje">Stiahni si zálohu</a> alebo zapni synchronizáciu, a uvoľni miesto v prehliadači.
+			</p>
+		</div>
+	{/if}
 	{@render children()}
 </main>
 
@@ -186,6 +200,19 @@
 <MoreMenu />
 
 <style>
+	.storage-full {
+		display: flex;
+		gap: 10px;
+		align-items: flex-start;
+		margin-top: 12px;
+		padding: 12px 14px;
+		border: 1.5px solid var(--tomato, #c4472d);
+		border-radius: var(--radius-sm);
+		background: var(--paper);
+	}
+	.storage-full p {
+		margin: 0;
+	}
 	.skip {
 		position: absolute;
 		left: -999px;

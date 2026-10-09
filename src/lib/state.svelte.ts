@@ -33,6 +33,34 @@ export const LIST_SEARCH_KEY = `${PREFIX}recepty-search`;
 export const changes = $state({ count: 0 });
 
 /**
+ * Saving failed because the browser's storage is full: what changed since works for this visit
+ * only. The layout says so and offers a backup.
+ */
+export const storageTrouble = $state({ full: false });
+
+/** Writes to localStorage; false (and `storageTrouble`) when the browser refused. */
+export function saveToStorage(key: string, text: string): boolean {
+	try {
+		localStorage.setItem(key, text);
+		storageTrouble.full = false;
+		return true;
+	} catch (err) {
+		// Blocked storage (some private modes) fails on every write; only a full one is news.
+		if (isQuotaError(err)) storageTrouble.full = true;
+		return false;
+	}
+}
+
+const isQuotaError = (err: unknown) =>
+	err instanceof DOMException &&
+	(err.name === 'QuotaExceededError' ||
+		err.name === 'NS_ERROR_DOM_QUOTA_REACHED' ||
+		err.code === 22);
+
+/** Every stored value by its storage key, so a change in another tab reaches it. */
+const byKey = new Map<string, Persisted<unknown>>();
+
+/**
  * A value mirrored to localStorage. Starts with `initial` on the server and during hydration,
  * and only reads storage in `load()` (called once from the root layout on mount) so prerendered
  * HTML and the first client render always match.
@@ -40,6 +68,7 @@ export const changes = $state({ count: 0 });
 class Persisted<T> {
 	#key: string;
 	#value: T = $state() as T;
+	#initial: T;
 	#validate: (raw: unknown) => T | undefined;
 	#deviceOnly: boolean;
 
@@ -52,8 +81,10 @@ class Persisted<T> {
 	) {
 		this.#key = PREFIX + key;
 		this.#value = initial;
+		this.#initial = initial;
 		this.#validate = validate;
 		this.#deviceOnly = deviceOnly;
+		byKey.set(this.#key, this as Persisted<unknown>);
 	}
 
 	get current(): T {
@@ -64,11 +95,23 @@ class Persisted<T> {
 		this.#value = value;
 		if (!browser) return;
 		if (!this.#deviceOnly) changes.count++;
+		saveToStorage(this.#key, JSON.stringify(value));
+	}
+
+	/**
+	 * Another tab saved a new value: take it without writing it back. It still counts as a change
+	 * here, so the tab that syncs sends it on.
+	 */
+	fromOtherTab(raw: string | null) {
+		let next = this.#initial;
 		try {
-			localStorage.setItem(this.#key, JSON.stringify(value));
+			const parsed = raw === null ? undefined : this.#validate(JSON.parse(raw));
+			if (parsed !== undefined) next = parsed;
 		} catch {
-			// Storage can be full or blocked (private mode); state still works for this session.
+			return;
 		}
+		this.#value = next;
+		if (!this.#deviceOnly) changes.count++;
 	}
 
 	/** The value backup data would give, without storing it. */
@@ -677,6 +720,11 @@ export function loadPersisted() {
 	openGardenId.load();
 	waterReminder.load();
 	supplementReminder.load();
+	// Two tabs open: a change saved in one shows in the other instead of being overwritten by it.
+	addEventListener('storage', (event) => {
+		if (event.storageArea !== localStorage || event.key === null) return;
+		byKey.get(event.key)?.fromOtherTab(event.newValue);
+	});
 	ui.loaded = true;
 }
 

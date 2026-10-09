@@ -1,5 +1,8 @@
 import { exportBackup, importBackup } from './backup';
+import { kvGet, kvSet } from './kv';
+import { merge3 } from './merge3';
 import { changes } from './state.svelte';
+import { onSyncStart, onSyncStop, tab } from './tabs.svelte';
 
 /**
  * Account-free sync. A random recovery code is the only secret: the browser derives from it the
@@ -15,7 +18,7 @@ const ALPHABET = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
 export const CODE_LENGTH = 20;
 const PUSH_DELAY_MS = 4000;
 
-type Status = 'off' | 'idle' | 'syncing' | 'error' | 'conflict';
+type Status = 'off' | 'idle' | 'syncing' | 'error';
 
 export const syncState = $state<{
 	code: string | null;
@@ -27,16 +30,23 @@ export const syncState = $state<{
 
 interface Meta {
 	syncedAt: number | null;
+	/** The server's version this device last matched; null before the server had versions. */
+	version: number | null;
 	/** Local changes not yet uploaded. */
 	dirty: boolean;
 }
 
-let meta: Meta = { syncedAt: null, dirty: false };
+let meta: Meta = { syncedAt: null, version: null, dirty: false };
 let pushTimer: ReturnType<typeof setTimeout> | undefined;
 /** Wait before retrying a failed upload; doubles up to RETRY_MAX_MS, resets on success. */
 const RETRY_FIRST_MS = 60_000;
 const RETRY_MAX_MS = 10 * 60_000;
 let retryDelay = RETRY_FIRST_MS;
+/** Two devices changed at once this many times in a row: give up for now and retry later. */
+const MAX_MERGES = 4;
+/** The backup both this device and the server last agreed on, for merging (IndexedDB, it's big). */
+const BASE_KEY = 'sync-base';
+let running: Promise<void> | null = null;
 /** Bumped when another device's backup replaced the data here (the household takes that as its base). */
 export const restores = $state({ count: 0 });
 /** Changes up to this count came from the server, not from the user – don't upload them back. */
@@ -171,75 +181,159 @@ function fail(err: unknown) {
 }
 
 /** Uploads everything now. */
+/** Uploads everything now; when another device saved meanwhile, merges with it first. */
 export async function pushNow(): Promise<void> {
 	clearTimeout(pushTimer);
 	pushTimer = undefined;
-	if (!syncState.code) return;
-	syncState.status = 'syncing';
-	try {
-		const keys = await deriveKeys(syncState.code);
-		const { updatedAt } = await request(keys, 'PUT', {
-			token: keys.token,
-			data: await encrypt(keys.key, exportBackup())
-		});
-		meta = { syncedAt: updatedAt as number, dirty: false };
-		saveMeta();
-		syncState.syncedAt = meta.syncedAt;
-		syncState.status = 'idle';
-		syncState.message = '';
-		retryDelay = RETRY_FIRST_MS;
-	} catch (err) {
-		fail(err);
-		if (isTemporary(err)) {
-			pushTimer = setTimeout(() => void pushNow(), retryDelay);
-			retryDelay = Math.min(retryDelay * 2, RETRY_MAX_MS);
+	if (!syncState.code || !tab.syncs) return;
+	await exclusive(async () => {
+		syncState.status = 'syncing';
+		try {
+			const keys = await deriveKeys(syncState.code!);
+			for (let attempt = 0; ; attempt++) {
+				const text = exportBackup();
+				try {
+					const saved = await request(keys, 'PUT', {
+						token: keys.token,
+						data: await encrypt(keys.key, text),
+						...(meta.version !== null && { ifVersion: meta.version })
+					});
+					await agreed(text, saved.updatedAt as number, saved.version);
+					break;
+				} catch (err) {
+					if (!isConflict(err) || attempt >= MAX_MERGES) throw err;
+					// Someone else saved since: take their changes into ours, then try again.
+					await mergeRemote(await fetchRemote(keys));
+				}
+			}
+			syncState.status = 'idle';
+			syncState.message = '';
+			retryDelay = RETRY_FIRST_MS;
+		} catch (err) {
+			fail(err);
+			if (isTemporary(err)) {
+				pushTimer = setTimeout(() => void pushNow(), retryDelay);
+				retryDelay = Math.min(retryDelay * 2, RETRY_MAX_MS);
+			}
 		}
+	});
+}
+
+/** One push or pull at a time. */
+async function exclusive(job: () => Promise<void>) {
+	while (running) await running;
+	running = job();
+	try {
+		await running;
+	} finally {
+		running = null;
 	}
 }
 
-async function applyRemote(keys: SyncKeys, remote: { data: string; updatedAt: number }) {
-	const restored = importBackup(await decrypt(keys.key, remote.data));
+const isConflict = (err: unknown) => err instanceof Error && 'status' in err && err.status === 409;
+
+interface Remote {
+	text: string;
+	updatedAt: number;
+	version: number | null;
+}
+
+async function fetchRemote(keys: SyncKeys): Promise<Remote | null> {
+	const query = meta.version !== null ? `?known=${meta.version}` : '';
+	const remote = await request(keys, 'GET', undefined, query);
+	if (remote.unchanged === true) return null;
+	return {
+		text: await decrypt(keys.key, remote.data as string),
+		updatedAt: remote.updatedAt as number,
+		version: typeof remote.version === 'number' ? remote.version : null
+	};
+}
+
+/** This device and the server now hold the same backup. */
+async function agreed(text: string, updatedAt: number, version: unknown) {
+	meta = {
+		syncedAt: updatedAt,
+		version: typeof version === 'number' ? version : null,
+		// Changed again while uploading: that goes up next.
+		dirty: dataOf(text) !== dataOf(exportBackup())
+	};
+	saveMeta();
+	syncState.syncedAt = meta.syncedAt;
+	try {
+		await kvSet(BASE_KEY, text);
+	} catch {
+		// Without the base the next merge keeps both sides' additions (nothing is lost).
+	}
+}
+
+/** A backup's data without its export time, to compare two backups. */
+function dataOf(text: string): string {
+	try {
+		return JSON.stringify((JSON.parse(text) as { data?: unknown }).data);
+	} catch {
+		return text;
+	}
+}
+
+/** Puts a backup's data on this device; it isn't an edit of this device's to upload back. */
+function apply(text: string) {
+	const restored = importBackup(text);
 	if (restored === null) throw new Error('Záloha na serveri je poškodená.');
 	appliedUpTo = changes.count;
 	restores.count++;
-	meta = { syncedAt: remote.updatedAt, dirty: false };
-	saveMeta();
-	syncState.syncedAt = meta.syncedAt;
-	syncState.status = 'idle';
-	syncState.message = '';
 }
 
-/** Takes newer data from another device, unless this one has unsent changes (then asks). */
-export async function pullIfNewer(): Promise<void> {
-	if (!syncState.code || syncState.status === 'syncing') return;
+/**
+ * The server has a newer backup: without changes here it simply replaces the data; with changes
+ * on both devices the two merge against the backup they last shared, and this device keeps
+ * changes to upload.
+ */
+async function mergeRemote(remote: Remote | null) {
+	if (!remote) return;
+	if (!meta.dirty) {
+		apply(remote.text);
+		await agreed(remote.text, remote.updatedAt, remote.version);
+		return;
+	}
+	const base = await kvGet<string>(BASE_KEY).catch(() => undefined);
+	apply(mergeBackups(base ?? null, exportBackup(), remote.text));
+	meta = { syncedAt: remote.updatedAt, version: remote.version, dirty: true };
+	saveMeta();
 	try {
-		const keys = await deriveKeys(syncState.code);
-		const remote = (await request(keys, 'GET')) as { data: string; updatedAt: number };
-		if (meta.syncedAt !== null && remote.updatedAt <= meta.syncedAt) {
-			if (meta.dirty) await pushNow();
-			return;
-		}
-		if (meta.dirty) {
-			syncState.status = 'conflict';
-			return;
-		}
-		await applyRemote(keys, remote);
-	} catch (err) {
-		// A code whose data was deleted elsewhere: upload what this device has.
-		if (err instanceof Error && 'status' in err && err.status === 404) await pushNow();
-		else fail(err);
+		await kvSet(BASE_KEY, remote.text);
+	} catch {
+		// See agreed().
 	}
 }
 
-/** When both devices changed: keep the server's version or overwrite it with this one. */
-export async function resolveConflict(keep: 'remote' | 'local'): Promise<void> {
-	if (!syncState.code) return;
-	if (keep === 'local') return pushNow();
+/** Both devices' changes since `base`; where both changed the same thing, this device's. */
+export function mergeBackups(base: string | null, local: string, remote: string): string {
+	const data = (text: string | null) => {
+		try {
+			return text ? (JSON.parse(text) as { data?: unknown }).data : undefined;
+		} catch {
+			return undefined;
+		}
+	};
+	const parsed = JSON.parse(local) as Record<string, unknown>;
+	return JSON.stringify({ ...parsed, data: merge3(data(base), data(local), data(remote)) });
+}
+
+/** Takes newer data from another device, merging when both changed. */
+export async function pullIfNewer(): Promise<void> {
+	if (!syncState.code || !tab.syncs) return;
 	try {
 		const keys = await deriveKeys(syncState.code);
-		await applyRemote(keys, (await request(keys, 'GET')) as { data: string; updatedAt: number });
+		await exclusive(async () => mergeRemote(await fetchRemote(keys)));
+		syncState.status = 'idle';
+		syncState.message = '';
+		if (meta.dirty) await pushNow();
 	} catch (err) {
-		fail(err);
+		// A code whose data was deleted elsewhere: upload what this device has.
+		if (err instanceof Error && 'status' in err && err.status === 404) {
+			meta = { ...meta, version: null, dirty: true };
+			await pushNow();
+		} else fail(err);
 	}
 }
 
@@ -261,7 +355,8 @@ function storeCode(code: string | null) {
 export async function enableSync(): Promise<void> {
 	void requestPersistence();
 	storeCode(generateCode());
-	meta = { syncedAt: null, dirty: true };
+	meta = { syncedAt: null, version: null, dirty: true };
+	saveMeta();
 	await pushNow();
 }
 
@@ -271,9 +366,12 @@ export async function connectSync(input: string): Promise<string | null> {
 	if (!code) return 'Kód má 20 znakov – skontroluj, či je celý.';
 	try {
 		const keys = await deriveKeys(code);
-		const remote = (await request(keys, 'GET')) as { data: string; updatedAt: number };
+		const remote = await request(keys, 'GET');
+		const text = await decrypt(keys.key, remote.data as string);
 		storeCode(code);
-		await applyRemote(keys, remote);
+		apply(text);
+		meta.dirty = false;
+		await agreed(text, remote.updatedAt as number, remote.version);
 		void requestPersistence();
 		return null;
 	} catch (err) {
@@ -299,12 +397,12 @@ export async function disableSync(deleteRemote: boolean): Promise<void> {
 	}
 	clearTimeout(pushTimer);
 	storeCode(null);
-	meta = { syncedAt: null, dirty: false };
+	meta = { syncedAt: null, version: null, dirty: false };
 }
 
-/** Called after saved changes; uploads a few seconds after the last one. */
+/** Called after saved changes; the syncing tab uploads a few seconds after the last one. */
 export function noteChange() {
-	if (!syncState.code || changes.count <= appliedUpTo) return;
+	if (!syncState.code || !tab.syncs || changes.count <= appliedUpTo) return;
 	meta.dirty = true;
 	saveMeta();
 	clearTimeout(pushTimer);
@@ -328,17 +426,20 @@ export async function isPersisted(): Promise<boolean> {
 	}
 }
 
+function readMeta(raw: unknown): Meta {
+	const saved = raw && typeof raw === 'object' ? (raw as Record<string, unknown>) : {};
+	return {
+		syncedAt: typeof saved.syncedAt === 'number' ? saved.syncedAt : null,
+		version: typeof saved.version === 'number' ? saved.version : null,
+		dirty: saved.dirty === true
+	};
+}
+
 /** Once, from the root layout after local data is loaded. */
 export function initSync() {
 	try {
 		const code = localStorage.getItem(CODE_KEY);
-		const saved = JSON.parse(localStorage.getItem(META_KEY) ?? 'null');
-		if (saved && typeof saved === 'object') {
-			meta = {
-				syncedAt: typeof saved.syncedAt === 'number' ? saved.syncedAt : null,
-				dirty: saved.dirty === true
-			};
-		}
+		meta = readMeta(JSON.parse(localStorage.getItem(META_KEY) ?? 'null'));
 		if (code && normalizeCode(code)) {
 			syncState.code = code;
 			syncState.status = 'idle';
@@ -347,11 +448,24 @@ export function initSync() {
 	} catch {
 		return;
 	}
-	// Listeners go on even without a code: sync can be switched on later in this session.
-	if (syncState.code) void pullIfNewer();
-	document.addEventListener('visibilitychange', () => {
-		if (document.visibilityState === 'visible') void pullIfNewer();
-		else if (pushTimer) void pushNow();
+	// Only the tab in front syncs; it takes over what's pending when it comes forward.
+	onSyncStart(() => pullIfNewer());
+	onSyncStop(async () => {
+		if (pushTimer) await pushNow();
 	});
 	addEventListener('online', () => void pullIfNewer());
+	// Sync switched on or off, or synced, in another tab.
+	addEventListener('storage', (event) => {
+		if (event.key === CODE_KEY) {
+			syncState.code = event.newValue && normalizeCode(event.newValue);
+			syncState.status = syncState.code ? 'idle' : 'off';
+		} else if (event.key === META_KEY) {
+			try {
+				meta = readMeta(JSON.parse(event.newValue ?? 'null'));
+			} catch {
+				return;
+			}
+			syncState.syncedAt = meta.syncedAt;
+		}
+	});
 }
