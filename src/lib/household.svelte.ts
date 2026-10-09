@@ -26,7 +26,17 @@ import {
 	type SharedView
 } from './household';
 import { localToday, shiftDate } from './journal';
-import { newSigner, signMember, verifyMember, type Signer } from './member-keys';
+import {
+	newInbox,
+	newSigner,
+	openSealed,
+	seal,
+	signMember,
+	verifyMember,
+	type KeyPair,
+	type Sealed,
+	type Signer
+} from './member-keys';
 import type { Pantry } from './pantry';
 import type { PlanEntry } from './shopping';
 import {
@@ -329,12 +339,37 @@ function save() {
 }
 
 /** `ifVersion`: write only over the copy this phone merged with; creating a new copy has none. */
-async function upload(k: SyncKeys, doc: HouseholdDoc, ifVersion?: number) {
+async function upload(k: SyncKeys, doc: HouseholdDoc | Forward, ifVersion?: number) {
 	await request(k, 'PUT', {
 		token: k.token,
 		data: await encrypt(k.key, JSON.stringify(doc)),
 		...(ifVersion !== undefined && { ifVersion })
 	});
+}
+
+/** What stays under a changed link: the new one, sealed for each phone that stays. */
+interface Forward {
+	moved: Sealed;
+}
+
+/** The household moved to a new link. */
+class Moved extends Error {
+	constructor(readonly sealed: Sealed) {
+		super('moved');
+	}
+}
+
+const BOX_RE = /^[A-Za-z0-9_-]{16}\.[A-Za-z0-9_-]{20,200}$/;
+
+function validateSealed(raw: unknown): Sealed | null {
+	if (typeof raw !== 'object' || raw === null) return null;
+	const r = raw as Record<string, unknown>;
+	if (typeof r.from !== 'string' || !/^[A-Za-z0-9_-]{80,100}$/.test(r.from)) return null;
+	if (typeof r.boxes !== 'object' || r.boxes === null) return null;
+	const boxes = Object.entries(r.boxes)
+		.filter((e): e is [string, string] => typeof e[1] === 'string' && BOX_RE.test(e[1]))
+		.slice(0, MAX_MEMBERS);
+	return { from: r.from, boxes: Object.fromEntries(boxes) };
 }
 
 interface Remote {
@@ -345,7 +380,10 @@ interface Remote {
 
 async function fetchDoc(k: SyncKeys): Promise<Remote> {
 	const remote = await request(k, 'GET');
-	const doc = validateDoc(JSON.parse(await decrypt(k.key, remote.data as string)));
+	const raw = JSON.parse(await decrypt(k.key, remote.data as string));
+	const moved = raw && typeof raw === 'object' && 'moved' in raw && validateSealed(raw.moved);
+	if (moved) throw new Moved(moved);
+	const doc = validateDoc(raw);
 	if (!doc) throw new Error('corrupt');
 	return { doc, version: typeof remote.version === 'number' ? remote.version : undefined };
 }
@@ -431,8 +469,21 @@ async function syncOnce() {
 		save();
 	} catch (err) {
 		const status = err instanceof Error && 'status' in err ? Number(err.status) : 0;
-		household.status = status === 404 ? 'missing' : 'offline';
+		household.status = status === 404 || err instanceof Moved ? 'missing' : 'offline';
+		if (err instanceof Moved) void follow(err.sealed);
 	}
+}
+
+/** Someone changed the link: this phone's profile got the new one, sealed for its inbox key. */
+async function follow(sealed: Sealed) {
+	const me = household.me;
+	const inbox = signer?.inbox;
+	const code = me && inbox && normalizeCode((await openSealed(sealed, me, inbox)) ?? '');
+	if (!code || code === household.code) return;
+	household.code = code;
+	household.status = 'connecting';
+	save();
+	await start(code);
 }
 
 /** One sync at a time; a request while one runs waits for it and runs again. */
@@ -512,19 +563,32 @@ export function initHousehold() {
 	signer = saved.signer;
 	household.status = 'connecting';
 	base = viewOf(saved.doc);
-	void start(saved.code).then(() => {
-		// Picked "this is me" before profiles had owners: make it theirs now.
+	void start(saved.code).then(async () => {
 		const me = myMember();
-		if (me && !me.owner) void claimMember(me.id);
+		// Picked "this is me" before profiles had owners: make it theirs now.
+		if (me && !me.owner) return claimMember(me.id);
+		// Owned before profiles carried an inbox: without one a changed link can't find this phone.
+		if (me && signer && canEdit(me) && (!signer.inbox || me.inbox !== signer.inbox.pub)) {
+			signer.inbox ??= await newInbox();
+			save();
+			await putSigned({ ...me, at: Date.now() });
+		}
 	});
 }
 
-function validateSigner(raw: unknown): Signer | null {
+function validateKeyPair(raw: unknown): KeyPair | null {
 	if (typeof raw !== 'object' || raw === null) return null;
 	const r = raw as Record<string, unknown>;
 	return typeof r.pub === 'string' && typeof r.jwk === 'object' && r.jwk !== null
 		? { pub: r.pub, jwk: r.jwk as JsonWebKey }
 		: null;
+}
+
+function validateSigner(raw: unknown): Signer | null {
+	const pair = validateKeyPair(raw);
+	if (!pair) return null;
+	const inbox = validateKeyPair((raw as Record<string, unknown>).inbox);
+	return inbox ? { ...pair, inbox } : pair;
 }
 
 /** The stash was written by this app, but storage can be edited – keep only what fits. */
@@ -592,7 +656,7 @@ export async function createHousehold(name: string, myName: string): Promise<str
 	const now = Date.now();
 	const code = generateCode();
 	let doc = newDoc(name, now);
-	if (myName.trim()) signer ??= await newSigner();
+	if (myName.trim()) await ownSigner();
 	const me = myName.trim() && signer ? await signMember(blankMember(myName, now), signer) : null;
 	if (me) doc = { ...doc, members: { [me.id]: me } };
 	await upload(await deriveKeys(code), doc);
@@ -625,6 +689,8 @@ export async function joinHousehold(input: string): Promise<string | null> {
 		remote = await trusted(fetched, household.doc);
 	} catch (err) {
 		household.status = household.code ? before : 'off';
+		if (err instanceof Moved)
+			return 'Tento odkaz už vymenili – popros niekoho z domácnosti o nový.';
 		if (err instanceof Error && 'status' in err && err.status === 404) {
 			return 'Táto domácnosť už neexistuje.';
 		}
@@ -698,10 +764,14 @@ export async function leaveHousehold() {
 	}
 }
 
+/** Phones that find a changed link on their own: whose own profile carries their inbox key. */
+export const followsLink = (m: Member) => !m.removed && !!m.owner && !!m.inbox;
+
 /**
- * A new link for the same household: the data moves to a new code and the old one is deleted,
- * so whoever still has the old link (someone who moved out) can't get in any more. Everyone
- * staying needs the new link.
+ * A new link for the same household: the data moves to a new code, and the old one keeps only
+ * the new code sealed for the profiles still here – their phones move over by themselves, while
+ * someone removed (or anyone else holding the old link) finds nothing they can open. Others,
+ * like profiles nobody owns yet, need the new link sent.
  */
 export async function changeLink(): Promise<string> {
 	if (!keys || !household.doc) throw new Error('no household');
@@ -712,14 +782,25 @@ export async function changeLink(): Promise<string> {
 	const old = keys;
 	const code = generateCode();
 	const next = await deriveKeys(code);
-	await upload(next, household.doc);
+	// Profiles here were checked against their signatures when they came in.
+	const stays = Object.values(household.doc.members).filter(followsLink);
+	const forward = {
+		moved: await seal(code, Object.fromEntries(stays.map((m) => [m.id, m.inbox!])))
+	};
+	for (let attempt = 0; ; attempt++) {
+		const remote = await fetchDoc(old);
+		const doc = mergeDocs(await trusted(remote.doc, household.doc), household.doc);
+		await upload(next, doc);
+		try {
+			// Over exactly the copy just merged, so no one's last change stays behind.
+			await upload(old, forward, remote.version);
+			break;
+		} catch (err) {
+			if (!isConflict(err) || attempt >= MAX_RETRIES) throw err;
+		}
+	}
 	household.code = code;
 	save();
-	try {
-		await request(old, 'DELETE', { token: old.token });
-	} catch {
-		// The old copy stays readable until it expires; the new one already works.
-	}
 	await start(code);
 	return code;
 }
@@ -750,6 +831,13 @@ export function addMember(name: string): Member | null {
 	return member;
 }
 
+/** This phone's keys, made the first time it owns a profile; older ones get their inbox. */
+async function ownSigner(): Promise<Signer> {
+	signer ??= await newSigner();
+	signer.inbox ??= await newInbox();
+	return signer;
+}
+
 /** Own profile, or one nobody owns (a child without a phone): this phone may change it. */
 export const canEdit = (m: Member) => !m.owner || (!!signer && m.owner === signer.pub);
 
@@ -771,7 +859,7 @@ async function putSigned(member: Member) {
 /** `undefined` in the change clears that field (`eaten` when sharing stops). */
 export function updateMember(
 	id: string,
-	change: Partial<Omit<Member, 'id' | 'at' | 'owner' | 'sig'>>
+	change: Partial<Omit<Member, 'id' | 'at' | 'owner' | 'sig' | 'inbox'>>
 ) {
 	const current = household.doc?.members[id];
 	if (!current || !canEdit(current)) return;
@@ -800,9 +888,9 @@ export function setMe(id: string | null) {
 export async function claimMember(id: string) {
 	const current = household.doc?.members[id];
 	if (!current || current.owner) return;
-	signer ??= await newSigner();
+	const own = await ownSigner();
 	setMe(id);
-	await putSigned({ ...current, owner: signer.pub, at: Date.now() });
+	await putSigned({ ...current, owner: own.pub, at: Date.now() });
 }
 
 /** What this person ate the last days, for the others – or null to stop showing it. */

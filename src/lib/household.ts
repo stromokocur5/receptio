@@ -70,6 +70,8 @@ export interface Member {
 	owner?: string;
 	/** The owner's signature over the rest of the profile. */
 	sig?: string;
+	/** The owner phone's key for a changed link, so it finds the household again. */
+	inbox?: string;
 	/** What they ate the last days, when they chose to show it to the others. */
 	eaten?: EatenDay[];
 }
@@ -248,6 +250,7 @@ function validateMember(raw: unknown): Member | undefined {
 		at: raw.at,
 		...(typeof raw.owner === 'string' && KEY_RE.test(raw.owner) && { owner: raw.owner }),
 		...(typeof raw.sig === 'string' && KEY_RE.test(raw.sig) && { sig: raw.sig }),
+		...(typeof raw.inbox === 'string' && KEY_RE.test(raw.inbox) && { inbox: raw.inbox }),
 		...(Array.isArray(raw.eaten) && { eaten: validateEaten(raw.eaten) })
 	};
 }

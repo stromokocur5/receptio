@@ -25,6 +25,7 @@
 		changeLink,
 		claimMember,
 		createHousehold,
+		followsLink,
 		household,
 		inviteLink,
 		joinHousehold,
@@ -155,6 +156,9 @@
 		await claimMember(added.id);
 		editing = added.id;
 	}
+
+	/** Who still needs the new link sent: profiles whose phone can't find it alone. */
+	const sendTo = $derived(list.filter((m) => m.id !== household.me && !followsLink(m)));
 
 	function newLink() {
 		if (!confirmNewLink) {
@@ -408,11 +412,17 @@
 					{#if removedSomeone}
 						<strong>Kto odišiel, má stále starý odkaz.</strong> Vymeň ho, aby sa už nedostal dnu.
 					{:else}
-						Odsťahoval sa niekto alebo odkaz unikol? Vymeň ho – starý prestane fungovať.
+						Odsťahoval sa niekto alebo odkaz unikol? Odober ho a vymeň odkaz – starý prestane
+						fungovať. Kto tu má svoj profil, prepojí sa sám.
 					{/if}
 				</p>
+				{#if confirmNewLink && sendTo.length}
+					<p class="muted small">
+						Nový odkaz potom pošli: {sendTo.map((m) => m.name).join(', ')} (ak majú telefón).
+					</p>
+				{/if}
 				<button class="btn ghost small" disabled={busy || !household.code} onclick={newLink}>
-					{confirmNewLink ? 'Naozaj? Ostatným pošleš nový odkaz.' : 'Vymeniť odkaz'}
+					{confirmNewLink ? 'Naozaj vymeniť?' : 'Vymeniť odkaz'}
 				</button>
 				{#if error}<p class="msg" role="alert"><Icon name="alert" size={18} /> {error}</p>{/if}
 			</div>

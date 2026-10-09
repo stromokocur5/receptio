@@ -7,7 +7,7 @@ import {
 	validateDoc,
 	type Member
 } from './household';
-import { canonical, newSigner, signMember, verifyMember } from './member-keys';
+import { canonical, newSigner, openSealed, seal, signMember, verifyMember } from './member-keys';
 
 const kid: Member = {
 	id: 'ema',
@@ -67,5 +67,23 @@ describe('owned profiles', () => {
 		expect(acceptMember(mine, removed, false, 1 + STALE_OWNER_MS / 2)).toBe(false);
 		expect(acceptMember(mine, removed, false, 2 + STALE_OWNER_MS)).toBe(true);
 		expect(acceptMember(mine, { ...removed, name: 'Iná' }, false, 2 + STALE_OWNER_MS)).toBe(false);
+	});
+});
+
+describe('a changed link', () => {
+	it('opens only for the profile it was sealed to, with that phone’s key', async () => {
+		const stays = await newSigner();
+		const left = await newSigner();
+		const sealed = await seal('NEWCODE', { ema: stays.inbox!.pub });
+		expect(await openSealed(sealed, 'ema', stays.inbox!)).toBe('NEWCODE');
+		expect(await openSealed(sealed, 'ema', left.inbox!)).toBeNull();
+		expect(await openSealed(sealed, 'jano', left.inbox!)).toBeNull();
+	});
+
+	it('signs the inbox key with the profile', async () => {
+		const signer = await newSigner();
+		const own = await signMember(kid, signer);
+		expect(own.inbox).toBe(signer.inbox!.pub);
+		expect(await verifyMember({ ...own, inbox: (await newSigner()).inbox!.pub })).toBe(false);
 	});
 });

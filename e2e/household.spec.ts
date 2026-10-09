@@ -73,24 +73,32 @@ test('two phones share the plan, who buys what, the log and the money', async ({
 	await jano.getByRole('button', { name: 'Zapísať' }).click();
 	await expect(jano.locator('.paybacks')).toContainText(/Ema → Jano\s*6,00/);
 
-	// A new link locks the old one out. One phone at a time: both share the sync's rate limit.
+	// A new link: Jano's phone moves over by itself, the old link lets nobody else in.
+	// One phone at a time: they share the sync's rate limit.
 	await jano.close();
 	await ema.goto('/domacnost');
 	await ema.waitForLoadState('networkidle');
 	await ema.getByRole('button', { name: 'Vymeniť odkaz' }).click();
-	await ema.getByRole('button', { name: /Naozaj\?/ }).click();
+	await ema.getByRole('button', { name: 'Naozaj vymeniť?' }).click();
 	await expect(ema.locator('.new-link .msg')).toHaveCount(0);
 	await expect.poll(() => householdCode(ema), SYNCED).not.toBe(code);
+	const newCode = await householdCode(ema);
 	await ema.close();
 	const janoAgain = await second.newPage();
 	await visit(janoAgain, '/domacnost');
-	await expect(janoAgain.getByRole('status')).toContainText(
-		'Pod týmto odkazom už domácnosť nie je',
-		SYNCED
-	);
+	await expect(janoAgain.getByRole('status')).toContainText('Spojené', SYNCED);
+	await expect.poll(() => householdCode(janoAgain)).toBe(newCode);
+	await janoAgain.close();
+
+	const third = await browser.newContext();
+	const outsider = await third.newPage();
+	await visit(outsider, `/domacnost#d=${code}`);
+	await outsider.getByRole('button', { name: 'Pripojiť sa' }).click();
+	await expect(outsider.getByText('Tento odkaz už vymenili')).toBeVisible();
 
 	await first.close();
 	await second.close();
+	await third.close();
 });
 
 test('the own plan and pantry stay apart from the household', async ({ page }) => {
