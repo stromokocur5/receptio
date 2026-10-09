@@ -6,12 +6,14 @@
 	import { localToday, shiftDate } from '$lib/journal';
 	import { MEAL_LABELS } from '$lib/labels';
 	import { dailyTargets } from '$lib/nutrition';
-	import { useSoon } from '$lib/pantry';
+	import { rankByLeftovers, useSoon } from '$lib/pantry';
+	import { avoidFilter } from '$lib/avoid';
 	import { activeSales } from '$lib/pricing';
 	import { rememberDigests } from '$lib/reminders';
 	import { mealSchedule, type ScheduledMeal } from '$lib/schedule';
 	import { isBreakfastEntry } from '$lib/shopping';
 	import {
+		avoid,
 		digestReminder,
 		history,
 		journal,
@@ -81,9 +83,33 @@
 				isBreakfast: (e) => isBreakfastEntry(e, catalog.recipesById.get(e.recipeId))
 			}
 		);
-		const soon = useSoon(pantry.current, pantryAdded.current, catalog.ingredientsById, new Date())
-			.slice(0, 3)
-			.map((s) => s.ingredient.name.split(' (')[0].toLowerCase());
+		const allowed = catalog.recipes.filter(avoidFilter(avoid.current, catalog.ingredientsById));
+		/** What will need using up on the morning `d` days from now, and what to cook with it. */
+		const soonOn = (d: number, plannedThatDay: string[]) => {
+			const date = new Date();
+			date.setDate(date.getDate() + d);
+			const items = useSoon(
+				pantry.current,
+				pantryAdded.current,
+				catalog.ingredientsById,
+				date
+			).slice(0, 3);
+			if (!items.length) return { names: [], ids: [], cookIt: null };
+			const ids = items.map((s) => s.ingredient.id);
+			const groups = new Set(items.map((s) => s.ingredient.group));
+			// A meal already planned that day that uses it is the best answer.
+			const planned = plannedThatDay.find((id) =>
+				catalog.recipesById
+					.get(id)
+					?.lines.some((l) => groups.has(catalog.ingredientsById.get(l.ingredientId)?.group ?? ''))
+			);
+			const best = planned ?? rankByLeftovers(allowed, ids, catalog.ingredientsById)[0]?.recipe.id;
+			return {
+				names: items.map((s) => s.ingredient.name.split(' (')[0].toLowerCase()),
+				ids,
+				cookIt: best ? titleOf(best) : null
+			};
+		};
 		const planned = new Set(plan.current.map((e) => e.recipeId));
 		const plannedIngredients = new Set(
 			[...planned].flatMap(
@@ -117,10 +143,19 @@
 						.filter((m): m is ScheduledMeal => !!m && !!m.entry.fromFreezer && m.kind === 'cook')
 						.map((m) => titleOf(m.entry.recipeId))
 				: [];
+			const soon =
+				d < 3
+					? soonOn(
+							d,
+							slots.map((s) => s.meal.entry.recipeId)
+						)
+					: { names: [], ids: [], cookIt: null };
 			const text = morningDigest({
 				meals,
 				thaw,
-				useSoon: d < 2 ? soon : [],
+				useSoon: soon.names,
+				useSoonIds: soon.ids,
+				cookIt: soon.cookIt,
 				sales: sales
 					.filter((s) => s.entry.saleUntil! >= date)
 					.slice(0, 3)

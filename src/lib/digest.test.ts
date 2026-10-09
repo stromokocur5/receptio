@@ -33,4 +33,18 @@ describe('digests', () => {
 			'V akcii z plánu: mrkva (Lidl)'
 		]);
 	});
+
+	it('with nothing planned, food about to spoil is the news and the tap finds a recipe', () => {
+		const day = morningDigest({
+			meals: [],
+			thaw: [],
+			useSoon: ['špenát', 'tofu'],
+			useSoonIds: ['spenat', 'tofu-natural'],
+			cookIt: 'Tofu so špenátom',
+			sales: []
+		});
+		expect(day?.title).toBe('Minie sa špenát a ďalšie');
+		expect(day?.body).toBe('Minie sa: špenát, tofu – čo tak Tofu so špenátom?');
+		expect(day?.url).toBe('/zvysky?s=spenat,tofu-natural');
+	});
 });

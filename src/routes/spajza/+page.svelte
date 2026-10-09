@@ -14,6 +14,7 @@
 	import {
 		addExtraItem,
 		avoid,
+		digestReminder,
 		extraItems,
 		pantry,
 		pantryAdded,
@@ -22,6 +23,26 @@
 		ui
 	} from '$lib/state.svelte';
 	import { INGREDIENT_CATEGORIES, type Ingredient } from '$lib/types';
+	import { enableDigests, remindersSupported, updateDigests } from '$lib/reminders';
+	import { onMount } from 'svelte';
+
+	/** The morning overview tells what's about to spoil and what to cook with it. */
+	let canRemind = $state(false);
+	let remindBusy = $state(false);
+	let remindError = $state('');
+	onMount(() => (canRemind = remindersSupported()));
+	async function remindMornings() {
+		remindBusy = true;
+		remindError = '';
+		const kinds = { weekly: digestReminder.current?.weekly ?? false, morning: true };
+		try {
+			await (digestReminder.current ? updateDigests(kinds) : enableDigests(kinds));
+		} catch (err) {
+			remindError = err instanceof Error ? err.message : 'Nepodarilo sa zapnúť.';
+		} finally {
+			remindBusy = false;
+		}
+	}
 
 	const catalog = useCatalog();
 
@@ -327,6 +348,14 @@
 							.map((s) => s.ingredient.id)
 							.join(',')}">Nájdi recept, ktorý to minie <Icon name="arrow-right" size={16} /></a
 					>
+					{#if canRemind && ui.loaded && !digestReminder.current?.morning}
+						<button class="btn ghost small" disabled={remindBusy} onclick={remindMornings}>
+							<Icon name="bell" size={16} /> Pripomeň mi to ráno
+						</button>
+						{#if remindError}<p class="muted small" role="alert">{remindError}</p>{/if}
+					{:else if digestReminder.current?.morning}
+						<p class="muted small">Ráno o 7:00 ti pripomenieme, čo sa minie, aj s receptom.</p>
+					{/if}
 				</section>
 			{/if}
 			<section class="card mine" id="moja-spajza">

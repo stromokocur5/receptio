@@ -68,6 +68,10 @@ export interface DayNumbers {
 	thaw: string[];
 	/** Fresh food at home that should be cooked soon. */
 	useSoon: string[];
+	/** Their ingredient ids, for the link to recipes that use them up. */
+	useSoonIds?: string[];
+	/** A recipe that uses them up: one planned for the day if any, else the best match. */
+	cookIt?: string | null;
 	/** Planned ingredients on sale in the user's shops. */
 	sales: string[];
 }
@@ -77,10 +81,20 @@ export function morningDigest(d: DayNumbers): DigestText | null {
 	const lines: string[] = [];
 	if (d.meals.length) lines.push(d.meals.join(' · '));
 	if (d.thaw.length) lines.push(`Vyber z mrazničky na zajtra: ${d.thaw.join(', ')}`);
-	if (d.useSoon.length) lines.push(`Minie sa: ${d.useSoon.join(', ')}`);
+	if (d.useSoon.length) {
+		lines.push(`Minie sa: ${d.useSoon.join(', ')}${d.cookIt ? ` – čo tak ${d.cookIt}?` : ''}`);
+	}
 	if (d.sales.length) lines.push(`V akcii z plánu: ${d.sales.join(', ')}`);
 	if (!lines.length) return null;
 	const count = d.meals.length;
+	if (!count && d.useSoon.length) {
+		// Nothing planned: the food about to spoil is the news, and the tap finds it a recipe.
+		return {
+			title: `Minie sa ${d.useSoon[0]}${d.useSoon.length > 1 ? ' a ďalšie' : ''}`,
+			body: lines.join('\n'),
+			url: d.useSoonIds?.length ? `/zvysky?s=${d.useSoonIds.join(',')}` : '/spajza'
+		};
+	}
 	return {
 		title: count
 			? `Dnes ${count} ${plural(count, 'jedlo', 'jedlá', 'jedál')} z plánu`
