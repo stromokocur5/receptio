@@ -60,7 +60,8 @@
 		setPlanServings,
 		settings,
 		ui,
-		type Settings
+		type Settings,
+		mainMeals
 	} from '$lib/state.svelte';
 
 	const catalog = useCatalog();
@@ -221,7 +222,7 @@
 		mealSchedule(
 			plan.current,
 			settings.current.people,
-			settings.current.mealsPerDay,
+			mainMeals(settings.current).length,
 			settings.current.planDays,
 			{
 				keeps: (id) => catalog.recipesById.get(id)?.keeps,
@@ -553,7 +554,7 @@
 										{@render slot(day.breakfast, d === 0 ? 'ranajky' : null, 'Raňajky')}
 									{/if}
 									{#each day.meals as meal, m (m)}
-										{@render slot(meal, d === 0 ? (m === 0 ? 'obed' : 'vecera') : null)}
+										{@render slot(meal, d === 0 ? mainMeals(settings.current)[m] : null)}
 									{/each}
 								</span>
 							</li>
@@ -627,7 +628,7 @@
 											? 'už zaplatené'
 											: formatEur(e.data.costPerServing * e.servings)}
 										{#if e.freezeExtra}· z toho {e.freezeExtra} porc. do mrazničky{/if}
-										{#if settings.current.people > 1 || settings.current.mealsPerDay > 1}
+										{#if settings.current.people > 1 || mainMeals(settings.current).length > 1}
 											· {Math.floor(e.servings / settings.current.people)}× jedlo
 										{/if}
 									</span>
@@ -669,7 +670,7 @@
 											<button
 												aria-pressed={morning}
 												onclick={() => setPlanBreakfast(i, !morning)}
-												title={morning ? 'Presunúť medzi obedy a večere' : 'Jesť na raňajky'}
+												title={morning ? 'Presunúť medzi hlavné jedlá' : 'Jesť na raňajky'}
 											>
 												<Icon name={morning ? 'check' : 'sun'} size={14} stroke={2.2} />
 												Na raňajky

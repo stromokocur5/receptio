@@ -5,7 +5,8 @@ import type { Allergen, RecipeSummary, RecipeVariant } from './types';
 export interface AutoPlanOptions {
 	days: number;
 	people: number;
-	mealsPerDay: 1 | 2;
+	/** Lunches and/or dinners a day (0–2). */
+	mealsPerDay: number;
 	/** Plan a breakfast for every day too, from breakfast recipes. */
 	breakfasts?: boolean;
 	/** Whole plan, in €; null = no limit. */

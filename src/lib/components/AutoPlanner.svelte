@@ -28,7 +28,8 @@
 		pantryAdded,
 		plan,
 		settings,
-		ui
+		ui,
+		mainMeals
 	} from '$lib/state.svelte';
 	import type { Allergen, RecipeSummary } from '$lib/types';
 
@@ -41,6 +42,16 @@
 
 	/** Ready-made budgets per person for a 7-day week; scaled to the plan's days and people. */
 	const BUDGET_PRESETS = [15, 20, 30];
+	const plannedMeals = $derived(
+		[
+			settings.current.breakfasts && 'raňajky',
+			settings.current.lunches && 'obedy',
+			settings.current.dinners && 'večere'
+		]
+			.filter(Boolean)
+			.join(', ')
+			.replace(/, ([^,]*)$/, ' a $1')
+	);
 	const PRESET_PARAM = 'rozpocet';
 
 	// Links like "Navrhni mi týždeň" land here already opened; /plan?rozpocet=25 also proposes.
@@ -104,7 +115,7 @@
 		const options: AutoPlanOptions = {
 			days: settings.current.planDays,
 			people: settings.current.people,
-			mealsPerDay: settings.current.mealsPerDay,
+			mealsPerDay: mainMeals(settings.current).length,
 			breakfasts: settings.current.breakfasts,
 			budget: budget && budget > 0 ? budget : settingsBudget,
 			minProtein,
@@ -290,12 +301,7 @@
 				</p>
 			{/if}
 			<p class="muted small">
-				Plánuje {settings.current.breakfasts ? 'raňajky, ' : ''}obedy{settings.current
-					.mealsPerDay === 2
-					? ' a večere'
-					: ''}. {settings.current.breakfasts
-					? 'Snacky rieš zvlášť.'
-					: 'Raňajky zapneš v nastavení plánu („Aj raňajky“), snacky rieš zvlášť.'}
+				Plánuje {plannedMeals}. Snacky rieš zvlášť.
 			</p>
 			{#if gaps.length}
 				<p class="small gaps-note">

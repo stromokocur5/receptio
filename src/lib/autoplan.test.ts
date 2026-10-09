@@ -166,6 +166,13 @@ describe('breakfasts', () => {
 		expect(plan.minProtein).toBeGreaterThanOrEqual(15);
 	});
 
+	it('plans breakfasts alone when no lunch or dinner is wanted', () => {
+		const plan = autoPlan(recipes, { ...base, mealsPerDay: 0, breakfasts: true });
+		expect(plan.entries.length).toBeGreaterThan(0);
+		expect(plan.entries.every((e) => e.breakfast)).toBe(true);
+		expect(plan.wanted).toBe(base.days);
+	});
+
 	it('swaps a breakfast only for another breakfast', () => {
 		const plan = autoPlan(recipes, { ...base, breakfasts: true });
 		const index = plan.entries.findIndex((e) => e.breakfast);

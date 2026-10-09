@@ -9,7 +9,10 @@ test('the data page charts a price over time and filters every price', async ({ 
 	await page.keyboard.press('ArrowLeft');
 	await expect(chart).toHaveAttribute('aria-valuetext', /\d+\. \d+\.:/);
 
-	await page.getByRole('button', { name: 'Tabuľka' }).click();
+	await page
+		.getByRole('figure', { name: /Mrkva/ })
+		.getByRole('button', { name: 'Tabuľka' })
+		.click();
 	await expect(page.getByRole('columnheader', { name: 'Deň' })).toBeVisible();
 
 	await page.getByLabel('Hľadať surovinu alebo produkt').fill('sójový nápoj');

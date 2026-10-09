@@ -2,7 +2,7 @@
 	import { fly } from 'svelte/transition';
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
 	import { markOnboarded, onboarding } from '$lib/onboarding.svelte';
-	import { avoid, journal, settings } from '$lib/state.svelte';
+	import { avoid, chosenMeals, journal, MEAL_SETTINGS, settings } from '$lib/state.svelte';
 	import { connectSync, enableSync, formatCode, syncState } from '$lib/sync.svelte';
 
 	const STEPS = ['vitaj', 'recepty', 'plan', 'viac', 'nastavenia', 'hotovo'] as const;
@@ -347,27 +347,16 @@
 					<div class="setting">
 						<span>Čo varíš</span>
 						<div class="chips">
-							<button
-								class="chip"
-								aria-pressed={settings.current.mealsPerDay === 1}
-								onclick={() => (settings.current = { ...settings.current, mealsPerDay: 1 })}
-								>Jedno jedlo denne</button
-							>
-							<button
-								class="chip"
-								aria-pressed={settings.current.mealsPerDay === 2}
-								onclick={() => (settings.current = { ...settings.current, mealsPerDay: 2 })}
-								>Obed aj večeru</button
-							>
-							<button
-								class="chip"
-								aria-pressed={settings.current.breakfasts}
-								onclick={() =>
-									(settings.current = {
-										...settings.current,
-										breakfasts: !settings.current.breakfasts
-									})}>+ raňajky</button
-							>
+							{#each MEAL_SETTINGS as { key, label } (key)}
+								{@const on = settings.current[key]}
+								<button
+									class="chip"
+									aria-pressed={on}
+									disabled={on && chosenMeals(settings.current) === 1}
+									onclick={() => (settings.current = { ...settings.current, [key]: !on })}
+									>{label}</button
+								>
+							{/each}
 						</div>
 					</div>
 					<div class="setting">

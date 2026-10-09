@@ -172,11 +172,15 @@
 			<form class="form" onsubmit={create}>
 				<label>
 					Ako sa voláte
-					<input bind:value={householdName} maxlength="40" placeholder="Napr. Kohútovci, Byt 4B" />
+					<input
+						bind:value={householdName}
+						maxlength="40"
+						placeholder="Napr. Byt 4B, Spolubývajúci"
+					/>
 				</label>
 				<label>
 					Tvoje meno <span class="muted">(nepovinné)</span>
-					<input bind:value={myName} maxlength="40" placeholder="Napr. Gabo" />
+					<input bind:value={myName} maxlength="40" placeholder="Napr. Miška" />
 				</label>
 				<button class="btn leaf" type="submit" disabled={busy}>
 					<Icon name="plus" size={18} /> Založiť

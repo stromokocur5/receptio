@@ -3,6 +3,7 @@
 	import { useCatalog } from '$lib/catalog';
 	import { morningDigest, weeklyDigest, type DigestStore, type DigestText } from '$lib/digest';
 	import { localToday, shiftDate } from '$lib/journal';
+	import { MEAL_LABELS } from '$lib/labels';
 	import { dailyTargets } from '$lib/nutrition';
 	import { useSoon } from '$lib/pantry';
 	import { activeSales } from '$lib/pricing';
@@ -17,7 +18,8 @@
 		pantryAdded,
 		plan,
 		purchases,
-		settings
+		settings,
+		mainMeals
 	} from '$lib/state.svelte';
 	import { plantsThisWeek, weeklyNutrition } from '$lib/stats';
 
@@ -69,7 +71,7 @@
 		const schedule = mealSchedule(
 			plan.current,
 			settings.current.people,
-			settings.current.mealsPerDay,
+			mainMeals(settings.current).length,
 			settings.current.planDays,
 			{
 				keeps: (id) => catalog.recipesById.get(id)?.keeps,
@@ -98,7 +100,7 @@
 			const slots = [
 				...(day.breakfast ? [{ label: 'Raňajky', meal: day.breakfast }] : []),
 				...day.meals.flatMap((meal, m) =>
-					meal ? [{ label: m === 0 ? 'Obed' : 'Večera', meal }] : []
+					meal ? [{ label: MEAL_LABELS[mainMeals(settings.current)[m]], meal }] : []
 				)
 			];
 			const meals = slots.map(

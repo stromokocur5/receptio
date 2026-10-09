@@ -30,7 +30,7 @@ const empty: SharedView = { plan: [], pantry: {}, checked: {}, extras: [] };
 
 describe('household sync', () => {
 	it('keeps both phones’ edits when they merge', () => {
-		const base = newDoc('Kohútovci', 1);
+		const base = newDoc('Byt 4B', 1);
 		const a = withLocalChanges(
 			base,
 			empty,

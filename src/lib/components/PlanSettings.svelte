@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { household, members } from '$lib/household.svelte';
-	import { settings, type Settings } from '$lib/state.svelte';
+	import { chosenMeals, MEAL_SETTINGS, settings, type Settings } from '$lib/state.svelte';
 
 	/** In a household the plan cooks for everyone in it. */
 	const fromHousehold = $derived(!!household.doc && members().length > 0);
@@ -34,16 +34,21 @@
 		{settings.current.people === 1 ? 'osobu' : settings.current.people < 5 ? 'osoby' : 'osôb'}
 		{#if fromHousehold}<a class="from-household" href="/domacnost">podľa domácnosti</a>{/if}
 	</label>
-	<label>
-		Jedál denne
-		<select
-			value={settings.current.mealsPerDay}
-			onchange={(e) => update({ mealsPerDay: e.currentTarget.value === '2' ? 2 : 1 })}
-		>
-			<option value={1}>1 (obed)</option>
-			<option value={2}>2 (obed a večera)</option>
-		</select>
-	</label>
+	<fieldset class="meals">
+		<legend>Varím</legend>
+		{#each MEAL_SETTINGS as { key, label } (key)}
+			{@const on = settings.current[key]}
+			<label class="check">
+				<input
+					type="checkbox"
+					checked={on}
+					disabled={on && chosenMeals(settings.current) === 1}
+					onchange={(e) => update({ [key]: e.currentTarget.checked })}
+				/>
+				{label}
+			</label>
+		{/each}
+	</fieldset>
 	<label>
 		Rozpočet
 		<input
@@ -61,14 +66,6 @@
 		/>
 		€ / týždeň
 	</label>
-	<label class="check">
-		<input
-			type="checkbox"
-			checked={settings.current.breakfasts}
-			onchange={(e) => update({ breakfasts: e.currentTarget.checked })}
-		/>
-		Aj raňajky
-	</label>
 </div>
 
 <style>
@@ -82,6 +79,19 @@
 		margin-bottom: 8px;
 		font-weight: 600;
 		font-size: 0.92rem;
+	}
+	.meals {
+		display: inline-flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 12px;
+		border: 0;
+		padding: 0;
+		margin: 0;
+	}
+	.meals legend {
+		float: left;
+		padding: 0;
 	}
 	.check {
 		display: inline-flex;

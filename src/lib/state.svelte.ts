@@ -186,8 +186,9 @@ export interface Settings {
 	planDays: number;
 	/** How many people eat each planned meal. */
 	people: number;
-	/** Planned (cooked) meals per day: lunch only, or lunch and dinner. */
-	mealsPerDay: 1 | 2;
+	/** Which cooked meals the plan covers; at least one of lunch, dinner and breakfast is on. */
+	lunches: boolean;
+	dinners: boolean;
 	theme: 'auto' | 'light' | 'dark';
 	/** Where the garden is, for local sowing dates and weather. Stays on the device. */
 	location: { name: string; lat: number; lon: number; elevation: number } | null;
@@ -203,7 +204,8 @@ const DEFAULT_SETTINGS: Settings = {
 	weightKg: null,
 	planDays: 7,
 	people: 1,
-	mealsPerDay: 1,
+	lunches: true,
+	dinners: false,
 	theme: 'auto',
 	location: null,
 	myStores: [],
@@ -224,6 +226,31 @@ function validateLocation(raw: unknown): Settings['location'] {
 	return { name: name.slice(0, 80), lat, lon, elevation };
 }
 
+function validateMeals(raw: Record<string, unknown>) {
+	const breakfasts = raw.breakfasts === true;
+	// Older settings had `mealsPerDay`: lunch, or lunch and dinner.
+	const legacy = typeof raw.lunches !== 'boolean' && typeof raw.dinners !== 'boolean';
+	const lunches = legacy ? true : raw.lunches === true;
+	const dinners = legacy ? raw.mealsPerDay === 2 : raw.dinners === true;
+	if (!breakfasts && !lunches && !dinners) return { breakfasts, lunches: true, dinners };
+	return { breakfasts, lunches, dinners };
+}
+
+/** The meal switches of the plan settings, in the order of the day. */
+export const MEAL_SETTINGS = [
+	{ key: 'breakfasts', label: 'Raňajky' },
+	{ key: 'lunches', label: 'Obed' },
+	{ key: 'dinners', label: 'Večeru' }
+] as const;
+
+/** How many meals the plan covers; the last one left on can't be turned off. */
+export const chosenMeals = (s: Settings) => MEAL_SETTINGS.filter(({ key }) => s[key]).length;
+
+/** The cooked main meals of a day, in order; the plan's meal slots follow it. */
+export function mainMeals(s: Pick<Settings, 'lunches' | 'dinners'>): ('obed' | 'vecera')[] {
+	return [...(s.lunches ? ['obed' as const] : []), ...(s.dinners ? ['vecera' as const] : [])];
+}
+
 function validateSettings(raw: unknown): Settings | undefined {
 	if (!isRecord(raw)) return undefined;
 	const weight = raw.weightKg;
@@ -232,7 +259,7 @@ function validateSettings(raw: unknown): Settings | undefined {
 		weightKg: typeof weight === 'number' && weight >= 20 && weight <= 250 ? weight : null,
 		planDays: inRange(raw.planDays, 1, 14) ? raw.planDays : DEFAULT_SETTINGS.planDays,
 		people: inRange(raw.people, 1, 12) ? raw.people : DEFAULT_SETTINGS.people,
-		mealsPerDay: raw.mealsPerDay === 2 ? 2 : 1,
+		...validateMeals(raw),
 		theme: theme === 'light' || theme === 'dark' ? theme : 'auto',
 		location: validateLocation(raw.location),
 		myStores: Array.isArray(raw.myStores)
@@ -240,7 +267,6 @@ function validateSettings(raw: unknown): Settings | undefined {
 					.filter((id): id is string => typeof id === 'string' && /^[a-z0-9-]{1,30}$/.test(id))
 					.slice(0, 20)
 			: [],
-		breakfasts: raw.breakfasts === true,
 		weeklyBudget:
 			typeof raw.weeklyBudget === 'number' && raw.weeklyBudget >= 1 && raw.weeklyBudget <= 1000
 				? raw.weeklyBudget
