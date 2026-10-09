@@ -51,6 +51,7 @@
 		type GoalKey
 	} from '$lib/nutrition';
 	import { history, journal, settings } from '$lib/state.svelte';
+	import { withUndo } from '$lib/toast.svelte';
 	import { onMount } from 'svelte';
 	import type { Ingredient, NutrientKey, Nutrients, RecipeSummary, Unit } from '$lib/types';
 
@@ -356,17 +357,20 @@
 		journal.current = { ...journal.current, ...patch };
 	}
 
-	let confirmClear = $state(false);
+	/** The whole diary goes at once, so it can come back from the toast. */
+	function clearDays() {
+		withUndo('Záznamy v denníku sú zmazané', journal, () => setPref({ days: {} }));
+	}
 </script>
 
-<section class="card journal" id="dennik">
-	<h2><Icon name="cup" size={24} /> Denník jedla a vody</h2>
+<section class="card box journal" id="dennik">
+	<h2 class="section-title"><Icon name="cup" size={24} /> Denník jedla a vody</h2>
 
 	{#if !journal.current.enabled}
 		<p>
 			Zapisuj si vodu a jedlá a uvidíš, koľko máš za deň bielkovín, vlákniny, železa či vápnika.
 			Recepty z Receptia a suroviny sa spočítajú samé, kúpené veci zadáš ručne. Kalórie sú skryté,
-			kým si ich sám/sama nezapneš.
+			kým si ich nezapneš.
 		</p>
 		<button class="btn leaf" onclick={() => setPref({ enabled: true })}>
 			<Icon name="plus" size={18} /> Zapnúť denník
@@ -375,7 +379,7 @@
 			Záznamy ostávajú len v tomto prehliadači (a v synchronizácii, ak ju máš).
 		</p>
 	{:else}
-		<div class="daynav">
+		<div class="daynav sunk">
 			<button
 				class="btn ghost small"
 				aria-label="Predchádzajúci deň"
@@ -475,7 +479,7 @@
 			{/if}
 
 			{#if picked}
-				<div class="picked">
+				<div class="picked sunk">
 					<p>
 						<strong
 							>{picked.kind === 'recipe'
@@ -525,7 +529,7 @@
 				</div>
 			{:else if custom}
 				<form
-					class="picked"
+					class="picked sunk"
 					onsubmit={(e) => {
 						e.preventDefault();
 						addCustom();
@@ -592,7 +596,8 @@
 						</div>
 					</details>
 					<label class="check">
-						<input type="checkbox" bind:checked={customSave} /> Uložiť medzi moje potraviny
+						<input type="checkbox" bind:checked={customSave} />
+						<span>Uložiť medzi moje potraviny</span>
 					</label>
 					<div class="picked-row">
 						<button class="btn leaf small" type="submit">Zapísať</button>
@@ -677,14 +682,14 @@
 								{#if item.kind === 'recipe'}
 									<span class="stepper">
 										<button
-											class="icon-btn"
+											class="icon-btn plain"
 											aria-label="O pol porcie menej: {itemLabel(item)}"
 											onclick={() => change((d) => setPortions(d, item.id, item.portions - 0.5))}
 										>
 											<Icon name="minus" size={15} />
 										</button>
 										<button
-											class="icon-btn"
+											class="icon-btn plain"
 											aria-label="O pol porcie viac: {itemLabel(item)}"
 											onclick={() => change((d) => setPortions(d, item.id, item.portions + 0.5))}
 										>
@@ -693,9 +698,12 @@
 									</span>
 								{/if}
 								<button
-									class="icon-btn remove"
+									class="icon-btn plain remove"
 									aria-label="Odstrániť: {itemLabel(item)}"
-									onclick={() => change((d) => removeItem(d, item.id))}
+									onclick={() =>
+										withUndo(`${itemLabel(item)}: odstránené`, journal, () =>
+											change((d) => removeItem(d, item.id))
+										)}
 								>
 									<Icon name="x" size={16} />
 								</button>
@@ -795,7 +803,7 @@
 					checked={journal.current.showKcal}
 					onchange={(e) => setPref({ showKcal: e.currentTarget.checked })}
 				/>
-				Ukazovať kalórie
+				<span>Ukazovať kalórie</span>
 			</label>
 			{#if savedFoods.length}
 				<div class="saved-foods">
@@ -814,9 +822,14 @@
 									></span
 								>
 								<button
-									class="icon-btn"
+									class="icon-btn plain remove"
 									aria-label="Odstrániť z mojich potravín: {f.name}"
-									onclick={() => (journal.current = removeSavedFood(journal.current, f.id))}
+									onclick={() =>
+										withUndo(
+											`${f.name}: odstránené z mojich potravín`,
+											journal,
+											() => (journal.current = removeSavedFood(journal.current, f.id))
+										)}
 								>
 									<Icon name="x" size={14} />
 								</button>
@@ -894,21 +907,9 @@
 				<button class="btn ghost small" onclick={() => setPref({ enabled: false })}>
 					Skryť denník
 				</button>
-				{#if confirmClear}
-					<button
-						class="btn small danger"
-						onclick={() => {
-							setPref({ days: {} });
-							confirmClear = false;
-						}}
-					>
-						Naozaj zmazať všetky záznamy
-					</button>
-				{:else}
-					<button class="btn ghost small" onclick={() => (confirmClear = true)}>
-						<Icon name="trash" size={15} /> Zmazať záznamy
-					</button>
-				{/if}
+				<button class="btn danger small" onclick={clearDays}>
+					<Icon name="trash" size={15} /> Zmazať záznamy
+				</button>
 			</div>
 			<p class="muted small">
 				Skrytý denník si záznamy nechá. Pamätá si rok: posledné 3 mesiace po položkách, staršie dni
@@ -920,15 +921,7 @@
 
 <style>
 	.journal {
-		margin-bottom: 20px;
-		padding: 20px;
-	}
-	h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.4rem;
-		margin: 0 0 12px;
+		margin-bottom: var(--sp-5);
 	}
 	h3 {
 		display: flex;
@@ -943,8 +936,6 @@
 		justify-content: space-between;
 		gap: 10px;
 		padding: 6px;
-		border-radius: 14px;
-		background: var(--paper-2);
 	}
 	.daynav strong {
 		text-align: center;
@@ -981,8 +972,8 @@
 		transition: background 0.25s;
 	}
 	.glass.full {
-		border-color: var(--sky, #4a90c2);
-		background: linear-gradient(to top, var(--sky, #4a90c2) 75%, transparent 75%);
+		border-color: var(--sky);
+		background: linear-gradient(to top, var(--sky) 75%, transparent 75%);
 	}
 	.water-actions,
 	.picked-row,
@@ -993,17 +984,12 @@
 		gap: 8px;
 	}
 	.chips {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
 		margin-bottom: 10px;
 	}
 	.picked {
 		display: grid;
 		gap: 8px;
 		padding: 12px;
-		border-radius: 14px;
-		background: var(--paper-2);
 	}
 	.picked p {
 		margin: 0;
@@ -1028,9 +1014,10 @@
 		align-items: center;
 		gap: 8px;
 		width: 100%;
+		min-height: var(--tap);
 		padding: 8px 10px;
 		border: none;
-		border-radius: 10px;
+		border-radius: var(--radius-xs);
 		background: none;
 		color: var(--ink);
 		font: inherit;
@@ -1039,13 +1026,13 @@
 	}
 	.results button:hover,
 	.results button:focus-visible {
-		background: var(--paper-2);
+		background: var(--sunk);
 	}
 	.results small {
 		margin-left: auto;
 	}
 	.other {
-		margin-top: 10px;
+		margin: 10px 0 var(--sp-3);
 	}
 	.items {
 		list-style: none;
@@ -1085,18 +1072,7 @@
 		margin: 16px 0;
 	}
 	.icon-btn {
-		display: grid;
-		place-items: center;
-		width: 36px;
-		height: 36px;
-		border: none;
-		border-radius: 50%;
-		background: none;
 		color: var(--ink-2);
-		cursor: pointer;
-	}
-	.icon-btn:hover {
-		background: var(--paper-2);
 	}
 	.remove:hover {
 		background: var(--tomato-soft);
@@ -1111,17 +1087,12 @@
 	.prefs > * + * {
 		margin-top: 10px;
 	}
-	.check {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-	}
 	.goal {
 		max-width: 16em;
 	}
 	.goals {
 		border: 1px solid var(--line);
-		border-radius: 14px;
+		border-radius: var(--radius-sm);
 		padding: 12px;
 		margin-inline: 0;
 	}
@@ -1161,12 +1132,6 @@
 	.gap .chip small {
 		color: var(--muted);
 		margin-left: 4px;
-	}
-	.danger {
-		background: var(--tomato-soft);
-	}
-	.small {
-		font-size: 0.84rem;
 	}
 	a {
 		color: var(--ink);

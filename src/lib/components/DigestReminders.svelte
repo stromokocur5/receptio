@@ -62,7 +62,7 @@
 </script>
 
 <section class="card box digests">
-	<h2><Icon name="bell" size={24} /> Súhrny do telefónu</h2>
+	<h2 class="section-title"><Icon name="bell" size={24} /> Súhrny do telefónu</h2>
 	{#if !supported}
 		<p class="muted">
 			Tento prehliadač upozornenia nepodporuje. Na iPhone pridaj Receptio na plochu.
@@ -77,9 +77,7 @@
 			/>
 			<span>
 				<strong>Ranný prehľad o 7:00</strong>
-				<small class="muted"
-					>Čo dnes variť, čo vybrať z mrazničky, čo sa minie a čo z plánu je v akcii.</small
-				>
+				<small>Čo dnes variť, čo vybrať z mrazničky, čo sa minie a čo z plánu je v akcii.</small>
 			</span>
 		</label>
 		<label class="check">
@@ -91,14 +89,14 @@
 			/>
 			<span>
 				<strong>Nedeľný súhrn týždňa o 18:00</strong>
-				<small class="muted">Čo sa uvarilo, rastliny, bielkoviny, peniaze a rozpočet.</small>
+				<small>Čo sa uvarilo, rastliny, bielkoviny, peniaze a rozpočet.</small>
 			</span>
 		</label>
 		{#if digestReminder.current}
 			<button class="btn ghost small" disabled={busy} onclick={sendTest}>Poslať skúšobný</button>
 		{/if}
 		{#if message}<p class="small" role="status">{message}</p>{/if}
-		<p class="muted small">
+		<p class="hint">
 			Texty skladá tento telefón z tvojich údajov, na server ide len adresa pre upozornenia. Súhrn
 			je aktuálny k poslednému otvoreniu Receptia.
 		</p>
@@ -107,26 +105,9 @@
 
 <style>
 	.digests {
-		margin-bottom: 20px;
-		padding: 20px;
+		margin-bottom: var(--sp-5);
 	}
-	h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.4rem;
-		margin: 0 0 12px;
-	}
-	.check {
-		display: flex;
-		gap: 10px;
-		align-items: flex-start;
-		margin-bottom: 10px;
-	}
-	.check span {
-		display: grid;
-	}
-	.small {
-		font-size: 0.86rem;
+	.check + .btn {
+		margin-top: var(--sp-2);
 	}
 </style>

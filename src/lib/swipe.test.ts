@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { Member } from './household';
-import { almost, matches, swipeDeck } from './swipe';
+import { almost, matches, swipeDeck, swipers } from './swipe';
 
 const m = (id: string) => ({ id, name: id }) as Member;
 const ema = m('ema');
@@ -36,5 +36,15 @@ describe('swiping recipes together', () => {
 		expect(matches(wishes, [ema, jano, ivo])).toEqual(['b']);
 		expect(matches(wishes, [ema])).toEqual([]);
 		expect(almost(wishes, [ema, jano, ivo])).toEqual([{ id: 'a', missing: ivo }]);
+	});
+
+	it("a child's profile without a phone doesn't hold back a match", () => {
+		const own = (x: Member) => ({ ...x, owner: `key-${x.id}` }) as Member;
+		const lea = m('lea');
+		const everyone = [own(ema), own(jano), lea];
+		const wishes = new Map([['a', [ema, jano]]]);
+		expect(matches(wishes, everyone)).toEqual([]);
+		expect(matches(wishes, swipers(everyone))).toEqual(['a']);
+		expect(swipers([ema, jano])).toEqual([ema, jano]);
 	});
 });

@@ -99,9 +99,12 @@
 
 <div class="reminders">
 	{#if !supported}
-		<p class="muted small">
-			<Icon name="bell" size={15} /> Pripomienky tento prehliadač nevie. Na iPhone si Receptio najprv
-			pridaj na plochu (Zdieľať → Pridať na plochu) a otvor ho odtiaľ.
+		<p class="muted small icon-line">
+			<Icon name="bell" size={15} />
+			<span
+				>Pripomienky tento prehliadač nevie. Na iPhone si Receptio najprv pridaj na plochu (Zdieľať
+				→ Pridať na plochu) a otvor ho odtiaľ.</span
+			>
 		</p>
 	{:else if !waterReminder.current}
 		<button
@@ -125,6 +128,7 @@
 			<label>
 				<span class="sr-only">Prvá pripomienka</span>
 				<select
+					class="input sm"
 					value={s.from}
 					disabled={busy}
 					onchange={(e) => setSchedule({ from: Number(e.currentTarget.value) })}
@@ -135,6 +139,7 @@
 			<label>
 				<span class="sr-only">Posledná pripomienka</span>
 				<select
+					class="input sm"
 					value={s.to}
 					disabled={busy}
 					onchange={(e) => setSchedule({ to: Number(e.currentTarget.value) })}
@@ -145,6 +150,7 @@
 			<label>
 				<span class="sr-only">Ako často</span>
 				<select
+					class="input sm"
 					value={s.every}
 					disabled={busy}
 					onchange={(e) =>
@@ -176,7 +182,10 @@
 		</p>
 	{/if}
 	{#if testNote}<p class="muted small" role="status">{testNote}</p>{/if}
-	{#if message}<p class="msg small" role="alert">{message}</p>{/if}
+	{#if message}<p class="notice danger" role="alert">
+			<Icon name="alert" size={18} />
+			{message}
+		</p>{/if}
 </div>
 
 <style>
@@ -190,23 +199,18 @@
 		gap: 8px;
 	}
 	select {
-		padding: 6px 10px;
-		border: 1.5px solid var(--line);
-		border-radius: 10px;
-		background: var(--card, var(--paper));
-		color: var(--ink);
-		font: inherit;
-		font-size: 0.88rem;
+		font-size: var(--fs-sm);
 	}
 	p {
 		margin: 8px 0 0;
 	}
-	.small {
-		font-size: 0.84rem;
+	.icon-line {
+		display: flex;
+		align-items: flex-start;
+		gap: 6px;
 	}
-	.msg {
-		padding: 6px 10px;
-		border-radius: 10px;
-		background: var(--tomato-soft);
+	.icon-line :global(svg) {
+		flex: none;
+		margin-top: 3px;
 	}
 </style>

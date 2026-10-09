@@ -1305,8 +1305,16 @@ export function addExpense(expense: Omit<Expense, 'date'> & { date?: string }) {
 	);
 }
 
-export function removeExpense(id: string) {
+/** Removes a payment; returns it, so it can be put back (`restoreExpense`). */
+export function removeExpense(id: string): Expense | null {
+	const before = household.doc?.expenses[id]?.[0] || null;
 	updateDoc((doc) => ({ ...doc, expenses: { ...doc.expenses, [id]: [false, stamp()] } }));
+	return before;
+}
+
+/** Undoes `removeExpense`: the payment comes back as it was, without a new log entry. */
+export function restoreExpense(id: string, expense: Expense) {
+	updateDoc((doc) => ({ ...doc, expenses: { ...doc.expenses, [id]: [expense, stamp()] } }));
 }
 
 export const moneyOn = () => !!household.doc?.money[0];

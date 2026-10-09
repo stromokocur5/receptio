@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { formatEur } from '$lib/amounts';
+	import { toast } from '$lib/toast.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import { expensesOf, householdBalances, isAway, settleUp } from '$lib/household';
 	import { localToday } from '$lib/journal';
@@ -9,6 +10,7 @@
 		members,
 		moneyOn,
 		removeExpense,
+		restoreExpense,
 		setMoney
 	} from '$lib/household.svelte';
 
@@ -39,6 +41,11 @@
 	const sharing = $derived(
 		shares ?? (home.some((m) => m.owner) ? home.filter((m) => m.owner) : home).map((m) => m.id)
 	);
+	function remove(id: string) {
+		const gone = removeExpense(id);
+		if (gone) toast(`Platba ${formatEur(gone.amount)} zmazaná`, () => restoreExpense(id, gone));
+	}
+
 	function toggleShare(id: string) {
 		const now = sharing.includes(id) ? sharing.filter((x) => x !== id) : [...sharing, id];
 		if (now.length) shares = now;
@@ -60,8 +67,8 @@
 
 {#if !moneyOn()}
 	<p>
-		Nepovinné. Kto chce, môže si tu zapisovať, kto koľko zaplatil za nákup, a Receptio spočíta, kto
-		komu koľko dlží. Kým to nezapnete, nič sa nepočíta – ani nákupy z nákupného zoznamu.
+		Kto chce, môže si tu zapisovať, kto koľko zaplatil za nákup, a Receptio spočíta, kto komu koľko
+		dlží. Kým to nezapnete, nič sa nepočíta – ani nákupy z nákupného zoznamu.
 	</p>
 	<button class="btn ghost" onclick={() => setMoney(true)}>
 		<Icon name="euro" size={18} /> Zapnúť počítanie výdavkov
@@ -72,8 +79,10 @@
 	{#if paybacks.length}
 		<ul class="paybacks">
 			{#each paybacks as p (p.from + p.to)}
-				<li>
-					<span><strong>{nameOf(p.from)}</strong> → <strong>{nameOf(p.to)}</strong></span>
+				<li class="sunk">
+					<span class="who"
+						><strong>{nameOf(p.from)}</strong> → <strong>{nameOf(p.to)}</strong></span
+					>
 					<strong class="sum">{formatEur(p.amount)}</strong>
 					<button
 						class="btn ghost small"
@@ -85,37 +94,45 @@
 			{/each}
 		</ul>
 	{:else if expenses.length}
-		<p><Icon name="check" size={18} /> Ste si kvit.</p>
+		<p class="notice ok"><Icon name="check" size={18} /> Ste si kvit.</p>
 	{/if}
 
 	<form class="add" onsubmit={add}>
 		<label>
 			Kto platil
-			<select bind:value={by} required>
+			<select class="input" bind:value={by} required>
 				<option value="" disabled>Vyber</option>
 				{#each list as m (m.id)}<option value={m.id}>{m.name}</option>{/each}
 			</select>
 		</label>
 		<label>
 			Koľko €
-			<input class="amount" bind:value={amount} inputmode="decimal" placeholder="0,00" required />
+			<input
+				class="input amount"
+				bind:value={amount}
+				inputmode="decimal"
+				placeholder="0,00"
+				required
+			/>
 		</label>
 		<label class="grow">
 			Za čo
-			<input bind:value={note} maxlength="60" placeholder="Napr. Lidl, olej a ryža" />
+			<input class="input" bind:value={note} maxlength="60" placeholder="Napr. Lidl, olej a ryža" />
 		</label>
-		<fieldset class="grow shares">
+		<fieldset class="shares">
 			<legend>Za koho</legend>
-			{#each list as m (m.id)}
-				<label class="chip">
-					<input
-						type="checkbox"
-						checked={sharing.includes(m.id)}
-						onchange={() => toggleShare(m.id)}
-					/>
-					{m.name}
-				</label>
-			{/each}
+			<div class="chips">
+				{#each list as m (m.id)}
+					<label class="chip">
+						<input
+							type="checkbox"
+							checked={sharing.includes(m.id)}
+							onchange={() => toggleShare(m.id)}
+						/>
+						{m.name}
+					</label>
+				{/each}
+			</div>
 		</fieldset>
 		<button class="btn leaf" type="submit" disabled={!by || !amount.trim()}>
 			<Icon name="plus" size={18} /> Zapísať
@@ -123,11 +140,12 @@
 	</form>
 	<p class="hint">
 		Delí sa rovnakým dielom medzi tých, za koho sa platilo – kto je preč, nákup v tom čase neplatí.
-		Kto pri nákupe ťukne „Nakúpené → do špajze“ a vybral si, ktorý člen je, má nákup zapísaný sám.
+		Nákup odškrtnutý cez „Nakúpené → do špajze“ sa zapíše sám tomu, kto si v domácnosti vybral svoj
+		profil.
 	</p>
 
 	{#if expenses.length}
-		<ul class="expenses">
+		<ul class="expenses divided">
 			{#each showAll ? expenses : expenses.slice(0, SHOWN) as e (e.id)}
 				<li>
 					<span class="when">{date.format(new Date(`${e.date}T12:00`))}</span>
@@ -138,13 +156,13 @@
 						{#if sharedBy(e.for)}<span class="muted">· za {sharedBy(e.for)}</span>{/if}
 					</span>
 					<span class="sum">{formatEur(e.amount)}</span>
-					<button
-						class="remove"
-						aria-label="Zmazať platbu {formatEur(e.amount)}"
-						onclick={() => removeExpense(e.id)}
-					>
-						<Icon name="x" size={14} />
-					</button>
+					<span class="remove">
+						<button
+							class="icon-btn plain"
+							aria-label="Zmazať platbu {formatEur(e.amount)}"
+							onclick={() => remove(e.id)}><Icon name="trash" size={16} /></button
+						>
+					</span>
 				</li>
 			{/each}
 		</ul>
@@ -162,44 +180,48 @@
 	{/if}
 {/if}
 {#if moneyOn()}
-	<button class="off" onclick={() => setMoney(false)}>
-		Vypnúť počítanie výdavkov (zapísané platby ostanú)
-	</button>
+	<p class="off">
+		<button class="btn-link quiet" onclick={() => setMoney(false)}>
+			Vypnúť počítanie výdavkov
+		</button>
+		<span class="muted">(zapísané platby ostanú)</span>
+	</p>
 {/if}
 
 <style>
-	.paybacks,
-	.expenses {
+	.paybacks {
 		display: grid;
-		gap: 6px;
+		gap: var(--sp-2);
 		padding: 0;
-		margin: 12px 0;
+		margin: var(--sp-3) 0;
 		list-style: none;
 	}
 	.paybacks li {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px 12px;
-		padding: 10px 12px;
-		border-radius: var(--radius-sm);
-		background: var(--paper-2);
+		gap: var(--sp-2) var(--sp-3);
+		padding: 10px var(--sp-3);
 	}
-	.paybacks span {
+	.paybacks .who {
 		flex: 1 1 160px;
 	}
 	.add {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: flex-end;
-		gap: 10px;
-		margin-top: 12px;
+		gap: var(--sp-3);
+		margin-top: var(--sp-4);
 	}
-	.add label {
+	.add > label {
 		display: grid;
 		gap: 4px;
 		font-weight: 650;
-		font-size: 0.9rem;
+		font-size: var(--fs-sm);
+	}
+	/* Labels are small; the boxes keep body size (smaller text zooms the page on iPhone). */
+	.add .input {
+		font-size: var(--fs-base);
 	}
 	.add .amount {
 		width: 7em;
@@ -207,87 +229,54 @@
 	.grow {
 		flex: 1 1 180px;
 	}
+	.grow .input {
+		width: 100%;
+	}
 	.shares {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
+		flex: 1 1 100%;
+		min-width: 0;
 		border: 0;
 		margin: 0;
 		padding: 0;
 	}
 	.shares legend {
-		font-weight: 650;
-		font-size: 0.9rem;
-		margin-bottom: 4px;
-	}
-	.add .shares label {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		font-weight: 500;
-	}
-	.shares input {
 		padding: 0;
-		accent-color: var(--leaf);
+		margin-bottom: 4px;
+		font-weight: 650;
+		font-size: var(--fs-sm);
 	}
-	input,
-	select {
-		border: 1.5px solid var(--line);
-		border-radius: var(--radius-sm);
-		background: var(--paper);
-		color: var(--ink);
-		padding: 9px 10px;
-		font: inherit;
-		min-width: 0;
+	.shares .chip {
+		cursor: pointer;
 	}
-	.hint {
-		margin: 8px 0 0;
-		color: var(--muted);
-		font-size: 0.86rem;
+	.expenses {
+		margin: var(--sp-3) 0;
 	}
 	.expenses li {
-		display: grid;
-		grid-template-columns: auto 1fr auto auto;
+		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
-		gap: 10px;
-		font-size: 0.92rem;
+		gap: 4px 10px;
+		padding: 6px 0;
+		font-size: var(--fs-md);
 	}
 	.when {
 		color: var(--muted);
 		font-variant-numeric: tabular-nums;
 	}
 	.what {
+		flex: 1 1 10em;
 		min-width: 0;
 		overflow-wrap: anywhere;
 	}
 	.sum {
 		font-variant-numeric: tabular-nums;
 	}
+	/* Asking "Zmazať?" needs room: then it wraps onto its own line. */
 	.remove {
-		display: grid;
-		place-items: center;
-		width: 26px;
-		height: 26px;
-		border: 0;
-		border-radius: 50%;
-		background: transparent;
-		color: var(--muted);
-		cursor: pointer;
+		margin-left: auto;
 	}
 	.off {
-		display: block;
-		margin-top: 14px;
-		border: 0;
-		padding: 0;
-		background: none;
-		color: var(--ink-2);
-		font: inherit;
-		font-size: 0.86rem;
-		text-decoration: underline;
-		cursor: pointer;
-	}
-	.remove:hover {
-		background: var(--tomato-soft);
-		color: var(--tomato);
+		margin: var(--sp-4) 0 0;
+		font-size: var(--fs-sm);
 	}
 </style>

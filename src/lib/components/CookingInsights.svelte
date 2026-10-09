@@ -95,10 +95,10 @@
 </script>
 
 <section class="card box insights">
-	<h2><Icon name="chart" size={24} /> Viac o mojom varení</h2>
+	<h2 class="section-title"><Icon name="chart" size={24} /> Viac o mojom varení</h2>
 
-	<dl class="tiles">
-		<div>
+	<dl class="stat-grid tiles">
+		<div class="stat">
 			<dt>Doma vs. reštaurácia</dt>
 			{#if meals.portions}
 				<dd>{formatEur(meals.cost)}</dd>
@@ -116,7 +116,7 @@
 				<dd class="sub">keď uvaríš obed alebo večeru</dd>
 			{/if}
 		</div>
-		<div>
+		<div class="stat">
 			<dt>Ušetrené na akciách</dt>
 			<dd>{savings ? formatEur(savings.total) : '…'}</dd>
 			<dd class="sub">
@@ -124,7 +124,7 @@
 				<span class="badge">odhad</span>
 			</dd>
 		</div>
-		<div>
+		<div class="stat">
 			<dt>Varenie po sebe</dt>
 			<dd>{cookingStreak}</dd>
 			<dd class="sub">
@@ -269,7 +269,7 @@
 		{/if}
 	</div>
 
-	<h3>Míľniky</h3>
+	<h3 class="milestones">Míľniky</h3>
 	<ul class="goals">
 		{#each goals as g (g.label)}
 			<li class:done={g.done}>
@@ -283,50 +283,24 @@
 
 <style>
 	.insights {
-		margin-bottom: 20px;
-		padding: 20px;
-	}
-	.insights h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.4rem;
-		margin: 0 0 12px;
+		margin-bottom: var(--sp-5);
 	}
 	.insights h3 {
-		font-size: 1rem;
-		margin: 0 0 8px;
+		font-size: var(--fs-base);
+		margin: 0 0 var(--sp-2);
 	}
 	.tiles {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-		gap: 10px;
-		margin: 0 0 8px;
+		margin-bottom: var(--sp-2);
 	}
-	.tiles div {
-		padding: 10px 12px;
-		border-radius: 14px;
-		background: var(--paper-2);
-	}
-	.tiles dt {
-		font-size: 0.8rem;
-		color: var(--ink-2);
-	}
-	.tiles dd {
-		margin: 2px 0 0;
-		font-size: 1.5rem;
-		font-weight: 700;
+	.stat dd {
 		font-variant-numeric: tabular-nums;
 	}
-	.tiles .sub {
+	.stat .sub {
 		margin: 2px 0 0;
 		font-family: inherit;
 		font-weight: 400;
 		color: var(--muted);
-		font-size: 0.8rem;
-	}
-	.small {
-		font-size: 0.86rem;
+		font-size: var(--fs-xs);
 	}
 	.grid {
 		display: grid;
@@ -336,7 +310,7 @@
 	}
 	.panel {
 		padding: 14px;
-		border-radius: 14px;
+		border-radius: var(--radius-sm);
 		border: 1px solid var(--line);
 		min-width: 0;
 	}
@@ -389,7 +363,7 @@
 	.meter {
 		height: 10px;
 		border-radius: 999px;
-		background: var(--paper-2);
+		background: var(--sunk);
 		overflow: hidden;
 		margin: 4px 0 8px;
 	}
@@ -490,6 +464,9 @@
 	}
 	.down {
 		color: var(--leaf);
+	}
+	.insights .milestones {
+		margin-top: var(--sp-2);
 	}
 	.goals {
 		list-style: none;

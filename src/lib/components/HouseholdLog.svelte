@@ -92,14 +92,14 @@
 		grid-template-columns: auto 1fr auto;
 		align-items: center;
 		gap: 10px;
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 	}
 	.what {
 		overflow-wrap: anywhere;
 	}
 	time {
 		color: var(--muted);
-		font-size: 0.84rem;
+		font-size: var(--fs-sm);
 		font-variant-numeric: tabular-nums;
 		white-space: nowrap;
 	}

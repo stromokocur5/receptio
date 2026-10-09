@@ -3,7 +3,8 @@
 	import Icon from './Icon.svelte';
 </script>
 
-<div class="toasts" role="status" aria-live="polite" data-noprint>
+<!-- A live region (not role=status: pages have their own status lines). -->
+<div class="toasts" aria-live="polite" data-noprint>
 	{#each toasts as t (t.id)}
 		<div class="toast">
 			<span>{t.text}</span>

@@ -26,7 +26,7 @@ test('two people swiping right on the same recipe get a match, one tap from the 
 	await ema.getByLabel('Názov domácnosti').fill('Byt 4B');
 	await ema.getByLabel(/Tvoje meno/).fill('Ema');
 	await ema.getByRole('button', { name: 'Založiť' }).click();
-	await expect(ema.getByRole('status')).toContainText('Spojené');
+	await expect(ema.getByRole('status').filter({ hasText: 'Spojené' })).toBeVisible();
 	const code = await ema.evaluate(
 		() => JSON.parse(localStorage.getItem('receptio:household') ?? '{}').code as string
 	);
@@ -34,7 +34,7 @@ test('two people swiping right on the same recipe get a match, one tap from the 
 	const jano = await (await browser.newContext(phone)).newPage();
 	await visit(jano, `/domacnost#d=${code}`);
 	await jano.getByRole('button', { name: 'Pripojiť sa' }).click();
-	await expect(jano.getByRole('status')).toContainText('Spojené');
+	await expect(jano.getByRole('status').filter({ hasText: 'Spojené' })).toBeVisible();
 	await jano.getByLabel('Tvoje meno').fill('Jano');
 	await jano.getByRole('button', { name: 'Som tu nový' }).click();
 
@@ -61,6 +61,8 @@ test('two people swiping right on the same recipe get a match, one tap from the 
 	await expect(hers.getByText('Chce to aj Jano')).toBeVisible();
 	await hers.getByRole('button', { name: 'Chcem', exact: true }).click();
 	await expect(hers.getByText('Zhoda!')).toBeVisible();
+	// The match covers the cards, so focus moves onto it.
+	await expect(hers.getByRole('button', { name: 'Do plánu' })).toBeFocused();
 	if (SHOTS) await ema.screenshot({ path: `${SHOTS}/swipe-match.png` });
 	await hers.getByRole('button', { name: 'Do plánu' }).click();
 	await ema.keyboard.press('Escape');

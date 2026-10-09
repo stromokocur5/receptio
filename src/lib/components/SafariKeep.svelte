@@ -39,32 +39,24 @@
 </script>
 
 {#if show}
-	<div class="wrap keep" role="note">
-		<Icon name="info" size={18} />
-		<p>
-			<strong>Safari maže dáta stránok, ktoré týždeň neotvoríš.</strong> Aby ti plán a špajza
-			nezmizli, pridaj si Receptio na plochu (Zdieľať → „Pridať na plochu“) alebo
-			<a href="/moje">zapni synchronizáciu</a>.
-		</p>
-		<button class="btn ghost small" onclick={close}>Rozumiem</button>
+	<div class="wrap">
+		<div class="notice keep" role="note">
+			<Icon name="info" size={18} />
+			<p>
+				<strong>Safari maže dáta stránok, ktoré týždeň neotvoríš.</strong> Aby ti plán a špajza
+				nezmizli, pridaj si Receptio na plochu (Zdieľať → „Pridať na plochu“) alebo
+				<a href="/moje">zapni synchronizáciu</a>.
+			</p>
+			<button class="btn ghost small" onclick={close}>Rozumiem</button>
+		</div>
 	</div>
 {/if}
 
 <style>
 	.keep {
-		display: flex;
 		flex-wrap: wrap;
-		gap: 10px;
-		align-items: flex-start;
-		margin-top: 12px;
-		padding: 12px 14px;
-		border: 1.5px solid var(--line);
-		border-left: 4px solid var(--sky);
-		border-radius: var(--radius-sm);
-		background: var(--paper);
 	}
 	.keep p {
 		flex: 1 1 240px;
-		margin: 0;
 	}
 </style>

@@ -488,6 +488,11 @@ a.chip:hover {
 	margin: 0 0 var(--sp-3);
 	font-size: var(--fs-xl);
 }
+.section-title .badge {
+	font-family: var(--font-body);
+	font-variation-settings: normal;
+	letter-spacing: 0.01em;
+}
 .section-title > svg {
 	flex: none;
 	color: var(--leaf);
@@ -671,6 +676,8 @@ a.chip:hover {
 .input {
 	min-height: var(--tap);
 	padding: 8px 12px;
+	/* Below 16px, iPhone zooms the page in on focus. */
+	font-size: max(16px, 1em);
 	border: 1.5px solid var(--line);
 	border-radius: var(--radius-sm);
 	background: var(--card);

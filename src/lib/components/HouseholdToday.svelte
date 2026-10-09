@@ -77,9 +77,9 @@
 		</li>
 	{/each}
 </ul>
-<p class="small">
+<p class="foot small">
 	{#if away.length}
-		<Icon name="sun" size={16} /> Preč: {names(away)}.
+		<span><Icon name="sun" size={16} /> Preč: {names(away)}.</span>
 	{/if}
 	{#if toBuy}
 		<a href="/plan#nakup"
@@ -99,7 +99,7 @@
 	}
 	.today li {
 		display: grid;
-		grid-template-columns: 6.5em 1fr;
+		grid-template-columns: 6.5em minmax(0, 1fr);
 		gap: 10px;
 		align-items: baseline;
 	}
@@ -113,16 +113,19 @@
 		align-items: baseline;
 		min-width: 0;
 	}
-	.small {
-		font-size: 0.9rem;
-	}
-	p.small {
+	.foot {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 4px 16px;
+		align-items: center;
+		gap: 4px var(--sp-4);
 		margin: 10px 0 0;
 	}
-	p.small:empty {
+	.foot:empty {
 		display: none;
+	}
+	.foot > * {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
 	}
 </style>

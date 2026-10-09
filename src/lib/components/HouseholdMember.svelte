@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { formatNumber } from '$lib/amounts';
+	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
 	import IngredientExcluder from '$lib/components/IngredientExcluder.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import {
@@ -25,9 +26,14 @@
 	import { localToday } from '$lib/journal';
 	import { ACTIVITY_LABELS, ALLERGEN_LABELS, type Activity } from '$lib/nutrition';
 	import { journal, settings } from '$lib/state.svelte';
+	import { toast } from '$lib/toast.svelte';
 	import { ALLERGENS } from '$lib/types';
 
-	let { member, ondone }: { member: Member; ondone: () => void } = $props();
+	let {
+		member,
+		onclose,
+		onremoved
+	}: { member: Member; onclose: () => void; onremoved: () => void } = $props();
 
 	const MEAL_NAMES: Record<PlanMeal, string> = {
 		ranajky: 'Raňajky',
@@ -75,6 +81,15 @@
 		setBody({ weightKg: settings.current.weightKg, activity: journal.current.goals.activity });
 	}
 
+	/** A profile this phone may change can be put back; a lost phone's one only by that phone. */
+	function remove() {
+		const { id, name } = member;
+		const undoable = editable;
+		removeMember(id);
+		onremoved();
+		if (undoable) toast(`${name}: odobraté`, () => updateMember(id, { removed: false }));
+	}
+
 	function setAway(from: string, to: string | null) {
 		if (!from) updateMember(member.id, { away: null });
 		else updateMember(member.id, { away: { from, to: to && to >= from ? to : null } });
@@ -90,12 +105,12 @@
 		{#if canRemove(member)}
 			<p class="hint">Tento telefón sa dva mesiace neozval, preto profil môžeš odobrať.</p>
 			<div class="actions">
-				<button
-					class="btn ghost small danger"
-					onclick={() => {
-						removeMember(member.id);
-						ondone();
-					}}><Icon name="trash" size={16} /> Odobrať</button
+				<ConfirmButton
+					small
+					icon="trash"
+					confirm="Áno, odobrať"
+					why="Ak sa ten telefón ešte ozve, profil sa vráti."
+					onconfirm={remove}>Odobrať</ConfirmButton
 				>
 			</div>
 		{/if}
@@ -103,7 +118,7 @@
 {:else}
 	<div class="edit">
 		{#if !member.owner}
-			<p class="hint owner">
+			<p class="hint">
 				Tento profil môže upraviť ktokoľvek v domácnosti – hodí sa pre dieťa alebo niekoho bez
 				telefónu.
 			</p>
@@ -111,6 +126,7 @@
 		<label class="name-field">
 			Meno
 			<input
+				class="input"
 				value={member.name}
 				maxlength="40"
 				onchange={(e) =>
@@ -120,10 +136,10 @@
 		</label>
 
 		<fieldset>
-			<legend>Je doma</legend>
-			<div class="toggles">
+			<legend>Kedy je doma</legend>
+			<div class="chips">
 				{#each PLAN_MEALS as meal (meal)}
-					<button class="toggle" aria-pressed={member.meals[meal]} onclick={() => toggleMeal(meal)}
+					<button class="chip" aria-pressed={member.meals[meal]} onclick={() => toggleMeal(meal)}
 						>{MEAL_NAMES[meal]}</button
 					>
 				{/each}
@@ -137,6 +153,7 @@
 				<label>
 					od
 					<input
+						class="input"
 						type="date"
 						value={away?.from ?? ''}
 						onchange={(e) => setAway(e.currentTarget.value, away?.to ?? null)}
@@ -145,6 +162,7 @@
 				<label>
 					do
 					<input
+						class="input"
 						type="date"
 						value={away?.to ?? ''}
 						min={away?.from ?? localToday()}
@@ -153,7 +171,7 @@
 					/>
 				</label>
 				{#if away}
-					<button class="btn ghost small" onclick={() => setAway('', null)}>Už je doma</button>
+					<button class="btn ghost" onclick={() => setAway('', null)}>Už je doma</button>
 				{/if}
 			</div>
 			{#if away && !away.to}<p class="hint">Bez dátumu „do“ – kým nepovieš, že je späť.</p>{/if}
@@ -162,6 +180,7 @@
 		<fieldset>
 			<legend>Porcia</legend>
 			<select
+				class="input"
 				value={member.portion ?? 'auto'}
 				onchange={(e) =>
 					updateMember(member.id, {
@@ -178,12 +197,13 @@
 		</fieldset>
 
 		<fieldset>
-			<legend>Telo a ciele <span class="muted">(nepovinné)</span></legend>
+			<legend>Telo a ciele <span class="badge">nepovinné</span></legend>
 			<div class="body">
 				<label>
 					Výška
 					<span class="unit"
 						><input
+							class="input"
 							inputmode="numeric"
 							placeholder="—"
 							value={member.body.heightCm ?? ''}
@@ -195,6 +215,7 @@
 					Váha
 					<span class="unit"
 						><input
+							class="input"
 							inputmode="numeric"
 							placeholder="—"
 							value={member.body.weightKg ?? ''}
@@ -206,6 +227,7 @@
 					Vek
 					<span class="unit"
 						><input
+							class="input"
 							inputmode="numeric"
 							placeholder="—"
 							value={member.body.age ?? ''}
@@ -216,6 +238,7 @@
 				<label>
 					Pohlavie
 					<select
+						class="input"
 						value={member.body.sex ?? ''}
 						onchange={(e) => setBody({ sex: (e.currentTarget.value || null) as Body['sex'] })}
 					>
@@ -227,6 +250,7 @@
 				<label>
 					Pohyb
 					<select
+						class="input"
 						value={member.body.activity}
 						onchange={(e) => setBody({ activity: e.currentTarget.value as Activity })}
 					>
@@ -238,6 +262,7 @@
 				<label>
 					Cieľ
 					<select
+						class="input"
 						value={member.body.goal}
 						onchange={(e) => setBody({ goal: e.currentTarget.value as BodyGoal })}
 					>
@@ -262,7 +287,7 @@
 				deťom do 13 rokov stačí vek.
 			</p>
 			{#if isMe && settings.current.weightKg && member.body.weightKg !== settings.current.weightKg}
-				<button class="btn ghost small" onclick={fromMyProfile}
+				<button class="btn ghost small from-mine" onclick={fromMyProfile}
 					>Prevziať váhu a pohyb z môjho profilu</button
 				>
 			{/if}
@@ -270,30 +295,33 @@
 
 		<fieldset>
 			<legend>Alergie</legend>
-			<div class="toggles">
+			<div class="chips">
 				{#each ALLERGENS as allergen (allergen)}
 					<button
-						class="toggle"
+						class="chip"
 						aria-pressed={member.allergens.includes(allergen)}
 						onclick={() => toggleAllergen(allergen)}>{ALLERGEN_LABELS[allergen]}</button
 					>
 				{/each}
 			</div>
 		</fieldset>
-		<div class="toggles">
-			<button
-				class="toggle"
-				aria-pressed={member.mild}
-				onclick={() => updateMember(member.id, { mild: !member.mild })}
-				><Icon name="chili" size={16} /> Nepálivo</button
-			>
-			<button
-				class="toggle"
-				aria-pressed={member.glutenFree}
-				onclick={() => updateMember(member.id, { glutenFree: !member.glutenFree })}
-				><Icon name="wheat" size={16} /> Bezlepkovo</button
-			>
-		</div>
+		<fieldset>
+			<legend>Strava</legend>
+			<div class="chips">
+				<button
+					class="chip"
+					aria-pressed={member.mild}
+					onclick={() => updateMember(member.id, { mild: !member.mild })}
+					><Icon name="chili" size={16} /> Nepálivo</button
+				>
+				<button
+					class="chip"
+					aria-pressed={member.glutenFree}
+					onclick={() => updateMember(member.id, { glutenFree: !member.glutenFree })}
+					><Icon name="wheat" size={16} /> Bezlepkovo</button
+				>
+			</div>
+		</fieldset>
 		<fieldset>
 			<legend>Čo neje alebo nechce jesť</legend>
 			<IngredientExcluder
@@ -317,17 +345,15 @@
 				>
 			</label>
 		{/if}
+		<!-- The editor is long: closing it shouldn't need a scroll back up. -->
 		<div class="actions">
+			<button class="btn leaf" onclick={onclose}><Icon name="check" size={18} /> Hotovo</button>
 			{#if !member.owner && !household.me}
-				<button class="btn ghost small" onclick={() => claimMember(member.id)}>Toto som ja</button>
+				<button class="btn ghost" onclick={() => claimMember(member.id)}>Toto som ja</button>
 			{/if}
 			{#if !member.owner || !isMe}
-				<button
-					class="btn ghost small danger"
-					onclick={() => {
-						removeMember(member.id);
-						ondone();
-					}}><Icon name="trash" size={16} /> Odobrať</button
+				<button class="btn danger push" onclick={remove}
+					><Icon name="trash" size={18} /> Odobrať</button
 				>
 			{/if}
 		</div>
@@ -337,8 +363,13 @@
 <style>
 	.edit {
 		display: grid;
-		gap: 14px;
-		margin-top: 12px;
+		gap: var(--sp-4);
+		margin-top: var(--sp-3);
+		padding-top: var(--sp-3);
+		border-top: 1px dashed var(--line);
+	}
+	.edit > .hint {
+		margin: 0;
 	}
 	.name-field,
 	.body label,
@@ -346,52 +377,29 @@
 		display: grid;
 		gap: 4px;
 		font-weight: 650;
-		font-size: 0.9rem;
+		font-size: var(--fs-sm);
 	}
 	.name-field {
 		max-width: 420px;
 	}
-	input,
-	select {
-		border: 1.5px solid var(--line);
-		border-radius: var(--radius-sm);
-		background: var(--paper);
-		color: var(--ink);
-		padding: 8px 10px;
-		font: inherit;
+	/* Labels are small; the boxes keep body size (smaller text zooms the page on iPhone). */
+	.input {
 		min-width: 0;
+		font-size: var(--fs-base);
 	}
 	fieldset {
 		border: 0;
 		padding: 0;
 		margin: 0;
+		min-width: 0;
 	}
 	legend {
-		font-weight: 650;
-		margin-bottom: 6px;
-	}
-	.toggles {
 		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
-	.toggle {
-		display: inline-flex;
 		align-items: center;
-		gap: 4px;
-		padding: 6px 12px;
-		border: 1.5px solid var(--line);
-		border-radius: 999px;
-		background: var(--paper);
-		color: var(--ink);
-		font: inherit;
-		font-size: 0.9rem;
-		cursor: pointer;
-	}
-	.toggle[aria-pressed='true'] {
-		border-color: var(--leaf);
-		background: var(--leaf);
-		color: var(--paper);
+		gap: var(--sp-2);
+		padding: 0;
+		margin-bottom: var(--sp-2);
+		font-weight: 650;
 	}
 	.dates {
 		display: flex;
@@ -410,32 +418,26 @@
 		gap: 6px;
 		font-weight: 500;
 	}
-	.unit input {
+	.unit .input {
 		width: 100%;
 	}
 	.targets {
 		margin: 10px 0 0;
 	}
-	.hint {
-		margin: 6px 0 0;
-		color: var(--muted);
-		font-size: 0.86rem;
+	.from-mine {
+		margin-top: var(--sp-2);
+	}
+	.check {
+		padding: 0;
 	}
 	.actions {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 10px;
-	}
-	.danger {
-		color: var(--tomato);
-	}
-	.owner {
-		margin: 0;
-	}
-	.check {
-		display: flex;
-		gap: 8px;
 		align-items: flex-start;
-		font-size: 0.9rem;
+		gap: var(--sp-2);
+	}
+	/* Removing sits apart from "done", so it isn't hit by accident. */
+	.push {
+		margin-left: auto;
 	}
 </style>

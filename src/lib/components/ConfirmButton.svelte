@@ -50,12 +50,20 @@
 <span class="confirm" class:armed>
 	{#if armed && why}<span class="why" role="status">{why}</span>{/if}
 	<span class="row">
-		<button class="btn danger" class:small class:armed {disabled} onclick={tap} aria-live="polite">
+		<button
+			type="button"
+			class="btn danger"
+			class:small
+			class:armed
+			{disabled}
+			onclick={tap}
+			aria-live="polite"
+		>
 			{#if icon}<Icon name={icon} size={small ? 16 : 18} />{/if}
 			{#if armed}{confirm}{:else}{@render children()}{/if}
 		</button>
 		{#if armed}
-			<button class="btn ghost" class:small onclick={cancel}>Zrušiť</button>
+			<button type="button" class="btn ghost" class:small onclick={cancel}>Zrušiť</button>
 		{/if}
 	</span>
 </span>

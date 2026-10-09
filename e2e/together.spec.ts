@@ -21,7 +21,7 @@ test('shopping together: ticks go both ways between the shared list and the own 
 
 	const friend = await (await browser.newContext()).newPage();
 	await visit(friend, url);
-	await expect(friend.getByRole('status')).toContainText('Naživo');
+	await expect(friend.getByRole('status').filter({ hasText: 'Naživo' })).toBeVisible();
 	// The friend picks up the chickpeas: the own list shows them bought.
 	await friend.locator('label', { hasText: /Cícer/ }).first().click();
 	const mine = me.getByRole('checkbox', { name: /Cícer/ }).first();

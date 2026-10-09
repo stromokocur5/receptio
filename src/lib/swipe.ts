@@ -36,6 +36,14 @@ export function swipeDeck<R extends { id: string }>(
 	);
 }
 
+/**
+ * Who swipes: members with their own phone. A child's profile can't swipe, so it doesn't
+ * hold back a match (everyone, when nobody has a phone of their own).
+ */
+export function swipers(members: Member[]): Member[] {
+	return members.some((m) => m.owner) ? members.filter((m) => m.owner) : members;
+}
+
 /** Recipes everyone in the household wants (two people at least). */
 export function matches(wishes: Wishes, members: Member[]): string[] {
 	if (members.length < 2) return [];

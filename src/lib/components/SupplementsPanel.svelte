@@ -19,6 +19,7 @@
 		updateSupplementReminders
 	} from '$lib/reminders';
 	import { journal, supplementReminder, waterReminder } from '$lib/state.svelte';
+	import { withUndo } from '$lib/toast.svelte';
 	import { onMount } from 'svelte';
 
 	/** The day shown in the diary; reminders always follow today. */
@@ -108,11 +109,13 @@
 		};
 	}
 
-	function remove(id: string) {
-		journal.current = {
-			...journal.current,
-			supplements: supplements.filter((s) => s.id !== id)
-		};
+	function remove(id: string, name: string) {
+		withUndo(`${name}: odstránené`, journal, () => {
+			journal.current = {
+				...journal.current,
+				supplements: supplements.filter((s) => s.id !== id)
+			};
+		});
 	}
 
 	function toggle(id: string) {
@@ -140,17 +143,25 @@
 			{#each supplements as s (s.id)}
 				{@const taken = (day.taken ?? []).includes(s.id)}
 				<li class:taken>
-					<label class="tick">
+					<label class="check tick">
 						<input type="checkbox" checked={taken} onchange={() => toggle(s.id)} />
 						<span>{s.name}</span>
 					</label>
 					<label>
 						<span class="sr-only">Kedy: {s.name}</span>
-						<select value={s.time} onchange={(e) => setTime(s.id, Number(e.currentTarget.value))}>
+						<select
+							class="input sm"
+							value={s.time}
+							onchange={(e) => setTime(s.id, Number(e.currentTarget.value))}
+						>
 							{#each TIMES as m (m)}<option value={m}>{minutesToTime(m)}</option>{/each}
 						</select>
 					</label>
-					<button class="icon-btn" aria-label="Odstrániť: {s.name}" onclick={() => remove(s.id)}>
+					<button
+						class="icon-btn plain remove"
+						aria-label="Odstrániť: {s.name}"
+						onclick={() => remove(s.id, s.name)}
+					>
 						<Icon name="x" size={15} />
 					</button>
 				</li>
@@ -184,17 +195,23 @@
 		{/if}
 		{#if adding || !presets.length}
 			<form class="custom" onsubmit={addCustom}>
-				<label class="field small-field">
+				<label class="name">
 					<span class="sr-only">Názov</span>
-					<input bind:value={customName} maxlength="40" placeholder="Napr. horčík" required />
+					<input
+						class="input"
+						bind:value={customName}
+						maxlength="40"
+						placeholder="Napr. horčík"
+						required
+					/>
 				</label>
-				<label class="field small-field">
+				<label>
 					<span class="sr-only">Kedy</span>
-					<select bind:value={customTime}>
+					<select class="input" bind:value={customTime}>
 						{#each TIMES as m (m)}<option value={m}>{minutesToTime(m)}</option>{/each}
 					</select>
 				</label>
-				<button class="btn leaf small" type="submit">Pridať</button>
+				<button class="btn leaf" type="submit">Pridať</button>
 			</form>
 		{/if}
 	{/if}
@@ -236,7 +253,10 @@
 				</div>
 				{#if testNote}<p class="muted small" role="status">{testNote}</p>{/if}
 			{/if}
-			{#if message}<p class="error small" role="alert">{message}</p>{/if}
+			{#if message}<p class="notice danger" role="alert">
+					<Icon name="alert" size={18} />
+					{message}
+				</p>{/if}
 			<p class="muted small">
 				Na server ide len čas pripomienky. Čo berieš, ostáva v tvojom zariadení.
 			</p>
@@ -269,27 +289,26 @@
 		border-bottom: 1px dashed var(--line);
 	}
 	.tick {
-		display: flex;
 		align-items: center;
-		gap: 8px;
 		min-width: 0;
+		padding: 0;
 		overflow-wrap: anywhere;
 		font-weight: 600;
 	}
 	.tick input {
-		width: 20px;
-		height: 20px;
-		flex: none;
-		accent-color: var(--leaf);
+		margin: 0;
+	}
+	.remove {
+		color: var(--ink-2);
+	}
+	.remove:hover {
+		background: var(--tomato-soft);
 	}
 	.taken .tick span {
 		text-decoration: line-through;
 		color: var(--muted);
 	}
 	.chips {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
 		margin-bottom: 10px;
 	}
 	.chips small {
@@ -303,7 +322,8 @@
 		align-items: center;
 		margin-bottom: 10px;
 	}
-	.custom .field:first-child {
+	.custom .name {
+		display: grid;
 		flex: 1 1 12em;
 	}
 	.done {
@@ -318,16 +338,10 @@
 		flex-wrap: wrap;
 		gap: 8px;
 	}
-	.reminders p {
+	.reminders p:not(.notice) {
 		display: flex;
 		align-items: center;
 		gap: 6px;
 		flex-wrap: wrap;
-	}
-	.error {
-		color: var(--tomato);
-	}
-	.small {
-		font-size: 0.84rem;
 	}
 </style>

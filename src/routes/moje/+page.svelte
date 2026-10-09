@@ -33,6 +33,7 @@
 	import { weekSummary } from '$lib/week';
 	import { cookingStats, supplementStreak, waterStreak } from '$lib/stats';
 	import { localToday } from '$lib/journal';
+	import { toast, withUndo } from '$lib/toast.svelte';
 
 	const catalog = useCatalog();
 	const dateFormat = new Intl.DateTimeFormat('sk-SK', { day: 'numeric', month: 'long' });
@@ -76,7 +77,12 @@
 	});
 	let newCollection = $state<string | null>(null);
 	let renaming = $state<string | null>(null);
-	let confirmDelete = $state(false);
+
+	/** Recipes stay saved, and the collection can be put back from the toast. */
+	function removeCollection(id: string, name: string) {
+		withUndo(`Kolekcia ${name} je zmazaná`, collections, () => deleteCollection(id));
+		shelf = 'all';
+	}
 
 	function addCollection(event: SubmitEvent) {
 		event.preventDefault();
@@ -150,6 +156,8 @@
 		const file = event.currentTarget.files?.[0];
 		event.currentTarget.value = '';
 		if (!file) return;
+		// What's here now, so restoring the wrong file can be undone.
+		const before = exportBackup();
 		const restored = importBackup(await file.text());
 		restoreMessage =
 			restored === null
@@ -157,6 +165,12 @@
 				: restored.length
 					? { ok: true, text: 'Hotovo – špajza, plán, história aj poznámky sú späť.' }
 					: { ok: false, text: 'Záloha je prázdna alebo poškodená, nič sa nezmenilo.' };
+		if (restored?.length) {
+			toast('Záloha je obnovená', () => {
+				importBackup(before);
+				restoreMessage = null;
+			});
+		}
 	}
 </script>
 
@@ -176,7 +190,7 @@
 	</header>
 
 	<section class="block">
-		<h2><Icon name="bookmark" size={24} /> Obľúbené</h2>
+		<h2 class="section-title"><Icon name="bookmark" size={24} /> Obľúbené</h2>
 		{#if !ui.loaded}
 			<p class="muted">Načítavam…</p>
 		{:else}
@@ -194,7 +208,6 @@
 						onclick={() => {
 							shelf = c.id;
 							renaming = null;
-							confirmDelete = false;
 						}}
 					>
 						{c.name} ({c.recipeIds.length})
@@ -247,20 +260,12 @@
 							<Icon name="pencil" size={15} /> Premenovať
 						</button>
 					{/if}
-					{#if confirmDelete}
-						<button
-							class="btn small danger"
-							onclick={() => {
-								deleteCollection(activeCollection.id);
-								shelf = 'all';
-								confirmDelete = false;
-							}}>Naozaj zmazať kolekciu</button
-						>
-					{:else}
-						<button class="btn ghost small" onclick={() => (confirmDelete = true)}>
-							<Icon name="trash" size={15} /> Zmazať kolekciu
-						</button>
-					{/if}
+					<button
+						class="btn danger small"
+						onclick={() => removeCollection(activeCollection.id, activeCollection.name)}
+					>
+						<Icon name="trash" size={15} /> Zmazať kolekciu
+					</button>
 					<span class="muted small">Recepty v nej ostanú uložené.</span>
 				</div>
 			{/if}
@@ -268,7 +273,7 @@
 			{#if shown.length === 0}
 				<p class="muted">
 					{#if shelf === 'liked'}
-						Zatiaľ si nič nelajkol/a. Srdiečko je pri každom recepte.
+						Zatiaľ nemáš nič lajknuté. Srdiečko je pri každom recepte.
 					{:else if activeCollection}
 						Kolekcia je prázdna. Recept do nej pridáš na jeho stránke – keď je uložený, pod
 						tlačidlami uvidíš svoje kolekcie.
@@ -304,41 +309,41 @@
 
 	{#if stats && stats.total > 0}
 		<section class="card box statbox">
-			<h2><Icon name="chart" size={24} /> Moje varenie v číslach</h2>
-			<dl class="tiles">
-				<div>
+			<h2 class="section-title"><Icon name="chart" size={24} /> Moje varenie v číslach</h2>
+			<dl class="stat-grid">
+				<div class="stat">
 					<dt>Tento mesiac</dt>
 					<dd>{stats.thisMonth}×</dd>
 					<small>minulý {stats.lastMonth}×</small>
 				</div>
-				<div>
+				<div class="stat">
 					<dt>Recepty</dt>
 					<dd>{stats.recipes}</dd>
 					<small>z {catalog.recipes.length}</small>
 				</div>
-				<div>
+				<div class="stat">
 					<dt>Kuchyne sveta</dt>
 					<dd>{stats.cuisines}</dd>
 					<small>z {catalog.cuisines.length}</small>
 				</div>
-				<div>
+				<div class="stat">
 					<dt>Minuté tento mesiac</dt>
 					<dd>{formatEur(stats.costThisMonth)}</dd>
 					<small>minulý {formatEur(stats.costLastMonth)}</small>
 				</div>
-				<div>
+				<div class="stat">
 					<dt>Porcia v priemere</dt>
 					<dd>{formatEur(stats.perPortion)}</dd>
 				</div>
 				{#if streaks && streaks.water > 0}
-					<div>
+					<div class="stat">
 						<dt>Voda splnená</dt>
 						<dd>{streaks.water}</dd>
 						<small>{dayWord(streaks.water)} po sebe</small>
 					</div>
 				{/if}
 				{#if streaks && streaks.supplements > 0}
-					<div>
+					<div class="stat">
 						<dt>Vitamíny</dt>
 						<dd>{streaks.supplements}</dd>
 						<small>{dayWord(streaks.supplements)} po sebe</small>
@@ -362,7 +367,7 @@
 
 	{#if week && week.portions > 0}
 		<section class="card box weekbox">
-			<h2><Icon name="calendar" size={24} /> Posledných 7 dní</h2>
+			<h2 class="section-title"><Icon name="calendar" size={24} /> Posledných 7 dní</h2>
 			<p class="stats">
 				<strong>{formatNumber(week.portions, 0)}</strong>
 				{week.portions < 1.5 ? 'porcia' : week.portions < 4.5 ? 'porcie' : 'porcií'} na osobu ·
@@ -385,7 +390,7 @@
 
 	<div class="two">
 		<section class="card box">
-			<h2><Icon name="history" size={24} /> Uvarené</h2>
+			<h2 class="section-title"><Icon name="history" size={24} /> Uvarené</h2>
 			{#if cooked.length === 0}
 				<p class="muted">
 					Keď dovaríš recept v režime varenia alebo ho v pláne označíš „Uvarené“, objaví sa tu.
@@ -397,13 +402,15 @@
 						Najčastejšie: {topCooked.map(([id, n]) => `${titleOf(id)} (${n}×)`).join(', ')}.
 					{/if}
 				</p>
-				<ul class="history">
+				<ul class="history divided">
 					{#each showAllHistory ? cooked : cooked.slice(0, 8) as h, i (i)}
 						<li>
 							<span class="muted">{dateFormat.format(new Date(h.date))}</span>
 							<a href="/recepty/{h.recipeId}"
 								>{titleOf(h.recipeId)}{#if h.rating}
-									<small class="rating r{h.rating}">{RATING_LABELS[h.rating]}</small>{/if}</a
+									<small class="badge" class:leaf={h.rating === 3} class:turmeric={h.rating === 1}
+										>{RATING_LABELS[h.rating]}</small
+									>{/if}</a
 							>
 							<span class="muted">{h.servings} porc.</span>
 						</li>
@@ -418,11 +425,11 @@
 		</section>
 
 		<section class="card box">
-			<h2><Icon name="pencil" size={24} /> Poznámky</h2>
+			<h2 class="section-title"><Icon name="pencil" size={24} /> Poznámky</h2>
 			{#if noted.length === 0}
 				<p class="muted">Poznámku si napíšeš pod postupom každého receptu.</p>
 			{:else}
-				<ul class="notes">
+				<ul class="notes divided">
 					{#each noted as [id, text] (id)}
 						<li>
 							<a href="/recepty/{id}">{titleOf(id)}</a>
@@ -443,7 +450,7 @@
 	</p>
 
 	<section class="card box backup">
-		<h2><Icon name="package" size={24} /> Záloha do súboru</h2>
+		<h2 class="section-title"><Icon name="package" size={24} /> Záloha do súboru</h2>
 		<p>
 			Špajza, plán, záhradka, história, obľúbené a poznámky žijú v tomto prehliadači. Ak nechceš
 			synchronizáciu, stiahni si zálohu ako súbor a na druhom zariadení ju obnov (pošli si ho
@@ -459,35 +466,29 @@
 			</label>
 		</div>
 		{#if restoreMessage}
-			<p class="msg" class:ok={restoreMessage.ok} role="status">
+			<p
+				class="notice"
+				class:ok={restoreMessage.ok}
+				class:danger={!restoreMessage.ok}
+				role={restoreMessage.ok ? 'status' : 'alert'}
+			>
 				<Icon name={restoreMessage.ok ? 'check' : 'alert'} size={18} />
 				{restoreMessage.text}
 			</p>
 		{/if}
-		<p class="muted small">Obnovenie prepíše to, čo máš v tomto prehliadači teraz.</p>
+		<p class="hint">Obnovenie prepíše to, čo máš v tomto prehliadači teraz.</p>
 	</section>
 </div>
 
 <style>
 	.guide-again {
-		margin: 16px 0 0;
-	}
-	.page {
-		padding-top: 28px;
+		margin: var(--sp-4) 0 0;
 	}
 	.lede {
 		max-width: 44em;
-		color: var(--ink-2);
-	}
-	h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.4rem;
-		margin: 0 0 12px;
 	}
 	.block {
-		margin: 28px 0;
+		margin: var(--sp-6) 0;
 	}
 	.shelves,
 	.collection-tools,
@@ -495,13 +496,11 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 6px;
+		gap: var(--sp-2);
 	}
-	.shelves {
-		margin-bottom: 14px;
-	}
+	.shelves,
 	.collection-tools {
-		margin-bottom: 14px;
+		margin-bottom: var(--sp-4);
 	}
 	.inline-form .field {
 		min-width: 0;
@@ -512,11 +511,8 @@
 		width: 100%;
 	}
 	.group-title {
-		margin: 18px 0 10px;
-		font-size: 1.1rem;
-	}
-	.danger {
-		background: var(--tomato-soft);
+		margin: var(--sp-5) 0 10px;
+		font-size: var(--fs-lg);
 	}
 	.grid {
 		display: grid;
@@ -525,65 +521,59 @@
 	}
 	.two {
 		display: grid;
-		gap: 20px;
-	}
-	.box {
-		padding: 20px;
+		gap: var(--sp-5);
 	}
 	.stats {
 		margin: 0 0 10px;
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 		color: var(--ink-2);
 	}
-	ul {
-		list-style: none;
-		margin: 0 0 12px;
-		padding: 0;
+	ul + .btn {
+		margin-top: var(--sp-3);
 	}
 	.history li {
 		display: grid;
 		grid-template-columns: 6.5em 1fr auto;
 		gap: 10px;
-		padding: 7px 0;
-		border-bottom: 1px dashed var(--line);
-		font-size: 0.92rem;
+		padding: var(--sp-2) 0;
+		font-size: var(--fs-md);
+	}
+	.history .badge {
+		margin-left: 6px;
+		vertical-align: 1px;
 	}
 	a {
 		color: var(--ink);
 		font-weight: 650;
 	}
-	.rating {
-		margin-left: 6px;
-		padding: 0 6px;
-		border-radius: 6px;
-		font-size: 0.72rem;
-		font-weight: 700;
-		background: var(--paper-2);
-		color: var(--ink-2);
-	}
-	.rating.r3 {
-		background: var(--leaf-soft);
-		color: var(--leaf);
-	}
-	.rating.r1 {
-		background: var(--turmeric-soft);
-	}
 	.notes li {
-		padding: 8px 0;
-		border-bottom: 1px dashed var(--line);
+		padding: var(--sp-2) 0;
 	}
 	.notes p {
 		margin: 4px 0 0;
 		white-space: pre-line;
 		color: var(--ink-2);
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 	}
 	.statbox,
 	.weekbox {
-		margin-bottom: 20px;
+		margin-bottom: var(--sp-5);
+	}
+	.weekbox > p:last-child {
+		margin: var(--sp-3) 0 0;
+	}
+	.stat-grid {
+		margin-bottom: 10px;
+	}
+	.stat dd {
+		font-variant-numeric: tabular-nums;
+	}
+	.stat small {
+		color: var(--muted);
+		font-size: var(--fs-xs);
 	}
 	.backup {
-		margin-top: 20px;
+		margin-top: var(--sp-5);
 	}
 	.backup-actions {
 		display: flex;
@@ -603,49 +593,10 @@
 		outline: 3px solid var(--turmeric);
 		outline-offset: 2px;
 	}
-	.msg {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		padding: 8px 12px;
-		border-radius: 12px;
-		background: var(--tomato-soft);
-	}
-	.msg.ok {
-		background: var(--leaf-soft);
-	}
-	.small {
-		font-size: 0.84rem;
-	}
 	@media (min-width: 900px) {
 		.two {
 			grid-template-columns: 1fr 1fr;
 			align-items: start;
 		}
-	}
-	.tiles {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-		gap: 10px;
-		margin: 0 0 10px;
-	}
-	.tiles div {
-		padding: 10px 12px;
-		border-radius: 14px;
-		background: var(--paper-2);
-	}
-	.tiles dt {
-		font-size: 0.8rem;
-		color: var(--ink-2);
-	}
-	.tiles dd {
-		margin: 2px 0 0;
-		font-size: 1.5rem;
-		font-weight: 700;
-		font-variant-numeric: tabular-nums;
-	}
-	.tiles small {
-		color: var(--muted);
-		font-size: 0.8rem;
 	}
 </style>

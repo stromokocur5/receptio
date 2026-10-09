@@ -87,7 +87,7 @@
 		grid-template-columns: auto 1fr;
 		gap: 6px 14px;
 		margin: 0;
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 	}
 	dt {
 		font-weight: 650;

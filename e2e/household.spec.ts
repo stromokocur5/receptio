@@ -10,7 +10,7 @@ async function createHousehold(page: Page, me: string) {
 	await page.getByLabel('Názov domácnosti').fill('Byt 4B');
 	await page.getByLabel(/Tvoje meno/).fill(me);
 	await page.getByRole('button', { name: 'Založiť' }).click();
-	await expect(page.getByRole('status')).toContainText('Spojené');
+	await expect(page.getByRole('status').filter({ hasText: 'Spojené' })).toBeVisible();
 }
 
 const householdCode = (page: Page) =>
@@ -42,7 +42,7 @@ test('two phones share the plan, who buys what, the log and the money', async ({
 	const jano = await second.newPage();
 	await visit(jano, `/domacnost#d=${code}`);
 	await jano.getByRole('button', { name: 'Pripojiť sa' }).click();
-	await expect(jano.getByRole('status')).toContainText('Spojené');
+	await expect(jano.getByRole('status').filter({ hasText: 'Spojené' })).toBeVisible();
 	await jano.getByLabel('Tvoje meno').fill('Jano');
 	await jano.getByRole('button', { name: 'Som tu nový' }).click();
 	await expect(jano.locator('.member', { hasText: 'Jano' })).toContainText('ty');
@@ -51,7 +51,7 @@ test('two phones share the plan, who buys what, the log and the money', async ({
 		.locator('.member', { hasText: 'Ema' })
 		.getByRole('button', { name: 'Pozrieť' })
 		.click();
-	await expect(jano.getByText('Svoj profil si Ema vypĺňa sám')).toBeVisible();
+	await expect(jano.getByText('Profil si Ema vypĺňa vo svojom telefóne')).toBeVisible();
 	await expect(jano.getByRole('button', { name: 'Odobrať' })).toHaveCount(0);
 
 	await addFalafel(ema);
@@ -78,15 +78,16 @@ test('two phones share the plan, who buys what, the log and the money', async ({
 	await jano.close();
 	await ema.goto('/domacnost');
 	await ema.waitForLoadState('networkidle');
+	await ema.getByText('Nastavenia domácnosti').click();
 	await ema.getByRole('button', { name: 'Vymeniť odkaz' }).click();
-	await ema.getByRole('button', { name: 'Naozaj vymeniť?' }).click();
-	await expect(ema.locator('.new-link .msg')).toHaveCount(0);
+	await ema.getByRole('button', { name: 'Áno, vymeniť' }).click();
+	await expect(ema.locator('.notice.danger')).toHaveCount(0);
 	await expect.poll(() => householdCode(ema), SYNCED).not.toBe(code);
 	const newCode = await householdCode(ema);
 	await ema.close();
 	const janoAgain = await second.newPage();
 	await visit(janoAgain, '/domacnost');
-	await expect(janoAgain.getByRole('status')).toContainText('Spojené', SYNCED);
+	await expect(janoAgain.getByRole('status').filter({ hasText: 'Spojené' })).toBeVisible(SYNCED);
 	await expect.poll(() => householdCode(janoAgain)).toBe(newCode);
 	await janoAgain.close();
 
@@ -116,7 +117,7 @@ test('the own plan and pantry stay apart from the household', async ({ page }) =
 	await page.goto('/domacnost');
 	await page.waitForLoadState('networkidle');
 	await page.getByRole('button', { name: 'Odísť z domácnosti' }).click();
-	await page.getByRole('button', { name: /Naozaj odísť/ }).click();
+	await page.getByRole('button', { name: 'Áno, odísť' }).click();
 	await page.goto('/spajza');
 	await expect(page.locator('#moja-spajza')).toContainText('Chia');
 });
@@ -192,7 +193,7 @@ test('a garden is grown together: the other phone gets it', async ({ browser }) 
 	const jano = await second.newPage();
 	await visit(jano, `/domacnost#d=${code}`);
 	await jano.getByRole('button', { name: 'Pripojiť sa' }).click();
-	await expect(jano.getByRole('status')).toContainText('Spojené');
+	await expect(jano.getByRole('status').filter({ hasText: 'Spojené' })).toBeVisible();
 	await jano.goto('/pestuj');
 	await jano.waitForLoadState('networkidle');
 	await expect(jano.getByText('Balkón u nás').first()).toBeVisible();

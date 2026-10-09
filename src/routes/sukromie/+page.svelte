@@ -16,7 +16,7 @@
 		{
 			what: 'Synchronizácia',
 			detail: 'Len ak ju zapneš: zašifrovaná záloha tvojich dát.',
-			why: 'Aby si mal/a dáta na viacerých zariadeniach. Šifruje sa v prehliadači kľúčom z tvojho kódu – bez kódu ju neprečíta nikto, ani správca.',
+			why: 'Aby boli tvoje dáta na viacerých zariadeniach. Šifruje sa v prehliadači kľúčom z tvojho kódu – bez kódu ju neprečíta nikto, ani správca.',
 			kept: `Kým ju nezmažeš (Moje → Zmazať zo servera). Záloha, ktorú ${syncYears} roky neotvorilo žiadne zariadenie, sa zmaže sama.`
 		},
 		{
@@ -56,8 +56,8 @@
 		{
 			what: 'Hľadanie bez výsledku',
 			detail:
-				'Keď na Receptoch hľadáš niečo, čo nemáme ani bez filtrov: len hľadané slová, koľkokrát ich niekto zadal a kedy naposledy. Bez zariadenia, adresy či čohokoľvek o tebe; čísla, e-maily a iné znaky sa vôbec neodosielajú.',
-			why: 'Aby som vedel, aké recepty chýbajú.',
+				'Keď na Receptoch hľadáš niečo, čo tu nie je ani bez filtrov: len hľadané slová, koľkokrát ich niekto zadal a kedy naposledy. Bez zariadenia, adresy či čohokoľvek o tebe; čísla, e-maily a iné znaky sa vôbec neodosielajú.',
+			why: 'Aby som videl, aké recepty chýbajú.',
 			kept: `${SEARCH_MISS_DAYS} dní od posledného hľadania toho slova.`
 		},
 		{
@@ -100,7 +100,7 @@
 			Receptio nepotrebuje konto, nemá reklamy ani analytiku a nesleduje ťa. Tu je presne, čo sa kde
 			ukladá a prečo.
 		</p>
-		<p class="muted small">Naposledy upravené {UPDATED}.</p>
+		<p class="hint">Naposledy upravené {UPDATED}.</p>
 	</header>
 
 	<div class="prose">
@@ -162,7 +162,7 @@
 				im pošle priamo len jeho číslo. Obraz z fotoaparátu zostáva v telefóne.
 			</li>
 		</ul>
-		<p>Údaje nikomu nepredávame a nepoužívame ich na reklamu ani profilovanie.</p>
+		<p>Údaje nikomu nepredávam a nepoužívam ich na reklamu ani profilovanie.</p>
 
 		<h2>Právny základ</h2>
 		<ul>
@@ -181,12 +181,12 @@
 		<h2>Tvoje práva</h2>
 		<p>
 			Máš právo na prístup k údajom, ich opravu, vymazanie, obmedzenie spracúvania, prenosnosť a
-			právo namietať. Napíš na <a href="mailto:{CONTACT}">{CONTACT}</a>. Synchronizáciu si zmažeš
-			sám/sama na stránke <a href="/moje">Moje</a> a lajk zrušíš ďalším kliknutím. Lajky a zálohy nie
-			sú spojené s tvojou identitou, preto ich bez ID alebo kódu nevieme priradiť tebe.
+			právo namietať. Napíš na <a href="mailto:{CONTACT}">{CONTACT}</a>. Synchronizáciu si zmažeš na
+			stránke <a href="/moje">Moje</a> a lajk zrušíš ďalším kliknutím. Lajky a zálohy nie sú spojené s
+			tvojou identitou, preto ich bez ID alebo kódu neviem priradiť tebe.
 		</p>
 		<p>
-			Ak si myslíš, že s údajmi zaobchádzame zle, môžeš podať sťažnosť na
+			Ak si myslíš, že s údajmi zaobchádzam zle, môžeš podať sťažnosť na
 			<a href="https://dataprotection.gov.sk" rel="noopener">Úrad na ochranu osobných údajov SR</a>.
 		</p>
 
@@ -204,48 +204,42 @@
 
 <style>
 	.page {
-		padding-top: 28px;
-		padding-bottom: 40px;
-	}
-	.lede {
-		color: var(--ink-2);
-		max-width: 68ch;
+		padding-bottom: var(--sp-7);
 	}
 	.prose {
 		max-width: 76ch;
 	}
-	.small {
-		font-size: 0.85rem;
-	}
 	.stored {
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-		gap: 12px;
-		margin: 12px 0 8px;
+		gap: var(--sp-3);
+		margin: var(--sp-3) 0 var(--sp-2);
 	}
 	.item {
-		padding: 14px 16px;
+		padding: var(--sp-4);
 		border-radius: var(--radius-sm);
 		background: var(--card);
 		border: 1px solid var(--line);
 	}
+	/* The name of each kind of data leads; the detail under it is quieter and smaller. */
 	.item h3 {
-		margin: 0 0 4px;
-		font-size: 1.05rem;
+		margin: 0 0 6px;
+		font-size: var(--fs-lg);
 	}
 	.item p {
-		margin: 0 0 8px;
+		margin: 0 0 var(--sp-2);
+		font-size: var(--fs-md);
 		color: var(--ink-2);
 	}
 	.item dl {
 		display: grid;
 		gap: 2px;
 		margin: 0;
-		font-size: 0.92rem;
+		font-size: var(--fs-sm);
 	}
 	.item dt {
 		margin-top: 6px;
-		font-size: 0.72rem;
+		font-size: var(--fs-xs);
 		font-weight: 700;
 		letter-spacing: 0.06em;
 		text-transform: uppercase;

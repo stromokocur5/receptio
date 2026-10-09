@@ -9,7 +9,8 @@
 	import HouseholdToday from '$lib/components/HouseholdToday.svelte';
 	import InviteQr from '$lib/components/InviteQr.svelte';
 	import RecipeSwipe from '$lib/components/RecipeSwipe.svelte';
-	import { almost, matches } from '$lib/swipe';
+	import ConfirmButton from '$lib/components/ConfirmButton.svelte';
+	import { almost, matches, swipers } from '$lib/swipe';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import {
@@ -72,14 +73,19 @@
 	/** From an invite link: asks before replacing this device's plan. */
 	let invitedCode = $state<string | null>(null);
 	let error = $state('');
+	/** Which part of the page the error belongs to, so it shows once, next to what failed. */
+	let errorAt = $state('');
 	let busy = $state(false);
 	let copied = $state(false);
 	let newMember = $state('');
 	let editing = $state<string | null>(null);
-	let confirmLeave = $state(false);
-	let confirmNewLink = $state(false);
 	/** Someone was just removed: their old link still works until it's changed. */
-	let removedSomeone = $state(false);
+	let removedId = $state<string | null>(null);
+	/** Renaming and changing the link are rare, so they wait folded away. */
+	let settingsOpen = $state(false);
+	let settingsBox = $state<HTMLDetailsElement>();
+	let nameDraft = $state<string | null>(null);
+	let renamed = $state(false);
 	let soloAway = $state(true);
 	let soloUntil = $state('');
 
@@ -112,12 +118,14 @@
 	const planned = $derived(new Set(sharedPlan.map((e) => e.recipeId)));
 	/** Everyone wants it and it isn't in the plan yet. */
 	const matched = $derived(
-		matches(wishMap, list)
+		matches(wishMap, swipers(list))
 			.filter((id) => !planned.has(id))
 			.flatMap((id) => catalog.recipesById.get(id) ?? [])
 	);
 	const nearly = $derived(
-		almost(wishMap, list).filter((a) => !planned.has(a.id) && catalog.recipesById.has(a.id))
+		almost(wishMap, swipers(list)).filter(
+			(a) => !planned.has(a.id) && catalog.recipesById.has(a.id)
+		)
 	);
 
 	afterNavigate(() => {
@@ -130,9 +138,10 @@
 		}
 	});
 
-	async function run(action: () => Promise<unknown>) {
+	async function run(at: string, action: () => Promise<unknown>) {
 		busy = true;
 		error = '';
+		errorAt = at;
 		try {
 			await action();
 		} catch {
@@ -144,11 +153,11 @@
 
 	function create(event: SubmitEvent) {
 		event.preventDefault();
-		void run(() => createHousehold(householdName, myName));
+		void run('create', () => createHousehold(householdName, myName));
 	}
 
-	function join(code: string) {
-		void run(async () => {
+	function join(code: string, at: string) {
+		void run(at, async () => {
 			const message = await joinHousehold(code.replace(/^.*#?d=/, ''));
 			if (message) error = message;
 			else invitedCode = null;
@@ -194,18 +203,39 @@
 
 	/** Who still needs the new link sent: profiles whose phone can't find it alone. */
 	const sendTo = $derived(list.filter((m) => m.id !== household.me && !followsLink(m)));
+	const newLinkWhy = $derived(
+		'Starý odkaz prestane fungovať.' +
+			(sendTo.length
+				? ` Nový potom pošli ${sendTo.length === 1 ? 'tomuto členovi' : 'týmto členom'}, ak ${sendTo.length === 1 ? 'má' : 'majú'} telefón: ${sendTo.map((m) => m.name).join(', ')}.`
+				: ' Kto tu má svoj profil, prepojí sa sám.')
+	);
 
 	function newLink() {
-		if (!confirmNewLink) {
-			confirmNewLink = true;
-			return;
-		}
-		confirmNewLink = false;
-		void run(async () => {
+		void run('link', async () => {
 			await changeLink();
-			removedSomeone = false;
+			removedId = null;
 			await share();
 		});
+	}
+
+	function rename(event: SubmitEvent) {
+		event.preventDefault();
+		if (nameDraft === null) return;
+		renameHousehold(nameDraft);
+		nameDraft = null;
+		renamed = true;
+		setTimeout(() => (renamed = false), 2000);
+	}
+
+	/** After a removal: unfold the settings and bring the link change into view. */
+	function showSettings() {
+		settingsOpen = true;
+		requestAnimationFrame(() =>
+			settingsBox?.scrollIntoView({
+				block: 'start',
+				behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+			})
+		);
 	}
 
 	const MEAL_SHORT = { ranajky: 'raňajky', obed: 'obedy', vecera: 'večere' } as const;
@@ -242,6 +272,12 @@
 	description="Spoločný plán, nákup a špajza pre všetkých, čo spolu varia a jedia – a recepty, ktoré môže jesť každý pri stole."
 />
 
+{#snippet failed(at: string)}
+	{#if error && errorAt === at}
+		<p class="notice danger" role="alert"><Icon name="alert" size={18} /> {error}</p>
+	{/if}
+{/snippet}
+
 <div class="wrap page">
 	<header class="rise">
 		<p class="eyebrow">Varíme spolu</p>
@@ -256,59 +292,60 @@
 		<p class="muted">Načítavam…</p>
 	{:else if invitedCode && !household.code}
 		<section class="card box">
-			<h2><Icon name="users" size={24} /> Pozvánka do domácnosti</h2>
+			<h2 class="section-title"><Icon name="users" size={24} /> Pozvánka do domácnosti</h2>
 			<p>
 				Po pripojení uvidíš spoločný plán, nákupný zoznam a špajzu. Tvoje vlastné sa s nimi
 				nemiešajú – odložia sa, ako sú, a kedykoľvek sa k nim prepneš cez <strong>Len môj</strong>
 				v pláne alebo v špajzi. Keď z domácnosti odídeš, vrátia sa ti.
 			</p>
 			<div class="actions">
-				<button class="btn leaf" disabled={busy} onclick={() => join(invitedCode!)}>
+				<button class="btn leaf" disabled={busy} onclick={() => join(invitedCode!, 'invite')}>
 					<Icon name="users" size={18} /> Pripojiť sa
 				</button>
 				<button class="btn ghost" onclick={() => (invitedCode = null)}>Teraz nie</button>
 			</div>
-			{#if error}<p class="msg" role="alert"><Icon name="alert" size={18} /> {error}</p>{/if}
+			{@render failed('invite')}
 		</section>
 	{:else if !household.code}
 		<section class="card box">
-			<h2><Icon name="home" size={24} /> Založiť domácnosť</h2>
+			<h2 class="section-title"><Icon name="home" size={24} /> Založiť domácnosť</h2>
 			<p>
-				Domácnosť dostane vlastný plán, nákupný zoznam a špajzu. Tvoje vlastné sa odložia, nič sa
-				nezmieša ani nezmaže – prepneš sa k nim cez <strong>Len môj</strong>. Potom pošleš odkaz
-				ostatným – kto ho otvorí, je doma s vami.
+				Domácnosť dostane spoločný plán, nákupný zoznam a špajzu. Tvoje vlastné sa odložia – nič sa
+				nezmaže a prepneš sa k nim cez <strong>Len môj</strong>. Potom pošleš odkaz ostatným.
 			</p>
 			<form class="form" onsubmit={create}>
 				<label>
 					Názov domácnosti
 					<input
+						class="input"
 						bind:value={householdName}
 						maxlength="40"
 						placeholder="Napr. Byt 4B, Spolubývajúci"
 					/>
 				</label>
 				<label>
-					<span>Tvoje meno <span class="muted">(nepovinné)</span></span>
-					<input bind:value={myName} maxlength="40" placeholder="Napr. Miška" />
+					<span>Tvoje meno <span class="badge">nepovinné</span></span>
+					<input class="input" bind:value={myName} maxlength="40" placeholder="Napr. Miška" />
 				</label>
 				<button class="btn leaf" type="submit" disabled={busy}>
 					<Icon name="plus" size={18} /> Založiť
 				</button>
 			</form>
-			{#if error}<p class="msg" role="alert"><Icon name="alert" size={18} /> {error}</p>{/if}
+			{@render failed('create')}
 		</section>
 
 		<section class="card box">
-			<h2><Icon name="users" size={24} /> Máš pozvánku?</h2>
+			<h2 class="section-title"><Icon name="users" size={24} /> Máš pozvánku?</h2>
 			<p class="muted">Otvor odkaz, ktorý ti poslali, alebo ho sem vlož.</p>
 			<form
 				class="row"
 				onsubmit={(e) => {
 					e.preventDefault();
-					join(joinInput);
+					join(joinInput, 'join');
 				}}
 			>
 				<input
+					class="input"
 					bind:value={joinInput}
 					aria-label="Odkaz alebo kód domácnosti"
 					placeholder="https://…/domacnost#d=…"
@@ -319,22 +356,22 @@
 					>Pripojiť sa</button
 				>
 			</form>
+			{@render failed('join')}
 		</section>
 
 		<section class="how">
-			<h2>Ako to funguje</h2>
+			<h2 class="section-title">Ako to funguje</h2>
 			<ul>
 				<li>
-					<Icon name="basket" size={20} /> Kto je v obchode, odškrtáva – ostatní to hneď vidia. Kto uvarí,
-					odpočíta suroviny zo spoločnej špajze.
+					<Icon name="basket" size={20} /> Kto nakúpi alebo uvarí, odškrtne to – ostatní to hneď vidia.
 				</li>
 				<li>
-					<Icon name="heart" size={20} /> Každý člen má svoje alergie, suroviny, ktoré neje, „nepálivo“
-					pre deti a bezlepkovú stravu. Recepty a automatický plán to rešpektujú.
+					<Icon name="heart" size={20} /> Každý si zapíše alergie a čo neje. Recepty a plán sa podľa toho
+					riadia.
 				</li>
 				<li>
-					<Icon name="shield" size={20} /> Bez účtov. Dáta sa šifrujú v telefóne, na server ide len šifra.
-					Kľúč je v odkaze – posielaj ho len tým, s ktorými bývaš.
+					<Icon name="shield" size={20} /> Bez účtov, šifrované v telefóne. Kľúč je v odkaze – pošli ho
+					len tým, s ktorými bývaš.
 				</li>
 			</ul>
 		</section>
@@ -354,16 +391,17 @@
 
 		{#if household.status === 'missing'}
 			<section class="card box">
-				<h2><Icon name="users" size={24} /> Máš nový odkaz?</h2>
+				<h2 class="section-title"><Icon name="users" size={24} /> Máš nový odkaz?</h2>
 				<p>Popros niekoho z domácnosti o nový odkaz a vlož ho sem. Tvoj plán a zoznam ostanú.</p>
 				<form
 					class="row"
 					onsubmit={(e) => {
 						e.preventDefault();
-						join(joinInput);
+						join(joinInput, 'missing');
 					}}
 				>
 					<input
+						class="input"
 						bind:value={joinInput}
 						aria-label="Nový odkaz domácnosti"
 						placeholder="https://…/domacnost#d=…"
@@ -374,13 +412,14 @@
 						>Pripojiť sa</button
 					>
 				</form>
-				{#if error}<p class="msg" role="alert"><Icon name="alert" size={18} /> {error}</p>{/if}
+				{@render failed('missing')}
 			</section>
 		{/if}
 
 		{#if household.doc && !household.me && !household.solo}
-			<section class="card box who">
-				<h2><Icon name="users" size={24} /> Kto z vás si ty?</h2>
+			<!-- Until they pick who they are, a newcomer sees only that question (and how to leave). -->
+			<section class="card box">
+				<h2 class="section-title"><Icon name="users" size={24} /> Kto z vás si ty?</h2>
 				<p>
 					Vyber svoj profil alebo si založ nový. Bude len tvoj – vyplníš si, čo neješ, koľko zješ a
 					kedy si doma, a ostatní to uvidia, ale nezmenia.
@@ -394,6 +433,7 @@
 				{/if}
 				<form class="row" onsubmit={joinAsNew}>
 					<input
+						class="input"
 						bind:value={myNewName}
 						maxlength="40"
 						aria-label="Tvoje meno"
@@ -405,30 +445,43 @@
 				</form>
 			</section>
 		{:else}
-			<!-- Until they pick who they are, a newcomer sees only that question (and how to leave). -->
-
 			{#if household.solo}
 				<section class="card box solo-on">
-					<h2><Icon name="sun" size={24} /> Plánuješ pre seba</h2>
+					<h2 class="section-title"><Icon name="sun" size={24} /> Plánuješ pre seba</h2>
 					<p>
 						Máš svoj vlastný plán, nákupný zoznam a špajzu. Spoločné na teba počkajú, ako sú.{#if household.soloAway && me?.away}
-							Ostatní vidia, že nie si doma{me.away.to ? ` do ${dateText(me.away.to)}` : ''}.{/if}
+							{' '}Ostatní vidia, že nie si doma{me.away.to
+								? ` do ${dateText(me.away.to)}`
+								: ''}.{/if}
 					</p>
-					<button class="btn leaf" disabled={busy} onclick={() => void run(() => stopSolo())}>
+					<button
+						class="btn leaf"
+						disabled={busy}
+						onclick={() => void run('solo', () => stopSolo())}
+					>
 						<Icon name="users" size={18} /> Späť k domácnosti
 					</button>
+					{@render failed('solo')}
 				</section>
 			{/if}
 
 			{#if !household.solo && list.length}
 				<section class="card box">
-					<h2><Icon name="pot" size={24} /> Dnes doma</h2>
+					<h2 class="section-title"><Icon name="pot" size={24} /> Dnes doma</h2>
 					<HouseholdToday />
+					<div class="actions">
+						<a class="btn ghost small" href="/plan"
+							><Icon name="calendar" size={16} /> Spoločný plán</a
+						>
+						<a class="btn ghost small" href="/plan#nakup"
+							><Icon name="basket" size={16} /> Nákupný zoznam</a
+						>
+					</div>
 				</section>
 			{/if}
 
 			<section class="card box">
-				<h2><Icon name="share" size={24} /> Pozvi ostatných</h2>
+				<h2 class="section-title"><Icon name="share" size={24} /> Pozvi ostatných</h2>
 				<p>
 					Pošli odkaz každému, s kým spolu varíte. Kto ho má, vidí a mení spoločný plán, zoznam aj
 					špajzu; svoj profil si vyplní každý sám.
@@ -442,46 +495,15 @@
 						<Icon name="qr" size={18} />
 						{showQr ? 'Skryť QR kód' : 'QR kód'}
 					</button>
-					<a class="btn ghost" href="/plan">Spoločný plán</a>
-					<a class="btn ghost" href="/plan#nakup">Nákupný zoznam</a>
 				</div>
 				{#if showQr && household.code}
 					<InviteQr url={inviteLink(household.code)} />
-					<p class="muted small">Stačí ho namieriť fotoaparátom druhého telefónu.</p>
+					<p class="hint">Stačí ho namieriť fotoaparátom druhého telefónu.</p>
 				{/if}
-				<label class="rename">
-					Názov
-					<input
-						value={household.doc?.name[0] ?? ''}
-						maxlength="40"
-						onchange={(e) => renameHousehold(e.currentTarget.value)}
-					/>
-				</label>
-				<div class="new-link" class:alert={removedSomeone}>
-					<p>
-						<Icon name="shield" size={18} />
-						{#if removedSomeone}
-							<strong>Kto odišiel, má stále starý odkaz.</strong> Vymeň ho, aby sa už nedostal dnu.
-						{:else}
-							Odsťahoval sa niekto alebo odkaz unikol? Odober ho a vymeň odkaz – starý prestane
-							fungovať. Kto tu má svoj profil, prepojí sa sám.
-						{/if}
-					</p>
-					{#if confirmNewLink && sendTo.length}
-						<p class="muted small">
-							Nový odkaz potom pošli {sendTo.length === 1 ? 'tomuto členovi' : 'týmto členom'}, ak
-							{sendTo.length === 1 ? 'má' : 'majú'} telefón: {sendTo.map((m) => m.name).join(', ')}.
-						</p>
-					{/if}
-					<button class="btn ghost small" disabled={busy || !household.code} onclick={newLink}>
-						{confirmNewLink ? 'Naozaj vymeniť?' : 'Vymeniť odkaz'}
-					</button>
-					{#if error}<p class="msg" role="alert"><Icon name="alert" size={18} /> {error}</p>{/if}
-				</div>
 			</section>
 
 			<section class="card box">
-				<h2><Icon name="users" size={24} /> Kto je pri stole</h2>
+				<h2 class="section-title"><Icon name="users" size={24} /> Kto je pri stole</h2>
 				{#if list.length}
 					<p class="muted">
 						Plán varí pre {list.length}
@@ -497,31 +519,43 @@
 
 				<ul class="members">
 					{#each list as member (member.id)}
-						<li class="member">
+						{@const facts = summary(member)}
+						{@const mine = canEdit(member)}
+						<li class="member sunk">
 							<div class="member-head">
-								<strong>{member.name}</strong>
-								{#if household.me === member.id}<span class="me">ty</span
-									>{:else if !member.owner}<span class="muted small">upraví ktokoľvek</span>{/if}
-								<span class="chips">
-									{#each summary(member) as chip (chip)}<span class="chip">{chip}</span>{:else}<span
-											class="muted small">je všetko</span
-										>{/each}
-								</span>
+								<p class="name-line">
+									<strong>{member.name}</strong>
+									{#if household.me === member.id}<span class="badge leaf">ty</span
+										>{:else if !member.owner}<span class="muted small">upraví ktokoľvek</span>{/if}
+								</p>
 								<button
 									class="btn ghost small"
 									aria-expanded={editing === member.id}
 									onclick={() => (editing = editing === member.id ? null : member.id)}
 								>
-									<Icon name={canEdit(member) ? 'pencil' : 'info'} size={16} />
-									{editing === member.id ? 'Hotovo' : canEdit(member) ? 'Upraviť' : 'Pozrieť'}
+									{#if editing === member.id}
+										<Icon name={mine ? 'check' : 'x'} size={16} />
+										{mine ? 'Hotovo' : 'Zavrieť'}
+									{:else}
+										<Icon name={mine ? 'pencil' : 'info'} size={16} />
+										{mine ? 'Upraviť' : 'Pozrieť'}
+									{/if}
 								</button>
+								{#if facts.length}
+									<ul class="facts" aria-label="Čo platí pre {member.name}">
+										{#each facts as fact (fact)}<li class="badge">{fact}</li>{/each}
+									</ul>
+								{:else}
+									<p class="facts muted small">Je všetko, doma pri každom jedle.</p>
+								{/if}
 							</div>
 							{#if editing === member.id}
 								<HouseholdMember
 									{member}
-									ondone={() => {
+									onclose={() => (editing = null)}
+									onremoved={() => {
 										editing = null;
-										removedSomeone = true;
+										removedId = member.id;
 									}}
 								/>
 							{/if}
@@ -529,9 +563,22 @@
 					{/each}
 				</ul>
 
+				<!-- Gone again once the removal is undone. -->
+				{#if removedId && !list.some((m) => m.id === removedId)}
+					<div class="notice warn" role="status">
+						<Icon name="shield" size={18} />
+						<p>
+							<strong>Kto odišiel, má stále starý odkaz.</strong>
+							<button class="btn-link" onclick={showSettings}>Vymeň ho</button>, aby sa už nedostal
+							dnu.
+						</p>
+					</div>
+				{/if}
+
 				{#if list.length < MAX_MEMBERS}
 					<form class="row" onsubmit={addNew}>
 						<input
+							class="input"
 							bind:value={newMember}
 							maxlength="40"
 							aria-label="Meno nového člena"
@@ -545,16 +592,16 @@
 			</section>
 
 			<section class="card box">
-				<h2><Icon name="pot" size={24} /> Kto varí a čo by ste chceli</h2>
+				<h2 class="section-title"><Icon name="pot" size={24} /> Kto varí a čo by ste chceli</h2>
 				{#if sharedPlan.length}
-					<ul class="cooking">
+					<ul class="cooking divided">
 						{#each sharedPlan as e, i (i)}
 							<li>
 								<a href="/recepty/{e.recipeId}"
 									>{catalog.recipesById.get(e.recipeId)?.title ?? e.recipeId}</a
 								>
-								<span class="muted"
-									>{e.fromFreezer ? 'z mrazničky' : (cookOf(e.cook) ?? 'ktokoľvek')}</span
+								<span class="muted small"
+									>{e.fromFreezer ? 'z mrazničky' : (cookOf(e.cook) ?? 'varí ktokoľvek')}</span
 								>
 							</li>
 						{/each}
@@ -570,11 +617,11 @@
 					<Icon name="heart" size={18} /> Čo budeme jesť? Poťahaj recepty
 				</button>
 				{#if matched.length}
-					<ul class="cooking matches" aria-label="Zhody">
+					<ul class="cooking divided matches" aria-label="Zhody">
 						{#each matched as recipe (recipe.id)}
 							<li>
 								<a href="/recepty/{recipe.id}"><strong>{recipe.title}</strong></a>
-								<span class="muted">chcete všetci</span>
+								<span class="muted small">chcete všetci</span>
 								<button class="btn small leaf" onclick={() => addToPlan(recipe.id, recipe.servings)}
 									>Do plánu</button
 								>
@@ -592,16 +639,16 @@
 					</p>
 				{/if}
 				{#if wishes.length}
-					<ul class="cooking">
+					<ul class="cooking divided">
 						{#each wishes as w (w.recipe!.id)}
 							<li>
 								<a href="/recepty/{w.recipe!.id}">{w.recipe!.title}</a>
-								<span class="muted">{w.who.map((m) => m.name).join(', ')}</span>
+								<span class="muted small">{w.who.map((m) => m.name).join(', ')}</span>
 							</li>
 						{/each}
 					</ul>
 				{:else}
-					<p class="muted">
+					<p class="hint">
 						Poťahaj recepty alebo pri recepte ťukni „Chcem to“ – čo chcete všetci, je zhoda, a
 						automatický plán želania zaradí skôr.
 					</p>
@@ -609,10 +656,10 @@
 			</section>
 
 			<section class="card box">
-				<h2><Icon name="clock" size={24} /> Čo sa deje</h2>
+				<h2 class="section-title"><Icon name="clock" size={24} /> Čo sa deje</h2>
 				<HouseholdLog />
 				{#if pushSupported}
-					<label class="news">
+					<label class="check news">
 						<input
 							type="checkbox"
 							checked={household.news}
@@ -620,13 +667,14 @@
 							onchange={(e) => toggleNews(e.currentTarget.checked)}
 						/>
 						<span>
-							Upozorniť ma, keď ostatní niečo pridajú do plánu, nakúpia alebo zaplatia – aj keď mám
-							Receptio zavreté. <span class="muted small"
-								>Najviac raz za 10 minút; čo sa zmenilo, si telefón prečíta sám, server text nevidí.</span
+							Upozorniť ma, keď ostatní niečo pridajú do plánu, nakúpia alebo zaplatia
+							<small
+								>Aj keď je Receptio zavreté, najviac raz za 10 minút. Čo sa zmenilo, si telefón
+								prečíta sám – server text nevidí.</small
 							>
 						</span>
 					</label>
-					{#if newsError}<p class="msg" role="alert">
+					{#if newsError}<p class="notice danger" role="alert">
 							<Icon name="alert" size={18} />
 							{newsError}
 						</p>{/if}
@@ -634,15 +682,15 @@
 			</section>
 
 			<section class="card box">
-				<h2>
-					<Icon name="euro" size={24} /> Kto koľko zaplatil <span class="optional">nepovinné</span>
+				<h2 class="section-title">
+					<Icon name="euro" size={24} /> Kto koľko zaplatil <span class="badge">nepovinné</span>
 				</h2>
 				<HouseholdMoney />
 			</section>
 
 			{#if !household.solo}
 				<section class="card box">
-					<h2><Icon name="sun" size={24} /> Plánovať pre seba</h2>
+					<h2 class="section-title"><Icon name="sun" size={24} /> Plánovať pre seba</h2>
 					<p>
 						Ideš na dovolenku, varíš si obedy do práce alebo chceš chvíľu vlastný plán? Prepneš sa
 						na svoj vlastný plán, nákupný zoznam a špajzu – tie sa so spoločnými nikdy nemiešajú.
@@ -655,13 +703,13 @@
 					{#if me}
 						<label class="check">
 							<input type="checkbox" bind:checked={soloAway} />
-							Medzitým nejem doma – nech domácnosť varí bezo mňa
+							<span>Medzitým nejem doma – nech domácnosť varí bezo mňa</span>
 						</label>
 						{#if soloAway}
 							<label class="until">
 								do
-								<input type="date" bind:value={soloUntil} min={today} />
-								<span class="muted small">(nepovinné)</span>
+								<input class="input" type="date" bind:value={soloUntil} min={today} />
+								<span class="badge">nepovinné</span>
 							</label>
 						{/if}
 					{:else}
@@ -669,30 +717,68 @@
 							Najprv si hore vyber svoj profil, aby ostatní videli, že nie si doma.
 						</p>
 					{/if}
-					<button
-						class="btn ghost"
-						disabled={busy}
-						onclick={() => void run(() => startSolo(soloAway, soloUntil || null))}
-					>
-						<Icon name="sun" size={18} /> Plánovať pre seba
-					</button>
+					<div class="actions">
+						<button
+							class="btn ghost"
+							disabled={busy}
+							onclick={() => void run('solo', () => startSolo(soloAway, soloUntil || null))}
+						>
+							<Icon name="sun" size={18} /> Plánovať pre seba
+						</button>
+					</div>
+					{@render failed('solo')}
 				</section>
 			{/if}
+
+			<details class="card box settings" bind:open={settingsOpen} bind:this={settingsBox}>
+				<summary>
+					<h2 class="section-title"><Icon name="sliders" size={24} /> Nastavenia domácnosti</h2>
+				</summary>
+				<form class="row rename" onsubmit={rename}>
+					<label>
+						Názov domácnosti
+						<input
+							class="input"
+							value={nameDraft ?? household.doc?.name[0] ?? ''}
+							maxlength="40"
+							oninput={(e) => (nameDraft = e.currentTarget.value)}
+						/>
+					</label>
+					<button
+						class="btn ghost"
+						type="submit"
+						disabled={!renamed && (nameDraft === null || !nameDraft.trim())}
+					>
+						<Icon name={renamed ? 'check' : 'pencil'} size={18} />
+						{renamed ? 'Premenované' : 'Premenovať'}
+					</button>
+				</form>
+
+				<h3>Vymeniť odkaz</h3>
+				<p>
+					Odsťahoval sa niekto alebo odkaz unikol? Odober ho zo stola a vymeň odkaz – starý prestane
+					fungovať a kto tu má svoj profil, prepojí sa sám.
+				</p>
+				<ConfirmButton
+					icon="shield"
+					confirm="Áno, vymeniť"
+					why={newLinkWhy}
+					disabled={busy || !household.code}
+					onconfirm={newLink}>Vymeniť odkaz</ConfirmButton
+				>
+				{@render failed('link')}
+			</details>
 		{/if}
 
 		<section class="leave">
-			<button
-				class="btn ghost small danger"
+			<ConfirmButton
+				small
+				confirm="Áno, odísť"
+				why="Vráti sa ti tvoj vlastný plán, zoznam a špajza. Späť do domácnosti sa dostaneš len cez odkaz od ostatných."
 				disabled={busy}
-				onclick={() => {
-					if (confirmLeave) void run(leaveHousehold);
-					confirmLeave = !confirmLeave;
-				}}
+				onconfirm={() => void run('leave', leaveHousehold)}>Odísť z domácnosti</ConfirmButton
 			>
-				{confirmLeave
-					? 'Naozaj odísť? Vráti sa ti tvoj vlastný plán, zoznam a špajza.'
-					: 'Odísť z domácnosti'}
-			</button>
+			{@render failed('leave')}
 		</section>
 	{/if}
 </div>
@@ -700,99 +786,54 @@
 {#if household.doc}<RecipeSwipe bind:open={swiping} />{/if}
 
 <style>
-	.swipe-btn {
-		margin: 4px 0 12px;
-	}
-	.matches li {
-		align-items: center;
-	}
-	.news {
-		display: flex;
-		gap: 12px;
-		align-items: flex-start;
-		margin-top: 16px;
-		padding: 12px 14px;
-		border: 1px solid var(--line);
-		border-radius: 14px;
-		cursor: pointer;
-	}
-	/* The long text next to it must not squeeze the box to a dot. */
-	.news input {
-		flex: none;
-		width: 22px;
-		height: 22px;
-		margin: 2px 0 0;
-		accent-color: var(--leaf);
-	}
-	.page {
-		padding-top: 28px;
-	}
-	.lede {
-		max-width: 62ch;
-	}
 	.box {
-		margin-top: 20px;
-		padding: 22px;
+		margin-top: var(--sp-5);
 	}
-	.box h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-	}
-	.form {
-		display: grid;
-		gap: 12px;
-		max-width: 420px;
-	}
-	.form label,
-	.rename {
-		display: grid;
-		gap: 6px;
-		font-weight: 650;
-	}
-	input {
-		border: 1.5px solid var(--line);
-		border-radius: var(--radius-sm);
-		background: var(--paper);
-		color: var(--ink);
-		padding: 10px 12px;
-		font: inherit;
-		min-width: 0;
-	}
-	.rename {
-		margin-top: 12px;
-		max-width: 420px;
-	}
-	.row {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-		margin-top: 12px;
-	}
-	.row input {
-		flex: 1 1 220px;
+	.box h3 {
+		margin: var(--sp-5) 0 var(--sp-2);
+		font-size: var(--fs-lg);
 	}
 	.actions {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 10px;
-		margin: 12px 0;
+		gap: var(--sp-2);
+		margin: var(--sp-3) 0 0;
 	}
-	.msg {
+	.form {
+		display: grid;
+		gap: var(--sp-3);
+		max-width: 420px;
+	}
+	.form label,
+	.rename label {
+		display: grid;
+		gap: 6px;
+		font-weight: 650;
+	}
+	.form .btn {
+		justify-self: start;
+	}
+	.row {
 		display: flex;
-		align-items: center;
-		gap: 8px;
-		padding: 8px 12px;
-		border-radius: 12px;
-		background: var(--tomato-soft);
+		flex-wrap: wrap;
+		align-items: flex-end;
+		gap: var(--sp-2);
+		margin-top: var(--sp-3);
+	}
+	.row > .input,
+	.row > label {
+		flex: 1 1 220px;
+		min-width: 0;
 	}
 	.how {
-		margin-top: 28px;
+		margin-top: var(--sp-6);
 	}
 	.how ul {
 		display: grid;
-		gap: 12px;
+		gap: var(--sp-3);
+		max-width: 62ch;
 		padding: 0;
+		margin: 0;
 		list-style: none;
 	}
 	.how li {
@@ -800,11 +841,16 @@
 		gap: 10px;
 		align-items: flex-start;
 	}
+	.how li :global(svg) {
+		flex: none;
+		margin-top: 3px;
+		color: var(--leaf);
+	}
 	.status {
 		display: flex;
 		align-items: center;
-		gap: 8px;
-		margin-top: 12px;
+		gap: var(--sp-2);
+		margin: var(--sp-3) 0 0;
 		font-weight: 600;
 	}
 	.dot {
@@ -823,108 +869,125 @@
 	}
 	.members {
 		display: grid;
-		gap: 10px;
+		gap: var(--sp-2);
 		padding: 0;
-		margin: 14px 0 0;
+		margin: var(--sp-3) 0 0;
 		list-style: none;
 	}
 	.member {
-		padding: 12px 14px;
-		border-radius: var(--radius-sm);
-		background: var(--paper-2);
+		padding: var(--sp-3) 14px;
 	}
+	/* Name and button on one line, what applies to them underneath at full width. */
 	.member-head {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: center;
+		gap: 6px var(--sp-3);
+	}
+	.name-line {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px;
+		gap: 4px var(--sp-2);
+		margin: 0;
 	}
-	.member-head .chips {
+	.facts {
+		grid-column: 1 / -1;
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
-		flex: 1 1 160px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
 	}
-	.chip {
-		padding: 3px 10px;
-		border-radius: 999px;
-		background: var(--paper);
-		font-size: 0.86rem;
-	}
-	.me {
-		padding: 2px 8px;
-		border-radius: 999px;
-		background: var(--leaf);
-		color: var(--paper);
-		font-size: 0.78rem;
-		font-weight: 700;
-	}
-	.leave {
-		margin-top: 28px;
-	}
-	.optional {
-		padding: 2px 10px;
-		border-radius: 999px;
-		background: var(--paper-2);
-		font-family: inherit;
-		font-size: 0.8rem;
+	/* On the sunk row a plain badge would melt in. */
+	.facts .badge {
+		background: var(--card);
 		font-weight: 600;
-		color: var(--ink-2);
 	}
-	.new-link {
-		margin-top: 16px;
-		padding: 12px 14px;
-		border-radius: var(--radius-sm);
-		background: var(--paper-2);
+	.cooking {
+		margin: var(--sp-2) 0;
 	}
-	.new-link.alert {
-		background: var(--tomato-soft);
+	.cooking li {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: baseline;
+		gap: 2px var(--sp-3);
+		padding: var(--sp-2) 0;
 	}
-	.new-link p {
+	.cooking li > :nth-child(2) {
+		text-align: right;
+	}
+	.matches li {
+		grid-template-columns: minmax(0, 1fr) auto auto;
+		align-items: center;
+	}
+	.swipe-btn {
+		margin: var(--sp-1) 0 var(--sp-2);
+	}
+	.news {
+		margin-top: var(--sp-3);
+		padding-top: var(--sp-3);
+		border-top: 1px dashed var(--line);
+	}
+	.until {
 		display: flex;
-		gap: 8px;
-		align-items: flex-start;
-		margin: 0 0 10px;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--sp-2);
+		margin: 0 0 var(--sp-2) 30px;
+		font-weight: 600;
 	}
 	.solo-on {
 		border: 2px solid var(--leaf);
 	}
-	.cooking {
-		display: grid;
-		gap: 6px;
-		padding: 0;
-		margin: 10px 0;
-		list-style: none;
-	}
-	.cooking li {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		gap: 2px 12px;
-	}
-	.box h3 {
-		margin: 18px 0 4px;
-		font-size: 1.05rem;
-	}
-	.hint {
-		color: var(--muted);
-		font-size: 0.86rem;
-	}
-	.check,
-	.until {
+	.settings summary {
 		display: flex;
 		align-items: center;
-		gap: 8px;
-		margin: 10px 0;
-		font-weight: 600;
+		justify-content: space-between;
+		min-height: var(--tap);
+		list-style: none;
+		cursor: pointer;
 	}
-	.check input {
+	.settings summary::-webkit-details-marker {
+		display: none;
+	}
+	.settings summary::after {
+		content: '';
 		flex: none;
+		width: 10px;
+		height: 10px;
+		margin: 0 6px 6px 0;
+		border-right: 2px solid var(--ink-2);
+		border-bottom: 2px solid var(--ink-2);
+		transform: rotate(45deg);
+		transition: transform 0.2s;
 	}
-	.danger {
-		color: var(--tomato);
+	.settings[open] summary::after {
+		margin: 6px 6px 0 0;
+		transform: rotate(-135deg);
 	}
-	.small {
-		font-size: 0.86rem;
+	.settings summary .section-title {
+		margin: 0;
+	}
+	.settings[open] summary {
+		margin-bottom: var(--sp-2);
+	}
+	.rename {
+		margin-top: 0;
+		max-width: 520px;
+	}
+	/* "nepovinné" next to a card title reads as a label, not as part of the title. */
+	.section-title .badge {
+		font-family: var(--font-body);
+		letter-spacing: 0;
+	}
+	.leave {
+		margin-top: var(--sp-6);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.settings summary::after {
+			transition: none;
+		}
 	}
 </style>

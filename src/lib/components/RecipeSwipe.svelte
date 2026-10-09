@@ -9,7 +9,8 @@
 	import { localToday } from '$lib/journal';
 	import { recipeSeason } from '$lib/season';
 	import { addToPlan, plan, swiped } from '$lib/state.svelte';
-	import { swipeDeck } from '$lib/swipe';
+	import { swipeDeck, swipers } from '$lib/swipe';
+	import { tick } from 'svelte';
 	import type { RecipeSummary } from '$lib/types';
 
 	/**
@@ -30,6 +31,8 @@
 	let dragging = $state(false);
 	let leaving = $state<'left' | 'right' | null>(null);
 	let match = $state<{ recipe: RecipeSummary; names: string[] } | null>(null);
+	let matchButton = $state<HTMLButtonElement>();
+	let yesButton = $state<HTMLButtonElement>();
 	let start = 0;
 	let startTime = 0;
 
@@ -73,10 +76,14 @@
 		if (yes) setWish(recipe.id, true);
 		history = [...history, { id: recipe.id, yes }];
 		// Everyone else already wants it: that's a match.
-		const everyone = members();
-		const others = othersFor(recipe.id);
+		const everyone = swipers(members());
+		const others = othersFor(recipe.id).filter((m: { id: string }) =>
+			everyone.some((e) => e.id === m.id)
+		);
 		if (yes && everyone.length > 1 && others.length === everyone.length - 1) {
 			match = { recipe, names: others.map((m: { name: string }) => m.name) };
+			// The match covers the cards: focus moves onto it, so keyboards and readers land there.
+			void tick().then(() => matchButton?.focus());
 		}
 		setTimeout(() => {
 			at++;
@@ -122,16 +129,28 @@
 		else dx = 0;
 	}
 	function onkeydown(e: KeyboardEvent) {
-		if (match) return;
+		if (match) {
+			// Esc closes the match, not the whole deck.
+			if (e.key === 'Escape') {
+				e.preventDefault();
+				closeMatch();
+			}
+			return;
+		}
 		if (e.key === 'ArrowRight') decide(true);
 		else if (e.key === 'ArrowLeft') decide(false);
 		else if (e.key === 'Backspace') undo();
 	}
 
+	function closeMatch() {
+		match = null;
+		void tick().then(() => yesButton?.focus());
+	}
+
 	function planMatch() {
 		if (!match) return;
 		addToPlan(match.recipe.id, match.recipe.servings);
-		match = null;
+		closeMatch();
 	}
 </script>
 
@@ -144,11 +163,11 @@
 >
 	<header>
 		<h2>Čo budeme jesť?</h2>
-		<button class="icon-btn" aria-label="Zavrieť" onclick={() => (open = false)}>
+		<button class="icon-btn plain" aria-label="Zavrieť" onclick={() => (open = false)}>
 			<Icon name="x" size={22} />
 		</button>
 	</header>
-	<p class="muted hint">Doprava „chcem“, doľava „teraz nie“. Čo chcete všetci, je zhoda.</p>
+	<p class="hint">Doprava „chcem“, doľava „teraz nie“. Čo chcete všetci, je zhoda.</p>
 
 	<div class="stack">
 		{#if card}
@@ -208,10 +227,10 @@
 				</article>
 			{/key}
 		{:else}
-			<div class="done">
+			<div class="empty done">
 				<Icon name="check" size={32} />
 				<p><strong>To sú všetky recepty.</strong></p>
-				<p class="muted">Čo si chcel, ostáva ako želanie. Tie „teraz nie“ môžeš prejsť znova.</p>
+				<p>Čo chceš, ostáva ako želanie. Tie „teraz nie“ môžeš prejsť znova.</p>
 				<button class="btn" onclick={restart}>Prejsť znova</button>
 			</div>
 		{/if}
@@ -225,14 +244,19 @@
 			<button class="round undo" aria-label="Späť" disabled={!history.length} onclick={undo}>
 				<Icon name="undo" size={20} />
 			</button>
-			<button class="round yes" aria-label="Chcem" onclick={() => decide(true)}>
+			<button
+				class="round yes"
+				aria-label="Chcem"
+				bind:this={yesButton}
+				onclick={() => decide(true)}
+			>
 				<Icon name="heart" size={28} />
 			</button>
 		</div>
 	{/if}
 
 	{#if match}
-		<div class="match" role="alertdialog" aria-labelledby="match-title">
+		<div class="match" role="alertdialog" aria-labelledby="match-title" aria-modal="true">
 			<p class="eyebrow">Zhoda!</p>
 			<h3 id="match-title">{match.recipe.title}</h3>
 			<div class="match-art">
@@ -243,10 +267,10 @@
 				/>
 			</div>
 			<p>Chceš to ty aj {match.names.join(', ')}.</p>
-			<button class="btn leaf wide" onclick={planMatch}>
+			<button class="btn leaf wide" bind:this={matchButton} onclick={planMatch}>
 				<Icon name="calendar" size={18} /> Do plánu
 			</button>
-			<button class="btn ghost wide" onclick={() => (match = null)}>Ťahať ďalej</button>
+			<button class="btn ghost wide" onclick={closeMatch}>Ťahať ďalej</button>
 		</div>
 	{/if}
 </dialog>
@@ -260,7 +284,7 @@
 		margin: auto;
 		padding: 16px;
 		border: 0;
-		border-radius: 24px;
+		border-radius: var(--radius);
 		background: var(--paper);
 		color: var(--ink);
 		overflow: hidden;
@@ -268,9 +292,6 @@
 	.swipe[open] {
 		display: flex;
 		flex-direction: column;
-	}
-	.swipe::backdrop {
-		background: rgb(0 0 0 / 0.55);
 	}
 	@media (max-width: 480px) {
 		.swipe {
@@ -285,18 +306,10 @@
 	}
 	header h2 {
 		margin: 0;
-		font-size: 1.4rem;
-	}
-	.icon-btn {
-		border: 0;
-		background: none;
-		color: inherit;
-		padding: 8px;
-		cursor: pointer;
+		font-size: var(--fs-xl);
 	}
 	.hint {
 		margin: 4px 0 12px;
-		font-size: 0.86rem;
 	}
 	.stack {
 		position: relative;
@@ -309,7 +322,7 @@
 		display: flex;
 		flex-direction: column;
 		border: 1px solid var(--line);
-		border-radius: 22px;
+		border-radius: var(--radius);
 		background: var(--card);
 		box-shadow: var(--shadow-lift);
 		overflow: hidden;
@@ -426,8 +439,8 @@
 		height: 64px;
 		border: 1px solid var(--line);
 		border-radius: 50%;
-		background: var(--paper);
-		box-shadow: 0 4px 14px rgb(0 0 0 / 0.12);
+		background: var(--card);
+		box-shadow: var(--shadow);
 		cursor: pointer;
 	}
 	.round.no {
@@ -445,11 +458,11 @@
 		opacity: 0.4;
 	}
 	.done {
-		display: grid;
-		justify-items: center;
-		gap: 6px;
 		padding-top: 30%;
-		text-align: center;
+		color: var(--ink);
+	}
+	.done > p + p {
+		color: var(--muted);
 	}
 	.match {
 		position: absolute;
@@ -468,7 +481,7 @@
 	.match .eyebrow {
 		margin: 0;
 		color: var(--tomato);
-		font-size: 1.6rem;
+		font-size: var(--fs-xl);
 		font-weight: 800;
 	}
 	.match h3 {
