@@ -303,6 +303,9 @@
 	 * The cheapest big pack or e-shop offer of each ingredient, next to what it costs in a shop
 	 * you walk into (your shops, if picked), biggest saving first. Other e-shops are no "shop".
 	 */
+	/** The best online deals first; the long tail of e-shop products waits behind a button. */
+	const BULK_PAGE = 12;
+	let bulkShown = $state(BULK_PAGE);
 	const bulk = $derived.by(() => {
 		const cheapest = new Map<string, PriceEntry>();
 		for (const p of prices) {
@@ -473,7 +476,7 @@
 									{#each deal.recipes as r (r.id)}
 										<a class="chip" href="/recepty/{r.id}">{r.title}</a>
 									{/each}
-									<a class="chip more" href="/recepty?s={deal.ingredient.id}">Všetky recepty →</a>
+									<a class="chip" href="/recepty?s={deal.ingredient.id}">Všetky recepty →</a>
 								</div>
 							{/if}
 						</div>
@@ -705,7 +708,7 @@
 				koľko by to isté stálo v obchode.
 			</p>
 			<ul class="bulk">
-				{#each bulk as { entry: e, ingredient, shop, saving }, i (i)}
+				{#each bulk.slice(0, bulkShown) as { entry: e, ingredient, shop, saving }, i (i)}
 					<li>
 						<strong><a class="ing" href="/suroviny/{ingredient.id}">{ingredient.name}</a></strong>
 						<span class="bulk-price">{perUnit(e)}</span>
@@ -732,6 +735,13 @@
 					</li>
 				{/each}
 			</ul>
+			{#if bulk.length > bulkShown}
+				<div class="more">
+					<button class="btn ghost" onclick={() => (bulkShown = bulk.length)}>
+						Zobraziť všetky ({bulk.length})
+					</button>
+				</div>
+			{/if}
 		</section>
 	{/if}
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import PlantGlyph from '$lib/components/PlantGlyph.svelte';
 	import { comboLayout } from '$lib/garden';
@@ -7,12 +8,18 @@
 	let {
 		combo,
 		guides,
-		compact = false
+		compact = false,
+		modules = 1,
+		onpick
 	}: {
 		combo: GrowCombo;
 		guides: GrowGuide[];
 		/** A small preview without legend, for a collapsed card. */
 		compact?: boolean;
+		/** How many times the combo is planted; the legend counts plants for all of them. */
+		modules?: number;
+		/** Tapping a crop in the legend opens it; without this, a tap picks out its plants. */
+		onpick?: (ingredientId: string) => void;
 	} = $props();
 
 	const catalog = useCatalog();
@@ -94,10 +101,15 @@
 		<figcaption>
 			{#each combo.members as m (m.ingredientId)}
 				<button
-					aria-pressed={highlight === m.ingredientId}
-					onclick={() => (highlight = highlight === m.ingredientId ? null : m.ingredientId)}
+					aria-pressed={onpick ? undefined : highlight === m.ingredientId}
+					onclick={() =>
+						onpick
+							? onpick(m.ingredientId)
+							: (highlight = highlight === m.ingredientId ? null : m.ingredientId)}
 					onpointerenter={(e) => e.pointerType === 'mouse' && (highlight = m.ingredientId)}
 					onpointerleave={(e) => e.pointerType === 'mouse' && (highlight = null)}
+					onfocus={() => (highlight = m.ingredientId)}
+					onblur={() => (highlight = null)}
 				>
 					<svg viewBox="-11 -11 22 22" class="mini" aria-hidden="true">
 						<PlantGlyph
@@ -106,12 +118,12 @@
 							color={color(m.ingredientId)}
 						/>
 					</svg>
-					{m.name}
+					{m.count * modules} × {m.name}
 				</button>
 			{/each}
 			<small>
 				{layout.width >= 1
-					? `${layout.width} × ${layout.depth} m`
+					? `${formatNumber(layout.width, 2)} × ${formatNumber(layout.depth, 2)} m`
 					: `${Math.round(layout.depth * 100)} cm hlboký pás`}
 			</small>
 		</figcaption>
@@ -199,14 +211,16 @@
 		border: 1px solid var(--line);
 		border-radius: 999px;
 		background: var(--card);
-		color: inherit;
+		color: var(--ink);
 		font: inherit;
+		font-weight: 600;
 		cursor: pointer;
 		transition:
 			border-color 0.2s,
 			transform 0.2s var(--ease-spring);
 	}
 	figcaption button:hover,
+	figcaption button:focus-visible,
 	figcaption button[aria-pressed='true'] {
 		border-color: var(--leaf);
 		transform: translateY(-1px);

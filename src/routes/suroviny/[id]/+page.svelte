@@ -279,7 +279,7 @@
 		<aside class="side">
 			{#if data.swaps.length}
 				<section class="card box swaps">
-					<h2>Nemáš? Nahraď</h2>
+					<h2><Icon name="copy" size={20} /> Nemáš? Nahraď</h2>
 					<ul>
 						{#each data.swaps as s, i (i)}
 							<li>
@@ -294,7 +294,7 @@
 
 			{#if storePrices.length}
 				<section class="card box">
-					<h2>Ceny v obchodoch</h2>
+					<h2><Icon name="tag" size={20} /> Ceny v obchodoch</h2>
 					<ul class="prices">
 						{#each storePrices as p, i (i)}
 							{@const store = catalog.storesById.get(p.storeId)}
@@ -332,7 +332,7 @@
 
 			{#if ingredient.season.length}
 				<section class="card box">
-					<h2>Sezóna na Slovensku</h2>
+					<h2><Icon name="leaf" size={20} /> Sezóna na Slovensku</h2>
 					<ol class="months" aria-label="Mesiace v sezóne">
 						{#each MONTH_NAMES as name, i (i)}
 							<li
@@ -350,7 +350,7 @@
 			{/if}
 
 			<section class="card box">
-				<h2>Živiny na 100 g</h2>
+				<h2><Icon name="chart" size={20} /> Živiny na 100 g</h2>
 				<NutrientBars
 					values={ingredient.per100g}
 					targets={DAILY_REFERENCE}
@@ -362,14 +362,14 @@
 			{#if groupMates.length || howto.length}
 				<section class="card box">
 					{#if groupMates.length}
-						<h2>V špajzi sa zamieňa s</h2>
+						<h2><Icon name="jar" size={20} /> V špajzi sa zamieňa s</h2>
 						<p>
 							{#each groupMates as m, i (m.id)}{i ? ', ' : ''}<a href="/suroviny/{m.id}">{m.name}</a
 								>{/each}
 						</p>
 					{/if}
 					{#if howto.length}
-						<h2>Návody</h2>
+						<h2><Icon name="book" size={20} /> Návody</h2>
 						<div class="links">
 							{#each howto as h (h.slug)}
 								<a class="chip" href="/wiki/{h.slug}"><Icon name="book" size={14} /> {h.title}</a>
@@ -548,7 +548,7 @@
 		border-radius: var(--radius-xs);
 		font-size: var(--fs-xs);
 		font-weight: 650;
-		background: var(--paper-2);
+		background: var(--sunk);
 		color: var(--muted);
 	}
 	.months li.on {

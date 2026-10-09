@@ -37,7 +37,7 @@ export function shelfName(product: string): string {
 }
 
 /** Most shop names already end with the pack size ("Cícer 500 g"): say it once. */
-const PACK_IN_NAME = /\d\s*(g|kg|ml|l)\b/i;
+const PACK_IN_NAME = /\d\s*(g|kg|ml|l|ks)\b/i;
 export const packInName = (product: string) => PACK_IN_NAME.test(product);
 
 /** "Cícer 500 g", or the name and the pack when the name doesn't say it. */

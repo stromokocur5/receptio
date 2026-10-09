@@ -132,17 +132,23 @@
 		margin-top: var(--sp-5);
 		overflow-x: auto;
 	}
+	/* The months share the page width, so the calendar doesn't sit in one corner of a desktop. */
 	table {
+		width: 100%;
+		table-layout: fixed;
 		border-collapse: separate;
 		border-spacing: 2px;
 		font-size: var(--fs-sm);
-		min-width: 560px;
+	}
+	thead th:first-child {
+		width: 240px;
+		text-align: left;
 	}
 	th[scope='row'] {
 		text-align: left;
 		font-weight: 600;
 		padding-right: 10px;
-		white-space: nowrap;
+		line-height: 1.25;
 	}
 	th[scope='row'] a {
 		color: var(--ink);
@@ -154,13 +160,11 @@
 	thead th {
 		color: var(--muted);
 		font-weight: 700;
-		width: 26px;
 	}
 	thead th.current {
 		color: var(--ink);
 	}
 	td {
-		width: 26px;
 		height: 20px;
 		border-radius: 5px;
 		background: color-mix(in srgb, var(--line) 45%, transparent);
@@ -180,22 +184,14 @@
 	/* On a phone all twelve months fit the screen; scrolling sideways hid the current one. */
 	@media (max-width: 599px) {
 		table {
-			width: 100%;
-			min-width: 0;
-			table-layout: fixed;
 			border-spacing: 1px;
 			font-size: var(--fs-xs);
 		}
 		thead th:first-child {
 			width: 38%;
 		}
-		thead th,
-		td {
-			width: auto;
-		}
 		th[scope='row'] {
 			padding-right: 6px;
-			white-space: normal;
 			line-height: 1.2;
 			overflow-wrap: anywhere;
 		}

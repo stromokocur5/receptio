@@ -194,7 +194,7 @@
 	function deleteBed(bed: Bed) {
 		const at = diary.beds.indexOf(bed);
 		saveGarden({ ...diary, beds: diary.beds.filter((b) => b.id !== bed.id) });
-		toast(`${bed.name} je zmazaný`, () => restore(bed, at));
+		toast(`Zmazané: ${bed.name}`, () => restore(bed, at));
 	}
 </script>
 

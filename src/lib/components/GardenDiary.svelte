@@ -163,8 +163,8 @@
 	/** It's only this device's copy, so it goes at once and the toast can bring it back. */
 	function deleteGarden() {
 		const text = isSharedGarden(diary.id)
-			? `${diary.name} je zmazaná u teba, ostatným v domácnosti ostáva`
-			: `${diary.name} je zmazaná`;
+			? `Zmazané u teba: ${diary.name} – ostatným v domácnosti ostáva`
+			: `Zmazané: ${diary.name}`;
 		const id = diary.id;
 		withUndo(text, gardens, () => removeGarden(id));
 	}

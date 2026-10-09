@@ -598,6 +598,7 @@
 						<span class="area-input">
 							<input
 								id="garden-area"
+								class="input"
 								type="number"
 								min="0.1"
 								max="10000"
@@ -786,14 +787,7 @@
 									<span class="chev" aria-hidden="true"><Icon name="plus" size={18} /></span>
 								</summary>
 								<div class="combo-body">
-									<ComboLayout {combo} {guides} />
-									<p class="members">
-										{#each combo.members as m (m.ingredientId)}
-											<button class="member" onclick={() => openCrop(m.ingredientId)}
-												><i style:background={color(m.ingredientId)}></i>{m.count * modules} × {m.name}</button
-											>
-										{/each}
-									</p>
+									<ComboLayout {combo} {guides} {modules} onpick={openCrop} />
 									<p class="how-to"><Icon name="sprout" size={16} /> {combo.how}</p>
 									<p class="why"><Icon name="heart" size={16} /> {combo.why}</p>
 								</div>
@@ -830,19 +824,21 @@
 								{@const g = guideById.get(p.ingredientId)}
 								<li>
 									<strong>{p.count}</strong>
-									<button class="btn-link quiet" onclick={() => openCrop(p.ingredientId)}
-										>{p.name}</button
-									>
-									{#if (kgById.get(p.ingredientId) ?? 0) >= 0.1}<small class="muted"
-											>≈ {formatNumber(Math.round((kgById.get(p.ingredientId) ?? 0) * 10) / 10)} kg</small
-										>{/if}
-									<small class="muted">
-										{g?.perennial
-											? 'sadenica, trvalka'
-											: g?.indoor.length
-												? 'semená na predpestovanie alebo sadenice'
-												: 'semená'}
-									</small>
+									<span>
+										<button class="btn-link quiet" onclick={() => openCrop(p.ingredientId)}
+											>{p.name}</button
+										>
+										{#if (kgById.get(p.ingredientId) ?? 0) >= 0.1}<small class="muted"
+												>≈ {formatNumber(Math.round((kgById.get(p.ingredientId) ?? 0) * 10) / 10)} kg</small
+											>{/if}
+										<small class="muted">
+											· {g?.perennial
+												? 'sadenica, trvalka'
+												: g?.indoor.length
+													? 'semená na predpestovanie alebo sadenice'
+													: 'semená'}
+										</small>
+									</span>
 								</li>
 							{/each}
 						</ul>
@@ -1257,7 +1253,7 @@
 		padding: 12px;
 		border: 1.5px solid var(--line);
 		border-radius: var(--radius-sm);
-		background: var(--paper);
+		background: var(--sunk);
 		color: var(--ink);
 		font: inherit;
 		text-align: left;
@@ -1333,12 +1329,6 @@
 	}
 	.area-input input {
 		width: 96px;
-		border: 1.5px solid var(--line);
-		border-radius: var(--radius-sm);
-		background: var(--paper);
-		color: var(--ink);
-		padding: 10px 12px;
-		font: inherit;
 	}
 	.stats .stat {
 		display: grid;
@@ -1427,7 +1417,7 @@
 	}
 	.combo {
 		border-radius: var(--radius-sm);
-		background: var(--paper);
+		background: var(--sunk);
 		border: 1px solid var(--line);
 		animation: rise 0.45s var(--ease-out) both;
 		animation-delay: calc(var(--i) * 70ms);
@@ -1507,29 +1497,6 @@
 		gap: 8px;
 		align-items: flex-start;
 	}
-	.members {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
-	.member {
-		display: inline-flex;
-		align-items: center;
-		gap: 5px;
-		padding: 4px 10px;
-		border: 1px solid var(--line);
-		border-radius: 999px;
-		background: var(--card);
-		color: var(--ink);
-		font: inherit;
-		font-weight: 600;
-		font-size: var(--fs-sm);
-		cursor: pointer;
-		transition: transform 0.2s var(--ease-spring);
-	}
-	.member:hover {
-		transform: translateY(-2px);
-	}
 	.crop-glyph {
 		flex: none;
 		width: 30px;
@@ -1547,7 +1514,6 @@
 	.kinds :global(svg) {
 		color: var(--leaf);
 	}
-	.member i,
 	.rec-dot {
 		box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 25%, transparent);
 		display: inline-block;
@@ -1584,11 +1550,19 @@
 		display: grid;
 		gap: 6px;
 	}
+	/* The count in its own column; a long note wraps under the name, not under the count. */
 	.shopping li {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
+		display: grid;
+		grid-template-columns: 2.2ch 1fr;
+		gap: 8px;
 		align-items: baseline;
+	}
+	.shopping li > strong {
+		text-align: right;
+	}
+	/* Month names line up with the heading; the current month's tint reaches past them. */
+	.tasks {
+		margin-inline: -10px;
 	}
 	.tasks li {
 		display: grid;
@@ -1596,16 +1570,22 @@
 		padding: 8px 10px;
 		border-radius: var(--radius-xs);
 	}
+	/* A wrapped list of crops stays to the right of its colour mark. */
+	.tasks li > span {
+		display: grid;
+		grid-template-columns: 12px 1fr;
+		column-gap: 8px;
+	}
 	.tasks li.now {
 		background: var(--leaf-soft);
 	}
 	.tasks i {
-		display: inline-block;
 		width: 12px;
 		height: 5px;
 		border-radius: 3px;
-		vertical-align: middle;
-		margin-right: 4px;
+		/* Centred on the first line of text (line-height 1.55). */
+		align-self: start;
+		margin-top: calc(0.775em - 2.5px);
 	}
 	.t-indoor {
 		background: var(--sky);
@@ -1620,7 +1600,7 @@
 		margin-top: 20px;
 		padding: 16px;
 		border-radius: var(--radius-sm);
-		background: var(--paper-2);
+		background: var(--sunk);
 	}
 	.gear h3 {
 		display: flex;

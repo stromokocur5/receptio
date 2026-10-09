@@ -335,8 +335,11 @@
 		gap: var(--sp-2) var(--sp-3);
 		margin: var(--sp-2) 0 var(--sp-5);
 	}
+	/* A pill can't wrap into two rows; on a phone the four sections scroll sideways instead. */
 	.segmented {
-		flex-wrap: wrap;
+		max-width: 100%;
+		overflow-x: auto;
+		scrollbar-width: none;
 	}
 	.count {
 		display: inline-grid;

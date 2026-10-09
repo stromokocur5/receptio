@@ -615,6 +615,10 @@ a.chip:hover {
 /* Two to four options of which one is on (Týždeň / Mesiac). */
 .segmented {
 	display: inline-flex;
+	/* More options than fit: it scrolls sideways instead of wrapping inside the pill. */
+	max-width: 100%;
+	overflow-x: auto;
+	scrollbar-width: none;
 	gap: 2px;
 	padding: 3px;
 	border-radius: 999px;
@@ -623,6 +627,7 @@ a.chip:hover {
 }
 .segmented > button,
 .segmented > a {
+	flex: none;
 	border: 0;
 	border-radius: 999px;
 	padding: 0.45em 1em;

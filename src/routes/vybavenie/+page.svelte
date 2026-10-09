@@ -161,7 +161,7 @@
 	.alt {
 		padding: 10px 12px;
 		border-radius: var(--radius-sm);
-		background: var(--paper);
+		background: var(--sunk);
 		font-size: var(--fs-md);
 	}
 	.alt ul {

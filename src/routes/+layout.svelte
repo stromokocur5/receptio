@@ -46,8 +46,11 @@
 	const planCount = $derived(plan.current.length);
 	/** Sync needs the user's attention (failed upload or two devices disagree). */
 	const syncTrouble = $derived(syncState.status === 'error');
-	const isActive = (href: string) =>
+	const within = (href: string) =>
 		page.url.pathname === href || page.url.pathname.startsWith(`${href}/`);
+	/** Pages that belong to a nav section without living under its path (the shared shopping list). */
+	const ALSO_UNDER: Record<string, string[]> = { '/plan': ['/zoznam'] };
+	const isActive = (href: string) => within(href) || (ALSO_UNDER[href] ?? []).some(within);
 	const moreActive = $derived(MORE_PATHS.some(isActive));
 
 	onMount(() => {
