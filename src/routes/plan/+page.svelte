@@ -926,9 +926,15 @@
 			{#if !ui.loaded}
 				<p class="muted">Načítavam…</p>
 			{:else if entries.length === 0}
-				<p class="muted empty">Tu sa objaví zoznam, keď pridáš recepty.</p>
+				<p class="muted empty">
+					{extraItems.current.length
+						? 'Recepty v pláne zatiaľ nemáš – tu je, čo si si zapísal.'
+						: 'Tu sa objaví zoznam, keď pridáš recepty.'}
+				</p>
+				{@render extrasOnly()}
 			{:else if allItems.length === 0}
-				<p class="empty"><Icon name="check" size={20} /> Všetko máš doma. Môžeš variť.</p>
+				<p class="empty"><Icon name="check" size={20} /> Na recepty máš všetko doma.</p>
+				{@render extrasOnly()}
 			{:else}
 				<div class="shop-summary">
 					{#if hasRealPrices}
@@ -985,39 +991,7 @@
 					{/if}
 				{/each}
 
-				<div class="cat extra">
-					<h3>Vlastné položky</h3>
-					{#if !extraItems.current.length}
-						<p class="muted small">Čo kúpiš popri receptoch – drogériu, kávu, pečivo na raňajky.</p>
-					{/if}
-					{#if extraItems.current.length}
-						<ul>
-							{#each extraItems.current.filter((x) => !x.checked) as x (x.id)}
-								{@render extraRow(x)}
-							{/each}
-						</ul>
-					{/if}
-					<form
-						class="extra-add"
-						onsubmit={(e) => {
-							e.preventDefault();
-							addExtraItem(extraText);
-							extraText = '';
-						}}
-					>
-						<label class="field extra-field">
-							<Icon name="plus" size={18} />
-							<span class="sr-only">Pridať vlastnú položku</span>
-							<input
-								id="extra-text"
-								bind:value={extraText}
-								maxlength="80"
-								placeholder="Napíš, čo ešte kúpiť…"
-							/>
-						</label>
-						<button class="btn small leaf" disabled={!extraText.trim()}>Pridať</button>
-					</form>
-				</div>
+				{@render extrasBlock()}
 
 				{#if boughtCount}
 					<details class="cat in-cart" open>
@@ -1264,6 +1238,58 @@
 		<span class="meal empty">{label ? `${label}: ` : ''}nikto nie je doma</span>
 	{:else}
 		<span class="meal empty">{label ? `${label}: ` : ''}nič naplánované</span>
+	{/if}
+{/snippet}
+
+{#snippet extrasBlock()}
+	<div class="cat extra">
+		<h3>Vlastné položky</h3>
+		{#if !extraItems.current.length}
+			<p class="muted small">Čo kúpiš popri receptoch – drogériu, kávu, pečivo na raňajky.</p>
+		{/if}
+		{#if extraItems.current.length}
+			<ul>
+				{#each extraItems.current.filter((x) => !x.checked) as x (x.id)}
+					{@render extraRow(x)}
+				{/each}
+			</ul>
+		{/if}
+		<form
+			class="extra-add"
+			onsubmit={(e) => {
+				e.preventDefault();
+				addExtraItem(extraText);
+				extraText = '';
+			}}
+		>
+			<label class="field extra-field">
+				<Icon name="plus" size={18} />
+				<span class="sr-only">Pridať vlastnú položku</span>
+				<input
+					id="extra-text"
+					bind:value={extraText}
+					maxlength="80"
+					placeholder="Napíš, čo ešte kúpiť…"
+				/>
+			</label>
+			<button class="btn small leaf" disabled={!extraText.trim()}>Pridať</button>
+		</form>
+	</div>
+{/snippet}
+
+<!-- Ran out in the pantry, or added by hand, with no recipes to shop for: still a list. -->
+{#snippet extrasOnly()}
+	{@render extrasBlock()}
+	{#if extraItems.current.some((x) => x.checked)}
+		<details class="cat in-cart" open>
+			<summary><h3>V košíku ({extraItems.current.filter((x) => x.checked).length})</h3></summary>
+			<ul>
+				{#each extraItems.current.filter((x) => x.checked) as x (x.id)}
+					{@render extraRow(x)}
+				{/each}
+			</ul>
+			<button class="link-btn" onclick={clearChecked}>Vyčistiť košík</button>
+		</details>
 	{/if}
 {/snippet}
 
