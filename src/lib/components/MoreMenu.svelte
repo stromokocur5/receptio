@@ -50,6 +50,12 @@
 			title: 'Ty',
 			links: [
 				{ href: '/moje', label: 'Moje', hint: 'Obľúbené, história, záloha', icon: 'bookmark' },
+				{
+					href: '/domacnost',
+					label: 'Domácnosť',
+					hint: 'Spoločný plán, nákup a špajza',
+					icon: 'users'
+				},
 				{ href: '/navrhni', label: 'Navrhni recept', hint: 'Pošli svoj obľúbený', icon: 'send' }
 			]
 		},

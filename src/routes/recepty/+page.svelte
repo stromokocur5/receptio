@@ -37,6 +37,8 @@
 	import { recipeSeason } from '$lib/season';
 	import { isAssumedAtHome, rankByPantry, type PantryMatch } from '$lib/pantry';
 	import { avoidFilter, isAvoiding, missableTools, shortName } from '$lib/avoid';
+	import { hasNeeds, householdFilter } from '$lib/household';
+	import { household, members, tableNeeds } from '$lib/household.svelte';
 	import {
 		LIST_SEARCH_KEY,
 		MAX_PRESETS,
@@ -179,6 +181,14 @@
 	const avoiding = $derived(ui.loaded && !ignoreAvoid && isAvoiding(avoid.current));
 	const allowedByAvoid = $derived(avoidFilter(avoid.current, catalog.ingredientsById));
 
+	/** Only what everyone in the household can eat. */
+	let forTable = $state(false);
+	const needs = $derived(household.doc ? tableNeeds() : null);
+	const tableReady = $derived(!!needs && hasNeeds(needs));
+	const allowedAtTable = $derived(
+		needs ? householdFilter(needs, catalog.ingredientsById) : () => true
+	);
+
 	/** Categories almost every recipe has; searching them would match everything. */
 	const UNSEARCHED_CATEGORIES = new Set<IngredientCategory>(['koreniny', 'oleje', 'ine']);
 	const searchIndex = $derived(
@@ -237,6 +247,7 @@
 	function passesFilters(r: RecipeSummary): boolean {
 		if (!matchesQuery(searchIndex.get(r.id)!)) return false;
 		if (avoiding && !allowedByAvoid(r)) return false;
+		if (forTable && tableReady && !allowedAtTable(r)) return false;
 		if (gf === 1 && r.gluten === 'contains') return false;
 		if (gf === 2 && r.gluten === 'contains' && !r.gfSwappable) return false;
 		if (cuisine && r.cuisine !== cuisine) return false;
@@ -442,6 +453,9 @@
 			});
 		}
 		if (onlyPantry) add('pantry', 'Len z toho, čo mám', 'doma', () => (onlyPantry = false));
+		if (forTable && tableReady) {
+			add('table', 'Pre celú domácnosť', 'doma', () => (forTable = false));
+		}
 		if (avoiding) {
 			const n = avoid.current.ingredients.length + avoid.current.tools.length;
 			const parts = [
@@ -502,6 +516,7 @@
 		subs = 'all';
 		difficulty = 0;
 		onlyPantry = false;
+		forTable = false;
 		sort = 'odporucane';
 	}
 
@@ -525,6 +540,7 @@
 		if (withIngredients.length) p.set('s', withIngredients.join(','));
 		if (sort !== 'odporucane') p.set('sort', sort);
 		if (onlyPantry) p.set('spajza', '1');
+		if (forTable) p.set('domacnost', '1');
 		if (subs !== 'all') p.set('nahrady', subs);
 		if (difficulty) p.set('narocnost', String(difficulty));
 		if (missingTools.length) p.set('nemam', missingTools.join(','));
@@ -582,6 +598,7 @@
 		const s = p.get('sort');
 		if (s && s in SORTS) sort = s as Sort;
 		if (p.get('spajza') === '1') onlyPantry = true;
+		if (p.get('domacnost') === '1') forTable = true;
 		const n = p.get('nahrady');
 		if (n === 'bez' || n === 's') subs = n;
 		const d = Number(p.get('narocnost'));
@@ -1034,6 +1051,20 @@
 							</p>
 						{/if}
 					</fieldset>
+
+					{#if tableReady}
+						<fieldset>
+							<legend>Domácnosť</legend>
+							<div class="chips">
+								<button class="chip" aria-pressed={forTable} onclick={() => (forTable = !forTable)}>
+									Môže jesť každý ({members()
+										.map((m) => m.name)
+										.join(', ')})
+								</button>
+							</div>
+							<p class="hint"><a href="/domacnost">Kto čo neje</a></p>
+						</fieldset>
+					{/if}
 
 					{#if ui.loaded && isAvoiding(avoid.current)}
 						<fieldset>

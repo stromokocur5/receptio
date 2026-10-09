@@ -1,5 +1,9 @@
 <script lang="ts">
+	import { household, members } from '$lib/household.svelte';
 	import { settings, type Settings } from '$lib/state.svelte';
+
+	/** In a household the plan cooks for everyone in it. */
+	const fromHousehold = $derived(!!household.doc && members().length > 0);
 
 	function update(patch: Partial<Settings>) {
 		settings.current = { ...settings.current, ...patch };
@@ -21,11 +25,14 @@
 		Varím pre
 		<select
 			value={settings.current.people}
+			disabled={fromHousehold}
 			onchange={(e) => update({ people: Number(e.currentTarget.value) })}
 		>
-			{#each [1, 2, 3, 4, 5, 6, 8] as p (p)}<option value={p}>{p}</option>{/each}
+			{#each Array.from({ length: 12 }, (_, i) => i + 1) as p (p)}<option value={p}>{p}</option
+				>{/each}
 		</select>
 		{settings.current.people === 1 ? 'osobu' : settings.current.people < 5 ? 'osoby' : 'osôb'}
+		{#if fromHousehold}<a class="from-household" href="/domacnost">podľa domácnosti</a>{/if}
 	</label>
 	<label>
 		Jedál denne
@@ -65,6 +72,9 @@
 </div>
 
 <style>
+	.from-household {
+		font-size: 0.86rem;
+	}
 	.settings {
 		display: flex;
 		flex-wrap: wrap;

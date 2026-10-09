@@ -8,7 +8,7 @@
 	} from '$lib/retention';
 
 	const CONTACT = 'gabriel@kohut.xyz';
-	const UPDATED = '4. 10. 2026';
+	const UPDATED = '9. 10. 2026';
 	const syncYears = SYNC_IDLE_DAYS / 365;
 	const handledYears = HANDLED_RETENTION_DAYS / 365;
 
@@ -24,6 +24,13 @@
 			detail: 'Len ak ho vytvoríš: zašifrovaný nákupný zoznam a čo je v ňom odškrtnuté.',
 			why: 'Aby ste mohli nakupovať dvaja naraz. Kľúč je len v odkaze, ktorý pošleš – server zoznam neprečíta.',
 			kept: `Zoznam, ktorý ${syncYears} roky nikto neotvoril, sa zmaže sám.`
+		},
+		{
+			what: 'Domácnosť',
+			detail:
+				'Len ak ju založíš alebo sa pripojíš: zašifrovaný spoločný plán, špajza, nákupný zoznam a členovia – mená, ktoré zadáte, alergie, čo kto neje, „nepálivo“ a bezlepková strava.',
+			why: 'Aby ste mali doma jeden plán a nákup a recepty vedeli, čo môže jesť každý pri stole. Kľúč je len v pozývacom odkaze – server nevidí mená ani alergie, len šifru.',
+			kept: `Kým domácnosť niekto používa. Domácnosť, ktorú ${syncYears} roky nikto neotvoril, sa zmaže sama. Kto odíde, zmizne zo zoznamu členov.`
 		},
 		{
 			what: 'Pripomienky na vodu a vitamíny',
@@ -147,7 +154,11 @@
 
 		<h2>Právny základ</h2>
 		<ul>
-			<li>Synchronizácia: poskytnutie služby, o ktorú žiadaš (čl. 6 ods. 1 písm. b GDPR).</li>
+			<li>
+				Synchronizácia, spoločný nákup a domácnosť: poskytnutie služby, o ktorú žiadaš (čl. 6 ods. 1
+				písm. b GDPR). Alergie a bezlepková strava členov domácnosti sú údaje o zdraví – zadávaš ich
+				dobrovoľne, ostávajú zašifrované a správca ich nevidí (čl. 9 ods. 2 písm. a GDPR).
+			</li>
 			<li>
 				Lajky, formuláre a ochrana pred zneužitím: oprávnený záujem prevádzkovať stránku a chrániť
 				ju (čl. 6 ods. 1 písm. f GDPR).

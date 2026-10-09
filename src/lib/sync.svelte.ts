@@ -37,6 +37,8 @@ let pushTimer: ReturnType<typeof setTimeout> | undefined;
 const RETRY_FIRST_MS = 60_000;
 const RETRY_MAX_MS = 10 * 60_000;
 let retryDelay = RETRY_FIRST_MS;
+/** Bumped when another device's backup replaced the data here (the household takes that as its base). */
+export const restores = $state({ count: 0 });
 /** Changes up to this count came from the server, not from the user – don't upload them back. */
 let appliedUpTo = 0;
 
@@ -194,6 +196,7 @@ async function applyRemote(keys: SyncKeys, remote: { data: string; updatedAt: nu
 	const restored = importBackup(await decrypt(keys.key, remote.data));
 	if (restored === null) throw new Error('Záloha na serveri je poškodená.');
 	appliedUpTo = changes.count;
+	restores.count++;
 	meta = { syncedAt: remote.updatedAt, dirty: false };
 	saveMeta();
 	syncState.syncedAt = meta.syncedAt;

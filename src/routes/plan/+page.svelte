@@ -27,6 +27,7 @@
 	import { budgetStatus, spentThisWeek } from '$lib/budget';
 	import { encodeSharedPlan } from '$lib/share';
 	import { LIVE_PREFIX, createLiveList } from '$lib/live-list.svelte';
+	import { household } from '$lib/household.svelte';
 	import {
 		approxPieces,
 		buildShoppingList,
@@ -456,6 +457,15 @@
 			Pridaj recepty a počet porcií. Receptio z nich spraví jeden nákupný zoznam, odpočíta to, čo
 			máš v špajzi, a ukáže, ako na tom si so živinami.
 		</p>
+		{#if household.doc}
+			<p class="household-note">
+				<Icon name="users" size={18} />
+				<span
+					>Spoločný plán domácnosti <a href="/domacnost">{household.doc.name[0]}</a> – zmeny vidia
+					všetci{household.status === 'offline' ? ' (teraz offline)' : ''}.</span
+				>
+			</p>
+		{/if}
 	</header>
 
 	{#if entries.length}
@@ -1216,6 +1226,12 @@
 </dialog>
 
 <style>
+	.household-note {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		font-weight: 600;
+	}
 	.page {
 		padding-top: 28px;
 	}

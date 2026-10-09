@@ -18,6 +18,8 @@
 	import { matchRecipe, pantryByGroup, useSoon } from '$lib/pantry';
 	import { recipeSeason } from '$lib/season';
 	import { avoidFilter } from '$lib/avoid';
+	import { hasNeeds, householdFilter } from '$lib/household';
+	import { members, tableNeeds } from '$lib/household.svelte';
 	import {
 		addToPlan,
 		avoid,
@@ -114,8 +116,10 @@
 			seed
 		};
 		const allowed = avoidFilter(avoid.current, catalog.ingredientsById);
+		const needs = tableNeeds();
+		const atTable = needs ? householdFilter(needs, catalog.ingredientsById) : () => true;
 		return {
-			recipes: catalog.recipes.filter(allowed),
+			recipes: catalog.recipes.filter((r) => allowed(r) && atTable(r)),
 			options,
 			ctx: {
 				pantryScore:
@@ -278,6 +282,13 @@
 					</button>
 				{/each}
 			</div>
+			{#if tableNeeds() && hasNeeds(tableNeeds()!)}
+				<p class="small">
+					<Icon name="users" size={16} /> Len jedlá, ktoré môže jesť každý z domácnosti ({members()
+						.map((m) => m.name)
+						.join(', ')}). <a href="/domacnost">Upraviť</a>
+				</p>
+			{/if}
 			<p class="muted small">
 				Plánuje {settings.current.breakfasts ? 'raňajky, ' : ''}obedy{settings.current
 					.mealsPerDay === 2

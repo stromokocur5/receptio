@@ -19,6 +19,7 @@
 		settings,
 		ui
 	} from '$lib/state.svelte';
+	import { initHousehold, noteHouseholdChange } from '$lib/household.svelte';
 	import { initSync, noteChange, syncState } from '$lib/sync.svelte';
 	import { onboarding, shouldOnboard } from '$lib/onboarding.svelte';
 	import { initInstall } from '$lib/install.svelte';
@@ -49,12 +50,16 @@
 		loadTimers();
 		void loadLikes();
 		initSync();
+		initHousehold();
 		initInstall();
 		if (shouldOnboard(page.url)) onboarding.open = true;
 	});
 
 	$effect(() => {
-		if (changes.count > 0) noteChange();
+		if (changes.count > 0) {
+			noteChange();
+			noteHouseholdChange();
+		}
 	});
 
 	$effect(() => {
