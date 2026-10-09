@@ -42,9 +42,10 @@
 	{#if targets.kcal || targets.protein}
 		<dt>Denne asi</dt>
 		<dd>
-			{#if targets.kcal}{formatNumber(targets.kcal, 0)} kcal{/if}{#if targets.kcal && targets.protein}
-				·
-			{/if}{#if targets.protein}{formatNumber(targets.protein, 0)} g bielkovín{/if}
+			{#if targets.kcal}{formatNumber(targets.kcal, 0)} kcal{/if}{#if targets.kcal && targets.protein}{' · '}{/if}{#if targets.protein}{formatNumber(
+					targets.protein,
+					0
+				)} g bielkovín{/if}
 		</dd>
 	{/if}
 	<dt>Porcia</dt>

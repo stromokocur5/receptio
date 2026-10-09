@@ -252,9 +252,8 @@
 				<p class="targets">
 					Denne asi
 					{#if targets.kcal}<strong>{formatNumber(targets.kcal, 0)} kcal</strong
-						>{/if}{#if targets.kcal && targets.protein}
-						a
-					{/if}{#if targets.protein}<strong>{formatNumber(targets.protein, 0)} g bielkovín</strong
+						>{/if}{#if targets.kcal && targets.protein}{' a '}{/if}{#if targets.protein}<strong
+							>{formatNumber(targets.protein, 0)} g bielkovín</strong
 						>{/if}
 					· porcia {formatNumber(portionOf(member), 2)}×
 				</p>
