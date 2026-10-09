@@ -3,7 +3,19 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import { createChallenge } from '$lib/turnstile';
 
-	let { recipeId }: { recipeId: string } = $props();
+	let {
+		recipeId,
+		taste
+	}: {
+		recipeId: string;
+		/**
+		 * Cooking mode already asked "Ako chutilo?" (1–3); then that answer goes along and the
+		 * stars aren't shown, so nobody rates the same dinner twice.
+		 */
+		taste?: 1 | 2 | 3 | null;
+	} = $props();
+	/** Výborné / Dobré / Nabudúce inak on the shared five-star scale. */
+	const TASTE_STARS = { 3: 5, 2: 4, 1: 2 } as const;
 
 	const SENT_KEY = 'receptio:feedback-sent';
 
@@ -53,7 +65,7 @@
 					recipeId,
 					kind,
 					message: message.trim() || undefined,
-					rating: rating || undefined,
+					rating: (taste === undefined ? rating : taste && TASTE_STARS[taste]) || undefined,
 					turnstile
 				})
 			});
@@ -87,26 +99,30 @@
 				? 'Ďakujem! Keď recept potvrdí viac ľudí, dostane odznak Vyskúšané.'
 				: 'Ďakujem, chybu opravím.'}
 			{#if mode === 'idle'}
-				<button class="linkish" onclick={() => (sentKind = null)}>Poslať ďalšiu</button>
+				<button class="btn-link quiet" onclick={() => (sentKind = null)}>Poslať ďalšiu</button>
 			{/if}
 		</p>
 	{:else}
-		<p class="title">Po uvarení: pomôž recept overiť</p>
-		<div class="stars" role="radiogroup" aria-label="Ako chutilo (nepovinné)">
-			<span class="muted small">Ako chutilo?</span>
-			{#each [1, 2, 3, 4, 5] as star (star)}
-				<button
-					type="button"
-					role="radio"
-					class:on={star <= rating}
-					aria-checked={star === rating}
-					aria-label="{star} z 5"
-					onclick={() => (rating = rating === star ? 0 : star)}
-				>
-					<Icon name="star" size={22} />
-				</button>
-			{/each}
-		</div>
+		<p class="title">
+			{taste === undefined ? 'Po uvarení: pomôž recept overiť' : 'Pomôž recept overiť'}
+		</p>
+		{#if taste === undefined}
+			<div class="stars" role="radiogroup" aria-label="Ako chutilo (nepovinné)">
+				<span class="muted small">Ako chutilo?</span>
+				{#each [1, 2, 3, 4, 5] as star (star)}
+					<button
+						type="button"
+						role="radio"
+						class:on={star <= rating}
+						aria-checked={star === rating}
+						aria-label="{star} z 5"
+						onclick={() => (rating = rating === star ? 0 : star)}
+					>
+						<Icon name="star" size={22} />
+					</button>
+				{/each}
+			</div>
+		{/if}
 		<div class="buttons">
 			<button class="btn ghost small" disabled={mode === 'sending'} onclick={() => send('worked')}>
 				<Icon name="check" size={16} /> Funguje, ako je napísané
@@ -121,6 +137,8 @@
 		</div>
 		{#if mode === 'problem' || (mode === 'error' && message)}
 			<textarea
+				class="input"
+				aria-label="Čo nesedí"
 				bind:value={message}
 				rows="3"
 				maxlength="2000"
@@ -133,7 +151,9 @@
 				<Icon name="send" size={16} /> Poslať
 			</button>
 		{/if}
-		{#if mode === 'error'}<p class="err" role="alert">{errorText}</p>{/if}
+		{#if mode === 'error'}
+			<p class="notice danger" role="alert"><Icon name="alert" size={18} /> {errorText}</p>
+		{/if}
 	{/if}
 	<div class="challenge" bind:this={challengeBox}></div>
 </div>
@@ -161,12 +181,12 @@
 	.stars button {
 		display: grid;
 		place-items: center;
-		width: 34px;
-		height: 34px;
+		width: 38px;
+		height: var(--tap);
 		border: 0;
 		border-radius: 50%;
 		background: none;
-		color: var(--line);
+		color: color-mix(in srgb, var(--muted) 55%, transparent);
 	}
 	.stars button.on {
 		color: var(--turmeric);
@@ -181,13 +201,6 @@
 	}
 	textarea {
 		width: 100%;
-		resize: vertical;
-		border: 1.5px solid var(--line);
-		border-radius: 12px;
-		background: var(--paper);
-		color: var(--ink);
-		padding: 8px 10px;
-		font: inherit;
 	}
 	.feedback > .btn {
 		justify-self: start;
@@ -201,21 +214,11 @@
 		color: var(--leaf);
 		font-weight: 600;
 	}
-	.linkish {
-		border: 0;
-		background: none;
-		padding: 0;
-		color: var(--ink-2);
-		font: inherit;
-		font-weight: 500;
-		text-decoration: underline;
-		cursor: pointer;
-	}
+
 	.challenge:empty {
 		display: none;
 	}
-	.err {
+	.notice {
 		margin: 0;
-		color: var(--tomato);
 	}
 </style>

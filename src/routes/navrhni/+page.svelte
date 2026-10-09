@@ -3,7 +3,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { createChallenge } from '$lib/turnstile';
-	import { SUGGESTION_LIMITS as L, suggestionProblem } from '$lib/suggestion';
+	import { SUGGESTION_LIMITS as L, suggestionProblem, type SuggestionField } from '$lib/suggestion';
 
 	const DRAFT_KEY = 'receptio:suggestion-draft';
 
@@ -11,6 +11,32 @@
 	let status = $state<'idle' | 'sending' | 'sent' | 'error'>('idle');
 	let errorText = $state('');
 	let needsClick = $state(false);
+	/** What's wrong with each field, shown right under it after the first try to send. */
+	let fieldErrors = $state<Partial<Record<SuggestionField, string>>>({});
+	const REQUIRED = ['title', 'ingredients', 'steps'] as const;
+
+	/** The shared check, one field at a time (the others filled with something valid). */
+	function fieldProblem(field: SuggestionField): string | undefined {
+		const valid = { title: 'xxx', ingredients: 'x'.repeat(10), steps: 'x'.repeat(10) };
+		const problem = suggestionProblem({ ...valid, [field]: form[field] })?.replace(/^[^:]+: /, '');
+		return problem && problem[0].toUpperCase() + problem.slice(1);
+	}
+	function checkFields(): boolean {
+		const errors: typeof fieldErrors = {};
+		for (const field of [...REQUIRED, 'note', 'author'] as const) {
+			const problem = fieldProblem(field);
+			if (problem) errors[field] = problem;
+		}
+		fieldErrors = errors;
+		const first = Object.keys(errors)[0];
+		if (first) document.getElementById(`s-${first}`)?.focus();
+		return !first;
+	}
+	/** Once an error shows, it goes away as soon as the field is right. */
+	function recheck(field: SuggestionField) {
+		if (fieldErrors[field]) fieldErrors = { ...fieldErrors, [field]: fieldProblem(field) };
+	}
+	const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 	let challengeBox: HTMLDivElement;
 	let challenge: Promise<Awaited<ReturnType<typeof createChallenge>>> | null = null;
 
@@ -19,7 +45,10 @@
 		challenge ??= createChallenge(challengeBox, 'suggest', {
 			onInteractive: () => {
 				needsClick = true;
-				challengeBox.scrollIntoView({ block: 'center', behavior: 'smooth' });
+				challengeBox.scrollIntoView({
+					block: 'center',
+					behavior: reducedMotion() ? 'auto' : 'smooth'
+				});
 			},
 			onInteractiveDone: () => (needsClick = false)
 		}).catch((err) => {
@@ -62,10 +91,8 @@
 
 	async function submit(event: SubmitEvent) {
 		event.preventDefault();
-		const problem = suggestionProblem(form);
-		if (problem) {
-			errorText = problem;
-			status = 'error';
+		if (!checkFields()) {
+			status = 'idle';
 			return;
 		}
 		status = 'sending';
@@ -109,7 +136,7 @@
 
 <Seo
 	title="Navrhni recept"
-	description="Máš recept, ktorý u vás mizne z taniera ako prvý? Pošli ho – skontrolujeme ho a dopočítame živiny aj cenu."
+	description="Máš recept, ktorý u vás mizne z taniera ako prvý? Pošli ho – skontrolujem ho a dopočítam živiny aj cenu."
 />
 
 <div class="wrap page">
@@ -140,44 +167,30 @@
 		oninput={saveDraft}
 		novalidate
 	>
-		<label>
-			<span>Názov receptu</span>
-			<input
-				bind:value={form.title}
-				required
-				minlength={L.title.min}
-				maxlength={L.title.max}
-				placeholder="Babkin lečo s tofu"
-			/>
-		</label>
-		<label>
-			<span>Suroviny <small>jedna na riadok, aj s množstvom</small></span>
-			<textarea
-				bind:value={form.ingredients}
-				required
-				minlength={L.ingredients.min}
-				maxlength={L.ingredients.max}
-				rows="7"
-				placeholder={'400 g tofu\n2 cibule\n3 papriky\n1 PL sladkej papriky'}></textarea>
-		</label>
-		<label>
-			<span>Postup</span>
-			<textarea
-				bind:value={form.steps}
-				required
-				minlength={L.steps.min}
-				maxlength={L.steps.max}
-				rows="8"
-				placeholder={'1. Cibuľu nakrájaj a opeč dozlatista.\n2. …'}></textarea>
-		</label>
-		<label>
-			<span>Poznámka <small>nepovinné – pre koľkých, ako dlho, odkiaľ recept je…</small></span>
-			<textarea bind:value={form.note} maxlength={L.note.max} rows="3"></textarea>
-		</label>
-		<label>
-			<span>Tvoje meno alebo prezývka <small>nepovinné, ak ťa máme pri recepte uviesť</small></span>
-			<input bind:value={form.author} maxlength={L.author.max} autocomplete="nickname" />
-		</label>
+		<p class="hint required-note">Polia s hviezdičkou (*) sú povinné.</p>
+		{@render field('title', 'Názov receptu', '', 'Babkin lečo s tofu', 0)}
+		{@render field(
+			'ingredients',
+			'Suroviny',
+			'jedna na riadok, aj s množstvom',
+			'400 g tofu\n2 cibule\n3 papriky\n1 PL sladkej papriky',
+			7
+		)}
+		{@render field('steps', 'Postup', '', '1. Cibuľu nakrájaj a opeč dozlatista.\n2. …', 8)}
+		{@render field(
+			'note',
+			'Poznámka',
+			'nepovinné – pre koľkých, ako dlho, odkiaľ recept je…',
+			'',
+			3
+		)}
+		{@render field(
+			'author',
+			'Tvoje meno alebo prezývka',
+			'nepovinné, ak ťa máme pri recepte uviesť',
+			'',
+			0
+		)}
 		<label class="hp" aria-hidden="true">
 			Web
 			<input bind:value={form.website} tabindex="-1" autocomplete="off" />
@@ -185,10 +198,12 @@
 
 		<div class="challenge" bind:this={challengeBox}></div>
 		{#if needsClick}
-			<p class="hint" role="status">Ešte klikni na overenie vyššie a návrh sa odošle.</p>
+			<p class="notice" role="status">
+				<Icon name="info" size={18} /> Ešte klikni na overenie vyššie a návrh sa odošle.
+			</p>
 		{/if}
 		{#if status === 'error'}
-			<p class="err" role="alert"><Icon name="alert" size={18} /> {errorText}</p>
+			<p class="notice danger" role="alert"><Icon name="alert" size={18} /> {errorText}</p>
 		{/if}
 		<div class="submit">
 			<button class="btn leaf" type="submit" disabled={status === 'sending'}>
@@ -203,48 +218,97 @@
 	</form>
 </div>
 
+{#snippet field(
+	name: SuggestionField,
+	label: string,
+	note: string,
+	placeholder: string,
+	rows: number
+)}
+	{@const required = (REQUIRED as readonly string[]).includes(name)}
+	<div class="row">
+		<label for="s-{name}">
+			{label}{#if required}<span class="req" aria-hidden="true"> *</span>{/if}
+			{#if note}<small>{note}</small>{/if}
+		</label>
+		{#if rows}
+			<textarea
+				class="input"
+				id="s-{name}"
+				bind:value={form[name]}
+				{required}
+				aria-invalid={!!fieldErrors[name]}
+				aria-describedby={fieldErrors[name] ? `s-${name}-err` : undefined}
+				minlength={L[name].min || undefined}
+				maxlength={L[name].max}
+				{rows}
+				{placeholder}
+				oninput={() => recheck(name)}></textarea>
+		{:else}
+			<input
+				class="input"
+				id="s-{name}"
+				bind:value={form[name]}
+				{required}
+				aria-invalid={!!fieldErrors[name]}
+				aria-describedby={fieldErrors[name] ? `s-${name}-err` : undefined}
+				minlength={L[name].min || undefined}
+				maxlength={L[name].max}
+				{placeholder}
+				autocomplete={name === 'author' ? 'nickname' : 'off'}
+				oninput={() => recheck(name)}
+			/>
+		{/if}
+		{#if fieldErrors[name]}
+			<p class="field-err" id="s-{name}-err">
+				<Icon name="alert" size={16} />
+				{fieldErrors[name]}
+			</p>
+		{/if}
+	</div>
+{/snippet}
+
 <style>
 	.page {
-		padding-top: 28px;
 		max-width: 820px;
-	}
-	.lede {
-		color: var(--ink-2);
-	}
-	.box {
-		padding: 22px;
 	}
 	form {
 		display: grid;
 		gap: 16px;
 	}
-	label {
+	.required-note {
+		margin: 0;
+	}
+	.row {
 		display: grid;
 		gap: 6px;
+	}
+	label {
 		font-weight: 650;
 	}
 	label small {
+		display: block;
 		font-weight: 500;
+		font-size: var(--fs-sm);
 		color: var(--muted);
 	}
-	input,
-	textarea {
+	.req {
+		color: var(--tomato);
+	}
+	.input {
 		width: 100%;
-		border: 1.5px solid var(--line);
-		border-radius: var(--radius-sm);
-		background: var(--paper);
-		color: var(--ink);
-		padding: 10px 12px;
-		font: inherit;
-		font-weight: 400;
 	}
-	textarea {
-		resize: vertical;
+	.input[aria-invalid='true'] {
+		border-color: var(--tomato);
 	}
-	input:focus,
-	textarea:focus {
-		outline: none;
-		border-color: var(--leaf-2);
+	.field-err {
+		display: flex;
+		align-items: center;
+		gap: 6px;
+		margin: 0;
+		font-size: var(--fs-sm);
+		font-weight: 600;
+		color: color-mix(in srgb, var(--tomato) 75%, var(--ink));
 	}
 	.hp {
 		position: absolute;
@@ -259,10 +323,8 @@
 	.challenge:empty {
 		display: none;
 	}
-	.hint {
+	.notice {
 		margin: 0;
-		color: var(--leaf);
-		font-weight: 600;
 	}
 	.submit {
 		display: flex;
@@ -270,18 +332,8 @@
 		align-items: center;
 		gap: 12px;
 	}
-	.small {
-		font-size: 0.84rem;
+	.submit .small {
 		margin: 0;
-	}
-	.err {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		margin: 0;
-		padding: 8px 12px;
-		border-radius: 12px;
-		background: var(--tomato-soft);
 	}
 	.sent {
 		display: flex;

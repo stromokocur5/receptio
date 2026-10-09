@@ -49,7 +49,7 @@
 		display: flex;
 		justify-content: space-between;
 		gap: 8px;
-		font-size: 0.88rem;
+		font-size: var(--fs-sm);
 		margin-bottom: 4px;
 	}
 	.label {
@@ -62,12 +62,13 @@
 	.pct {
 		color: var(--muted);
 		margin-left: 4px;
-		font-size: 0.8rem;
+		font-size: var(--fs-xs);
 	}
 	.track {
 		height: 8px;
 		border-radius: 999px;
-		background: var(--paper-2);
+		/* Visible on a card, the page or a sunk row, in both themes. */
+		background: color-mix(in srgb, var(--line) 80%, transparent);
 		overflow: hidden;
 	}
 	.fill {

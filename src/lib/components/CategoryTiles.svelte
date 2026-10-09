@@ -15,7 +15,7 @@
 	} = $props();
 </script>
 
-<nav class="cats" aria-label="Kategórie">
+<nav class="cats scroller" aria-label="Kategórie">
 	{#each CATEGORY_IDS as id, i (id)}
 		{@const c = RECIPE_CATEGORIES[id]}
 		{#if onpick}
@@ -44,17 +44,12 @@
 {/snippet}
 
 <style>
+	/* .scroller reaches the screen edge; snapping keeps the first tile off it. */
 	.cats {
-		display: flex;
 		gap: 10px;
-		margin: 0 -16px 12px;
-		padding: 4px 16px 8px;
-		overflow-x: auto;
+		margin-bottom: var(--sp-3);
+		padding-bottom: var(--sp-2);
 		scroll-snap-type: x proximity;
-		scrollbar-width: none;
-	}
-	.cats::-webkit-scrollbar {
-		display: none;
 	}
 	.cat {
 		flex: none;
@@ -67,7 +62,7 @@
 		width: 104px;
 		padding: 12px 8px 10px;
 		border: 1.5px solid var(--line);
-		border-radius: 18px;
+		border-radius: var(--radius-sm);
 		background: var(--card);
 		color: var(--ink);
 		font: inherit;
@@ -112,7 +107,7 @@
 		position: absolute;
 		top: 8px;
 		right: 8px;
-		font-size: 0.7rem;
+		font-size: var(--fs-xs);
 		font-weight: 700;
 		color: var(--muted);
 	}

@@ -20,7 +20,7 @@
 	import { install } from '$lib/install.svelte';
 	import InstallCard from '$lib/components/InstallCard.svelte';
 	import { onboarding } from '$lib/onboarding.svelte';
-	import { avoid, favorites, gardens, likes, pantry, plan, settings, ui } from '$lib/state.svelte';
+	import { avoid, favorites, gardens, pantry, plan, settings, ui } from '$lib/state.svelte';
 	import type { GrowGuide } from '$lib/types';
 	import { activeSales, recipesOnSale } from '$lib/pricing';
 
@@ -42,7 +42,9 @@
 	const haveMatches = $derived(
 		haveIds.length
 			? rankByLeftovers(
-					catalog.recipes.filter(avoidFilter(avoid.current, catalog.ingredientsById)),
+					ui.loaded
+						? catalog.recipes.filter(avoidFilter(avoid.current, catalog.ingredientsById))
+						: catalog.recipes,
 					haveIds,
 					catalog.ingredientsById
 				).slice(0, 4)
@@ -66,15 +68,6 @@
 	const slovakCount = $derived(catalog.recipes.filter((r) => r.cuisine === 'slovenska').length);
 
 	const heroRecipe = $derived(catalog.recipesById.get('zelene-kari-tofu') ?? catalog.recipes[0]);
-	const featured = $derived(
-		[...catalog.recipes]
-			.sort(
-				(a, b) =>
-					(likes.counts[b.id] ?? 0) - (likes.counts[a.id] ?? 0) ||
-					b.perServing.protein / b.costPerServing - a.perServing.protein / a.costPerServing
-			)
-			.slice(0, 8)
-	);
 	const month = new Date().getMonth() + 1;
 
 	/** Reminder for people with a saved garden; calendars load only then. */
@@ -108,6 +101,8 @@
 	});
 	/** Recipes whose main ingredients are on sale in the user's shops right now. */
 	const onSale = $derived.by(() => {
+		// Before the settings load, the user's shops aren't known yet: no list rather than a wrong one.
+		if (!ui.loaded) return [];
 		const mine = settings.current.myStores;
 		const deals = activeSales(catalog.prices, new Date()).filter(
 			(d) => !mine.length || mine.includes(d.entry.storeId)
@@ -126,11 +121,6 @@
 			.map((x) => x.r)
 	);
 	const basics = $derived(catalog.wiki.filter((w) => w.section === 'zaklady').slice(0, 6));
-	const cuisineCounts = $derived(
-		new Map(
-			catalog.cuisines.map((c) => [c.id, catalog.recipes.filter((r) => r.cuisine === c.id).length])
-		)
-	);
 
 	/** The four things Receptio does, each with its main door and a couple of side doors. */
 	const PILLARS: {
@@ -190,24 +180,6 @@
 		}
 	];
 
-	const STEPS: { icon: IconName; title: string; text: string }[] = [
-		{
-			icon: 'heart',
-			title: 'Vyber si recepty',
-			text: 'Tlačidlom + ich pridáš do plánu na týždeň.'
-		},
-		{
-			icon: 'basket',
-			title: 'Nakúp podľa zoznamu',
-			text: 'Suroviny sa spočítajú, vynechá sa, čo máš doma, a uvidíš, kde je to najlacnejšie.'
-		},
-		{
-			icon: 'chef',
-			title: 'Var krok za krokom',
-			text: 'Režim varenia s časovačmi, veľkým písmom a ovládaním hlasom.'
-		}
-	];
-
 	const VALUES: { icon: IconName; title: string; text: string }[] = [
 		{
 			icon: 'shield',
@@ -264,12 +236,13 @@
 				<input id="home-q" bind:value={query} placeholder="cícer, kari, raňajky…" />
 				<button class="btn leaf">Hľadať</button>
 			</form>
-			<nav class="quick-start" aria-label="Rýchly štart">
-				<a href="/recepty?cas=20"><Icon name="clock" size={16} /> Do 20 minút</a>
-				<a href="#co-mam-doma"><Icon name="jar" size={16} /> Z toho, čo mám</a>
-				<a href="/plan?rozpocet=20#navrh"><Icon name="euro" size={16} /> Týždeň do 20 €</a>
-				<a href="/recepty?chut=sladke"><Icon name="cake" size={16} /> Niečo sladké</a>
-				<a href="/plan#navrh"><Icon name="calendar" size={16} /> Navrhni mi týždeň</a>
+			<nav class="chips quick-start" aria-label="Rýchly štart">
+				<a class="chip" href="/recepty?cas=20"><Icon name="clock" size={16} /> Do 20 minút</a>
+				<a class="chip" href="#co-mam-doma"><Icon name="jar" size={16} /> Z toho, čo mám</a>
+				<a class="chip" href="/plan?rozpocet=20#navrh"
+					><Icon name="calendar" size={16} /> Týždeň do 20 €</a
+				>
+				<a class="chip" href="/recepty?chut=sladke"><Icon name="cake" size={16} /> Niečo sladké</a>
 			</nav>
 			<div class="stats">
 				<span
@@ -279,10 +252,10 @@
 				<span><strong>{catalog.ingredients.length}</strong> surovín</span>
 			</div>
 			<p class="hero-links">
-				<button class="linkish" onclick={() => (onboarding.open = true)}
-					><Icon name="info" size={16} /> Ako to funguje</button
+				<button class="btn-link" onclick={() => (onboarding.open = true)}
+					><Icon name="play" size={16} /> Ako to funguje</button
 				>
-				<a href="/o-projekte"><Icon name="heart" size={16} /> Prečo Receptio vzniklo</a>
+				<a href="/o-projekte"><Icon name="sprout" size={16} /> Prečo Receptio vzniklo</a>
 			</p>
 		</div>
 		<div class="hero-art plate-host" aria-hidden="true">
@@ -342,7 +315,7 @@
 {#if inPlan || inPantry || favCount}
 	<section class="wrap continue" aria-label="Pokračuj">
 		{#if inPlan}
-			<a class="card cont" href="/plan" style:--tone="var(--sky)">
+			<a class="card cont accent-edge" href="/plan" style:--accent="var(--sky)">
 				<Icon name="calendar" size={22} />
 				<span
 					><strong>{inPlan} {pluralRecipes(inPlan)} v pláne</strong><small
@@ -352,15 +325,15 @@
 			</a>
 		{/if}
 		{#if inPantry}
-			<a class="card cont" href="/recepty?sort=spajza" style:--tone="var(--turmeric)">
+			<a class="card cont accent-edge" href="/recepty?sort=spajza" style:--accent="var(--turmeric)">
 				<Icon name="jar" size={22} />
 				<span><strong>Čo uvarím zo špajze</strong><small>{inPantry} surovín doma</small></span>
 			</a>
 		{/if}
 		{#if favCount}
-			<a class="card cont" href="/moje" style:--tone="var(--tomato)">
-				<Icon name="heart" size={22} />
-				<span><strong>Obľúbené</strong><small>{favCount} {pluralRecipes(favCount)}</small></span>
+			<a class="card cont accent-edge" href="/moje" style:--accent="var(--plum)">
+				<Icon name="bookmark" size={22} />
+				<span><strong>Uložené</strong><small>{favCount} {pluralRecipes(favCount)}</small></span>
 			</a>
 		{/if}
 	</section>
@@ -403,7 +376,7 @@
 				>Viac receptov a čo ešte treba <Icon name="arrow-right" size={16} /></a
 			>
 		{:else}
-			<p class="muted">Z tohto zatiaľ nemáme recept. Skús pridať ešte niečo.</p>
+			<p class="muted">Z tohto tu zatiaľ recept nie je. Skús pridať ešte niečo.</p>
 		{/if}
 	{/if}
 </section>
@@ -438,31 +411,9 @@
 	</div>
 </section>
 
-<section class="wrap block">
-	<div class="how card">
-		<div class="how-copy">
-			<p class="eyebrow">Ako to funguje</p>
-			<h2>Od receptu po tanier v troch krokoch</h2>
-			<button class="btn ghost small" onclick={() => (onboarding.open = true)}>
-				<Icon name="play" size={16} /> Krátky sprievodca
-			</button>
-		</div>
-		<ol class="steps">
-			{#each STEPS as step, i (step.title)}
-				<li style:--i={i}>
-					<span class="s-num">{i + 1}</span>
-					<span class="s-icon"><Icon name={step.icon} size={24} /></span>
-					<strong>{step.title}</strong>
-					<p>{step.text}</p>
-				</li>
-			{/each}
-		</ol>
-	</div>
-</section>
-
 {#if gardenTasks.length}
 	<section class="wrap block">
-		<a class="card garden-note" href="/pestuj#moja-zahradka">
+		<a class="card garden-note accent-edge" href="/pestuj#moja-zahradka">
 			<Icon name="sprout" size={26} />
 			<span>
 				<strong>Záhradka {IN_MONTH[month - 1]}</strong>
@@ -529,20 +480,6 @@
 	</section>
 {/if}
 
-<section class="wrap block">
-	<div class="head">
-		<h2>Obľúbené a výhodné</h2>
-		<a class="btn ghost small" href="/recepty"
-			>Všetky recepty <Icon name="arrow-right" size={16} /></a
-		>
-	</div>
-	<div class="grid">
-		{#each featured as recipe, i (recipe.id)}
-			<RecipeCard {recipe} index={i} />
-		{/each}
-	</div>
-</section>
-
 <section class="wrap block roots">
 	<div class="roots-copy">
 		<p class="eyebrow">Od babky aj zo sveta</p>
@@ -565,21 +502,11 @@
 			{/each}
 		</div>
 	{/if}
-	<div class="head roots-head">
-		<h3>Kam dnes?</h3>
+	<p class="roots-more">
 		<a class="btn ghost small" href="/kuchyne"
-			>Všetky kuchyne <Icon name="arrow-right" size={16} /></a
+			>Všetkých {catalog.cuisines.length} kuchýň <Icon name="arrow-right" size={16} /></a
 		>
-	</div>
-	<div class="cuisines">
-		{#each catalog.cuisines as c (c.id)}
-			<a class="cuisine-pill" href="/kuchyne/{c.id}" style:--c={c.color}>
-				<span class="swatch"></span>
-				{c.name}
-				<span class="n">{cuisineCounts.get(c.id)}</span>
-			</a>
-		{/each}
-	</div>
+	</p>
 </section>
 
 <section class="wrap block">
@@ -613,10 +540,7 @@
 				slovensky, pri ktorých by bolo jasné, koľko bielkovín či železa v nich je a koľko stojí
 				porcia. Weby s receptami boli plné reklám a vyskakovacích okien, čísla na nich chýbali.
 			</p>
-			<p>
-				Tak vznikol nástroj, ktorý to spája: recepty, plán, nákup a špajzu na jednom mieste. Dnes je
-				otvorený pre každého – zadarmo, bez reklám a bez sledovania.
-			</p>
+
 			<a class="btn ghost small" href="/o-projekte"
 				>Viac o projekte <Icon name="arrow-right" size={16} /></a
 			>
@@ -663,7 +587,7 @@
 		padding: 16px 18px;
 		color: var(--ink);
 		text-decoration: none;
-		border-left: 4px solid var(--leaf-2);
+		--accent: var(--leaf-2);
 	}
 	.garden-note strong {
 		display: block;
@@ -709,7 +633,8 @@
 	}
 	.stats {
 		display: flex;
-		gap: 18px;
+		flex-wrap: wrap;
+		gap: 4px 18px;
 		color: var(--muted);
 		font-size: 0.92rem;
 	}
@@ -786,20 +711,11 @@
 		font-weight: 650;
 	}
 	.hero-links a,
-	.linkish {
+	.hero-links .btn-link {
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		color: var(--leaf);
-	}
-	.linkish {
-		border: 0;
-		padding: 0;
-		background: none;
-		font: inherit;
-		cursor: pointer;
-		text-decoration: underline;
-		text-underline-offset: 3px;
+		min-height: var(--tap);
 	}
 
 	.install-wrap {
@@ -820,14 +736,13 @@
 		color: var(--ink);
 		line-height: 1.3;
 		text-decoration: none;
-		border-left: 4px solid var(--tone);
 		transition: transform 0.25s var(--ease-spring);
 	}
 	.cont:hover {
 		transform: translateY(-2px);
 	}
 	.cont :global(svg) {
-		color: var(--tone);
+		color: var(--accent);
 		flex: none;
 	}
 	.cont span {
@@ -848,21 +763,26 @@
 		gap: 8px;
 		padding: 20px;
 		animation-delay: calc(var(--i) * 80ms + 150ms);
-		border-top: 4px solid var(--tone);
+		/* A stripe along the top; a border would bend with the rounded corners. */
+		box-shadow:
+			inset 0 4px 0 var(--tone),
+			var(--shadow);
 		transition:
 			transform 0.3s var(--ease-spring),
 			box-shadow 0.3s;
 	}
 	.pillar:hover {
 		transform: translateY(-4px);
-		box-shadow: var(--shadow-lift);
+		box-shadow:
+			inset 0 4px 0 var(--tone),
+			var(--shadow-lift);
 	}
 	.p-icon {
 		display: grid;
 		place-items: center;
 		width: 52px;
 		height: 52px;
-		border-radius: 17px;
+		border-radius: var(--radius-sm);
 		background: color-mix(in srgb, var(--tone) 18%, transparent);
 		color: color-mix(in srgb, var(--tone) 80%, var(--ink));
 		transform: rotate(-4deg);
@@ -901,55 +821,6 @@
 		color: var(--ink-2);
 	}
 
-	.how {
-		display: grid;
-		gap: 20px;
-		padding: 24px;
-	}
-	.how-copy h2 {
-		margin: 4px 0 12px;
-	}
-	.steps {
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		display: grid;
-		gap: 14px;
-	}
-	.steps li {
-		position: relative;
-		display: grid;
-		grid-template-columns: auto 1fr;
-		grid-template-rows: auto auto;
-		column-gap: 14px;
-		align-items: center;
-		animation: rise 0.5s var(--ease-out) both;
-		animation-delay: calc(var(--i) * 120ms + 200ms);
-	}
-	.s-num {
-		display: none;
-	}
-	.s-icon {
-		grid-row: span 2;
-		display: grid;
-		place-items: center;
-		width: 52px;
-		height: 52px;
-		border-radius: 50%;
-		background: var(--leaf-soft);
-		color: var(--leaf);
-		border: 2px dashed color-mix(in srgb, var(--leaf-2) 60%, transparent);
-	}
-	.steps strong {
-		font-family: var(--font-display);
-		font-size: 1.08rem;
-	}
-	.steps p {
-		margin: 0;
-		color: var(--ink-2);
-		font-size: 0.92rem;
-	}
-
 	.story {
 		display: grid;
 		gap: 22px;
@@ -981,7 +852,7 @@
 		place-items: center;
 		width: 40px;
 		height: 40px;
-		border-radius: 13px;
+		border-radius: var(--radius-sm);
 		background: var(--leaf-soft);
 		color: var(--leaf);
 	}
@@ -1015,16 +886,20 @@
 	.season-note {
 		margin: -6px 0 14px;
 	}
+	/* Title left, its "all" link right, on one line even on a phone. */
 	.head {
 		display: flex;
-		align-items: baseline;
+		align-items: center;
 		justify-content: space-between;
 		gap: 12px;
-		flex-wrap: wrap;
 		margin-bottom: 18px;
 	}
 	.head h2 {
+		min-width: 0;
 		margin: 0;
+	}
+	.head .btn {
+		flex: none;
 	}
 	.grid {
 		display: grid;
@@ -1071,46 +946,8 @@
 		color: var(--ink-2);
 		font-size: 1.05rem;
 	}
-	.roots-head {
-		margin-top: 28px;
-	}
-	.roots-head h3 {
-		margin: 0;
-		font-size: 1.3rem;
-	}
-	.cuisines {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 10px;
-	}
-	.cuisine-pill {
-		display: inline-flex;
-		align-items: center;
-		gap: 8px;
-		padding: 8px 14px 8px 8px;
-		border-radius: 999px;
-		background: var(--card);
-		border: 1.5px solid var(--line);
-		color: var(--ink);
-		text-decoration: none;
-		font-weight: 600;
-		transition:
-			transform 0.25s var(--ease-spring),
-			border-color 0.2s;
-	}
-	.cuisine-pill:hover {
-		transform: translateY(-2px) rotate(-1deg);
-		border-color: var(--c);
-	}
-	.swatch {
-		width: 22px;
-		height: 22px;
-		border-radius: 45% 55% 50% 50%;
-		background: var(--c);
-	}
-	.n {
-		font-size: 0.78rem;
-		color: var(--muted);
+	.roots-more {
+		margin: 20px 0 0;
 	}
 
 	.basics {
@@ -1179,8 +1016,9 @@
 	}
 
 	@media (max-width: 859px) {
+		/* Decoration only: on a phone it shouldn't push everything a screen further down. */
 		.hero-art {
-			width: min(72%, 320px);
+			width: min(56%, 240px);
 		}
 	}
 	@media (max-width: 600px) {
@@ -1193,32 +1031,6 @@
 		}
 	}
 	@media (min-width: 860px) {
-		.how {
-			grid-template-columns: 0.8fr 2fr;
-			align-items: center;
-			padding: 32px;
-		}
-		.steps {
-			grid-template-columns: repeat(3, 1fr);
-			gap: 20px;
-		}
-		.steps li {
-			grid-template-columns: 1fr;
-			justify-items: start;
-			row-gap: 8px;
-		}
-		.s-icon {
-			grid-row: auto;
-		}
-		/* Dashed arrow between steps on wide screens. */
-		.steps li:not(:last-child)::after {
-			content: '';
-			position: absolute;
-			top: 26px;
-			left: 64px;
-			right: -8px;
-			border-top: 2px dashed var(--line);
-		}
 		.story {
 			grid-template-columns: 1fr 1.2fr;
 			align-items: center;
@@ -1236,29 +1048,9 @@
 		}
 	}
 	.quick-start {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-		margin: 14px 0 4px;
+		margin: 14px 0 18px;
 	}
-	.quick-start a {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		padding: 7px 14px;
-		border: 1.5px solid var(--line);
-		border-radius: 999px;
-		background: var(--card);
+	.quick-start .chip {
 		color: var(--ink);
-		font-size: 0.9rem;
-		font-weight: 650;
-		text-decoration: none;
-		transition:
-			transform 0.25s var(--ease-spring),
-			border-color 0.2s;
-	}
-	.quick-start a:hover {
-		transform: translateY(-2px);
-		border-color: var(--leaf-2);
 	}
 </style>

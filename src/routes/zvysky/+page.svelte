@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { avoidFilter } from '$lib/avoid';
-	import { avoid } from '$lib/state.svelte';
+	import { avoid, ui } from '$lib/state.svelte';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
@@ -17,6 +17,25 @@
 	let chosen = $state<string[]>([]);
 
 	const ingredientNames = catalog.ingredients.map(ingredientSearchText);
+	/** What is most often left over, to start with one tap instead of typing. */
+	const COMMON = [
+		'ryza-basmati',
+		'cestoviny',
+		'zemiaky',
+		'cuketa',
+		'mrkva',
+		'spenat',
+		'brokolica',
+		'paprika-cervena',
+		'cicer-sterilizovany',
+		'tofu-natural',
+		'chlieb'
+	];
+	const common = $derived(
+		COMMON.flatMap((id) => catalog.ingredientsById.get(id) ?? []).filter(
+			(i) => !chosen.includes(i.id)
+		)
+	);
 
 	const suggestions = $derived.by(() => {
 		if (!q.trim()) return [];
@@ -29,7 +48,9 @@
 	const matches = $derived(
 		chosen.length
 			? rankByLeftovers(
-					catalog.recipes.filter(avoidFilter(avoid.current, catalog.ingredientsById)),
+					ui.loaded
+						? catalog.recipes.filter(avoidFilter(avoid.current, catalog.ingredientsById))
+						: catalog.recipes,
 					chosen,
 					catalog.ingredientsById
 				).slice(0, SHOWN)
@@ -44,6 +65,14 @@
 		chosen = chosen.filter((c) => c !== id);
 	}
 	const nameOf = (id: string) => catalog.ingredientsById.get(id)?.name ?? id;
+	/** A long shopping list in a card hides the point: the first few, then how many more. */
+	function shortList(items: { name: string }[], max = 4): string {
+		const names = items.map((i) => i.name.split(' (')[0]);
+		const rest = names.length - max;
+		if (rest < 1) return names.join(', ');
+		const more = rest === 1 ? 'ďalšia' : rest < 5 ? 'ďalšie' : 'ďalších';
+		return `${names.slice(0, max).join(', ')} + ${rest} ${more}`;
+	}
 
 	// Špajza links here with what should be used up soon: /zvysky?s=spenat,tofu-natural.
 	onMount(() => {
@@ -56,7 +85,7 @@
 
 <Seo
 	title="Čo uvariť zo zvyškov"
-	description="Pol cukety, ryža zo včera, zvyšok cíceru? Zadaj, čo treba minúť, a nájdeme recept, ktorý to spotrebuje."
+	description="Pol cukety, ryža zo včera, zvyšok cíceru? Zadaj, čo treba minúť, a nájdeš recept, ktorý to spotrebuje."
 />
 
 <div class="wrap page">
@@ -76,7 +105,9 @@
 			<input
 				type="search"
 				bind:value={q}
-				placeholder={chosen.length >= MAX_CHOSEN ? 'Viac už netreba' : 'Cuketa, ryža, cícer…'}
+				placeholder={chosen.length >= MAX_CHOSEN
+					? `Najviac ${MAX_CHOSEN} surovín`
+					: 'Cuketa, ryža, cícer…'}
 				disabled={chosen.length >= MAX_CHOSEN}
 				onkeydown={(e) => {
 					if (e.key === 'Enter' && suggestions[0]) add(suggestions[0].id);
@@ -84,18 +115,31 @@
 			/>
 		</label>
 		{#if suggestions.length}
-			<ul class="suggest">
+			<ul class="chips suggest" aria-label="Návrhy">
 				{#each suggestions as i (i.id)}
 					<li>
-						<button onclick={() => add(i.id)} style:--c={i.color}>
-							<span class="dot"></span>{i.name}
+						<button class="chip" onclick={() => add(i.id)}>
+							<span class="swatch" style:--c={i.color}></span>{i.name}
 						</button>
 					</li>
 				{/each}
 			</ul>
+		{:else if !chosen.length && !q.trim()}
+			<div class="starters">
+				<p class="hint">Často ostáva:</p>
+				<ul class="chips suggest">
+					{#each common as i (i.id)}
+						<li>
+							<button class="chip" onclick={() => add(i.id)}>
+								<span class="swatch" style:--c={i.color}></span>{i.name.split(' (')[0]}
+							</button>
+						</li>
+					{/each}
+				</ul>
+			</div>
 		{/if}
 		{#if chosen.length}
-			<div class="chosen">
+			<div class="chips">
 				{#each chosen as id (id)}
 					<button class="chip on" onclick={() => remove(id)} aria-label="Odobrať {nameOf(id)}">
 						{nameOf(id)}
@@ -110,35 +154,29 @@
 		<section class="results">
 			{#if matches.length}
 				{#each matches as m, i (m.recipe.id)}
-					<div class="match">
-						<RecipeCard recipe={m.recipe} index={i} />
+					<RecipeCard recipe={m.recipe} index={i}>
 						<p class="why">
-							<strong>Použije:</strong>
-							{m.uses.map((u) => u.name).join(', ')}
-							{#if m.others.length}
-								<br /><span class="muted">Ešte treba: {m.others.map((o) => o.name).join(', ')}</span
-								>
-							{:else}
-								<br /><span class="ok">Nič ďalšie netreba.</span>
-							{/if}
+							<strong>Minie:</strong>
+							{shortList(m.uses, 5)}
 						</p>
-					</div>
+						{#if m.others.length}
+							<p class="why">
+								<strong>Ešte treba:</strong>
+								{shortList(m.others)}
+							</p>
+						{:else}
+							<p class="why ok">Nič ďalšie netreba.</p>
+						{/if}
+					</RecipeCard>
 				{/each}
 			{:else}
-				<p class="muted">Žiadny recept tieto suroviny nepoužíva.</p>
+				<p class="empty">Žiadny recept tieto suroviny nepoužíva. Skús inú.</p>
 			{/if}
 		</section>
 	{/if}
 </div>
 
 <style>
-	.page {
-		padding-top: 28px;
-	}
-	.lede {
-		color: var(--ink-2);
-		max-width: 44em;
-	}
 	.picker {
 		position: relative;
 		padding: 16px;
@@ -147,34 +185,12 @@
 		max-width: 640px;
 	}
 	.suggest {
-		list-style: none;
 		margin: 0;
 		padding: 0;
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
+		list-style: none;
 	}
-	.suggest button {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		padding: 6px 12px;
-		border-radius: 999px;
-		border: 1.5px solid var(--line);
-		background: var(--paper);
-		color: var(--ink);
-		font-weight: 600;
-	}
-	.dot {
-		width: 10px;
-		height: 10px;
-		border-radius: 50%;
-		background: var(--c);
-	}
-	.chosen {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
+	.starters .hint {
+		margin: 0 0 var(--sp-2);
 	}
 	.results {
 		display: grid;
@@ -182,14 +198,15 @@
 		gap: 18px;
 		margin-top: 24px;
 	}
-	.match {
-		display: grid;
-		gap: 8px;
-		align-content: start;
+	.results .empty {
+		grid-column: 1 / -1;
 	}
 	.why {
 		margin: 0;
-		font-size: 0.86rem;
+		line-height: 1.4;
+	}
+	.why + .why {
+		margin-top: 2px;
 	}
 	.ok {
 		color: var(--leaf);

@@ -71,14 +71,6 @@
 </div>
 
 <style>
-	.page {
-		padding-top: 28px;
-	}
-	.lede {
-		max-width: 40em;
-		color: var(--ink-2);
-		font-size: 1.08rem;
-	}
 	.region {
 		margin-top: 36px;
 	}
@@ -116,17 +108,21 @@
 	h3 {
 		margin: 2px 0 4px;
 	}
-	p {
+	.text p {
 		margin: 0 0 10px;
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 		color: var(--ink-2);
 	}
+	/* Plain ink keeps the count readable in both themes; the cuisine's colour stays on the arrow. */
 	.meta {
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		font-size: 0.82rem;
+		font-size: var(--fs-sm);
 		font-weight: 700;
-		color: color-mix(in srgb, var(--c) 45%, var(--ink));
+		color: var(--ink);
+	}
+	.meta :global(svg) {
+		color: color-mix(in srgb, var(--c) 70%, var(--ink));
 	}
 </style>

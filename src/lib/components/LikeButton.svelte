@@ -22,7 +22,8 @@
 		class:compact
 		class:liked
 		aria-pressed={liked}
-		aria-label={liked ? 'Zrušiť páči sa mi' : 'Páči sa mi'}
+		aria-label={liked ? 'Zrušiť „páči sa mi“' : 'Páči sa mi'}
+		title={count ? `Páči sa ${count} ${count === 1 ? 'človeku' : 'ľuďom'}` : 'Páči sa mi'}
 		{onclick}
 	>
 		<span class="heart">
@@ -42,28 +43,44 @@
 {/if}
 
 <style>
+	/* Same height and fill as an .icon-btn beside it; the count makes it a pill. */
 	.like {
+		position: relative;
 		display: inline-flex;
 		align-items: center;
+		justify-content: center;
 		gap: 0.35em;
+		height: 38px;
+		min-width: 38px;
 		border: 0;
 		border-radius: 999px;
-		padding: 0.45em 0.8em;
-		background: var(--card);
+		padding: 0 0.8em;
+		background: var(--paper-2);
 		color: var(--ink-2);
 		font-weight: 700;
-		font-size: 0.9rem;
-		box-shadow: inset 0 0 0 1.5px var(--line);
+		font-size: var(--fs-sm);
 		transition:
 			transform 0.25s var(--ease-spring),
 			color 0.2s;
 	}
 	.like.compact {
-		padding: 0.35em 0.6em;
-		font-size: 0.8rem;
+		height: 36px;
+		min-width: 36px;
+		padding: 0 0.6em;
 		background: color-mix(in srgb, var(--card) 88%, transparent);
 		backdrop-filter: blur(6px);
-		box-shadow: none;
+	}
+	/* The compact one stays small to look at; a finger still gets 44px. */
+	.like.compact::before {
+		content: '';
+		position: absolute;
+		inset: -4px;
+	}
+	@media (pointer: coarse) {
+		.like:not(.compact) {
+			height: var(--tap);
+			min-width: var(--tap);
+		}
 	}
 	.like:hover {
 		transform: scale(1.06);

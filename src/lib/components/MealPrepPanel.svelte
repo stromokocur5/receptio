@@ -67,9 +67,9 @@
 </script>
 
 <section class="card prep" aria-labelledby="meal-prep-title">
-	<h3 id="meal-prep-title"><Icon name="package" size={20} /> Meal prep</h3>
+	<h3 id="meal-prep-title"><Icon name="package" size={20} /> Navariť dopredu</h3>
 	{#if !recipe.keeps}
-		<p class="muted">Pri tomto recepte nevieme, ako dlho vydrží – navar radšej na 2 dni.</p>
+		<p class="muted">Pri tomto recepte nie je známe, ako dlho vydrží – navar radšej na 2 dni.</p>
 	{:else if !prep}
 		<p>Toto jedlo je najlepšie čerstvé – do krabičiek na viac dní sa nehodí.</p>
 	{:else}
@@ -83,7 +83,7 @@
 			</div>
 			<label class="choice">
 				<span>porcie na deň</span>
-				<select bind:value={perDay}>
+				<select class="input sm" bind:value={perDay}>
 					{#each [1, 2, 3, 4, 5, 6] as n (n)}<option value={n}>{n}</option>{/each}
 				</select>
 			</label>
@@ -147,7 +147,7 @@
 <style>
 	h4 {
 		margin: 0;
-		font-size: 0.95rem;
+		font-size: var(--fs-md);
 	}
 	.prep {
 		display: grid;
@@ -161,6 +161,9 @@
 		gap: 8px;
 		margin: 0;
 	}
+	.prep h3 > :global(svg) {
+		color: var(--leaf);
+	}
 	.choices {
 		display: flex;
 		flex-wrap: wrap;
@@ -173,14 +176,7 @@
 		align-items: center;
 		gap: 6px;
 	}
-	.choice select {
-		border: 1.5px solid var(--line);
-		border-radius: var(--radius-sm);
-		background: var(--paper);
-		color: var(--ink);
-		padding: 6px 10px;
-		font: inherit;
-	}
+
 	.summary {
 		margin: 0;
 	}
@@ -198,7 +194,7 @@
 		gap: 4px 12px;
 		padding: 8px 12px;
 		border-radius: var(--radius-sm);
-		background: var(--paper-2);
+		background: var(--sunk);
 	}
 	.days li.frozen {
 		background: var(--sky-soft);
@@ -216,9 +212,7 @@
 		margin: 0;
 		padding-left: 18px;
 	}
-	.small {
-		font-size: 0.88rem;
-	}
+
 	.btn {
 		justify-self: start;
 	}

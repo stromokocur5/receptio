@@ -97,7 +97,8 @@
 		position: fixed;
 		right: 12px;
 		left: 12px;
-		bottom: calc(92px + env(safe-area-inset-bottom));
+		/* Above the floating navigation (its height, plus a gap). */
+		bottom: calc(80px + var(--sp-3) + env(safe-area-inset-bottom));
 		z-index: 60;
 		max-width: 380px;
 		margin-left: auto;
@@ -110,14 +111,15 @@
 		align-items: center;
 		gap: 8px;
 		padding: 8px 8px 8px 12px;
-		border-radius: 16px;
+		border-radius: var(--radius-sm);
 		background: var(--ink);
 		color: var(--paper);
 		box-shadow: var(--shadow-lift);
 		animation: rise 0.35s var(--ease-out);
 	}
 	li.ringing {
-		background: var(--tomato);
+		background: var(--alert-bg);
+		color: var(--alert-ink);
 		animation: shake 0.6s ease-in-out infinite;
 	}
 	.label {
@@ -140,10 +142,10 @@
 	button {
 		display: grid;
 		place-items: center;
-		min-width: 34px;
-		height: 34px;
+		min-width: 38px;
+		height: 38px;
 		border: 0;
-		border-radius: 12px;
+		border-radius: var(--radius-xs);
 		background: color-mix(in srgb, var(--paper) 16%, transparent);
 		color: inherit;
 		font-weight: 700;
@@ -153,8 +155,14 @@
 		opacity: 0.35;
 	}
 	.ringing .stop {
-		background: var(--paper);
-		color: var(--tomato);
+		background: var(--alert-ink);
+		color: var(--alert-bg);
+	}
+	@media (pointer: coarse) {
+		button {
+			min-width: var(--tap);
+			height: var(--tap);
+		}
 	}
 	.bar {
 		position: absolute;

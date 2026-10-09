@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { avoidFilter } from '$lib/avoid';
 	import { useCatalog } from '$lib/catalog';
-	import { avoid, history, pantry } from '$lib/state.svelte';
+	import { avoid, history, pantry, ui } from '$lib/state.svelte';
 	import { TODAY_COUNT, pickToday, type TodayPick } from '$lib/today';
 	import Icon from './Icon.svelte';
 	import RecipeCard from './RecipeCard.svelte';
@@ -9,8 +9,8 @@
 	const catalog = useCatalog();
 	const RECENT_DAYS = 7;
 	const TIMES = [
-		{ value: 20, label: 'Do 20 min' },
-		{ value: 45, label: 'Do 45 min' },
+		{ value: 20, label: 'Do 20 minút' },
+		{ value: 45, label: 'Do 45 minút' },
 		{ value: 0, label: 'Mám čas' }
 	];
 
@@ -60,7 +60,7 @@
 		suggest(true);
 	}
 
-	const hasPantry = $derived(Object.keys(pantry.current).length > 0);
+	const hasPantry = $derived(ui.loaded && Object.keys(pantry.current).length > 0);
 </script>
 
 <section class="wrap" id="co-dnes">
@@ -91,11 +91,11 @@
 			{#if picks.length}
 				<div class="grid">
 					{#each picks as pick, i (pick.recipe.id)}
-						<RecipeCard recipe={pick.recipe} match={pick.match} index={i} />
+						<RecipeCard recipe={pick.recipe} match={hasPantry ? pick.match : undefined} index={i} />
 					{/each}
 				</div>
 				{#if !hasPantry}
-					<p class="muted small hint">
+					<p class="hint">
 						Keď si naklikáš <a href="/spajza">špajzu</a>, návrhy budú z toho, čo máš naozaj doma.
 					</p>
 				{/if}
@@ -109,7 +109,7 @@
 <style>
 	section {
 		margin-top: 20px;
-		scroll-margin-top: 84px;
+		scroll-margin-top: calc(var(--header-h) + var(--sp-5));
 	}
 	.today {
 		display: grid;
@@ -142,9 +142,7 @@
 		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
 		gap: 18px;
 	}
-	.hint {
-		margin: 12px 0 0;
-	}
+
 	@media (min-width: 800px) {
 		.today {
 			grid-template-columns: 1.2fr 1fr;

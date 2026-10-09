@@ -227,10 +227,9 @@
 
 	const matches = $derived(
 		new Map<string, PantryMatch>(
-			rankByPantry(catalog.recipes, pantry.current, catalog.ingredientsById).map((m) => [
-				m.recipe.id,
-				m
-			])
+			rankByPantry(catalog.recipes, ui.loaded ? pantry.current : {}, catalog.ingredientsById).map(
+				(m) => [m.recipe.id, m]
+			)
 		)
 	);
 	const hasPantry = $derived(ui.loaded && Object.keys(pantry.current).length > 0);
@@ -726,10 +725,10 @@
 		</div>
 	{/if}
 
-	<nav class="ideas" aria-label="Rýchly štart">
+	<nav class="ideas scroller" aria-label="Rýchly štart">
 		<span class="ideas-label">Na čo máš chuť?</span>
 		{#each ui.loaded ? presets.current : [] as preset (preset.name)}
-			<span class="idea preset" style:--tone="var(--plum)">
+			<span class="chip idea preset" style:--tone="var(--plum)">
 				<button class="preset-apply" onclick={() => applySearch(preset.search)}
 					><span class="idea-ico"><Icon name="star" size={16} /></span> {preset.name}</button
 				>
@@ -742,7 +741,7 @@
 		{/each}
 		{#each STARTERS as starter (starter.label)}
 			<button
-				class="idea"
+				class="chip idea"
 				style:--tone={starter.tone}
 				aria-pressed={search === starter.search}
 				onclick={() => applySearch(search === starter.search ? '' : starter.search)}
@@ -750,13 +749,13 @@
 				{starter.label}</button
 			>
 		{/each}
-		<a class="idea" href="/spajza" style:--tone="var(--turmeric)"
+		<a class="chip idea" href="/spajza" style:--tone="var(--turmeric)"
 			><span class="idea-ico"><Icon name="jar" size={16} /></span> Z toho, čo mám doma</a
 		>
-		<a class="idea" href="/zvysky" style:--tone="var(--leaf-2)"
+		<a class="chip idea" href="/zvysky" style:--tone="var(--leaf-2)"
 			><span class="idea-ico"><Icon name="history" size={16} /></span> Zo zvyškov</a
 		>
-		<button class="idea" style:--tone="var(--tomato)" onclick={surprise}
+		<button class="chip idea" style:--tone="var(--tomato)" onclick={surprise}
 			><span class="idea-ico"><Icon name="sparkle" size={16} /></span> Prekvap ma</button
 		>
 	</nav>
@@ -902,7 +901,7 @@
 						</div>
 						{#if gf}
 							<p class="hint">
-								Bezlepkové* = niektorá surovina (bujón, tortilly…) môže mať lepok, kontroluj
+								„Asi bezlepkové“ = niektorá surovina (bujón, tortilly…) môže mať lepok, skontroluj
 								etiketu.
 							</p>
 						{/if}
@@ -1136,7 +1135,7 @@
 					{/each}
 					{#if activeFilters.length > 1}
 						<li>
-							<button class="link-btn" onclick={reset}>Zrušiť všetko</button>
+							<button class="btn-link quiet" onclick={reset}>Zrušiť všetko</button>
 						</li>
 					{/if}
 					<li>
@@ -1151,6 +1150,7 @@
 								<label class="sr-only" for="preset-name">Názov uložených filtrov</label>
 								<!-- svelte-ignore a11y_autofocus -->
 								<input
+									class="input sm"
 									id="preset-name"
 									bind:value={presetName}
 									maxlength="40"
@@ -1158,12 +1158,12 @@
 									autofocus
 								/>
 								<button class="btn small" disabled={!presetName.trim()}>Uložiť</button>
-								<button type="button" class="link-btn" onclick={() => (savingPreset = false)}
+								<button type="button" class="btn-link quiet" onclick={() => (savingPreset = false)}
 									>Zrušiť</button
 								>
 							</form>
 						{:else}
-							<button class="link-btn" onclick={() => (savingPreset = true)}
+							<button class="btn-link quiet" onclick={() => (savingPreset = true)}
 								><Icon name="star" size={14} /> Uložiť tieto filtre</button
 							>
 						{/if}
@@ -1171,11 +1171,13 @@
 				</ul>
 			{/if}
 			{#if filtered.closest}
-				<p class="closest card">
+				<p class="notice warn closest">
 					<Icon name="jar" size={18} />
-					Len z toho, čo máš doma, sa nedá uvariť nič. Najbližšie sú tieto – chýba im najviac
-					{filtered.closest}
-					{filtered.closest < 5 ? 'veci' : 'vecí'}.
+					<span>
+						Len z toho, čo máš doma, sa nedá uvariť nič. Najbližšie sú tieto – chýba im najviac
+						{filtered.closest}
+						{filtered.closest < 5 ? 'veci' : 'vecí'}.
+					</span>
 				</p>
 			{/if}
 			{#if results.length}
@@ -1185,6 +1187,7 @@
 							{recipe}
 							index={i % PAGE_SIZE}
 							match={hasPantry ? matches.get(recipe.id) : undefined}
+							matchAlways={sort === 'spajza' || onlyPantry}
 						/>
 					{/each}
 				</div>
@@ -1215,20 +1218,20 @@
 					{#if nearest.kind === 'filters'}
 						<h3>S týmito filtrami nič</h3>
 						<p class="muted">
-							„{q.trim()}“ tu máme, len ho filtre schovali. Bez nich nájdeš napríklad:
+							„{q.trim()}“ tu je, len ho filtre schovali. Bez nich nájdeš napríklad:
 						</p>
 						<button class="btn" onclick={clearFilters}>Zrušiť filtre, hľadanie nechať</button>
 					{:else if nearest.kind === 'words' && nearest.list.length}
 						<h3>Všetko naraz v žiadnom recepte nie je</h3>
 						<p class="muted">Tieto majú z hľadaného najviac:</p>
 					{:else}
-						<h3>Nič také zatiaľ nemáme</h3>
+						<h3>Nič také tu zatiaľ nie je</h3>
 						<p class="muted">
 							{#if q.trim()}
 								Skús iné slovo alebo surovinu. Ak ti tu recept chýba,
-								<a href="/navrhni">napíš nám oň</a> a pridáme ho.
+								<a href="/navrhni">napíš mi oň</a> a pridám ho.
 							{:else}
-								Skús uvoľniť filtre, alebo si recept <a href="/navrhni">vyžiadaj</a> a pridáme ho.
+								Skús uvoľniť filtre, alebo si recept <a href="/navrhni">vyžiadaj</a> a pridám ho.
 							{/if}
 						</p>
 						<button class="btn" onclick={reset}>Zrušiť filtre</button>
@@ -1253,7 +1256,7 @@
 		gap: 6px;
 		margin-bottom: 14px;
 		padding: 12px;
-		border-radius: 16px;
+		border-radius: var(--radius-sm);
 		background: color-mix(in srgb, var(--tone) 9%, transparent);
 		animation: rise 0.3s var(--ease-out);
 	}
@@ -1277,16 +1280,8 @@
 		display: none;
 	}
 	.ideas {
-		display: flex;
 		align-items: center;
-		gap: 8px;
-		margin: 14px -16px 0;
-		padding: 2px 16px 6px;
-		overflow-x: auto;
-		scrollbar-width: none;
-	}
-	.ideas::-webkit-scrollbar {
-		display: none;
+		margin-top: 14px;
 	}
 	.ideas-label {
 		flex: none;
@@ -1295,27 +1290,16 @@
 		font-weight: 650;
 		color: var(--muted);
 	}
+	/* A .chip with a round coloured icon at its start. */
 	.idea {
 		flex: none;
-		display: inline-flex;
-		align-items: center;
 		gap: 8px;
-		padding: 5px 14px 5px 5px;
-		border: 1.5px solid var(--line);
-		border-radius: 999px;
-		background: var(--card);
+		padding: 4px 14px 4px 4px;
 		color: var(--ink);
-		font: inherit;
-		font-size: 0.88rem;
-		font-weight: 650;
-		text-decoration: none;
+		font-size: var(--fs-sm);
 		cursor: pointer;
-		transition:
-			transform 0.25s var(--ease-spring),
-			border-color 0.2s;
 	}
 	.idea:hover {
-		transform: translateY(-2px);
 		border-color: var(--tone);
 	}
 	.idea-ico {
@@ -1330,9 +1314,6 @@
 	}
 	.idea:hover .idea-ico {
 		transform: rotate(-12deg) scale(1.08);
-	}
-	.page {
-		padding-top: 28px;
 	}
 	.page-head h1 {
 		margin-bottom: 18px;
@@ -1427,9 +1408,9 @@
 		border-color: var(--ink);
 		color: var(--paper);
 	}
-	.idea[aria-pressed='true'] {
-		border-color: var(--tone);
-		background: color-mix(in srgb, var(--tone) 14%, var(--card));
+	.idea[aria-pressed='true'] .idea-ico {
+		background: color-mix(in srgb, var(--paper) 20%, transparent);
+		color: var(--paper);
 	}
 	.preset {
 		padding: 0;
@@ -1439,7 +1420,7 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 8px;
-		padding: 5px 4px 5px 5px;
+		padding: 4px;
 		border: 0;
 		background: none;
 		color: inherit;
@@ -1447,10 +1428,11 @@
 		cursor: pointer;
 	}
 	.preset-rm {
+		position: relative;
 		display: grid;
 		place-items: center;
-		width: 30px;
-		height: 30px;
+		width: 32px;
+		height: 32px;
 		margin-right: 2px;
 		border: 0;
 		border-radius: 50%;
@@ -1461,6 +1443,12 @@
 	.preset-rm:hover {
 		color: var(--ink);
 	}
+	/* A bigger hit area than it looks: the × is small but a finger isn't. */
+	.preset-rm::before {
+		content: '';
+		position: absolute;
+		inset: -6px;
+	}
 	.preset-form {
 		display: inline-flex;
 		align-items: center;
@@ -1468,27 +1456,14 @@
 	}
 	.preset-form input {
 		width: 170px;
-		padding: 6px 10px;
-		border: 1.5px solid var(--line);
-		border-radius: 999px;
-		background: var(--card);
-		color: var(--ink);
-		font: inherit;
-		font-size: 0.88rem;
 	}
-	.link-btn {
+	.active-filters .btn-link {
 		display: inline-flex;
 		align-items: center;
 		gap: 4px;
-		border: 0;
-		background: none;
-		padding: 4px 6px;
-		font: inherit;
-		font-size: 0.86rem;
-		font-weight: 650;
-		color: var(--ink-2);
-		text-decoration: underline;
-		cursor: pointer;
+		min-height: 36px;
+		padding: 0 6px;
+		font-size: var(--fs-sm);
 	}
 	fieldset {
 		border: 0;
@@ -1508,11 +1483,6 @@
 		font-weight: 600;
 		color: var(--leaf);
 	}
-	.chips {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
 	.filters .chip {
 		max-width: 100%;
 		white-space: normal;
@@ -1522,19 +1492,11 @@
 		opacity: 0.5;
 		cursor: not-allowed;
 	}
-	.hint {
-		font-size: 0.82rem;
-		color: var(--muted);
+	fieldset .hint {
 		margin: 0;
 	}
 	.closest {
-		display: flex;
-		align-items: flex-start;
-		gap: 8px;
-		padding: 12px 14px;
 		margin: 0 0 14px;
-		background: var(--turmeric-soft);
-		border-color: transparent;
 	}
 	.count-line {
 		margin: 0 0 12px;
@@ -1553,12 +1515,9 @@
 	.nearest {
 		margin-top: 18px;
 	}
-	.empty {
-		display: grid;
-		justify-items: center;
-		text-align: center;
-		padding: 40px 20px;
-		gap: 6px;
+	.empty h3 {
+		margin: 0;
+		color: var(--ink);
 	}
 	@media (min-width: 980px) {
 		.filter-toggle {
@@ -1570,9 +1529,9 @@
 		.filters {
 			display: flex;
 			position: sticky;
-			top: 84px;
+			top: calc(var(--header-h) + var(--sp-5));
 			/* Taller than the viewport: scroll inside, or the bottom filters are unreachable. */
-			max-height: calc(100vh - 100px);
+			max-height: calc(100dvh - var(--header-h) - var(--sp-6));
 			overflow-y: auto;
 			overscroll-behavior: contain;
 			scrollbar-width: thin;

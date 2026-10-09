@@ -58,3 +58,11 @@ test('excluding an ingredient hides recipes with any form of it', async ({ page 
 	await expect(page).toHaveURL(/bez=cicer/);
 	await expect(page.getByRole('link', { name: 'Krémový hummus' })).toBeHidden();
 });
+
+test('an ingredient that isn’t at home offers what to use instead', async ({ page }) => {
+	await visit(page, '/recepty/chana-masala');
+	const swap = page.getByRole('button', { name: /^Čím nahradiť:/ }).first();
+	await swap.click();
+	await expect(swap).toHaveAttribute('aria-expanded', 'true');
+	await expect(page.locator('#suroviny .swaps').first()).toBeVisible();
+});

@@ -10,8 +10,11 @@
 		<Icon name="wheat-off" size={14} stroke={2} /> Bezlepkové
 	</span>
 {:else if recipe.gluten === 'risk'}
-	<span class="badge turmeric" title="Niektorá surovina môže obsahovať lepok, kontroluj etiketu">
-		<Icon name="wheat-off" size={14} stroke={2} /> Bezlepkové*
+	<span
+		class="badge turmeric"
+		title="Niektorá surovina (bujón, tortilly…) môže obsahovať lepok – skontroluj etiketu"
+	>
+		<Icon name="wheat-off" size={14} stroke={2} /> Asi bezlepkové
 	</span>
 {:else if recipe.gfSwappable}
 	<span

@@ -58,6 +58,7 @@
 	} from '$lib/state.svelte';
 	import { breadcrumbJsonLd, recipeJsonLd } from '$lib/structured-data';
 	import { jarsFromYield } from '$lib/preserves';
+	import { formatMinutes } from '$lib/mealprep';
 	import { shortName } from '$lib/avoid';
 	import { recipeConflicts, wishesOf } from '$lib/household';
 	import { household, planFromHousehold, tableMembers, toggleWish } from '$lib/household.svelte';
@@ -308,6 +309,10 @@
 		}
 	}
 
+	/** The ingredient card sticks beside the steps only if it fits (header and margins: ~120px). */
+	let ingredientsHeight = $state(0);
+	let viewportHeight = $state(0);
+
 	/** Ingredients ticked off while preparing; only for this visit. */
 	let ready = $state<Record<number, boolean>>({});
 
@@ -378,10 +383,16 @@
 		return `${names.slice(0, max).join(', ')} a ${rest < 5 ? 'ďalšie' : 'ďalších'} ${rest}`;
 	}
 
+	function portions(n: number) {
+		return `${n} ${n === 1 ? 'porcia' : n < 5 ? 'porcie' : 'porcií'}`;
+	}
+
 	function daysLabel(n: number) {
 		return n === 1 ? '1 deň' : n < 5 ? `${n} dni` : `${n} dní`;
 	}
 </script>
+
+<svelte:window bind:innerHeight={viewportHeight} />
 
 <Seo
 	title="{base.title} – vegánsky recept"
@@ -434,8 +445,9 @@
 				<div>
 					<dt><Icon name="clock" size={16} /> Čas</dt>
 					<dd>
-						{recipe.time} min
-						{#if recipe.activeTime < recipe.time}<small>z toho {recipe.activeTime} min práce</small
+						{formatMinutes(recipe.time)}
+						{#if recipe.activeTime < recipe.time}<small
+								>z toho {formatMinutes(recipe.activeTime)} práce</small
 							>{/if}
 						{#if recipe.ahead}<small><a href="#vopred">+ čakanie vopred</a></small>{/if}
 					</dd>
@@ -578,25 +590,14 @@
 			{/if}
 
 			<div class="actions" data-noprint bind:this={actionsEl}>
-				<div class="main-actions">
-					<button class="btn leaf" onclick={plan}>
-						{#if justAdded}
-							<Icon name="check" size={18} draw /> Pridané
-						{:else}
-							<Icon name="calendar" size={18} /> Do plánu ({servings}
-							{servings === 1 ? 'porcia' : servings < 5 ? 'porcie' : 'porcií'})
-						{/if}
-					</button>
-					{#if canPlanForMe}
-						<button
-							class="btn ghost"
-							onclick={planForMe}
-							title="Do plánu len pre mňa – nakúpi sa so zoznamom, ale nepočíta sa do spoločných jedál"
-						>
-							<Icon name={justAddedForMe ? 'check' : 'plus'} size={18} />
-							{justAddedForMe ? 'Pridané pre teba' : 'Len pre mňa'}
-						</button>
+				<button class="btn leaf primary" onclick={plan}>
+					{#if justAdded}
+						<Icon name="check" size={18} draw /> Pridané
+					{:else}
+						<Icon name="calendar" size={18} /> Do plánu ({portions(servings)})
 					{/if}
+				</button>
+				<div class="secondary">
 					<button class="btn ghost" onclick={startCooking}>
 						<Icon name="pot" size={18} /> Variť
 					</button>
@@ -607,7 +608,17 @@
 							aria-controls="meal-prep"
 							onclick={() => (prepOpen = !prepOpen)}
 						>
-							<Icon name="package" size={18} /> Meal prep
+							<Icon name="package" size={18} /> Navariť dopredu
+						</button>
+					{/if}
+					{#if canPlanForMe}
+						<button
+							class="btn ghost"
+							onclick={planForMe}
+							title="Do plánu len pre mňa – nakúpi sa so zoznamom, ale nepočíta sa do spoločných jedál"
+						>
+							<Icon name={justAddedForMe ? 'check' : 'plus'} size={18} />
+							{justAddedForMe ? 'Pridané pre teba' : 'Len pre mňa'}
 						</button>
 					{/if}
 					{#if isPreserve}
@@ -628,22 +639,12 @@
 						class:on={isFavorite}
 						onclick={() => toggleFavorite(base.id)}
 						aria-pressed={isFavorite}
-						aria-label={isFavorite ? 'Odobrať z obľúbených' : 'Uložiť medzi obľúbené'}
-						title={isFavorite ? 'V obľúbených' : 'Uložiť medzi obľúbené'}
+						aria-label="Uložiť medzi obľúbené"
+						title={isFavorite ? 'Uložené – ťukni a odober' : 'Uložiť'}
 					>
 						<Icon name="bookmark" size={19} />
 					</button>
 					<LikeButton recipeId={recipe.id} />
-					{#if ui.loaded && journal.current.enabled && recipe.showNutrition}
-						<button
-							class="btn ghost small"
-							onclick={logEaten}
-							title="Zapíše jednu porciu do denníka jedla (Moje → Denník)"
-						>
-							<Icon name={justLogged ? 'check' : 'plus'} size={16} />
-							{justLogged ? 'Zapísané' : 'Zjedená porcia'}
-						</button>
-					{/if}
 					<button
 						class="icon-btn"
 						onclick={share}
@@ -660,7 +661,21 @@
 					>
 						<Icon name="printer" size={19} />
 					</button>
-					{#if inPlan}<a class="in-plan" href="/plan">V pláne: {inPlan} porc.</a>{/if}
+					{#if ui.loaded && journal.current.enabled && recipe.showNutrition}
+						<button
+							class="btn ghost small"
+							onclick={logEaten}
+							title="Zapíše jednu porciu do denníka jedla (Moje → Denník)"
+						>
+							<Icon name={justLogged ? 'check' : 'plus'} size={16} />
+							{justLogged ? 'Zapísané' : 'Zjedená porcia'}
+						</button>
+					{/if}
+					{#if inPlan}
+						<a class="in-plan" href="/plan"
+							><Icon name="calendar" size={16} /> V pláne ({portions(inPlan)})</a
+						>
+					{/if}
 				</div>
 			</div>
 			{#if prepOpen}
@@ -693,6 +708,9 @@
 					<Icon name="jar" size={18} />
 					{#if match.missing.length === 0 && match.short.length === 0}
 						{match.swaps.length ? 'Uvaríš to z toho, čo máš doma.' : 'Máš doma všetko potrebné.'}
+					{:else if match.have < match.needed / 2}
+						<!-- Most of it is missing: the list would be the whole recipe. -->
+						Doma máš {match.have} z {match.needed} surovín.
 					{:else}
 						Máš {match.have - match.short.length}/{match.needed}.
 						{#if match.missing.length}Chýba: {shortList(match.missing)}.{/if}
@@ -717,32 +735,35 @@
 	{#if table}
 		<section class="warnings" aria-label="Domácnosť">
 			{#if table.conflicts.length}
-				<div class="warning warn">
+				<div class="notice warn">
 					<Icon name="users" size={20} />
 					<span>
 						{#each table.conflicts as c, i (c.member.id)}{i ? ' · ' : ''}<strong
 								>{c.member.name}</strong
 							>: {c.reasons.join(', ')}{/each}.
 						{#if table.fits}
-							<button class="linkish" onclick={() => (variantName = table.fits!.name)}
+							<button class="btn-link" onclick={() => (variantName = table.fits!.name)}
 								>Verzia „{table.fits.name}“ sedí všetkým</button
 							>
 						{/if}
 					</span>
 				</div>
 			{:else}
-				<div class="warning info">
+				<div class="notice">
 					<Icon name="users" size={20} />
 					<span>Môže jesť každý z domácnosti ({table.names}).</span>
 				</div>
 			{/if}
 			{#if wishes && (wishes.names.length || household.me)}
-				<div class="warning info">
-					<Icon name="heart" size={20} />
+				<div class="notice">
+					<Icon name="sparkle" size={20} />
 					<span>
 						{#if wishes.names.length}Chce to: {wishes.names.join(', ')}.{/if}
 						{#if household.me}
-							<button class="linkish" aria-pressed={wishes.mine} onclick={() => toggleWish(base.id)}
+							<button
+								class="btn-link"
+								aria-pressed={wishes.mine}
+								onclick={() => toggleWish(base.id)}
 								>{wishes.mine
 									? 'Už to nechcem'
 									: 'Chcem to – nech to automatický plán zaradí'}</button
@@ -757,7 +778,7 @@
 	{#if recipe.warnings.length}
 		<section class="warnings" aria-label="Upozornenia">
 			{#each recipe.warnings as w, i (i)}
-				<div class="warning {w.level}">
+				<div class="notice {w.level === 'info' ? '' : w.level}">
 					<Icon name={w.level === 'info' ? 'info' : 'alert'} size={20} />
 					<span>{w.text}</span>
 				</div>
@@ -774,7 +795,12 @@
 	</nav>
 
 	<div class="main">
-		<section class="ingredients card" id="suroviny">
+		<section
+			class="ingredients card"
+			class:sticky={ingredientsHeight + 120 < viewportHeight}
+			id="suroviny"
+			bind:offsetHeight={ingredientsHeight}
+		>
 			<div class="ing-head">
 				<h2>Suroviny</h2>
 				<div class="stepper" role="group" aria-label="Počet porcií">
@@ -847,15 +873,16 @@
 							{#if home}<span class="home-dot" title="Máš doma"
 									><Icon name="check" size={14} stroke={2.6} /></span
 								>{/if}
-							{#if swaps.length}
+							{#if swaps.length && !home}
 								<button
 									data-noprint
 									class="swap-btn"
 									aria-expanded={openSwap === line.ingredientId}
+									aria-label="Čím nahradiť: {ingredient.name}"
 									onclick={() =>
 										(openSwap = openSwap === line.ingredientId ? null : line.ingredientId)}
 								>
-									Nemám
+									Náhrada
 								</button>
 							{/if}
 						</span>
@@ -889,7 +916,7 @@
 									<summary>
 										<Icon name={isIconName(tool.icon) ? tool.icon : 'spoon'} size={18} />
 										{tool.name}
-										<span class="no-tool" data-noprint>Nemám</span>
+										<span class="no-tool" data-noprint>Náhrada</span>
 									</summary>
 									<ul class="alts">
 										{#each tool.alternatives as alt, i (i)}<li>{alt}</li>{/each}
@@ -970,13 +997,14 @@
 			{/if}
 			<p class="muted tap-hint" data-noprint>
 				Ťukni na krok, keď ho máš hotový, alebo
-				<button class="linkish" onclick={startCooking}>zapni režim varenia</button> s časovačmi.
+				<button class="btn-link" onclick={startCooking}>zapni režim varenia</button> s časovačmi.
 				Neznáme slovo? <a href="/wiki/slovnik">Slovník receptov</a>.
 			</p>
 
 			<div class="my-note" data-noprint={!notes.current[base.id] || undefined}>
 				<label for="note-{base.id}"><Icon name="pencil" size={18} /> Moje poznámky</label>
 				<textarea
+					class="input"
 					id="note-{base.id}"
 					rows="3"
 					maxlength="2000"
@@ -1074,8 +1102,8 @@
 				<p class="b12-note">
 					<Icon name="info" size={18} />
 					<span>
-						Vápnik a B12 tu rátame z obohatených surovín: {fortified.names.join(', ')}. S domácimi
-						alebo neobohatenými odrátaj asi {fortified.calcium} mg vápnika a B12 nebude žiadna.
+						Vápnik a B12 sú tu z obohatených surovín: {fortified.names.join(', ')}. S domácimi alebo
+						neobohatenými odrátaj asi {fortified.calcium} mg vápnika a B12 nebude žiadna.
 					</span>
 				</p>
 			{/if}
@@ -1129,20 +1157,10 @@
 
 <style>
 	.page {
-		padding-top: 18px;
 		overflow-x: clip;
-	}
-	.back {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		color: var(--ink-2);
-		text-decoration: none;
-		font-weight: 600;
-		margin-bottom: 8px;
-	}
-	.back:hover {
-		color: var(--ink);
+		/* The phone's quick bar floats above the navigation; the page ends above both. */
+		--quick-bar-h: 64px;
+		--jump-h: 48px;
 	}
 	.crumbs {
 		display: flex;
@@ -1300,46 +1318,57 @@
 		animation: rise 0.3s var(--ease-out);
 	}
 	.ahead {
-		scroll-margin-top: 90px;
+		scroll-margin-top: calc(var(--header-h) + var(--sp-5));
 		display: flex;
 		align-items: center;
 		gap: 8px;
 		margin: 14px 0 0;
 		padding: 8px 12px;
-		border-radius: 12px;
+		border-radius: var(--radius-sm);
 		background: var(--turmeric-soft);
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 	}
+	/* One filled primary, the other ways to use the recipe as quieter buttons, then small icons. */
 	.actions {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 10px 14px;
-		margin-top: 18px;
+		gap: var(--sp-2);
+		margin-top: var(--sp-5);
 	}
-	.main-actions,
+	.actions .btn {
+		justify-content: center;
+		min-height: var(--tap);
+	}
+	.secondary {
+		display: contents;
+	}
 	.side-actions {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px;
+		gap: var(--sp-2);
+		flex-basis: 100%;
+		margin-top: var(--sp-1);
 	}
 	@media (max-width: 599px) {
-		.main-actions {
-			width: 100%;
+		.primary {
+			flex: 1 1 100%;
 		}
-		.main-actions .btn {
-			flex: 1 1 auto;
-			justify-content: center;
-		}
-		.side-actions .icon-btn {
-			width: 44px;
-			height: 44px;
+		.secondary {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+			gap: var(--sp-2);
+			flex: 1 1 100%;
 		}
 	}
 	.in-plan {
-		font-size: 0.88rem;
-		font-weight: 600;
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		margin-left: var(--sp-1);
+		font-size: var(--fs-sm);
+		font-weight: 650;
 	}
 	.ing-link {
 		color: inherit;
@@ -1372,7 +1401,7 @@
 		gap: 6px;
 		padding: 5px 10px;
 		border: 1px solid var(--line);
-		border-radius: 10px;
+		border-radius: var(--radius-xs);
 		background: var(--paper-2);
 		color: var(--ink);
 		font-size: 0.88rem;
@@ -1417,15 +1446,26 @@
 		gap: 6px;
 		align-self: center;
 	}
+	/* "What can I use instead?" – only on what isn't at home. */
 	.swap-btn {
-		padding: 0 7px;
-		border: 1px solid var(--line);
+		position: relative;
+		min-height: 30px;
+		padding: 2px 10px;
+		border: 1.5px solid var(--line);
 		border-radius: 999px;
-		background: transparent;
-		color: var(--muted);
-		font-size: 0.72rem;
-		font-weight: 650;
-		vertical-align: middle;
+		background: var(--card);
+		color: var(--ink-2);
+		font-size: var(--fs-xs);
+		font-weight: 700;
+		white-space: nowrap;
+	}
+	.swap-btn::before {
+		content: '';
+		position: absolute;
+		inset: -7px -2px;
+	}
+	.swap-btn:hover {
+		border-color: var(--ink-2);
 	}
 	.swap-btn[aria-expanded='true'] {
 		background: var(--turmeric-soft);
@@ -1436,7 +1476,7 @@
 		grid-column: 1 / -1;
 		margin: 2px 0 4px;
 		padding: 8px 12px 8px 26px;
-		border-radius: 10px;
+		border-radius: var(--radius-xs);
 		background: var(--turmeric-soft);
 		list-style: disc;
 		font-size: 0.86rem;
@@ -1478,8 +1518,8 @@
 		font-weight: 650;
 	}
 	.fav.on {
-		background: var(--turmeric-soft);
-		color: color-mix(in srgb, var(--turmeric) 60%, var(--ink));
+		background: var(--leaf-soft);
+		color: var(--leaf);
 	}
 	.fav.on :global(path) {
 		fill: currentColor;
@@ -1491,16 +1531,6 @@
 		margin: 12px 0 0;
 		font-size: 0.9rem;
 		color: var(--ink-2);
-	}
-	.linkish {
-		border: 0;
-		padding: 0;
-		background: none;
-		color: var(--leaf);
-		font: inherit;
-		font-weight: 650;
-		text-decoration: underline;
-		cursor: pointer;
 	}
 	.fb-wrap {
 		margin-top: 18px;
@@ -1519,17 +1549,6 @@
 	}
 	.my-note textarea {
 		width: 100%;
-		resize: vertical;
-		border: 1.5px solid var(--line);
-		border-radius: var(--radius-sm);
-		background: var(--card);
-		color: var(--ink);
-		padding: 10px 12px;
-		font: inherit;
-	}
-	.my-note textarea:focus {
-		outline: none;
-		border-color: var(--leaf-2);
 	}
 	.pantry-line {
 		display: flex;
@@ -1545,28 +1564,8 @@
 		gap: 8px;
 		margin: 28px 0 0;
 	}
-	.warning {
-		display: flex;
-		gap: 10px;
-		align-items: flex-start;
-		padding: 12px 16px;
-		border-radius: var(--radius-sm);
-		font-size: 0.95rem;
-	}
-	.warning.danger {
-		background: var(--tomato-soft);
-		color: color-mix(in srgb, var(--tomato) 70%, var(--ink));
-	}
-	.warning.warn {
-		background: var(--turmeric-soft);
-		color: color-mix(in srgb, var(--turmeric) 45%, var(--ink));
-	}
-	.warning.info {
-		background: var(--sky-soft);
-		color: color-mix(in srgb, var(--sky) 60%, var(--ink));
-	}
-	.warning :global(.icon) {
-		margin-top: 2px;
+	.warnings .notice {
+		margin: 0;
 	}
 
 	.main {
@@ -1592,10 +1591,6 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-	}
-	.stepper .icon-btn {
-		width: 32px;
-		height: 32px;
 	}
 	.stepper .icon-btn:disabled {
 		opacity: 0.4;
@@ -1676,15 +1671,17 @@
 		opacity: 1;
 	}
 
-	/* Section tabs and quick buttons exist for phones, where the page is long. */
+	/* Section links and quick buttons exist for phones, where the page is long. They jump within
+	   the page, so they look like links with a marker under the current part, not like tabs. */
 	.jump-bar {
 		position: sticky;
-		top: 64px;
+		top: var(--header-h);
 		z-index: 6;
 		display: flex;
 		gap: 4px;
-		margin: 16px -16px 0;
-		padding: 6px 16px;
+		min-height: var(--jump-h);
+		margin: 16px calc(-1 * var(--gutter)) 0;
+		padding: 0 var(--gutter);
 		background: color-mix(in srgb, var(--paper) 90%, transparent);
 		backdrop-filter: blur(10px);
 		border-bottom: 1px solid transparent;
@@ -1695,37 +1692,40 @@
 	}
 	.jump-bar a {
 		flex: 1;
-		padding: 7px 10px;
-		border-radius: 999px;
-		text-align: center;
+		display: grid;
+		place-items: center;
 		color: var(--ink-2);
 		font-weight: 650;
-		font-size: 0.9rem;
-		text-decoration: none;
+		font-size: var(--fs-sm);
+		text-decoration: underline;
+		text-decoration-color: transparent;
+		text-decoration-thickness: 3px;
+		text-underline-offset: 8px;
 		transition:
-			background 0.2s,
-			color 0.2s;
+			color 0.2s,
+			text-decoration-color 0.2s;
 	}
 	.jump-bar a.active {
-		background: var(--ink);
-		color: var(--paper);
+		color: var(--ink);
+		text-decoration-color: var(--leaf);
 	}
 	#suroviny,
 	#postup,
 	#ziviny {
-		scroll-margin-top: 120px;
+		scroll-margin-top: calc(var(--header-h) + var(--jump-h) + var(--sp-2));
 	}
 	.quick-bar {
 		position: fixed;
-		left: 16px;
-		right: 16px;
-		bottom: calc(92px + env(safe-area-inset-bottom));
+		left: var(--gutter);
+		right: var(--gutter);
+		/* Above the floating navigation (its height, plus its own and this bar's gap). */
+		bottom: calc(80px + var(--sp-3) + env(safe-area-inset-bottom));
 		z-index: 45;
 		display: grid;
 		grid-template-columns: 1fr 1.4fr;
 		gap: 8px;
 		padding: 8px;
-		border-radius: 20px;
+		border-radius: var(--radius);
 		background: color-mix(in srgb, var(--card) 92%, transparent);
 		backdrop-filter: blur(12px);
 		border: 1px solid var(--line);
@@ -1747,7 +1747,7 @@
 	}
 	@media (max-width: 899px) {
 		.page {
-			padding-bottom: 80px;
+			padding-bottom: var(--quick-bar-h);
 		}
 	}
 	@media (min-width: 900px) {
@@ -1769,7 +1769,7 @@
 		font-weight: 700;
 		vertical-align: middle;
 		padding: 1px 6px;
-		border-radius: 6px;
+		border-radius: var(--radius-xs);
 		margin-left: 4px;
 	}
 	.gluten.contains {
@@ -1832,7 +1832,7 @@
 		align-items: center;
 		gap: 8px;
 		padding: 6px 8px;
-		border-radius: 10px;
+		border-radius: var(--radius-xs);
 		cursor: pointer;
 		list-style: none;
 		font-weight: 600;
@@ -1845,12 +1845,12 @@
 	}
 	.no-tool {
 		margin-left: auto;
-		font-size: 0.75rem;
-		font-weight: 650;
-		color: var(--muted);
-		border: 1px solid var(--line);
+		padding: 2px 10px;
+		border: 1.5px solid var(--line);
 		border-radius: 999px;
-		padding: 1px 8px;
+		font-size: var(--fs-xs);
+		font-weight: 700;
+		color: var(--ink-2);
 	}
 	details[open] .no-tool {
 		background: var(--turmeric-soft);
@@ -1996,7 +1996,7 @@
 		color: var(--muted);
 	}
 	.howto {
-		scroll-margin-top: 90px;
+		scroll-margin-top: calc(var(--header-h) + var(--sp-5));
 	}
 	.tap-hint {
 		font-size: 0.82rem;
@@ -2029,7 +2029,7 @@
 		align-items: center;
 		gap: 6px;
 		padding: 8px 12px;
-		border-radius: 12px;
+		border-radius: var(--radius-sm);
 		background: var(--leaf-soft);
 		color: var(--leaf);
 		font-weight: 600;
@@ -2142,14 +2142,11 @@
 			grid-template-columns: minmax(320px, 0.85fr) 1.15fr;
 			gap: 40px;
 		}
-		.ingredients {
+		/* Sticks beside the steps only when the whole list fits on screen; a long one scrolls
+		   with the page, so nothing is cut off inside a box. */
+		.ingredients.sticky {
 			position: sticky;
-			top: 84px;
-			/* A long list scrolls inside, or its end is unreachable while it sticks. */
-			max-height: calc(100vh - 100px);
-			overflow-y: auto;
-			overscroll-behavior: contain;
-			scrollbar-width: thin;
+			top: calc(var(--header-h) + var(--sp-5));
 		}
 	}
 </style>

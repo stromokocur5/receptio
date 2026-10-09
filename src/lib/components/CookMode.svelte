@@ -15,7 +15,8 @@
 		type CookUndo,
 		pantry,
 		rateLastCooked,
-		type Rating
+		type Rating,
+		ui
 	} from '$lib/state.svelte';
 	import { startTimer } from '$lib/timers.svelte';
 	import {
@@ -78,7 +79,7 @@
 	const stepText = $derived(done ? '' : scaleStep(steps[index], factor));
 	const segments = $derived(done ? [] : splitStep(stepText));
 	const needed = $derived(done ? [] : stepLines(steps[index], lines, catalog.ingredientsById));
-	const hasPantry = $derived(Object.keys(pantry.current).length > 0);
+	const hasPantry = $derived(ui.loaded && Object.keys(pantry.current).length > 0);
 	const guideTitles = $derived(
 		new Map([...catalog.wiki, ...guides].map((g) => [g.slug, g.title] as const))
 	);
@@ -280,14 +281,12 @@
 		void acquire();
 		document.addEventListener('visibilitychange', onvisible);
 
-		const overflow = document.body.style.overflow;
-		document.body.style.overflow = 'hidden';
+		// The page under it stays still through the global html:has(dialog:modal) rule.
 		return () => {
 			listener?.stop();
 			if (speechSupported()) speechSynthesis.cancel();
 			document.removeEventListener('visibilitychange', onvisible);
 			void lock?.release();
-			document.body.style.overflow = overflow;
 		};
 	});
 </script>
@@ -425,7 +424,7 @@
 									Čo zmeniť nabudúce? Zapíš si to do poznámok pod postupom receptu.
 								</p>
 							{/if}
-							<RecipeFeedback {recipeId} />
+							<RecipeFeedback {recipeId} taste={rated} />
 							{#if cooked.length}
 								<ul class="used">
 									{#each cooked as use (use.ingredient.id)}
@@ -573,20 +572,22 @@
 		gap: 4px;
 		padding: 0 16px;
 	}
+	/* A thin bar to look at, a 22px strip to tap: the padding is outside the painted background. */
 	.progress button {
 		flex: 1;
-		height: 6px;
+		height: 22px;
 		border: 0;
-		padding: 0;
-		border-radius: 3px;
-		background: var(--line);
-		transition: background 0.3s;
+		padding: 8px 0;
+		border-radius: 999px;
+		background-color: var(--line);
+		background-clip: content-box;
+		transition: background-color 0.3s;
 	}
 	.progress button.past {
-		background: var(--leaf-2);
+		background-color: var(--leaf-2);
 	}
 	.progress button.current {
-		background: var(--leaf);
+		background-color: var(--leaf);
 	}
 	.stage {
 		flex: 1;
@@ -627,7 +628,7 @@
 		padding: 0.05em 0.5em;
 		margin: 0 0.1em;
 		border: 0;
-		border-radius: 12px;
+		border-radius: var(--radius-sm);
 		background: var(--turmeric-soft);
 		color: inherit;
 		font: inherit;
@@ -670,6 +671,7 @@
 	}
 	.finish p {
 		display: flex;
+		flex-wrap: wrap;
 		align-items: center;
 		gap: 8px;
 		margin: 0;
@@ -741,7 +743,7 @@
 		gap: 6px;
 		padding: 8px 12px;
 		border: 0;
-		border-radius: 12px;
+		border-radius: var(--radius-sm);
 		background: var(--leaf-soft);
 		color: var(--leaf);
 		font: inherit;
@@ -777,7 +779,7 @@
 		gap: 10px;
 		padding: 8px 6px;
 		border-bottom: 1px dashed var(--line);
-		border-radius: 8px;
+		border-radius: var(--radius-xs);
 	}
 	.sheet > ul > li.now {
 		background: var(--leaf-soft);
