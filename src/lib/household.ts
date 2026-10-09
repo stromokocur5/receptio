@@ -1108,6 +1108,42 @@ export function withEvents(doc: HouseholdDoc, events: LogEvent[]): HouseholdDoc 
 	return { ...doc, log: newest(log, MAX_LOG, (e) => e.at) };
 }
 
+/**
+ * Others' news for a push, one line per person: "Jana: do plánu Dal, Chili · nakúpené 5 vecí".
+ * `title` names a recipe or an ingredient.
+ */
+export function describeNews(
+	events: LogEvent[],
+	names: Map<string, string>,
+	title: (id: string) => string | undefined
+): string {
+	const byWho = new Map<string | null, LogEvent[]>();
+	for (const e of [...events].sort((a, b) => a.at - b.at)) {
+		byWho.set(e.who, [...(byWho.get(e.who) ?? []), e]);
+	}
+	const items = (n: number) => (n === 1 ? 'vec' : n < 5 ? 'veci' : 'vecí');
+	const list = (refs: (string | undefined)[]) =>
+		[...new Set(refs.map((r) => (r && title(r)) ?? 'recept'))].join(', ');
+	return [...byWho]
+		.map(([who, list_]) => {
+			const of = (kind: LogKind) => list_.filter((e) => e.kind === kind);
+			const sum = (kind: LogKind) => of(kind).reduce((n, e) => n + (e.n ?? 0), 0);
+			const parts = [
+				of('plan-add').length && `do plánu ${list(of('plan-add').map((e) => e.ref))}`,
+				of('cooked').length && `uvarené ${list(of('cooked').map((e) => e.ref))}`,
+				of('plan-remove').length && `z plánu preč ${list(of('plan-remove').map((e) => e.ref))}`,
+				sum('bought') && `nakúpené ${sum('bought')} ${items(sum('bought'))}`,
+				sum('pantry') && `do špajze ${sum('pantry')} ${items(sum('pantry'))}`,
+				sum('expense') && `zaplatené ${sum('expense').toFixed(2).replace('.', ',')} €`,
+				of('needs').length && 'zmena v tom, čo niekto neje',
+				of('harvest').length && `úroda ${list(of('harvest').map((e) => e.ref))}`
+			].filter(Boolean);
+			return parts.length ? `${(who && names.get(who)) || 'Niekto'}: ${parts.join(' · ')}` : '';
+		})
+		.filter(Boolean)
+		.join('\n');
+}
+
 /** The log, newest first. */
 export const logOf = (doc: HouseholdDoc) =>
 	Object.entries(doc.log)

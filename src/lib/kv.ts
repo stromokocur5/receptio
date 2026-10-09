@@ -77,6 +77,19 @@ export interface ReminderTest {
 /** Set on the admin's devices: on a push, ask /api/zdravie whether the site is down. */
 export const ADMIN_ALERTS_KEY = 'admin-alerts';
 
+/**
+ * The household, for its news by push: the service worker reads what changed with this code
+ * and tells what others did since `seenAt` (the newest log entry this phone has shown).
+ */
+export const HOUSEHOLD_NEWS_KEY = 'household-news';
+export interface HouseholdNews {
+	code: string;
+	me: string | null;
+	seenAt: number;
+	/** News by push is on on this phone. */
+	on: boolean;
+}
+
 /** Weekly summary and morning overviews the page prepared (src/lib/digest.ts). */
 export const DIGEST_KEY = 'digest';
 /** Which digests were shown, so a late or repeated push doesn't show one twice. */

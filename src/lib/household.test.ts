@@ -4,6 +4,7 @@ import {
 	balances,
 	changeEvents,
 	collect,
+	describeNews,
 	householdBalances,
 	sumUpOldExpenses,
 	latestStamp,
@@ -572,5 +573,27 @@ describe('gardens grown together', () => {
 		]);
 		// A garden shared just now brings its old diary – that isn't news.
 		expect(changeEvents(empty, after, 'ema', 5)).toEqual([]);
+	});
+});
+
+describe('household news by push', () => {
+	it('tells each person’s changes in one line', () => {
+		const names = new Map([
+			['jana', 'Jana'],
+			['tomas', 'Tomáš']
+		]);
+		const titles: Record<string, string> = { dal: 'Dal', chili: 'Chili' };
+		const text = describeNews(
+			[
+				{ at: 1, who: 'jana', kind: 'plan-add', ref: 'dal' },
+				{ at: 2, who: 'jana', kind: 'plan-add', ref: 'chili' },
+				{ at: 3, who: 'tomas', kind: 'bought', n: 3 },
+				{ at: 4, who: 'tomas', kind: 'bought', n: 2 },
+				{ at: 5, who: 'tomas', kind: 'expense', n: 12.5 }
+			],
+			names,
+			(id) => titles[id]
+		);
+		expect(text).toBe('Jana: do plánu Dal, Chili\nTomáš: nakúpené 5 vecí · zaplatené 12,50 €');
 	});
 });

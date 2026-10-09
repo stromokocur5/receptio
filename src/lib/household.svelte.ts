@@ -75,6 +75,8 @@ import {
 	type SyncKeys
 } from './sync.svelte';
 import { joinRoom, type Room } from './room';
+import { HOUSEHOLD_NEWS_KEY, kvSet, type HouseholdNews } from './kv';
+import { pushTarget, releasePush } from './reminders';
 import { onSyncStart, onSyncStop, tab } from './tabs.svelte';
 
 /**
@@ -143,6 +145,8 @@ interface Saved {
 	phone: string;
 	/** Last successful sync, for the other tabs to show. */
 	syncedAt: number | null;
+	/** News by push is on on this phone. */
+	news: boolean;
 }
 
 export const household = $state<{
@@ -155,6 +159,8 @@ export const household = $state<{
 	/** This device plans on its own for now. */
 	solo: boolean;
 	soloAway: boolean;
+	/** Others' news comes by push while the app is closed. */
+	news: boolean;
 }>({
 	status: 'off',
 	code: null,
@@ -162,7 +168,8 @@ export const household = $state<{
 	doc: null,
 	syncedAt: null,
 	solo: false,
-	soloAway: false
+	soloAway: false,
+	news: false
 });
 
 let keys: SyncKeys | null = null;
@@ -373,10 +380,57 @@ function save() {
 			personal,
 			signer,
 			phone,
-			syncedAt: household.syncedAt
+			syncedAt: household.syncedAt,
+			news: household.news
 		} satisfies Saved)
 	);
 }
+
+/** What the service worker needs to tell this phone others' news (kv.ts). */
+function shareWithWorker() {
+	if (!household.code) {
+		void kvSet(HOUSEHOLD_NEWS_KEY, null).catch(() => {});
+		return;
+	}
+	const log = household.doc ? Object.values(household.doc.log) : [];
+	const news: HouseholdNews = {
+		code: household.code,
+		me: household.me,
+		// What's on the screen now has been seen.
+		seenAt: Math.max(0, ...log.map((e) => e.at)),
+		on: household.news
+	};
+	void kvSet(HOUSEHOLD_NEWS_KEY, news).catch(() => {});
+}
+
+/** Others' news by push while the app is closed, on this phone; throws a message to show. */
+export async function setHouseholdNews(on: boolean) {
+	if (!household.code) return;
+	const k = await deriveKeys(household.code);
+	const url = `/api/live/${k.id}/push`;
+	if (on) {
+		const target = await pushTarget();
+		const res = await fetch(url, {
+			method: 'POST',
+			headers: { 'content-type': 'application/json' },
+			body: JSON.stringify({ token: k.token, phone, ...target })
+		});
+		if (!res.ok) throw new Error('Upozornenia sa teraz nepodarilo zapnúť, skús to o chvíľu.');
+	} else {
+		await fetch(url, {
+			method: 'DELETE',
+			headers: { 'content-type': 'application/json' },
+			body: JSON.stringify({ token: k.token, phone })
+		}).catch(() => {});
+	}
+	household.news = on;
+	save();
+	shareWithWorker();
+	if (!on) await releasePush().catch(() => {});
+}
+
+/** News since the last upload, for the room to push to the others. */
+let news = false;
 
 /**
  * `ifVersion`: write only over the copy this phone merged with; creating a new copy has none.
@@ -387,8 +441,11 @@ async function upload(k: SyncKeys, doc: HouseholdDoc | Forward, ifVersion?: numb
 		token: k.token,
 		data: await encrypt(k.key, JSON.stringify(doc)),
 		announce: true,
+		from: phone,
+		news,
 		...(ifVersion !== undefined && { ifVersion })
 	});
+	news = false;
 	const version = typeof saved.version === 'number' ? saved.version : undefined;
 	if (!('moved' in doc)) lastRemote = { id: k.id, doc, version };
 }
@@ -516,6 +573,7 @@ function commitLocal() {
 	];
 	pendingEvents = [];
 	cookedSinceSync.clear();
+	if (events.length) news = true;
 	const doc = withEvents(withLocalChanges(household.doc, base, view, stamp(), phone), events);
 	if (!same(doc, household.doc)) {
 		setDoc(doc);
@@ -548,6 +606,7 @@ async function syncOnce() {
 		household.status = 'live';
 		household.syncedAt = Date.now();
 		save();
+		if (document.visibilityState === 'visible') shareWithWorker();
 	} catch (err) {
 		const status = err instanceof Error && 'status' in err ? Number(err.status) : 0;
 		household.status = status === 404 || err instanceof Moved ? 'missing' : 'offline';
@@ -607,7 +666,8 @@ function openLive() {
 			else void sync();
 		},
 		// Anything saved while this phone wasn't listening.
-		() => void sync()
+		() => void sync(),
+		phone
 	);
 }
 
@@ -631,7 +691,16 @@ async function start(code: string) {
 	addEventListener('online', onOnline);
 	await sync();
 	openLive();
+	shareWithWorker();
+	// A changed link is a new room: this phone asks there for its news again.
+	if (household.news && keys?.id !== newsRoom) {
+		newsRoom = keys?.id ?? null;
+		void setHouseholdNews(true).catch(() => {});
+	}
 }
+
+/** The room this phone last asked for news in. */
+let newsRoom: string | null = null;
 
 function stop() {
 	clearTimeout(timer);
@@ -675,7 +744,8 @@ function parseSaved(text: string | null): Saved | null {
 				typeof raw.phone === 'string' && /^[a-z0-9]{1,16}$/.test(raw.phone)
 					? raw.phone
 					: newPhoneId(),
-			syncedAt: typeof raw.syncedAt === 'number' ? raw.syncedAt : null
+			syncedAt: typeof raw.syncedAt === 'number' ? raw.syncedAt : null,
+			news: raw.news === true
 		};
 	} catch {
 		return null;
@@ -702,7 +772,8 @@ function fromOtherTab(text: string | null) {
 			doc: null,
 			syncedAt: null,
 			solo: false,
-			soloAway: false
+			soloAway: false,
+			news: false
 		});
 		return;
 	}
@@ -712,6 +783,7 @@ function fromOtherTab(text: string | null) {
 	household.solo = saved.solo;
 	household.soloAway = saved.soloAway;
 	household.syncedAt = saved.syncedAt ?? household.syncedAt;
+	household.news = saved.news;
 	personal = saved.personal;
 	signer = saved.signer ?? signer;
 	phone = saved.phone;
@@ -779,6 +851,7 @@ export function initHousehold() {
 	household.solo = saved.solo;
 	household.soloAway = saved.soloAway;
 	household.syncedAt = saved.syncedAt;
+	household.news = saved.news;
 	personal = saved.personal;
 	signer = saved.signer;
 	phone = saved.phone;
@@ -974,6 +1047,7 @@ export async function leaveHousehold() {
 			// The others still see this person; they can remove them by hand.
 		}
 	}
+	if (household.news) await setHouseholdNews(false).catch(() => {});
 	stop();
 	// Joined before own data was kept apart: nothing was put aside, so the household's stays.
 	if (!household.solo && personal) putOnDevice(personal);
@@ -987,8 +1061,10 @@ export async function leaveHousehold() {
 		doc: null,
 		syncedAt: null,
 		solo: false,
-		soloAway: false
+		soloAway: false,
+		news: false
 	});
+	shareWithWorker();
 	try {
 		localStorage.removeItem(STORAGE_KEY);
 	} catch {
@@ -1104,6 +1180,7 @@ export function updateMember(
 	void putSigned(next);
 	// Allergies and what someone doesn't eat matter to whoever cooks: the log says it changed.
 	if (NEEDS.some((key) => key in change && !same(current[key], next[key]))) {
+		news = true;
 		updateDoc((doc) =>
 			withEvents(doc, [{ at: Date.now(), who: household.me, kind: 'needs', ref: id }])
 		);
@@ -1219,6 +1296,7 @@ export function addExpense(expense: Omit<Expense, 'date'> & { date?: string }) {
 		date,
 		...(!expense.to && shares.length && { for: shares })
 	};
+	if (!clean.to) news = true;
 	updateDoc((doc) =>
 		withEvents(
 			{ ...doc, expenses: { ...doc.expenses, [logId(at)]: [clean, at] } },

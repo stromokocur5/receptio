@@ -24,7 +24,9 @@ export interface Room {
 export function joinRoom(
 	id: string,
 	onVersion: (version: number) => void,
-	onOpen = () => {}
+	onOpen = () => {},
+	/** This household phone, so the room doesn't push it news while it's looking. */
+	phone?: string
 ): Room {
 	let socket: WebSocket | null = null;
 	let retryTimer: ReturnType<typeof setTimeout> | undefined;
@@ -36,7 +38,8 @@ export function joinRoom(
 		if (closed || socket || failures >= MAX_FAILURES || typeof WebSocket === 'undefined') return;
 		if (document.visibilityState !== 'visible') return;
 		const scheme = location.protocol === 'https:' ? 'wss' : 'ws';
-		const ws = new WebSocket(`${scheme}://${location.host}/api/live/${id}`);
+		const query = phone ? `?phone=${phone}` : '';
+		const ws = new WebSocket(`${scheme}://${location.host}/api/live/${id}${query}`);
 		let opened = false;
 		socket = ws;
 		ws.onopen = () => {

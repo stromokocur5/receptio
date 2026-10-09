@@ -20,7 +20,14 @@ export const syncPutSchema = z
 		/** Write only over this version (what the household phone merged with). */
 		ifVersion: z.number().int().min(0).optional(),
 		/** A household: tell its other phones at once. */
-		announce: z.boolean().optional()
+		announce: z.boolean().optional(),
+		/** Which of the household's phones saved (it isn't told its own news). */
+		from: z
+			.string()
+			.regex(/^[a-z0-9]{1,16}$/)
+			.optional(),
+		/** Something worth a push to the phones that aren't looking (a meal planned, a payment…). */
+		news: z.boolean().optional()
 	})
 	.strict();
 

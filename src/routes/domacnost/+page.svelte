@@ -35,15 +35,32 @@
 		members,
 		myMember,
 		renameHousehold,
+		setHouseholdNews,
 		startSolo,
 		stopSolo,
 		tableNeeds
 	} from '$lib/household.svelte';
 	import { localToday } from '$lib/journal';
+	import { remindersSupported } from '$lib/reminders';
 	import { ALLERGEN_LABELS } from '$lib/nutrition';
 	import { plan, ui } from '$lib/state.svelte';
 
 	const catalog = useCatalog();
+
+	const pushSupported = $derived(ui.loaded && remindersSupported());
+	let newsBusy = $state(false);
+	let newsError = $state('');
+	async function toggleNews(on: boolean) {
+		newsBusy = true;
+		newsError = '';
+		try {
+			await setHouseholdNews(on);
+		} catch (err) {
+			newsError = err instanceof Error ? err.message : 'Upozornenia sa nepodarilo zapnúť.';
+		} finally {
+			newsBusy = false;
+		}
+	}
 
 	let householdName = $state('');
 	let myName = $state('');
@@ -543,6 +560,26 @@
 		<section class="card box">
 			<h2><Icon name="clock" size={24} /> Čo sa deje</h2>
 			<HouseholdLog />
+			{#if pushSupported}
+				<label class="news">
+					<input
+						type="checkbox"
+						checked={household.news}
+						disabled={newsBusy}
+						onchange={(e) => toggleNews(e.currentTarget.checked)}
+					/>
+					<span>
+						Upozorniť ma, keď ostatní niečo pridajú do plánu, nakúpia alebo zaplatia – aj keď mám
+						Receptio zavreté. <span class="muted small"
+							>Najviac raz za 10 minút; čo sa zmenilo, si telefón prečíta sám, server text nevidí.</span
+						>
+					</span>
+				</label>
+				{#if newsError}<p class="msg" role="alert">
+						<Icon name="alert" size={18} />
+						{newsError}
+					</p>{/if}
+			{/if}
 		</section>
 
 		<section class="card box">
@@ -607,6 +644,16 @@
 </div>
 
 <style>
+	.news {
+		display: flex;
+		gap: 10px;
+		align-items: flex-start;
+		margin-top: 14px;
+	}
+	.news input {
+		margin-top: 4px;
+		accent-color: var(--leaf);
+	}
 	.page {
 		padding-top: 28px;
 	}

@@ -33,6 +33,13 @@
 			kept: `Kým domácnosť niekto používa. Domácnosť, ktorú ${syncYears} roky nikto neotvoril, sa zmaže sama. Kto odíde, zmizne zo zoznamu členov.`
 		},
 		{
+			what: 'Upozornenia z domácnosti',
+			detail:
+				'Len ak ich zapneš: push adresa tvojho prehliadača a jej kľúče, náhodné označenie tvojho telefónu v domácnosti a kedy ti prišlo posledné upozornenie. Uložené pri zašifrovanej domácnosti, nie pri tebe.',
+			why: 'Aby ti server dal vedieť, že niekto z domácnosti niečo zmenil, keď máš Receptio zavreté. Upozornenie nesie len slovo „domácnosť“ – čo sa zmenilo, si telefón stiahne a dešifruje sám.',
+			kept: 'Kým ich nevypneš alebo z domácnosti neodídeš. Adresu, ktorú prehliadač zruší, server zabudne pri ďalšom upozornení.'
+		},
+		{
 			what: 'Pripomienky na vodu a vitamíny',
 			detail:
 				'Len ak ich zapneš: push adresa tvojho prehliadača, časy pripomienok, časové pásmo, deň, keď máš vodu vypitú, a ktoré dnešné časy vitamínov sú už odškrtnuté.',

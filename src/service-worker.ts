@@ -4,6 +4,8 @@
 /// <reference lib="webworker" />
 import { build, files, prerendered, version } from '$service-worker';
 import type { DigestStore } from '$lib/digest';
+import { describeNews, logOf, validateDoc } from '$lib/household';
+import { decrypt, deriveKeys } from '$lib/sync-crypto';
 import { isDigestDue } from '$lib/push';
 import {
 	ADMIN_ALERTS_KEY,
@@ -11,6 +13,7 @@ import {
 	DIGEST_SHOWN_KEY,
 	FROST_SYNC_TAG,
 	FROST_WATCH_KEY,
+	HOUSEHOLD_NEWS_KEY,
 	kvGet,
 	kvSet,
 	REMINDER_SHOWN_KEY,
@@ -18,6 +21,7 @@ import {
 	SUPPLEMENTS_TODAY_KEY,
 	WATER_TODAY_KEY,
 	type FrostWatch,
+	type HouseholdNews,
 	type ReminderTest,
 	type SupplementsToday,
 	type WaterToday
@@ -315,6 +319,76 @@ async function showOutage(): Promise<boolean> {
 	return true;
 }
 
+/**
+ * Someone in the household saved news while this phone wasn't looking: read the household's
+ * copy with the code this phone holds, and tell what the others did since it last looked.
+ */
+async function showHouseholdNews() {
+	const state = await kvGet<HouseholdNews>(HOUSEHOLD_NEWS_KEY).catch(() => undefined);
+	let title = 'Domácnosť';
+	let body = 'Niekto z domácnosti niečo zmenil.';
+	let seenAt = state?.seenAt ?? 0;
+	if (state?.code) {
+		try {
+			const keys = await deriveKeys(state.code);
+			const res = await fetch(`/api/sync/${keys.id}`, { cache: 'no-store' });
+			const remote = (await res.json()) as { data: string };
+			const doc = validateDoc(JSON.parse(await decrypt(keys.key, remote.data)));
+			if (doc) {
+				title = doc.name[0];
+				const fresh = logOf(doc).filter((e) => e.at > seenAt && e.who !== state.me);
+				if (fresh.length) {
+					const names = new Map(Object.values(doc.members).map((m) => [m.id, m.name]));
+					body = describeNews(fresh, names, await titles()) || body;
+					seenAt = Math.max(...fresh.map((e) => e.at));
+				}
+			}
+		} catch {
+			// Offline or a changed link: the general line will do.
+		}
+		await kvSet(HOUSEHOLD_NEWS_KEY, { ...state, seenAt }).catch(() => {});
+	}
+	await sw.registration.showNotification(title, {
+		body,
+		tag: 'household',
+		icon: '/icon-192.png',
+		data: { url: '/domacnost' }
+	});
+}
+
+/** Recipe and ingredient names from the cached catalog (lines are packed, names aren't). */
+async function titles(): Promise<(id: string) => string | undefined> {
+	try {
+		const cached = await caches.match('/catalog.json');
+		const catalog = cached
+			? ((await cached.json()) as {
+					recipes: { id: string; title: string }[];
+					ingredients: { id: string; name: string }[];
+				})
+			: null;
+		const byId = new Map<string, string>([
+			...(catalog?.recipes ?? []).map((r) => [r.id, r.title] as [string, string]),
+			...(catalog?.ingredients ?? []).map(
+				(i) => [i.id, i.name.split(' (')[0].toLowerCase()] as [string, string]
+			)
+		]);
+		return (id) => byId.get(id);
+	} catch {
+		return () => undefined;
+	}
+}
+
 sw.addEventListener('push', (event) => {
+	// Reminders come without a payload (the worker knows what's due); household news says so.
+	let kind: string | undefined;
+	try {
+		kind = (event.data?.json() as { t?: string } | undefined)?.t;
+	} catch {
+		kind = undefined;
+	}
+	if (kind === 'household') {
+		event.waitUntil(showHouseholdNews());
+		return;
+	}
 	event.waitUntil(showOutage().then((shown) => (shown ? undefined : showReminder())));
 });

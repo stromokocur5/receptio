@@ -3,11 +3,13 @@ import type { DigestStore } from './digest';
 import {
 	ADMIN_ALERTS_KEY,
 	DIGEST_KEY,
+	HOUSEHOLD_NEWS_KEY,
 	kvGet,
 	kvSet,
 	REMINDER_TEST_KEY,
 	SUPPLEMENTS_TODAY_KEY,
 	WATER_TODAY_KEY,
+	type HouseholdNews,
 	type ReminderTest,
 	type SupplementsToday,
 	type WaterToday
@@ -154,9 +156,23 @@ export async function disableReminders(): Promise<void> {
 async function unsubscribeIfUnused(): Promise<void> {
 	if (waterReminder.current || supplementReminder.current || digestReminder.current) return;
 	if (await kvGet<boolean>(ADMIN_ALERTS_KEY).catch(() => false)) return;
+	if ((await kvGet<HouseholdNews>(HOUSEHOLD_NEWS_KEY).catch(() => undefined))?.on) return;
 	const registration = await navigator.serviceWorker.getRegistration();
 	await (await registration?.pushManager.getSubscription())?.unsubscribe();
 }
+
+/** This browser's push address and keys, asking for permission first; for household news. */
+export async function pushTarget(): Promise<{ endpoint: string; p256dh: string; auth: string }> {
+	await askPermission();
+	const json = (await subscription()).toJSON();
+	if (!json.endpoint || !json.keys?.p256dh || !json.keys.auth) {
+		throw new Error('Prehliadač nedal adresu na upozornenia. Skús to znova.');
+	}
+	return { endpoint: json.endpoint, p256dh: json.keys.p256dh, auth: json.keys.auth };
+}
+
+/** Drops the push subscription when no reminder or news uses it any more. */
+export const releasePush = () => unsubscribeIfUnused();
 
 /** This browser's push address, asking for permission first; for the admin's outage alerts. */
 export async function pushEndpoint(): Promise<string> {
