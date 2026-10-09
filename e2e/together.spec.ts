@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { visit } from './helpers';
+import { visit, waitReady } from './helpers';
 
 test.skip(({ isMobile }) => isMobile, 'the sync is the same on every screen');
 
@@ -13,7 +13,7 @@ test('shopping together: ticks go both ways between the shared list and the own 
 		.first()
 		.click();
 	await me.goto('/plan#nakup');
-	await me.waitForLoadState('networkidle');
+	await waitReady(me);
 	await me.getByRole('button', { name: 'Nakupovať spolu' }).click();
 	const link = me.getByRole('link', { name: 'spoločný zoznam' });
 	await expect(link).toBeVisible();

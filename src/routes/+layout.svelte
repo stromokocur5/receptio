@@ -58,6 +58,8 @@
 		initTabs();
 		initInstall();
 		if (shouldOnboard(page.url)) onboarding.open = true;
+		// Interactive from here on; browser tests wait for it before clicking.
+		document.documentElement.dataset.ready = 'true';
 	});
 
 	$effect(() => {
