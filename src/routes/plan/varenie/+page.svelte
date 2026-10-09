@@ -6,7 +6,7 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import { asPlanned, formatMinutes, packingTips, prepList, prepSchedule } from '$lib/mealprep';
 	import { approxPieces } from '$lib/shopping';
-	import { markCooked, plan, ui } from '$lib/state.svelte';
+	import { markCooked, plan, ui, undoCooked, type CookUndo } from '$lib/state.svelte';
 
 	const catalog = useCatalog();
 
@@ -39,16 +39,24 @@
 	};
 
 	let doneMessage = $state('');
+	let undos: CookUndo[] = [];
+	/** All of it back, newest first, as if "all cooked" was never tapped. */
+	function uncookAll() {
+		for (const undo of undos.toReversed()) undoCooked(undo);
+		undos = [];
+		doneMessage = '';
+	}
 	/** Everything cooked: pantry, history and the freezer get it all at once. */
 	function allCooked() {
 		const titles = [];
+		undos = [];
 		// Cooking takes the entries off the plan, which changes `chosen` – go through a copy.
 		for (const e of [...chosen]) {
 			const original = catalog.recipesById.get(e.entry.recipeId)!;
 			const variant = e.entry.variant
 				? original.variants.find((v) => v.name === e.entry.variant)
 				: undefined;
-			markCooked(
+			const { undo } = markCooked(
 				e.entry.recipeId,
 				e.entry.variant,
 				e.entry.servings,
@@ -57,6 +65,7 @@
 				catalog.ingredientsById,
 				original.title
 			);
+			undos.push(undo);
 			titles.push(original.title);
 		}
 		doneMessage = `Hotovo: ${titles.join(', ')}. Zo špajze ubudlo, čo sa minulo, a porcie na zamrazenie sú v mrazničke.`;
@@ -306,7 +315,10 @@
 			<section class="card box done">
 				{#if doneMessage}
 					<p role="status"><Icon name="check" size={18} /> {doneMessage}</p>
-					<a class="btn ghost" href="/plan">Späť na plán</a>
+					<div class="actions">
+						<a class="btn ghost" href="/plan">Späť na plán</a>
+						<button class="btn ghost" onclick={uncookAll}>Vrátiť – ešte nie je uvarené</button>
+					</div>
 				{:else}
 					<p>Keď je všetko v krabičkách:</p>
 					<button class="btn leaf" onclick={allCooked}>
@@ -522,5 +534,10 @@
 	.notes .pack li {
 		padding: 2px 0;
 		border: 0;
+	}
+	.done .actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
 	}
 </style>

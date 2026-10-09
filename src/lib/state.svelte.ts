@@ -861,9 +861,21 @@ export function rateLastCooked(recipeId: string, rating: Rating) {
 	history.current = history.current.map((h, i) => (i === index ? { ...h, rating } : h));
 }
 
+/** What one "cooked" changed, to take it back after a mis-tap. */
+export interface CookUndo {
+	used: PantryUse[];
+	/** When the used-up items had been added, so "use soon" stays right. */
+	added: Record<string, string>;
+	entry: CookedEntry;
+	planned?: PlanEntry;
+	plannedIndex: number;
+	preserveId?: string;
+}
+
 /**
  * Records a cooked recipe: subtracts the ingredients from the pantry, adds it to the history
- * and takes the cooked servings off the plan. Returns what came out of the pantry.
+ * and takes the cooked servings off the plan. Returns what came out of the pantry and how to
+ * take it all back.
  */
 export function markCooked(
 	recipeId: string,
@@ -874,25 +886,35 @@ export function markCooked(
 	byId: Map<string, Ingredient>,
 	/** The recipe's name, for the freezer label when part of the batch is frozen. */
 	title = recipeId
-): PantryUse[] {
+): { used: PantryUse[]; undo: CookUndo } {
 	const { pantry: next, used } = consumeFromPantry(
 		pantry.current,
 		lines,
 		servings / recipeServings,
 		byId
 	);
+	const added = Object.fromEntries(
+		used.flatMap((u) =>
+			u.usedUp && pantryAdded.current[u.ingredient.id]
+				? [[u.ingredient.id, pantryAdded.current[u.ingredient.id]]]
+				: []
+		)
+	);
 	pantry.current = next;
 	const date = new Date().toISOString().slice(0, 10);
-	history.current = [
-		...history.current,
-		variant ? { recipeId, variant, servings, date } : { recipeId, servings, date }
-	].slice(-MAX_HISTORY);
-	const planned = plan.current.find((e) => sameEntry(e, recipeId, variant));
+	const entry: CookedEntry = variant
+		? { recipeId, variant, servings, date }
+		: { recipeId, servings, date };
+	history.current = [...history.current, entry].slice(-MAX_HISTORY);
+	const plannedIndex = plan.current.findIndex((e) => sameEntry(e, recipeId, variant));
+	const planned = plan.current[plannedIndex];
+	let preserveId: string | undefined;
 	if (planned?.freezeExtra) {
+		preserveId = crypto.randomUUID().slice(0, 8);
 		preserves.current = [
 			...preserves.current,
 			{
-				id: crypto.randomUUID().slice(0, 8),
+				id: preserveId,
 				name: title,
 				count: planned.freezeExtra,
 				made: date,
@@ -902,7 +924,36 @@ export function markCooked(
 		];
 	}
 	if (planned) setPlanServings(recipeId, variant, planned.servings - servings);
-	return used;
+	return { used, undo: { used, added, entry, planned, plannedIndex, preserveId } };
+}
+
+/** Takes a "cooked" back: the pantry gets its food, the plan its portions, the history forgets it. */
+export function undoCooked(undo: CookUndo) {
+	const restored = { ...pantry.current };
+	for (const u of undo.used) {
+		restored[u.ingredient.id] = Math.round((restored[u.ingredient.id] ?? 0) + u.grams);
+	}
+	pantry.current = restored;
+	pantryAdded.current = { ...pantryAdded.current, ...undo.added };
+	const { entry } = undo;
+	const at = history.current.findLastIndex(
+		(h) =>
+			h.recipeId === entry.recipeId &&
+			h.variant === entry.variant &&
+			h.servings === entry.servings &&
+			h.date === entry.date
+	);
+	if (at !== -1) history.current = history.current.filter((_, i) => i !== at);
+	if (undo.preserveId) {
+		preserves.current = preserves.current.filter((p) => p.id !== undo.preserveId);
+	}
+	const { planned } = undo;
+	if (planned) {
+		const still = plan.current.some((e) => sameEntry(e, planned.recipeId, planned.variant));
+		plan.current = still
+			? plan.current.map((e) => (sameEntry(e, planned.recipeId, planned.variant) ? planned : e))
+			: plan.current.toSpliced(Math.min(undo.plannedIndex, plan.current.length), 0, planned);
+	}
 }
 
 export function setPantryItem(id: string, grams: number | null) {

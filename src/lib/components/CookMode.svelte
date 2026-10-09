@@ -11,6 +11,8 @@
 	import {
 		RATING_LABELS,
 		markCooked,
+		undoCooked,
+		type CookUndo,
 		pantry,
 		rateLastCooked,
 		type Rating
@@ -135,7 +137,7 @@
 	}
 
 	function finish() {
-		cooked = markCooked(
+		const result = markCooked(
 			recipeId,
 			variant,
 			servings,
@@ -143,6 +145,17 @@
 			recipeServings,
 			catalog.ingredientsById
 		);
+		cooked = result.used;
+		cookUndo = result.undo;
+	}
+
+	let cookUndo: CookUndo | null = null;
+	/** A mis-tap on "cooked": back to before it, the button shows again. */
+	function uncook() {
+		if (cookUndo) undoCooked(cookUndo);
+		cookUndo = null;
+		cooked = null;
+		rated = null;
 	}
 
 	/** Reads the current step aloud; the mic pauses meanwhile so it doesn't hear itself. */
@@ -388,7 +401,10 @@
 								<Icon name="check" size={18} /> Uvarené
 							</button>
 						{:else}
-							<p><Icon name="check" size={18} /> Zapísané do histórie.</p>
+							<p>
+								<Icon name="check" size={18} /> Zapísané do histórie.
+								<button class="btn ghost small" onclick={uncook}>Späť – ešte nie je uvarené</button>
+							</p>
 							<div class="rate" role="group" aria-label="Ako chutilo?">
 								<span>Ako chutilo?</span>
 								{#each [3, 2, 1] as const as r (r)}

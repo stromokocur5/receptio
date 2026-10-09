@@ -54,6 +54,8 @@
 		type ExtraItem,
 		journal,
 		markCooked,
+		undoCooked,
+		type CookUndo,
 		movePlanEntryUp,
 		setPlanBreakfast,
 		setPlanCook,
@@ -305,7 +307,7 @@
 	}
 
 	function cooked(e: (typeof entries)[number]) {
-		const used = markCooked(
+		const { used, undo } = markCooked(
 			e.recipeId,
 			e.variant,
 			e.servings,
@@ -318,7 +320,17 @@
 			? `${e.recipe.title}: zapísané, zo špajze ubudlo ${used.map((u) => u.ingredient.name).join(', ')}.`
 			: `${e.recipe.title}: zapísané do histórie.`;
 		justCooked = { recipeId: e.recipeId, variant: e.variant };
+		cookUndo = undo;
 		noteCooked(e.recipeId);
+	}
+	/** The last "cooked", to take back a mis-tap. */
+	let cookUndo = $state<CookUndo | null>(null);
+	function uncook() {
+		if (!cookUndo) return;
+		undoCooked(cookUndo);
+		cookUndo = null;
+		justCooked = null;
+		cookedMessage = 'Vrátené – recept je späť v pláne a suroviny v špajzi.';
 	}
 	/** The recipe just marked cooked, to log a portion of it right away if it's eaten now. */
 	let justCooked = $state<{ recipeId: string; variant?: string } | null>(null);
@@ -501,6 +513,28 @@
 	});
 </script>
 
+{#snippet cookedNote()}
+	{#if cookedMessage}
+		<p class="cooked-msg" role="status">
+			<Icon name="check" size={16} />
+			{cookedMessage}
+			<a href="/spajza">Špajza</a>
+			{#if cookUndo}
+				<button class="linkish" onclick={uncook}>Späť – ešte nie je uvarené</button>
+			{/if}
+			{#if justCooked && journal.current.enabled}
+				<button
+					class="linkish"
+					onclick={() => {
+						logPortion(justCooked!.recipeId, justCooked!.variant);
+						justCooked = null;
+					}}>Porciu jem hneď – zapísať do denníka</button
+				>
+			{/if}
+		</p>
+	{/if}
+{/snippet}
+
 <Seo
 	title="Plán a nákup"
 	description="Naplánuj si jedlá na týždeň a dostaneš jeden nákupný zoznam – bez vecí, ktoré už máš doma."
@@ -589,6 +623,7 @@
 			{/if}
 			<AutoPlanner bind:open={plannerOpen} />
 			<SavedWeeks />
+			{#if !entries.length}{@render cookedNote()}{/if}
 			{#if entries.length}
 				<section class="card box" id="rozpis">
 					<div class="box-head">
@@ -817,22 +852,7 @@
 							</p>
 						</div>
 					{/if}
-					{#if cookedMessage}
-						<p class="cooked-msg" role="status">
-							<Icon name="check" size={16} />
-							{cookedMessage}
-							<a href="/spajza">Špajza</a>
-							{#if justCooked && journal.current.enabled}
-								<button
-									class="linkish"
-									onclick={() => {
-										logPortion(justCooked!.recipeId, justCooked!.variant);
-										justCooked = null;
-									}}>Porciu jem hneď – zapísať do denníka</button
-								>
-							{/if}
-						</p>
-					{/if}
+					{@render cookedNote()}
 					<p class="summary">
 						<strong>{totalServings}</strong> porcií · spolu <strong>{formatEur(planCost)}</strong>
 						· <strong>{formatEur(totalServings ? planCost / totalServings : 0)}</strong> / porcia

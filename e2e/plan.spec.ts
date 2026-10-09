@@ -35,3 +35,20 @@ test('the floating cook bar steps aside for the footer', async ({ page, isMobile
 	for (let i = 0; i < 40; i++) await page.mouse.wheel(0, 800);
 	await expect(bar).not.toHaveClass(/shown/);
 });
+
+test('a mis-tapped "cooked" can be taken back', async ({ page }) => {
+	await visit(page, '/recepty/falafel');
+	await page
+		.getByRole('button', { name: /^Do plánu/ })
+		.first()
+		.click();
+	await page.goto('/plan');
+	await page.waitForLoadState('networkidle');
+	await page.getByRole('button', { name: 'Uvarené' }).first().click();
+	await expect(page.getByRole('status').filter({ hasText: 'zapísané' })).toBeVisible();
+	await page.getByRole('button', { name: 'Späť – ešte nie je uvarené' }).click();
+	await expect(page.getByRole('status').filter({ hasText: 'Vrátené' })).toBeVisible();
+	await expect(page.getByRole('button', { name: 'Uvarené' }).first()).toBeVisible();
+	const history = await page.evaluate(() => localStorage.getItem('receptio:history'));
+	expect(JSON.parse(history ?? '[]')).toEqual([]);
+});
