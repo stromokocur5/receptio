@@ -250,15 +250,54 @@ function save() {
 	}
 }
 
-async function upload(k: SyncKeys, doc: HouseholdDoc) {
-	await request(k, 'PUT', { token: k.token, data: await encrypt(k.key, JSON.stringify(doc)) });
+/** `ifVersion`: write only over the copy this phone merged with; creating a new copy has none. */
+async function upload(k: SyncKeys, doc: HouseholdDoc, ifVersion?: number) {
+	await request(k, 'PUT', {
+		token: k.token,
+		data: await encrypt(k.key, JSON.stringify(doc)),
+		...(ifVersion !== undefined && { ifVersion })
+	});
 }
 
-async function fetchDoc(k: SyncKeys): Promise<HouseholdDoc> {
+interface Remote {
+	doc: HouseholdDoc;
+	/** Absent until the server has the version column. */
+	version?: number;
+}
+
+async function fetchDoc(k: SyncKeys): Promise<Remote> {
 	const remote = await request(k, 'GET');
 	const doc = validateDoc(JSON.parse(await decrypt(k.key, remote.data as string)));
 	if (!doc) throw new Error('corrupt');
-	return doc;
+	return { doc, version: typeof remote.version === 'number' ? remote.version : undefined };
+}
+
+const isConflict = (err: unknown) => err instanceof Error && 'status' in err && err.status === 409;
+/** Someone else saved in between: read their copy, merge again and retry – a few times at most. */
+const MAX_RETRIES = 4;
+
+/**
+ * Merges this phone's changes into `remote` and writes the result over exactly that version. When
+ * another phone wrote first, its copy is read and merged again, so neither change is lost.
+ */
+async function mergeAndUpload(
+	k: SyncKeys,
+	remote: Remote,
+	local: () => HouseholdDoc,
+	merged: (doc: HouseholdDoc) => void
+) {
+	for (let attempt = 0; ; attempt++) {
+		const doc = mergeDocs(remote.doc, local());
+		merged(doc);
+		if (same(doc, remote.doc)) return;
+		try {
+			await upload(k, doc, remote.version);
+			return;
+		} catch (err) {
+			if (!isConflict(err) || attempt >= MAX_RETRIES) throw err;
+			remote = await fetchDoc(k);
+		}
+	}
 }
 
 async function syncOnce() {
@@ -270,20 +309,27 @@ async function syncOnce() {
 			seenRestores = restores.count;
 			base = currentView();
 		}
-		const now = Date.now();
-		const view = sharedView();
-		const events = [
-			...pendingEvents,
-			...changeEvents(base, view, household.me, now, cookedSinceSync)
-		];
-		const local = withEvents(withLocalChanges(household.doc, base, view, now), events);
-		pendingEvents = [];
-		cookedSinceSync.clear();
-		const merged = mergeDocs(remote, local);
-		household.doc = merged;
-		base = viewOf(merged);
-		applyView(base);
-		if (!same(merged, remote)) await upload(keys, merged);
+		// Each round takes what changed here since the last one – also while an upload was waiting.
+		await mergeAndUpload(
+			keys,
+			remote,
+			() => {
+				const now = Date.now();
+				const view = sharedView();
+				const events = [
+					...pendingEvents,
+					...changeEvents(base!, view, household.me, now, cookedSinceSync)
+				];
+				pendingEvents = [];
+				cookedSinceSync.clear();
+				return withEvents(withLocalChanges(household.doc!, base!, view, now), events);
+			},
+			(doc) => {
+				household.doc = doc;
+				base = viewOf(doc);
+				applyView(base);
+			}
+		);
 		household.status = 'live';
 		household.syncedAt = Date.now();
 		save();
@@ -460,7 +506,7 @@ export async function joinHousehold(input: string): Promise<string | null> {
 	household.status = 'connecting';
 	let remote: HouseholdDoc;
 	try {
-		remote = await fetchDoc(await deriveKeys(code));
+		remote = (await fetchDoc(await deriveKeys(code))).doc;
 	} catch (err) {
 		household.status = household.code ? before : 'off';
 		if (err instanceof Error && 'status' in err && err.status === 404) {
@@ -502,7 +548,12 @@ export async function leaveHousehold() {
 			members: { ...doc.members, [me]: { ...doc.members[me], removed: true, at: Date.now() } }
 		};
 		try {
-			await upload(k, mergeDocs(await fetchDoc(k), left));
+			await mergeAndUpload(
+				k,
+				await fetchDoc(k),
+				() => left,
+				() => {}
+			);
 		} catch {
 			// The others still see this person; they can remove them by hand.
 		}

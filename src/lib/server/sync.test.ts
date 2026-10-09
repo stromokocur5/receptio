@@ -6,14 +6,28 @@ import { deleteSync, readSync, writeSync } from './sync';
 function fakeDb() {
 	const rows = new Map<
 		string,
-		{ write_hash: string; data: string; created_at: number; updated_at: number }
+		{ write_hash: string; data: string; created_at: number; updated_at: number; version: number }
 	>();
 	const statement = (sql: string, args: unknown[] = []) => ({
 		bind: (...values: unknown[]) => statement(sql, values),
 		async first() {
 			if (sql.startsWith('SELECT data')) {
 				const row = rows.get(args[0] as string);
-				return row ? { data: row.data, updated_at: row.updated_at } : null;
+				return row ? { data: row.data, updated_at: row.updated_at, version: row.version } : null;
+			}
+			if (sql.startsWith('UPDATE')) {
+				const [data, updated_at, id, hash, ifVersion] = args as [
+					string,
+					number,
+					string,
+					string,
+					number | null
+				];
+				const row = rows.get(id);
+				if (!row || row.write_hash !== hash) return null;
+				if (ifVersion !== null && row.version !== ifVersion) return null;
+				Object.assign(row, { data, updated_at, version: row.version + 1 });
+				return { version: row.version };
 			}
 			if (sql.startsWith('SELECT write_hash')) return rows.get(args[0] as string) ?? null;
 			if (sql.startsWith('SELECT COUNT')) return { n: rows.size };
@@ -23,14 +37,7 @@ function fakeDb() {
 			if (sql.startsWith('INSERT')) {
 				const [id, write_hash, data, updated_at] = args as [string, string, string, number];
 				if (rows.has(id)) return { meta: { changes: 0 } };
-				rows.set(id, { write_hash, data, created_at: updated_at, updated_at });
-				return { meta: { changes: 1 } };
-			}
-			if (sql.startsWith('UPDATE')) {
-				const [data, updated_at, id, hash] = args as [string, number, string, string];
-				const row = rows.get(id);
-				if (!row || row.write_hash !== hash) return { meta: { changes: 0 } };
-				Object.assign(row, { data, updated_at });
+				rows.set(id, { write_hash, data, created_at: updated_at, updated_at, version: 0 });
 				return { meta: { changes: 1 } };
 			}
 			if (sql.startsWith('DELETE FROM sync WHERE updated_at')) {
@@ -65,7 +72,27 @@ describe('sync storage', () => {
 		expect((await writeSync(db, ID, TOKEN, 'iv.one', 1_000_000)).result).toBe('saved');
 		expect((await writeSync(db, ID, TOKEN, 'iv.two', 2_000_000)).result).toBe('saved');
 		expect((await writeSync(db, ID, 'c'.repeat(64), 'iv.evil')).result).toBe('forbidden');
-		expect(await readSync(db, ID)).toEqual({ data: 'iv.two', updatedAt: 2000 });
+		expect(await readSync(db, ID)).toEqual({ data: 'iv.two', updatedAt: 2000, version: 1 });
+	});
+
+	it('writes over a version only while nobody else has written since', async () => {
+		const db = fakeDb();
+		expect(await writeSync(db, ID, TOKEN, 'iv.one', 1_000_000)).toMatchObject({
+			result: 'saved',
+			version: 0
+		});
+		// Two phones read version 0; the first one to write wins, the second has to merge again.
+		expect(await writeSync(db, ID, TOKEN, 'iv.ema', 2_000_000, 0)).toMatchObject({
+			result: 'saved',
+			version: 1
+		});
+		expect((await writeSync(db, ID, TOKEN, 'iv.jano', 2_000_000, 0)).result).toBe('conflict');
+		expect((await writeSync(db, ID, TOKEN, 'iv.jano', 3_000_000, 1)).result).toBe('saved');
+		expect((await readSync(db, ID))?.data).toBe('iv.jano');
+		// A gone copy isn't silently created again by a phone that thinks it's updating it.
+		expect((await writeSync(db, 'f'.repeat(64), TOKEN, 'iv.x', 3_000_000, 4)).result).toBe(
+			'conflict'
+		);
 	});
 
 	it('deletes only with the right token', async () => {

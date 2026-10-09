@@ -16,7 +16,9 @@ export const syncPutSchema = z
 		data: z
 			.string()
 			.max(MAX_SYNC_BYTES)
-			.regex(/^[A-Za-z0-9+/]+=*\.[A-Za-z0-9+/]+=*$/)
+			.regex(/^[A-Za-z0-9+/]+=*\.[A-Za-z0-9+/]+=*$/),
+		/** Write only over this version (what the household phone merged with). */
+		ifVersion: z.number().int().min(0).optional()
 	})
 	.strict();
 
@@ -28,15 +30,16 @@ export async function sha256Hex(text: string): Promise<string> {
 export async function readSync(
 	db: D1Database,
 	id: string
-): Promise<{ data: string; updatedAt: number } | null> {
+): Promise<{ data: string; updatedAt: number; version: number } | null> {
 	const row = await db
-		.prepare('SELECT data, updated_at FROM sync WHERE id = ?')
+		.prepare('SELECT data, updated_at, version FROM sync WHERE id = ?')
 		.bind(id)
-		.first<{ data: string; updated_at: number }>();
-	return row ? { data: row.data, updatedAt: row.updated_at } : null;
+		.first<{ data: string; updated_at: number; version: number }>();
+	return row ? { data: row.data, updatedAt: row.updated_at, version: row.version } : null;
 }
 
-export type WriteResult = 'saved' | 'forbidden' | 'full';
+/** `conflict`: someone else wrote since `ifVersion` – read, merge and try again. */
+export type WriteResult = 'saved' | 'forbidden' | 'full' | 'conflict';
 
 /**
  * Creates the backup for a new code or replaces it when the write token matches. The token check
@@ -47,8 +50,9 @@ export async function writeSync(
 	id: string,
 	token: string,
 	data: string,
-	now = Date.now()
-): Promise<{ result: WriteResult; updatedAt: number }> {
+	now = Date.now(),
+	ifVersion?: number
+): Promise<{ result: WriteResult; updatedAt: number; version?: number }> {
 	const updatedAt = Math.floor(now / 1000);
 	const writeHash = await sha256Hex(token);
 	const existing = await db
@@ -57,12 +61,18 @@ export async function writeSync(
 		.first<{ write_hash: string }>();
 	if (existing) {
 		if (existing.write_hash !== writeHash) return { result: 'forbidden', updatedAt };
-		await db
-			.prepare('UPDATE sync SET data = ?, updated_at = ? WHERE id = ? AND write_hash = ?')
-			.bind(data, updatedAt, id, writeHash)
-			.run();
-		return { result: 'saved', updatedAt };
+		// The version check is in the same statement, so two writers can't both pass it.
+		const updated = await db
+			.prepare(
+				'UPDATE sync SET data = ?, updated_at = ?, version = version + 1 WHERE id = ? AND write_hash = ? AND (? IS NULL OR version = ?) RETURNING version'
+			)
+			.bind(data, updatedAt, id, writeHash, ifVersion ?? null, ifVersion ?? null)
+			.first<{ version: number }>();
+		if (!updated) return { result: 'conflict', updatedAt };
+		return { result: 'saved', updatedAt, version: updated.version };
 	}
+	// A household phone only updates; a deleted copy (new link) must not come back.
+	if (ifVersion !== undefined) return { result: 'conflict', updatedAt };
 	await pruneIdleSyncs(db, updatedAt);
 	const today = await db
 		.prepare('SELECT COUNT(*) AS n FROM sync WHERE created_at > ?')
@@ -76,8 +86,8 @@ export async function writeSync(
 		.bind(id, writeHash, data, updatedAt)
 		.run();
 	// Another device created it a moment ago: go through the token check like any update.
-	if (inserted.meta.changes === 0) return writeSync(db, id, token, data, now);
-	return { result: 'saved', updatedAt };
+	if (inserted.meta.changes === 0) return writeSync(db, id, token, data, now, ifVersion);
+	return { result: 'saved', updatedAt, version: 0 };
 }
 
 /** Runs when a new code is created – often enough, and needs no scheduled job. */

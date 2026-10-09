@@ -57,14 +57,22 @@ export const PUT: RequestHandler = async (event) => {
 	if (!body.success) error(400, 'Neplatná záloha');
 	let outcome;
 	try {
-		outcome = await writeSync(db, id, body.data.token, body.data.data);
+		outcome = await writeSync(
+			db,
+			id,
+			body.data.token,
+			body.data.data,
+			Date.now(),
+			body.data.ifVersion
+		);
 	} catch (err) {
 		console.error('sync: write failed', err);
 		error(500, 'Zálohu sa nepodarilo uložiť');
 	}
 	if (outcome.result === 'forbidden') error(403, 'Tento kód patrí inej zálohe');
 	if (outcome.result === 'full') error(429, 'Dnes už vzniklo priveľa nových záloh, skús zajtra');
-	return json({ updatedAt: outcome.updatedAt }, { headers: NO_STORE });
+	if (outcome.result === 'conflict') error(409, 'Medzitým to zmenil niekto iný');
+	return json({ updatedAt: outcome.updatedAt, version: outcome.version }, { headers: NO_STORE });
 };
 
 export const DELETE: RequestHandler = async (event) => {
