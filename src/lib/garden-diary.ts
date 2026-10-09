@@ -156,5 +156,6 @@ function validateBeds(raw: unknown): GardenDiary['beds'] {
 export function validateGardens(raw: unknown): GardenDiary[] | undefined {
 	if (!Array.isArray(raw)) return undefined;
 	const byId = new Map(raw.flatMap((g) => validateGarden(g) ?? []).map((g) => [g.id, g]));
-	return [...byId.values()].slice(0, MAX_GARDENS);
+	// Gardens shared by the household come on top of the own ones.
+	return [...byId.values()].slice(0, MAX_GARDENS * 2);
 }

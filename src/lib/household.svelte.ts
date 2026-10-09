@@ -5,6 +5,9 @@ import {
 	acceptMember,
 	activeMembers,
 	changeEvents,
+	collect,
+	FORGET_AFTER_MS,
+	latestStamp,
 	householdNeeds,
 	logId,
 	mergeDocs,
@@ -27,6 +30,7 @@ import {
 } from './household';
 import { localToday, shiftDate } from './journal';
 import {
+	canonical,
 	newInbox,
 	newSigner,
 	openSealed,
@@ -81,6 +85,8 @@ const STORAGE_KEY = 'receptio:household';
 /** Visible tab only; a few phones on one home connection plus the live list stay under 60 a minute. */
 const POLL_MS = 15_000;
 const PUSH_DELAY_MS = 1500;
+/** A phone whose clock runs further ahead than this doesn't drag everyone's times with it. */
+const MAX_AHEAD_MS = 24 * 60 * 60 * 1000;
 
 /** One person's own plan, list and pantry, kept aside while they plan with the household. */
 interface PersonalPlan {
@@ -160,6 +166,24 @@ let appliedUpTo = 0;
 /** Told to the others with the next sync. */
 let pendingEvents: LogEvent[] = [];
 const cookedSinceSync = new Set<string>();
+/** The newest time this phone has seen or given out. */
+let lastStamp = 0;
+
+/**
+ * When a change happened, for "the newer one wins": the clock, but always after everything this
+ * phone has seen – a phone whose clock runs behind still wins with a change made after the
+ * others', and two changes here never share a time.
+ */
+function stamp(): number {
+	lastStamp = Math.max(Date.now(), lastStamp + 1);
+	return lastStamp;
+}
+
+/** Keeps the household's document and notes its newest time for `stamp`. */
+function setDoc(doc: HouseholdDoc) {
+	household.doc = doc;
+	lastStamp = Math.max(lastStamp, latestStamp(doc, Date.now() + MAX_AHEAD_MS));
+}
 
 /** Everyone in the household, alone-planning or not. */
 export const members = (): Member[] => (household.doc ? activeMembers(household.doc) : []);
@@ -288,26 +312,29 @@ function applyGardens(shared: SharedView['gardens']) {
 	const byId = new Map(shared.map((g) => [g.id, g]));
 	const kept = gardens.current.map((g) => byId.get(g.id) ?? g);
 	const known = new Set(kept.map((g) => g.id));
-	gardens.current = [...kept, ...shared.filter((g) => !known.has(g.id))].slice(0, MAX_GARDENS);
+	// Shared ones never fall off the end: a garden missing here would read as "stop sharing it".
+	gardens.current = [...kept, ...shared.filter((g) => !known.has(g.id))];
 }
 
 /** Starts growing a garden together: the others get it with its diary on their next sync. */
 export function shareGarden(id: string) {
 	const garden = gardens.current.find((g) => g.id === id);
 	if (!garden || !household.doc) return;
+	const shared = Object.values(household.doc.gardens).filter(([g]) => g !== false).length;
+	if (shared >= MAX_GARDENS) return;
 	updateDoc((doc) =>
 		withLocalChanges(
 			doc,
 			{ ...viewOf(doc), gardens: [] },
 			{ ...viewOf(doc), gardens: [garden] },
-			Date.now()
+			stamp()
 		)
 	);
 }
 
 /** Stops sharing; everyone keeps a copy of it as their own. */
 export function unshareGarden(id: string) {
-	updateDoc((doc) => ({ ...doc, gardens: { ...doc.gardens, [id]: [false, Date.now()] } }));
+	updateDoc((doc) => ({ ...doc, gardens: { ...doc.gardens, [id]: [false, stamp()] } }));
 }
 
 /** Everyone in the household eats, so the plan cooks for all of them. */
@@ -397,7 +424,12 @@ async function trusted(remote: HouseholdDoc, local: HouseholdDoc | null): Promis
 	const members = { ...remote.members };
 	for (const theirs of Object.values(remote.members)) {
 		const mine = local?.members[theirs.id];
-		if (mine && theirs.at <= mine.at) continue;
+		// Older, or the very same profile: the merge keeps this phone's copy anyway.
+		if (
+			mine &&
+			(theirs.at < mine.at || (theirs.at === mine.at && canonical(theirs) === canonical(mine)))
+		)
+			continue;
 		const signed = !!theirs.owner && (await verifyMember(theirs));
 		if (acceptMember(mine, theirs, signed, now)) continue;
 		if (mine) members[theirs.id] = mine;
@@ -421,7 +453,8 @@ async function mergeAndUpload(
 	merged: (doc: HouseholdDoc) => void
 ) {
 	for (let attempt = 0; ; attempt++) {
-		const doc = mergeDocs(await trusted(remote.doc, household.doc), local());
+		const fresh = await trusted(remote.doc, household.doc);
+		const doc = collect(mergeDocs(fresh, local()), Date.now() - FORGET_AFTER_MS);
 		merged(doc);
 		if (same(doc, remote.doc)) return;
 		try {
@@ -434,32 +467,48 @@ async function mergeAndUpload(
 	}
 }
 
+/**
+ * Writes what changed on this device since the last time into the household's document here,
+ * before anything goes over the network: offline, or when switching to planning alone right
+ * after, the change is already part of the document and goes out with the next sync.
+ */
+function commitLocal() {
+	if (!household.doc || !base) return;
+	// Another device's backup replaced the data here: that isn't an edit to share.
+	if (restores.count !== seenRestores) {
+		seenRestores = restores.count;
+		base = currentView();
+	}
+	const view = sharedView();
+	const events = [
+		...pendingEvents,
+		...changeEvents(base, view, household.me, Date.now(), cookedSinceSync)
+	];
+	pendingEvents = [];
+	cookedSinceSync.clear();
+	const doc = withEvents(withLocalChanges(household.doc, base, view, stamp()), events);
+	if (!same(doc, household.doc)) {
+		setDoc(doc);
+		save();
+	}
+	base = view;
+}
+
 async function syncOnce() {
 	if (!keys || !household.doc || !base) return;
 	try {
+		commitLocal();
 		const remote = await fetchDoc(keys);
-		// Another device's backup replaced the data here: that isn't an edit to share.
-		if (restores.count !== seenRestores) {
-			seenRestores = restores.count;
-			base = currentView();
-		}
 		// Each round takes what changed here since the last one – also while an upload was waiting.
 		await mergeAndUpload(
 			keys,
 			remote,
 			() => {
-				const now = Date.now();
-				const view = sharedView();
-				const events = [
-					...pendingEvents,
-					...changeEvents(base!, view, household.me, now, cookedSinceSync)
-				];
-				pendingEvents = [];
-				cookedSinceSync.clear();
-				return withEvents(withLocalChanges(household.doc!, base!, view, now), events);
+				commitLocal();
+				return household.doc!;
 			},
 			(doc) => {
-				household.doc = doc;
+				setDoc(doc);
 				base = viewOf(doc);
 				applyView(base);
 			}
@@ -497,6 +546,8 @@ async function sync(): Promise<void> {
 		running = null;
 	}
 	if (keys && household.status !== 'missing' && document.visibilityState === 'visible') {
+		// Another sync may have finished meanwhile and set its own: only one poll waits.
+		clearTimeout(timer);
 		timer = setTimeout(() => void sync(), POLL_MS);
 	}
 }
@@ -556,7 +607,7 @@ export function initHousehold() {
 	if (!saved) return;
 	household.code = saved.code;
 	household.me = saved.me;
-	household.doc = saved.doc;
+	setDoc(saved.doc);
 	household.solo = saved.solo;
 	household.soloAway = saved.soloAway;
 	personal = saved.personal;
@@ -571,7 +622,7 @@ export function initHousehold() {
 		if (me && signer && canEdit(me) && (!signer.inbox || me.inbox !== signer.inbox.pub)) {
 			signer.inbox ??= await newInbox();
 			save();
-			await putSigned({ ...me, at: Date.now() });
+			await putSigned({ ...me, at: stamp() });
 		}
 	});
 }
@@ -653,7 +704,7 @@ function blankMember(name: string, at: number): Member {
 
 /** Starts an empty household (the own plan, list and pantry go aside) and returns its code. */
 export async function createHousehold(name: string, myName: string): Promise<string> {
-	const now = Date.now();
+	const now = stamp();
 	const code = generateCode();
 	let doc = newDoc(name, now);
 	if (myName.trim()) await ownSigner();
@@ -662,7 +713,7 @@ export async function createHousehold(name: string, myName: string): Promise<str
 	await upload(await deriveKeys(code), doc);
 	household.code = code;
 	household.me = me?.id ?? null;
-	household.doc = doc;
+	setDoc(doc);
 	household.solo = false;
 	household.soloAway = false;
 	personal = onDevice();
@@ -704,7 +755,7 @@ export async function joinHousehold(input: string): Promise<string | null> {
 	personal = own;
 	household.code = code;
 	household.me = sameHousehold ? household.me : null;
-	household.doc = remote;
+	setDoc(remote);
 	household.solo = false;
 	household.soloAway = false;
 	base = shared;
@@ -721,9 +772,10 @@ export async function leaveHousehold() {
 	clearTimeout(timer);
 	clearTimeout(pushTimer);
 	while (running) await running;
+	commitLocal();
 	if (k && me && household.doc?.members[me]) {
 		const doc = household.doc;
-		const gone = { ...doc.members[me], removed: true, at: Date.now() };
+		const gone = { ...doc.members[me], removed: true, at: stamp() };
 		const left = {
 			...doc,
 			members: {
@@ -789,7 +841,9 @@ export async function changeLink(): Promise<string> {
 	};
 	for (let attempt = 0; ; attempt++) {
 		const remote = await fetchDoc(old);
+		commitLocal();
 		const doc = mergeDocs(await trusted(remote.doc, household.doc), household.doc);
+		setDoc(doc);
 		await upload(next, doc);
 		try {
 			// Over exactly the copy just merged, so no one's last change stays behind.
@@ -807,7 +861,7 @@ export async function changeLink(): Promise<string> {
 
 function updateDoc(change: (doc: HouseholdDoc) => HouseholdDoc) {
 	if (!household.doc) return;
-	household.doc = change(household.doc);
+	setDoc(change(household.doc));
 	save();
 	syncPeople();
 	if (keys) {
@@ -821,12 +875,12 @@ function updateDoc(change: (doc: HouseholdDoc) => HouseholdDoc) {
 
 export function renameHousehold(name: string) {
 	const clean = name.trim().slice(0, 40);
-	if (clean) updateDoc((doc) => ({ ...doc, name: [clean, Date.now()] }));
+	if (clean) updateDoc((doc) => ({ ...doc, name: [clean, stamp()] }));
 }
 
 export function addMember(name: string): Member | null {
 	if (!name.trim() || members().length >= MAX_MEMBERS) return null;
-	const member = blankMember(name, Date.now());
+	const member = blankMember(name, stamp());
 	updateDoc((doc) => ({ ...doc, members: { ...doc.members, [member.id]: member } }));
 	return member;
 }
@@ -863,7 +917,7 @@ export function updateMember(
 ) {
 	const current = household.doc?.members[id];
 	if (!current || !canEdit(current)) return;
-	const next: Member = { ...current, ...change, at: Date.now() };
+	const next: Member = { ...current, ...change, at: stamp() };
 	for (const [key, value] of Object.entries(change)) {
 		if (value === undefined) delete next[key as keyof Member];
 	}
@@ -875,7 +929,7 @@ export function removeMember(id: string) {
 	if (!current || !canRemove(current)) return;
 	if (canEdit(current)) updateMember(id, { removed: true });
 	// A lost phone's profile: the others accept the removal unsigned, and only the removal.
-	else putMember({ ...current, removed: true, at: Date.now() });
+	else putMember({ ...current, removed: true, at: stamp() });
 	if (household.me === id) setMe(null);
 }
 
@@ -890,7 +944,7 @@ export async function claimMember(id: string) {
 	if (!current || current.owner) return;
 	const own = await ownSigner();
 	setMe(id);
-	await putSigned({ ...current, owner: own.pub, at: Date.now() });
+	await putSigned({ ...current, owner: own.pub, at: stamp() });
 }
 
 /** What this person ate the last days, for the others – or null to stop showing it. */
@@ -910,6 +964,8 @@ export function shareEaten(days: EatenDay[] | null) {
  */
 export async function startSolo(away: boolean, until: string | null) {
 	if (household.solo || !household.doc) return;
+	// The last changes to the household's plan are kept even when the sync below can't run.
+	commitLocal();
 	if (keys) await sync();
 	const own = personal ?? EMPTY_PERSONAL;
 	personal = null;
@@ -957,13 +1013,13 @@ export function claimItem(itemId: string, mine: boolean) {
 	if (!me) return;
 	updateDoc((doc) => ({
 		...doc,
-		claims: { ...doc.claims, [itemId]: [mine ? me : false, Date.now()] }
+		claims: { ...doc.claims, [itemId]: [mine ? me : false, stamp()] }
 	}));
 }
 
 export function addExpense(expense: Omit<Expense, 'date'> & { date?: string }) {
 	if (!(expense.amount > 0)) return;
-	const at = Date.now();
+	const at = stamp();
 	const clean: Expense = {
 		...expense,
 		amount: Math.round(expense.amount * 100) / 100,
@@ -979,13 +1035,13 @@ export function addExpense(expense: Omit<Expense, 'date'> & { date?: string }) {
 }
 
 export function removeExpense(id: string) {
-	updateDoc((doc) => ({ ...doc, expenses: { ...doc.expenses, [id]: [false, Date.now()] } }));
+	updateDoc((doc) => ({ ...doc, expenses: { ...doc.expenses, [id]: [false, stamp()] } }));
 }
 
 export const moneyOn = () => !!household.doc?.money[0];
 
 export function setMoney(on: boolean) {
-	updateDoc((doc) => ({ ...doc, money: [on, Date.now()] }));
+	updateDoc((doc) => ({ ...doc, money: [on, stamp()] }));
 }
 
 /** With money tracking on, a shopping trip paid from this phone is this person's expense. */
@@ -999,5 +1055,5 @@ export function toggleWish(recipeId: string) {
 	if (!me || !household.doc) return;
 	const key = wishKey(me, recipeId);
 	const wanted = household.doc.wishes[key]?.[0] ?? false;
-	updateDoc((doc) => ({ ...doc, wishes: { ...doc.wishes, [key]: [!wanted, Date.now()] } }));
+	updateDoc((doc) => ({ ...doc, wishes: { ...doc.wishes, [key]: [!wanted, stamp()] } }));
 }

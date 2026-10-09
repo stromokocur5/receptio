@@ -3,6 +3,8 @@ import {
 	EMPTY_BODY,
 	balances,
 	changeEvents,
+	collect,
+	latestStamp,
 	householdFilter,
 	isAway,
 	memberTargets,
@@ -89,6 +91,57 @@ describe('household sync', () => {
 			9
 		);
 		expect(viewOf(mergeDocs(one, two)).plan).toEqual([{ recipeId: 'chili', servings: 2 }]);
+	});
+
+	it('picks the same winner on every phone when two changes share a time', () => {
+		const a = { ...newDoc('D', 1), members: { m: member('m', { at: 5, allergens: ['nuts'] }) } };
+		const b = { ...newDoc('D', 1), members: { m: member('m', { at: 5 }) } };
+		expect(mergeDocs(a, b)).toEqual(mergeDocs(b, a));
+		const x = withLocalChanges(newDoc('D', 1), empty, { ...empty, pantry: { ryza: 100 } }, 9);
+		const y = withLocalChanges(newDoc('D', 1), empty, { ...empty, pantry: { ryza: 300 } }, 9);
+		expect(mergeDocs(x, y)).toEqual(mergeDocs(y, x));
+	});
+
+	it('forgets old deletions without bringing them back from a phone that was away', () => {
+		const start: SharedView = {
+			...empty,
+			extras: [{ id: 'x1', text: 'papier', checked: false }],
+			pantry: { mrkva: 500 }
+		};
+		const shared = withLocalChanges(newDoc('D', 1), empty, start, 10);
+		// One phone deletes both; a month later the deletions are forgotten.
+		const deleted = collect(withLocalChanges(shared, start, empty, 20), 1000);
+		expect(deleted.extras).toEqual({});
+		expect(deleted.gc).toBe(1000);
+		// The phone that was away still has them as they were before the deletion.
+		const away = withLocalChanges(shared, start, { ...start, checked: { tofu: true } }, 2000);
+		const merged = mergeDocs(away, deleted);
+		expect(mergeDocs(deleted, away)).toEqual(merged);
+		expect(viewOf(merged)).toEqual({ ...empty, checked: { tofu: true } });
+		// Something added after the horizon stays.
+		const added = withLocalChanges(
+			away,
+			viewOf(away),
+			{ ...viewOf(away), pantry: { cicer: 1 } },
+			3000
+		);
+		expect(viewOf(mergeDocs(added, deleted)).pantry).toEqual({ cicer: 1 });
+	});
+
+	it('keeps the newest items when a copy has too many, not the first ones', () => {
+		const doc = newDoc('D', 1);
+		for (let i = 0; i < 1000; i++) doc.extras[`old-${i}`] = [{ text: 'x', checked: true }, i + 1];
+		doc.extras['new-item'] = [{ text: 'mlieko', checked: false }, 5000];
+		const read = validateDoc(JSON.parse(JSON.stringify(doc)))!;
+		expect(read.extras['new-item']).toBeDefined();
+		expect(read.extras['old-0']).toBeUndefined();
+	});
+
+	it('knows the newest time in a copy, ignoring a clock far ahead', () => {
+		const doc = withLocalChanges(newDoc('D', 1), empty, { ...empty, checked: { tofu: true } }, 50);
+		doc.pantry.ryza = [100, 9e15];
+		expect(latestStamp(doc)).toBe(9e15);
+		expect(latestStamp(doc, 1000)).toBe(50);
 	});
 
 	it('rejects junk from the server and keeps what is valid', () => {

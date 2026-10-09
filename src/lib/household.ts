@@ -135,6 +135,11 @@ export interface HouseholdDoc {
 	gardenDone: Record<string, Stamped<string | false>>;
 	/** One harvest each (`garden|date|plant|grams|n`), false when deleted – two people can weigh at once. */
 	harvests: Record<string, Stamped<boolean>>;
+	/**
+	 * Deletions older than this were forgotten (see `collect`): an item missing from this copy
+	 * but older than this was deleted here, so it doesn't come back from a phone that was away.
+	 */
+	gc: number;
 }
 
 /** A garden without its diary (ticked tasks and harvests travel one by one). */
@@ -154,7 +159,10 @@ export const MAX_MEMBERS = 12;
 /** Ticked tasks and harvests kept in the shared copy, newest first; a garden's own diary keeps more. */
 export const MAX_GARDEN_ENTRIES = 400;
 const MAX_NAME = 40;
-const MAX_ITEMS = 400;
+/** Per record; deletions are forgotten after a month, so only what's alive counts against it. */
+const MAX_ITEMS = 1000;
+/** Deletions are kept this long, so every phone hears about them before they're forgotten. */
+export const FORGET_AFTER_MS = 30 * 24 * 60 * 60 * 1000;
 /** The sync storage holds 400 kB; old money and history go first. */
 export const MAX_EXPENSES = 200;
 export const MAX_LOG = 80;
@@ -193,7 +201,8 @@ export function newDoc(name: string, now: number): HouseholdDoc {
 		wishes: {},
 		gardens: {},
 		gardenDone: {},
-		harvests: {}
+		harvests: {},
+		gc: 0
 	};
 }
 
@@ -209,16 +218,20 @@ function stamped<T>(raw: unknown, value: (v: unknown) => T | undefined): Stamped
 	return v === undefined ? undefined : [v, raw[1]];
 }
 
-function record<T>(raw: unknown, key: RegExp, value: (v: unknown) => T | undefined) {
+/** The valid entries; past `max`, the newest ones (by `at`) – never the first ones by chance. */
+function record<T>(
+	raw: unknown,
+	key: RegExp,
+	value: (v: unknown) => T | undefined,
+	at: (item: T) => number = (item) => (item as Stamped<unknown>)[1],
+	max = MAX_ITEMS
+) {
 	if (!isRecord(raw)) return {};
-	return Object.fromEntries(
-		Object.entries(raw)
-			.slice(0, MAX_ITEMS)
-			.flatMap(([k, v]) => {
-				const item = key.test(k) ? value(v) : undefined;
-				return item === undefined ? [] : [[k, item] as const];
-			})
-	);
+	const items = Object.entries(raw).flatMap(([k, v]) => {
+		const item = key.test(k) ? value(v) : undefined;
+		return item === undefined ? [] : [[k, item] as const];
+	});
+	return newest(Object.fromEntries(items), max, at);
 }
 
 function validateMember(raw: unknown): Member | undefined {
@@ -397,15 +410,18 @@ export function validateDoc(raw: unknown): HouseholdDoc | null {
 	);
 	const plan = stamped(raw.plan, validatePlanEntries);
 	if (!name || !plan) return null;
-	const members = record(raw.members, MEMBER_ID_RE, validateMember);
+	// Everyone still here first, then the newest removals.
+	const members = record(
+		raw.members,
+		MEMBER_ID_RE,
+		validateMember,
+		(m) => (m.removed ? m.at : m.at + 1e15),
+		MAX_MEMBERS * 2
+	);
 	return {
 		v: 1,
 		name,
-		members: Object.fromEntries(
-			Object.values(members)
-				.slice(0, MAX_MEMBERS * 2)
-				.map((m) => [m.id, m])
-		),
+		members: Object.fromEntries(Object.values(members).map((m) => [m.id, m])),
 		plan,
 		pantry: record(raw.pantry, ID_RE, (v) =>
 			stamped(v, (x) =>
@@ -437,15 +453,15 @@ export function validateDoc(raw: unknown): HouseholdDoc | null {
 					: undefined
 			)
 		),
-		expenses: newest(
-			record(raw.expenses, ITEM_ID_RE, (v) =>
-				stamped(v, (x) => (x === false ? false : validateExpense(x)))
-			),
-			MAX_EXPENSES,
-			(e) => e[1]
+		expenses: record(
+			raw.expenses,
+			ITEM_ID_RE,
+			(v) => stamped(v, (x) => (x === false ? false : validateExpense(x))),
+			undefined,
+			MAX_EXPENSES
 		),
 		money: stamped(raw.money, (x) => (typeof x === 'boolean' ? x : undefined)) ?? [false, 0],
-		log: newest(record(raw.log, ITEM_ID_RE, validateLogEvent), MAX_LOG, (e) => e.at),
+		log: record(raw.log, ITEM_ID_RE, validateLogEvent, (e) => e.at, MAX_LOG),
 		wishes: record(raw.wishes, /^[a-z0-9]{1,16}\.[a-z0-9]+(-[a-z0-9]+)*$/, (v) =>
 			stamped(v, (x) => (typeof x === 'boolean' ? x : undefined))
 		),
@@ -461,7 +477,8 @@ export function validateDoc(raw: unknown): HouseholdDoc | null {
 		),
 		harvests: record(raw.harvests, HARVEST_KEY_RE, (v) =>
 			stamped(v, (x) => (typeof x === 'boolean' ? x : undefined))
-		)
+		),
+		gc: isTime(raw.gc) ? raw.gc : 0
 	};
 }
 
@@ -474,38 +491,112 @@ function newest<T>(items: Record<string, T>, max: number, at: (item: T) => numbe
 
 // ── Merging ────────────────────────────────────────────────────
 
-const newer = <T>(a: Stamped<T> | undefined, b: Stamped<T> | undefined) =>
-	!a ? b! : !b ? a : b[1] > a[1] ? b : a;
+/** Two values set at the same moment: the same one wins on every phone, whichever merges. */
+const later = (a: unknown, b: unknown) => canonical(b) > canonical(a);
 
-function mergeRecord<T>(a: Record<string, Stamped<T>>, b: Record<string, Stamped<T>>) {
-	const out: Record<string, Stamped<T>> = { ...a };
-	for (const [k, v] of Object.entries(b)) out[k] = newer(out[k], v);
+const newer = <T>(a: Stamped<T> | undefined, b: Stamped<T> | undefined) =>
+	!a ? b! : !b ? a : b[1] > a[1] || (b[1] === a[1] && later(a[0], b[0])) ? b : a;
+
+/**
+ * Item by item, the newer value. An item one copy doesn't have although it's older than that
+ * copy's `gc` was deleted there and its deletion already forgotten – it stays gone.
+ */
+function mergeKeyed<T>(
+	a: Record<string, T>,
+	b: Record<string, T>,
+	gcA: number,
+	gcB: number,
+	pick: (x: T | undefined, y: T | undefined) => T,
+	at: (item: T) => number
+): Record<string, T> {
+	const out: Record<string, T> = {};
+	for (const k of new Set([...Object.keys(a), ...Object.keys(b)])) {
+		const v = pick(a[k], b[k]);
+		if ((!(k in a) && at(v) < gcA) || (!(k in b) && at(v) < gcB)) continue;
+		out[k] = v;
+	}
 	return out;
 }
 
+const mergeRecord = <T>(
+	a: Record<string, Stamped<T>>,
+	b: Record<string, Stamped<T>>,
+	gcA: number,
+	gcB: number
+) => mergeKeyed(a, b, gcA, gcB, newer<T>, (v) => v[1]);
+
+const newerMember = (a: Member | undefined, b: Member | undefined) =>
+	!a ? b! : !b ? a : b.at > a.at || (b.at === a.at && later(a, b)) ? b : a;
+
 /** Both copies' changes, the newer one per item. Order doesn't matter: merge(a, b) = merge(b, a). */
 export function mergeDocs(a: HouseholdDoc, b: HouseholdDoc): HouseholdDoc {
-	const members = { ...a.members };
-	for (const m of Object.values(b.members)) {
-		if (!members[m.id] || m.at > members[m.id].at) members[m.id] = m;
-	}
+	const merge = <T>(x: Record<string, Stamped<T>>, y: Record<string, Stamped<T>>) =>
+		mergeRecord(x, y, a.gc, b.gc);
 	return {
 		v: 1,
 		name: newer(a.name, b.name),
-		members,
+		members: mergeKeyed(a.members, b.members, a.gc, b.gc, newerMember, (m) => m.at),
 		plan: newer(a.plan, b.plan),
-		pantry: mergeRecord(a.pantry, b.pantry),
-		checked: mergeRecord(a.checked, b.checked),
-		extras: mergeRecord(a.extras, b.extras),
-		claims: mergeRecord(a.claims, b.claims),
-		expenses: newest(mergeRecord(a.expenses, b.expenses), MAX_EXPENSES, (e) => e[1]),
+		pantry: merge(a.pantry, b.pantry),
+		checked: merge(a.checked, b.checked),
+		extras: merge(a.extras, b.extras),
+		claims: merge(a.claims, b.claims),
+		expenses: newest(merge(a.expenses, b.expenses), MAX_EXPENSES, (e) => e[1]),
 		money: newer(a.money, b.money),
 		log: newest({ ...a.log, ...b.log }, MAX_LOG, (e) => e.at),
-		wishes: mergeRecord(a.wishes, b.wishes),
-		gardens: mergeRecord(a.gardens, b.gardens),
-		gardenDone: newest(mergeRecord(a.gardenDone, b.gardenDone), MAX_GARDEN_ENTRIES, (e) => e[1]),
-		harvests: newest(mergeRecord(a.harvests, b.harvests), MAX_GARDEN_ENTRIES, (e) => e[1])
+		wishes: merge(a.wishes, b.wishes),
+		gardens: merge(a.gardens, b.gardens),
+		gardenDone: newest(merge(a.gardenDone, b.gardenDone), MAX_GARDEN_ENTRIES, (e) => e[1]),
+		harvests: newest(merge(a.harvests, b.harvests), MAX_GARDEN_ENTRIES, (e) => e[1]),
+		gc: Math.max(a.gc, b.gc)
 	};
+}
+
+const RECORDS = [
+	'pantry',
+	'checked',
+	'extras',
+	'claims',
+	'expenses',
+	'wishes',
+	'gardens',
+	'gardenDone',
+	'harvests'
+] as const;
+
+/**
+ * Forgets deletions (and removed members) set before `horizon`; the document says so in `gc`,
+ * so a phone that still has such an item doesn't bring it back. Without this the deletions
+ * would pile up for good.
+ */
+export function collect(doc: HouseholdDoc, horizon: number): HouseholdDoc {
+	if (horizon <= doc.gc) return doc;
+	const next = { ...doc, gc: horizon };
+	const keep = <T>(items: Record<string, Stamped<T>>) =>
+		Object.fromEntries(Object.entries(items).filter(([, [v, at]]) => v !== false || at >= horizon));
+	for (const name of RECORDS) {
+		(next[name] as Record<string, Stamped<unknown>>) = keep(
+			doc[name] as Record<string, Stamped<unknown>>
+		);
+	}
+	next.members = Object.fromEntries(
+		Object.entries(doc.members).filter(([, m]) => !m.removed || m.at >= horizon)
+	);
+	return next;
+}
+
+/** The newest time anything in the document was set, for the next change to come after it. */
+export function latestStamp(doc: HouseholdDoc, notAfter = Infinity): number {
+	let latest = 0;
+	const see = (at: number) => {
+		if (at > latest && at <= notAfter) latest = at;
+	};
+	see(doc.name[1]);
+	see(doc.plan[1]);
+	see(doc.money[1]);
+	for (const m of Object.values(doc.members)) see(m.at);
+	for (const name of RECORDS) for (const [, at] of Object.values(doc[name])) see(at);
+	return latest;
 }
 
 /** What the household document means for one device's plan, pantry and list. */

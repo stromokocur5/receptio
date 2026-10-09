@@ -435,7 +435,9 @@ export function saveGarden(diary: GardenDiary) {
 	const next = { ...diary, name };
 	gardens.current = gardens.current.some((g) => g.id === next.id)
 		? gardens.current.map((g) => (g.id === next.id ? next : g))
-		: [...gardens.current, next].slice(0, MAX_GARDENS);
+		: gardens.current.length < MAX_GARDENS
+			? [...gardens.current, next]
+			: gardens.current;
 	openGardenId.current = next.id;
 }
 
