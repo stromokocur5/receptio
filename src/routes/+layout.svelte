@@ -182,7 +182,7 @@
 			<ul>
 				<li><a href="/wiki/o-receptiu">Odkiaľ sú čísla</a></li>
 				<li><a href="/navrhni">Navrhni recept</a></li>
-				<li><a href="/moje">Záloha dát</a></li>
+				<li><a href="/moje#zaloha">Záloha dát</a></li>
 				<li><a href="/sukromie">Ochrana súkromia</a></li>
 				<li><a href="mailto:gabriel@kohut.xyz">Kontakt</a></li>
 			</ul>

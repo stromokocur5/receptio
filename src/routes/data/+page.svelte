@@ -15,7 +15,7 @@
 		priceChanges,
 		type PriceHistory
 	} from '$lib/price-history';
-	import { isSaleActive, shelfName, unitPrice } from '$lib/pricing';
+	import { isSaleActive, nameWithPack, packInName, shelfName, unitPrice } from '$lib/pricing';
 	import { SITE_ORIGIN } from '$lib/site';
 	import type { PriceEntry } from '$lib/types';
 	import type { PageProps } from './$types';
@@ -33,10 +33,7 @@
 		year: 'numeric'
 	});
 	const fmtDay = (d: string) => dayFormat.format(new Date(`${d}T00:00:00Z`));
-	/** Most shop names already end with the pack size; say it once. */
-	const PACK_IN_NAME = /\d\s*(g|kg|ml|l)\b/i;
-	const withPack = (product: string, pack: string) =>
-		PACK_IN_NAME.test(product) ? shelfName(product) : `${shelfName(product)} · ${pack}`;
+	const withPack = nameWithPack;
 	const percent = (n: number) =>
 		`${n > 0 ? '+' : n < 0 ? '−' : ''}${formatNumber(Math.abs(n) * 100, 1)} %`;
 
@@ -448,7 +445,7 @@
 								{#if p.url}<a href={p.url} rel="noopener noreferrer" target="_blank"
 										>{shelfName(p.product)}</a
 									>{:else}{shelfName(p.product)}{/if}
-								{#if !PACK_IN_NAME.test(p.product)}<span class="muted">· {p.pack}</span>{/if}
+								{#if !packInName(p.product)}<span class="muted">· {p.pack}</span>{/if}
 								{#if p.saleUntil && isSaleActive(p, today)}<span class="badge tomato">akcia</span
 									>{/if}
 							</td>

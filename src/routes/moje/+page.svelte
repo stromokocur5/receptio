@@ -449,7 +449,7 @@
 		</button>
 	</p>
 
-	<section class="card box backup">
+	<section class="card box backup" id="zaloha">
 		<h2 class="section-title"><Icon name="package" size={24} /> Záloha do súboru</h2>
 		<p>
 			Špajza, plán, záhradka, história, obľúbené a poznámky žijú v tomto prehliadači. Ak nechceš

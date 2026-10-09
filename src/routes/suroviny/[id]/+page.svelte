@@ -13,7 +13,7 @@
 	import { CATEGORY_ICONS } from '$lib/ingredient-icons';
 	import { CATEGORY_LABELS, pluralRecipes } from '$lib/labels';
 	import { ALLERGEN_LABELS, DAILY_REFERENCE } from '$lib/nutrition';
-	import { bestPrice, isUsable, pricePerKg, shelfName, unitPrice } from '$lib/pricing';
+	import { bestPrice, isUsable, nameWithPack, pricePerKg, unitPrice } from '$lib/pricing';
 	import { onMount } from 'svelte';
 	import PriceChart from '$lib/components/PriceChart.svelte';
 	import { ingredientTimeline, type PriceHistory } from '$lib/price-history';
@@ -51,10 +51,7 @@
 	);
 	const dayMonth = new Intl.DateTimeFormat('sk', { day: 'numeric', month: 'numeric' });
 
-	/** Most shop names already end with the pack size ("Cícer 500 g"); say it once. */
-	const PACK_IN_NAME = /\d\s*(g|kg|ml|l)\b/i;
-	const withPack = (p: PriceEntry) =>
-		PACK_IN_NAME.test(p.product) ? shelfName(p.product) : `${shelfName(p.product)} · ${p.pack}`;
+	const withPack = (p: PriceEntry) => nameWithPack(p.product, p.pack);
 
 	/** How the plant grows decides the heading and icon of the growing section. */
 	const GROW_TITLE: Record<string, (name: string) => string> = {

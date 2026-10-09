@@ -36,6 +36,15 @@ export function shelfName(product: string): string {
 	return lower.charAt(0).toLocaleUpperCase('sk') + lower.slice(1);
 }
 
+/** Most shop names already end with the pack size ("Cícer 500 g"): say it once. */
+const PACK_IN_NAME = /\d\s*(g|kg|ml|l)\b/i;
+export const packInName = (product: string) => PACK_IN_NAME.test(product);
+
+/** "Cícer 500 g", or the name and the pack when the name doesn't say it. */
+export function nameWithPack(product: string, pack: string): string {
+	return packInName(product) ? shelfName(product) : `${shelfName(product)} · ${pack}`;
+}
+
 export function ageInDays(isoDate: string, today: Date): number {
 	return Math.floor((today.getTime() - new Date(isoDate).getTime()) / DAY_MS);
 }

@@ -13,18 +13,18 @@
 	} from '$lib/labels';
 	import { proteinEnergyShare } from '$lib/nutrition';
 	import {
-		BULK_PACK_GRAMS,
-		STALE_AFTER_DAYS,
 		activeSales,
 		ageInDays,
 		bestOnlinePrice,
 		bestPrice,
+		BULK_PACK_GRAMS,
 		isSaleActive,
 		isStale,
 		isUsable,
+		nameWithPack,
 		pricePerKg,
 		recipesOnSale,
-		shelfName,
+		STALE_AFTER_DAYS,
 		storeStandings,
 		unitPrice
 	} from '$lib/pricing';
@@ -106,10 +106,7 @@
 		const value = want === 'l' ? perKg * ingredient.density : perKg;
 		return `${formatEur(value)}/${want}`;
 	}
-	/** Most shop names already end with the pack size ("Cícer 500 g"); say it once. */
-	const PACK_IN_NAME = /\d\s*(g|kg|ml|l)\b/i;
-	const withPack = (e: PriceEntry) =>
-		PACK_IN_NAME.test(e.product) ? shelfName(e.product) : `${shelfName(e.product)} · ${e.pack}`;
+	const withPack = (e: PriceEntry) => nameWithPack(e.product, e.pack);
 	const dayWord = (n: number) => (n === 1 ? 'deň' : n < 5 ? 'dni' : 'dní');
 
 	const myStores = $derived(settings.current.myStores);
