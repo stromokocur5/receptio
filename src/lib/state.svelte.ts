@@ -83,7 +83,7 @@ class Persisted<T> {
 	}
 }
 
-function validateDates(raw: unknown): Record<string, string> | undefined {
+export function validateDates(raw: unknown): Record<string, string> | undefined {
 	if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) return undefined;
 	return Object.fromEntries(
 		Object.entries(raw).filter(
@@ -95,7 +95,7 @@ function validateDates(raw: unknown): Record<string, string> | undefined {
 const isRecord = (v: unknown): v is Record<string, unknown> =>
 	typeof v === 'object' && v !== null && !Array.isArray(v);
 
-function validatePantry(raw: unknown): Pantry | undefined {
+export function validatePantry(raw: unknown): Pantry | undefined {
 	if (!isRecord(raw)) return undefined;
 	const pantry: Pantry = {};
 	for (const [id, grams] of Object.entries(raw)) {

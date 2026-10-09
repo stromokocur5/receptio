@@ -3,6 +3,7 @@
 	import { formatGrams } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
+	import PlanScope from '$lib/components/PlanScope.svelte';
 	import PreservesShelf from '$lib/components/PreservesShelf.svelte';
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import { CATEGORY_LABELS, ingredientSearchText, pluralRecipes, searchMatcher } from '$lib/labels';
@@ -190,6 +191,7 @@
 			Naklikaj suroviny a Receptio ti ukáže, čo z nich uvaríš. Množstvo vyplň, iba ak chceš
 			presnejší nákupný zoznam. Všetko ostáva len v tvojom prehliadači.
 		</p>
+		<PlanScope />
 		<a class="leftovers-link card draw-host" href="/zvysky">
 			<Icon name="jar" size={22} />
 			<span>

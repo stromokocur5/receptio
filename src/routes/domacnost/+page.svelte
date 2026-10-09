@@ -206,9 +206,9 @@
 		<section class="card box">
 			<h2><Icon name="users" size={24} /> Pozvánka do domácnosti</h2>
 			<p>
-				Po pripojení uvidíš spoločný plán a nákupný zoznam – <strong
-					>tvoj doterajší plán a zoznam v tomto telefóne sa nahradia</strong
-				>. Veci zo špajze, ktoré máš len ty, sa pridajú k spoločným.
+				Po pripojení uvidíš spoločný plán, nákupný zoznam a špajzu. Tvoje vlastné sa s nimi
+				nemiešajú – odložia sa, ako sú, a kedykoľvek sa k nim prepneš cez <strong>Len môj</strong>
+				v pláne alebo v špajzi. Keď z domácnosti odídeš, vrátia sa ti.
 			</p>
 			<div class="actions">
 				<button class="btn leaf" disabled={busy} onclick={() => join(invitedCode!)}>
@@ -222,8 +222,9 @@
 		<section class="card box">
 			<h2><Icon name="home" size={24} /> Založiť domácnosť</h2>
 			<p>
-				Tvoj súčasný plán, špajza a nákupný zoznam sa stanú spoločnými. Potom pošleš odkaz ostatným
-				– kto ho otvorí, je doma s vami.
+				Domácnosť dostane vlastný plán, nákupný zoznam a špajzu. Tvoje vlastné sa odložia, nič sa
+				nezmieša ani nezmaže – prepneš sa k nim cez <strong>Len môj</strong>. Potom pošleš odkaz
+				ostatným – kto ho otvorí, je doma s vami.
 			</p>
 			<form class="form" onsubmit={create}>
 				<label>
@@ -327,14 +328,13 @@
 
 		{#if household.solo}
 			<section class="card box solo-on">
-				<h2><Icon name="sun" size={24} /> Plánuješ sám</h2>
+				<h2><Icon name="sun" size={24} /> Plánuješ pre seba</h2>
 				<p>
-					Máš vlastný plán a nákupný zoznam. Spoločný plán domácnosti na teba počká, špajza ostáva
-					spoločná.{#if household.soloAway && me?.away}
+					Máš svoj vlastný plán, nákupný zoznam a špajzu. Spoločné na teba počkajú, ako sú.{#if household.soloAway && me?.away}
 						Ostatní vidia, že nie si doma{me.away.to ? ` do ${dateText(me.away.to)}` : ''}.{/if}
 				</p>
 				<button class="btn leaf" disabled={busy} onclick={() => void run(() => stopSolo())}>
-					<Icon name="users" size={18} /> Späť k spoločnému plánu
+					<Icon name="users" size={18} /> Späť k domácnosti
 				</button>
 			</section>
 		{/if}
@@ -490,10 +490,11 @@
 
 		{#if !household.solo}
 			<section class="card box">
-				<h2><Icon name="sun" size={24} /> Plánovať sám</h2>
+				<h2><Icon name="sun" size={24} /> Plánovať pre seba</h2>
 				<p>
-					Ideš na dovolenku, varíš si obedy do práce alebo chceš chvíľu vlastný plán? Dostaneš
-					vlastný plán a nákupný zoznam, spoločný na teba počká. Špajza ostáva spoločná.
+					Ideš na dovolenku, varíš si obedy do práce alebo chceš chvíľu vlastný plán? Prepneš sa na
+					svoj vlastný plán, nákupný zoznam a špajzu – tie sa so spoločnými nikdy nemiešajú. Rovnako
+					sa prepneš aj cez <strong>Len môj</strong> v pláne či v špajzi.
 				</p>
 				<p class="hint">
 					Len občas niečo pre seba? Pri recepte ťukni <strong>Len pre mňa</strong> – nakúpi sa so spoločným
@@ -519,7 +520,7 @@
 					disabled={busy}
 					onclick={() => void run(() => startSolo(soloAway, soloUntil || null))}
 				>
-					<Icon name="sun" size={18} /> Plánovať sám
+					<Icon name="sun" size={18} /> Plánovať pre seba
 				</button>
 			</section>
 		{/if}
@@ -533,7 +534,9 @@
 					confirmLeave = !confirmLeave;
 				}}
 			>
-				{confirmLeave ? 'Naozaj odísť? Plán a zoznam ti tu ostanú.' : 'Odísť z domácnosti'}
+				{confirmLeave
+					? 'Naozaj odísť? Vráti sa ti tvoj vlastný plán, zoznam a špajza.'
+					: 'Odísť z domácnosti'}
 			</button>
 		</section>
 	{/if}

@@ -23,6 +23,7 @@ import {
 	type SharedView
 } from './household';
 import { localToday, shiftDate } from './journal';
+import type { Pantry } from './pantry';
 import type { PlanEntry } from './shopping';
 import {
 	changes,
@@ -30,8 +31,11 @@ import {
 	extraItems,
 	mainMeals,
 	pantry,
+	pantryAdded,
 	plan,
 	settings,
+	validateDates,
+	validatePantry,
 	type ExtraItem,
 	type Settings
 } from './state.svelte';
@@ -51,9 +55,9 @@ import {
  * this loop merges them with everyone else's copy on the encrypted sync storage. The code lives
  * only on the device and in the invite link's fragment (/domacnost#d=CODE).
  *
- * "Planning alone" (on holiday, a week of lunches at work) gives this device its own plan and
- * shopping list for a while; the pantry stays shared and the household's plan waits in the
- * document until they're back.
+ * The household's plan, list and pantry are kept apart from the person's own: joining puts the
+ * own ones aside untouched, "planning for myself" switches back to them for a while (on holiday,
+ * a week of lunches at work) and leaving brings them back. Nothing is merged either way.
  */
 
 export const HOUSEHOLD_PREFIX = 'd=';
@@ -62,11 +66,33 @@ const STORAGE_KEY = 'receptio:household';
 const POLL_MS = 15_000;
 const PUSH_DELAY_MS = 1500;
 
-/** One person's own plan and list, kept aside while they plan with the household. */
+/** One person's own plan, list and pantry, kept aside while they plan with the household. */
 interface PersonalPlan {
 	plan: PlanEntry[];
 	checked: Record<string, boolean>;
 	extras: ExtraItem[];
+	pantry: Pantry;
+	/** When each own pantry item was added, for "use soon". */
+	added: Record<string, string>;
+}
+
+const EMPTY_PERSONAL: PersonalPlan = { plan: [], checked: {}, extras: [], pantry: {}, added: {} };
+
+/** What's on this device now – the own data while planning for oneself. */
+const onDevice = (): PersonalPlan => ({
+	plan: plan.current,
+	checked: checkedItems.current,
+	extras: extraItems.current,
+	pantry: pantry.current,
+	added: pantryAdded.current
+});
+
+function putOnDevice(data: PersonalPlan) {
+	plan.current = data.plan;
+	checkedItems.current = data.checked;
+	extraItems.current = data.extras;
+	pantry.current = data.pantry;
+	pantryAdded.current = data.added;
 }
 
 interface Saved {
@@ -78,6 +104,7 @@ interface Saved {
 	solo: boolean;
 	/** Planning alone marked them away; coming back clears it. */
 	soloAway: boolean;
+	/** The own data while the household's is on the device; null while planning for oneself. */
 	personal: PersonalPlan | null;
 }
 
@@ -203,10 +230,10 @@ function currentView(): SharedView {
 	};
 }
 
-/** What this device shares: alone, only the pantry – the plan and list are its own. */
+/** What this device shares: planning for oneself, nothing – the household's data waits as it was. */
 function sharedView(): SharedView {
 	if (!household.solo || !base) return currentView();
-	return { ...base, pantry: pantry.current };
+	return base;
 }
 
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b);
@@ -217,8 +244,8 @@ function applyView(view: SharedView) {
 		if (!same(now.plan, view.plan)) plan.current = view.plan;
 		if (!same(now.checked, view.checked)) checkedItems.current = view.checked;
 		if (!same(now.extras, view.extras)) extraItems.current = view.extras;
+		if (!same(now.pantry, view.pantry)) pantry.current = view.pantry;
 	}
-	if (!same(now.pantry, view.pantry)) pantry.current = view.pantry;
 	syncPeople();
 	appliedUpTo = changes.count;
 }
@@ -434,7 +461,10 @@ function validatePersonal(raw: unknown): PersonalPlan | null {
 						typeof x.text === 'string' &&
 						typeof x.checked === 'boolean'
 				)
-			: []
+			: [],
+		// Stashed before the pantry was kept apart too: it was shared, so the current one is it.
+		pantry: validatePantry(r.pantry) ?? pantry.current,
+		added: validateDates(r.added) ?? pantryAdded.current
 	};
 }
 
@@ -474,11 +504,11 @@ function blankMember(name: string, at: number): Member {
 	};
 }
 
-/** Starts a household from what this device already has (plan, pantry, list) and returns its code. */
+/** Starts an empty household (the own plan, list and pantry go aside) and returns its code. */
 export async function createHousehold(name: string, myName: string): Promise<string> {
 	const now = Date.now();
 	const code = generateCode();
-	let doc = withLocalChanges(newDoc(name, now), viewOf(newDoc('', 0)), currentView(), now);
+	let doc = newDoc(name, now);
 	const me = myName.trim() ? blankMember(myName, now) : null;
 	if (me) doc = { ...doc, members: { [me.id]: me } };
 	await upload(await deriveKeys(code), doc);
@@ -487,17 +517,18 @@ export async function createHousehold(name: string, myName: string): Promise<str
 	household.doc = doc;
 	household.solo = false;
 	household.soloAway = false;
-	personal = null;
+	personal = onDevice();
 	household.status = 'connecting';
 	base = viewOf(doc);
+	applyView(base);
 	save();
 	await start(code);
 	return code;
 }
 
 /**
- * Joins from an invite link. The household's plan and list replace this device's; pantry
- * items only this device knows about are added to the shared pantry.
+ * Joins from an invite link. The own plan, list and pantry go aside as they are and come back
+ * when planning for oneself or after leaving; the household's are shown instead.
  */
 export async function joinHousehold(input: string): Promise<string | null> {
 	const code = normalizeCode(input);
@@ -516,11 +547,10 @@ export async function joinHousehold(input: string): Promise<string | null> {
 	}
 	// A new link to the same household (after it was changed) keeps who this phone is.
 	const sameHousehold = household.doc && household.me && remote.members[household.me];
-	if (household.solo) await stopSolo(false);
+	// In another household the device holds that one's data; the own data is already aside.
+	const own = household.solo || !household.code ? onDevice() : (personal ?? EMPTY_PERSONAL);
 	const shared = viewOf(remote);
-	const ownPantry = Object.fromEntries(
-		Object.entries(pantry.current).filter(([id]) => !(id in shared.pantry))
-	);
+	personal = own;
 	household.code = code;
 	household.me = sameHousehold ? household.me : null;
 	household.doc = remote;
@@ -528,13 +558,12 @@ export async function joinHousehold(input: string): Promise<string | null> {
 	household.soloAway = false;
 	base = shared;
 	applyView(shared);
-	if (Object.keys(ownPantry).length) pantry.current = { ...shared.pantry, ...ownPantry };
 	save();
 	await start(code);
 	return null;
 }
 
-/** Leaves on this device; plan, pantry and list stay here as they are now. */
+/** Leaves on this device; the own plan, list and pantry come back, the household's stay with it. */
 export async function leaveHousehold() {
 	const me = household.me;
 	const k = keys;
@@ -559,6 +588,8 @@ export async function leaveHousehold() {
 		}
 	}
 	stop();
+	// Joined before own data was kept apart: nothing was put aside, so the household's stays.
+	if (!household.solo && personal) putOnDevice(personal);
 	base = null;
 	personal = null;
 	pendingEvents = [];
@@ -651,22 +682,20 @@ export function setMe(id: string | null) {
 	save();
 }
 
-// ── Planning alone ─────────────────────────────────────────────
+// ── Planning for oneself ───────────────────────────────────────
 
 /**
- * This device gets its own plan and shopping list (the one from last time, or empty); the
- * household's wait in the shared document. `away` also tells the others this person isn't
- * eating at home, from today until `until` (null: until they're back).
+ * The own plan, list and pantry come back on this device; the household's wait in the shared
+ * document as they are. `away` also tells the others this person isn't eating at home, from
+ * today until `until` (null: until they're back).
  */
 export async function startSolo(away: boolean, until: string | null) {
 	if (household.solo || !household.doc) return;
 	if (keys) await sync();
-	const own = personal ?? { plan: [], checked: {}, extras: [] };
+	const own = personal ?? EMPTY_PERSONAL;
 	personal = null;
 	household.solo = true;
-	plan.current = own.plan;
-	checkedItems.current = own.checked;
-	extraItems.current = own.extras;
+	putOnDevice(own);
 	appliedUpTo = changes.count;
 	settings.current = { ...settings.current, people: 1 };
 	const me = myMember();
@@ -675,16 +704,10 @@ export async function startSolo(away: boolean, until: string | null) {
 	save();
 }
 
-/** Back to the household's plan and list; this person's own are kept for next time. */
-export async function stopSolo(resync = true) {
+/** Back to the household's plan, list and pantry; the own ones go aside for next time. */
+export async function stopSolo() {
 	if (!household.solo || !household.doc) return;
-	// The pantry changed while alone is shared first, or the household's copy would undo it.
-	if (resync && keys) await sync();
-	personal = {
-		plan: plan.current,
-		checked: checkedItems.current,
-		extras: extraItems.current
-	};
+	personal = onDevice();
 	household.solo = false;
 	const me = myMember();
 	if (me && household.soloAway) updateMember(me.id, { away: null });
@@ -692,7 +715,7 @@ export async function stopSolo(resync = true) {
 	base = viewOf(household.doc);
 	applyView(base);
 	save();
-	if (resync && keys) await sync();
+	if (keys) await sync();
 }
 
 // ── Shopping, money, wishes ────────────────────────────────────

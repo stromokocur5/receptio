@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { planCheck } from '$lib/plancheck';
+	import PlanScope from '$lib/components/PlanScope.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
@@ -513,11 +514,12 @@
 			Pridaj recepty a počet porcií. Receptio z nich spraví jeden nákupný zoznam, odpočíta to, čo
 			máš v špajzi, a ukáže, ako na tom si so živinami.
 		</p>
+		<PlanScope />
 		{#if household.doc}
 			<p class="household-note">
 				<Icon name="users" size={18} />
 				<span
-					>{#if household.solo}Plánuješ sám – spoločný plán domácnosti <a href="/domacnost"
+					>{#if household.solo}Tvoj vlastný plán – spoločný plán domácnosti <a href="/domacnost"
 							>{household.doc.name[0]}</a
 						> na teba počká.{:else}Spoločný plán domácnosti <a href="/domacnost"
 							>{household.doc.name[0]}</a

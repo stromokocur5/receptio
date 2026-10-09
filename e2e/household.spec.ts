@@ -86,6 +86,26 @@ test('two phones share the plan, who buys what, the log and the money', async ({
 	await second.close();
 });
 
+test('the own plan and pantry stay apart from the household', async ({ page }) => {
+	await visit(page, '/spajza');
+	await page.getByRole('button', { name: /Raňajky/ }).click();
+	await expect(page.locator('#moja-spajza')).toContainText('Chia');
+	await createHousehold(page, 'Ema');
+	await page.goto('/spajza');
+	await page.waitForLoadState('networkidle');
+	await expect(page.locator('#moja-spajza')).toContainText('Zatiaľ prázdne');
+	await page.getByRole('button', { name: 'Len môj' }).click();
+	await expect(page.locator('#moja-spajza')).toContainText('Chia');
+	await page.getByRole('button', { name: 'Byt 4B' }).click();
+	await expect(page.locator('#moja-spajza')).toContainText('Zatiaľ prázdne');
+	await page.goto('/domacnost');
+	await page.waitForLoadState('networkidle');
+	await page.getByRole('button', { name: 'Odísť z domácnosti' }).click();
+	await page.getByRole('button', { name: /Naozaj odísť/ }).click();
+	await page.goto('/spajza');
+	await expect(page.locator('#moja-spajza')).toContainText('Chia');
+});
+
 test('planning alone keeps an own plan and goes back to the shared one', async ({ page }) => {
 	await createHousehold(page, 'Ema');
 	await page.getByLabel('Meno nového člena').fill('Jano');
@@ -101,18 +121,18 @@ test('planning alone keeps an own plan and goes back to the shared one', async (
 
 	await page.goto('/domacnost');
 	await page.waitForLoadState('networkidle');
-	await page.getByRole('button', { name: 'Plánovať sám' }).click();
-	await expect(page.getByRole('heading', { name: 'Plánuješ sám' })).toBeVisible();
+	await page.getByRole('button', { name: 'Plánovať pre seba' }).click();
+	await expect(page.getByRole('heading', { name: 'Plánuješ pre seba' })).toBeVisible();
 	await expect(page.locator('.member').first()).toContainText('preč');
 
 	await page.goto('/plan');
 	await page.waitForLoadState('networkidle');
-	await expect(page.getByText(/Plánuješ sám/)).toBeVisible();
+	await expect(page.getByText(/Tvoj vlastný plán/)).toBeVisible();
 	await expect(page.getByText(/falafel/i)).toHaveCount(0);
 
 	await page.goto('/domacnost');
 	await page.waitForLoadState('networkidle');
-	await page.getByRole('button', { name: 'Späť k spoločnému plánu' }).click();
+	await page.getByRole('button', { name: 'Späť k domácnosti' }).click();
 	await expect(page.locator('.member').first()).not.toContainText('preč');
 	await page.goto('/plan');
 	await page.waitForLoadState('networkidle');
