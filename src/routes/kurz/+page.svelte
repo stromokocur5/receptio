@@ -98,6 +98,7 @@
 
 <style>
 	.page {
+		padding-top: 28px;
 		padding-bottom: 48px;
 	}
 	.progress {

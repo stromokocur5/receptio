@@ -628,6 +628,9 @@ const akcie = data.filter((p) => p.sale_until);`}</code
 </div>
 
 <style>
+	.page {
+		padding-top: 28px;
+	}
 	.tiles {
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));

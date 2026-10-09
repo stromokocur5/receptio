@@ -540,6 +540,9 @@
 </div>
 
 <style>
+	.page {
+		padding-top: 28px;
+	}
 	.lede {
 		max-width: 62ch;
 	}
