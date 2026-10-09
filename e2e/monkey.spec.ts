@@ -50,6 +50,8 @@ function watch(page: Page) {
 		const text = m.text();
 		// Offline backends and refused permissions are expected in the test browser.
 		if (/Failed to load resource|net::|camera|NotAllowedError|Permission/i.test(text)) return;
+		// The catalog request of a page the monkey already tapped away from, cut off mid-load.
+		if (/catalog unavailable TypeError: Failed to fetch/.test(text)) return;
 		errors.push(text);
 	});
 	page.on('dialog', (d) => d.accept().catch(() => {}));

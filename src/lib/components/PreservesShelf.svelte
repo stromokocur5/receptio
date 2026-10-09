@@ -286,7 +286,7 @@
 			Koľko
 			<input class="input" type="number" bind:value={count} min="1" max="999" step="1" />
 		</label>
-		<label>
+		<label class="where">
 			Kde
 			<select class="input" bind:value={place}>
 				{#each PRESERVE_PLACES as where (where)}
@@ -294,11 +294,11 @@
 				{/each}
 			</select>
 		</label>
-		<label>
+		<label class="when">
 			Kedy
 			<input class="input" type="date" bind:value={made} max={today} />
 		</label>
-		<button class="btn leaf"><Icon name="plus" size={18} /> Pridať</button>
+		<button class="btn leaf add-btn"><Icon name="plus" size={18} /> Pridať</button>
 	</form>
 	<p class="hint">
 		Ako zavárať a mraziť: <a href="/wiki/zavaranie">Zaváranie</a> ·
@@ -400,18 +400,22 @@
 		min-width: 0;
 		width: 100%;
 	}
+	/* What and how many, then where and when: every field lines up with the card's edges. */
 	.add {
-		display: flex;
-		flex-wrap: wrap;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 88px;
 		align-items: end;
 		gap: var(--sp-2);
 		margin: var(--sp-4) 0 10px;
 	}
 	.grow {
-		flex: 1 1 180px;
+		grid-column: span 2;
 	}
-	.num {
-		flex: 0 0 76px;
+	.when {
+		grid-column: span 2;
+	}
+	.add-btn {
+		justify-self: start;
 	}
 	@media (prefers-reduced-motion: reduce) {
 		.items li {

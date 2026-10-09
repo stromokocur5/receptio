@@ -2,7 +2,8 @@
 	import { useCatalog } from '$lib/catalog';
 	import { settings } from '$lib/state.svelte';
 
-	let { label = 'Kde nakupuješ?' }: { label?: string } = $props();
+	/** `quiet`: the label is for screen readers only, under a heading that already says it. */
+	let { label = 'Kde nakupuješ?', quiet = false }: { label?: string; quiet?: boolean } = $props();
 
 	const catalog = useCatalog();
 	/** Only the shops you walk into; e-shops are compared separately as bulk buys. */
@@ -22,7 +23,7 @@
 </script>
 
 <fieldset class="store-picker">
-	<legend>{label}</legend>
+	<legend class:sr-only={quiet}>{label}</legend>
 	<div class="chips">
 		{#each shops as shop (shop.id)}
 			<button class="chip" aria-pressed={mine.includes(shop.id)} onclick={() => toggle(shop.id)}>

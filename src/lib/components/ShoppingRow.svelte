@@ -69,7 +69,8 @@
 		width: 26px;
 		height: 26px;
 		border-radius: var(--radius-xs);
-		border: 2px solid var(--line);
+		/* --line alone all but disappears on a dark card; the box must read as tappable. */
+		border: 2px solid color-mix(in srgb, var(--ink) 30%, var(--line));
 		color: transparent;
 		transition:
 			background 0.2s,

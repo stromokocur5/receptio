@@ -318,6 +318,10 @@
 	.recipes a {
 		font-weight: 650;
 		color: var(--ink);
+		text-decoration: none;
+	}
+	.recipes a:hover {
+		text-decoration: underline;
 	}
 	.recipes .muted {
 		white-space: nowrap;

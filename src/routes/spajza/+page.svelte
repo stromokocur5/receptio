@@ -463,7 +463,7 @@
 	<section class="card box never" id="nemam" aria-labelledby="nemam-title">
 		<div class="never-head">
 			<h2 class="section-title" id="nemam-title"><Icon name="x" size={24} /> Čo nemám a nejem</h2>
-			<p class="muted">
+			<p class="hint">
 				Recepty s týmito vecami ti Receptio nebude ponúkať – v receptoch, v návrhu týždňa ani tu. V
 				receptoch sa to dá na chvíľu vypnúť.
 			</p>
@@ -622,7 +622,7 @@
 	}
 	.side {
 		display: grid;
-		gap: 18px;
+		gap: 20px;
 		align-content: start;
 	}
 	.soon {

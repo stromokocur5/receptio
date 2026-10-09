@@ -681,7 +681,7 @@
 		<div class="column">
 			{#if ui.loaded && entries.length === 0}
 				<section class="card box start">
-					<h2 class="section-title">Ako chceš začať?</h2>
+					<h2 class="section-title"><Icon name="calendar" size={24} /> Ako chceš začať?</h2>
 					<p class="muted">
 						Plán je zatiaľ prázdny. Vyber si, čo ti sedí – všetko sa dá neskôr zmeniť.
 					</p>
@@ -1181,7 +1181,7 @@
 					{/if}
 					<p class="hint">
 						Za celé balenia{comparison.recommended
-							? ` v obchode ${storeNames(comparison.recommended)}`
+							? ` v ${comparison.recommended.storeIds.length > 1 ? 'obchodoch' : 'obchode'} ${storeNames(comparison.recommended)}`
 							: ''}. Na tieto recepty z nich spotrebuješ za {formatEur(list.total)}, zvyšok ti
 						ostane.
 					</p>
@@ -1220,7 +1220,7 @@
 						{@const extra = comparison.unpricedCost}
 						<div class="stores">
 							<h3><Icon name="store" size={18} /> Kde nakúpiť</h3>
-							<StorePicker label="Moje obchody" />
+							<StorePicker label="Moje obchody" quiet />
 							<p class="rec">
 								{#if rec.storeIds.length > 1}
 									Najlacnejšie vyjde nakúpiť v <strong>{storeNames(rec)}</strong> – ušetríš
@@ -1733,6 +1733,14 @@
 		min-width: 0;
 		display: grid;
 	}
+	.frozen-name a {
+		color: var(--ink);
+		font-weight: 650;
+		text-decoration: none;
+	}
+	.frozen-name a:hover {
+		text-decoration: underline;
+	}
 	.frozen-name small {
 		font-size: var(--fs-sm);
 	}
@@ -1917,7 +1925,9 @@
 		background: color-mix(in srgb, var(--tone) 18%, transparent);
 		color: color-mix(in srgb, var(--tone) 70%, var(--ink));
 	}
-	@media (min-width: 720px) {
+	/* Three across only while the plan has the page's full width; beside the shopping list a
+	   column is too narrow and the titles break word by word. */
+	@media (min-width: 720px) and (max-width: 959px) {
 		.start-grid {
 			grid-template-columns: repeat(3, 1fr);
 		}

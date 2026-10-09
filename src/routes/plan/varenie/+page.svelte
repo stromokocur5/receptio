@@ -100,6 +100,22 @@
 	/** The dish's own packing advice; the one that holds for everything is shown once below. */
 	const tipsFor = (r: (typeof entries)[number]['recipe']) =>
 		packingTips(r, catalog.ingredientsById).slice(0, -1);
+	/**
+	 * Each piece of advice once, with the dishes it's for: two saucy dishes would otherwise
+	 * repeat the same two paragraphs under each of them.
+	 */
+	const packing = $derived.by(() => {
+		const byTip = new Map<string, string[]>();
+		for (const e of chosen) {
+			for (const tip of tipsFor(e.recipe))
+				byTip.set(tip, [...(byTip.get(tip) ?? []), e.recipe.title]);
+		}
+		return [...byTip].map(([tip, titles]) => ({
+			tip,
+			// Said of every dish, it needs no names.
+			titles: chosen.length > 1 && titles.length === chosen.length ? [] : titles
+		}));
+	});
 	const boxes = (n: number) => `${n} ${n === 1 ? 'krabička' : n < 5 ? 'krabičky' : 'krabičiek'}`;
 
 	function keepsText(r: (typeof entries)[number]['recipe']): string {
@@ -315,19 +331,24 @@
 				</p>
 				<ul class="notes divided">
 					{#each chosen as e (e.key)}
-						{@const tips = tipsFor(e.recipe)}
 						<li>
 							<strong>{e.recipe.title}:</strong>
 							{boxes(Math.round(e.entry.servings))} · {keepsText(e.recipe)}{#if e.entry.freezeExtra}
 								· <strong>{e.entry.freezeExtra} porc. hneď do mrazničky</strong>{/if}
-							{#if tips.length}
-								<ul class="pack">
-									{#each tips as tip (tip)}<li>{tip}</li>{/each}
-								</ul>
-							{/if}
 						</li>
 					{/each}
 				</ul>
+				{#if packing.length}
+					<h3 class="pack-title">Ako zabaliť</h3>
+					<ul class="pack">
+						{#each packing as { tip, titles } (tip)}
+							<li>
+								{#if titles.length && chosen.length > 1}<strong>{titles.join(', ')}:</strong
+									>{' '}{/if}{tip}
+							</li>
+						{/each}
+					</ul>
+				{/if}
 				<p class="hint">
 					Na každú krabičku papierovú pásku: čo to je a dátum. Do práce na dlhšiu cestu chladiacu
 					tašku s vreckom ľadu. Viac v <a href="/wiki/meal-prep">návode na meal prep</a>.
@@ -539,8 +560,12 @@
 	.loading {
 		margin: var(--sp-2) 0;
 	}
+	.pack-title {
+		margin: var(--sp-4) 0 var(--sp-1);
+		font-size: var(--fs-base);
+	}
 	.pack {
-		margin: var(--sp-1) 0 0;
+		margin: 0;
 		padding-left: 18px;
 		list-style: disc;
 		color: var(--ink-2);
@@ -548,6 +573,10 @@
 	}
 	.pack li {
 		padding: 2px 0;
+	}
+	.pack strong {
+		color: var(--ink);
+		font-weight: 650;
 	}
 	.done .notice {
 		margin: 0 0 var(--sp-3);

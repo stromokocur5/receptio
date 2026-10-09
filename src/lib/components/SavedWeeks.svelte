@@ -78,7 +78,7 @@
 					id="week-name"
 					bind:value={name}
 					maxlength="40"
-					placeholder="Napr. Bežný týždeň, Lacný týždeň…"
+					placeholder="Napr. Lacný týždeň"
 					autofocus
 				/>
 				<button class="btn leaf small" disabled={!name.trim()}>

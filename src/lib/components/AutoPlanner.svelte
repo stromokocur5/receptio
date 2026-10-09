@@ -495,6 +495,10 @@
 	.title a {
 		color: var(--ink);
 		font-weight: 650;
+		text-decoration: none;
+	}
+	.title a:hover {
+		text-decoration: underline;
 	}
 	.title small {
 		font-size: var(--fs-sm);

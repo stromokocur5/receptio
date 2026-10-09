@@ -143,7 +143,7 @@
 					id="barcode-code"
 					inputmode="numeric"
 					autocomplete="off"
-					placeholder="alebo číslo pod kódom"
+					placeholder={canScan ? 'alebo číslo pod kódom' : 'Číslo pod kódom'}
 					bind:value={code}
 				/>
 				<button class="btn ghost small" type="submit" disabled={!isBarcode(code)}>Hľadať</button>
