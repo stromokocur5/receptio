@@ -1,9 +1,15 @@
 <script lang="ts">
+	import { afterNavigate, replaceState } from '$app/navigation';
 	import Seo from '$lib/components/Seo.svelte';
 	import { formatEur, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
-	import { CATEGORY_LABELS, ingredientSearchText, searchMatcher } from '$lib/labels';
+	import {
+		CATEGORY_LABELS,
+		ingredientSearchText,
+		normalizeSearch,
+		searchMatcher
+	} from '$lib/labels';
 	import { proteinEnergyShare } from '$lib/nutrition';
 	import {
 		BULK_PACK_GRAMS,
@@ -18,6 +24,7 @@
 		pricePerKg,
 		recipesOnSale,
 		shelfName,
+		storeStandings,
 		unitPrice
 	} from '$lib/pricing';
 	import StorePicker from '$lib/components/StorePicker.svelte';
@@ -37,13 +44,52 @@
 
 	let search = $state('');
 	let category = $state<IngredientCategory | ''>('');
+	/** One shop's whole price list instead of every shop's. */
+	let shop = $state('');
+	type Sort = 'name' | 'cheap' | 'spread';
+	let sort = $state<Sort>('name');
+	const SORT_LABELS: Record<Sort, string> = {
+		name: 'Podľa názvu',
+		cheap: 'Najlacnejšie za kg',
+		spread: 'Kde sa oplatí porovnávať'
+	};
 	/** The whole list is hundreds of rows; it opens a page at a time. */
 	const PAGE = 30;
 	let shown = $state(PAGE);
 	$effect(() => {
 		void search;
 		void category;
+		void shop;
+		void sort;
 		shown = PAGE;
+	});
+
+	// Filters live in the URL, so "Lidl, tofu" can be shared and Back returns to it.
+	let urlRead = $state(false);
+	// After the first navigation, so the router is ready when the effect below writes the URL.
+	afterNavigate(() => {
+		if (urlRead) return;
+		const p = new URLSearchParams(location.search);
+		search = p.get('q')?.slice(0, 60) ?? '';
+		const s = p.get('obchod');
+		if (s && catalog.storesById.has(s)) shop = s;
+		const c = p.get('kategoria');
+		if (c && (INGREDIENT_CATEGORIES as readonly string[]).includes(c)) {
+			category = c as IngredientCategory;
+		}
+		const o = p.get('zoradit');
+		if (o && o in SORT_LABELS) sort = o as Sort;
+		urlRead = true;
+	});
+	$effect(() => {
+		const p = new URLSearchParams();
+		if (search.trim()) p.set('q', search.trim());
+		if (shop) p.set('obchod', shop);
+		if (category) p.set('kategoria', category);
+		if (sort !== 'name') p.set('zoradit', sort);
+		const query = p.toString();
+		if (!urlRead || query === new URLSearchParams(location.search).toString()) return;
+		replaceState(`${location.pathname}${query ? `?${query}` : ''}${location.hash}`, {});
 	});
 
 	const perUnit = (e: PriceEntry) => {
@@ -69,19 +115,81 @@
 
 	const ingredientNames = catalog.ingredients.map(ingredientSearchText);
 	const matchesName = $derived(searchMatcher(ingredientNames, search));
-	const rows = $derived(
-		catalog.ingredients
+	/** "alpro", "lidl tofu": product names and shop names find prices too. */
+	const searchWords = $derived(normalizeSearch(search).split(/\s+/).filter(Boolean));
+	const storeWords = $derived(
+		new Map(catalog.stores.map((s) => [s.id, normalizeSearch(s.name)] as const))
+	);
+	const matchesEntry = (e: PriceEntry) => {
+		const text = `${normalizeSearch(e.product)} ${storeWords.get(e.storeId) ?? ''}`;
+		return searchWords.length > 0 && searchWords.every((w) => text.includes(w));
+	};
+	/** A shop named in the search ("lidl tofu") narrows like the shop filter; the rest finds the food. */
+	const searchedStore = $derived(
+		catalog.stores.find((s) => searchWords.includes(normalizeSearch(s.name)))?.id ?? ''
+	);
+	const foodWords = $derived(
+		searchedStore
+			? searchWords.filter((w) => w !== storeWords.get(searchedStore)).join(' ')
+			: search
+	);
+	const matchesFood = $derived(searchMatcher(ingredientNames, foodWords));
+	/** "lidl tofu" when Lidl has no tofu price: show tofu everywhere rather than nothing. */
+	const storeHasFood = $derived(
+		!!searchedStore &&
+			prices.some((p) => {
+				const ingredient = catalog.ingredientsById.get(p.ingredientId);
+				return (
+					p.storeId === searchedStore &&
+					!!ingredient &&
+					(!foodWords.trim() || matchesFood(ingredientSearchText(ingredient)))
+				);
+			})
+	);
+	const searchStore = $derived(storeHasFood ? searchedStore : '');
+	const rows = $derived.by(() => {
+		const inShop = shop || searchStore;
+		const list = catalog.ingredients
 			.filter((i) => i.id !== 'voda')
 			.filter((i) => !category || i.category === category)
-			.filter((i) => matchesName(ingredientSearchText(i)))
-			.map((ingredient) => ({
-				ingredient,
-				best: bestPrice(ingredient, prices, today),
-				online: bestOnlinePrice(ingredient, prices, today),
-				entries: prices
+			.map((ingredient) => {
+				const all = prices
 					.filter((p) => p.ingredientId === ingredient.id)
-					.sort((a, b) => pricePerKg(a) - pricePerKg(b))
-			}))
+					.sort((a, b) => pricePerKg(a) - pricePerKg(b));
+				const current = all.filter((p) => !p.online && isUsable(p, today));
+				const low = current.length ? Math.min(...current.map(pricePerKg)) : null;
+				const high = current.length ? Math.max(...current.map(pricePerKg)) : null;
+				return {
+					ingredient,
+					best: bestPrice(ingredient, prices, today),
+					online: bestOnlinePrice(ingredient, prices, today),
+					entries: inShop ? all.filter((p) => p.storeId === inShop) : all,
+					/** How much dearer the dearest shop is than the cheapest (0.5 = +50 %). */
+					spread: low && high && current.length > 1 ? high / low - 1 : 0,
+					cheapestHere:
+						inShop && low !== null
+							? current.some((p) => p.storeId === inShop && pricePerKg(p) === low)
+							: false,
+					lowElsewhere: inShop
+						? current
+								.filter((p) => p.storeId !== inShop)
+								.reduce<PriceEntry | null>(
+									(a, b) => (!a || pricePerKg(b) < pricePerKg(a) ? b : a),
+									null
+								)
+						: null
+				};
+			})
+			.filter((row) => !inShop || row.entries.length)
+			.filter(
+				(row) =>
+					!search.trim() ||
+					(searchedStore
+						? (!foodWords.trim() && !!searchStore) ||
+							(!!foodWords.trim() && matchesFood(ingredientSearchText(row.ingredient)))
+						: matchesName(ingredientSearchText(row.ingredient))) ||
+					row.entries.some(matchesEntry)
+			)
 			.map((row) => ({
 				...row,
 				// Liquids read per litre, like on the shelf label.
@@ -90,9 +198,22 @@
 					: row.entries.find(
 							(e) => e.storeId === row.best.storeId && pricePerKg(e) === row.best.perKg
 						)
-			}))
-			.sort((a, b) => a.ingredient.name.localeCompare(b.ingredient.name, 'sk'))
+			}));
+		const byName = (a: (typeof list)[number], b: (typeof list)[number]) =>
+			a.ingredient.name.localeCompare(b.ingredient.name, 'sk');
+		if (sort === 'cheap') {
+			const perKg = (r: (typeof list)[number]) =>
+				inShop && r.entries.length ? pricePerKg(r.entries[0]) : r.best.perKg;
+			return list.sort((a, b) => perKg(a) - perKg(b) || byName(a, b));
+		}
+		if (sort === 'spread') return list.sort((a, b) => b.spread - a.spread || byName(a, b));
+		return list.sort(byName);
+	});
+	const shopName = $derived(
+		(shop || searchStore) && catalog.storesById.get(shop || searchStore)?.name
 	);
+
+	const standings = $derived(storeStandings(catalog.prices, catalog.stores, today));
 
 	let dealSearch = $state('');
 	let dealSort = $state<'discount' | 'ending' | 'name'>('discount');
@@ -242,6 +363,9 @@
 			{#if allDeals.length}
 				<a class="chip" href="#akcie"><Icon name="tag" size={14} /> Akcie ({allDeals.length})</a>
 			{/if}
+			{#if standings.length}
+				<a class="chip" href="#obchody"><Icon name="store" size={14} /> Ktorý obchod je lacnejší</a>
+			{/if}
 			<a class="chip" href="#bielkoviny"><Icon name="bean" size={14} /> Bielkoviny za euro</a>
 			{#if bulk.length}
 				<a class="chip" href="#vo-velkom"><Icon name="package" size={14} /> Vo veľkom</a>
@@ -375,8 +499,30 @@
 			<div class="field grow">
 				<Icon name="search" size={20} />
 				<label for="price-q" class="sr-only">Hľadať surovinu</label>
-				<input id="price-q" type="search" bind:value={search} placeholder="Hľadať surovinu…" />
+				<input
+					id="price-q"
+					type="search"
+					bind:value={search}
+					placeholder="Surovina, výrobok alebo obchod – napr. „lidl tofu“"
+				/>
 			</div>
+			<label class="field">
+				<span class="sr-only">Obchod</span>
+				<select bind:value={shop}>
+					<option value="">Všetky obchody</option>
+					{#each catalog.stores.filter( (st) => catalog.prices.some((p) => p.storeId === st.id) ) as st (st.id)}
+						<option value={st.id}>{st.name}{st.online ? ' (e-shop)' : ''}</option>
+					{/each}
+				</select>
+			</label>
+			<label class="field">
+				<span class="sr-only">Zoradiť</span>
+				<select bind:value={sort}>
+					{#each Object.entries(SORT_LABELS) as [value, text] (value)}
+						<option {value}>{text}</option>
+					{/each}
+				</select>
+			</label>
 			<label class="field">
 				<span class="sr-only">Kategória</span>
 				<select bind:value={category}>
@@ -387,8 +533,18 @@
 			</label>
 		</div>
 
+		<p class="muted small result-count" role="status">
+			{rows.length}
+			{rows.length === 1
+				? 'surovina'
+				: rows.length < 5 && rows.length > 1
+					? 'suroviny'
+					: 'surovín'}{shopName ? ` v obchode ${shopName}` : ''}{sort === 'spread'
+				? ' – navrchu tie, kde je medzi obchodmi najväčší rozdiel'
+				: ''}.
+		</p>
 		<ul class="rows">
-			{#each rows.slice(0, shown) as { ingredient, best, bestEntry, online, entries } (ingredient.id)}
+			{#each rows.slice(0, shown) as { ingredient, best, bestEntry, online, entries, spread, cheapestHere, lowElsewhere } (ingredient.id)}
 				<li class="row card">
 					<div class="main">
 						<span class="dot" style:background={ingredient.color}></span>
@@ -418,6 +574,24 @@
 							{/if}
 						</div>
 					</div>
+					{#if shopName && entries.length}
+						<p class="shop-verdict small">
+							{#if cheapestHere}
+								<span class="badge leaf"><Icon name="check" size={12} /> tu najlacnejšie</span>
+							{:else if lowElsewhere && pricePerKg(lowElsewhere) < pricePerKg(entries[0])}
+								<span class="badge"
+									>inde od {perUnit(lowElsewhere)} · {catalog.storesById.get(lowElsewhere.storeId)
+										?.name} (−{Math.round(
+										(1 - pricePerKg(lowElsewhere) / pricePerKg(entries[0])) * 100
+									)} %)</span
+								>
+							{/if}
+						</p>
+					{:else if sort === 'spread' && spread >= 0.05}
+						<p class="shop-verdict small">
+							<span class="badge">medzi obchodmi až +{Math.round(spread * 100)} %</span>
+						</p>
+					{/if}
 					{#if !ingredient.byproduct && online && online.storeId !== best.storeId && pricePerKg(online) < best.perKg}
 						<p class="bulk-hint">
 							<Icon name="package" size={14} />
@@ -465,6 +639,44 @@
 			</div>
 		{/if}
 	</section>
+
+	{#if standings.length}
+		<section class="card box standings" id="obchody">
+			<h2><Icon name="store" size={24} /> Ktorý obchod je najlacnejší</h2>
+			<p class="muted small">
+				Porovnávame suroviny, ktoré predávajú aspoň tri obchody, za bežnú cenu za kg (bez akcií).
+				„+8 %“ znamená, že tam v priemere zaplatíš o 8 % viac ako v najlacnejšom obchode pri každej
+				surovine. Klikni na obchod a uvidíš jeho cenník.
+			</p>
+			<ol>
+				{#each standings as st (st.storeId)}
+					{@const store = catalog.storesById.get(st.storeId)}
+					<li>
+						<button
+							class="standing"
+							aria-pressed={shop === st.storeId}
+							onclick={() => {
+								shop = shop === st.storeId ? '' : st.storeId;
+								document.getElementById('price-q')?.scrollIntoView({ block: 'center' });
+							}}
+						>
+							<span class="sdot" style:background={store?.color}></span>
+							<strong>{store?.name ?? st.storeId}</strong>
+							<span class="ratio">+{Math.round((st.ratio - 1) * 100)} %</span>
+							<span class="muted small"
+								>najlacnejší pri {st.cheapest} z {st.compared}
+								surovín</span
+							>
+						</button>
+					</li>
+				{/each}
+			</ol>
+			<p class="muted small">
+				Na konkrétny nákup je presnejší <a href="/plan#nakup">nákupný zoznam</a> – porovná obchody len
+				pre to, čo naozaj kupuješ.
+			</p>
+		</section>
+	{/if}
 
 	<section class="card box ppe" id="bielkoviny">
 		<h2><Icon name="bean" size={24} /> Najviac bielkovín za euro</h2>
@@ -704,6 +916,45 @@
 	}
 	.grow {
 		flex: 1 1 240px;
+	}
+	.result-count {
+		margin: 0 0 10px;
+	}
+	.shop-verdict {
+		margin: 6px 0 0;
+	}
+	.standings ol {
+		display: grid;
+		gap: 8px;
+		padding: 0;
+		margin: 12px 0;
+		list-style: none;
+	}
+	.standing {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px 10px;
+		width: 100%;
+		padding: 10px 14px;
+		border: 1.5px solid var(--line);
+		border-radius: var(--radius-sm);
+		background: var(--paper);
+		color: var(--ink);
+		font: inherit;
+		text-align: left;
+		cursor: pointer;
+	}
+	.standing[aria-pressed='true'] {
+		border-color: var(--leaf);
+	}
+	.standing .ratio {
+		margin-left: auto;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+	}
+	.standing .muted {
+		flex-basis: 100%;
 	}
 	.rows {
 		list-style: none;

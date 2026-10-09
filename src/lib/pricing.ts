@@ -386,3 +386,55 @@ export function compareStores(
 		unpricedCost: priced.filter((i) => i.costs.size === 0).reduce((sum, i) => sum + i.estimate, 0)
 	};
 }
+
+export interface StoreStanding {
+	storeId: string;
+	/** Ingredients this shop sells that at least `minShops` shops sell. */
+	compared: number;
+	/** How many of them are cheapest here. */
+	cheapest: number;
+	/** Average of (this shop's price / the cheapest shop's price) – 1 means always cheapest. */
+	ratio: number;
+}
+
+/**
+ * Which walk-in shop is cheapest overall: every ingredient sold in several shops is compared
+ * at its regular shelf price per kg (sales would make a shop look cheap for a week only).
+ */
+export function storeStandings(
+	prices: PriceEntry[],
+	stores: Store[],
+	today: Date,
+	minShops = 3
+): StoreStanding[] {
+	const shops = new Set(stores.filter((s) => !s.online).map((s) => s.id));
+	const byIngredient = new Map<string, Map<string, number>>();
+	for (const p of prices) {
+		if (!shops.has(p.storeId) || p.saleUntil !== undefined || isStale(p, today)) continue;
+		const perKg = pricePerKg(p);
+		if (!(perKg > 0)) continue;
+		const row = byIngredient.get(p.ingredientId) ?? new Map<string, number>();
+		row.set(p.storeId, Math.min(row.get(p.storeId) ?? Infinity, perKg));
+		byIngredient.set(p.ingredientId, row);
+	}
+	const tally = new Map<string, { compared: number; cheapest: number; ratioSum: number }>();
+	for (const row of byIngredient.values()) {
+		if (row.size < minShops) continue;
+		const low = Math.min(...row.values());
+		for (const [storeId, perKg] of row) {
+			const t = tally.get(storeId) ?? { compared: 0, cheapest: 0, ratioSum: 0 };
+			t.compared++;
+			if (perKg === low) t.cheapest++;
+			t.ratioSum += perKg / low;
+			tally.set(storeId, t);
+		}
+	}
+	return [...tally]
+		.map(([storeId, t]) => ({
+			storeId,
+			compared: t.compared,
+			cheapest: t.cheapest,
+			ratio: t.ratioSum / t.compared
+		}))
+		.sort((a, b) => a.ratio - b.ratio);
+}

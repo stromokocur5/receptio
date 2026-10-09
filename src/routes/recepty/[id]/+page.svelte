@@ -17,6 +17,7 @@
 	import GlutenBadge from '$lib/components/GlutenBadge.svelte';
 	import Icon, { isIconName } from '$lib/components/Icon.svelte';
 	import LikeButton from '$lib/components/LikeButton.svelte';
+	import MealPrepPanel from '$lib/components/MealPrepPanel.svelte';
 	import CollectionChips from '$lib/components/CollectionChips.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
 	import PlateArt from '$lib/components/PlateArt.svelte';
@@ -58,6 +59,8 @@
 	import { breadcrumbJsonLd, recipeJsonLd } from '$lib/structured-data';
 	import { jarsFromYield } from '$lib/preserves';
 	import { shortName } from '$lib/avoid';
+	import { recipeConflicts } from '$lib/household';
+	import { members } from '$lib/household.svelte';
 
 	let { data } = $props();
 	const catalog = useCatalog();
@@ -97,6 +100,18 @@
 		variantName = null;
 	});
 	const cuisine = $derived(catalog.cuisinesById.get(recipe.cuisine));
+	/** Who at the household's table can't eat this version, and a version they all can. */
+	const table = $derived.by(() => {
+		const people = ui.loaded ? members() : [];
+		if (!people.length) return null;
+		const conflictsOf = (r: typeof recipe) =>
+			recipeConflicts(r, people, catalog.ingredientsById, ALLERGEN_LABELS);
+		const conflicts = conflictsOf(recipe);
+		const fits = conflicts.length
+			? base.variants.find((v) => !conflictsOf({ ...base, ...v, ahead: base.ahead }).length)
+			: undefined;
+		return { conflicts, fits, names: people.map((m) => m.name).join(', ') };
+	});
 	/**
 	 * Calcium and B12 of soy drink and yogurt are what the producer adds. Homemade and plain ones
 	 * have next to none, so the numbers need that said when they lean on it.
@@ -156,6 +171,8 @@
 	}
 
 	let servings = $state(0);
+	/** Cooking once for several days: the panel picks the servings. */
+	let prepOpen = $state(false);
 	$effect.pre(() => {
 		// Reset the scaler when navigating between recipes.
 		servings = recipe.servings;
@@ -441,7 +458,7 @@
 				{:else if recipe.yields}
 					<div>
 						<dt><Icon name="package" size={16} /> Výťažok</dt>
-						<dd class="yields">{recipe.yields}</dd>
+						<dd class="yields">{scaleStep(recipe.yields, factor)}</dd>
 					</div>
 				{/if}
 			</dl>
@@ -556,6 +573,16 @@
 					<button class="btn ghost" onclick={startCooking}>
 						<Icon name="pot" size={18} /> Variť
 					</button>
+					{#if base.keeps?.fridge}
+						<button
+							class="btn ghost"
+							aria-expanded={prepOpen}
+							aria-controls="meal-prep"
+							onclick={() => (prepOpen = !prepOpen)}
+						>
+							<Icon name="package" size={18} /> Meal prep
+						</button>
+					{/if}
 					{#if isPreserve}
 						{#if shelved}
 							<a class="btn ghost" href="/spajza#shelf-title">
@@ -609,6 +636,15 @@
 					{#if inPlan}<a class="in-plan" href="/plan">V pláne: {inPlan} porc.</a>{/if}
 				</div>
 			</div>
+			{#if prepOpen}
+				<div id="meal-prep" data-noprint>
+					<MealPrepPanel
+						{recipe}
+						variant={variantName ?? undefined}
+						onservings={(n) => (servings = Math.min(n, 40))}
+					/>
+				</div>
+			{/if}
 			{#if isFavorite}
 				<div data-noprint><CollectionChips recipeId={base.id} /></div>
 			{/if}
@@ -644,6 +680,31 @@
 			{/if}
 		</div>
 	</header>
+
+	{#if table}
+		<section class="warnings" aria-label="Domácnosť">
+			{#if table.conflicts.length}
+				<div class="warning warn">
+					<Icon name="users" size={20} />
+					<span>
+						{#each table.conflicts as c, i (c.member.id)}{i ? ' · ' : ''}<strong
+								>{c.member.name}</strong
+							>: {c.reasons.join(', ')}{/each}.
+						{#if table.fits}
+							<button class="linkish" onclick={() => (variantName = table.fits!.name)}
+								>Verzia „{table.fits.name}“ sedí všetkým</button
+							>
+						{/if}
+					</span>
+				</div>
+			{:else}
+				<div class="warning info">
+					<Icon name="users" size={20} />
+					<span>Môže jesť každý z domácnosti ({table.names}).</span>
+				</div>
+			{/if}
+		</section>
+	{/if}
 
 	{#if recipe.warnings.length}
 		<section class="warnings" aria-label="Upozornenia">
@@ -882,7 +943,7 @@
 				<div class="tips">
 					<h3><Icon name="sparkle" size={20} /> Tipy</h3>
 					<ul>
-						{#each recipe.tips as tip, i (i)}<li>{tip}</li>{/each}
+						{#each recipe.tips as tip, i (i)}<li>{scaleStep(tip, factor)}</li>{/each}
 					</ul>
 				</div>
 			{/if}

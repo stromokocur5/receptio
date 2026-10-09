@@ -127,9 +127,41 @@ describe('scaleStep', () => {
 		expect(scaleStep('Pridaj 2–3 PL vody.', 2)).toBe('Pridaj 4–6 PL vody.');
 	});
 
+	it('scales lowercase spoons, spelled-out amounts, liters and garlic', () => {
+		expect(scaleStep('Pridaj 1/2 čl soli a 2 pl oleja.', 2)).toBe('Pridaj 1 ČL soli a 4 PL oleja.');
+		expect(scaleStep('Zmiešaj štyri lyžice nálevu a 2 lyžičky papriky.', 0.5)).toBe(
+			'Zmiešaj 2 PL nálevu a 1 ČL papriky.'
+		);
+		expect(scaleStep('Rozmixuj s 1 litrom vody a pol litra mlieka.', 2)).toBe(
+			'Rozmixuj s 2 l vody a 1 l mlieka.'
+		);
+		expect(scaleStep('Pridaj 2 dl smotany.', 1.5)).toBe('Pridaj 300 ml smotany.');
+		expect(scaleStep('Pridaj 3 strúčiky cesnaku.', 0.5)).toBe('Pridaj 2 strúčiky cesnaku.');
+		expect(scaleStep('Zomeľ s 2 strúčikmi cesnaku.', 0.25)).toBe('Zomeľ s 1 strúčikom cesnaku.');
+		expect(scaleStep('Pridaj 2 strúčiky cesnaku.', 3)).toBe('Pridaj 6 strúčikov cesnaku.');
+	});
+
+	it('scales pressed cloves and the pieces a batch is shaped into', () => {
+		expect(scaleStep('Pridaj 4 prelisované strúčiky cesnaku.', 0.25)).toBe(
+			'Pridaj 1 prelisovaný strúčik cesnaku.'
+		);
+		expect(scaleStep('S 2 prelisovanými strúčikmi cesnaku.', 3)).toBe(
+			'S 6 prelisovanými strúčikmi cesnaku.'
+		);
+		expect(scaleStep('Vytvaruj 8 fašírok a rozdeľ na 4 časti.', 0.5)).toBe(
+			'Vytvaruj 4 fašírky a rozdeľ na 2 časti.'
+		);
+		expect(scaleStep('Cesto rozdeľ na 12 guliek.', 0.25)).toBe('Cesto rozdeľ na 3 guľky.');
+	});
+
+	it('keeps spoons per piece', () => {
+		const step = 'Na každú tortillu daj 2 lyžice fazule a do každej pol lyžičky masla.';
+		expect(scaleStep(step, 2)).toBe(step);
+	});
+
 	it('leaves times, temperatures, sizes and counts alone', () => {
 		const step =
-			'Peč na 200 °C 25 minút, vytvaruj 8 guliek hrubých 2 cm a var s 1,5-násobkom vody.';
+			'Peč na 200 °C 25 minút, vytvaruj guľky hrubé 2 cm, daj 2 plechy a var s 1,5-násobkom vody.';
 		expect(scaleStep(step, 2)).toBe(step);
 		expect(scaleStep('Pridaj 2 PL oleja.', 1)).toBe('Pridaj 2 PL oleja.');
 	});

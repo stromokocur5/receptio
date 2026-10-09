@@ -22,7 +22,25 @@
 		'jedlo-a-cvicenie': 'protein'
 	};
 
+	/** Guides that collect recipes by tag, with the heading above them. */
+	const BY_TAG: Record<string, { tag: string; title: string }> = {
+		'pizzeria-doma': { tag: 'pizza', title: 'Pizze na vyskúšanie' },
+		'varenie-pre-vela-ludi': { tag: 'pre-vela-ludi', title: 'Recepty pre 20 a viac ľudí' },
+		'ranajky-v-tortille': { tag: 'tortilla-na-tyzden', title: 'Tortilly na celý týždeň' }
+	};
+	const passataGrams = (r: (typeof catalog.recipes)[number]) =>
+		r.lines.filter((l) => l.ingredientId === 'passata').reduce((sum, l) => sum + l.grams, 0);
+
 	const related = $derived.by(() => {
+		const byTag = BY_TAG[page.slug];
+		if (byTag) return catalog.recipes.filter((r) => r.tags.includes(byTag.tag));
+		if (page.slug === 'zvysna-passata') {
+			// Least passata first: what fits the rest of an opened bottle.
+			return catalog.recipes
+				.filter((r) => passataGrams(r) > 0 && passataGrams(r) <= 600)
+				.sort((a, b) => passataGrams(a) - passataGrams(b))
+				.slice(0, 9);
+		}
 		if (page.slug === 'lacne-bielkoviny') {
 			return [...catalog.recipes]
 				.filter((r) => r.showNutrition)
@@ -127,13 +145,17 @@
 	{#if related.length}
 		<section class="related" data-noprint>
 			<h2>
-				{page.slug === 'desiata-do-skoly' || page.slug === 'vysokoskolak'
-					? 'Do krabičky'
-					: page.slug === 'jedlo-na-cesty'
-						? 'Na cesty'
-						: page.section === 'zaklady'
-							? 'Precvič si to v receptoch'
-							: 'Recepty, ktoré pomôžu'}
+				{BY_TAG[page.slug]
+					? BY_TAG[page.slug].title
+					: page.slug === 'zvysna-passata'
+						? 'Recepty na zvyšok passaty'
+						: page.slug === 'desiata-do-skoly' || page.slug === 'vysokoskolak'
+							? 'Do krabičky'
+							: page.slug === 'jedlo-na-cesty'
+								? 'Na cesty'
+								: page.section === 'zaklady'
+									? 'Precvič si to v receptoch'
+									: 'Recepty, ktoré pomôžu'}
 			</h2>
 			<div class="grid">
 				{#each related as recipe, i (recipe.id)}<RecipeCard {recipe} index={i} />{/each}
@@ -208,6 +230,8 @@
 	}
 	.layout {
 		display: grid;
+		/* minmax(0, …) lets a wide table scroll inside the column instead of widening the page. */
+		grid-template-columns: minmax(0, 1fr);
 		gap: 30px;
 	}
 	.side h2 {

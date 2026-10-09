@@ -47,16 +47,39 @@ export function splitStep(step: string): StepSegment[] {
 }
 
 const GLYPHS: Record<string, number> = { '½': 0.5, '¼': 0.25, '¾': 0.75, '⅓': 1 / 3, '⅔': 2 / 3 };
-const NUMBER = String.raw`\d+(?:[.,]\d+)?(?:\/\d+)?|[½¼¾⅓⅔]|pol`;
-/** Amounts written in steps ("2 PL oleja", "½ ČL soli", "v 500 ml vody"); times and °C don't match. */
+const WORD_NUMBERS: Record<string, number> = {
+	pol: 0.5,
+	jeden: 1,
+	jedna: 1,
+	jednu: 1,
+	jedným: 1,
+	jednou: 1,
+	dve: 2,
+	dva: 2,
+	dvoma: 2,
+	tri: 3,
+	troma: 3,
+	tromi: 3,
+	štyri: 4,
+	štyroch: 4,
+	päť: 5,
+	šesť: 6
+};
+const NUMBER = String.raw`\d+(?:[.,]\d+)?(?:\/\d+)?|[½¼¾⅓⅔]|${Object.keys(WORD_NUMBERS).join('|')}`;
+/**
+ * Amounts written in steps ("2 PL oleja", "½ čl soli", "v 1 litri vody", "štyri lyžice nálevu",
+ * "3 strúčiky cesnaku"); times, °C, sizes and counts of shapes ("8 guliek") don't match.
+ */
 const STEP_AMOUNT_RE = new RegExp(
-	String.raw`(?<![\p{L}\d,.])(${NUMBER})(?:\s*[–-]\s*(${NUMBER}))?\s*(kg|g|ml|l|PL|ČL|hrnček(?:och|mi|a|y|ov|u)?)(?![\p{L}])`,
+	String.raw`(?<![\p{L}\d,.])(${NUMBER})(?:\s*[–-]\s*(${NUMBER}))?\s*(kg|g|dl|ml|l|PL|ČL|pl|čl|hrnček(?:och|mi|a|y|ov|u)?|lit(?:er|ra|re|ri|rov|rom|rami|roch)|lyžic(?:a|u|e|ou|ami|iach|i)|lyžíc|lyžičk(?:a|u|y|ou|ami|ách|e)|lyžičiek|(?:(?:prelisovan|pretlačen|nasekan)\p{L}*\s+)?strúčik(?:y|ov|mi|om|och|u)?)(?![\p{L}])`,
 	'gu'
 );
-const STEP_UNITS: Record<string, Unit> = { kg: 'kg', g: 'g', ml: 'ml', l: 'l', PL: 'pl', ČL: 'čl' };
+const STEP_UNITS: Record<string, Unit> = { kg: 'kg', g: 'g', ml: 'ml', l: 'l', pl: 'pl', čl: 'čl' };
+/** "Na každú tortillu 2 lyžice", "do každého hrnca 1 kg ryže": amounts per piece stay as they are. */
+const PER_PIECE_RE = /každ\p{L}*\s[^.,;:]*$|\bpo\s+$/u;
 
 function stepNumber(text: string): number {
-	if (text === 'pol') return 0.5;
+	if (text in WORD_NUMBERS) return WORD_NUMBERS[text];
 	if (text in GLYPHS) return GLYPHS[text];
 	if (text.includes('/')) {
 		const [a, b] = text.split('/').map(Number);
@@ -72,33 +95,117 @@ function cupWord(amount: number): string {
 	return amount < 5 ? 'hrnčeky' : 'hrnčekov';
 }
 
+/** Garlic cloves keep the case they were written in: "s 2 strúčikmi" → "s 1 strúčikom". */
+function cloveWord(written: string, count: number): string {
+	const [, adjective = ''] = /^(\p{L}+)\s/u.exec(written) ?? [];
+	const prefix = adjective ? `${clovesAdjective(adjective, written, count)} ` : '';
+	if (/mi$|om$/.test(written)) return prefix + (count === 1 ? 'strúčikom' : 'strúčikmi');
+	if (/och$|u$/.test(written)) return prefix + (count === 1 ? 'strúčiku' : 'strúčikoch');
+	if (count === 1) return `${prefix}strúčik`;
+	return prefix + (count < 5 ? 'strúčiky' : 'strúčikov');
+}
+
+/** "prelisované" → "prelisovaný" / "prelisovaných", agreeing with the new count. */
+function clovesAdjective(adjective: string, written: string, count: number): string {
+	const stem = adjective.replace(/(ý|é|ých|ými|ým)$/, '');
+	if (/mi$|om$/.test(written)) return stem + (count === 1 ? 'ým' : 'ými');
+	if (/och$|u$/.test(written)) return stem + (count === 1 ? 'om' : 'ých');
+	if (count === 1) return `${stem}ý`;
+	return stem + (count < 5 ? 'é' : 'ých');
+}
+
+/** Shapes a batch is divided into: twice the batch makes twice the balls. [1, 2–4, 5+] */
+const PIECE_FORMS: string[][] = [
+	['guľu', 'gule', 'gúľ'],
+	['guľku', 'guľky', 'guliek'],
+	['kus', 'kusy', 'kusov'],
+	['guličku', 'guličky', 'guličiek'],
+	['kúsok', 'kúsky', 'kúskov'],
+	['placku', 'placky', 'placiek'],
+	['fašírku', 'fašírky', 'fašírok'],
+	['kôpku', 'kôpky', 'kôpok'],
+	['formu', 'formy', 'foriem'],
+	['košíček', 'košíčky', 'košíčkov'],
+	['tyčinku', 'tyčinky', 'tyčiniek'],
+	['plátok', 'plátky', 'plátkov'],
+	['časť', 'časti', 'častí']
+];
+const PIECE_WORDS = new Map(PIECE_FORMS.flatMap((forms) => forms.map((f) => [f, forms] as const)));
+const PIECES_RE = new RegExp(
+	String.raw`(?<![\p{L}\d,.])(\d+)(?:\s*[–-]\s*(\d+))?\s+(${[...PIECE_WORDS.keys()].join('|')})(?![\p{L}])`,
+	'gu'
+);
+
+function pieceWord(forms: string[], count: number): string {
+	return count === 1 ? forms[0] : count < 5 ? forms[1] : forms[2];
+}
+
+function scalePieces(step: string, factor: number): string {
+	return step.replace(PIECES_RE, (match, from, to: string | undefined, word: string, offset) => {
+		// "Po 2–3 placky na panvicu", "každú rolku na 8 kúskov": per pan or per piece, not per batch.
+		if (/\b[Pp]o\s+$/u.test(step.slice(0, offset)) || PER_PIECE_RE.test(step.slice(0, offset))) {
+			return match;
+		}
+		const forms = PIECE_WORDS.get(word)!;
+		const a = Math.max(1, Math.round(Number(from) * factor));
+		if (to === undefined) return `${a} ${pieceWord(forms, a)}`;
+		const b = Math.max(a, Math.round(Number(to) * factor));
+		return a === b ? `${a} ${pieceWord(forms, a)}` : `${a}–${b} ${pieceWord(forms, b)}`;
+	});
+}
+
 /** The number part only: "1½", "250", "0,3". */
-function scaledNumber(amount: number, unit: string): string {
-	const formatted = formatAmount(amount, unit.startsWith('hrnček') ? 'hrnček' : STEP_UNITS[unit]);
+function scaledNumber(amount: number, unit: Unit): string {
+	const formatted = formatAmount(amount, unit);
 	return formatted.slice(0, formatted.lastIndexOf(' '));
+}
+
+function unitOf(written: string): Unit | 'strúčik' {
+	const lower = written.toLowerCase();
+	if (lower.startsWith('hrnček')) return 'hrnček';
+	if (lower.startsWith('lit')) return 'l';
+	if (lower.startsWith('lyžič')) return 'čl';
+	if (lower.startsWith('lyžic') || lower === 'lyžíc') return 'pl';
+	if (lower.includes('strúčik')) return 'strúčik';
+	if (lower === 'dl') return 'ml';
+	return STEP_UNITS[lower];
 }
 
 /**
  * Rescales amounts in a step's text for a different number of servings, so "na 2 PL oleja"
- * reads "na 1 PL oleja" when cooking half. Times, temperatures and counts stay as written.
+ * reads "na 1 PL oleja" when cooking half. Times, temperatures and counts stay as written, and
+ * so do spoons per piece ("na každú placku 2 lyžice").
  */
 export function scaleStep(step: string, factor: number): string {
 	if (factor === 1) return step;
-	return step.replace(
+	return scalePieces(step, factor).replace(
 		STEP_AMOUNT_RE,
-		(match, from: string, to: string | undefined, unit: string) => {
-			const low = stepNumber(from) * factor;
-			const high = to === undefined ? low : stepNumber(to) * factor;
+		(match, from: string, to: string | undefined, written: string, offset: number) => {
+			const unit = unitOf(written);
+			// "Do každého pohára 1 PL šťavy", "po 2 lyžiciach": per jar or pan, not per batch.
+			if (PER_PIECE_RE.test(step.slice(0, offset))) return match;
+			// Decilitres are rewritten as millilitres, so they round like any other liquid.
+			const perUnit = written === 'dl' ? 100 : 1;
+			const low = stepNumber(from) * factor * perUnit;
+			const high = to === undefined ? low : stepNumber(to) * factor * perUnit;
 			if (!(low > 0) || !(high > 0)) return match;
+			if (unit === 'strúčik') {
+				const a = Math.max(1, Math.round(low));
+				const b = Math.max(1, Math.round(high));
+				return `${a === b ? a : `${a}–${b}`} ${cloveWord(written, b)}`;
+			}
 			const number =
 				to === undefined
 					? scaledNumber(low, unit)
 					: `${scaledNumber(low, unit)}–${scaledNumber(high, unit)}`;
 			// Nominative-like forms follow the number; "v 2 hrnčekoch" / "v 1 hrnčeku" keep their case.
-			let word = unit;
-			if (/^hrnček(a|y|ov)?$/.test(unit)) word = cupWord(high);
-			else if (unit === 'hrnčekoch' || unit === 'hrnčeku')
+			let word: string = written;
+			if (/^hrnček(a|y|ov)?$/.test(written)) word = cupWord(high);
+			else if (written === 'hrnčekoch' || written === 'hrnčeku')
 				word = high === 1 ? 'hrnčeku' : 'hrnčekoch';
+			// Spelled-out spoons and liters change their ending with the number; the short form doesn't.
+			else if (unit === 'pl' || unit === 'čl') word = unit.toUpperCase();
+			else if (unit === 'l' || written === 'dl') word = written === 'dl' ? 'ml' : 'l';
 			return `${number} ${word}`;
 		}
 	);

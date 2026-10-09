@@ -186,6 +186,8 @@ const recipeSchema = z
 		ahead: z.string().optional(),
 		/** false when a 1:1 flour swap would ruin the dish (pizza dough, halušky). */
 		gf_swap: z.boolean().default(true),
+		/** false when the soy protein does the work (mayo, yogurt) and oat drink wouldn't. */
+		oat_swap: z.boolean().default(true),
 		yields: z.string().optional(),
 		nutrition: z.boolean().default(true),
 		related: z.array(slug).default([]),
@@ -311,7 +313,9 @@ const equipmentSchema = z
 	.strict();
 
 const GF_VARIANT_NAME = 'Bezlepková verzia';
+const formatProtein = (grams: number) => grams.toFixed(grams < 10 ? 1 : 0).replace('.', ',');
 const LOW_SALT_VARIANT_NAME = 'Menej soli';
+const OAT_VARIANT_NAME = 'S ovseným nápojom';
 /** Seasonings halved in the low-salt version: salt itself and salty sauces and pastes (g salt / 100 g). */
 const SALTY_SEASONING_MIN = 1.5;
 
@@ -755,6 +759,34 @@ export function compileContent(raw: RawContent, today: Date): Content {
 					.map((i) => `${i.name} → ${byId.get(i.gfAlternative!)!.name}`)
 					.join(', ')}.`,
 				...compute(mergeLines(gfLines), r.servings)
+			});
+		}
+
+		// A hand-written gluten-free version (pizza with a psyllium dough) counts like the automatic one.
+		if (base.gluten === 'contains' && variants.some((v) => v.gluten === 'free')) {
+			base.gfSwappable = true;
+		}
+
+		if (
+			r.oat_swap &&
+			lines.some((l) => l.ingredientId === 'sojove-mlieko') &&
+			!variants.some((v) => v.name === OAT_VARIANT_NAME)
+		) {
+			const oat = compute(
+				mergeLines(
+					lines.map((l) =>
+						l.ingredientId === 'sojove-mlieko' ? swapLine(l, 'ovseny-napoj', where) : l
+					)
+				),
+				r.servings
+			);
+			variants.push({
+				name: OAT_VARIANT_NAME,
+				description:
+					`Sójový nápoj nahraď ovseným v rovnakom množstve – bez sóje, o niečo sladšie. ` +
+					`Bielkovín je menej (${formatProtein(base.perServing.protein)} → ${formatProtein(oat.perServing.protein)} g na porciu). ` +
+					`Ovsený pri varení zhustne, do omáčok a kaší ho prilievaj postupne.`,
+				...oat
 			});
 		}
 

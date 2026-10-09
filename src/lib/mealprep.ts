@@ -95,3 +95,54 @@ export function formatMinutes(minutes: number): string {
 	if (!h) return `${m} min`;
 	return m ? `${h} h ${m} min` : `${h} h`;
 }
+
+/** One day of eating a batch: where that day's boxes come from. */
+export interface BatchDay {
+	/** 0 = the day you cook. */
+	day: number;
+	from: 'fridge' | 'freezer';
+	/** Starts a new batch: cooked that day, because the last one wouldn't keep. */
+	cook: boolean;
+}
+
+export interface BatchPlan {
+	days: BatchDay[];
+	/** Portions to cook in each session, in order. */
+	batches: number[];
+	fridge: number;
+	freezer: number;
+}
+
+/**
+ * How a recipe cooked once covers several days: the first days from the fridge as long as it
+ * keeps there, the rest frozen – or, when it doesn't freeze, cooked again. Null when it has to
+ * be eaten fresh.
+ */
+export function batchPlan(
+	keeps: { fridge: number; freezer: number } | undefined,
+	days: number,
+	perDay: number
+): BatchPlan | null {
+	if (!keeps || keeps.fridge < 1 || days < 1 || perDay < 1) return null;
+	const out: BatchDay[] = [];
+	const batches: number[] = [];
+	let cookedOn = 0;
+	for (let day = 0; day < days; day++) {
+		const fresh = day - cookedOn < keeps.fridge;
+		if (fresh || keeps.freezer > 0) {
+			out.push({ day, from: fresh ? 'fridge' : 'freezer', cook: day === 0 });
+		} else {
+			cookedOn = day;
+			out.push({ day, from: 'fridge', cook: true });
+		}
+		if (out[day].cook) batches.push(0);
+		batches[batches.length - 1] += perDay;
+	}
+	const frozenDays = out.filter((d) => d.from === 'freezer').length;
+	return {
+		days: out,
+		batches,
+		fridge: (days - frozenDays) * perDay,
+		freezer: frozenDays * perDay
+	};
+}

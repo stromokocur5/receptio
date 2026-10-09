@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatMinutes, prepList, prepSchedule } from './mealprep';
+import { batchPlan, formatMinutes, prepList, prepSchedule } from './mealprep';
 import type { Ingredient, RecipeLine, RecipeSummary } from './types';
 
 function recipe(
@@ -61,5 +61,31 @@ describe('meal prep', () => {
 		expect(formatMinutes(40)).toBe('40 min');
 		expect(formatMinutes(60)).toBe('1 h');
 		expect(formatMinutes(85)).toBe('1 h 25 min');
+	});
+});
+
+describe('batchPlan', () => {
+	it('keeps the first days in the fridge and freezes the rest', () => {
+		const plan = batchPlan({ fridge: 3, freezer: 3 }, 5, 2)!;
+		expect(plan.days.map((d) => d.from)).toEqual([
+			'fridge',
+			'fridge',
+			'fridge',
+			'freezer',
+			'freezer'
+		]);
+		expect(plan).toMatchObject({ batches: [10], fridge: 6, freezer: 4 });
+	});
+
+	it('cooks again when the food does not freeze', () => {
+		const plan = batchPlan({ fridge: 2, freezer: 0 }, 5, 1)!;
+		expect(plan.days.map((d) => d.cook)).toEqual([true, false, true, false, true]);
+		expect(plan.batches).toEqual([2, 2, 1]);
+		expect(plan.freezer).toBe(0);
+	});
+
+	it('has nothing to plan for food eaten fresh', () => {
+		expect(batchPlan({ fridge: 0, freezer: 0 }, 5, 1)).toBeNull();
+		expect(batchPlan(undefined, 5, 1)).toBeNull();
 	});
 });
