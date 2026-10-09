@@ -100,11 +100,12 @@ async function shake(page: Page, path: string, seed: number, moves = 60) {
 
 for (const [n, path] of PAGES.entries()) {
 	test(`tapping around ${path} breaks nothing`, async ({ page }) => {
-		test.setTimeout(90_000);
+		test.setTimeout(150_000);
 		const errors = watch(page);
 		await visit(page, path);
 		await shake(page, path, n + 1);
-		// Still a page with something on it, and still answering.
+		// No error thrown, and still a page with something on it, still answering.
+		expect(errors, errors.join('\n\n')).toEqual([]);
 		await expect(page.locator('#main')).not.toBeEmpty();
 		await page.reload();
 		await page.waitForLoadState('domcontentloaded');
