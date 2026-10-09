@@ -716,7 +716,7 @@
 		{@const c = RECIPE_CATEGORIES[category]}
 		<div class="subs" style:--tone={c.tone} role="group" aria-label="Podkategórie: {c.label}">
 			<button class="chip" aria-pressed={!sub} onclick={() => (sub = '')}>
-				Všetky {c.label.toLowerCase()}
+				{'all' in c ? c.all : `Všetky ${c.label.toLowerCase()}`}
 			</button>
 			{#each subOptions as [id, label] (id)}
 				<button class="chip" aria-pressed={sub === id} onclick={() => (sub = sub === id ? '' : id)}>

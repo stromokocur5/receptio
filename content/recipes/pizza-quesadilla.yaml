@@ -1,0 +1,31 @@
+title: Pizza quesadilla
+description: Dve tortilly, medzi nimi zvyšná pizzová omáčka, syr, šampiňóny a kukurica, opečené na suchej panvici. Pizza za 10 minút bez rúry.
+cuisine: moderna
+meals: [obed, vecera, snack]
+categories: [pizza/rychla, hlavne/plnene]
+time: 15
+active: 15
+servings: 2
+difficulty: 1
+tags: [pizza, zvysky, rychle, deti]
+keeps: { fridge: 1 }
+leftovers: 'Studená je dobrá do krabičky, teplú ju opeč na suchej panvici 2 minúty z každej strany.'
+related: [pizza-al-taglio, pita-pizza, tofu-pizzaiola, pizzova-omacka]
+ingredients:
+  - psenicne-tortilly: 4 ks
+  - passata: 1/2 hrnček | alebo zvyšná pizzová omáčka
+  - oregano: 1 čl
+  - vegansky-syr: 1 hrnček | alebo domáca mozzarella na strúhanie
+  - sampinony: 1 hrnček | na tenké plátky
+  - kukurica: 70 g | sterilizovaná, scedená
+  - olivy: 6 ks | nepovinné
+  - olivovy-olej: 1 čl
+steps:
+  - Šampiňóny opeč na lyžičke oleja 4 minúty, kým nepustia a neodparia vodu. Inak by quesadilla bola mokrá.
+  - Ak máš passatu, nie hotovú omáčku, zamiešaj do nej oregano a štipku soli.
+  - Na dve tortilly natri omáčku, nechaj 1 cm okraj. Posyp syrom, šampiňónmi, kukuricou a olivami a prikry druhou tortillou.
+  - Opeč na suchej panvici na strednom ohni 3 minúty, kým spodok nie je chrumkavý a syr sa nezačne topiť. Prikry ju tanierom, otoč a opeč druhú stranu.
+  - Nechaj minútu odpočinúť a krájaj na štvrtiny ako pizzu.
+tips:
+  - Omáčky naozaj len tenkú vrstvu – 2 lyžice na quesadillu. Viac ju rozmočí.
+  - Syr môžeš vynechať a dať namiesto neho tenkú vrstvu hummusu.

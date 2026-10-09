@@ -2,7 +2,7 @@ title: Pizza New York
 description: Veľká tenká pizza, ktorú zložíš napoly a ješ z ruky. Cesto s olejom a štipkou cukru je ohybné a chrumkavé zároveň, omáčka varená s cesnakom a oreganom.
 cuisine: americka
 meals: [obed, vecera]
-categories: [comfort/burgre, hlavne/cesto]
+categories: [pizza/okruhla]
 time: 90
 active: 35
 servings: 4

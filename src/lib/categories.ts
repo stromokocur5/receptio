@@ -5,6 +5,8 @@ export interface RecipeCategory {
 	label: string;
 	/** One line under the label on the category tiles. */
 	blurb: string;
+	/** The "all of them" chip, when "Všetky" + the lowercase label isn't Slovak. */
+	all?: string;
 	icon: IconName;
 	tone: string;
 	subs: Record<string, string>;
@@ -56,6 +58,18 @@ export const RECIPE_CATEGORIES = {
 			bowly: 'Misky a bowly'
 		}
 	},
+	pizza: {
+		label: 'Pizza',
+		all: 'Všetky pizze',
+		blurb: 'Neapolská, z plechu aj za 15 minút',
+		icon: 'pizza',
+		tone: 'var(--tomato)',
+		subs: {
+			okruhla: 'Okrúhla z rúry',
+			plech: 'Z plechu',
+			rychla: 'Rýchle a malé'
+		}
+	},
 	comfort: {
 		label: 'Fast food a comfort',
 		blurb: 'Kebab, burgre, hranolky, párky',
@@ -63,7 +77,7 @@ export const RECIPE_CATEGORIES = {
 		tone: 'var(--tomato)',
 		subs: {
 			kebab: 'Kebab, gyros a wrapy',
-			burgre: 'Burgre, pizza a sendviče',
+			burgre: 'Burgre a sendviče',
 			vyprazane: 'Vyprážané a hranolky',
 			bufet: 'Párky, klobásy a bufet'
 		}
@@ -197,6 +211,7 @@ const TASTE_BY_CATEGORY: Record<string, Taste | null> = {
 	'napoje/limonady': 'sladke',
 	polievky: 'slane',
 	hlavne: 'slane',
+	pizza: 'slane',
 	comfort: 'slane',
 	salaty: 'slane',
 	omacky: 'slane',

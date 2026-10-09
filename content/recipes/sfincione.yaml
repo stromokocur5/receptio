@@ -2,7 +2,7 @@ title: Sfincione – sicílska pizza z plechu
 description: Hrubá mäkká pizza z Palerma, ktorá sa predáva na uliciach. Navrch sladkastá omáčka z dusenej cibule a paradajok a chrumkavá strúhanka s oreganom namiesto syra.
 cuisine: talianska
 meals: [obed, vecera, snack]
-categories: [hlavne/cesto, snacky/party]
+categories: [pizza/plech, snacky/party]
 time: 150
 active: 35
 servings: 6

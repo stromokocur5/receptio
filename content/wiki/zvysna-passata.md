@@ -1,6 +1,6 @@
 ---
 title: Čo so zvyšnou passatou
-summary: Otvorená fľaša passaty vydrží v chladničke pár dní. Ako ju zamraziť po lyžiciach a do čoho dať 2 lyžice, pol hrnčeka aj pol fľaše.
+summary: Otvorená fľaša passaty alebo pizzovej omáčky vydrží v chladničke pár dní. Ako ich zamraziť po lyžiciach a do čoho dať 2 lyžice, pol hrnčeka aj pol fľaše.
 section: navody
 icon: bottle
 order: 18
@@ -40,6 +40,17 @@ Passata je preosiata paradajková dreň – hladká, bez šupiek a semienok. Rec
 - [Domáci kečup](/recepty/kecup-z-passaty) – 2 hrnčeky sa zmenia na pohár kečupu.
 - [Pizzová omáčka do zásoby](/recepty/pizzova-omacka) – zamrazíš ju v kockách na pizzu.
 - [Arrabbiata](/recepty/arrabbiata) alebo [marinara](/recepty/marinara-omacka).
+
+## Zvyšná pizzová omáčka
+
+Na jednu pizzu stačia 3 lyžice, takže z hrnca [pizzovej omáčky](/recepty/pizzova-omacka) skoro vždy ostane. Je už hustá, osolená a s cesnakom a oreganom, takže jedlo z nej je rýchlejšie ako z passaty – netreba ju dlho variť ani dochucovať.
+
+- **Pol hrnčeka:** [pizza quesadilla](/recepty/pizza-quesadilla) na panvici za 10 minút alebo [pizza roláčiky z tortilly](/recepty/pizza-rolaciky) do rúry. Obe chcú len tenkú vrstvu omáčky.
+- **Hrnček:** [tofu alla pizzaiola](/recepty/tofu-pizzaiola) – opečené tofu dusené v omáčke s olivami, alebo [pizzové cestoviny z jedného hrnca](/recepty/pizzove-cestoviny), ktoré sa varia rovno v omáčke.
+- **Pár lyžíc:** na [chlebové pizzky](/recepty/chlebove-pizzky-z-rury), na namáčanie [cesnakových uzlíkov](/recepty/cesnakove-uzliky) alebo do [fazule na hrianke](/recepty/fazula-v-paradajkovej-omacke).
+- **Viac, ako zješ do 5 dní:** zamraz ju v tvorítku na ľad – jedna kocka je jedna malá pizza.
+
+Pizzová omáčka je slanšia ako passata. Keď ju dávaš do receptu, ktorý ráta s passatou, soľ pridaj až na konci podľa chuti.
 
 ## Z hladkej passaty aj iné veci
 

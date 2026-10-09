@@ -2,7 +2,7 @@ title: Detroit pizza z plechu
 description: Hrubá nadýchaná pizza z vysokého plechu s chrumkavým, do tmava opečeným syrovým okrajom. Omáčka sa dáva navrch v pásoch až po upečení. Cesto sa takmer nemiesi.
 cuisine: americka
 meals: [obed, vecera]
-categories: [comfort/burgre, hlavne/cesto, hlavne/rura]
+categories: [pizza/plech, hlavne/rura]
 time: 180
 active: 30
 servings: 4

@@ -1,0 +1,30 @@
+title: Pizza roláčiky z tortilly
+description: Tortilla natretá pizzovou omáčkou, posypaná syrom a zeleninou, zrolovaná a nakrájaná na slimáčiky, ktoré sa zapečú dochrumkava. Na párty, do krabičky aj pre deti.
+cuisine: moderna
+meals: [snack]
+categories: [pizza/rychla, snacky/party]
+time: 25
+active: 10
+servings: 4
+difficulty: 1
+tags: [pizza, zvysky, deti, party]
+keeps: { fridge: 2 }
+leftovers: 'Studené sú dobré do krabičky. Zohrej ich 5 minút v rúre, v mikrovlnke zmäknú.'
+related: [pizza-quesadilla, chlebove-pizzky-z-rury, pizzova-omacka]
+ingredients:
+  - psenicne-tortilly: 4 ks
+  - passata: 1/2 hrnček | alebo zvyšná pizzová omáčka
+  - oregano: 1 čl
+  - vegansky-syr: 1 hrnček
+  - paprika-cervena: 1/2 ks | nadrobno
+  - kukurica: 50 g | sterilizovaná, scedená
+  - olivovy-olej: 1 pl
+steps:
+  - Rúru rozpáľ na 200 °C a plech vylož papierom na pečenie.
+  - Passatu zmiešaj s oreganom a štipkou soli (hotovú pizzovú omáčku netreba). Natri tenkú vrstvu na tortilly, pri jednom okraji nechaj 2 cm voľné.
+  - Posyp syrom, paprikou a kukuricou a tortillu pevne zroluj smerom k voľnému okraju.
+  - Ostrým nožom nakrájaj každú rolku na 6 kúskov a polož ich na plech rezom nahor. Potri olejom.
+  - Peč 12–15 minút, kým okraje nezhnednú a syr sa neroztopí. Nechaj 5 minút vychladnúť, aby sa nerozpadli.
+tips:
+  - Rolky sa krájajú ľahšie, keď ich na 15 minút daš do chladničky.
+  - S posypom z vegánskeho parmezánu sú chrumkavejšie.

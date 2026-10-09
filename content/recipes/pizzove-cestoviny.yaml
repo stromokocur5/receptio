@@ -1,0 +1,35 @@
+title: Pizzové cestoviny z jedného hrnca
+description: Cestoviny uvarené rovno v paradajkovej omáčke so šampiňónmi, paprikou, olivami a oreganom – chutia ako pizza capricciosa. Jeden hrniec, žiadne scedenie, a minie zvyšok passaty.
+cuisine: talianska
+meals: [obed, vecera]
+categories: [hlavne/cestoviny]
+time: 25
+active: 15
+servings: 3
+difficulty: 1
+tags: [zvysky, rychle, lacne, one-pot, deti]
+keeps: { fridge: 3 }
+leftovers: 'Druhý deň prilej lyžicu vody a zohrej na panvici, alebo zapeč v rúre s posypom.'
+related: [pizza-quesadilla, tofu-pizzaiola, arrabbiata]
+ingredients:
+  - olivovy-olej: 2 pl
+  - cibula: 1 ks
+  - cesnak: 2 ks
+  - sampinony: 2 hrnček | na plátky
+  - paprika-cervena: 1 ks
+  - passata: 1 hrnček | alebo zvyšná pizzová omáčka
+  - voda: 3 hrnček
+  - sol: 1 čl
+  - oregano: 1,5 čl
+  - cestoviny: 250 g | penne alebo fusilli
+  - olivy: 10 ks
+  - vyzivne-drozdie: 2 pl | alebo vegánsky syr
+  - bazalka: 1/4 hrnček
+steps:
+  - V širokom hrnci na oleji opeč nakrájanú cibuľu 4 minúty. Pridaj šampiňóny a papriku na prúžky a opekaj 5 minút, kým šampiňóny nezhnednú.
+  - Pridaj prelisovaný cesnak a oregano, o minútu prilej passatu, vodu a soľ a priveď do varu.
+  - Vsyp cestoviny, premiešaj a var odokryté podľa času na obale plus 1–2 minúty, každú minútu premiešaj, aby sa neprilepili. Keď je omáčka príliš hustá skôr, ako sú cestoviny mäkké, prilej trochu vody.
+  - Na konci by mala omáčka cestoviny obaľovať, nie plávať. Vmiešaj olivy a droždie, nechaj 2 minúty postáť a posyp bazalkou.
+tips:
+  - Hotová pizzová omáčka je hustejšia a slanejšia – soľ pridaj až na konci podľa chuti.
+  - Kúsky údeného tofu alebo vegánskej salámy z neho spravia „šunkovú“ pizzu.

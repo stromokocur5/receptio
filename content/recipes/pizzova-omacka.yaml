@@ -10,7 +10,15 @@ difficulty: 1
 tags: [pizza, zvysky, lacne, meal-prep]
 yields: cca 450 ml – na 4 veľké pizze
 keeps: { fridge: 5, freezer: 6 }
-related: [pizza-new-york, pizza-margherita-neapolska, chlebove-pizzky-z-rury, domaca-passata]
+related:
+  [
+    pizza-quesadilla,
+    tofu-pizzaiola,
+    pizzove-cestoviny,
+    pizza-rolaciky,
+    pizza-new-york,
+    chlebove-pizzky-z-rury
+  ]
 ingredients:
   - olivovy-olej: 2 pl
   - cesnak: 3 ks
@@ -27,8 +35,9 @@ steps:
   - Nechaj vychladnúť. Do chladničky ju daj v pohári, do mrazničky po lyžiciach v tvorítku na ľad – kocky potom prelož do vrecka.
 tips:
   - Jedna kocka z tvorítka (asi 2 PL) stačí na jednu malú pizzu alebo dva pizza-toasty.
+  - Čo so zvyškom – pizza quesadilla, tofu alla pizzaiola alebo pizzové cestoviny z jedného hrnca. Viac v návode Čo so zvyšnou passatou.
   - Na neapolskú pizzu sa omáčka nevarí – stačí rozdrviť paradajky so soľou a olejom. Pozri verziu nižšie.
-howto: [pizzeria-doma]
+howto: [pizzeria-doma, zvysna-passata]
 variants:
   - name: Surová neapolská
     description: Nevarená – len rozdrvené paradajky, soľ a olivový olej. Sviežejšia, na pizzu pečenú v čo najteplejšej rúre.
