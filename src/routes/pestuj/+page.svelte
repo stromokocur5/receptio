@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '$lib/styles/wiki-art.css';
 	import { onMount, tick } from 'svelte';
 	import { cubicOut } from 'svelte/easing';
 	import { Tween } from 'svelte/motion';

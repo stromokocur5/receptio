@@ -1,4 +1,5 @@
 <script lang="ts">
+	import '$lib/styles/wiki-art.css';
 	import Seo from '$lib/components/Seo.svelte';
 	import { SITE_ORIGIN } from '$lib/site';
 	import { articleJsonLd, breadcrumbJsonLd } from '$lib/structured-data';

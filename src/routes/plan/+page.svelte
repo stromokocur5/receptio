@@ -1561,8 +1561,8 @@
 	.jump-bar .n {
 		padding: 0 6px;
 		border-radius: 999px;
-		background: var(--tomato);
-		color: #fff;
+		background: var(--alert-bg);
+		color: var(--alert-ink);
 		font-size: 0.72rem;
 	}
 	#recepty-v-plane,

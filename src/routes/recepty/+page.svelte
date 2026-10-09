@@ -1355,8 +1355,8 @@
 		min-width: 20px;
 		height: 20px;
 		border-radius: 999px;
-		background: var(--tomato);
-		color: #fff;
+		background: var(--alert-bg);
+		color: var(--alert-ink);
 		font-size: 0.72rem;
 	}
 	.layout {

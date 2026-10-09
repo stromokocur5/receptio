@@ -25,6 +25,7 @@
 	import { household, initHousehold, noteHouseholdChange } from '$lib/household.svelte';
 	import { initSync, noteChange, requestPersistence, syncState } from '$lib/sync.svelte';
 	import SafariKeep from '$lib/components/SafariKeep.svelte';
+	import Toasts from '$lib/components/Toasts.svelte';
 	import { onboarding, shouldOnboard } from '$lib/onboarding.svelte';
 	import { initInstall } from '$lib/install.svelte';
 	import { loadTimers } from '$lib/timers.svelte';
@@ -166,6 +167,7 @@
 	<SafariKeep />
 	{@render children()}
 </main>
+<Toasts />
 
 <footer class="foot" data-noprint>
 	<div class="wrap">
@@ -219,7 +221,7 @@
 		align-items: flex-start;
 		margin-top: 12px;
 		padding: 12px 14px;
-		border: 1.5px solid var(--tomato, #c4472d);
+		border: 1.5px solid var(--tomato);
 		border-radius: var(--radius-sm);
 		background: var(--paper);
 	}
@@ -296,9 +298,9 @@
 		height: 18px;
 		padding: 0 5px;
 		border-radius: 999px;
-		background: var(--tomato);
-		color: #fff;
-		font-size: 0.7rem;
+		background: var(--alert-bg);
+		color: var(--alert-ink);
+		font-size: var(--fs-xs);
 		font-weight: 800;
 	}
 	.mine {
