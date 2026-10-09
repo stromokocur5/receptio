@@ -6,7 +6,6 @@ import {
 	activeMembers,
 	changeEvents,
 	collect,
-	FORGET_AFTER_MS,
 	latestStamp,
 	householdNeeds,
 	isAway,
@@ -482,10 +481,7 @@ async function mergeAndUpload(
 	for (let attempt = 0; ; attempt++) {
 		const fresh = await trusted(remote.doc, household.doc);
 		const now = Date.now();
-		const doc = sumUpOldExpenses(
-			collect(mergeDocs(fresh, local()), now - FORGET_AFTER_MS),
-			now - SUM_UP_AFTER_MS
-		);
+		const doc = sumUpOldExpenses(collect(mergeDocs(fresh, local()), now), now - SUM_UP_AFTER_MS);
 		merged(doc);
 		if (same(doc, remote.doc)) return;
 		try {
@@ -580,6 +576,12 @@ async function sync(): Promise<void> {
 	} finally {
 		running = null;
 	}
+	// Announced while this sync ran, and newer than what it saw: someone else saved meanwhile.
+	if (announced > (lastRemote?.version ?? -1)) {
+		announced = -1;
+		return sync();
+	}
+	announced = -1;
 	if (keys && household.status !== 'missing' && document.visibilityState === 'visible') {
 		// Another sync may have finished meanwhile and set its own: only one poll waits.
 		clearTimeout(timer);
@@ -595,6 +597,8 @@ let socketRetry: ReturnType<typeof setTimeout> | undefined;
 let keepAlive: ReturnType<typeof setInterval> | undefined;
 /** Attempts in a row that never connected; where there's no live server (dev), polling does. */
 let socketFailures = 0;
+/** The newest version announced while a sync was running (often this phone's own save). */
+let announced = -1;
 
 function openLive() {
 	if (!keys || socket || socketFailures >= 3 || typeof WebSocket === 'undefined') return;
@@ -615,7 +619,9 @@ function openLive() {
 		if (event.data === 'pong' || keys?.id !== id) return;
 		try {
 			const { v } = JSON.parse(event.data as string) as { v: unknown };
-			if (typeof v === 'number' && v !== lastRemote?.version) void sync();
+			if (typeof v !== 'number' || v <= (lastRemote?.version ?? -1)) return;
+			if (running) announced = Math.max(announced, v);
+			else void sync();
 		} catch {
 			// Not ours.
 		}
@@ -1052,7 +1058,15 @@ export function updateMember(
 		if (value === undefined) delete next[key as keyof Member];
 	}
 	void putSigned(next);
+	// Allergies and what someone doesn't eat matter to whoever cooks: the log says it changed.
+	if (NEEDS.some((key) => key in change && !same(current[key], next[key]))) {
+		updateDoc((doc) =>
+			withEvents(doc, [{ at: Date.now(), who: household.me, kind: 'needs', ref: id }])
+		);
+	}
 }
+
+const NEEDS = ['allergens', 'avoid', 'mild', 'glutenFree'] as const;
 
 export function removeMember(id: string) {
 	const current = household.doc?.members[id];

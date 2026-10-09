@@ -214,13 +214,16 @@ describe('household sync', () => {
 			extras: [{ id: 'x1', text: 'papier', checked: false }],
 			pantry: { mrkva: 500 }
 		};
-		const shared = withLocalChanges(newDoc('D', 1), empty, start, 10);
+		const day = 24 * 60 * 60 * 1000;
+		const shared = withLocalChanges(newDoc('D', 1), empty, start, 10 * day);
 		// One phone deletes both; a month later the deletions are forgotten.
-		const deleted = collect(withLocalChanges(shared, start, empty, 20), 1000);
+		const deleted = collect(withLocalChanges(shared, start, empty, 20 * day), 60 * day);
 		expect(deleted.extras).toEqual({});
-		expect(deleted.gc).toBe(1000);
+		expect(deleted.gc).toBe(30 * day);
+		// Collecting again the same day changes nothing, so a sync has nothing new to upload.
+		expect(collect(deleted, 60 * day + 1000)).toBe(deleted);
 		// The phone that was away still has them as they were before the deletion.
-		const away = withLocalChanges(shared, start, { ...start, checked: { tofu: true } }, 2000);
+		const away = withLocalChanges(shared, start, { ...start, checked: { tofu: true } }, 50 * day);
 		const merged = mergeDocs(away, deleted);
 		expect(mergeDocs(deleted, away)).toEqual(merged);
 		expect(viewOf(merged)).toEqual({ ...empty, planIds: [], checked: { tofu: true } });
@@ -229,7 +232,7 @@ describe('household sync', () => {
 			away,
 			viewOf(away),
 			{ ...viewOf(away), pantry: { cicer: 1 } },
-			3000
+			55 * day
 		);
 		expect(viewOf(mergeDocs(added, deleted)).pantry).toEqual({ cicer: 1 });
 	});

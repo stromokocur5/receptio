@@ -1,3 +1,4 @@
+import { dev } from '$app/environment';
 import { error, json } from '@sveltejs/kit';
 import {
 	MAX_SYNC_BYTES,
@@ -82,7 +83,8 @@ export const PUT: RequestHandler = async (event) => {
 	if (outcome.result === 'forbidden') error(403, 'Tento kód patrí inej zálohe');
 	if (outcome.result === 'full') error(429, 'Dnes už vzniklo priveľa nových záloh, skús zajtra');
 	if (outcome.result === 'conflict') error(409, 'Medzitým to zmenil niekto iný');
-	if (body.data.announce && outcome.version !== undefined) {
+	// `vite dev` has the binding but not the Worker entry that holds the rooms; phones poll there.
+	if (!dev && body.data.announce && outcome.version !== undefined) {
 		event.platform?.ctx?.waitUntil(announce(event.platform.env, id, outcome.version));
 	}
 	return json({ updatedAt: outcome.updatedAt, version: outcome.version }, { headers: NO_STORE });

@@ -10,6 +10,9 @@
 
 	const events = $derived(household.doc ? logOf(household.doc).slice(0, SHOWN) : []);
 	const names = $derived(new Map(members().map((m) => [m.id, m.name])));
+	/** Whose profile, also once they've left. */
+	const whose = (id: string | undefined) =>
+		(id && (names.get(id) ?? household.doc?.members[id]?.name)) || 'niekto';
 
 	const ICON: Record<LogEvent['kind'], IconName> = {
 		'plan-add': 'plus',
@@ -18,7 +21,8 @@
 		bought: 'basket',
 		pantry: 'jar',
 		expense: 'euro',
-		harvest: 'sprout'
+		harvest: 'sprout',
+		needs: 'shield'
 	};
 
 	const items = (n: number) => (n === 1 ? 'vec' : n < 5 ? 'veci' : 'vecí');
@@ -39,6 +43,8 @@
 				return `do špajze ${n} ${items(n)}`;
 			case 'expense':
 				return `zaplatené ${formatEur(n)}`;
+			case 'needs':
+				return e.ref === e.who ? 'zmena v tom, čo neje' : `zmena v tom, čo neje ${whose(e.ref)}`;
 			case 'harvest':
 				return `úroda: ${formatGrams(n)} ${(e.ref && catalog.ingredientsById.get(e.ref)?.name.split(' (')[0].toLowerCase()) ?? ''}`;
 		}

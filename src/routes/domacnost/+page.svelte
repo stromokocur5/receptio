@@ -6,6 +6,7 @@
 	import HouseholdLog from '$lib/components/HouseholdLog.svelte';
 	import HouseholdMember from '$lib/components/HouseholdMember.svelte';
 	import HouseholdMoney from '$lib/components/HouseholdMoney.svelte';
+	import HouseholdToday from '$lib/components/HouseholdToday.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import {
@@ -382,6 +383,13 @@
 				<button class="btn leaf" disabled={busy} onclick={() => void run(() => stopSolo())}>
 					<Icon name="users" size={18} /> Späť k domácnosti
 				</button>
+			</section>
+		{/if}
+
+		{#if !household.solo && list.length}
+			<section class="card box">
+				<h2><Icon name="pot" size={24} /> Dnes doma</h2>
+				<HouseholdToday />
 			</section>
 		{/if}
 

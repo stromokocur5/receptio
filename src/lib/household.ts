@@ -104,7 +104,15 @@ export interface Expense {
 export type Balance = Record<string, number>;
 
 export type LogKind =
-	'plan-add' | 'plan-remove' | 'bought' | 'pantry' | 'expense' | 'cooked' | 'harvest';
+	| 'plan-add'
+	| 'plan-remove'
+	| 'bought'
+	| 'pantry'
+	| 'expense'
+	| 'cooked'
+	| 'harvest'
+	/** What someone can't eat changed (`ref`: whose profile) – everyone should know. */
+	| 'needs';
 
 /** One line of "who did what" for the others. `ref` is a recipe id, `n` a count or an amount. */
 export interface LogEvent {
@@ -188,6 +196,7 @@ const MAX_NAME = 40;
 const MAX_ITEMS = 1000;
 /** Deletions are kept this long, so every phone hears about them before they're forgotten. */
 export const FORGET_AFTER_MS = 30 * 24 * 60 * 60 * 1000;
+const DAY_MS = 24 * 60 * 60 * 1000;
 /** The sync storage holds 400 kB; old money and history go first. */
 export const MAX_EXPENSES = 1000;
 /** Expenses are summed up by month once they were entered this long ago. */
@@ -213,7 +222,8 @@ const LOG_KINDS: LogKind[] = [
 	'pantry',
 	'expense',
 	'cooked',
-	'harvest'
+	'harvest',
+	'needs'
 ];
 
 export function newDoc(name: string, now: number): HouseholdDoc {
@@ -713,11 +723,13 @@ const RECORDS = [
 ] as const;
 
 /**
- * Forgets deletions (and removed members) set before `horizon`; the document says so in `gc`,
+ * Forgets deletions (and removed members) set over a month before `now`; the document says so in `gc`,
  * so a phone that still has such an item doesn't bring it back. Without this the deletions
  * would pile up for good.
  */
-export function collect(doc: HouseholdDoc, horizon: number): HouseholdDoc {
+export function collect(doc: HouseholdDoc, now: number): HouseholdDoc {
+	// Whole days, so the document changes once a day for it, not with every sync.
+	const horizon = Math.floor((now - FORGET_AFTER_MS) / DAY_MS) * DAY_MS;
 	if (horizon <= doc.gc) return doc;
 	const next = { ...doc, gc: horizon };
 	const keep = <T>(items: Record<string, Stamped<T>>) =>
