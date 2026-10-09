@@ -47,7 +47,7 @@ export const MEAL_LABELS: Record<Meal, string> = {
 	vecera: 'Večera',
 	snack: 'Snack',
 	dezert: 'Dezert',
-	domace: 'Urob si sám'
+	domace: 'Urob si doma'
 };
 
 /** Lowercase without diacritics, so "cicer" finds "Cícer". */

@@ -154,7 +154,7 @@ export const RECIPE_CATEGORIES = {
 		}
 	},
 	domace: {
-		label: 'Urob si sám',
+		label: 'Urob si doma',
 		blurb: 'Tofu, mlieka, syry, kimchi',
 		icon: 'jar',
 		tone: 'var(--leaf)',
