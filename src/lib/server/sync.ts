@@ -30,12 +30,18 @@ export async function sha256Hex(text: string): Promise<string> {
 export async function readSync(
 	db: D1Database,
 	id: string
-): Promise<{ data: string; updatedAt: number; version: number } | null> {
+): Promise<{ data: string; updatedAt: number; version?: number } | null> {
+	// SELECT * also works before migration 0011 adds the version; phones then skip the check.
 	const row = await db
-		.prepare('SELECT data, updated_at, version FROM sync WHERE id = ?')
+		.prepare('SELECT * FROM sync WHERE id = ?')
 		.bind(id)
-		.first<{ data: string; updated_at: number; version: number }>();
-	return row ? { data: row.data, updatedAt: row.updated_at, version: row.version } : null;
+		.first<{ data: string; updated_at: number; version?: number }>();
+	if (!row) return null;
+	return {
+		data: row.data,
+		updatedAt: row.updated_at,
+		...(typeof row.version === 'number' && { version: row.version })
+	};
 }
 
 /** `conflict`: someone else wrote since `ifVersion` – read, merge and try again. */
@@ -61,12 +67,19 @@ export async function writeSync(
 		.first<{ write_hash: string }>();
 	if (existing) {
 		if (existing.write_hash !== writeHash) return { result: 'forbidden', updatedAt };
+		if (ifVersion === undefined) {
+			await db
+				.prepare('UPDATE sync SET data = ?, updated_at = ? WHERE id = ? AND write_hash = ?')
+				.bind(data, updatedAt, id, writeHash)
+				.run();
+			return { result: 'saved', updatedAt };
+		}
 		// The version check is in the same statement, so two writers can't both pass it.
 		const updated = await db
 			.prepare(
-				'UPDATE sync SET data = ?, updated_at = ?, version = version + 1 WHERE id = ? AND write_hash = ? AND (? IS NULL OR version = ?) RETURNING version'
+				'UPDATE sync SET data = ?, updated_at = ?, version = version + 1 WHERE id = ? AND write_hash = ? AND version = ? RETURNING version'
 			)
-			.bind(data, updatedAt, id, writeHash, ifVersion ?? null, ifVersion ?? null)
+			.bind(data, updatedAt, id, writeHash, ifVersion)
 			.first<{ version: number }>();
 		if (!updated) return { result: 'conflict', updatedAt };
 		return { result: 'saved', updatedAt, version: updated.version };

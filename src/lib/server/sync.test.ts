@@ -11,7 +11,7 @@ function fakeDb() {
 	const statement = (sql: string, args: unknown[] = []) => ({
 		bind: (...values: unknown[]) => statement(sql, values),
 		async first() {
-			if (sql.startsWith('SELECT data')) {
+			if (sql.startsWith('SELECT *')) {
 				const row = rows.get(args[0] as string);
 				return row ? { data: row.data, updated_at: row.updated_at, version: row.version } : null;
 			}
@@ -21,11 +21,11 @@ function fakeDb() {
 					number,
 					string,
 					string,
-					number | null
+					number
 				];
 				const row = rows.get(id);
 				if (!row || row.write_hash !== hash) return null;
-				if (ifVersion !== null && row.version !== ifVersion) return null;
+				if (row.version !== ifVersion) return null;
 				Object.assign(row, { data, updated_at, version: row.version + 1 });
 				return { version: row.version };
 			}
@@ -34,6 +34,13 @@ function fakeDb() {
 			throw new Error(sql);
 		},
 		async run() {
+			if (sql.startsWith('UPDATE')) {
+				const [data, updated_at, id, hash] = args as [string, number, string, string];
+				const row = rows.get(id);
+				if (!row || row.write_hash !== hash) return { meta: { changes: 0 } };
+				Object.assign(row, { data, updated_at });
+				return { meta: { changes: 1 } };
+			}
 			if (sql.startsWith('INSERT')) {
 				const [id, write_hash, data, updated_at] = args as [string, string, string, number];
 				if (rows.has(id)) return { meta: { changes: 0 } };
@@ -72,7 +79,7 @@ describe('sync storage', () => {
 		expect((await writeSync(db, ID, TOKEN, 'iv.one', 1_000_000)).result).toBe('saved');
 		expect((await writeSync(db, ID, TOKEN, 'iv.two', 2_000_000)).result).toBe('saved');
 		expect((await writeSync(db, ID, 'c'.repeat(64), 'iv.evil')).result).toBe('forbidden');
-		expect(await readSync(db, ID)).toEqual({ data: 'iv.two', updatedAt: 2000, version: 1 });
+		expect(await readSync(db, ID)).toEqual({ data: 'iv.two', updatedAt: 2000, version: 0 });
 	});
 
 	it('writes over a version only while nobody else has written since', async () => {
