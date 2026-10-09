@@ -53,6 +53,7 @@
 		planNeed,
 		planSlots
 	} from '$lib/household.svelte';
+	import { noteTick, orderAisles, settleTrip } from '$lib/store-order';
 	import {
 		approxPieces,
 		buildShoppingList,
@@ -62,6 +63,7 @@
 	import {
 		addExtraItem,
 		checkedItems,
+		storeOrder,
 		extraItems,
 		type ExtraItem,
 		journal,
@@ -148,13 +150,32 @@
 	);
 	const allItems = $derived(list.byCategory.flatMap(([, items]) => items));
 
+	/**
+	 * The shop the list is walked in: the one you shop in, or the one picked when there are more.
+	 * Each learns its own order.
+	 */
+	const shopIn = $derived.by(() => {
+		const mine = settings.current.myStores;
+		if (mine.length === 1) return mine[0];
+		return mine.includes(storeOrder.current.store) ? storeOrder.current.store : '';
+	});
+	const learnedTrips = $derived(storeOrder.current.trips[shopIn] ?? 0);
+	const aisles = $derived(orderAisles(list.byCategory, storeOrder.current, shopIn));
+
+	function pickShop(id: string) {
+		storeOrder.current = { ...settleTrip(storeOrder.current, Date.now(), true), store: id };
+	}
+	function forgetOrder() {
+		const { [shopIn]: _, ...pairs } = storeOrder.current.pairs;
+		const { [shopIn]: __, ...trips } = storeOrder.current.trips;
+		storeOrder.current = { ...storeOrder.current, pairs, trips, trip: null };
+	}
+
 	/** Aisles (default) or one list per store where each item is cheapest. */
 	let groupBy = $state<'aisle' | 'store'>('aisle');
 	const hasRealPrices = $derived(allItems.some((i) => i.storeId));
 	const groups = $derived.by((): [string, string, ShoppingItem[]][] => {
-		if (groupBy === 'aisle') {
-			return list.byCategory.map(([c, items]) => [c, CATEGORY_LABELS[c], items]);
-		}
+		if (groupBy === 'aisle') return aisles.map(([c, items]) => [c, CATEGORY_LABELS[c], items]);
 		const byStore = new Map<string, ShoppingItem[]>();
 		for (const item of allItems) {
 			// Follow the recommended shops; anything they lack goes where it's cheapest.
@@ -370,12 +391,22 @@
 		}
 		checkedItems.current = {};
 		extraItems.current = extraItems.current.filter((x) => !x.checked);
+		endTrip();
 	}
 
 	function toggleChecked(id: string) {
 		const done = !checkedItems.current[id];
 		checkedItems.current = { ...checkedItems.current, [id]: done };
 		if (following) tickLive(id, done);
+		const category = catalog.ingredientsById.get(id)?.category;
+		if (category) {
+			storeOrder.current = noteTick(storeOrder.current, shopIn, id, category, done, Date.now());
+		}
+	}
+	/** The basket was emptied: the trip is over, learn from it now. */
+	function endTrip() {
+		if (storeOrder.current.trip)
+			storeOrder.current = settleTrip(storeOrder.current, Date.now(), true);
 	}
 
 	/**
@@ -384,6 +415,14 @@
 	 * updates their list.
 	 */
 	let following = $state(false);
+	// A trip left unfinished (the basket never emptied) is learned once it's clearly over.
+	let settled = false;
+	$effect(() => {
+		if (!ui.loaded || settled) return;
+		settled = true;
+		const next = settleTrip(storeOrder.current, Date.now());
+		if (next !== storeOrder.current) storeOrder.current = next;
+	});
 	onMount(() => {
 		const code = ownLiveCode();
 		if (!code) return;
@@ -421,7 +460,7 @@
 	const pieces = (item: ShoppingItem) => approxPieces(item.ingredient, item.buyGrams);
 
 	async function copyList() {
-		const lines = list.byCategory.flatMap(([category, items]) => [
+		const lines = aisles.flatMap(([category, items]) => [
 			`${CATEGORY_LABELS[category]}:`,
 			...items.map((i) => `- ${i.ingredient.name}: ${formatGrams(i.buyGrams)}${pieces(i)}`),
 			''
@@ -500,6 +539,7 @@
 		}
 		checkedItems.current = {};
 		extraItems.current = extraItems.current.filter((x) => !x.checked);
+		endTrip();
 		// Bought and put away: the shopping trip is over.
 		if (following) endTogether();
 	}
@@ -976,6 +1016,28 @@
 							· najlacnejšie v {storeNames(comparison.recommended)}
 						{/if}
 					</p>
+					{#if groupBy === 'aisle'}
+						{#if settings.current.myStores.length > 1}
+							<div class="group-by" role="group" aria-label="V ktorom obchode nakupuješ">
+								{#each settings.current.myStores as id (id)}
+									<button class="chip" aria-pressed={shopIn === id} onclick={() => pickShop(id)}>
+										{catalog.storesById.get(id)?.name ?? id}
+									</button>
+								{/each}
+							</div>
+						{/if}
+						<p class="muted small learned">
+							{#if learnedTrips}
+								<Icon name="sparkle" size={15} />
+								Zoradené tak, ako chodíš po obchode – naučené z {learnedTrips}
+								{learnedTrips === 1 ? 'nákupu' : 'nákupov'}.
+								<button class="link" onclick={forgetOrder}>Zabudnúť</button>
+							{:else}
+								Odškrtávaj v obchode postupne – zoznam sa naučí, kade chodíš, a nabudúce sa tak
+								zoradí.
+							{/if}
+						</p>
+					{/if}
 				</div>
 				{#each groups as [key, label, items] (key)}
 					{@const toBuy = items.filter((i) => !checkedItems.current[i.ingredient.id])}
@@ -2071,6 +2133,22 @@
 	}
 	.in-cart:not([open]) summary h3::after {
 		content: ' ▸';
+	}
+	.learned {
+		margin: 8px 0 0;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px;
+	}
+	.learned .link {
+		border: 0;
+		background: none;
+		padding: 0;
+		color: var(--ink-2);
+		font: inherit;
+		text-decoration: underline;
+		cursor: pointer;
 	}
 	.link-btn {
 		display: block;

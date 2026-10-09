@@ -12,6 +12,7 @@ import {
 	type Journal
 } from './journal';
 import { merge3 } from './merge3';
+import { NO_STORE_ORDER, validateStoreOrder, type StoreOrder } from './store-order';
 import { consumeFromPantry, type Pantry, type PantryUse } from './pantry';
 import { isValidSchedule, type ReminderSchedule } from './push';
 import { validatePreserves, type Preserve } from './preserves';
@@ -396,6 +397,12 @@ export function addExtraItem(text: string) {
 		{ id: crypto.randomUUID(), text: clean, checked: false }
 	];
 }
+/** The way you walk your shops, learned from the order things are ticked off (store-order.ts). */
+export const storeOrder = new Persisted<StoreOrder>(
+	'store-order',
+	NO_STORE_ORDER,
+	validateStoreOrder
+);
 /** Basics (spices, oils) the user marked as missing at home. */
 export const outOfStock = new Persisted<Record<string, boolean>>('out-of-stock', {}, validateFlags);
 export const settings = new Persisted<Settings>('settings', DEFAULT_SETTINGS, validateSettings);

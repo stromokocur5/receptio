@@ -10,7 +10,8 @@
 	import { decodeSharedPlan, type SharedPlan } from '$lib/share';
 	import { LIVE_PREFIX, joinLiveList, leaveLiveList, live, tickLive } from '$lib/live-list.svelte';
 	import { approxPieces } from '$lib/shopping';
-	import { plan, settings } from '$lib/state.svelte';
+	import { plan, settings, storeOrder } from '$lib/state.svelte';
+	import { noteTick, orderAisles } from '$lib/store-order';
 	import { INGREDIENT_CATEGORIES } from '$lib/types';
 
 	const CHECKED_KEY = 'receptio:shared-checked';
@@ -44,9 +45,15 @@
 		const items = shared.buy
 			.map(([id, grams]) => ({ ingredient: catalog.ingredientsById.get(id)!, grams }))
 			.sort((a, b) => a.ingredient.name.localeCompare(b.ingredient.name, 'sk'));
-		return INGREDIENT_CATEGORIES.map(
-			(c) => [c, items.filter((i) => i.ingredient.category === c)] as const
+		const aisles = INGREDIENT_CATEGORIES.map(
+			(c): [(typeof INGREDIENT_CATEGORIES)[number], typeof items] => [
+				c,
+				items.filter((i) => i.ingredient.category === c)
+			]
 		).filter(([, list]) => list.length);
+		// The order this phone learned walking its own shop.
+		const mine = settings.current.myStores;
+		return orderAisles(aisles, storeOrder.current, mine.length === 1 ? mine[0] : '');
 	});
 	const doneCount = $derived(shared ? shared.buy.filter(([id]) => checked[id]).length : 0);
 
@@ -78,6 +85,18 @@
 	});
 
 	function toggle(id: string) {
+		const category = catalog.ingredientsById.get(id)?.category;
+		if (category) {
+			const mine = settings.current.myStores;
+			storeOrder.current = noteTick(
+				storeOrder.current,
+				mine.length === 1 ? mine[0] : '',
+				id,
+				category,
+				!checked[id],
+				Date.now()
+			);
+		}
 		if (isLive) {
 			tickLive(id, !checked[id]);
 			return;
