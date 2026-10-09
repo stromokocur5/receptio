@@ -156,6 +156,11 @@
 				<a href="/pestuj">Pestuj si sám</a>. Keď si nastavíš polohu, prehliadač im pošle priamo
 				zadaný názov obce alebo súradnice zaokrúhlené na zhruba kilometer. Nič iné.
 			</li>
+			<li>
+				<strong>Open Food Facts</strong> – otvorená databáza potravín pre pridanie do
+				<a href="/spajza">špajze</a> podľa čiarového kódu. Keď kód naskenuješ alebo zadáš, prehliadač
+				im pošle priamo len jeho číslo. Obraz z fotoaparátu zostáva v telefóne.
+			</li>
 		</ul>
 		<p>Údaje nikomu nepredávame a nepoužívame ich na reklamu ani profilovanie.</p>
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import BarcodeScanner from '$lib/components/BarcodeScanner.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { formatGrams } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
@@ -246,6 +247,7 @@
 					placeholder="Hľadaj surovinu – cícer, huby…"
 				/>
 			</div>
+			<BarcodeScanner />
 			{#if !search.trim()}
 				<div class="bundles" role="group" aria-label="Pridať naraz">
 					<span class="bundles-label">Pridať naraz:</span>

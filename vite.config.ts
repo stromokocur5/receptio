@@ -45,6 +45,8 @@ export default defineConfig({
 						'self',
 						'wss://receptio.kohut.xyz',
 						'wss://*.gabrielkohut3.workers.dev',
+						// Products by barcode for the pantry (only the barcode is sent).
+						'https://world.openfoodfacts.org',
 						'https://api.open-meteo.com',
 						'https://geocoding-api.open-meteo.com'
 					],
