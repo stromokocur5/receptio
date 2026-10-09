@@ -346,7 +346,7 @@
 		{/each}
 	</nav>
 
-	<div class="stage" {onpointerdown} {onpointerup}>
+	<div class="stage" role="group" aria-label="Kroky receptu" {onpointerdown} {onpointerup}>
 		{#key index}
 			<section class="slide" style:--dir={direction}>
 				{#if !done}
