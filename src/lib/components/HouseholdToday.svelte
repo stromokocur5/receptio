@@ -90,17 +90,19 @@
 </p>
 
 <style>
+	/* The meal column is as wide as its longest name, the same for every row. */
 	.today {
 		display: grid;
-		gap: 8px;
+		grid-template-columns: max-content minmax(0, 1fr);
+		gap: var(--sp-2) var(--sp-4);
 		padding: 0;
 		margin: 0;
 		list-style: none;
 	}
 	.today li {
 		display: grid;
-		grid-template-columns: 6.5em minmax(0, 1fr);
-		gap: 10px;
+		grid-column: 1 / -1;
+		grid-template-columns: subgrid;
 		align-items: baseline;
 	}
 	.meal {

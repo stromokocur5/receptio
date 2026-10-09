@@ -425,6 +425,10 @@
 		flex-wrap: wrap;
 		gap: 4px;
 	}
+	/* As flex items the chips line up by their box; a tick inside one doesn't lift it. */
+	.cuisines li {
+		display: flex;
+	}
 	.cuisines a {
 		display: inline-flex;
 		align-items: center;

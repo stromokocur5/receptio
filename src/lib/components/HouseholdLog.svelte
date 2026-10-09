@@ -69,6 +69,8 @@
 				<Icon name={ICON[e.kind]} size={16} />
 				<span
 					><strong>{(e.who && names.get(e.who)) || 'Niekto'}</strong>
+					<!-- A label, not a sentence: "Jano · zaplatené 12 €" needs no gendered verb. -->
+					<span class="sep" aria-hidden="true">·</span>
 					<span class="what">{text(e)}</span></span
 				>
 				<time datetime={new Date(e.at).toISOString()}>{when(e.at)}</time>
@@ -96,6 +98,9 @@
 	}
 	.what {
 		overflow-wrap: anywhere;
+	}
+	.sep {
+		color: var(--muted);
 	}
 	time {
 		color: var(--muted);

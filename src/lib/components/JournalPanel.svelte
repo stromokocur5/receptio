@@ -617,7 +617,7 @@
 					<input
 						type="search"
 						bind:value={query}
-						placeholder="Recept alebo surovina: dal, jablko, tofu…"
+						placeholder="Recept alebo surovina…"
 						autocomplete="off"
 					/>
 				</label>
@@ -1080,9 +1080,32 @@
 	.prefs {
 		margin-top: 16px;
 	}
+	/* A chevron that turns, the same as the other disclosures. */
 	.prefs summary {
+		display: flex;
+		align-items: center;
+		gap: var(--sp-2);
+		min-height: var(--tap);
 		cursor: pointer;
 		font-weight: 650;
+		list-style: none;
+	}
+	.prefs summary::-webkit-details-marker {
+		display: none;
+	}
+	.prefs summary::after {
+		content: '';
+		width: 7px;
+		height: 7px;
+		margin-top: -3px;
+		border-right: 2px solid var(--muted);
+		border-bottom: 2px solid var(--muted);
+		transform: rotate(45deg);
+		transition: transform 0.2s var(--ease-out);
+	}
+	.prefs:not([open]) summary::after {
+		margin-top: 0;
+		transform: rotate(-45deg);
 	}
 	.prefs > * + * {
 		margin-top: 10px;
@@ -1107,8 +1130,9 @@
 		gap: 8px;
 		margin-bottom: 8px;
 	}
+	/* Weight and activity side by side when both fit whole, else one under the other. */
 	.goal-row {
-		grid-template-columns: minmax(100px, 140px) minmax(0, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(14em, 1fr));
 	}
 	.goal-row select {
 		min-width: 0;
@@ -1121,6 +1145,10 @@
 	}
 	.week > p {
 		margin: 0 0 8px;
+	}
+	/* The note after the bars mustn't sit on the last one. */
+	.week > p:last-child {
+		margin: var(--sp-3) 0;
 	}
 	.gaps h4 {
 		margin: 16px 0 6px;
@@ -1147,6 +1175,13 @@
 		gap: 8px;
 		margin: 14px 0 4px;
 		font-size: 0.92rem;
+	}
+	/* The meal's totals are figures, not part of the heading. */
+	.meal-head .small {
+		font-family: var(--font-body);
+		font-weight: 500;
+		font-variation-settings: normal;
+		letter-spacing: 0;
 	}
 	.more-label summary {
 		cursor: pointer;

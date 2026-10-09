@@ -21,6 +21,8 @@
 
 	const catalog = useCatalog();
 	const THROW = 90;
+	/** "Jano a Lea", "Jano, Lea a Ema". */
+	const both = new Intl.ListFormat('sk', { type: 'conjunction' });
 
 	let dialog = $state<HTMLDialogElement>();
 	/** Fixed when opened, so the cards don't reshuffle as the others' swipes arrive. */
@@ -213,7 +215,9 @@
 						{#if others.length}
 							<p class="wanted">
 								<Icon name="heart" size={15} />
-								Chce to aj {others.map((m: { name: string }) => m.name).join(', ')}
+								{others.length === 1 ? 'Chce' : 'Chcú'} to aj {both.format(
+									others.map((m: { name: string }) => m.name)
+								)}
 							</p>
 						{/if}
 						<h3>{card.title}</h3>
@@ -266,7 +270,7 @@
 					byId={catalog.ingredientsById}
 				/>
 			</div>
-			<p>Chceš to ty aj {match.names.join(', ')}.</p>
+			<p>Chceš to ty aj {both.format(match.names)}.</p>
 			<button class="btn leaf wide" bind:this={matchButton} onclick={planMatch}>
 				<Icon name="calendar" size={18} /> Do plánu
 			</button>
@@ -490,6 +494,11 @@
 	}
 	.match-art {
 		width: 180px;
+	}
+	/* Both answers the same width, one under the other. */
+	.match .wide {
+		width: min(240px, 100%);
+		justify-content: center;
 	}
 	@keyframes pop {
 		from {

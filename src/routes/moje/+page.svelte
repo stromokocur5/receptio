@@ -443,12 +443,6 @@
 
 	<SyncPanel />
 
-	<p class="guide-again">
-		<button class="btn ghost small" onclick={() => (onboarding.open = true)}>
-			<Icon name="info" size={16} /> Ako Receptio funguje – spustiť sprievodcu
-		</button>
-	</p>
-
 	<section class="card box backup" id="zaloha">
 		<h2 class="section-title"><Icon name="package" size={24} /> Záloha do súboru</h2>
 		<p>
@@ -478,11 +472,18 @@
 		{/if}
 		<p class="hint">Obnovenie prepíše to, čo máš v tomto prehliadači teraz.</p>
 	</section>
+
+	<p class="guide-again">
+		<button class="btn ghost small" onclick={() => (onboarding.open = true)}>
+			<Icon name="info" size={16} /> Ako Receptio funguje – spustiť sprievodcu
+		</button>
+	</p>
 </div>
 
 <style>
+	/* Last on the page, so it doesn't split sync from the file backup. */
 	.guide-again {
-		margin: var(--sp-4) 0 0;
+		margin: var(--sp-5) 0 0;
 	}
 	.lede {
 		max-width: 44em;

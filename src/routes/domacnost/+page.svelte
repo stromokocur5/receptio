@@ -621,10 +621,10 @@
 						{#each matched as recipe (recipe.id)}
 							<li>
 								<a href="/recepty/{recipe.id}"><strong>{recipe.title}</strong></a>
-								<span class="muted small">chcete všetci</span>
 								<button class="btn small leaf" onclick={() => addToPlan(recipe.id, recipe.servings)}
 									>Do plánu</button
 								>
+								<span class="muted small">chcete všetci</span>
 							</li>
 						{/each}
 					</ul>
@@ -918,9 +918,16 @@
 	.cooking li > :nth-child(2) {
 		text-align: right;
 	}
+	/* The title keeps the width; "chcete všetci" sits under it, the button beside both. */
 	.matches li {
-		grid-template-columns: minmax(0, 1fr) auto auto;
 		align-items: center;
+	}
+	.matches li > .btn {
+		grid-row: span 2;
+	}
+	.matches li > .muted {
+		grid-column: 1;
+		text-align: left;
 	}
 	.swipe-btn {
 		margin: var(--sp-1) 0 var(--sp-2);
