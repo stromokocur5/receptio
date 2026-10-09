@@ -1,13 +1,16 @@
 import { getContext, setContext } from 'svelte';
-import type {
-	RecipeLine,
-	Catalog,
-	Cuisine,
-	Equipment,
-	Ingredient,
-	RecipeSummary,
-	Store,
-	WikiPage
+import {
+	NUTRIENT_KEYS,
+	type RecipeLine,
+	type Catalog,
+	type Cuisine,
+	type Equipment,
+	type Ingredient,
+	type Nutrients,
+	type RecipeSummary,
+	type Store,
+	type Unit,
+	type WikiPage
 } from './types';
 
 export type WikiIndexEntry = Omit<WikiPage, 'html'>;
@@ -59,12 +62,57 @@ export function unpackVariantLines(base: RecipeLine[], lines: PackedLine[]): Rec
 	return lines.map((line) => (typeof line === 'number' ? base[line] : line));
 }
 
-export function indexCatalog(catalog: CatalogPayload): IndexedCatalog {
+/**
+ * In catalog.json a line is `[ingredient, grams, amount, unit, notEaten?]` and nutrients are a
+ * list in NUTRIENT_KEYS order: the key names repeated on every line and recipe were a third of
+ * the file and most of the time spent reading it.
+ */
+type LineTuple = [string, number, number | null, Unit | null, 1?];
+
+export const packLine = (l: RecipeLine): LineTuple =>
+	l.notEaten
+		? [l.ingredientId, l.grams, l.amount, l.unit, 1]
+		: [l.ingredientId, l.grams, l.amount, l.unit];
+
+const unpackLine = (line: RecipeLine | LineTuple): RecipeLine =>
+	Array.isArray(line)
+		? {
+				ingredientId: line[0],
+				grams: line[1],
+				amount: line[2],
+				unit: line[3],
+				...(line[4] === 1 && { notEaten: true })
+			}
+		: line;
+
+export const packNutrients = (n: Nutrients): number[] => NUTRIENT_KEYS.map((k) => n[k]);
+
+const unpackNutrients = (n: Nutrients | number[]): Nutrients =>
+	Array.isArray(n)
+		? (Object.fromEntries(NUTRIENT_KEYS.map((k, i) => [k, n[i] ?? 0])) as Nutrients)
+		: n;
+
+/** Undoes what catalog.json packed; an older, unpacked catalog (offline cache) reads as is. */
+function unpack(catalog: CatalogPayload) {
+	for (const ingredient of catalog.ingredients) {
+		ingredient.per100g = unpackNutrients(ingredient.per100g);
+	}
 	for (const recipe of catalog.recipes) {
+		recipe.lines = (recipe.lines as (RecipeLine | LineTuple)[]).map(unpackLine);
+		recipe.perServing = unpackNutrients(recipe.perServing);
 		for (const variant of recipe.variants) {
-			variant.lines = unpackVariantLines(recipe.lines, variant.lines as PackedLine[]);
+			const packed = variant.lines as (PackedLine | LineTuple)[];
+			variant.lines = unpackVariantLines(
+				recipe.lines,
+				packed.map((l) => (typeof l === 'number' ? l : unpackLine(l)))
+			);
+			variant.perServing = unpackNutrients(variant.perServing);
 		}
 	}
+}
+
+export function indexCatalog(catalog: CatalogPayload): IndexedCatalog {
+	unpack(catalog);
 	return {
 		...catalog,
 		// A catalog cached by an older service worker has no equipment yet.

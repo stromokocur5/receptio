@@ -1,5 +1,5 @@
-import { packVariantLines, type CatalogPayload } from '$lib/catalog';
-import type { RecipeLine } from '$lib/types';
+import { packLine, packNutrients, packVariantLines, type CatalogPayload } from '$lib/catalog';
+import type { Nutrients, RecipeLine } from '$lib/types';
 import { getContent } from '$lib/server/content';
 import type { RequestHandler } from './$types';
 
@@ -11,23 +11,27 @@ export const prerender = true;
  */
 export const GET: RequestHandler = () => {
 	const { ingredients, recipes, cuisines, stores, prices, wiki, equipment } = getContent();
+	// Lines and nutrients go as lists instead of objects; indexCatalog unpacks them.
 	const catalog: CatalogPayload = {
-		ingredients,
+		ingredients: ingredients.map((i) => ({
+			...i,
+			per100g: packNutrients(i.per100g) as unknown as Nutrients
+		})),
 		// Warnings, line notes and variant descriptions are only shown on a recipe's own page,
 		// which loads the full recipe itself – no need to ship them with every page.
 		recipes: recipes.map((r) => ({
 			...r,
 			warnings: [],
-			lines: r.lines.map(({ note: _note, ...line }) => line),
+			lines: r.lines.map(packLine) as unknown as RecipeLine[],
+			perServing: packNutrients(r.perServing) as unknown as Nutrients,
 			variants: r.variants.map((v) => ({
 				...v,
 				description: '',
 				warnings: [],
-				// Unpacked again by indexCatalog.
-				lines: packVariantLines(
-					r.lines,
-					v.lines.map(({ note: _note, ...line }) => line)
-				) as RecipeLine[]
+				perServing: packNutrients(v.perServing) as unknown as Nutrients,
+				lines: packVariantLines(r.lines, v.lines).map((l) =>
+					typeof l === 'number' ? l : packLine(l)
+				) as unknown as RecipeLine[]
 			}))
 		})),
 		cuisines,
