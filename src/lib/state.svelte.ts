@@ -12,6 +12,7 @@ import {
 	type Journal
 } from './journal';
 import { merge3 } from './merge3';
+import { validateSeen } from './swipe';
 import { NO_STORE_ORDER, validateStoreOrder, type StoreOrder } from './store-order';
 import { consumeFromPantry, type Pantry, type PantryUse } from './pantry';
 import { isValidSchedule, type ReminderSchedule } from './push';
@@ -403,6 +404,8 @@ export const storeOrder = new Persisted<StoreOrder>(
 	NO_STORE_ORDER,
 	validateStoreOrder
 );
+/** Recipes swiped on this phone (id → 'yes' | 'no'), so they don't come round again. */
+export const swiped = new Persisted<Record<string, string>>('swiped', {}, validateSeen, true);
 /** Basics (spices, oils) the user marked as missing at home. */
 export const outOfStock = new Persisted<Record<string, boolean>>('out-of-stock', {}, validateFlags);
 export const settings = new Persisted<Settings>('settings', DEFAULT_SETTINGS, validateSettings);

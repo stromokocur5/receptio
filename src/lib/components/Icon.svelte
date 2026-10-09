@@ -41,6 +41,7 @@
 			'<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',
 		'arrow-right': '<path d="M4 12h15M13 6l6 6-6 6"/>',
 		'arrow-left': '<path d="M20 12H5M11 6l-6 6 6 6"/>',
+		undo: '<path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/>',
 		'arrow-up': '<path d="M12 20V5M6 11l6-6 6 6"/>',
 		bee: '<ellipse cx="12" cy="14" rx="5" ry="6.5"/><path d="M7.3 12h9.4M7.2 15.5h9.6"/><path d="M12 7.5V6M10 4.5l2 1.5 2-1.5"/><path d="M8.5 9.5C5 8 3 9 3.5 11s3 1.5 5 0M15.5 9.5C19 8 21 9 20.5 11s-3 1.5-5 0"/>',
 		tree: '<path d="M12 21v-6"/><path d="M12 15c-4.5 0-7.5-2.4-7.5-6A7.5 7.5 0 0 1 12 2.5 7.5 7.5 0 0 1 19.5 9c0 3.6-3 6-7.5 6Z"/><path d="M12 15l-3-3M12 12.5l3-3"/><path d="M8.5 21h7"/>',

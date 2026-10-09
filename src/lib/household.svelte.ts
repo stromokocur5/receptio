@@ -1321,6 +1321,15 @@ export function notePurchase(amount: number) {
 	addExpense({ by: household.me, amount, note: 'Nákup' });
 }
 
+/** Wants it (or not any more), e.g. from swiping. */
+export function setWish(recipeId: string, wanted: boolean) {
+	const me = household.me;
+	if (!me || !household.doc) return;
+	const key = wishKey(me, recipeId);
+	if ((household.doc.wishes[key]?.[0] ?? false) === wanted) return;
+	updateDoc((doc) => ({ ...doc, wishes: { ...doc.wishes, [key]: [wanted, stamp()] } }));
+}
+
 export function toggleWish(recipeId: string) {
 	const me = household.me;
 	if (!me || !household.doc) return;

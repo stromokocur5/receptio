@@ -8,6 +8,8 @@
 	import HouseholdMoney from '$lib/components/HouseholdMoney.svelte';
 	import HouseholdToday from '$lib/components/HouseholdToday.svelte';
 	import InviteQr from '$lib/components/InviteQr.svelte';
+	import RecipeSwipe from '$lib/components/RecipeSwipe.svelte';
+	import { almost, matches } from '$lib/swipe';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import {
@@ -44,7 +46,7 @@
 	import { localToday } from '$lib/journal';
 	import { remindersSupported } from '$lib/reminders';
 	import { ALLERGEN_LABELS } from '$lib/nutrition';
-	import { plan, ui } from '$lib/state.svelte';
+	import { addToPlan, plan, ui } from '$lib/state.svelte';
 
 	const catalog = useCatalog();
 
@@ -105,6 +107,18 @@
 			: []
 	);
 	const me = $derived(ui.loaded ? myMember() : null);
+	let swiping = $state(false);
+	const wishMap = $derived(household.doc ? wishesOf(household.doc, list) : new Map());
+	const planned = $derived(new Set(sharedPlan.map((e) => e.recipeId)));
+	/** Everyone wants it and it isn't in the plan yet. */
+	const matched = $derived(
+		matches(wishMap, list)
+			.filter((id) => !planned.has(id))
+			.flatMap((id) => catalog.recipesById.get(id) ?? [])
+	);
+	const nearly = $derived(
+		almost(wishMap, list).filter((a) => !planned.has(a.id) && catalog.recipesById.has(a.id))
+	);
 
 	afterNavigate(() => {
 		const fragment = location.hash.slice(1);
@@ -550,6 +564,31 @@
 				<p class="muted">Plán je zatiaľ prázdny.</p>
 			{/if}
 			<h3>Želania</h3>
+			<button class="btn swipe-btn" onclick={() => (swiping = true)}>
+				<Icon name="heart" size={18} /> Čo budeme jesť? Poťahaj recepty
+			</button>
+			{#if matched.length}
+				<ul class="cooking matches" aria-label="Zhody">
+					{#each matched as recipe (recipe.id)}
+						<li>
+							<a href="/recepty/{recipe.id}"><strong>{recipe.title}</strong></a>
+							<span class="muted">chcete všetci</span>
+							<button class="btn small leaf" onclick={() => addToPlan(recipe.id, recipe.servings)}
+								>Do plánu</button
+							>
+						</li>
+					{/each}
+				</ul>
+			{/if}
+			{#if nearly.some((a) => a.missing.id === me?.id)}
+				<p class="hint">
+					Ostatní chcú {nearly
+						.filter((a) => a.missing.id === me?.id)
+						.slice(0, 3)
+						.map((a) => catalog.recipesById.get(a.id)?.title)
+						.join(', ')} – chýba už len tvoje áno.
+				</p>
+			{/if}
 			{#if wishes.length}
 				<ul class="cooking">
 					{#each wishes as w (w.recipe!.id)}
@@ -561,8 +600,8 @@
 				</ul>
 			{:else}
 				<p class="muted">
-					Pri recepte ťukni „Chcem to“ (keď si vyberieš, ktorý člen si) – automatický plán ho potom
-					zaradí skôr.
+					Poťahaj recepty alebo pri recepte ťukni „Chcem to“ – čo chcete všetci, je zhoda, a
+					automatický plán želania zaradí skôr.
 				</p>
 			{/if}
 		</section>
@@ -653,7 +692,15 @@
 	{/if}
 </div>
 
+{#if household.doc}<RecipeSwipe bind:open={swiping} />{/if}
+
 <style>
+	.swipe-btn {
+		margin: 4px 0 12px;
+	}
+	.matches li {
+		align-items: center;
+	}
 	.news {
 		display: flex;
 		gap: 12px;
