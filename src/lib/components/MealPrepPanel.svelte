@@ -1,6 +1,7 @@
 <script lang="ts">
+	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
-	import { batchPlan } from '$lib/mealprep';
+	import { batchPlan, packingTips } from '$lib/mealprep';
 	import { addToPlan, plan, settings, ui } from '$lib/state.svelte';
 	import type { RecipeSummary } from '$lib/types';
 
@@ -9,12 +10,13 @@
 		variant,
 		onservings
 	}: {
-		recipe: Pick<RecipeSummary, 'id' | 'title' | 'keeps' | 'meals'>;
+		recipe: Pick<RecipeSummary, 'id' | 'title' | 'keeps' | 'meals' | 'categories' | 'lines'>;
 		variant?: string;
 		/** Rescales the recipe page to what the first cooking makes. */
 		onservings: (servings: number) => void;
 	} = $props();
 
+	const catalog = useCatalog();
 	const DAY_CHOICES = [2, 3, 4, 5, 7];
 	let days = $state(5);
 	let perDay = $state(1);
@@ -25,6 +27,7 @@
 	});
 
 	const prep = $derived(batchPlan(recipe.keeps, days, perDay));
+	const tips = $derived(packingTips(recipe, catalog.ingredientsById));
 	const weekday = new Intl.DateTimeFormat('sk-SK', { weekday: 'long' });
 	const dayName = (offset: number) => {
 		const date = new Date();
@@ -116,16 +119,19 @@
 			{/each}
 		</ol>
 
+		<h4>Ako zabaliť</h4>
 		<ul class="tips small">
 			<li>
 				Rozdeľ ešte teplé do plytkých krabičiek a do 2 hodín daj do chladničky – vo veľkom hrnci
 				chladne celú noc.
 			</li>
+			{#each tips as tip (tip)}<li>{tip}</li>{/each}
 			{#if prep.freezer}<li>Na krabičky do mrazničky napíš názov a dátum.</li>{/if}
 			{#if recipe.meals.includes('ranajky')}
 				<li>Na raňajky si krabičku pripravíš už večer, ráno ju len vezmeš.</li>
 			{/if}
 		</ul>
+		<p class="small"><a href="/wiki/meal-prep">Ako na meal prep celý týždeň</a></p>
 
 		<button class="btn leaf" onclick={toPlan}>
 			<Icon name={added ? 'check' : 'calendar'} size={18} />
@@ -139,6 +145,10 @@
 </section>
 
 <style>
+	h4 {
+		margin: 0;
+		font-size: 0.95rem;
+	}
 	.prep {
 		display: grid;
 		gap: 12px;

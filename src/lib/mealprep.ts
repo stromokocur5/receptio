@@ -146,3 +146,75 @@ export function batchPlan(
 		freezer: frozenDays * perDay
 	};
 }
+
+const FRESH_HERBS = new Set([
+	'bylinky-koriander',
+	'bylinky-mata',
+	'petrzlenova-vnat',
+	'kopor',
+	'bazalka',
+	'pazitka'
+]);
+const TORTILLAS = new Set(['kukuricne-tortilly', 'psenicne-tortilly']);
+/** Dishes with a sauce or broth that would soak into rice or pasta packed with them. */
+const SAUCY = ['polievky/', 'hlavne/kari', 'hlavne/strukoviny', 'omacky/omacky'];
+const CRISPY = ['comfort/vyprazane', 'hlavne/tofu', 'comfort/kebab'];
+
+/**
+ * How to pack this dish into boxes so it's still good on day three: what to keep apart, what to
+ * add only when eating, how to freeze it. The most specific advice first.
+ */
+export function packingTips(
+	recipe: Pick<RecipeSummary, 'categories' | 'lines' | 'keeps' | 'title'>,
+	byId: Map<string, Ingredient>
+): string[] {
+	const has = (prefixes: string[]) =>
+		recipe.categories.some((c) => prefixes.some((p) => c.startsWith(p)));
+	const ids = new Set(recipe.lines.map((l) => l.ingredientId));
+	const grains = recipe.lines.some((l) => byId.get(l.ingredientId)?.category === 'obilniny');
+	const tips: string[] = [];
+
+	if (has(['salaty/'])) {
+		tips.push(
+			'Dresing na dno pohára alebo do malej nádobky, naň strukoviny a obilniny, listy úplne navrch. Premiešaš až pri jedle – listy nezvädnú.'
+		);
+	}
+	if (has(SAUCY) && grains) {
+		tips.push(
+			'Prílohu (ryžu, cestoviny) daj do inej krabičky alebo do dózy s prepážkou – v omáčke napučí a rozvarí sa.'
+		);
+	} else if (has(SAUCY)) {
+		tips.push(
+			'Do dóz s pevným vekom, ktoré netečú – omáčka a polievka sa v taške vylejú najľahšie.'
+		);
+	}
+	if (has(CRISPY) || /chrumkav|vyprážan|falafel/i.test(recipe.title)) {
+		tips.push(
+			'Chrumkavé kúsky zabaľ zvlášť a nezatváraj ich, kým sú teplé – para ich zmäkčí. Zohrej ich v rúre alebo na suchej panvici, nie v mikrovlnke.'
+		);
+	}
+	if ([...TORTILLAS].some((id) => ids.has(id))) {
+		tips.push(
+			'Tortilly zabaľ zvlášť (do papiera alebo utierky) a plň ich až pri jedle, inak premoknú.'
+		);
+	}
+	if (ids.has('avokado'))
+		tips.push('Avokádo krájaj až pri jedle – v krabičke zhnedne za pár hodín.');
+	if ([...FRESH_HERBS].some((id) => ids.has(id)) || ids.has('citron') || ids.has('limetka')) {
+		tips.push('Čerstvé bylinky a šťavu z citróna pridaj až pri jedle, vydržia tak voňavé.');
+	}
+	if (recipe.categories.some((c) => c.startsWith('ranajky/kase'))) {
+		tips.push('Kašu na noc rob rovno v pohári s vekom; ovocie a orechy navrch až ráno.');
+	}
+	if ((recipe.keeps?.freezer ?? 0) > 0) {
+		tips.push(
+			has(SAUCY)
+				? 'Do mrazničky nechaj v dóze 2 cm voľného miesta (tekutina zamrznutím zväčší objem), alebo mraz naplocho vo vrecku – rozmrazí sa rýchlejšie.'
+				: 'Do mrazničky po porciách, každú zvlášť – vyberieš len toľko, koľko zješ.'
+		);
+	}
+	tips.push(
+		'Do práce: ak budeš na ceste viac ako 2 hodiny, daj krabičku do chladiacej tašky s vreckom ľadu.'
+	);
+	return tips;
+}

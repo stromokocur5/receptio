@@ -4,7 +4,7 @@
 	import { scaleStep } from '$lib/cooking';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
-	import { asPlanned, formatMinutes, prepList, prepSchedule } from '$lib/mealprep';
+	import { asPlanned, formatMinutes, packingTips, prepList, prepSchedule } from '$lib/mealprep';
 	import { approxPieces } from '$lib/shopping';
 	import { markCooked, plan, ui } from '$lib/state.svelte';
 
@@ -79,6 +79,11 @@
 			steps[recipeId] = 'error';
 		}
 	}
+
+	/** The dish's own packing advice; the one that holds for everything is shown once below. */
+	const tipsFor = (r: (typeof entries)[number]['recipe']) =>
+		packingTips(r, catalog.ingredientsById).slice(0, -1);
+	const boxes = (n: number) => `${n} ${n === 1 ? 'krabička' : n < 5 ? 'krabičky' : 'krabičiek'}`;
 
 	function keepsText(r: (typeof entries)[number]['recipe']): string {
 		const fridge = r.keeps?.fridge ?? 2;
@@ -279,13 +284,23 @@
 				</p>
 				<ul class="notes">
 					{#each chosen as e (e.key)}
+						{@const tips = tipsFor(e.recipe)}
 						<li>
 							<strong>{e.recipe.title}:</strong>
-							{keepsText(e.recipe)}{#if e.entry.freezeExtra}
+							{boxes(Math.round(e.entry.servings))} · {keepsText(e.recipe)}{#if e.entry.freezeExtra}
 								· <strong>{e.entry.freezeExtra} porc. hneď do mrazničky</strong>{/if}
+							{#if tips.length}
+								<ul class="pack">
+									{#each tips as tip (tip)}<li>{tip}</li>{/each}
+								</ul>
+							{/if}
 						</li>
 					{/each}
 				</ul>
+				<p class="muted small">
+					Na každú krabičku papierovú pásku: čo to je a dátum. Do práce na dlhšiu cestu chladiacu
+					tašku s vreckom ľadu. Viac v <a href="/wiki/meal-prep">návode na meal prep</a>.
+				</p>
 			</section>
 
 			<section class="card box done">
@@ -497,5 +512,15 @@
 		display: flex;
 		align-items: center;
 		gap: 6px;
+	}
+	.pack {
+		margin: 4px 0 0;
+		padding-left: 18px;
+		color: var(--ink-2);
+		font-size: 0.9rem;
+	}
+	.notes .pack li {
+		padding: 2px 0;
+		border: 0;
 	}
 </style>

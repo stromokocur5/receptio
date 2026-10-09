@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { batchPlan, formatMinutes, prepList, prepSchedule } from './mealprep';
+import { batchPlan, formatMinutes, packingTips, prepList, prepSchedule } from './mealprep';
 import type { Ingredient, RecipeLine, RecipeSummary } from './types';
 
 function recipe(
@@ -87,5 +87,35 @@ describe('batchPlan', () => {
 	it('has nothing to plan for food eaten fresh', () => {
 		expect(batchPlan({ fridge: 0, freezer: 0 }, 5, 1)).toBeNull();
 		expect(batchPlan(undefined, 5, 1)).toBeNull();
+	});
+});
+
+describe('packing tips', () => {
+	const ingredient = (id: string, category: Ingredient['category']) =>
+		[id, { id, category } as Ingredient] as const;
+	const byId = new Map([
+		ingredient('ryza-basmati', 'obilniny'),
+		ingredient('cicer', 'strukoviny'),
+		ingredient('salat', 'zelenina'),
+		ingredient('bylinky-koriander', 'zelenina')
+	]);
+	const dish = (categories: string[], ingredients: string[], freezer = 0) => ({
+		title: 'Jedlo',
+		categories,
+		lines: ingredients.map((ingredientId) => ({ ingredientId }) as RecipeLine),
+		keeps: { fridge: 3, freezer }
+	});
+
+	it('keeps rice out of a curry and leaves room for freezing', () => {
+		const tips = packingTips(dish(['hlavne/kari'], ['cicer', 'ryza-basmati'], 3), byId);
+		expect(tips[0]).toMatch(/Prílohu/);
+		expect(tips.some((t) => t.includes('2 cm'))).toBe(true);
+	});
+
+	it('layers a salad and adds herbs when eating', () => {
+		const tips = packingTips(dish(['salaty/syte'], ['salat', 'bylinky-koriander']), byId);
+		expect(tips[0]).toMatch(/Dresing na dno/);
+		expect(tips.some((t) => t.includes('bylinky'))).toBe(true);
+		expect(tips.some((t) => t.includes('mrazničky'))).toBe(false);
 	});
 });
