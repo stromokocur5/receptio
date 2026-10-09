@@ -5,18 +5,17 @@
 	import { planCheck } from '$lib/plancheck';
 	import PlanScope from '$lib/components/PlanScope.svelte';
 	import Seo from '$lib/components/Seo.svelte';
-	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
+	import { formatEur, formatGrams } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import AutoPlanner from '$lib/components/AutoPlanner.svelte';
 	import Icon from '$lib/components/Icon.svelte';
-	import NutrientBars from '$lib/components/NutrientBars.svelte';
+	import PlanNutrition from '$lib/components/PlanNutrition.svelte';
 	import PlanSettings from '$lib/components/PlanSettings.svelte';
 	import PlateArt from '$lib/components/PlateArt.svelte';
 	import { vesselFor } from '$lib/categories';
 	import RecipePicker from '$lib/components/RecipePicker.svelte';
 	import SavedWeeks from '$lib/components/SavedWeeks.svelte';
 	import { CATEGORY_LABELS } from '$lib/labels';
-	import { ACTIVITY_PROTEIN, dailyTargets, emptyNutrients, scaleNutrients } from '$lib/nutrition';
 	import StorePicker from '$lib/components/StorePicker.svelte';
 	import {
 		activeSales,
@@ -41,7 +40,7 @@
 		stopOwnLive,
 		tickLive
 	} from '$lib/live-list.svelte';
-	import { memberTargets, portionOf, shareCooking, type PlanMeal } from '$lib/household';
+	import { shareCooking } from '$lib/household';
 	import {
 		claimItem,
 		claims,
@@ -89,7 +88,6 @@
 		setPlanServings,
 		settings,
 		ui,
-		type Settings,
 		mainMeals
 	} from '$lib/state.svelte';
 
@@ -237,16 +235,6 @@
 	const completeShops = $derived(comparison.singles.filter((s) => s.missing === 0));
 	const incompleteShops = $derived(comparison.singles.filter((s) => s.missing > 0));
 
-	const perDay = $derived.by(() => {
-		const total = emptyNutrients();
-		for (const e of entries) {
-			if (isPersonal(e)) continue;
-			const factor = e.servings;
-			const n = e.data.perServing;
-			for (const key of Object.keys(total) as (keyof typeof total)[]) total[key] += n[key] * factor;
-		}
-		return scaleNutrients(total, 1 / Math.max(personDays, 1));
-	});
 	/**
 	 * Days of one adult eating every planned meal: the plan's food divided by this is "per person
 	 * a day". In a household, children's smaller portions and days away count less.
@@ -266,25 +254,6 @@
 	const cookName = (id: string | undefined) => cooks.find((m) => m.id === id)?.name;
 	/** Dishes one member makes just for themselves, outside the shared meals. */
 	const personal = $derived(ui.loaded ? entries.filter((e) => isPersonal(e)) : []);
-	/** What each member gets from the plan a day, by their portion and the meals they eat at home. */
-	const perMember = $derived.by(() => {
-		const planned: PlanMeal[] = [
-			...(settings.current.breakfasts ? (['ranajky'] as const) : []),
-			...mainMeals(settings.current)
-		];
-		if (!planned.length) return [];
-		return cooks.map((m) => {
-			const share =
-				(portionOf(m) * planned.filter((meal) => m.meals[meal]).length) / planned.length;
-			const goal = memberTargets(m.body);
-			return {
-				member: m,
-				kcal: perDay.kcal * share,
-				protein: perDay.protein * share,
-				goal
-			};
-		});
-	});
 	const itemClaims = $derived(ui.loaded ? claims() : new Map());
 
 	const schedule = $derived(
@@ -315,10 +284,6 @@
 	const dateShort = (iso: string) => shortDay.format(new Date(`${iso}T12:00:00`));
 	const titleOf = (recipeId: string) => catalog.recipesById.get(recipeId)?.title ?? recipeId;
 
-	function updateSettings(patch: Partial<Settings>) {
-		settings.current = { ...settings.current, ...patch };
-	}
-
 	function cooked(e: (typeof entries)[number]) {
 		const { used, undo } = markCooked(
 			e.recipeId,
@@ -347,7 +312,6 @@
 	}
 	/** The recipe just marked cooked, to log a portion of it right away if it's eaten now. */
 	let justCooked = $state<{ recipeId: string; variant?: string } | null>(null);
-	const targets = $derived(dailyTargets(settings.current.weightKg, journal.current.goals));
 
 	// Freezer portions were paid for when they were cooked.
 	const planCost = $derived(
@@ -920,74 +884,12 @@
 						· <strong>{formatEur(totalServings ? planCost / totalServings : 0)}</strong> / porcia
 					</p>
 				</section>
-				<section class="card box" id="ziviny">
-					<h2><Icon name="bean" size={24} /> Živiny na deň</h2>
-					<div class="settings">
-						<label>
-							Moja váha
-							<input
-								inputmode="numeric"
-								placeholder="—"
-								value={settings.current.weightKg ?? ''}
-								onchange={(e) => {
-									const w = Number(e.currentTarget.value);
-									updateSettings({ weightKg: w >= 20 && w <= 250 ? w : null });
-								}}
-							/>
-							kg
-						</label>
-					</div>
-					<p class="muted small">
-						Priemer na osobu a deň len z naplánovaných jedál (raňajky a snacky mimo plánu sa
-						nepočítajú).
-						{journal.current.goals.custom.protein
-							? `Cieľ bielkovín: ${formatNumber(targets.protein, 0)} g (vlastný).`
-							: settings.current.weightKg
-								? `Cieľ bielkovín: ${formatNumber(targets.protein, 0)} g (${formatNumber(ACTIVITY_PROTEIN[journal.current.goals.activity], 1)} g/kg).`
-								: ''}
-					</p>
-					<NutrientBars
-						values={perDay}
-						{targets}
-						keys={['kcal', 'protein', 'fiber', 'iron', 'calcium', 'zinc', 'ala', 'salt']}
-					/>
-					{#if perMember.length > 1}
-						<h3 class="per-member-title">Pre každého v domácnosti</h3>
-						<ul class="per-member">
-							{#each perMember as p (p.member.id)}
-								<li>
-									<strong>{p.member.name}</strong>
-									<span>
-										{formatNumber(p.kcal, 0)}{p.goal.kcal
-											? ` z ${formatNumber(p.goal.kcal, 0)}`
-											: ''} kcal · {formatNumber(p.protein, 0)}{p.goal.protein
-											? ` z ${formatNumber(p.goal.protein, 0)}`
-											: ''} g bielkovín
-									</span>
-								</li>
-							{/each}
-						</ul>
-						<p class="muted small">
-							Podľa porcie a jedál, ktoré je doma. Ciele z výšky, váhy a veku nastavíš v <a
-								href="/domacnost">domácnosti</a
-							>.
-						</p>
-					{/if}
-					{#if balance.length}
-						<ul class="balance">
-							{#each balance as tip (tip.text)}
-								<li class:tip={tip.level === 'tip'}>
-									<Icon name={tip.level === 'ok' ? 'check' : 'info'} size={16} />
-									<span>{tip.text}</span>
-								</li>
-							{/each}
-						</ul>
-					{/if}
-					<p class="b12">
-						<Icon name="pill" size={18} /> B12 a vitamín D pokryje len suplement.
-						<a href="/wiki/b12">Viac</a>
-					</p>
-				</section>
+				<PlanNutrition
+					entries={entries.filter((e) => !isPersonal(e))}
+					{personDays}
+					{cooks}
+					{balance}
+				/>
 			{/if}
 		</div>
 
@@ -1523,23 +1425,6 @@
 		gap: 6px;
 		align-items: flex-start;
 	}
-	.per-member-title {
-		margin: 18px 0 6px;
-		font-size: 1rem;
-	}
-	.per-member {
-		display: grid;
-		gap: 4px;
-		padding: 0;
-		margin: 0 0 6px;
-		list-style: none;
-	}
-	.per-member li {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: space-between;
-		gap: 4px 12px;
-	}
 	.page {
 		padding-top: 28px;
 	}
@@ -1592,7 +1477,6 @@
 	}
 	#recepty-v-plane,
 	#rozpis,
-	#ziviny,
 	#nakup {
 		scroll-margin-top: 120px;
 	}
@@ -2064,32 +1948,8 @@
 		font-size: 0.92rem;
 		color: var(--ink-2);
 	}
-	.settings {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 14px;
-		margin-bottom: 8px;
-		font-weight: 600;
-		font-size: 0.92rem;
-	}
-	.settings input {
-		border: 1.5px solid var(--line);
-		border-radius: 10px;
-		background: var(--paper);
-		padding: 4px 8px;
-		margin: 0 4px;
-		width: 4.5em;
-	}
 	.small {
 		font-size: 0.84rem;
-	}
-	.b12 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		margin: 16px 0 0;
-		font-size: 0.88rem;
-		color: var(--sky);
 	}
 	.shop-summary {
 		position: sticky;
@@ -2395,27 +2255,5 @@
 			max-height: calc(100vh - 100px);
 			overflow: auto;
 		}
-	}
-	.balance {
-		list-style: none;
-		margin: 14px 0 0;
-		padding: 0;
-		display: grid;
-		gap: 6px;
-	}
-	.balance li {
-		display: flex;
-		gap: 8px;
-		align-items: flex-start;
-		font-size: 0.9rem;
-		color: var(--ink-2);
-	}
-	.balance li :global(svg) {
-		flex: none;
-		margin-top: 2px;
-		color: var(--leaf);
-	}
-	.balance li.tip :global(svg) {
-		color: var(--turmeric);
 	}
 </style>
