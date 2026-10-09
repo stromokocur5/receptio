@@ -346,7 +346,7 @@
 		{/each}
 	</nav>
 
-	<main {onpointerdown} {onpointerup}>
+	<div class="stage" {onpointerdown} {onpointerup}>
 		{#key index}
 			<section class="slide" style:--dir={direction}>
 				{#if !done}
@@ -441,7 +441,7 @@
 				{/if}
 			</section>
 		{/key}
-	</main>
+	</div>
 
 	<div class="timers"><TimerDock /></div>
 
@@ -588,7 +588,7 @@
 	.progress button.current {
 		background: var(--leaf);
 	}
-	main {
+	.stage {
 		flex: 1;
 		min-height: 0;
 		position: relative;

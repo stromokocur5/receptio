@@ -391,6 +391,12 @@ input[type='number']::-webkit-inner-spin-button {
 	-webkit-appearance: none;
 }
 
+/* A box next to a long label keeps its size instead of being squeezed to a dot. */
+input[type='checkbox'],
+input[type='radio'] {
+	flex: none;
+	accent-color: var(--leaf);
+}
 input[type='range'] {
 	accent-color: var(--leaf);
 	width: 100%;

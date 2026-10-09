@@ -656,12 +656,20 @@
 <style>
 	.news {
 		display: flex;
-		gap: 10px;
+		gap: 12px;
 		align-items: flex-start;
-		margin-top: 14px;
+		margin-top: 16px;
+		padding: 12px 14px;
+		border: 1px solid var(--line);
+		border-radius: 14px;
+		cursor: pointer;
 	}
+	/* The long text next to it must not squeeze the box to a dot. */
 	.news input {
-		margin-top: 4px;
+		flex: none;
+		width: 22px;
+		height: 22px;
+		margin: 2px 0 0;
 		accent-color: var(--leaf);
 	}
 	.page {

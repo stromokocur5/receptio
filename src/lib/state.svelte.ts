@@ -11,6 +11,7 @@ import {
 	type DiaryMeal,
 	type Journal
 } from './journal';
+import { merge3 } from './merge3';
 import { consumeFromPantry, type Pantry, type PantryUse } from './pantry';
 import { isValidSchedule, type ReminderSchedule } from './push';
 import { validatePreserves, type Preserve } from './preserves';
@@ -71,6 +72,8 @@ class Persisted<T> {
 	#initial: T;
 	#validate: (raw: unknown) => T | undefined;
 	#deviceOnly: boolean;
+	/** The stored text this tab last read: what it and the other tabs last agreed on. */
+	#agreed: string | null = null;
 
 	/** `deviceOnly` values (which garden is open) stay out of backups and don't trigger sync. */
 	constructor(
@@ -99,19 +102,32 @@ class Persisted<T> {
 	}
 
 	/**
-	 * Another tab saved a new value: take it without writing it back. It still counts as a change
-	 * here, so the tab that syncs sends it on.
+	 * Another tab saved a new value. Usually this tab changed nothing since and simply takes it;
+	 * when both saved at the same moment, the two are merged against what they last agreed on, so
+	 * neither tap is lost, and the merge is written back for the other tab. It still counts as a
+	 * change here, so the tab that syncs sends it on.
 	 */
 	fromOtherTab(raw: string | null) {
-		let next = this.#initial;
+		let theirs = this.#initial;
+		let base = this.#initial;
 		try {
 			const parsed = raw === null ? undefined : this.#validate(JSON.parse(raw));
-			if (parsed !== undefined) next = parsed;
+			if (parsed !== undefined) theirs = parsed;
+			const before = this.#agreed === null ? undefined : this.#validate(JSON.parse(this.#agreed));
+			if (before !== undefined) base = before;
 		} catch {
 			return;
 		}
+		this.#agreed = raw;
+		const ours = this.#value;
+		let next = theirs;
+		if (JSON.stringify(ours) !== JSON.stringify(base)) {
+			next = this.#validate(merge3(base, ours, theirs)) ?? theirs;
+		}
 		this.#value = next;
 		if (!this.#deviceOnly) changes.count++;
+		const text = JSON.stringify(next);
+		if (text !== JSON.stringify(theirs)) saveToStorage(this.#key, text);
 	}
 
 	/** The value backup data would give, without storing it. */
@@ -130,6 +146,7 @@ class Persisted<T> {
 	load() {
 		try {
 			const raw = localStorage.getItem(this.#key);
+			this.#agreed = raw;
 			if (raw === null) return;
 			const parsed = this.#validate(JSON.parse(raw));
 			if (parsed !== undefined) this.#value = parsed;
