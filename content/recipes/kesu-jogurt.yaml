@@ -1,0 +1,30 @@
+title: Kešu jogurt
+description: Hustý, krémový a jemne kyslý jogurt z kešu orechov – najbližšie k smotanovému jogurtu. Netreba ho variť ani zahusťovať, orechy ho zahustia samé.
+cuisine: moderna
+meals: [domace, ranajky]
+categories: [domace/mlieka]
+time: 15
+active: 10
+servings: 6
+difficulty: 2
+tags: [urob-si-sam, fermentacia, jogurt]
+ahead: Kešu namoč na 4 hodiny. Jogurt potom kvasí 12–24 hodín v teple a 4 hodiny tuhne v chladničke.
+yields: cca 600 g jogurtu
+keeps: { fridge: 6 }
+related: [domaci-sojovy-jogurt, kokosovy-jogurt, labneh-zo-sojoveho-jogurtu]
+ingredients:
+  - kesu: 200 g | nepražené, namočené
+  - voda: 300 ml | prevarená a vychladnutá
+  - sojovy-jogurt: 2 pl | s živými kultúrami, ako štartér
+  - sol: 1 štipka
+  - citron: 1 čl | nepovinné
+steps:
+  - Namočené kešu sceď, prepláchni a rozmixuj s vodou a soľou 2 minúty úplne dohladka. Hmota má byť hustá ako smotana – v kúskoch by jogurt ostal zrnitý.
+  - Vmiešaj štartér a prelej do čistého pohára zaliateho vriacou vodou. Prikry utierkou alebo voľne položeným viečkom.
+  - Nechaj kvasiť 12–24 hodín v teple 30–40 °C (rúra so zapnutým svetlom, jogurtovač). Hotový je, keď je kyslastý a pri okrajoch má bublinky.
+  - Premiešaj, prípadne dochuť citrónom a daj aspoň na 4 hodiny do chladničky, tam zhustne.
+tips:
+  - Bez sóje – namiesto sójového jogurtu otvor 2 kapsuly probiotík (len prášok, bez obalu) alebo daj 2 PL kešu či kokosového jogurtu z obchodu.
+  - Ružová, oranžová alebo chlpatá pleseň navrchu znamená, že ho treba vyhodiť celý.
+  - Najlepší je ako dezert s ovocím a na dezerty namiesto mascarpone.
+howto: [jogurty]

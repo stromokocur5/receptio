@@ -1980,7 +1980,7 @@
 - id: sojovy-jogurt
   name: Sójový jogurt nesladený
   aliases: [jogurt]
-  howto: [nahrady]
+  howto: [nahrady, jogurty]
   category: nahrady
   allergens: [soy]
   n:
@@ -4962,6 +4962,7 @@
 
 - id: cierny-caj
   name: Čierny čaj (sypaný alebo vrecúška)
+  howto: [caje]
   category: ine
   n: { kcal: 1, p: 0, c: 0.3, f: 0, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0 }
   units: { čl: 2.5, ks: 2 }
@@ -4975,6 +4976,7 @@
 
 - id: matcha
   name: Matcha (mletý zelený čaj)
+  howto: [caje, matcha]
   category: ine
   n: { kcal: 324, p: 30, c: 39, f: 5, fib: 38, salt: 0, fe: 17, ca: 420, zn: 6 }
   units: { čl: 2 }
@@ -4989,6 +4991,7 @@
 
 - id: ibistek
   name: Ibištek sušený (jamaica)
+  howto: [caje]
   category: ine
   n: { kcal: 49, p: 0.4, c: 11, f: 0.6, fib: 1, salt: 0, fe: 1.5, ca: 215, zn: 0.1 }
   units: { hrnček: 40, pl: 3 }
@@ -5106,6 +5109,7 @@
 
 - id: zeleny-caj
   name: Zelený čaj (sypaný alebo vrecúška)
+  howto: [caje]
   category: ine
   n: { kcal: 1, p: 0, c: 0.2, f: 0, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0 }
   units: { čl: 2.5, ks: 2 }

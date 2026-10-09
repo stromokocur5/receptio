@@ -1,0 +1,30 @@
+title: Ovsený jogurt
+description: Najlacnejší rastlinný jogurt – z ovsených vločiek a vody za pár centov. Hustý ako kaša, jemne kyslý, výborný s ovocím a do overnight oats.
+cuisine: moderna
+meals: [domace, ranajky]
+categories: [domace/mlieka, ranajky/kase]
+time: 25
+active: 15
+servings: 4
+difficulty: 2
+tags: [urob-si-sam, fermentacia, lacne, jogurt]
+ahead: Jogurt kvasí 8–12 hodín v teple a potom 4 hodiny tuhne v chladničke.
+yields: cca 600 g jogurtu
+keeps: { fridge: 5 }
+related: [domace-ovsene-mlieko, overnight-oats, kesu-jogurt]
+ingredients:
+  - ovsene-vlocky: 100 g | jemné
+  - voda: 600 ml
+  - sol: 1 štipka
+  - cukor: 1 čl
+  - sojovy-jogurt: 2 pl | s živými kultúrami, ako štartér
+steps:
+  - Vločky s vodou a soľou rozmixuj 1 minútu dohladka. Neprecedzuj – vláknina jogurt zahustí.
+  - Prelej do hrnca, pridaj cukor a za stáleho miešania var na miernom ohni 3–4 minúty, kým nezhustne na riedku kašu.
+  - Nechaj vychladnúť na 40–43 °C a vmiešaj štartér.
+  - Prelej do čistých pohárov, prikry a nechaj 8–12 hodín v teple 40–43 °C.
+  - Premiešaj (ak je priveľmi hustý, pridaj lyžicu vody) a daj na 4 hodiny do chladničky.
+tips:
+  - Pri celiakii použi bezlepkové vločky.
+  - Bielkovín má málo – na raňajky ho zmiešaj napoly so sójovým jogurtom alebo pridaj orechy a semienka.
+howto: [jogurty]

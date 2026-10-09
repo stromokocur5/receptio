@@ -1,0 +1,27 @@
+title: Mrazený jogurt za 5 minút
+description: Mrazené ovocie rozmixované so sójovým jogurtom a lyžicou sirupu – hustý frozen jogurt hneď, bez zmrzlinovača a bez čakania.
+cuisine: moderna
+meals: [snack]
+categories: [dezerty/mrazene]
+time: 5
+active: 5
+servings: 2
+difficulty: 1
+tags: [rychle, deti, dezert, jogurt]
+keeps: { fridge: 0, freezer: 1 }
+related: [jogurtove-nanuky, jogurtova-kora, nice-cream]
+ingredients:
+  - jahody: 250 g | mrazené
+  - banan: 1 ks | nakrájaný a zamrazený
+  - sojovy-jogurt: 1/2 hrnček | čo najhustejší
+  - javorovy-sirup: 1 pl
+  - citron: 1 čl
+steps:
+  - Mrazené ovocie nechaj 3 minúty povoliť pri izbovej teplote, mixér ho potom ľahšie zomelie.
+  - Rozmixuj s jogurtom, sirupom a citrónom na hustý krém. Ak sa mixér zasekáva, zastav ho, premiešaj stierkou a mixuj ďalej – vodu nepridávaj.
+  - Podávaj hneď.
+  - Ak ho chceš tuhší, daj ho na 30 minút do mrazničky.
+tips:
+  - S mangom a limetkou, s malinami a kakaom alebo s čučoriedkami a vanilkou – princíp je vždy rovnaký.
+  - Zvyšok zamraz v tvorítkach na nanuky.
+howto: [jogurty]

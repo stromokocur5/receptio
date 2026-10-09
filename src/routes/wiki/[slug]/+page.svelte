@@ -26,7 +26,8 @@
 	const BY_TAG: Record<string, { tag: string; title: string }> = {
 		'pizzeria-doma': { tag: 'pizza', title: 'Pizze na vyskúšanie' },
 		'varenie-pre-vela-ludi': { tag: 'pre-vela-ludi', title: 'Recepty pre 20 a viac ľudí' },
-		'ranajky-v-tortille': { tag: 'tortilla-na-tyzden', title: 'Tortilly na celý týždeň' }
+		'ranajky-v-tortille': { tag: 'tortilla-na-tyzden', title: 'Tortilly na celý týždeň' },
+		jogurty: { tag: 'jogurt', title: 'Jogurty a čo z nich' }
 	};
 	const passataGrams = (r: (typeof catalog.recipes)[number]) =>
 		r.lines.filter((l) => l.ingredientId === 'passata').reduce((sum, l) => sum + l.grams, 0);

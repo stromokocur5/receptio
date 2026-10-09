@@ -3,6 +3,65 @@ import { arrow, drop, label, plant } from './kit';
 
 /** Fermenting, sprouting, kitchen gear and cooking without a stove. */
 export const DIY_ART: Record<string, () => string> = {
+	matcha: () =>
+		// Sift, water below boiling, whisk in an M until frothy.
+		`<path class="ta-sieve" d="M22 60h60l-10 22H32Z"/><path class="ta-sieve-mesh" d="M32 70h40"/>` +
+		`<g class="ta-trickle"><circle cx="46" cy="94" r="2" style="fill:#8cae4a"/><circle cx="56" cy="100" r="2" style="fill:#8cae4a"/></g>` +
+		label(52, 130, '1 ČL preosiať', 'middle') +
+		arrow(92, 80, 116, 80) +
+		`<path class="ta-bowl" d="M120 100h112a56 44 0 0 1-112 0Z"/>` +
+		`<path style="fill:#8cae4a;stroke:none" d="M128 102h96a48 30 0 0 1-96 0Z"/>` +
+		`<g class="ta-whisk-spin" style="transform-origin:176px 96px"><path class="ta-whisk" d="M176 30v40M168 70c0 16 16 16 16 0M162 70c0 24 28 24 28 0"/></g>` +
+		label(176, 164, '80 °C, šľahaj do „M“', 'middle') +
+		label(176, 178, '20–30 sekúnd', 'middle') +
+		label(272, 92, 'nie vriaca', 'middle') +
+		label(272, 106, 'voda – zhorkne', 'middle'),
+
+	caje: () => {
+		// Water temperature and steeping time by kind: green and white never with boiling water.
+		const teas: [string, number, string, string][] = [
+			['zelený', 75, '2–3 min', '#9ab45a'],
+			['biely', 80, '3–5 min', '#e6d9a8'],
+			['oolong', 90, '3–5 min', '#c79a4a'],
+			['čierny', 98, '3–5 min', '#7a3a1e'],
+			['bylinky', 100, '5–10 min', '#c8341e']
+		];
+		return (
+			label(10, 20, 'Teplota vody a čas lúhovania') +
+			teas
+				.map(([name, temp, time, color], i) => {
+					const x = 24 + i * 60;
+					const h = ((temp - 50) / 50) * 96;
+					return (
+						`<rect class="ta-bar-bg" x="${x}" y="34" width="28" height="96" rx="6"/>` +
+						`<rect class="ta-bar-v" style="--d:${(i * 0.15).toFixed(2)}s;fill:${color}" x="${x}" y="${(130 - h).toFixed(1)}" width="28" height="${h.toFixed(1)}" rx="6"/>` +
+						label(x + 14, 146, `${temp} °C`, 'middle') +
+						label(x + 14, 160, name, 'middle') +
+						label(x + 14, 174, time, 'middle')
+					);
+				})
+				.join('')
+		);
+	},
+
+	jogurty: () =>
+		// Milk + a spoon of yogurt, kept warm (43 °C) for 8–12 hours, then set in the fridge.
+		`<path class="ta-glass" d="M24 70h44l-4 70H28Z"/><path class="ta-milk" d="M27 86h38l-3 52H30Z"/>` +
+		`<path class="ta-spoon" d="M54 40l-14 38"/><path class="ta-spoon-bowl" d="M36 76a6 8 20 1 0 10 4Z"/>` +
+		label(46, 160, 'mlieko +', 'middle') +
+		label(46, 174, '2–3 PL jogurtu', 'middle') +
+		arrow(80, 106, 104, 106) +
+		`<rect class="ta-oven-box" x="110" y="58" width="100" height="84" rx="8"/>` +
+		jar(128, 96, 26, 36, '#f6f1e4') +
+		jar(166, 96, 26, 36, '#f6f1e4') +
+		`<g class="ta-heat"><path d="M134 88c-3-5 3-7 0-12M180 88c-3-5 3-7 0-12"/></g>` +
+		label(160, 160, '43 °C · 8–12 h', 'middle') +
+		label(160, 174, 'svetlo v rúre', 'middle') +
+		arrow(216, 106, 240, 106) +
+		`<rect class="ta-fridge" x="248" y="50" width="60" height="96" rx="6"/><path class="ta-fridge-line" d="M248 82h60"/>` +
+		jar(265, 100, 26, 36, '#f6f1e4') +
+		label(278, 160, '4 h stuhne', 'middle'),
+
 	'rastlinne-mlieka': () => {
 		// Protein per 100 ml, the one number that tells plant drinks apart. Milk rises to it.
 		const drinks: [string, number, string][] = [

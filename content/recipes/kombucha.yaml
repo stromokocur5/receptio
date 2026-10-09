@@ -12,7 +12,7 @@ ahead: Potrebuješ SCOBY a hrnček kombuchy z minulej várky. Kvasí 7–12 dní
 nutrition: false
 yields: cca 2 l
 keeps: { fridge: 30 }
-howto: [fermentacia]
+howto: [fermentacia, kombucha]
 ingredients:
   - voda: 2 l
   - cierny-caj: ~8 ks | vrecúška, alebo zelený
