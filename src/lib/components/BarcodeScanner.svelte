@@ -14,7 +14,8 @@
 	 */
 	const catalog = useCatalog();
 
-	let open = $state(false);
+	/** Opened by the barcode button in the search field (the page owns it). */
+	let { open = $bindable(false) }: { open?: boolean } = $props();
 	let code = $state('');
 	let status = $state<'idle' | 'camera' | 'looking' | 'found' | 'unknown' | 'error'>('idle');
 	let product = $state<Product | null>(null);
@@ -121,11 +122,7 @@
 	onDestroy(stopCamera);
 </script>
 
-{#if !open}
-	<button class="btn ghost small" onclick={() => (open = true)}>
-		<Icon name="barcode" size={16} /> Pridať podľa čiarového kódu
-	</button>
-{:else}
+{#if open}
 	<div class="scanner card">
 		<div class="row">
 			{#if canScan && status !== 'camera'}

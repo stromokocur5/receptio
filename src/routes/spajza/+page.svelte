@@ -159,6 +159,7 @@
 	}
 
 	let ranOut = $state<string | null>(null);
+	let scanning = $state(false);
 	/** Ran out: off the pantry and onto the shopping list in one tap. */
 	function useUp(ingredient: Ingredient) {
 		removePantryItem(ingredient.id);
@@ -246,8 +247,17 @@
 					bind:value={search}
 					placeholder="Hľadaj surovinu – cícer, huby…"
 				/>
+				<button
+					class="scan"
+					aria-label="Pridať podľa čiarového kódu"
+					title="Pridať podľa čiarového kódu"
+					aria-expanded={scanning}
+					onclick={() => (scanning = !scanning)}
+				>
+					<Icon name="barcode" size={20} />
+				</button>
 			</div>
-			<BarcodeScanner />
+			<BarcodeScanner bind:open={scanning} />
 			{#if !search.trim()}
 				<div class="bundles" role="group" aria-label="Pridať naraz">
 					<span class="bundles-label">Pridať naraz:</span>
@@ -460,6 +470,23 @@
 </div>
 
 <style>
+	.scan {
+		display: grid;
+		place-items: center;
+		flex: none;
+		width: 38px;
+		height: 38px;
+		border: 0;
+		border-radius: 999px;
+		background: transparent;
+		color: var(--ink-2);
+		cursor: pointer;
+	}
+	.scan:hover,
+	.scan[aria-expanded='true'] {
+		background: var(--leaf-soft);
+		color: var(--leaf);
+	}
 	.leftovers-link {
 		display: grid;
 		grid-template-columns: auto 1fr auto;
