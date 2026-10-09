@@ -16,7 +16,15 @@
 	} from '$lib/garden';
 	import { bestPrice } from '$lib/pricing';
 	import { IN_MONTH } from '$lib/season';
-	import { pantry, removeGarden, saveGarden, setPantryItem, settings } from '$lib/state.svelte';
+	import {
+		gardens,
+		pantry,
+		removeGarden,
+		saveGarden,
+		setPantryItem,
+		settings
+	} from '$lib/state.svelte';
+	import { withUndo } from '$lib/toast.svelte';
 	import { household, isSharedGarden, shareGarden, unshareGarden } from '$lib/household.svelte';
 	import type { GardenDiary } from '$lib/state.svelte';
 	import type { GrowCombo, GrowGuide } from '$lib/types';
@@ -152,7 +160,14 @@
 	);
 	let harvestGrams = $state<number | null>(null);
 	let harvestNote = $state('');
-	let confirmDelete = $state(false);
+	/** It's only this device's copy, so it goes at once and the toast can bring it back. */
+	function deleteGarden() {
+		const text = isSharedGarden(diary.id)
+			? `${diary.name} je zmazaná u teba, ostatným v domácnosti ostáva`
+			: `${diary.name} je zmazaná`;
+		const id = diary.id;
+		withUndo(text, gardens, () => removeGarden(id));
+	}
 
 	function toggle(key: string) {
 		const { [key]: was, ...rest } = diary.done;
@@ -202,19 +217,8 @@
 			<button class="btn ghost small" onclick={share}
 				><Icon name="share" size={16} /> Zdieľať</button
 			>
-			<button
-				class="btn ghost small"
-				onclick={() => {
-					if (confirmDelete) removeGarden(diary.id);
-					confirmDelete = !confirmDelete;
-				}}
-			>
-				<Icon name="trash" size={16} />
-				{confirmDelete
-					? isSharedGarden(diary.id)
-						? 'Naozaj? Ostatným v domácnosti ostane.'
-						: 'Naozaj zmazať?'
-					: 'Zmazať'}
+			<button class="btn danger small" onclick={deleteGarden}>
+				<Icon name="trash" size={16} /> Zmazať
 			</button>
 		</div>
 	</header>
@@ -293,6 +297,7 @@
 			<h3>Zapíš úrodu</h3>
 			<form class="harvest" onsubmit={logHarvest}>
 				<select
+					class="input"
 					value={harvestChoice}
 					onchange={(e) => (harvestId = e.currentTarget.value)}
 					aria-label="Plodina"
@@ -302,6 +307,7 @@
 					{/each}
 				</select>
 				<input
+					class="input"
 					type="number"
 					min="1"
 					step="any"
@@ -353,7 +359,7 @@
 					<li>
 						<strong>{f.guide.name}:</strong>
 						{#each f.next as g, i (g.ingredientId)}{i ? ', ' : ''}<button
-								class="linkish"
+								class="btn-link"
 								onclick={() => oncrop(g.ingredientId)}>{g.name}</button
 							>{/each}
 					</li>
@@ -405,7 +411,7 @@
 		field-sizing: content;
 		padding: 2px 6px;
 		border: 1.5px solid transparent;
-		border-radius: 8px;
+		border-radius: var(--radius-xs);
 		background: none;
 		color: var(--ink);
 		font-weight: 700;
@@ -414,9 +420,11 @@
 	.name input:focus {
 		border-color: var(--line);
 		background: var(--paper);
-		outline: none;
 	}
+	/* The field's own ring replaces the global focus outline. */
 	.name input:focus {
+		outline: none;
+		box-shadow: 0 0 0 4px color-mix(in srgb, var(--leaf) 18%, transparent);
 		border-color: var(--leaf-2);
 	}
 	@supports not (field-sizing: content) {
@@ -449,7 +457,7 @@
 	.kind {
 		margin: 12px 0 4px;
 		font-weight: 700;
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 	}
 	.k-indoor {
 		color: var(--sky);
@@ -458,7 +466,7 @@
 		color: var(--leaf);
 	}
 	.k-harvest {
-		color: #a4741a;
+		color: color-mix(in srgb, var(--turmeric) 60%, var(--ink));
 	}
 	.tasks,
 	.totals {
@@ -479,7 +487,7 @@
 		align-items: center;
 		gap: 10px;
 		padding: 6px 8px;
-		border-radius: 10px;
+		border-radius: var(--radius-xs);
 		cursor: pointer;
 		transition: background 0.2s;
 	}
@@ -556,30 +564,10 @@
 		gap: 6px;
 		margin-top: 8px;
 	}
-	.linkish {
-		border: 0;
-		padding: 0;
-		background: none;
-		color: var(--leaf);
-		font: inherit;
-		font-weight: 600;
-		text-decoration: underline;
-		text-underline-offset: 3px;
-		cursor: pointer;
-	}
 	.harvest {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 8px;
-	}
-	.harvest select,
-	.harvest input {
-		border: 1.5px solid var(--line);
-		border-radius: var(--radius-sm);
-		background: var(--paper);
-		color: var(--ink);
-		padding: 8px 10px;
-		font: inherit;
 	}
 	.harvest select {
 		flex: 1 1 140px;
@@ -597,7 +585,7 @@
 		display: flex;
 		justify-content: space-between;
 		padding: 5px 8px;
-		border-radius: 8px;
+		border-radius: var(--radius-xs);
 		background: linear-gradient(
 				to right,
 				color-mix(in srgb, var(--turmeric) 28%, transparent) var(--share),
@@ -633,9 +621,6 @@
 		grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 		gap: 14px;
 	}
-	.small {
-		font-size: 0.86rem;
-	}
 	.together {
 		display: flex;
 		flex-wrap: wrap;
@@ -643,9 +628,9 @@
 		gap: 8px 10px;
 		margin: 12px 0 0;
 		padding: 10px 14px;
-		border-radius: 14px;
+		border-radius: var(--radius-sm);
 		background: var(--leaf-soft);
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 	}
 	.together p {
 		flex: 1 1 220px;

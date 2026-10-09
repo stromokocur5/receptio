@@ -22,7 +22,10 @@ const PAGES = [
 	'/kurz',
 	'/wiki/rura',
 	'/wiki/silovy-trening',
-	'/recepty/kokosovy-dal'
+	'/recepty/kokosovy-dal',
+	'/sezona',
+	'/suroviny',
+	'/o-projekte'
 ];
 
 for (const colorScheme of ['light', 'dark'] as const) {

@@ -67,3 +67,18 @@ test('a second garden lives next to the first and keeps its own name', async ({ 
 	await expect(name).toHaveValue('Balkón');
 	await expect(page.getByRole('heading', { name: /na balkóne/ })).toBeVisible();
 });
+
+test('a deleted bed comes back with undo', async ({ page }) => {
+	await visit(page, '/pestuj#planovac');
+	await page.getByRole('button', { name: 'Uložiť ako moju záhradku' }).click();
+	await page.getByPlaceholder('šírka').fill('1');
+	await page.getByPlaceholder('hĺbka').fill('1');
+	await page.getByRole('button', { name: 'Pridať záhon' }).click();
+	const bed = page.getByRole('group', { name: /^Záhon / });
+	await expect(bed).toBeVisible();
+
+	await page.getByRole('button', { name: /^Zmazať záhon/ }).click();
+	await expect(bed).toBeHidden();
+	await page.getByRole('button', { name: 'Vrátiť' }).click();
+	await expect(bed).toBeVisible();
+});

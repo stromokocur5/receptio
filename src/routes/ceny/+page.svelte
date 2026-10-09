@@ -4,6 +4,7 @@
 	import { formatEur, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
+	import JumpNav, { type JumpLink } from '$lib/components/JumpNav.svelte';
 	import {
 		CATEGORY_LABELS,
 		ingredientSearchText,
@@ -105,6 +106,10 @@
 		const value = want === 'l' ? perKg * ingredient.density : perKg;
 		return `${formatEur(value)}/${want}`;
 	}
+	/** Most shop names already end with the pack size ("Cícer 500 g"); say it once. */
+	const PACK_IN_NAME = /\d\s*(g|kg|ml|l)\b/i;
+	const withPack = (e: PriceEntry) =>
+		PACK_IN_NAME.test(e.product) ? shelfName(e.product) : `${shelfName(e.product)} · ${e.pack}`;
 	const dayWord = (n: number) => (n === 1 ? 'deň' : n < 5 ? 'dni' : 'dní');
 
 	const myStores = $derived(settings.current.myStores);
@@ -332,6 +337,20 @@
 			.map((s) => s.name)
 			.join(', ')
 	);
+	/** Only places on this page: the data page is a link of its own in the header. */
+	const jumpLinks = $derived<JumpLink[]>([
+		...(allDeals.length
+			? [{ id: 'akcie', label: 'Akcie', icon: 'tag' as const, count: allDeals.length }]
+			: []),
+		{ id: 'suroviny', label: 'Všetky ceny', icon: 'euro' },
+		...(standings.length
+			? [{ id: 'obchody', label: 'Najlacnejší obchod', icon: 'store' as const }]
+			: []),
+		{ id: 'bielkoviny', label: 'Bielkoviny za euro', icon: 'bean' },
+		...(bulk.length ? [{ id: 'vo-velkom', label: 'Vo veľkom', icon: 'package' as const }] : []),
+		{ id: 'pokrytie', label: 'Koľko je z obchodov', icon: 'chart' },
+		{ id: 'odkial', label: 'Odkiaľ ceny berieme', icon: 'info' }
+	]);
 	const realCount = $derived(catalog.prices.length);
 	const storesWithPrices = $derived(new Set(catalog.prices.map((p) => p.storeId)).size);
 </script>
@@ -356,29 +375,16 @@
 			{realCount
 				? `${realCount} cien z ${storesWithPrices} obchodov.`
 				: 'Reálne ceny z obchodov zatiaľ nemáme, všetko nižšie je hrubý odhad.'}
-			<a href="#odkial">Odkiaľ ich berieme</a>
+			Ako sa ceny menia v čase a index košíka nájdeš v <a href="/data">Dátach</a>.
 		</p>
 		<div class="card box picker"><StorePicker /></div>
-		<nav class="jump" aria-label="Na tejto stránke">
-			{#if allDeals.length}
-				<a class="chip" href="#akcie"><Icon name="tag" size={14} /> Akcie ({allDeals.length})</a>
-			{/if}
-			{#if standings.length}
-				<a class="chip" href="#obchody"><Icon name="store" size={14} /> Ktorý obchod je lacnejší</a>
-			{/if}
-			<a class="chip" href="#bielkoviny"><Icon name="bean" size={14} /> Bielkoviny za euro</a>
-			{#if bulk.length}
-				<a class="chip" href="#vo-velkom"><Icon name="package" size={14} /> Vo veľkom</a>
-			{/if}
-			<a class="chip" href="/data#kosik"><Icon name="basket" size={14} /> Index košíka</a>
-			<a class="chip" href="/data"><Icon name="chart" size={14} /> Vývoj cien a všetky dáta</a>
-			<a class="chip" href="#pokrytie"><Icon name="store" size={14} /> Koľko je z obchodov</a>
-		</nav>
 	</header>
+
+	<JumpNav links={jumpLinks} />
 
 	{#if allDeals.length}
 		<section class="card box deals" id="akcie">
-			<h2>
+			<h2 class="section-title">
 				<Icon name="tag" size={24} /> Teraz v akcii <span class="count">{allDeals.length}</span>
 			</h2>
 			<p class="muted small">
@@ -435,7 +441,7 @@
 					<li>
 						<span class="off" class:plain={!deal.discount || deal.discount < 0.05}>
 							{deal.discount && deal.discount >= 0.05
-								? `−${Math.round(deal.discount * 100)} %`
+								? `−${Math.round(deal.discount * 100)}\u00a0%`
 								: 'akcia'}
 						</span>
 						<div class="deal-body">
@@ -449,7 +455,7 @@
 							<p class="small deal-where">
 								<span class="sdot" style:background={store?.color}></span>
 								<strong>{store?.name ?? deal.entry.storeId}</strong>
-								· {shelfName(deal.entry.product)} · {deal.entry.pack} ·
+								· {withPack(deal.entry)} ·
 								<span class="muted">{perUnit(deal.entry)}</span>
 							</p>
 							<p class="small deal-meta">
@@ -493,8 +499,8 @@
 		</p>
 	{/if}
 
-	<section class="table-section" aria-labelledby="suroviny">
-		<h2 id="suroviny" class="sr-only">Suroviny a ich ceny</h2>
+	<section class="table-section" id="suroviny">
+		<h2 class="section-title"><Icon name="euro" size={24} /> Všetky ceny surovín</h2>
 		<div class="filters">
 			<div class="field grow">
 				<Icon name="search" size={20} />
@@ -503,7 +509,7 @@
 					id="price-q"
 					type="search"
 					bind:value={search}
-					placeholder="Surovina, výrobok alebo obchod – napr. „lidl tofu“"
+					placeholder="Napr. tofu alebo „lidl tofu“"
 				/>
 			</div>
 			<label class="field">
@@ -547,7 +553,7 @@
 			{#each rows.slice(0, shown) as { ingredient, best, bestEntry, online, entries, spread, cheapestHere, lowElsewhere } (ingredient.id)}
 				<li class="row card">
 					<div class="main">
-						<span class="dot" style:background={ingredient.color}></span>
+						<span class="swatch" style:--c={ingredient.color}></span>
 						<div class="who">
 							<strong><a class="ing" href="/suroviny/{ingredient.id}">{ingredient.name}</a></strong>
 							<span class="muted small">{CATEGORY_LABELS[ingredient.category]}</span>
@@ -607,9 +613,7 @@
 									<span class="sdot" style:background={store?.color}></span>
 									<span class="what">
 										<span class="store">{store?.name}</span>
-										<span class="prod"
-											>{shelfName(e.product)} · {e.pack} za {formatEur(e.price)}</span
-										>
+										<span class="prod">{withPack(e)} za {formatEur(e.price)}</span>
 									</span>
 									<span class="kg">{perUnit(e)}</span>
 									<span class="tags">
@@ -630,7 +634,7 @@
 			{/each}
 		</ul>
 		{#if !rows.length}
-			<p class="muted">Takú surovinu nemáme. Skús iné slovo alebo kategóriu.</p>
+			<p class="empty">Takú surovinu nemáme. Skús iné slovo alebo kategóriu.</p>
 		{:else if rows.length > shown}
 			<div class="more">
 				<button class="btn ghost" onclick={() => (shown += PAGE)}>
@@ -642,7 +646,7 @@
 
 	{#if standings.length}
 		<section class="card box standings" id="obchody">
-			<h2><Icon name="store" size={24} /> Ktorý obchod je najlacnejší</h2>
+			<h2 class="section-title"><Icon name="store" size={24} /> Ktorý obchod je najlacnejší</h2>
 			<p class="muted small">
 				Porovnávame suroviny, ktoré predávajú aspoň tri obchody, za bežnú cenu za kg (bez akcií).
 				„+8 %“ znamená, že tam v priemere zaplatíš o 8 % viac ako v najlacnejšom obchode pri každej
@@ -679,7 +683,7 @@
 	{/if}
 
 	<section class="card box ppe" id="bielkoviny">
-		<h2><Icon name="bean" size={24} /> Najviac bielkovín za euro</h2>
+		<h2 class="section-title"><Icon name="bean" size={24} /> Najviac bielkovín za euro</h2>
 		<p class="muted small">
 			Gramy bielkovín, ktoré dostaneš za 1 €. Počítané zo suchej váhy, len potraviny, kde bielkoviny
 			tvoria aspoň 15 % energie.
@@ -697,7 +701,7 @@
 
 	{#if bulk.length}
 		<section class="card box" id="vo-velkom">
-			<h2><Icon name="package" size={24} /> Vo veľkom a z e-shopov</h2>
+			<h2 class="section-title"><Icon name="package" size={24} /> Vo veľkom a z e-shopov</h2>
 			<p class="muted small">
 				Kilové balenia orechov, strukovín, obilnín a korenín z e-shopov ({onlineStoreNames}) – cena
 				je bez dopravy, takže sa oplatia pri väčšej objednávke alebo s kamarátmi. Pri každom je,
@@ -714,7 +718,7 @@
 							<span class="badge">v obchode lacnejšie</span>
 						{/if}
 						<span class="muted small bulk-detail">
-							{shelfName(e.product)} · {catalog.storesById.get(e.storeId)?.name}
+							{withPack(e)} · {catalog.storesById.get(e.storeId)?.name}
 							{#if shop}
 								· v obchode od {sameUnit(shop, e, ingredient)} ({catalog.storesById.get(
 									shop.storeId
@@ -723,7 +727,9 @@
 								· v kamenných obchodoch cenu nepoznáme
 							{/if}
 							{#if e.url}<a href={e.url} rel="noopener noreferrer" target="_blank"
-									>odkaz <Icon name="external" size={14} /></a
+									>do e-shopu <Icon name="external" size={14} /><span class="sr-only">
+										(nové okno)</span
+									></a
 								>{/if}
 						</span>
 					</li>
@@ -733,7 +739,7 @@
 	{/if}
 
 	<section class="card box coverage" id="pokrytie">
-		<h2><Icon name="store" size={24} /> Koľko cien je z obchodov</h2>
+		<h2 class="section-title"><Icon name="chart" size={24} /> Koľko cien je z obchodov</h2>
 		<div class="meter" role="img" aria-label="{Math.round(knownShare * 100)} % z obchodov">
 			<span style:width="{knownShare * 100}%"></span>
 		</div>
@@ -749,7 +755,7 @@
 	</section>
 
 	<section class="card box sources" id="odkial">
-		<h2><Icon name="info" size={24} /> Odkiaľ ceny berieme</h2>
+		<h2 class="section-title"><Icon name="info" size={24} /> Odkiaľ ceny berieme</h2>
 		<p>
 			<strong>Každý deň sa samy obnovujú</strong> ceny základných potravín (zelenina, múka,
 			cestoviny, vločky, sójový nápoj…) z Billy, Lidla, Kauflandu, Tesca, Terna a Freshu – preberáme
@@ -796,22 +802,6 @@
 	.ing:hover {
 		text-decoration: underline;
 	}
-	.page {
-		padding-top: 28px;
-	}
-	.lede {
-		max-width: 46em;
-		color: var(--ink-2);
-	}
-	.small {
-		font-size: 0.85rem;
-	}
-	.jump {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-		margin-top: 4px;
-	}
 	.meter {
 		height: 12px;
 		margin: 12px 0 10px;
@@ -838,28 +828,21 @@
 		padding: 3px 10px;
 		border: 1.5px solid var(--line);
 		border-radius: 999px;
-		font-size: 0.86rem;
+		font-size: var(--fs-sm);
 		text-decoration: none;
 		color: var(--ink);
 	}
-	.box {
-		padding: 20px;
-		margin-top: 24px;
-		scroll-margin-top: 84px;
+	/* Every block on the page is the same distance from the one before it. */
+	.box,
+	.table-section {
+		margin-top: var(--sp-5);
 	}
-	.box h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.4rem;
-		margin-bottom: 4px;
-	}
-	.box h2 :global(svg) {
-		flex: none;
+	.section-title {
+		margin-bottom: var(--sp-1);
 	}
 	.sources p {
 		margin: 10px 0 0;
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 		color: var(--ink-2);
 	}
 	.ppe ol {
@@ -875,7 +858,7 @@
 		grid-template-columns: minmax(0, 1fr) auto;
 		gap: 4px 12px;
 		align-items: baseline;
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 	}
 	.ppe .bar {
 		grid-column: 1 / -1;
@@ -905,17 +888,18 @@
 	.ppe strong {
 		font-variant-numeric: tabular-nums;
 	}
-	.table-section {
-		margin-top: 24px;
-	}
 	.filters {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 10px;
 		margin-bottom: 14px;
 	}
-	.grow {
-		flex: 1 1 240px;
+	/* The pickers share a row when they fit, instead of each taking a line of its own. */
+	.filters > .field {
+		flex: 1 1 150px;
+	}
+	.filters > .grow {
+		flex: 3 1 240px;
 	}
 	.result-count {
 		margin: 0 0 10px;
@@ -982,11 +966,9 @@
 	.who strong {
 		line-height: 1.3;
 	}
-	.dot {
+	.main .swatch {
 		width: 14px;
 		height: 14px;
-		border-radius: 45% 55% 50% 50%;
-		box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12);
 	}
 	/* Price over the shop on a phone, so a long name keeps most of the row. */
 	.best {
@@ -1003,7 +985,7 @@
 	}
 	.price small {
 		margin-left: 3px;
-		font-size: 0.8rem;
+		font-size: var(--fs-xs);
 		font-weight: 500;
 		color: var(--muted);
 	}
@@ -1012,7 +994,7 @@
 		align-items: center;
 		gap: 6px;
 		margin: 6px 0 0 26px;
-		font-size: 0.85rem;
+		font-size: var(--fs-sm);
 		font-weight: 600;
 		color: var(--leaf);
 	}
@@ -1031,9 +1013,9 @@
 		grid-template-columns: auto minmax(0, 1fr) auto;
 		gap: 4px 10px;
 		align-items: baseline;
-		font-size: 0.86rem;
+		font-size: var(--fs-sm);
 		padding: 7px 10px;
-		border-radius: 8px;
+		border-radius: var(--radius-xs);
 		background: var(--paper);
 	}
 	/* An old price steps back by colour; fading the whole row made it too faint to read. */
@@ -1114,10 +1096,10 @@
 	}
 	.how pre {
 		background: var(--paper);
-		border-radius: 12px;
+		border-radius: var(--radius-sm);
 		padding: 14px;
 		overflow-x: auto;
-		font-size: 0.85rem;
+		font-size: var(--fs-sm);
 	}
 	code {
 		font-size: 0.9em;
@@ -1146,11 +1128,11 @@
 		}
 	}
 	.picker {
-		margin-top: 16px;
+		margin-top: var(--sp-4);
 	}
 	.count {
-		font-size: 0.9rem;
-		font-family: var(--font-body, inherit);
+		font-size: var(--fs-sm);
+		font-family: var(--font-body);
 		padding: 2px 9px;
 		border-radius: 999px;
 		background: var(--tomato-soft);
@@ -1178,7 +1160,7 @@
 		margin-top: 12px;
 	}
 	.no-deals {
-		margin: 16px 0;
+		margin: var(--sp-5) 0 0;
 	}
 	.deals ul {
 		list-style: none;
@@ -1206,9 +1188,8 @@
 		min-height: 48px;
 		padding: 4px;
 		border-radius: 12px 12px 12px 4px;
-		/* Darkened so white stays readable on it in both themes. */
-		background: color-mix(in srgb, var(--tomato) 72%, #000);
-		color: #fff;
+		background: var(--alert-bg);
+		color: var(--alert-ink);
 		font-weight: 800;
 		font-size: 1.05rem;
 		font-variant-numeric: tabular-nums;
@@ -1217,7 +1198,7 @@
 	.off.plain {
 		background: var(--tomato-soft);
 		color: color-mix(in srgb, var(--tomato) 60%, var(--ink));
-		font-size: 0.85rem;
+		font-size: var(--fs-sm);
 	}
 	.deal-body {
 		min-width: 0;
@@ -1244,7 +1225,7 @@
 	}
 	.deal-price s {
 		color: var(--muted);
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 	}
 	.deals p {
 		margin: 4px 0 0;
@@ -1283,7 +1264,7 @@
 			gap: 10px;
 		}
 		.off {
-			font-size: 0.92rem;
+			font-size: var(--fs-md);
 		}
 	}
 </style>

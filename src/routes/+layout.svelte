@@ -153,15 +153,17 @@
 	</div>
 </header>
 
-<main id="main">
+<main id="main" tabindex="-1">
 	{#if storageTrouble.full}
-		<div class="wrap storage-full" role="alert">
-			<Icon name="alert" size={18} />
-			<p>
-				<strong>Prehliadač nemá miesto na ďalšie dáta.</strong> Čo zmeníš teraz, po zatvorení
-				zmizne.
-				<a href="/moje">Stiahni si zálohu</a> alebo zapni synchronizáciu, a uvoľni miesto v prehliadači.
-			</p>
+		<div class="wrap" role="alert">
+			<div class="notice danger">
+				<Icon name="alert" size={18} />
+				<p>
+					<strong>Prehliadač nemá miesto na ďalšie dáta.</strong> Čo zmeníš teraz, po zatvorení
+					zmizne. <a href="/moje">Stiahni si zálohu</a> alebo zapni synchronizáciu, a uvoľni miesto v
+					prehliadači.
+				</p>
+			</div>
 		</div>
 	{/if}
 	<SafariKeep />
@@ -175,10 +177,16 @@
 		<p>
 			Komunitné, otvorené a zadarmo. Živiny, alergény a ceny sú orientačné – pri alergii kontroluj
 			etiketu.
-			<a href="/wiki/o-receptiu">Ako to funguje</a> · <a href="/navrhni">Navrhni recept</a> ·
-			<a href="/moje">Záloha dát</a> · <a href="/sukromie">Ochrana súkromia</a> ·
-			<a href="mailto:gabriel@kohut.xyz">Kontakt</a>
 		</p>
+		<nav aria-label="Pätička">
+			<ul>
+				<li><a href="/wiki/o-receptiu">Odkiaľ sú čísla</a></li>
+				<li><a href="/navrhni">Navrhni recept</a></li>
+				<li><a href="/moje">Záloha dát</a></li>
+				<li><a href="/sukromie">Ochrana súkromia</a></li>
+				<li><a href="mailto:gabriel@kohut.xyz">Kontakt</a></li>
+			</ul>
+		</nav>
 	</div>
 </footer>
 
@@ -215,19 +223,6 @@
 <MoreMenu />
 
 <style>
-	.storage-full {
-		display: flex;
-		gap: 10px;
-		align-items: flex-start;
-		margin-top: 12px;
-		padding: 12px 14px;
-		border: 1.5px solid var(--tomato);
-		border-radius: var(--radius-sm);
-		background: var(--paper);
-	}
-	.storage-full p {
-		margin: 0;
-	}
 	.skip {
 		position: absolute;
 		left: -999px;
@@ -236,7 +231,7 @@
 		background: var(--ink);
 		color: var(--paper);
 		padding: 8px 14px;
-		border-radius: 10px;
+		border-radius: var(--radius-xs);
 	}
 	.skip:focus {
 		left: 8px;
@@ -254,7 +249,7 @@
 		display: flex;
 		align-items: center;
 		gap: 16px;
-		height: 64px;
+		height: var(--header-h);
 	}
 	.brand {
 		text-decoration: none;
@@ -278,7 +273,7 @@
 		color: var(--ink-2);
 		text-decoration: none;
 		font-weight: 600;
-		font-size: 0.95rem;
+		font-size: var(--fs-md);
 		transition:
 			background 0.2s,
 			color 0.2s;
@@ -343,6 +338,10 @@
 		}
 	}
 
+	/* The skip link and "back to top" move focus here; the page itself needs no ring. */
+	main:focus {
+		outline: none;
+	}
 	main {
 		position: relative;
 		z-index: 1;
@@ -356,7 +355,7 @@
 		border-top: 1px solid var(--line);
 		padding: 28px 0 110px;
 		color: var(--muted);
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 	}
 	.foot .wrap {
 		display: flex;
@@ -366,6 +365,22 @@
 	}
 	.foot p {
 		margin: 0;
+		max-width: 62ch;
+	}
+	.foot ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 var(--sp-4);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	/* Each link is a full finger-sized target, not a word inside a sentence. */
+	.foot ul a {
+		display: inline-flex;
+		align-items: center;
+		min-height: var(--tap);
+		font-weight: 600;
 	}
 
 	/* Without it, cards peek out under and around the floating navigation. */
@@ -389,7 +404,7 @@
 		grid-template-columns: repeat(5, 1fr);
 		background: var(--card);
 		border: 1px solid var(--line);
-		border-radius: 22px;
+		border-radius: var(--radius);
 		box-shadow: var(--shadow-lift);
 		padding: 6px;
 		view-transition-name: mobile-nav;
@@ -401,13 +416,13 @@
 		align-items: center;
 		gap: 2px;
 		padding: 6px 0;
-		border-radius: 16px;
+		border-radius: var(--radius-sm);
 		color: var(--muted);
 		text-decoration: none;
 		border: 0;
 		background: none;
 		font: inherit;
-		font-size: 0.7rem;
+		font-size: var(--fs-xs);
 		font-weight: 700;
 		cursor: pointer;
 		transition:

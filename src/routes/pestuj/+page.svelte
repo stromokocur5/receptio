@@ -88,7 +88,7 @@
 	];
 	const LEVELS: { id: 1 | 2 | 3; label: string }[] = [
 		{ id: 1, label: 'Začínam' },
-		{ id: 2, label: 'Niečo som už pestoval/a' },
+		{ id: 2, label: 'Trochu už viem' },
 		{ id: 3, label: 'Mám skúsenosti' }
 	];
 
@@ -196,9 +196,17 @@
 	let indicator = $state({ left: 0, width: 0 });
 	const tabButtons = $state<Partial<Record<Tab, HTMLButtonElement>>>({});
 
+	/** Tabs hidden past an edge of the strip: the edge fades so it reads as "there's more". */
+	let tabsMore = $state({ before: false, after: false });
 	function measureIndicator() {
 		const button = tabButtons[current];
 		if (button) indicator = { left: button.offsetLeft, width: button.offsetWidth };
+		measureOverflow();
+	}
+	function measureOverflow() {
+		if (!tablist) return;
+		const { scrollLeft, scrollWidth, clientWidth } = tablist;
+		tabsMore = { before: scrollLeft > 2, after: scrollLeft + clientWidth < scrollWidth - 2 };
 	}
 	$effect(() => {
 		void current;
@@ -206,7 +214,8 @@
 		measureIndicator();
 		const button = tabButtons[current];
 		if (button && tablist) {
-			tablist.scrollTo({ left: button.offsetLeft - 16, behavior: 'smooth' });
+			const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+			tablist.scrollTo({ left: button.offsetLeft - 16, behavior: still ? 'auto' : 'smooth' });
 		}
 	});
 	$effect(() => {
@@ -223,7 +232,10 @@
 		// page again and the new panel opens somewhere in its middle.
 		await tick();
 		// When the tab bar is stuck to the top, jump back so the new panel starts in view.
-		const top = tabsAnchor.getBoundingClientRect().top + window.scrollY - 64;
+		const header = parseFloat(
+			getComputedStyle(document.documentElement).getPropertyValue('--header-h')
+		);
+		const top = tabsAnchor.getBoundingClientRect().top + window.scrollY - header;
 		if (window.scrollY > top) window.scrollTo({ top });
 	}
 
@@ -400,14 +412,14 @@
 <svelte:window onhashchange={readHash} />
 
 <Seo
-	title="Pestuj si sám"
+	title="Pestuj vlastnú úrodu"
 	description="Čo sa u nás oplatí pestovať – na okne, balkóne aj v záhrade. S plánovačom, kalendárom prác a tipmi, čo sadiť spolu."
 />
 
 <div class="wrap page">
 	<header class="rise">
-		<p class="eyebrow"><Icon name="sprout" size={16} /> Pestuj si sám</p>
-		<h1>Pestuj si sám</h1>
+		<p class="eyebrow"><Icon name="sprout" size={16} /> Pestuj</p>
+		<h1>Vlastná úroda</h1>
 		<p class="lede">
 			Aj z okna v byte sa dá zbierať – a zo záhonu celé jedlá. Tu nájdeš, čo sa u nás oplatí
 			pestovať, plánovač, ktorý ti z tvojho miesta navrhne zmiešané výsadby, a návod ku každej
@@ -453,10 +465,13 @@
 		<div
 			class="tabs"
 			role="tablist"
-			aria-label="Pestuj si sám"
+			aria-label="Pestuj"
 			tabindex="-1"
+			class:more-before={tabsMore.before}
+			class:more-after={tabsMore.after}
 			bind:this={tablist}
 			onkeydown={onTabKey}
+			onscroll={measureOverflow}
 		>
 			<span
 				class="indicator"
@@ -523,7 +538,7 @@
 		hidden={current !== 'planovac'}
 	>
 		<div class="card planner">
-			<h2><Icon name="sparkle" size={22} /> Plánovač</h2>
+			<h2 class="section-title"><Icon name="sparkle" size={22} /> Plánovač</h2>
 			<p class="muted">
 				Povedz, koľko máš miesta, a plánovač ho zaplní kombináciami rastlín, ktoré si navzájom
 				pomáhajú – namiesto jedného záhonu kapusty, kde sa darí hlavne škodcom.
@@ -539,8 +554,8 @@
 			{/if}
 			{#if ui.loaded && canAddGarden && (!diary || addingGarden)}
 				<p class="muted small">
-					Chceš si záhony nakresliť sám?
-					<button class="linkish" onclick={() => keepPlan({ asNew: true, beds: [], empty: true })}
+					Chceš si záhony nakresliť po svojom?
+					<button class="btn-link" onclick={() => keepPlan({ asNew: true, beds: [], empty: true })}
 						>Začni s prázdnou záhradkou</button
 					>.
 				</p>
@@ -630,7 +645,7 @@
 							>
 						{/if}
 						<input
-							class="goal-search"
+							class="input sm goal-search"
 							bind:value={goalQuery}
 							placeholder="Pridaj recept (lečo, hummus…)"
 							aria-label="Hľadať recept"
@@ -676,8 +691,8 @@
 			</div>
 
 			{#if plan.combos.length}
-				<div class="stats" aria-live="polite">
-					<div>
+				<div class="stat-grid stats" aria-live="polite">
+					<div class="stat">
 						<strong>{Math.round(combosShown.current)}</strong>
 						<span
 							>{plan.combos.length === 1
@@ -687,16 +702,16 @@
 									: 'výsadieb'}</span
 						>
 					</div>
-					<div>
+					<div class="stat">
 						<strong>{Math.round(plantsShown.current)}</strong>
 						<span>druhov rastlín</span>
 					</div>
 					{#if estimate.kg >= 0.5}
-						<div>
+						<div class="stat">
 							<strong>{formatNumber(Math.round(kgShown.current))} kg</strong>
 							<span>úrody za sezónu</span>
 						</div>
-						<div class="money">
+						<div class="stat money">
 							<strong>{formatEur(eurShown.current)}</strong>
 							<span>v obchode <span class="badge turmeric">odhad</span></span>
 						</div>
@@ -793,7 +808,7 @@
 						<ul>
 							{#each plan.extras as e (e.ingredientId)}
 								<li>
-									<button class="linkish" onclick={() => openCrop(e.ingredientId)}
+									<button class="btn-link" onclick={() => openCrop(e.ingredientId)}
 										>{e.count} × {e.name}</button
 									>
 									<small class="muted"
@@ -815,7 +830,7 @@
 								{@const g = guideById.get(p.ingredientId)}
 								<li>
 									<strong>{p.count}</strong>
-									<button class="linkish plain" onclick={() => openCrop(p.ingredientId)}
+									<button class="btn-link quiet" onclick={() => openCrop(p.ingredientId)}
 										>{p.name}</button
 									>
 									{#if (kgById.get(p.ingredientId) ?? 0) >= 0.1}<small class="muted"
@@ -870,7 +885,7 @@
 				{/if}
 			{:else}
 				<p class="empty">
-					Na takú plochu a svetlo zatiaľ nemám kombináciu. Skús väčšiu plochu alebo menej náročné
+					Pre takú plochu a svetlo zatiaľ kombináciu nemáme. Skús väčšiu plochu alebo menej náročné
 					skúsenosti – a v tieni sa darí aspoň klíčkom a hlive v byte.
 				</p>
 			{/if}
@@ -938,7 +953,7 @@
 				<input
 					type="search"
 					bind:value={cropQuery}
-					placeholder="Hľadať plodinu (paradajka, bazalka…)"
+					placeholder="Paradajka, bazalka…"
 					aria-label="Hľadať plodinu"
 				/>
 			</label>
@@ -993,7 +1008,7 @@
 					</p>
 				</article>
 			{:else}
-				<p class="muted">Takú plodinu tu nemám – skús iný filter.</p>
+				<p class="empty">Takú plodinu tu nemáme – skús iný filter.</p>
 			{/each}
 		</div>
 	</div>
@@ -1048,32 +1063,24 @@
 />
 
 <style>
-	.page {
-		padding-top: 28px;
-	}
 	.eyebrow {
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
 	}
-	.lede {
-		color: var(--ink-2);
-		max-width: 68ch;
-	}
-	.guides,
-	.chips {
+	.guides {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 8px;
+		gap: var(--sp-2);
 	}
 
 	/* ── Tabs ── */
 	.tabs-bar {
 		position: sticky;
-		top: 64px;
+		top: var(--header-h);
 		z-index: 5;
-		margin: 28px -16px 0;
-		padding: 8px 16px;
+		margin: var(--sp-5) calc(-1 * var(--gutter)) 0;
+		padding: var(--sp-2) var(--gutter);
 		background: color-mix(in srgb, var(--paper) 88%, transparent);
 		backdrop-filter: blur(10px);
 	}
@@ -1095,6 +1102,21 @@
 	.tabs::-webkit-scrollbar {
 		display: none;
 	}
+	.tabs.more-after {
+		mask-image: linear-gradient(to right, #000 calc(100% - 40px), transparent);
+	}
+	.tabs.more-before {
+		mask-image: linear-gradient(to left, #000 calc(100% - 40px), transparent);
+	}
+	.tabs.more-before.more-after {
+		mask-image: linear-gradient(
+			to right,
+			transparent,
+			#000 40px,
+			#000 calc(100% - 40px),
+			transparent
+		);
+	}
 	.tabs button {
 		position: relative;
 		z-index: 1;
@@ -1109,10 +1131,15 @@
 		color: var(--ink-2);
 		font: inherit;
 		font-weight: 650;
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 		white-space: nowrap;
 		cursor: pointer;
 		transition: color 0.25s;
+	}
+	@media (pointer: coarse) {
+		.tabs button {
+			min-height: var(--tap);
+		}
 	}
 	.tabs button[aria-selected='true'] {
 		color: var(--paper);
@@ -1136,12 +1163,12 @@
 	.count {
 		padding: 0 6px;
 		border-radius: 999px;
-		font-size: 0.72rem;
+		font-size: var(--fs-xs);
 		background: color-mix(in srgb, currentColor 18%, transparent);
 	}
 	.panel {
-		margin-top: 16px;
-		scroll-margin-top: 130px;
+		margin-top: var(--sp-4);
+		scroll-margin-top: calc(var(--header-h) + 72px);
 	}
 	.panel[hidden] {
 		display: none;
@@ -1186,7 +1213,7 @@
 		font-size: 1.08rem;
 	}
 	.tech-body .muted {
-		font-size: 0.88rem;
+		font-size: var(--fs-sm);
 		line-height: 1.4;
 	}
 	.panel:not([hidden]) {
@@ -1201,10 +1228,7 @@
 		padding: 22px;
 	}
 	.planner > h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		margin: 0 0 6px;
+		margin-bottom: 6px;
 	}
 	.form {
 		display: grid;
@@ -1252,9 +1276,11 @@
 	.opt small {
 		color: var(--muted);
 	}
+	/* Picked like a chip: an ink edge, the same "on" colour as every other choice. */
 	.opt[aria-pressed='true'] {
-		border-color: var(--leaf);
-		background: var(--leaf-soft);
+		border-color: var(--ink);
+		box-shadow: inset 0 0 0 1px var(--ink);
+		background: var(--card);
 	}
 	.area {
 		display: grid;
@@ -1314,27 +1340,20 @@
 		padding: 10px 12px;
 		font: inherit;
 	}
-	.stats {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-		gap: 8px;
-	}
-	.stats div {
+	.stats .stat {
 		display: grid;
 		gap: 2px;
-		padding: 12px 14px;
-		border-radius: var(--radius-sm);
 		background: var(--leaf-soft);
 	}
 	.stats strong {
 		font-family: var(--font-display);
-		font-size: 1.7rem;
+		font-size: var(--fs-xl);
 		line-height: 1.1;
 		color: var(--leaf);
 		font-variant-numeric: tabular-nums;
 	}
 	.stats span {
-		font-size: 0.85rem;
+		font-size: var(--fs-sm);
 		color: var(--ink-2);
 	}
 	.stats .money {
@@ -1354,12 +1373,6 @@
 	.goal-search {
 		flex: 1 1 200px;
 		min-width: 0;
-		border: 1.5px solid var(--line);
-		border-radius: 999px;
-		background: var(--paper);
-		color: var(--ink);
-		padding: 6px 14px;
-		font: inherit;
 	}
 	.goal-results {
 		margin-top: 8px;
@@ -1372,23 +1385,7 @@
 		padding-left: 1.2em;
 	}
 	.coverage {
-		font-size: 0.95rem;
-	}
-	.linkish {
-		border: 0;
-		padding: 0;
-		background: none;
-		color: var(--leaf);
-		font: inherit;
-		font-weight: 650;
-		text-decoration: underline;
-		cursor: pointer;
-	}
-	.linkish.plain {
-		color: inherit;
-		font-weight: inherit;
-		text-decoration-color: var(--line);
-		text-underline-offset: 3px;
+		font-size: var(--fs-md);
 	}
 	.gardens {
 		display: flex;
@@ -1472,12 +1469,12 @@
 		line-height: 1.2;
 	}
 	.combo-meta {
-		font-size: 0.82rem;
+		font-size: var(--fs-sm);
 		font-weight: 650;
 		color: var(--leaf);
 	}
 	.why-short {
-		font-size: 0.85rem;
+		font-size: var(--fs-sm);
 		color: var(--ink-2);
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
@@ -1526,7 +1523,7 @@
 		color: var(--ink);
 		font: inherit;
 		font-weight: 600;
-		font-size: 0.88rem;
+		font-size: var(--fs-sm);
 		cursor: pointer;
 		transition: transform 0.2s var(--ease-spring);
 	}
@@ -1597,7 +1594,7 @@
 		display: grid;
 		gap: 2px;
 		padding: 8px 10px;
-		border-radius: 10px;
+		border-radius: var(--radius-xs);
 	}
 	.tasks li.now {
 		background: var(--leaf-soft);
@@ -1648,9 +1645,11 @@
 		margin-top: 16px;
 	}
 	.empty {
-		padding: 16px;
 		border-radius: var(--radius-sm);
-		background: var(--paper-2);
+		background: var(--sunk);
+	}
+	.crops > .empty {
+		grid-column: 1 / -1;
 	}
 
 	/* ── Crops ── */
@@ -1659,11 +1658,11 @@
 		grid-auto-flow: column;
 		grid-auto-columns: minmax(220px, 260px);
 		gap: 12px;
-		margin: 14px -16px 0;
-		padding: 4px 16px 14px;
+		margin: 14px calc(-1 * var(--gutter)) 0;
+		padding: 4px var(--gutter) 14px;
 		overflow-x: auto;
 		scroll-snap-type: x mandatory;
-		scroll-padding: 16px;
+		scroll-padding: var(--gutter);
 	}
 	.rec {
 		display: grid;
@@ -1775,7 +1774,7 @@
 	}
 	.crop .how {
 		margin: 0;
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 		color: var(--ink-2);
 		display: -webkit-box;
 		-webkit-line-clamp: 2;
@@ -1785,11 +1784,8 @@
 	}
 	.crop .meta {
 		margin: 0;
-		font-size: 0.8rem;
+		font-size: var(--fs-xs);
 		color: var(--muted);
-	}
-	.small {
-		font-size: 0.85rem;
 	}
 
 	/* ── Not grown here ── */
@@ -1806,7 +1802,7 @@
 		color: var(--muted);
 	}
 	.not span {
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 		color: var(--ink-2);
 	}
 	@media (max-width: 520px) {

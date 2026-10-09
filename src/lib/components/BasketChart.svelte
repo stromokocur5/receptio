@@ -68,8 +68,9 @@
 <figure class="viz-root">
 	<figcaption>
 		<span>Cena košíka</span>
-		<button class="linkish" onclick={() => (showTable = !showTable)} aria-pressed={showTable}>
-			{showTable ? 'Graf' : 'Tabuľka'}
+		<!-- One label, pressed while the table shows: the state is in aria-pressed, not the text. -->
+		<button class="chip" onclick={() => (showTable = !showTable)} aria-pressed={showTable}>
+			Tabuľka
 		</button>
 	</figcaption>
 	{#if showTable}
@@ -174,15 +175,6 @@
 		font-weight: 700;
 		margin-bottom: 6px;
 	}
-	.linkish {
-		border: 0;
-		background: none;
-		padding: 0;
-		color: var(--plum);
-		font-weight: 600;
-		text-decoration: underline;
-		cursor: pointer;
-	}
 	/* Sized from its box, never the other way round (see PriceChart). */
 	.plot {
 		position: relative;
@@ -234,11 +226,11 @@
 		display: grid;
 		gap: 2px;
 		padding: 6px 10px;
-		border-radius: 10px;
+		border-radius: var(--radius-xs);
 		background: var(--card);
 		border: 1px solid var(--line);
-		box-shadow: 0 6px 20px rgb(0 0 0 / 0.12);
-		font-size: 0.82rem;
+		box-shadow: var(--shadow);
+		font-size: var(--fs-sm);
 		font-variant-numeric: tabular-nums;
 	}
 	.table-wrap {
@@ -248,7 +240,7 @@
 	table {
 		border-collapse: collapse;
 		width: 100%;
-		font-size: 0.86rem;
+		font-size: var(--fs-sm);
 		font-variant-numeric: tabular-nums;
 	}
 	th,

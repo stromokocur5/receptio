@@ -3,7 +3,7 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { CATEGORY_ICONS } from '$lib/ingredient-icons';
-	import { CATEGORY_LABELS, ingredientSearchText, searchMatcher } from '$lib/labels';
+	import { CATEGORY_LABELS, ingredientSearchText, pluralRecipes, searchMatcher } from '$lib/labels';
 	import { INGREDIENT_CATEGORIES } from '$lib/types';
 
 	const catalog = useCatalog();
@@ -46,7 +46,7 @@
 
 <div class="wrap page">
 	<header class="rise">
-		<p class="eyebrow">Wiki · Suroviny</p>
+		<p class="eyebrow">Objavuj</p>
 		<h1>Čo je čo</h1>
 		<p class="lede">
 			Všetky suroviny z receptov – aké druhy existujú, ako vybrať, ako skladovať, čím nahradiť a
@@ -54,7 +54,7 @@
 		</p>
 	</header>
 
-	<div class="tools">
+	<div class="tools" role="group" aria-label="Hľadať a filtrovať">
 		<label class="field search">
 			<Icon name="search" size={20} />
 			<span class="sr-only">Hľadať surovinu</span>
@@ -70,41 +70,42 @@
 
 	{#each groups as [category, list] (category)}
 		<section class="cat">
-			<h2><Icon name={CATEGORY_ICONS[category]} size={22} /> {CATEGORY_LABELS[category]}</h2>
+			<h2 class="section-title">
+				<Icon name={CATEGORY_ICONS[category]} size={22} />
+				{CATEGORY_LABELS[category]}
+			</h2>
 			<ul>
 				{#each list as i (i.id)}
 					<li>
 						<a href="/suroviny/{i.id}" class="item draw-host" style:--c={i.color}>
-							<span class="dot" aria-hidden="true"></span>
+							<span class="swatch" aria-hidden="true"></span>
 							<span class="name">{i.name}</span>
 							{#if i.season.includes(month)}<span class="season" title="Práve v sezóne"
 									><Icon name="leaf" size={14} /></span
 								>{/if}
-							<span class="count muted">{recipeCount.get(i.id) ?? 0}</span>
+							<span class="count muted"
+								>{recipeCount.get(i.id) ?? 0} {pluralRecipes(recipeCount.get(i.id) ?? 0)}</span
+							>
 						</a>
 					</li>
 				{/each}
 			</ul>
 		</section>
 	{:else}
-		<p class="muted">Nič sa nenašlo.</p>
+		<div class="empty">
+			<Icon name="search" size={28} />
+			<p>Takú surovinu nemáme. Skús iné slovo alebo vypni filtre.</p>
+		</div>
 	{/each}
 </div>
 
 <style>
-	.page {
-		padding-top: 28px;
-	}
-	.lede {
-		color: var(--ink-2);
-		max-width: 44em;
-	}
 	.tools {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 12px;
-		margin: 8px 0 12px;
+		gap: var(--sp-3);
+		margin: var(--sp-2) 0 var(--sp-3);
 	}
 	.search {
 		flex: 1;
@@ -112,13 +113,7 @@
 		max-width: 480px;
 	}
 	.cat {
-		margin-top: 28px;
-	}
-	.cat h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.3rem;
+		margin-top: var(--sp-6);
 	}
 	ul {
 		list-style: none;
@@ -135,7 +130,7 @@
 		align-items: center;
 		gap: 10px;
 		padding: 9px 12px;
-		border-radius: 12px;
+		border-radius: var(--radius-sm);
 		background: var(--card);
 		border: 1px solid var(--line);
 		color: var(--ink);
@@ -149,12 +144,9 @@
 		transform: translateY(-2px);
 		border-color: var(--c);
 	}
-	.dot {
-		flex: none;
+	.item .swatch {
 		width: 14px;
 		height: 14px;
-		border-radius: 45% 55% 50% 50%;
-		background: var(--c);
 	}
 	.name {
 		flex: 1;
@@ -166,7 +158,8 @@
 		color: var(--leaf);
 	}
 	.count {
-		font-size: 0.8rem;
+		font-size: var(--fs-xs);
 		font-variant-numeric: tabular-nums;
+		white-space: nowrap;
 	}
 </style>

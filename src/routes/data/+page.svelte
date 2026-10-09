@@ -4,6 +4,7 @@
 	import { formatEur, formatGrams, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
+	import JumpNav from '$lib/components/JumpNav.svelte';
 	import PriceChart from '$lib/components/PriceChart.svelte';
 	import BasketChart from '$lib/components/BasketChart.svelte';
 	import Seo from '$lib/components/Seo.svelte';
@@ -219,43 +220,48 @@
 			Ako sa menia ceny potravín, všetky ceny, ktoré poznáme, a celé dáta Receptia na stiahnutie –
 			pre každého, bez registrácie.
 		</p>
-		<dl class="tiles">
-			<div>
+		<dl class="stat-grid tiles">
+			<div class="stat">
 				<dt>Cien v obchodoch</dt>
 				<dd>{catalog.prices.length}</dd>
 				<dd class="sub">naposledy {fmtDay(lastPriceDay)}</dd>
 			</div>
-			<div>
+			<div class="stat">
 				<dt>Obchodov</dt>
 				<dd>{new Set(catalog.prices.map((p) => p.storeId)).size}</dd>
 				<dd class="sub">aj e-shopy</dd>
 			</div>
-			<div>
+			<div class="stat">
 				<dt>Dní histórie</dt>
 				<dd>{history ? history.days.length : '…'}</dd>
 				<dd class="sub">{history?.days.length ? `od ${fmtDay(history.days[0])}` : ''}</dd>
 			</div>
-			<div>
+			<div class="stat">
 				<dt>Receptov</dt>
 				<dd>{catalog.recipes.length}</dd>
 				<dd class="sub">{catalog.ingredients.length} surovín</dd>
 			</div>
 		</dl>
-		<nav class="jump" aria-label="Na tejto stránke">
-			<a class="chip" href="#kosik"><Icon name="basket" size={14} /> Index košíka</a>
-			<a class="chip" href="#vyvoj"><Icon name="chart" size={14} /> Vývoj cien</a>
-			<a class="chip" href="#zmeny"><Icon name="tag" size={14} /> Zdraželo a zlacnelo</a>
-			<a class="chip" href="#vsetky"><Icon name="store" size={14} /> Všetky ceny</a>
-			<a class="chip" href="#komunita"><Icon name="heart" size={14} /> Čo varia ostatní</a>
-			<a class="chip" href="#api"><Icon name="package" size={14} /> Otvorené dáta a API</a>
-		</nav>
 	</header>
+
+	<JumpNav
+		links={[
+			...(data.basketIndex.length
+				? [{ id: 'kosik', label: 'Index košíka', icon: 'basket' as const }]
+				: []),
+			{ id: 'vyvoj', label: 'Vývoj cien', icon: 'chart' },
+			{ id: 'zmeny', label: 'Zdraželo a zlacnelo', icon: 'tag' },
+			{ id: 'vsetky', label: 'Všetky ceny', icon: 'store' },
+			{ id: 'komunita', label: 'Čo varia ostatní', icon: 'heart' },
+			{ id: 'api', label: 'Otvorené dáta a API', icon: 'package' }
+		]}
+	/>
 
 	{#if data.basketIndex.length}
 		{@const first = data.basketIndex[0]}
 		{@const last = data.basketIndex.at(-1)!}
 		<section class="card box" id="kosik">
-			<h2><Icon name="basket" size={24} /> Index vegánskeho košíka</h2>
+			<h2 class="section-title"><Icon name="basket" size={24} /> Index vegánskeho košíka</h2>
 			<p class="headline">
 				Týždenný nákup základov pre jedného stojí <strong>{formatEur(last.cost)}</strong>
 				{#if data.basketIndex.length > 1}
@@ -289,7 +295,7 @@
 	{/if}
 
 	<section class="card box" id="vyvoj">
-		<h2><Icon name="chart" size={24} /> Vývoj cien</h2>
+		<h2 class="section-title"><Icon name="chart" size={24} /> Vývoj cien</h2>
 		{#if historyFailed}
 			<p class="muted">Históriu cien sa nepodarilo načítať. Skús stránku obnoviť.</p>
 		{:else if !history}
@@ -331,7 +337,7 @@
 	</section>
 
 	<section class="card box" id="zmeny">
-		<h2><Icon name="tag" size={24} /> Zdraželo a zlacnelo</h2>
+		<h2 class="section-title"><Icon name="tag" size={24} /> Zdraželo a zlacnelo</h2>
 		<p class="muted small">
 			Každý produkt porovnaný sám so sebou v tom istom obchode, na začiatku a na konci obdobia.
 			Akcie sa nerátajú.
@@ -384,7 +390,7 @@
 	</section>
 
 	<section class="card box" id="vsetky">
-		<h2><Icon name="store" size={24} /> Všetky ceny</h2>
+		<h2 class="section-title"><Icon name="store" size={24} /> Všetky ceny</h2>
 		<div class="filters">
 			<div class="field grow">
 				<Icon name="search" size={20} />
@@ -404,9 +410,12 @@
 				<input type="checkbox" bind:checked={salesOnly} /> Len akcie
 			</label>
 		</div>
-		<p class="muted small">{rows.length} cien</p>
+		<p class="muted small" role="status">
+			{rows.length}
+			{rows.length === 1 ? 'cena' : rows.length > 1 && rows.length < 5 ? 'ceny' : 'cien'}
+		</p>
 		<div class="table-wrap">
-			<table>
+			<table class="prices">
 				<thead>
 					<tr>
 						<th scope="col" aria-sort={ariaSort('ingredient')}
@@ -415,7 +424,7 @@
 						<th scope="col" aria-sort={ariaSort('store')}
 							><button onclick={() => sortBy('store')}>Obchod</button></th
 						>
-						<th scope="col">Produkt</th>
+						<th scope="col" class="prod-h">Produkt</th>
 						<th scope="col" class="num" aria-sort={ariaSort('price')}
 							><button onclick={() => sortBy('price')}>Cena</button></th
 						>
@@ -431,8 +440,10 @@
 					{#each rows.slice(0, shown) as p, i (i)}
 						{@const unit = unitPrice(p)}
 						<tr>
-							<td><a href="/suroviny/{p.ingredientId}">{ingredientName(p.ingredientId)}</a></td>
-							<td>{storeName(p.storeId)}</td>
+							<td class="ing">
+								<a href="/suroviny/{p.ingredientId}">{ingredientName(p.ingredientId)}</a>
+							</td>
+							<td class="store">{storeName(p.storeId)}</td>
 							<td class="prod">
 								{#if p.url}<a href={p.url} rel="noopener noreferrer" target="_blank"
 										>{shelfName(p.product)}</a
@@ -441,9 +452,9 @@
 								{#if p.saleUntil && isSaleActive(p, today)}<span class="badge tomato">akcia</span
 									>{/if}
 							</td>
-							<td class="num">{formatEur(p.price)}</td>
-							<td class="num">{formatEur(unit.value)}<small>/{unit.unit}</small></td>
-							<td>{fmtDay(p.date)}</td>
+							<td class="num price">{formatEur(p.price)}</td>
+							<td class="num unit">{formatEur(unit.value)}<small>/{unit.unit}</small></td>
+							<td class="date">{fmtDay(p.date)}</td>
 						</tr>
 					{/each}
 				</tbody>
@@ -459,7 +470,7 @@
 	</section>
 
 	<section class="card box" id="komunita">
-		<h2><Icon name="heart" size={24} /> Čo varia ostatní</h2>
+		<h2 class="section-title"><Icon name="heart" size={24} /> Čo varia ostatní</h2>
 		<p class="muted small">
 			Anonymne a len súhrnne: lajky a hlásenia „uvarené“ pri receptoch. Recept sa ukáže, až keď to
 			isté urobili aspoň dvaja ľudia. Kto čo robí, nevidí nikto – ani my.
@@ -469,64 +480,76 @@
 		{:else if !community}
 			<p class="muted">Načítavam…</p>
 		{:else}
-			<dl class="tiles small-tiles">
-				<div>
-					<dt>Lajkov</dt>
-					<dd>{community.totals.likes}</dd>
-					<dd class="sub">od {community.totals.liking_devices} ľudí</dd>
-				</div>
-				<div>
-					<dt>Uvarené podľa receptu</dt>
-					<dd>{community.totals.cooked_reports}×</dd>
-				</div>
-				<div>
-					<dt>Hodnotení</dt>
-					<dd>{community.totals.ratings}</dd>
-				</div>
-			</dl>
-			<div class="two">
-				{#each [{ title: 'Tento týždeň obľúbené', list: community.week.liked, unit: '♥' }, { title: 'Tento týždeň uvarené', list: community.week.cooked, unit: '×' }] as group (group.title)}
+			{@const t = community.totals}
+			{#if t.likes || t.cooked_reports || t.ratings}
+				<dl class="stat-grid tiles">
+					<div class="stat">
+						<dt>Lajkov</dt>
+						<dd>{t.likes}</dd>
+						<dd class="sub">od {t.liking_devices} ľudí</dd>
+					</div>
+					<div class="stat">
+						<dt>Uvarené podľa receptu</dt>
+						<dd>{t.cooked_reports}×</dd>
+					</div>
+					<div class="stat">
+						<dt>Hodnotení</dt>
+						<dd>{t.ratings}</dd>
+					</div>
+				</dl>
+				<div class="two">
+					{#each [{ title: 'Tento týždeň obľúbené', list: community.week.liked, unit: '♥' }, { title: 'Tento týždeň uvarené', list: community.week.cooked, unit: '×' }] as group (group.title)}
+						<div>
+							<h3>{group.title}</h3>
+							{#if group.list.some((r) => recipeTitle(r.recipe_id))}
+								<ol class="moves">
+									{#each group.list.filter((r) => recipeTitle(r.recipe_id)) as r (r.recipe_id)}
+										<li>
+											<a href="/recepty/{r.recipe_id}">{recipeTitle(r.recipe_id)}</a>
+											<span></span>
+											<strong>{r.count}{group.unit}</strong>
+										</li>
+									{/each}
+								</ol>
+							{:else}
+								<p class="muted small">
+									Zatiaľ nič – keď to isté urobia aspoň dvaja, objaví sa to tu.
+								</p>
+							{/if}
+						</div>
+					{/each}
 					<div>
-						<h3>{group.title}</h3>
-						{#if group.list.some((r) => recipeTitle(r.recipe_id))}
+						<h3>Najlepšie hodnotené</h3>
+						{#if community.rated.some((r) => recipeTitle(r.recipe_id))}
 							<ol class="moves">
-								{#each group.list.filter((r) => recipeTitle(r.recipe_id)) as r (r.recipe_id)}
+								{#each community.rated.filter((r) => recipeTitle(r.recipe_id)) as r (r.recipe_id)}
 									<li>
 										<a href="/recepty/{r.recipe_id}">{recipeTitle(r.recipe_id)}</a>
-										<span></span>
-										<strong>{r.count}{group.unit}</strong>
+										<span class="muted">{r.ratings} hodnotení</span>
+										<strong>{formatNumber(r.rating, 1)} ★</strong>
 									</li>
 								{/each}
 							</ol>
 						{:else}
-							<p class="muted small">
-								Zatiaľ nič – keď to isté urobia aspoň dvaja, objaví sa to tu.
-							</p>
+							<p class="muted small">Recept sa sem dostane s aspoň tromi hodnoteniami.</p>
 						{/if}
 					</div>
-				{/each}
-				<div>
-					<h3>Najlepšie hodnotené</h3>
-					{#if community.rated.some((r) => recipeTitle(r.recipe_id))}
-						<ol class="moves">
-							{#each community.rated.filter((r) => recipeTitle(r.recipe_id)) as r (r.recipe_id)}
-								<li>
-									<a href="/recepty/{r.recipe_id}">{recipeTitle(r.recipe_id)}</a>
-									<span class="muted">{r.ratings} hodnotení</span>
-									<strong>{formatNumber(r.rating, 1)} ★</strong>
-								</li>
-							{/each}
-						</ol>
-					{:else}
-						<p class="muted small">Recept sa sem dostane s aspoň tromi hodnoteniami.</p>
-					{/if}
 				</div>
-			</div>
+			{:else}
+				<!-- Three zero tiles and three "nothing yet" lists said the same thing six times. -->
+				<div class="empty">
+					<Icon name="heart" size={28} />
+					<p>
+						Zatiaľ tu nič nie je. Keď ľudia začnú lajkovať, variť a hodnotiť, uvidíš tu, čo je
+						obľúbené.
+					</p>
+				</div>
+			{/if}
 		{/if}
 	</section>
 
 	<section class="card box" id="api">
-		<h2><Icon name="package" size={24} /> Otvorené dáta a API</h2>
+		<h2 class="section-title"><Icon name="package" size={24} /> Otvorené dáta a API</h2>
 		<p>
 			Všetko, čo Receptio vie, je voľne na stiahnutie a na použitie vo vlastných aplikáciách,
 			tabuľkách či výskume – len na čítanie, bez kľúča a bez registrácie. Ceny sa obnovujú denne.
@@ -592,7 +615,7 @@
 									</dl>
 								</details>
 							</td>
-							<td class="num">{r.count}</td>
+							<td class="num">{r.count}<span class="rows-word"> riadkov</span></td>
 							<td class="dl">
 								<a href="{data.apiBase}/{r.name}.csv" download>CSV</a>
 								<a href="{data.apiBase}/{r.name}.json">JSON</a>
@@ -628,65 +651,31 @@ const akcie = data.filter((p) => p.sale_until);`}</code
 </div>
 
 <style>
-	.page {
-		padding-top: 28px;
-	}
 	.tiles {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-		gap: 10px;
-		margin: 18px 0 0;
+		margin: var(--sp-4) 0 var(--sp-3);
 	}
-	.tiles div {
-		padding: 12px 14px;
-		border-radius: var(--radius-sm);
+	/* In the header the tiles sit on the page, not in a card: they get their own card face. */
+	header .stat {
 		background: var(--card);
 		border: 1px solid var(--line);
 	}
-	.tiles dt {
-		font-size: 0.8rem;
-		color: var(--ink-2);
-	}
-	.tiles dd {
-		margin: 2px 0;
-		font-family: var(--font-display);
-		font-size: 1.7rem;
-		font-weight: 700;
+	.stat dd {
 		font-variant-numeric: tabular-nums;
 	}
-	.tiles .sub {
+	.stat .sub {
 		margin: 2px 0 0;
 		font-family: inherit;
+		font-size: var(--fs-xs);
 		font-weight: 400;
 		color: var(--muted);
-		font-size: 0.78rem;
 	}
-	.jump {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-		margin-top: 16px;
-	}
-	.box {
-		margin-top: 20px;
-		padding: 18px 20px;
+	.box + .box {
+		margin-top: var(--sp-5);
 	}
 	@media (max-width: 599px) {
-		.box {
-			padding: 16px 14px;
-		}
 		.tiles {
 			grid-template-columns: repeat(2, 1fr);
 		}
-	}
-	.box h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		margin-top: 0;
-	}
-	.small {
-		font-size: 0.86rem;
 	}
 	.headline {
 		font-size: 1.1rem;
@@ -745,11 +734,11 @@ const akcie = data.filter((p) => p.sale_until);`}</code
 		grid-template-columns: 1fr auto auto;
 		gap: 10px;
 		align-items: baseline;
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 		font-variant-numeric: tabular-nums;
 	}
 	.moves .muted {
-		font-size: 0.8rem;
+		font-size: var(--fs-xs);
 	}
 	.what {
 		display: grid;
@@ -774,10 +763,8 @@ const akcie = data.filter((p) => p.sale_until);`}</code
 	.grow {
 		flex: 1 1 240px;
 	}
-	.check {
-		display: inline-flex;
+	.filters .check {
 		align-items: center;
-		gap: 6px;
 		font-weight: 600;
 	}
 	.table-wrap {
@@ -787,7 +774,7 @@ const akcie = data.filter((p) => p.sale_until);`}</code
 	table {
 		border-collapse: collapse;
 		width: 100%;
-		font-size: 0.88rem;
+		font-size: var(--fs-sm);
 	}
 	th,
 	td {
@@ -797,7 +784,7 @@ const akcie = data.filter((p) => p.sale_until);`}</code
 		vertical-align: top;
 	}
 	th {
-		font-size: 0.8rem;
+		font-size: var(--fs-xs);
 		color: var(--ink-2);
 		white-space: nowrap;
 	}
@@ -824,6 +811,102 @@ const akcie = data.filter((p) => p.sale_until);`}</code
 	.prod {
 		min-width: 200px;
 	}
+	.prod .badge {
+		margin-left: 4px;
+	}
+	/*
+	 * Six columns don't fit a phone: each price becomes a small card, sorting stays as a row
+	 * of buttons on top.
+	 *   Surovina            €/kg
+	 *   Obchod              cena
+	 *   Produkt · balenie   dátum
+	 */
+	@media (max-width: 599px) {
+		.table-wrap:has(.prices) {
+			overflow: visible;
+			margin: 0;
+		}
+		.prices,
+		.prices thead,
+		.prices tbody {
+			display: block;
+		}
+		.prices thead tr {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: var(--sp-2);
+			padding-bottom: var(--sp-3);
+			border-bottom: 1px solid var(--line);
+		}
+		.prices thead tr::before {
+			content: 'Zoradiť:';
+			color: var(--muted);
+			font-size: var(--fs-sm);
+		}
+		.prices thead th {
+			padding: 0;
+			border: 0;
+		}
+		/* The column headers become sort chips; the sorted one is filled. */
+		.prices th button {
+			min-height: 40px;
+			padding: 0 var(--sp-3);
+			border: 1.5px solid var(--line);
+			border-radius: 999px;
+			background: var(--card);
+		}
+		.prices th[aria-sort] button {
+			border-color: var(--ink);
+			background: var(--ink);
+			color: var(--paper);
+		}
+		.prices .prod-h {
+			display: none;
+		}
+		.prices tbody tr {
+			display: grid;
+			grid-template-columns: minmax(0, 1fr) auto;
+			grid-template-areas:
+				'ing unit'
+				'store price'
+				'prod date';
+			gap: 0 var(--sp-3);
+			padding: var(--sp-3) 0;
+			border-bottom: 1px solid var(--line);
+		}
+		.prices td {
+			padding: 0;
+			border: 0;
+			min-width: 0;
+		}
+		.prices .ing {
+			grid-area: ing;
+			font-weight: 650;
+		}
+		.prices .unit {
+			grid-area: unit;
+			font-weight: 700;
+		}
+		.prices .store {
+			grid-area: store;
+		}
+		.prices .price {
+			grid-area: price;
+			color: var(--ink-2);
+		}
+		.prices .prod {
+			grid-area: prod;
+			color: var(--ink-2);
+			overflow-wrap: anywhere;
+		}
+		.prices .date {
+			grid-area: date;
+			text-align: right;
+			color: var(--muted);
+			white-space: nowrap;
+		}
+	}
 	.more {
 		display: flex;
 		justify-content: center;
@@ -840,12 +923,12 @@ const akcie = data.filter((p) => p.sale_until);`}</code
 	}
 	.resources summary {
 		cursor: pointer;
-		font-size: 0.82rem;
+		font-size: var(--fs-sm);
 		color: var(--plum);
 	}
 	.fields {
 		margin: 6px 0 0;
-		font-size: 0.82rem;
+		font-size: var(--fs-sm);
 	}
 	.fields dt {
 		margin-top: 6px;
@@ -856,6 +939,46 @@ const akcie = data.filter((p) => p.sale_until);`}</code
 	}
 	.dl {
 		white-space: nowrap;
+	}
+	.rows-word {
+		display: none;
+	}
+	/* Phones: the description gets the full width, the size and downloads go under it. */
+	@media (max-width: 599px) {
+		.resources,
+		.resources tbody {
+			display: block;
+		}
+		.resources thead {
+			display: none;
+		}
+		.resources tr {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: baseline;
+			gap: 0 var(--sp-4);
+			padding: var(--sp-3) 0;
+			border-bottom: 1px solid var(--line);
+		}
+		.resources td {
+			padding: 0;
+			border: 0;
+		}
+		.resources td:first-child {
+			flex: 1 1 100%;
+			margin-bottom: var(--sp-1);
+		}
+		.resources .num {
+			color: var(--muted);
+		}
+		.rows-word {
+			display: inline;
+		}
+		.dl a {
+			display: inline-flex;
+			align-items: center;
+			min-height: var(--tap);
+		}
 	}
 	.dl a {
 		margin-right: 10px;
@@ -868,6 +991,6 @@ const akcie = data.filter((p) => p.sale_until);`}</code
 		padding: 12px 14px;
 		border-radius: var(--radius-sm);
 		background: var(--paper-2);
-		font-size: 0.82rem;
+		font-size: var(--fs-sm);
 	}
 </style>

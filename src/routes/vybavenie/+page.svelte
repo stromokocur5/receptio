@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon, { isIconName } from '$lib/components/Icon.svelte';
+	import JumpNav from '$lib/components/JumpNav.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { pluralRecipes } from '$lib/labels';
 	import type { EquipmentLevel } from '$lib/types';
@@ -37,7 +38,7 @@
 
 <div class="wrap page">
 	<header class="rise">
-		<p class="eyebrow">Wiki · Základy</p>
+		<p class="eyebrow">Vedieť viac</p>
 		<h1>Vybavenie kuchyne</h1>
 		<p class="lede">
 			Netreba plnú kuchyňu. Každý recept ukazuje, čo budeš potrebovať, a keď niečo nemáš, ťukni na
@@ -45,8 +46,16 @@
 		</p>
 	</header>
 
-	<section class="card starter">
-		<h2><Icon name="sparkle" size={22} /> Štartovacia výbava za ~50 €</h2>
+	<JumpNav
+		links={LEVELS.map((l) => ({
+			id: `uroven-${l.id}`,
+			label: l.title,
+			count: data.equipment.filter((e) => e.level === l.id).length
+		}))}
+	/>
+
+	<section class="card box starter">
+		<h2 class="section-title"><Icon name="sparkle" size={22} /> Štartovacia výbava za ~50 €</h2>
 		<p>
 			Ostrý nôž a doska, veľká panvica, stredný a veľký hrniec s pokrievkou, sitko, strúhadlo,
 			metlička, dve misky a lacná digitálna váha. Neskôr tyčový mixér (od 20 €) a plech s papierom
@@ -55,7 +64,7 @@
 	</section>
 
 	{#each LEVELS as level (level.id)}
-		<section class="level" style:--tone={level.tone}>
+		<section class="level" id="uroven-{level.id}" style:--tone={level.tone}>
 			<h2>{level.title}</h2>
 			<p class="muted">{level.text}</p>
 			<div class="grid">
@@ -94,31 +103,19 @@
 </div>
 
 <style>
-	.page {
-		padding-top: 28px;
-	}
-	.lede {
-		color: var(--ink-2);
-		max-width: 44em;
-	}
 	.starter {
-		padding: 20px;
-		margin-top: 8px;
 		background: var(--leaf-soft);
 		border-color: transparent;
 	}
 	.starter h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.2rem;
-		margin: 0 0 6px;
+		font-size: var(--fs-lg);
+		margin-bottom: var(--sp-2);
 	}
 	.starter p {
 		margin: 0;
 	}
 	.level {
-		margin-top: 36px;
+		margin-top: var(--sp-6);
 	}
 	.level h2 {
 		margin-bottom: 4px;
@@ -132,7 +129,6 @@
 	.tool {
 		padding: 18px;
 		animation-delay: calc(var(--i) * 40ms);
-		scroll-margin-top: 90px;
 	}
 	.head {
 		display: flex;
@@ -152,21 +148,21 @@
 		place-items: center;
 		width: 48px;
 		height: 48px;
-		border-radius: 16px;
+		border-radius: var(--radius-sm);
 		background: color-mix(in srgb, var(--tone) 18%, transparent);
 		color: var(--tone);
 		transform: rotate(-4deg);
 	}
 	.tool p {
-		font-size: 0.93rem;
+		font-size: var(--fs-md);
 		color: var(--ink-2);
 		margin: 12px 0;
 	}
 	.alt {
 		padding: 10px 12px;
-		border-radius: 12px;
+		border-radius: var(--radius-sm);
 		background: var(--paper);
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 	}
 	.alt ul {
 		margin: 4px 0 0;
@@ -175,15 +171,12 @@
 	.alt li {
 		margin: 3px 0;
 	}
-	.small {
-		font-size: 0.82rem;
-	}
 	.filter-link {
 		display: inline-flex;
 		align-items: center;
 		gap: 4px;
-		margin-top: 10px;
-		font-size: 0.85rem;
+		min-height: var(--tap);
+		font-size: var(--fs-sm);
 		font-weight: 650;
 	}
 </style>

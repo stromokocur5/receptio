@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { useCatalog } from '$lib/catalog';
 	import Icon, { isIconName } from '$lib/components/Icon.svelte';
-	import RecipeCard from '$lib/components/RecipeCard.svelte';
+	import RecipeGrid from '$lib/components/RecipeGrid.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 
 	let { data } = $props();
@@ -17,8 +17,6 @@
 	const FILTERABLE = new Set(['rura', 'mixer', 'sekacik', 'teplomer']);
 
 	const recipes = $derived(catalog.recipes.filter((r) => r.equipment.includes(tool.id)));
-	const RECIPE_PREVIEW = 6;
-	let showAll = $state(false);
 </script>
 
 <Seo title={tool.name} description={tool.about} type="article" />
@@ -86,32 +84,12 @@
 	{#if recipes.length}
 		<section class="recipes">
 			<h2>Použiješ v {recipes.length === 1 ? '1 recepte' : `${recipes.length} receptoch`}</h2>
-			<div class="grid">
-				{#each showAll ? recipes : recipes.slice(0, RECIPE_PREVIEW) as recipe, i (recipe.id)}
-					<RecipeCard {recipe} index={i} />
-				{/each}
-			</div>
-			{#if recipes.length > RECIPE_PREVIEW && !showAll}
-				<button class="btn ghost more" onclick={() => (showAll = true)}>
-					Všetky ({recipes.length})
-				</button>
-			{/if}
+			<RecipeGrid {recipes} preview={6} />
 		</section>
 	{/if}
 </article>
 
 <style>
-	.page {
-		padding-top: 18px;
-	}
-	.back {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		color: var(--ink-2);
-		text-decoration: none;
-		font-weight: 600;
-	}
 	.head {
 		display: grid;
 		gap: 14px;
@@ -129,18 +107,13 @@
 		place-items: center;
 		width: 84px;
 		height: 84px;
-		border-radius: 24px;
+		border-radius: var(--radius);
 		background: var(--leaf-soft);
 		color: var(--leaf);
 		transform: rotate(-5deg);
 	}
 	h1 {
 		margin: 0;
-	}
-	.lede {
-		font-size: 1.08rem;
-		color: var(--ink-2);
-		max-width: 44em;
 	}
 	.cols {
 		display: grid;
@@ -154,7 +127,7 @@
 		display: flex;
 		align-items: center;
 		gap: 8px;
-		font-size: 1.2rem;
+		font-size: var(--fs-lg);
 		margin: 0 0 8px;
 	}
 	.text ul,
@@ -170,7 +143,6 @@
 		margin: 0;
 	}
 	.box {
-		padding: 18px;
 		align-self: start;
 	}
 	.alt {
@@ -181,20 +153,13 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 4px;
-		margin-top: 12px;
+		min-height: var(--tap);
+		margin-top: var(--sp-1);
 		font-weight: 650;
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 	}
 	.recipes {
-		margin-top: 36px;
-	}
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-		gap: 18px;
-	}
-	.more {
-		margin-top: 16px;
+		margin-top: var(--sp-6);
 	}
 	@media (min-width: 900px) {
 		.cols {

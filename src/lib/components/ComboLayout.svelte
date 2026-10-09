@@ -180,7 +180,7 @@
 	.north {
 		margin: 0 0 4px;
 		text-align: center;
-		font-size: 0.72rem;
+		font-size: var(--fs-xs);
 		color: var(--muted);
 	}
 	figcaption {
@@ -188,7 +188,7 @@
 		flex-wrap: wrap;
 		gap: 4px 8px;
 		margin-top: 10px;
-		font-size: 0.82rem;
+		font-size: var(--fs-sm);
 		color: var(--ink-2);
 	}
 	figcaption button {

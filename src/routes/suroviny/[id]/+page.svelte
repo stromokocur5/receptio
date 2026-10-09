@@ -6,7 +6,7 @@
 	import GrowMonths from '$lib/components/GrowMonths.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import NutrientBars from '$lib/components/NutrientBars.svelte';
-	import RecipeCard from '$lib/components/RecipeCard.svelte';
+	import RecipeGrid from '$lib/components/RecipeGrid.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { SITE_ORIGIN } from '$lib/site';
 	import { breadcrumbJsonLd } from '$lib/structured-data';
@@ -31,8 +31,6 @@
 	const recipes = $derived(
 		catalog.recipes.filter((r) => r.lines.some((l) => l.ingredientId === ingredient.id))
 	);
-	const RECIPE_PREVIEW = 6;
-	let showAllRecipes = $state(false);
 
 	/** Interchangeable forms tracked together in the pantry (dry vs canned chickpeas). */
 	const groupMates = $derived(
@@ -52,6 +50,23 @@
 			.sort((a, b) => pricePerKg(a) - pricePerKg(b))
 	);
 	const dayMonth = new Intl.DateTimeFormat('sk', { day: 'numeric', month: 'numeric' });
+
+	/** Most shop names already end with the pack size ("Cícer 500 g"); say it once. */
+	const PACK_IN_NAME = /\d\s*(g|kg|ml|l)\b/i;
+	const withPack = (p: PriceEntry) =>
+		PACK_IN_NAME.test(p.product) ? shelfName(p.product) : `${shelfName(p.product)} · ${p.pack}`;
+
+	/** How the plant grows decides the heading and icon of the growing section. */
+	const GROW_TITLE: Record<string, (name: string) => string> = {
+		strom: (name) => `Rastie na strome – ${name}`,
+		ker: (name) => `Rastie na kri – ${name}`,
+		popinava: (name) => `Popínavá rastlina – ${name}`,
+		huba: () => 'Pestuj si huby'
+	};
+	const growTitle = (form: string | undefined, name: string) =>
+		GROW_TITLE[form ?? '']?.(name.toLowerCase()) ?? 'Vypestuj si doma';
+	const growIcon = (form: string | undefined) =>
+		form === 'strom' || form === 'ker' ? 'tree' : form === 'huba' ? 'mushroom' : 'sprout';
 
 	/** Liquids compare per litre as on the shelf label, everything else per kg. */
 	function perUnit(p: PriceEntry): string {
@@ -163,7 +178,7 @@
 			{/if}
 			{#if info.homemade}
 				<section class="homemade">
-					<h2><Icon name="chef" size={20} /> Urob si sám</h2>
+					<h2><Icon name="chef" size={20} /> Urob si doma</h2>
 					{#if info.homemade.steps.length}
 						<ol>
 							{#each info.homemade.steps as step, i (i)}<li>{step}</li>{/each}
@@ -180,23 +195,8 @@
 			{#if data.grow}
 				<section class="grow" id="pestuj">
 					<h2>
-						<Icon
-							name={data.grow.form === 'strom' || data.grow.form === 'ker'
-								? 'tree'
-								: data.grow.form === 'huba'
-									? 'mushroom'
-									: 'sprout'}
-							size={20}
-						/>
-						{data.grow.form === 'strom'
-							? `Rastie na strome – ${data.grow.name.toLowerCase()}`
-							: data.grow.form === 'ker'
-								? `Rastie na kri – ${data.grow.name.toLowerCase()}`
-								: data.grow.form === 'popinava'
-									? `Popínavá rastlina – ${data.grow.name.toLowerCase()}`
-									: data.grow.form === 'huba'
-										? 'Pestuj si huby'
-										: 'Pestuj si sám'}
+						<Icon name={growIcon(data.grow.form)} size={20} />
+						{growTitle(data.grow.form, data.grow.name)}
 					</h2>
 					<p class="grow-where">
 						{data.grow.where
@@ -270,9 +270,9 @@
 			{/if}
 			{#if ingredient.note || ingredient.warn}
 				<section>
-					{#if ingredient.warn}<p class="warn">
+					{#if ingredient.warn}<p class="notice warn">
 							<Icon name="alert" size={18} />
-							{ingredient.warn}
+							<span>{ingredient.warn}</span>
 						</p>{/if}
 					{#if ingredient.note}<p class="muted">{ingredient.note}</p>{/if}
 				</section>
@@ -309,7 +309,7 @@
 									{#if p.saleUntil}<span class="badge tomato"
 											>akcia do {dayMonth.format(new Date(p.saleUntil))}</span
 										>{/if}
-									<small>{shelfName(p.product)} · {p.pack}</small>
+									<small>{withPack(p)}</small>
 								</span>
 								<span class="pval">
 									{formatEur(p.price)}
@@ -319,8 +319,8 @@
 						{/each}
 					</ul>
 					<p class="muted small">
-						Ceny z {dayMonth.format(new Date(storePrices[0].date))}, väčšinou z
-						<a href="/ceny">cenyslovensko.sk</a>. Pri zelenine na váhu je cena za kg.
+						Ceny z {dayMonth.format(new Date(storePrices[0].date))}, väčšinou z cenyslovensko.sk.
+						Pri zelenine na váhu je cena za kg. <a href="/ceny">Porovnať ceny všetkých surovín</a>
 					</p>
 					{#if timeline && timeline.days.length >= 2}
 						<div class="history">
@@ -343,7 +343,9 @@
 								class:now={i + 1 === month}
 								title={name}
 							>
-								{name.slice(0, 3)}
+								{name.slice(0, 3)}{#if ingredient.season.includes(i + 1)}<span class="sr-only"
+										>: v sezóne</span
+									>{/if}
 							</li>
 						{/each}
 					</ol>
@@ -388,16 +390,7 @@
 				? `${recipes.length} ${pluralRecipes(recipes.length)} s touto surovinou`
 				: 'Zatiaľ v žiadnom recepte'}
 		</h2>
-		<div class="grid">
-			{#each showAllRecipes ? recipes : recipes.slice(0, RECIPE_PREVIEW) as recipe, i (recipe.id)}
-				<RecipeCard {recipe} index={i} />
-			{/each}
-		</div>
-		{#if recipes.length > RECIPE_PREVIEW && !showAllRecipes}
-			<button class="btn ghost more" onclick={() => (showAllRecipes = true)}>
-				Všetky ({recipes.length})
-			</button>
-		{/if}
+		<RecipeGrid {recipes} preview={6} />
 	</section>
 </article>
 
@@ -407,22 +400,8 @@
 		flex-wrap: wrap;
 		gap: 8px;
 	}
-	.grow {
-		scroll-margin-top: 90px;
-	}
 	.grow-where {
 		color: var(--ink-2);
-		font-weight: 600;
-	}
-	.page {
-		padding-top: 18px;
-	}
-	.back {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		color: var(--ink-2);
-		text-decoration: none;
 		font-weight: 600;
 	}
 	.head {
@@ -450,11 +429,6 @@
 	h1 {
 		margin: 0;
 	}
-	.lede {
-		font-size: 1.08rem;
-		color: var(--ink-2);
-		max-width: 44em;
-	}
 	.badges {
 		display: flex;
 		flex-wrap: wrap;
@@ -466,9 +440,6 @@
 		align-items: center;
 		gap: 12px;
 		margin-top: 14px;
-	}
-	.small {
-		font-size: 0.84rem;
 	}
 	.cols {
 		display: grid;
@@ -482,7 +453,7 @@
 		display: flex;
 		align-items: center;
 		gap: 8px;
-		font-size: 1.2rem;
+		font-size: var(--fs-lg);
 		margin: 0 0 8px;
 	}
 	.text ul,
@@ -499,7 +470,7 @@
 	}
 	.homemade {
 		padding: 16px 18px;
-		border-radius: 16px;
+		border-radius: var(--radius-sm);
 		background: var(--leaf-soft);
 	}
 	.homemade ol + .btn,
@@ -513,20 +484,10 @@
 	.text p {
 		margin: 0;
 	}
-	.warn {
-		display: flex;
-		gap: 8px;
-		padding: 10px 12px;
-		border-radius: 12px;
-		background: var(--turmeric-soft);
-	}
 	.side {
 		display: grid;
 		gap: 16px;
 		align-content: start;
-	}
-	.box {
-		padding: 18px;
 	}
 	.box h2 + p,
 	.box h2 + .links {
@@ -566,7 +527,7 @@
 	.pval small {
 		display: block;
 		color: var(--muted);
-		font-size: 0.8rem;
+		font-size: var(--fs-xs);
 	}
 	.pname .badge {
 		margin-left: 4px;
@@ -587,8 +548,8 @@
 	.months li {
 		text-align: center;
 		padding: 5px 0;
-		border-radius: 8px;
-		font-size: 0.78rem;
+		border-radius: var(--radius-xs);
+		font-size: var(--fs-xs);
 		font-weight: 650;
 		background: var(--paper-2);
 		color: var(--muted);
@@ -610,15 +571,7 @@
 		text-decoration: none;
 	}
 	.recipes {
-		margin-top: 36px;
-	}
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-		gap: 18px;
-	}
-	.more {
-		margin-top: 16px;
+		margin-top: var(--sp-6);
 	}
 	@media (min-width: 900px) {
 		.cols {

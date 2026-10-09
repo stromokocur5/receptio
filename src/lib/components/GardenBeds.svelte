@@ -13,6 +13,7 @@
 	} from '$lib/garden';
 	import { normalizeSearch } from '$lib/labels';
 	import { saveGarden, type GardenDiary } from '$lib/state.svelte';
+	import { toast } from '$lib/toast.svelte';
 	import type { GrowCombo, GrowGuide } from '$lib/types';
 
 	let {
@@ -51,7 +52,6 @@
 	let newName = $state('');
 	let newWidth = $state<number | null>(null);
 	let newDepth = $state<number | null>(null);
-	let confirming = $state<string | null>(null);
 
 	/** Width available for a bed's grid, so squares shrink to fit the phone instead of scrolling. */
 	let gridSpace = $state(0);
@@ -178,11 +178,23 @@
 		if (trimmed && trimmed !== bed.name) update({ ...bed, name: trimmed });
 	}
 
-	function confirm(id: string, action: () => void) {
-		if (confirming === id) {
-			action();
-			confirming = null;
-		} else confirming = id;
+	/** Puts a bed back as it was (or where it was, if it was deleted). */
+	function restore(bed: Bed, at: number) {
+		const others = diary.beds.filter((b) => b.id !== bed.id);
+		saveGarden({ ...diary, beds: [...others.slice(0, at), bed, ...others.slice(at)] });
+	}
+
+	// Both can be put back, so they happen at once and the toast offers to undo them.
+	function startSeason(bed: Bed) {
+		const at = diary.beds.indexOf(bed);
+		remember(bed);
+		update(newSeason(bed, guides, new Date().getFullYear()));
+		toast(`${bed.name}: nová sezóna, záhon je prázdny`, () => restore(bed, at));
+	}
+	function deleteBed(bed: Bed) {
+		const at = diary.beds.indexOf(bed);
+		saveGarden({ ...diary, beds: diary.beds.filter((b) => b.id !== bed.id) });
+		toast(`${bed.name} je zmazaný`, () => restore(bed, at));
 	}
 </script>
 
@@ -192,15 +204,21 @@
 	<h3><Icon name="pencil" size={18} /> Moje záhony</h3>
 	<p class="muted small">
 		Nakresli si skutočné záhony, truhlíky alebo nádoby. Jedno políčko je {CELL_M * 100} × {CELL_M *
-			100} cm – vyber plodinu a ťahaj prstom alebo myšou po políčkach. Upozorním na zlých susedov, veľké
-		rastliny bez miesta a na to, čo tu rástlo minulý rok.
+			100} cm – vyber plodinu a ťahaj prstom alebo myšou po políčkach. Upozorníme ťa na zlých susedov,
+		veľké rastliny bez miesta a na to, čo tu rástlo minulý rok.
 	</p>
 
 	<form class="add" onsubmit={addBed}>
-		<input bind:value={newName} placeholder="Názov, napr. Záhon pri plote" aria-label="Názov" />
+		<input
+			class="input"
+			bind:value={newName}
+			placeholder="Názov, napr. Záhon pri plote"
+			aria-label="Názov"
+		/>
 		<span class="size">
 			<label
 				><input
+					class="input"
 					type="number"
 					min="0.1"
 					max="50"
@@ -213,6 +231,7 @@
 			<span>×</span>
 			<label
 				><input
+					class="input"
 					type="number"
 					min="0.1"
 					max="50"
@@ -242,7 +261,7 @@
 				</span>
 				{#if palette.length > 10}
 					<input
-						class="palette-search"
+						class="input sm palette-search"
 						type="search"
 						bind:value={paletteQuery}
 						placeholder="Hľadať plodinu"
@@ -301,6 +320,7 @@
 					</button>
 					{#if placeCombos.length}
 						<select
+							class="input sm"
 							aria-label="Vložiť kombináciu"
 							onchange={(e) => {
 								const combo = placeCombos.find((c) => c.id === e.currentTarget.value);
@@ -317,24 +337,18 @@
 					{/if}
 					<button
 						class="btn ghost small"
-						onclick={() =>
-							confirm(`season-${bed.id}`, () => {
-								remember(bed);
-								update(newSeason(bed, guides, new Date().getFullYear()));
-							})}
+						title="Vyčistí záhon a zapamätá si, čo v ňom rástlo"
+						onclick={() => startSeason(bed)}
 					>
-						{confirming === `season-${bed.id}` ? 'Naozaj? Vyčistí záhon' : 'Nová sezóna'}
+						Nová sezóna
 					</button>
 					<button
-						class="btn ghost small"
-						aria-label="Zmazať záhon"
-						onclick={() =>
-							confirm(`del-${bed.id}`, () => {
-								saveGarden({ ...diary, beds: diary.beds.filter((b) => b.id !== bed.id) });
-							})}
+						class="icon-btn plain"
+						aria-label="Zmazať záhon {bed.name}"
+						title="Zmazať záhon"
+						onclick={() => deleteBed(bed)}
 					>
 						<Icon name="trash" size={16} />
-						{confirming === `del-${bed.id}` ? 'Naozaj?' : ''}
 					</button>
 				</div>
 			</header>
@@ -442,15 +456,6 @@
 		gap: 8px;
 		margin: 12px 0;
 	}
-	.add input,
-	.palette-search {
-		border: 1.5px solid var(--line);
-		border-radius: var(--radius-sm);
-		background: var(--paper);
-		color: var(--ink);
-		padding: 8px 10px;
-		font: inherit;
-	}
 	.add > input {
 		flex: 1 1 240px;
 		min-width: 0;
@@ -465,9 +470,10 @@
 	.add label input {
 		width: 80px;
 	}
+	/* Sticks under the header and the garden page's tab bar (taller for fingers). */
 	.toolbox {
 		position: sticky;
-		top: 124px;
+		top: calc(var(--header-h) + 60px);
 		z-index: 2;
 		margin: 10px 0 16px;
 		padding: 10px;
@@ -484,7 +490,7 @@
 		gap: 8px;
 		margin-bottom: 8px;
 		font-weight: 650;
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 	}
 	.swatch {
 		width: 22px;
@@ -506,7 +512,7 @@
 		margin-left: auto;
 		padding: 5px 10px;
 		width: 160px;
-		font-size: 0.85rem;
+		font-size: var(--fs-sm);
 	}
 	/* One scrolling row, so the sticky toolbox covers as little of the beds as possible. */
 	/* One swipeable row; the faded edges show there is more to the side. */
@@ -577,7 +583,7 @@
 		padding: 2px 6px;
 		margin-left: -6px;
 		border: 1.5px solid transparent;
-		border-radius: 8px;
+		border-radius: var(--radius-xs);
 		background: none;
 		color: var(--ink);
 		font: inherit;
@@ -588,10 +594,12 @@
 	.bed-name:hover {
 		border-color: var(--line);
 	}
+	/* The field's own ring replaces the global focus outline. */
 	.bed-name:focus {
 		outline: none;
 		border-color: var(--leaf);
 		background: var(--card);
+		box-shadow: 0 0 0 4px color-mix(in srgb, var(--leaf) 18%, transparent);
 	}
 	.bed-actions {
 		display: flex;
@@ -600,13 +608,7 @@
 		align-items: center;
 	}
 	.bed-actions select {
-		border: 1.5px solid var(--line);
-		border-radius: var(--radius-sm);
-		background: var(--card);
-		color: var(--ink);
-		padding: 6px 8px;
-		font: inherit;
-		font-size: 0.85rem;
+		font-size: var(--fs-sm);
 	}
 	.grid-wrap {
 		overflow-x: auto;
@@ -635,7 +637,7 @@
 		background: var(--card);
 		color: var(--ink-2);
 		font: inherit;
-		font-size: 0.78rem;
+		font-size: var(--fs-xs);
 		font-weight: 650;
 		cursor: pointer;
 	}
@@ -647,7 +649,7 @@
 	.north,
 	.scale {
 		margin: 0 0 4px;
-		font-size: 0.75rem;
+		font-size: var(--fs-xs);
 	}
 	.scale {
 		margin: 4px 0 0;
@@ -657,7 +659,7 @@
 		gap: 2px;
 		width: max-content;
 		padding: 6px;
-		border-radius: 10px;
+		border-radius: var(--radius-xs);
 		background: #b98a5a;
 		box-shadow:
 			inset 0 0 0 1.5px #8a6039,
@@ -728,7 +730,7 @@
 		display: grid;
 		gap: 4px;
 		color: var(--tomato);
-		font-size: 0.88rem;
+		font-size: var(--fs-sm);
 	}
 	.warnings li {
 		display: flex;
@@ -736,6 +738,11 @@
 		align-items: flex-start;
 	}
 	.small {
-		font-size: 0.86rem;
+		font-size: var(--fs-sm);
+	}
+	@media (pointer: coarse) {
+		.toolbox {
+			top: calc(var(--header-h) + 68px);
+		}
 	}
 </style>

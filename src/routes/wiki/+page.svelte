@@ -2,6 +2,7 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import { useCatalog } from '$lib/catalog';
 	import Icon, { isIconName, type IconName } from '$lib/components/Icon.svelte';
+	import JumpNav from '$lib/components/JumpNav.svelte';
 	import { normalizeSearch } from '$lib/labels';
 	import type { WikiGroup, WikiSection } from '$lib/types';
 
@@ -148,29 +149,31 @@
 			<input
 				type="search"
 				bind:value={query}
-				placeholder="Hľadať v návodoch (tofu, železo, kompost…)"
+				placeholder="Tofu, železo, kompost…"
 				aria-label="Hľadať v návodoch"
 			/>
 		</label>
-		{#if !matches}
-			<nav class="jump" aria-label="Sekcie">
-				{#each SECTIONS as s (s.id)}
-					<a class="chip" href="#{s.id}" style:--tone={s.tone}
-						><Icon name={s.icon} size={16} />
-						{s.title}
-						<span class="n">{inSection(s.id).length}</span></a
-					>
-				{/each}
-			</nav>
-		{/if}
 	</header>
+
+	{#if !matches}
+		<JumpNav
+			label="Sekcie"
+			links={SECTIONS.map((s) => ({
+				id: s.id,
+				label: s.title,
+				icon: s.icon,
+				tone: s.tone,
+				count: inSection(s.id).length
+			}))}
+		/>
+	{/if}
 
 	{#if matches}
 		<section class="section" aria-live="polite">
 			<h2>
 				{matches.length
 					? `Nájdené: ${matches.length}`
-					: 'Nič som nenašiel – skús iné slovo alebo prezri sekcie nižšie.'}
+					: 'Nič sa nenašlo – skús iné slovo alebo prezri sekcie nižšie.'}
 			</h2>
 			<div class="grid">
 				{#each matches as page, i (page.slug)}
@@ -193,7 +196,7 @@
 		</section>
 	{:else}
 		<section class="start card rise">
-			<h2><Icon name="sparkle" size={22} /> Začni tu</h2>
+			<h2 class="section-title"><Icon name="sparkle" size={22} /> Začni tu</h2>
 			<ol>
 				{#each startHere as page, i (page.slug)}
 					<li>
@@ -272,44 +275,19 @@
 </div>
 
 <style>
-	.page {
-		padding-top: 28px;
-	}
-	.lede {
-		color: var(--ink-2);
-		max-width: 44em;
-	}
 	.search {
 		max-width: 560px;
-		margin: 18px 0 14px;
+		margin: var(--sp-4) 0 0;
 	}
 	.search input {
 		flex: 1;
 		min-width: 0;
 	}
-	.jump {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-	}
-	.jump .chip :global(svg) {
-		color: var(--tone);
-	}
-	.n {
-		font-size: 0.72rem;
-		color: var(--muted);
-	}
 	.start {
-		margin-top: 28px;
+		margin-top: var(--sp-5);
 		padding: 20px;
 		background:
 			radial-gradient(circle at 100% 0%, var(--turmeric-soft), transparent 45%), var(--card);
-	}
-	.start h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		margin: 0 0 12px;
 	}
 	.start ol {
 		list-style: none;
@@ -342,16 +320,15 @@
 		background: var(--leaf);
 		color: var(--paper);
 		font-weight: 800;
-		font-size: 0.85rem;
+		font-size: var(--fs-sm);
 	}
 	.start small {
 		display: block;
-		font-size: 0.82rem;
+		font-size: var(--fs-sm);
 		color: var(--ink-2);
 	}
 	.section {
-		margin-top: 44px;
-		scroll-margin-top: 80px;
+		margin-top: var(--sp-7);
 	}
 	.section-head {
 		display: flex;
@@ -376,8 +353,8 @@
 		color: var(--paper);
 	}
 	.group {
-		margin: 22px 0 0;
-		font-size: 0.8rem;
+		margin: var(--sp-5) 0 0;
+		font-size: var(--fs-xs);
 		font-family: var(--font-body);
 		font-weight: 700;
 		letter-spacing: 0.08em;
@@ -421,14 +398,14 @@
 		place-items: center;
 		width: 44px;
 		height: 44px;
-		border-radius: 14px;
+		border-radius: var(--radius-sm);
 		background: color-mix(in srgb, var(--tone) 18%, transparent);
 		color: color-mix(in srgb, var(--tone) 80%, var(--ink));
 		transform: rotate(-4deg);
 	}
 	.sum {
 		display: block;
-		font-size: 0.86rem;
+		font-size: var(--fs-sm);
 		color: var(--ink-2);
 		margin-top: 2px;
 	}

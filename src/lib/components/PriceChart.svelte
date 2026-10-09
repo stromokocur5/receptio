@@ -151,8 +151,9 @@
 <figure class="viz-root">
 	<figcaption>
 		<span class="title">{title}</span>
-		<button class="linkish" onclick={() => (showTable = !showTable)} aria-pressed={showTable}>
-			{showTable ? 'Graf' : 'Tabuľka'}
+		<!-- One label, pressed while the table shows: the state is in aria-pressed, not the text. -->
+		<button class="chip" onclick={() => (showTable = !showTable)} aria-pressed={showTable}>
+			Tabuľka
 		</button>
 	</figcaption>
 	<ul class="legend" aria-label="Obchody">
@@ -377,7 +378,7 @@
 		gap: 4px 14px;
 		margin: 8px 0;
 		padding: 0;
-		font-size: 0.85rem;
+		font-size: var(--fs-sm);
 		color: var(--ink-2);
 	}
 	.legend li {
@@ -448,14 +449,14 @@
 		gap: 2px;
 		min-width: 150px;
 		padding: 8px 10px;
-		border-radius: 10px;
+		border-radius: var(--radius-xs);
 		background: var(--card);
 		border: 1px solid var(--line);
-		box-shadow: 0 6px 20px rgb(0 0 0 / 0.12);
-		font-size: 0.82rem;
+		box-shadow: var(--shadow);
+		font-size: var(--fs-sm);
 	}
 	.tip-day {
-		font-size: 0.78rem;
+		font-size: var(--fs-xs);
 		color: var(--ink-2);
 	}
 	.tip-row {
@@ -471,16 +472,7 @@
 		margin: 4px 0 0;
 	}
 	.small {
-		font-size: 0.8rem;
-	}
-	.linkish {
-		border: 0;
-		background: none;
-		padding: 0;
-		color: var(--plum);
-		font-weight: 600;
-		text-decoration: underline;
-		cursor: pointer;
+		font-size: var(--fs-xs);
 	}
 	.table-wrap {
 		overflow-x: auto;
@@ -488,7 +480,7 @@
 	}
 	table {
 		border-collapse: collapse;
-		font-size: 0.85rem;
+		font-size: var(--fs-sm);
 		font-variant-numeric: tabular-nums;
 		width: 100%;
 	}
@@ -501,7 +493,7 @@
 	}
 	.sale {
 		display: block;
-		font-size: 0.75rem;
+		font-size: var(--fs-xs);
 		color: color-mix(in srgb, var(--tomato) 70%, var(--ink));
 	}
 </style>

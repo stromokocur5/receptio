@@ -80,7 +80,7 @@
 						/></svg
 					>
 					<h2 id="crop-sheet-title">{guide.name}</h2>
-					<button class="close" onclick={onclose} aria-label="Zavrieť">
+					<button class="icon-btn close" onclick={onclose} aria-label="Zavrieť">
 						<Icon name="x" size={20} />
 					</button>
 				</div>
@@ -220,7 +220,7 @@
 		animation: slide-up 0.35s var(--ease-out);
 	}
 	.sheet::backdrop {
-		background: rgba(17, 26, 20, 0.45);
+		background: var(--backdrop);
 		backdrop-filter: blur(2px);
 	}
 	@media (min-width: 700px) {
@@ -302,15 +302,7 @@
 		}
 	}
 	.close {
-		display: grid;
-		place-items: center;
-		width: 40px;
-		height: 40px;
-		border: 0;
-		border-radius: 50%;
-		background: var(--paper-2);
-		color: var(--ink);
-		cursor: pointer;
+		flex: none;
 	}
 	.tags {
 		display: flex;
@@ -344,7 +336,7 @@
 		background: var(--paper);
 	}
 	.facts dt {
-		font-size: 0.75rem;
+		font-size: var(--fs-xs);
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.06em;
@@ -356,7 +348,7 @@
 	}
 	h3 {
 		margin: 10px 0 6px;
-		font-size: 0.95rem;
+		font-size: var(--fs-md);
 	}
 	section h3:first-child {
 		margin-top: 0;

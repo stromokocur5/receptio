@@ -77,12 +77,12 @@
 	}
 </script>
 
-<section class="card loc">
-	<h2><Icon name="globe" size={22} /> Kde pestuješ</h2>
+<section class="card box loc">
+	<h2 class="section-title"><Icon name="globe" size={22} /> Kde pestuješ</h2>
 	{#if location && !editing}
 		<p>
 			<strong>{location.name}</strong>, {location.elevation} m n. m.
-			<button class="linkish" onclick={() => (editing = true)}>Zmeniť</button>
+			<button class="btn-link change" onclick={() => (editing = true)}>Zmeniť</button>
 		</p>
 		{#if frost}
 			<p class="muted">
@@ -101,6 +101,7 @@
 		</p>
 		<form class="search" onsubmit={search}>
 			<input
+				class="input"
 				bind:value={query}
 				placeholder="Obec alebo mesto"
 				aria-label="Obec alebo mesto"
@@ -130,20 +131,18 @@
 				<button class="chip" onclick={() => (editing = false)}>Nechať {location.name}</button>
 			{/if}
 		</div>
-		{#if error}<p class="err" role="alert">{error}</p>{/if}
+		{#if error}<p class="notice danger" role="alert">
+				<Icon name="alert" size={18} /> <span>{error}</span>
+			</p>{/if}
 	{/if}
 </section>
 
 <style>
 	.loc {
-		padding: 20px;
-		margin-top: 24px;
+		margin-top: var(--sp-5);
 	}
 	.loc h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		margin: 0 0 8px;
+		margin-bottom: var(--sp-2);
 	}
 	.search {
 		display: flex;
@@ -154,12 +153,6 @@
 	.search input {
 		flex: 1 1 200px;
 		min-width: 0;
-		border: 1.5px solid var(--line);
-		border-radius: var(--radius-sm);
-		background: var(--paper);
-		color: var(--ink);
-		padding: 8px 12px;
-		font: inherit;
 	}
 	.results {
 		list-style: none;
@@ -169,23 +162,7 @@
 		flex-wrap: wrap;
 		gap: 6px;
 	}
-	.chips {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
-	.err {
-		color: var(--tomato);
-	}
-	.linkish {
-		border: 0;
-		padding: 0;
-		background: none;
-		color: var(--leaf);
-		font: inherit;
-		font-weight: 650;
-		text-decoration: underline;
-		cursor: pointer;
+	.change {
 		margin-left: 6px;
 	}
 </style>

@@ -4,7 +4,8 @@
 	import { onMount } from 'svelte';
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
-	import RecipeCard from '$lib/components/RecipeCard.svelte';
+	import JumpNav from '$lib/components/JumpNav.svelte';
+	import RecipeGrid from '$lib/components/RecipeGrid.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { IN_MONTH, MONTH_NAMES, recipeSeason } from '$lib/season';
 
@@ -32,40 +33,55 @@
 
 <div class="wrap page">
 	<header class="rise">
-		<p class="eyebrow">Wiki · Sezóna</p>
+		<p class="eyebrow">Objavuj</p>
 		<h1>Sezónny kalendár</h1>
 		<p class="lede">
 			Zelenina v sezóne je chutnejšia a lacnejšia. Kalendár ukazuje, kedy sa čo zbiera na Slovensku,
 			aj s tým, čo vydrží v pivnici. Zelenina, ktorá je v obchode stále (cibuľa, zemiaky, cesnak),
-			tu nie je. Chceš si ju dopestovať? <a href="/pestuj">Pestuj si sám</a>.
+			tu nie je. Chceš vlastnú? <a href="/pestuj">Ako si ju dopestovať</a>.
 		</p>
 	</header>
 
-	<div class="months" role="group" aria-label="Mesiac">
+	<div class="chips months" role="group" aria-label="Mesiac">
 		{#each MONTH_NAMES as name, i (i)}
-			<button class="chip" aria-pressed={month === i + 1} onclick={() => (month = i + 1)}>
+			<button
+				class="chip"
+				aria-pressed={month === i + 1}
+				aria-label={name}
+				onclick={() => (month = i + 1)}
+			>
 				{name.slice(0, 3)}
 			</button>
 		{/each}
 	</div>
 
-	<section class="now card">
-		<h2>
+	<JumpNav
+		links={[
+			{ id: 'teraz', label: 'Teraz v sezóne', icon: 'leaf', count: inSeasonNow.length },
+			{ id: 'kalendar', label: 'Kalendár', icon: 'calendar' },
+			{ id: 'uvar', label: 'Čo uvariť', icon: 'bowl', count: recipes.length }
+		]}
+	/>
+
+	<section class="card box" id="teraz">
+		<h2 class="section-title">
 			<Icon name="leaf" size={22} />
 			{IN_MONTH[month - 1][0].toUpperCase() + IN_MONTH[month - 1].slice(1)} je v sezóne
 		</h2>
-		<div class="chips">
-			{#each inSeasonNow as i (i.id)}
-				<a class="chip" href="/suroviny/{i.id}" style:--c={i.color}
-					><span class="dot"></span>{i.name}</a
-				>
-			{:else}
-				<p class="muted">Tento mesiac nie je v sezóne nič z našich surovín.</p>
-			{/each}
-		</div>
+		{#if inSeasonNow.length}
+			<div class="chips">
+				{#each inSeasonNow as i (i.id)}
+					<a class="chip" href="/suroviny/{i.id}"
+						><span class="swatch" style:--c={i.color}></span>{i.name}</a
+					>
+				{/each}
+			</div>
+		{:else}
+			<p class="muted">Tento mesiac nie je v sezóne nič z našich surovín.</p>
+		{/if}
 	</section>
 
-	<section class="table-wrap">
+	<section class="table-wrap" id="kalendar" aria-label="Kalendár po mesiacoch">
 		<table>
 			<thead>
 				<tr>
@@ -94,12 +110,11 @@
 		</table>
 	</section>
 
-	<section class="recipes">
+	<section class="recipes" id="uvar">
 		<h2>Čo uvariť {IN_MONTH[month - 1]}</h2>
 		{#if recipes.length}
-			<div class="grid">
-				{#each recipes as recipe, i (recipe.id)}<RecipeCard {recipe} index={i} />{/each}
-			</div>
+			<!-- Another month is a new list: it starts folded again. -->
+			{#key month}<RecipeGrid {recipes} />{/key}
 		{:else}
 			<p class="muted">
 				Tento mesiac nie je v sezóne žiadny recept – zima patrí strukovinám, kapuste a zásobám.
@@ -110,51 +125,17 @@
 </div>
 
 <style>
-	.page {
-		padding-top: 28px;
-	}
-	.lede {
-		color: var(--ink-2);
-		max-width: 44em;
-	}
 	.months {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-		margin: 10px 0 18px;
-	}
-	.now {
-		padding: 18px;
-	}
-	.now h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.25rem;
-		margin: 0 0 10px;
-	}
-	.chips {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px;
-	}
-	.chips .chip {
-		text-decoration: none;
-	}
-	.dot {
-		width: 10px;
-		height: 10px;
-		border-radius: 50%;
-		background: var(--c);
+		margin: var(--sp-3) 0 0;
 	}
 	.table-wrap {
-		margin-top: 24px;
+		margin-top: var(--sp-5);
 		overflow-x: auto;
 	}
 	table {
 		border-collapse: separate;
 		border-spacing: 2px;
-		font-size: 0.85rem;
+		font-size: var(--fs-sm);
 		min-width: 560px;
 	}
 	th[scope='row'] {
@@ -166,6 +147,9 @@
 	th[scope='row'] a {
 		color: var(--ink);
 		text-decoration: none;
+	}
+	th[scope='row'] a:hover {
+		text-decoration: underline;
 	}
 	thead th {
 		color: var(--muted);
@@ -179,10 +163,15 @@
 		width: 26px;
 		height: 20px;
 		border-radius: 5px;
-		background: var(--paper-2);
+		background: color-mix(in srgb, var(--line) 45%, transparent);
 	}
+	/*
+	 * The produce's own colour, ringed: white cabbage on light paper and black chokeberry on
+	 * dark paper would otherwise vanish into the empty months.
+	 */
 	td.on {
-		background: color-mix(in srgb, var(--c) 75%, var(--paper));
+		background: var(--c);
+		box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--ink) 45%, transparent);
 	}
 	td.current {
 		outline: 2px solid var(--ink);
@@ -195,7 +184,7 @@
 			min-width: 0;
 			table-layout: fixed;
 			border-spacing: 1px;
-			font-size: 0.8rem;
+			font-size: var(--fs-xs);
 		}
 		thead th:first-child {
 			width: 38%;
@@ -212,11 +201,6 @@
 		}
 	}
 	.recipes {
-		margin-top: 32px;
-	}
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-		gap: 18px;
+		margin-top: var(--sp-6);
 	}
 </style>

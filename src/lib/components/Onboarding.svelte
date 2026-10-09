@@ -150,7 +150,7 @@
 		},
 		{
 			icon: 'sprout',
-			title: 'Pestuj si sám',
+			title: 'Pestuj',
 			text: 'Plánovač pre okno, balkón aj záhradu s kalendárom a zápisom úrody.',
 			href: '/pestuj'
 		},
@@ -259,7 +259,7 @@
 							</form>
 							<p class="muted small">
 								Dáta v tomto prehliadači sa nahradia tými zo zálohy.
-								<button class="linkish" onclick={() => (syncChoice = null)}>Späť</button>
+								<button class="btn-link" onclick={() => (syncChoice = null)}>Späť</button>
 							</p>
 						{:else}
 							<div class="choices">
@@ -276,10 +276,14 @@
 							</div>
 						{/if}
 						{#if syncError}
-							<p class="err" role="alert"><Icon name="alert" size={18} /> {syncError}</p>
+							<p class="notice danger" role="alert">
+								<Icon name="alert" size={18} /> <span>{syncError}</span>
+							</p>
 						{/if}
 						{#if syncState.status === 'error' && syncState.message && !syncError}
-							<p class="err" role="alert"><Icon name="alert" size={18} /> {syncState.message}</p>
+							<p class="notice danger" role="alert">
+								<Icon name="alert" size={18} /> <span>{syncState.message}</span>
+							</p>
 						{/if}
 						<p class="muted small">
 							Dáta sa šifrujú priamo v prehliadači, na server ide len šifra, ktorú bez kódu nikto
@@ -494,10 +498,10 @@
 		animation: pop-in 0.4s var(--ease-spring);
 	}
 	.guide::backdrop {
-		background: rgba(17, 26, 20, 0.55);
+		background: var(--backdrop);
 		backdrop-filter: blur(3px);
 	}
-	@media (max-width: 600px) {
+	@media (max-width: 599px) {
 		.guide {
 			height: 100dvh;
 			border-radius: 0;
@@ -548,7 +552,7 @@
 		color: var(--muted);
 		font: inherit;
 		font-weight: 600;
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 		cursor: pointer;
 	}
 	.stage {
@@ -581,7 +585,7 @@
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
-		font-size: 0.8rem;
+		font-size: var(--fs-xs);
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.08em;
@@ -674,7 +678,7 @@
 	}
 	code {
 		padding: 8px 12px;
-		border-radius: 10px;
+		border-radius: var(--radius-xs);
 		background: var(--card);
 		border: 1.5px dashed var(--leaf-2);
 		font-size: 1.05rem;
@@ -698,28 +702,12 @@
 		font: inherit;
 		font-family: ui-monospace, monospace;
 	}
-	.ok,
-	.err {
+	.ok {
 		display: flex;
 		align-items: center;
 		gap: 6px;
 		font-weight: 650;
-	}
-	.ok {
 		color: var(--leaf);
-	}
-	.err {
-		color: var(--tomato);
-	}
-	.linkish {
-		border: 0;
-		padding: 0;
-		background: none;
-		color: var(--leaf);
-		font: inherit;
-		font-weight: 650;
-		text-decoration: underline;
-		cursor: pointer;
 	}
 	.points,
 	.flow {
@@ -740,7 +728,7 @@
 	.points p,
 	.flow p,
 	.tile p {
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 		color: var(--ink-2);
 		margin-top: 2px;
 	}
@@ -750,7 +738,7 @@
 		flex: none;
 		width: 42px;
 		height: 42px;
-		border-radius: 14px;
+		border-radius: var(--radius-sm);
 		background: var(--leaf-soft);
 		color: var(--leaf);
 	}
@@ -892,11 +880,11 @@
 		background: var(--card);
 	}
 	.small {
-		font-size: 0.85rem;
+		font-size: var(--fs-sm);
 	}
 
 	/* On a phone every step should fit one screen: tighter spacing and shorter lines. */
-	@media (max-width: 600px) {
+	@media (max-width: 599px) {
 		.step {
 			gap: 10px;
 			padding: 12px 18px 16px;
@@ -905,7 +893,7 @@
 			font-size: 1.4rem;
 		}
 		.lede {
-			font-size: 0.95rem;
+			font-size: var(--fs-md);
 		}
 		.hello {
 			width: 52px;
@@ -917,7 +905,7 @@
 			padding: 14px;
 		}
 		.sync-text {
-			font-size: 0.92rem;
+			font-size: var(--fs-md);
 		}
 		.choices {
 			grid-template-columns: 1fr 1fr;
@@ -932,12 +920,12 @@
 		.points p,
 		.flow p,
 		.tile p {
-			font-size: 0.84rem;
+			font-size: var(--fs-sm);
 		}
 		.ico {
 			width: 36px;
 			height: 36px;
-			border-radius: 12px;
+			border-radius: var(--radius-sm);
 		}
 		.node {
 			width: 38px;

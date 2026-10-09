@@ -81,7 +81,7 @@
 							{/each}
 						</div>
 					{/if}
-					<label class="tick">
+					<label class="check">
 						<input
 							type="checkbox"
 							checked={done}
@@ -97,15 +97,11 @@
 </div>
 
 <style>
-	.page {
-		padding-top: 28px;
-		padding-bottom: 48px;
-	}
 	.progress {
 		position: relative;
 		overflow: hidden;
 		padding: 14px 18px;
-		margin: 18px 0;
+		margin: var(--sp-4) 0;
 	}
 	.progress p {
 		position: relative;
@@ -119,7 +115,7 @@
 		transition: width 0.6s var(--ease-out);
 	}
 	.intro h2 {
-		font-size: 1.15rem;
+		font-size: var(--fs-lg);
 		margin: 0 0 8px;
 	}
 	.links {
@@ -144,7 +140,6 @@
 		grid-template-columns: 44px minmax(0, 1fr);
 		gap: 14px;
 		padding: 16px;
-		scroll-margin-top: 90px;
 	}
 	.num {
 		display: grid;
@@ -152,7 +147,7 @@
 		width: 40px;
 		height: 40px;
 		border-radius: 50%;
-		background: var(--paper-2);
+		background: var(--sunk);
 		font-weight: 700;
 	}
 	.done .num {
@@ -160,38 +155,41 @@
 		color: var(--card);
 	}
 	.lesson h2 {
-		font-size: 1.2rem;
+		font-size: var(--fs-lg);
 		margin: 6px 0 4px;
 	}
 	.learn {
 		margin: 0 0 10px;
 	}
+	/* Icon beside the title, the time under it: a long title wraps on its own line. */
 	.recipe {
-		display: inline-flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 6px 8px;
+		display: inline-grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		align-items: start;
+		gap: 2px 8px;
 		margin-bottom: 10px;
 		font-weight: 650;
+		text-decoration: none;
+	}
+	.recipe > :global(svg) {
+		margin-top: 3px;
+	}
+	.recipe span {
+		text-decoration: underline;
+		text-decoration-thickness: 1.5px;
+		text-underline-offset: 3px;
 	}
 	.recipe small {
+		grid-column: 2;
 		display: inline-flex;
 		align-items: center;
 		gap: 3px;
 		color: var(--muted);
 		font-weight: 400;
 	}
-	.tick {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		margin-top: 12px;
-		font-size: 0.9rem;
-	}
-	.tick input {
-		width: 20px;
-		height: 20px;
-		accent-color: var(--leaf);
+	.check {
+		margin-top: var(--sp-1);
+		font-size: var(--fs-md);
 	}
 	@media (prefers-reduced-motion: reduce) {
 		.bar {

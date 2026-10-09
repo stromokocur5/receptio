@@ -103,7 +103,7 @@
 		{#if alerts.length}
 			<ul class="alerts">
 				{#each alerts as a (a.kind)}
-					<li class="alert {a.level}">
+					<li class="notice {a.level}">
 						<Icon name={ICONS[a.kind]} size={22} />
 						<div>
 							<strong>{a.title}</strong>
@@ -137,7 +137,7 @@
 				{:else if watchState === 'denied'}
 					<Icon name="info" size={16} /> Notifikácie sú zakázané – povoľ ich v nastaveniach prehliadača.
 				{:else}
-					<button class="linkish" onclick={watchFrost}>Upozorniť ma na mráz notifikáciou</button>
+					<button class="btn-link" onclick={watchFrost}>Upozorniť ma na mráz notifikáciou</button>
 				{/if}
 			</p>
 			<p class="muted small">Počasie: Open-Meteo.com</p>
@@ -158,24 +158,11 @@
 		display: grid;
 		gap: 8px;
 	}
-	.alert {
-		display: grid;
-		grid-template-columns: auto 1fr;
-		gap: 10px;
-		align-items: start;
-		padding: 12px 14px;
-		border-radius: var(--radius-sm);
-		background: var(--sky-soft);
+	.alerts .notice {
+		margin: 0;
 	}
-	.alert.warn {
-		background: var(--turmeric-soft);
-	}
-	.alert.danger {
-		background: var(--tomato-soft);
-	}
-	.alert p {
+	.notice p {
 		margin: 4px 0 0;
-		font-size: 0.92rem;
 	}
 	.calm {
 		display: flex;
@@ -191,13 +178,13 @@
 		grid-template-columns: repeat(7, minmax(0, 1fr));
 		gap: 4px;
 		text-align: center;
-		font-size: 0.8rem;
+		font-size: var(--fs-xs);
 	}
 	.days li {
 		display: grid;
 		gap: 1px;
 		padding: 6px 2px;
-		border-radius: 10px;
+		border-radius: var(--radius-xs);
 		background: var(--paper-2);
 	}
 	.days li.frost {
@@ -215,18 +202,5 @@
 		flex-wrap: wrap;
 		gap: 6px;
 		margin-top: 10px;
-	}
-	.linkish {
-		border: 0;
-		padding: 0;
-		background: none;
-		color: var(--leaf);
-		font: inherit;
-		font-weight: 650;
-		text-decoration: underline;
-		cursor: pointer;
-	}
-	.small {
-		font-size: 0.85rem;
 	}
 </style>

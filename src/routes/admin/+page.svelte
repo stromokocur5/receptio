@@ -87,21 +87,21 @@
 		<h1>Správa</h1>
 	</header>
 
-	<div class="tabs" role="group" aria-label="Sekcia">
-		<button class="chip" aria-pressed={tab === 'feedback'} onclick={() => (tab = 'feedback')}>
-			Spätná väzba {#if newFeedback}<span class="count">{newFeedback}</span>{/if}
-		</button>
-		<button class="chip" aria-pressed={tab === 'suggestions'} onclick={() => (tab = 'suggestions')}>
-			Návrhy receptov {#if newSuggestions}<span class="count">{newSuggestions}</span>{/if}
-		</button>
-		<button class="chip" aria-pressed={tab === 'likes'} onclick={() => (tab = 'likes')}>
-			Lajky
-		</button>
-		<button class="chip" aria-pressed={tab === 'stats'} onclick={() => (tab = 'stats')}>
-			Štatistiky {#if toFix.length}<span class="count">{toFix.length}</span>{/if}
-		</button>
+	<div class="tabs">
+		<div class="segmented" role="group" aria-label="Sekcia">
+			<button aria-pressed={tab === 'feedback'} onclick={() => (tab = 'feedback')}>
+				Spätná väzba {#if newFeedback}<span class="count">{newFeedback}</span>{/if}
+			</button>
+			<button aria-pressed={tab === 'suggestions'} onclick={() => (tab = 'suggestions')}>
+				Návrhy receptov {#if newSuggestions}<span class="count">{newSuggestions}</span>{/if}
+			</button>
+			<button aria-pressed={tab === 'likes'} onclick={() => (tab = 'likes')}> Lajky </button>
+			<button aria-pressed={tab === 'stats'} onclick={() => (tab = 'stats')}>
+				Štatistiky {#if toFix.length}<span class="count">{toFix.length}</span>{/if}
+			</button>
+		</div>
 		{#if tab === 'feedback' || tab === 'suggestions'}
-			<label class="done-toggle">
+			<label class="check done-toggle">
 				<input type="checkbox" bind:checked={showDone} /> ukázať aj vybavené
 			</label>
 		{/if}
@@ -110,7 +110,7 @@
 	{#if tab === 'feedback'}
 		{#if readyToMark.length}
 			<section class="card box ready">
-				<h2><Icon name="check" size={20} /> Pripravené na „Vyskúšané“</h2>
+				<h2 class="section-title"><Icon name="check" size={20} /> Pripravené na „Vyskúšané“</h2>
 				<p class="muted small">
 					Aspoň 2 potvrdenia a žiadna chyba. Napíš mi, ktoré označiť – doplním do receptu
 					<code>tested</code>.
@@ -126,7 +126,7 @@
 		{/if}
 
 		{#if feedback.length === 0}
-			<p class="muted">Nič nové.</p>
+			<p class="empty">Nič nové.</p>
 		{/if}
 		<ul class="items">
 			{#each feedback as f (f.id)}
@@ -151,7 +151,7 @@
 		</ul>
 	{:else if tab === 'suggestions'}
 		{#if suggestions.length === 0}
-			<p class="muted">Žiadne nové návrhy.</p>
+			<p class="empty">Žiadne nové návrhy.</p>
 		{/if}
 		<ul class="items">
 			{#each suggestions as s (s.id)}
@@ -188,7 +188,7 @@
 	{:else if tab === 'stats'}
 		{#if data.status}
 			<section class="card box health" class:down={!data.status.health.ok}>
-				<h2>
+				<h2 class="section-title">
 					<Icon name={data.status.health.ok ? 'check' : 'alert'} size={20} />
 					{data.status.health.ok ? 'API odpovedá' : 'API nefunguje'}
 				</h2>
@@ -214,34 +214,37 @@
 					Upozornenia dostávajú {data.status.alertDevices}
 					{data.status.alertDevices === 1 ? 'zariadenie' : 'zariadenia'}. Push príde raz za výpadok.
 				</p>
-				{#if alertsMessage}<p class="small" role="alert">{alertsMessage}</p>{/if}
+				{#if alertsMessage}<p class="notice danger" role="alert">
+						<Icon name="alert" size={18} />
+						<span>{alertsMessage}</span>
+					</p>{/if}
 			</section>
 		{/if}
-		<dl class="usage">
-			<div>
+		<dl class="stat-grid usage">
+			<div class="stat">
 				<dt>Synchronizácie a spoločné zoznamy</dt>
 				<dd>{data.usage.sync}</dd>
 			</div>
-			<div>
+			<div class="stat">
 				<dt>Pripomienky vody</dt>
 				<dd>{data.usage.water}</dd>
 			</div>
-			<div>
+			<div class="stat">
 				<dt>Pripomienky vitamínov</dt>
 				<dd>{data.usage.supplements}</dd>
 			</div>
-			<div>
+			<div class="stat">
 				<dt>Lajky</dt>
 				<dd>{data.usage.likes} <small>z {data.usage.likers} zariadení</small></dd>
 			</div>
-			<div>
+			<div class="stat">
 				<dt>Spätné väzby</dt>
 				<dd>{data.usage.feedback}</dd>
 			</div>
 		</dl>
 
 		<section class="card box">
-			<h2><Icon name="alert" size={20} /> Na opravu</h2>
+			<h2 class="section-title"><Icon name="alert" size={20} /> Na opravu</h2>
 			{#if toFix.length}
 				<p class="muted small">Recepty s nahlásenou chybou alebo hodnotením pod 3,5 ★.</p>
 				<table class="likes">
@@ -263,7 +266,7 @@
 		</section>
 
 		<section class="card box">
-			<h2><Icon name="star" size={20} /> Ako recepty vychádzajú</h2>
+			<h2 class="section-title"><Icon name="star" size={20} /> Ako recepty vychádzajú</h2>
 			<table class="likes">
 				<thead
 					><tr
@@ -286,7 +289,7 @@
 		</section>
 
 		<section class="card box">
-			<h2><Icon name="search" size={20} /> Hľadali a nenašli</h2>
+			<h2 class="section-title"><Icon name="search" size={20} /> Hľadali a nenašli</h2>
 			<p class="muted small">
 				Hľadania na Receptoch, ktoré nenašli žiadny recept ani bez filtrov. Kandidáti na nové
 				recepty – stačí mi napísať, ktoré dopísať.
@@ -323,33 +326,33 @@
 
 <style>
 	.page {
-		padding-top: 28px;
 		max-width: 900px;
 	}
 	.tabs {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		gap: 8px;
-		margin: 8px 0 20px;
+		gap: var(--sp-2) var(--sp-3);
+		margin: var(--sp-2) 0 var(--sp-5);
+	}
+	.segmented {
+		flex-wrap: wrap;
 	}
 	.count {
 		display: inline-grid;
 		place-items: center;
 		min-width: 20px;
 		height: 20px;
+		margin-left: 2px;
 		padding: 0 6px;
 		border-radius: 999px;
-		background: var(--tomato);
-		color: var(--paper);
-		font-size: 0.75rem;
+		background: var(--alert-bg);
+		color: var(--alert-ink);
+		font-size: var(--fs-xs);
 	}
 	.done-toggle {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
 		margin-left: auto;
-		font-size: 0.88rem;
+		font-size: var(--fs-sm);
 	}
 	.items {
 		list-style: none;
@@ -387,11 +390,11 @@
 		font: inherit;
 		margin: 0 0 8px;
 		padding: 10px;
-		border-radius: 10px;
+		border-radius: var(--radius-xs);
 		background: var(--paper);
 	}
 	h3 {
-		font-size: 0.95rem;
+		font-size: var(--fs-md);
 		margin: 10px 0 4px;
 	}
 	.actions {
@@ -399,22 +402,14 @@
 		gap: 8px;
 	}
 	.box {
-		padding: 16px;
-		margin-bottom: 16px;
+		margin-bottom: var(--sp-4);
+	}
+	.section-title {
+		font-size: var(--fs-lg);
 	}
 	.ready {
 		background: var(--leaf-soft);
 		border-color: transparent;
-	}
-	.ready h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		font-size: 1.1rem;
-		margin: 0 0 4px;
-	}
-	.small {
-		font-size: 0.84rem;
 	}
 	.likes {
 		border-collapse: collapse;
@@ -429,46 +424,27 @@
 		font-weight: 700;
 	}
 	.usage {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-		gap: 10px;
-		margin: 0 0 16px;
-	}
-	.usage div {
-		padding: 10px 12px;
-		border-radius: 14px;
-		background: var(--paper-2);
-	}
-	.usage dt {
-		font-size: 0.8rem;
-		color: var(--ink-2);
-	}
-	.usage dd {
-		margin: 2px 0 0;
-		font-size: 1.4rem;
-		font-weight: 700;
+		margin: 0 0 var(--sp-4);
 	}
 	.usage small {
-		font-size: 0.8rem;
+		font-family: var(--font-body);
+		font-size: var(--fs-xs);
 		font-weight: 400;
 		color: var(--muted);
 	}
 	.likes th {
 		text-align: left;
-		font-size: 0.8rem;
+		font-size: var(--fs-xs);
 		color: var(--muted);
 		font-weight: 600;
 	}
-	.health h2 {
-		display: flex;
-		align-items: center;
-		gap: 8px;
+	.health .section-title > :global(svg) {
 		color: var(--leaf);
 	}
 	.health.down {
 		border-color: var(--tomato);
 	}
-	.health.down h2 {
+	.health.down .section-title > :global(svg) {
 		color: var(--tomato);
 	}
 </style>

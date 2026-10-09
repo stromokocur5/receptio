@@ -43,7 +43,7 @@
 
 <div class="wrap page">
 	<header class="rise">
-		<p class="eyebrow">O projekte</p>
+		<p class="eyebrow">O Receptiu</p>
 		<h1>Prečo Receptio vzniklo</h1>
 		<p class="lede">
 			Rastlinné jedlo, ktoré sedí telu aj peňaženke – a nástroj, ktorý pri ňom pomáha, namiesto
@@ -115,11 +115,12 @@
 			<h2>Kto za tým je</h2>
 			<p>
 				Receptio robí <strong>Gabriel Kohut</strong>. Nápady, chyby v receptoch alebo otázky pošli
-				na <a href="mailto:gabriel@kohut.xyz">gabriel@kohut.xyz</a>, recept cez formulár.
+				na <a href="mailto:gabriel@kohut.xyz">gabriel@kohut.xyz</a>, recept cez
+				<a href="/navrhni">formulár na návrh receptu</a>.
 			</p>
 			<p class="muted small">
-				Podrobnosti o výpočtoch: <a href="/wiki/o-receptiu">Ako Receptio funguje</a> · O dátach:
-				<a href="/sukromie">Ochrana súkromia</a>
+				Ako sa rátajú živiny a ceny: <a href="/wiki/o-receptiu">Odkiaľ sú čísla</a> · Čo sa kde
+				ukladá: <a href="/sukromie">Ochrana súkromia</a>
 			</p>
 		</div>
 		<a class="btn leaf" href="/navrhni"><Icon name="send" size={18} /> Navrhni recept</a>
@@ -127,18 +128,9 @@
 </div>
 
 <style>
-	.page {
-		padding-top: 28px;
-		padding-bottom: 40px;
-	}
-	.lede {
-		color: var(--ink-2);
-		max-width: 44em;
-		font-size: 1.1rem;
-	}
 	.story {
 		position: relative;
-		margin-top: 24px;
+		margin-top: var(--sp-5);
 		padding: 28px 24px 24px;
 		max-width: 760px;
 		background:
@@ -165,7 +157,7 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
 		gap: 10px;
-		margin-top: 28px;
+		margin-top: var(--sp-6);
 	}
 	.numbers div {
 		display: grid;
@@ -181,10 +173,10 @@
 	}
 	.numbers span {
 		color: var(--ink-2);
-		font-size: 0.9rem;
+		font-size: var(--fs-md);
 	}
 	.block {
-		margin-top: 44px;
+		margin-top: var(--sp-7);
 	}
 	.principles {
 		list-style: none;
@@ -203,7 +195,7 @@
 	.principles p {
 		margin: 4px 0 0;
 		color: var(--ink-2);
-		font-size: 0.92rem;
+		font-size: var(--fs-md);
 	}
 	.ico {
 		flex: none;
@@ -211,7 +203,7 @@
 		place-items: center;
 		width: 44px;
 		height: 44px;
-		border-radius: 14px;
+		border-radius: var(--radius-sm);
 		background: var(--leaf-soft);
 		color: var(--leaf);
 		transform: rotate(-4deg);
@@ -255,8 +247,5 @@
 	.contact p {
 		margin: 0 0 6px;
 		max-width: 60ch;
-	}
-	.small {
-		font-size: 0.85rem;
 	}
 </style>

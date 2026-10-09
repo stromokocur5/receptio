@@ -25,7 +25,7 @@
 		{#each MONTH_NAMES as name, i (i)}
 			{@const m = i + 1}
 			<li class:now={m === month} title={label(m)} aria-label={label(m)}>
-				<span class="m">{name.slice(0, 1)}</span>
+				<span class="m">{name[0].toUpperCase()}</span>
 				<span class="bar indoor" class:on={indoor.includes(m)}></span>
 				<span class="bar sow" class:on={sow.includes(m)}></span>
 				<span class="bar harvest" class:on={harvest.includes(m)}></span>
@@ -89,7 +89,7 @@
 		flex-wrap: wrap;
 		gap: 4px 14px;
 		margin: 8px 0 0;
-		font-size: 0.8rem;
+		font-size: var(--fs-xs);
 		color: var(--muted);
 	}
 	.legend i {

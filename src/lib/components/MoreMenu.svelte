@@ -10,8 +10,11 @@
 		icon: IconName;
 	}
 
-	/** Everything outside the four main areas, grouped by what people come for. */
-	export const MORE_GROUPS: { title: string; links: MoreLink[] }[] = [
+	/**
+	 * Everything outside the four main areas, grouped by what people come for. Page eyebrows
+	 * use the same group names, so the menu and the page say where you are in the same words.
+	 */
+	export const MORE_GROUPS: { title: string; links: MoreLink[]; app?: boolean }[] = [
 		{
 			title: 'Objavuj',
 			links: [
@@ -61,6 +64,8 @@
 		},
 		{
 			title: 'O Receptiu',
+			// The guide and "add to home screen" are about the app itself; they end this group.
+			app: true,
 			links: [
 				{
 					href: '/o-projekte',
@@ -73,7 +78,13 @@
 		}
 	];
 
-	export const MORE_PATHS = MORE_GROUPS.flatMap((g) => g.links.map((l) => l.href));
+	/**
+	 * Pages that light up "Viac". Moje has its own button in the header; lighting both would
+	 * mark two places as "you are here".
+	 */
+	export const MORE_PATHS = MORE_GROUPS.flatMap((g) => g.links.map((l) => l.href)).filter(
+		(href) => href !== '/moje'
+	);
 </script>
 
 <script lang="ts">
@@ -92,7 +103,7 @@
 	}
 </script>
 
-<div
+<nav
 	class="more"
 	id={MORE_MENU_ID}
 	popover
@@ -125,7 +136,7 @@
 							</a>
 						</li>
 					{/each}
-					{#if group.title === 'O Receptiu'}
+					{#if group.app}
 						<li>
 							<button
 								onclick={() => {
@@ -151,7 +162,8 @@
 									<span class="ico"><Icon name="download" size={20} /></span>
 									<span>
 										<strong>Pridať na plochu</strong>
-										<small
+										<!-- The how-to stays on phones too: it's the instruction, not a hint. -->
+										<small class="keep"
 											>{install.prompt
 												? 'Ako appka, funguje aj offline'
 												: install.hint === 'ios'
@@ -167,11 +179,12 @@
 			</section>
 		{/each}
 	</div>
-</div>
+</nav>
 
 <style>
 	.more {
 		position: fixed;
+		/* Above the floating bottom navigation (its height plus its 10px gap). */
 		inset: auto 10px calc(86px + env(safe-area-inset-bottom)) 10px;
 		width: auto;
 		margin: 0;
@@ -203,11 +216,11 @@
 		}
 	}
 	.more::backdrop {
-		background: rgba(17, 26, 20, 0.25);
+		background: var(--backdrop);
 	}
 	@media (min-width: 900px) {
 		.more {
-			inset: 72px max(16px, calc((100vw - 1180px) / 2)) auto auto;
+			inset: calc(var(--header-h) + 8px) max(16px, calc((100vw - 1180px) / 2)) auto auto;
 			width: 620px;
 			max-height: calc(100dvh - 100px);
 		}
@@ -228,16 +241,10 @@
 		grid-template-columns: 1fr 1fr;
 		gap: 14px 12px;
 	}
-	@media (max-width: 420px) {
-		.groups {
-			grid-template-columns: 1fr;
-			gap: 10px;
-		}
-	}
 	h2 {
 		margin: 0 0 4px 8px;
 		font-family: var(--font-body);
-		font-size: 0.72rem;
+		font-size: var(--fs-xs);
 		font-weight: 700;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
@@ -256,9 +263,10 @@
 		align-items: center;
 		gap: 10px;
 		width: 100%;
+		min-height: var(--tap);
 		padding: 7px 8px;
 		border: 0;
-		border-radius: 12px;
+		border-radius: var(--radius-sm);
 		background: none;
 		color: inherit;
 		font: inherit;
@@ -280,17 +288,36 @@
 		flex: none;
 		width: 36px;
 		height: 36px;
-		border-radius: 11px;
+		border-radius: var(--radius-xs);
 		background: var(--paper-2);
 		color: var(--leaf);
 	}
 	strong {
 		display: block;
-		font-size: 0.92rem;
+		font-size: var(--fs-sm);
+		line-height: 1.25;
 	}
 	small {
 		display: block;
-		font-size: 0.78rem;
+		font-size: var(--fs-xs);
 		color: var(--muted);
+	}
+	/* Phones keep two columns and drop the hints, so the whole menu fits without scrolling. */
+	@media (max-width: 480px) {
+		.groups {
+			gap: 10px 6px;
+		}
+		small:not(.keep) {
+			display: none;
+		}
+		.ico {
+			width: 30px;
+			height: 30px;
+		}
+		a,
+		button {
+			gap: 8px;
+			padding-inline: 6px;
+		}
 	}
 </style>
