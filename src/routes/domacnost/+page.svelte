@@ -7,6 +7,7 @@
 	import HouseholdMember from '$lib/components/HouseholdMember.svelte';
 	import HouseholdMoney from '$lib/components/HouseholdMoney.svelte';
 	import HouseholdToday from '$lib/components/HouseholdToday.svelte';
+	import InviteQr from '$lib/components/InviteQr.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import {
@@ -49,6 +50,7 @@
 
 	const pushSupported = $derived(ui.loaded && remindersSupported());
 	let newsBusy = $state(false);
+	let showQr = $state(false);
 	let newsError = $state('');
 	async function toggleNews(on: boolean) {
 		newsBusy = true;
@@ -421,9 +423,17 @@
 					<Icon name={copied ? 'check' : 'share'} size={18} />
 					{copied ? 'Odkaz skopírovaný' : 'Poslať odkaz'}
 				</button>
+				<button class="btn ghost" aria-expanded={showQr} onclick={() => (showQr = !showQr)}>
+					<Icon name="qr" size={18} />
+					{showQr ? 'Skryť QR kód' : 'QR kód'}
+				</button>
 				<a class="btn ghost" href="/plan">Spoločný plán</a>
 				<a class="btn ghost" href="/plan#nakup">Nákupný zoznam</a>
 			</div>
+			{#if showQr && household.code}
+				<InviteQr url={inviteLink(household.code)} />
+				<p class="muted small">Stačí ho namieriť fotoaparátom druhého telefónu.</p>
+			{/if}
 			<label class="rename">
 				Názov
 				<input
