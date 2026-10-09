@@ -23,7 +23,8 @@
 	} from '$lib/state.svelte';
 	import { initTabs } from '$lib/tabs.svelte';
 	import { household, initHousehold, noteHouseholdChange } from '$lib/household.svelte';
-	import { initSync, noteChange, syncState } from '$lib/sync.svelte';
+	import { initSync, noteChange, requestPersistence, syncState } from '$lib/sync.svelte';
+	import SafariKeep from '$lib/components/SafariKeep.svelte';
 	import { onboarding, shouldOnboard } from '$lib/onboarding.svelte';
 	import { initInstall } from '$lib/install.svelte';
 	import { loadTimers } from '$lib/timers.svelte';
@@ -66,6 +67,15 @@
 		if (changes.count > 0) {
 			noteChange();
 			noteHouseholdChange();
+		}
+	});
+
+	/** The first thing saved: ask the browser to keep the data even when space runs low. */
+	let askedToKeep = false;
+	$effect(() => {
+		if (changes.count > 0 && !askedToKeep) {
+			askedToKeep = true;
+			void requestPersistence();
 		}
 	});
 
@@ -153,6 +163,7 @@
 			</p>
 		</div>
 	{/if}
+	<SafariKeep />
 	{@render children()}
 </main>
 

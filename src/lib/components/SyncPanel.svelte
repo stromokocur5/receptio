@@ -27,8 +27,22 @@
 		minute: '2-digit'
 	});
 
+	/** What Receptio keeps in this browser (plan, pantry, diary…), in kB. */
+	let usedKb = $state<number | null>(null);
+
 	onMount(() => {
 		void isPersisted().then((p) => (persisted = p));
+		try {
+			let chars = 0;
+			for (let i = 0; i < localStorage.length; i++) {
+				const key = localStorage.key(i);
+				if (key?.startsWith('receptio:'))
+					chars += key.length + (localStorage.getItem(key)?.length ?? 0);
+			}
+			usedKb = Math.max(1, Math.round(chars / 1024));
+		} catch {
+			usedKb = null;
+		}
 	});
 
 	async function run(action: () => Promise<unknown>) {
@@ -162,6 +176,13 @@
 	{/if}
 
 	<p class="persist small">
+		{#if usedKb !== null}
+			<span class="muted"
+				>Tvoje dáta tu zaberajú {usedKb >= 1024
+					? `${(usedKb / 1024).toFixed(1).replace('.', ',')} MB`
+					: `${usedKb} kB`} z približne 5 MB.</span
+			>
+		{/if}
 		{#if persisted}
 			<Icon name="check" size={16} /> Prehliadač tieto dáta sám nezmaže ani pri nedostatku miesta.
 		{:else if persisted === false}
