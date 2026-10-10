@@ -286,6 +286,7 @@
 						<li>
 							<span class="when">{clock(slot.start)}</span>
 							<details
+								class="disclosure"
 								ontoggle={(ev) => {
 									if ((ev.currentTarget as HTMLDetailsElement).open) void loadSteps(slot.recipe.id);
 								}}
@@ -513,37 +514,14 @@
 	}
 	/* A whole row to tap, with a chevron that says it opens. */
 	summary {
-		display: flex;
-		align-items: center;
 		gap: var(--sp-3);
-		min-height: var(--tap);
 		padding: 4px 0;
-		cursor: pointer;
-		list-style: none;
-	}
-	summary::-webkit-details-marker {
-		display: none;
 	}
 	.summary-text {
 		flex: 1;
 		min-width: 0;
 		display: flex;
 		flex-direction: column;
-	}
-	summary::after {
-		content: '';
-		flex: none;
-		width: 8px;
-		height: 8px;
-		margin: 0 6px 4px 0;
-		border-right: 2px solid var(--ink-2);
-		border-bottom: 2px solid var(--ink-2);
-		transform: rotate(45deg);
-		transition: transform 0.2s var(--ease-out);
-	}
-	details[open] > summary::after {
-		margin: 4px 6px 0 0;
-		transform: rotate(-135deg);
 	}
 	summary:hover strong {
 		text-decoration: underline;
@@ -588,10 +566,5 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: var(--sp-2);
-	}
-	@media (prefers-reduced-motion: reduce) {
-		summary::after {
-			transition: none;
-		}
 	}
 </style>

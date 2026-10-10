@@ -762,7 +762,7 @@
 
 	<div class="layout">
 		<aside id="filters" class="filters card" class:open={filtersOpen} aria-label="Filtre">
-			<details class="group" bind:open={openGroups.chut}>
+			<details class="group disclosure" bind:open={openGroups.chut}>
 				<summary>
 					Chuť a jedlo
 					{#if groupCount('chut')}<span class="count">{groupCount('chut')}</span>{/if}
@@ -833,7 +833,7 @@
 				</div>
 			</details>
 
-			<details class="group" bind:open={openGroups.cas}>
+			<details class="group disclosure" bind:open={openGroups.cas}>
 				<summary>
 					Čas a námaha
 					{#if groupCount('cas')}<span class="count">{groupCount('cas')}</span>{/if}
@@ -884,7 +884,7 @@
 				</div>
 			</details>
 
-			<details class="group" bind:open={openGroups.strava}>
+			<details class="group disclosure" bind:open={openGroups.strava}>
 				<summary>
 					Strava a alergie
 					{#if groupCount('strava')}<span class="count">{groupCount('strava')}</span>{/if}
@@ -1007,7 +1007,7 @@
 				</div>
 			</details>
 
-			<details class="group" bind:open={openGroups.doma}>
+			<details class="group disclosure" bind:open={openGroups.doma}>
 				<summary>
 					Čo mám doma
 					{#if groupCount('doma')}<span class="count">{groupCount('doma')}</span>{/if}
@@ -1364,30 +1364,9 @@
 		padding-bottom: 0;
 	}
 	.group summary {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		list-style: none;
-		cursor: pointer;
 		font-family: var(--font-display);
 		font-size: 1.08rem;
 		font-weight: 600;
-	}
-	.group summary::-webkit-details-marker {
-		display: none;
-	}
-	.group summary::after {
-		content: '';
-		width: 8px;
-		height: 8px;
-		margin-left: auto;
-		border-right: 2px solid currentColor;
-		border-bottom: 2px solid currentColor;
-		transform: translateY(-2px) rotate(45deg);
-		transition: transform 0.2s var(--ease-out);
-	}
-	.group[open] summary::after {
-		transform: translateY(2px) rotate(-135deg);
 	}
 	.group-body {
 		display: grid;

@@ -730,7 +730,11 @@
 				</section>
 			{/if}
 
-			<details class="card box settings" bind:open={settingsOpen} bind:this={settingsBox}>
+			<details
+				class="card box settings disclosure"
+				bind:open={settingsOpen}
+				bind:this={settingsBox}
+			>
 				<summary>
 					<h2 class="section-title"><Icon name="sliders" size={24} /> Nastavenia domácnosti</h2>
 				</summary>
@@ -948,32 +952,6 @@
 	.solo-on {
 		border: 2px solid var(--leaf);
 	}
-	.settings summary {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		min-height: var(--tap);
-		list-style: none;
-		cursor: pointer;
-	}
-	.settings summary::-webkit-details-marker {
-		display: none;
-	}
-	.settings summary::after {
-		content: '';
-		flex: none;
-		width: 10px;
-		height: 10px;
-		margin: 0 6px 6px 0;
-		border-right: 2px solid var(--ink-2);
-		border-bottom: 2px solid var(--ink-2);
-		transform: rotate(45deg);
-		transition: transform 0.2s;
-	}
-	.settings[open] summary::after {
-		margin: 6px 6px 0 0;
-		transform: rotate(-135deg);
-	}
 	.settings summary .section-title {
 		margin: 0;
 	}
@@ -991,10 +969,5 @@
 	}
 	.leave {
 		margin-top: var(--sp-6);
-	}
-	@media (prefers-reduced-motion: reduce) {
-		.settings summary::after {
-			transition: none;
-		}
 	}
 </style>

@@ -32,6 +32,7 @@ is a token.
   `.input.sm` inline).
 - Feedback: `.notice` (+ `.danger`/`.warn`/`.ok`) always with an icon first; `.hint` for help
   under a control; `.empty` for nothing-here states; `.badge` for status labels.
+- Disclosures: `<details class="disclosure">` — the whole summary row opens it, chevron down/up.
 - Lists and bits: `.divided` (dashed line between items), `.sunk` (row in a card), `.stat-grid` >
   `.stat`, `.swatch` (ingredient colour dot, `--c`), `.accent-edge` (stripe, `--accent`),
   `.scroller` (sideways strip that reaches the screen edge), `.small`, `.muted`, `.sr-only`.

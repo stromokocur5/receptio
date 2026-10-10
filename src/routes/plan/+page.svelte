@@ -1088,7 +1088,7 @@
 					{@render extrasBlock()}
 
 					{#if boughtCount}
-						<details class="cat in-cart" open>
+						<details class="cat in-cart disclosure" open>
 							<summary><h3 class="eyebrow">V košíku ({boughtCount})</h3></summary>
 							<ul>
 								{#each allItems.filter((i) => checkedItems.current[i.ingredient.id]) as item (item.ingredient.id)}
@@ -1398,7 +1398,7 @@
 {#snippet extrasOnly()}
 	{@render extrasBlock()}
 	{#if extraItems.current.some((x) => x.checked)}
-		<details class="cat in-cart" open>
+		<details class="cat in-cart disclosure" open>
 			<summary
 				><h3 class="eyebrow">
 					V košíku ({extraItems.current.filter((x) => x.checked).length})
@@ -2029,32 +2029,6 @@
 	.extra-field {
 		flex: 1;
 		min-width: 0;
-	}
-	.in-cart summary {
-		display: flex;
-		align-items: center;
-		gap: var(--sp-2);
-		min-height: var(--tap);
-		cursor: pointer;
-		list-style: none;
-	}
-	.in-cart summary::-webkit-details-marker {
-		display: none;
-	}
-	/* A chevron that turns, the same as other disclosures. */
-	.in-cart summary::after {
-		content: '';
-		width: 7px;
-		height: 7px;
-		margin-top: -3px;
-		border-right: 2px solid var(--muted);
-		border-bottom: 2px solid var(--muted);
-		transform: rotate(45deg);
-		transition: transform 0.2s var(--ease-out);
-	}
-	.in-cart:not([open]) summary::after {
-		margin-top: 0;
-		transform: rotate(-45deg);
 	}
 	.cart-actions {
 		display: flex;

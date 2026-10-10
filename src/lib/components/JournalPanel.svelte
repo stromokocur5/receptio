@@ -795,7 +795,7 @@
 			<a href="/wiki/pitny-rezim">Pitný režim</a>.
 		</p>
 
-		<details class="prefs">
+		<details class="prefs disclosure">
 			<summary>Nastavenia denníka</summary>
 			<label class="check">
 				<input
@@ -1080,32 +1080,8 @@
 	.prefs {
 		margin-top: 16px;
 	}
-	/* A chevron that turns, the same as the other disclosures. */
 	.prefs summary {
-		display: flex;
-		align-items: center;
-		gap: var(--sp-2);
-		min-height: var(--tap);
-		cursor: pointer;
 		font-weight: 650;
-		list-style: none;
-	}
-	.prefs summary::-webkit-details-marker {
-		display: none;
-	}
-	.prefs summary::after {
-		content: '';
-		width: 7px;
-		height: 7px;
-		margin-top: -3px;
-		border-right: 2px solid var(--muted);
-		border-bottom: 2px solid var(--muted);
-		transform: rotate(45deg);
-		transition: transform 0.2s var(--ease-out);
-	}
-	.prefs:not([open]) summary::after {
-		margin-top: 0;
-		transform: rotate(-45deg);
 	}
 	.prefs > * + * {
 		margin-top: 10px;

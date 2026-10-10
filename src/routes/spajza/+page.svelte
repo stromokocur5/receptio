@@ -323,7 +323,7 @@
 			<div class="cats">
 				{#each pickableByCategory as [category, list] (category)}
 					{@const picked = ui.loaded ? list.filter((i) => i.id in pantry.current).length : 0}
-					<details class="cat" open={!!search.trim()}>
+					<details class="cat disclosure" open={!!search.trim()}>
 						<summary>
 							<h3 class="eyebrow">{CATEGORY_LABELS[category]}</h3>
 							<span class="cat-n">{picked ? `${picked} z ${list.length}` : list.length}</span>
@@ -587,29 +587,6 @@
 	}
 	.more {
 		opacity: 0.7;
-	}
-	.cat summary {
-		display: flex;
-		align-items: center;
-		gap: var(--sp-2);
-		min-height: var(--tap);
-		cursor: pointer;
-		list-style: none;
-	}
-	.cat summary::-webkit-details-marker {
-		display: none;
-	}
-	.cat summary::before {
-		content: '';
-		width: 7px;
-		height: 7px;
-		border-right: 2px solid currentColor;
-		border-bottom: 2px solid currentColor;
-		transform: rotate(-45deg);
-		transition: transform 0.2s var(--ease-out);
-	}
-	.cat[open] summary::before {
-		transform: rotate(45deg);
 	}
 	.cat summary h3 {
 		margin: 0;

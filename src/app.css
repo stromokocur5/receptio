@@ -715,6 +715,36 @@ textarea.input {
 	padding: 4px 10px;
 }
 
+/* Something that opens: <details class="disclosure"><summary>…</summary>. The whole row is the
+   target; the chevron at its end points down when closed and up when open. */
+.disclosure > summary {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-2);
+	min-height: var(--tap);
+	list-style: none;
+	cursor: pointer;
+}
+.disclosure > summary::-webkit-details-marker {
+	display: none;
+}
+.disclosure > summary::after {
+	content: '';
+	flex: none;
+	width: 8px;
+	height: 8px;
+	margin: -4px 6px 0 auto;
+	border-right: 2px solid currentColor;
+	border-bottom: 2px solid currentColor;
+	opacity: 0.75;
+	transform: rotate(45deg);
+	transition: transform 0.2s var(--ease-out);
+}
+.disclosure[open] > summary::after {
+	margin-top: 4px;
+	transform: rotate(-135deg);
+}
+
 /* A modal <dialog> keeps the page under it still. */
 html:has(dialog[open]:modal) {
 	overflow: hidden;
