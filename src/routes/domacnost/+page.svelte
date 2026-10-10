@@ -601,7 +601,11 @@
 									>{catalog.recipesById.get(e.recipeId)?.title ?? e.recipeId}</a
 								>
 								<span class="muted small"
-									>{e.fromFreezer ? 'z mrazničky' : (cookOf(e.cook) ?? 'varí ktokoľvek')}</span
+									>{e.inFridge
+										? 'z chladničky'
+										: e.fromFreezer
+											? 'z mrazničky'
+											: (cookOf(e.cook) ?? 'varí ktokoľvek')}</span
 								>
 							</li>
 						{/each}

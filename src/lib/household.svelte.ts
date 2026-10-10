@@ -45,6 +45,7 @@ import {
 	type Signer
 } from './member-keys';
 import type { Pantry } from './pantry';
+import { validatePreserves, type Preserve } from './preserves';
 import type { PlanEntry } from './shopping';
 import {
 	changes,
@@ -57,6 +58,7 @@ import {
 	pantry,
 	pantryAdded,
 	plan,
+	preserves,
 	saveToStorage,
 	settings,
 	validateDates,
@@ -107,9 +109,17 @@ interface PersonalPlan {
 	pantry: Pantry;
 	/** When each own pantry item was added, for "use soon". */
 	added: Record<string, string>;
+	preserves: Preserve[];
 }
 
-const EMPTY_PERSONAL: PersonalPlan = { plan: [], checked: {}, extras: [], pantry: {}, added: {} };
+const EMPTY_PERSONAL: PersonalPlan = {
+	plan: [],
+	checked: {},
+	extras: [],
+	pantry: {},
+	added: {},
+	preserves: []
+};
 
 /** What's on this device now – the own data while planning for oneself. */
 const onDevice = (): PersonalPlan => ({
@@ -117,7 +127,8 @@ const onDevice = (): PersonalPlan => ({
 	checked: checkedItems.current,
 	extras: extraItems.current,
 	pantry: pantry.current,
-	added: pantryAdded.current
+	added: pantryAdded.current,
+	preserves: preserves.current
 });
 
 function putOnDevice(data: PersonalPlan) {
@@ -126,6 +137,7 @@ function putOnDevice(data: PersonalPlan) {
 	extraItems.current = data.extras;
 	pantry.current = data.pantry;
 	pantryAdded.current = data.added;
+	preserves.current = data.preserves;
 }
 
 interface Saved {
@@ -276,6 +288,14 @@ export function planSlots(s: Settings) {
 	return slots;
 }
 
+/** Portions eaten at the meal around now: who's home in the household, or the "cook for" people. */
+export function portionsNow(s: Settings): number {
+	if (!planFromHousehold()) return s.people;
+	const hour = new Date().getHours();
+	const meal: PlanMeal = hour < 10 ? 'ranajky' : hour < 16 ? 'obed' : 'vecera';
+	return portionsAt(members(), localToday(), meal);
+}
+
 /** Who eats at this meal on this plan day, for the schedule. */
 export function eatersAt(day: number, meal: PlanMeal): Member[] {
 	if (!planFromHousehold()) return [];
@@ -297,6 +317,7 @@ function currentView(): SharedView {
 		pantry: pantry.current,
 		checked: checkedItems.current,
 		extras: extraItems.current,
+		preserves: preserves.current,
 		gardens: gardens.current.filter((g) => isSharedGarden(g.id))
 	};
 }
@@ -319,6 +340,7 @@ function applyView(view: SharedView) {
 		if (!same(now.checked, view.checked)) checkedItems.current = view.checked;
 		if (!same(now.extras, view.extras)) extraItems.current = view.extras;
 		if (!same(now.pantry, view.pantry)) pantry.current = view.pantry;
+		if (!same(now.preserves, view.preserves)) preserves.current = view.preserves;
 	}
 	if (!same(now.gardens, view.gardens)) applyGardens(view.gardens);
 	syncPeople();
@@ -810,7 +832,8 @@ function keepAsideForBackups() {
 					checkedItems: personal.checked,
 					extraItems: personal.extras,
 					pantry: personal.pantry,
-					pantryAdded: personal.added
+					pantryAdded: personal.added,
+					preserves: personal.preserves
 				}
 			: null;
 	keptAside.write = (parts) => {
@@ -820,7 +843,8 @@ function keepAsideForBackups() {
 			checked: parts.checkedItems ?? personal.checked,
 			extras: parts.extraItems ?? personal.extras,
 			pantry: parts.pantry ?? personal.pantry,
-			added: parts.pantryAdded ?? personal.added
+			added: parts.pantryAdded ?? personal.added,
+			preserves: parts.preserves ?? personal.preserves
 		};
 		save();
 		return true;
@@ -912,7 +936,9 @@ function validatePersonal(raw: unknown): PersonalPlan | null {
 			: [],
 		// Stashed before the pantry was kept apart too: it was shared, so the current one is it.
 		pantry: validatePantry(r.pantry) ?? pantry.current,
-		added: validateDates(r.added) ?? pantryAdded.current
+		added: validateDates(r.added) ?? pantryAdded.current,
+		// Stashed before jars and the freezer were the household's: the ones on the device are shared.
+		preserves: validatePreserves(r.preserves) ?? []
 	};
 }
 

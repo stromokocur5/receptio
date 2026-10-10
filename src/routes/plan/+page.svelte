@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	import InstallCard from '$lib/components/InstallCard.svelte';
+	import LeftoverStepper from '$lib/components/LeftoverStepper.svelte';
 	import { install } from '$lib/install.svelte';
 	import { planCheck } from '$lib/plancheck';
 	import PlanScope from '$lib/components/PlanScope.svelte';
@@ -53,7 +54,8 @@
 		notePurchase,
 		planFromHousehold,
 		planNeed,
-		planSlots
+		planSlots,
+		portionsNow
 	} from '$lib/household.svelte';
 	import { noteTick, orderAisles, settleTrip } from '$lib/store-order';
 	import {
@@ -319,17 +321,20 @@
 			e.data.lines,
 			e.recipe.servings,
 			catalog.ingredientsById,
-			e.recipe.title
+			e.recipe.title,
+			portionsNow(settings.current)
 		);
 		cookedMessage = used.length
 			? `${e.recipe.title}: zapísané, zo špajze ubudlo ${used.map((u) => u.ingredient.name).join(', ')}.`
 			: `${e.recipe.title}: zapísané do histórie.`;
+		cookedTitle = e.recipe.title;
 		justCooked = { recipeId: e.recipeId, variant: e.variant };
 		cookUndo = undo;
 		noteCooked(e.recipeId);
 	}
 	/** The last "cooked", to take back a mis-tap. */
 	let cookUndo = $state<CookUndo | null>(null);
+	let cookedTitle = $state('');
 	function uncook() {
 		if (!cookUndo) return;
 		undoCooked(cookUndo);
@@ -608,6 +613,7 @@
 				{cookedMessage}
 				<a href="/spajza">Špajza</a>
 				{#if cookUndo}
+					<LeftoverStepper bind:undo={cookUndo} name={cookedTitle} />
 					<button class="btn-link" onclick={uncook}>Späť – ešte nie je uvarené</button>
 				{/if}
 				{#if justCooked && journal.current.enabled}
@@ -835,7 +841,9 @@
 									<a href="/recepty/{e.recipe.id}">{e.recipe.title}</a>
 									<span class="muted">
 										{#if isPersonal(e)}<span class="badge">iba {cookName(e.only)}</span>
-										{/if}{#if e.fromFreezer}<span class="badge sky">z mrazničky</span>
+										{/if}{#if e.fromFreezer}<span class="badge sky"
+												>{e.inFridge ? 'z chladničky' : 'z mrazničky'}</span
+											>
 										{/if}{#if e.variant}{e.variant} ·
 										{/if}{e.fromFreezer
 											? 'už zaplatené'
@@ -889,9 +897,12 @@
 										<button
 											class="chip"
 											onclick={() => returnToFreezer(i, e.recipe.title)}
-											title="Vrátiť porcie do mrazničky"
+											title={e.inFridge
+												? 'Vrátiť porcie do chladničky'
+												: 'Vrátiť porcie do mrazničky'}
 										>
-											<Icon name="arrow-left" size={14} stroke={2.2} /> Späť do mrazničky
+											<Icon name="arrow-left" size={14} stroke={2.2} />
+											{e.inFridge ? 'Späť do chladničky' : 'Späť do mrazničky'}
 										</button>
 									{:else}
 										<button
@@ -1320,13 +1331,15 @@
 			{/if}
 			<span class="meal-text">
 				<span class="meal-kind"
-					>{label ? `${label} · ` : ''}{meal.entry.fromFreezer
-						? meal.kind === 'cook'
-							? 'Z mrazničky'
-							: 'Zvyšky z mrazničky'
-						: meal.kind === 'cook'
-							? 'Uvariť'
-							: 'Zvyšky'}</span
+					>{label ? `${label} · ` : ''}{meal.entry.inFridge
+						? 'Zvyšky z chladničky'
+						: meal.entry.fromFreezer
+							? meal.kind === 'cook'
+								? 'Z mrazničky'
+								: 'Zvyšky z mrazničky'
+							: meal.kind === 'cook'
+								? 'Uvariť'
+								: 'Zvyšky'}</span
 				>
 				<a href="/recepty/{meal.entry.recipeId}">{titleOf(meal.entry.recipeId)}</a>
 				{#if meal.kind === 'cook' && cookName(meal.entry.cook)}<small

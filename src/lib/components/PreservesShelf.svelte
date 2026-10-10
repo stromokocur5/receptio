@@ -158,12 +158,18 @@
 				<ul class="items">
 					{#each items as p (p.id)}
 						{@const age = ageOf(p)}
+						{@const plannable =
+							p.place !== 'pivnica' && !!p.recipeId && catalog.recipesById.has(p.recipeId)}
 						<li class="sunk {age}">
 							<div class="row">
 								<span class="nm">
 									{#if p.recipeId}<a href="/recepty/{p.recipeId}">{p.name}</a>{:else}{p.name}{/if}
 									<small>
-										{p.thawed ? `rozmrazené ${dayMonth(p.thawed)}` : `z ${monthYear(p.made)}`} ·
+										{p.leftover
+											? `uvarené ${dayMonth(p.made)}`
+											: p.thawed
+												? `rozmrazené ${dayMonth(p.thawed)}`
+												: `z ${monthYear(p.made)}`} ·
 										{untilText(p)}
 									</small>
 								</span>
@@ -195,16 +201,18 @@
 									<Icon name="pencil" size={15} />
 								</button>
 							</div>
-							{#if p.place === 'mraznicka'}
+							{#if plannable || p.place === 'mraznicka'}
 								<div class="acts">
-									{#if p.recipeId && catalog.recipesById.has(p.recipeId)}
+									{#if plannable}
 										<button class="btn ghost small" onclick={() => plan(p)}
 											><Icon name="calendar" size={16} /> Do plánu</button
 										>
 									{/if}
-									<button class="btn ghost small" onclick={() => thawOne(p)}
-										><Icon name="fridge" size={16} /> Rozmraziť 1 do chladničky</button
-									>
+									{#if p.place === 'mraznicka'}
+										<button class="btn ghost small" onclick={() => thawOne(p)}
+											><Icon name="fridge" size={16} /> Rozmraziť 1 do chladničky</button
+										>
+									{/if}
 								</div>
 							{/if}
 							{#if editing === p.id}

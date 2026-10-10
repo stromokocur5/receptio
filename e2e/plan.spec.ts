@@ -53,6 +53,40 @@ test('a mis-tapped "cooked" can be taken back', async ({ page }) => {
 	expect(JSON.parse(history ?? '[]')).toEqual([]);
 });
 
+test('what is cooked and not eaten waits in the fridge and can go back to the plan', async ({
+	page
+}) => {
+	await visit(page, '/plan');
+	await page.evaluate(() =>
+		localStorage.setItem('receptio:plan', JSON.stringify([{ recipeId: 'falafel', servings: 4 }]))
+	);
+	await page.reload();
+	await page.waitForLoadState('networkidle');
+	await page.getByRole('button', { name: 'Uvarené' }).first().click();
+	// Cooking for one: one portion now, three for later – and one more was left than guessed.
+	const fridge = page.getByRole('group', { name: 'Porcie na neskôr v chladničke' });
+	await expect(fridge).toContainText('3');
+	await fridge.getByRole('button', { name: 'O porciu viac' }).click();
+	await expect(fridge).toContainText('4');
+	const stored = () =>
+		page.evaluate(() => JSON.parse(localStorage.getItem('receptio:preserves') ?? '[]'));
+	expect(await stored()).toMatchObject([
+		{ recipeId: 'falafel', count: 4, place: 'chladnicka', leftover: true }
+	]);
+
+	await page.goto('/spajza#zavaraniny');
+	await page.waitForLoadState('networkidle');
+	await expect(page.locator('#zavaraniny')).toContainText(/uvarené/);
+	await page.locator('#zavaraniny').getByRole('button', { name: 'Do plánu' }).click();
+	await page.goto('/plan');
+	await page.waitForLoadState('networkidle');
+	await expect(page.getByText('z chladničky').first()).toBeVisible();
+	await page.getByRole('button', { name: 'Späť do chladničky' }).click();
+	expect(await stored()).toMatchObject([
+		{ recipeId: 'falafel', count: 4, place: 'chladnicka', leftover: true }
+	]);
+});
+
 test('clearing the plan goes at once and can be taken back', async ({ page }) => {
 	await visit(page, '/recepty/falafel');
 	await page

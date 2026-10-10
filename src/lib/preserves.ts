@@ -19,6 +19,8 @@ export interface Preserve {
 	recipeId?: string;
 	/** ISO date it came out of the freezer into the fridge. */
 	thawed?: string;
+	/** Cooked and not eaten yet: keeps days in the fridge, not months. */
+	leftover?: boolean;
 }
 
 export type PreserveAge = 'fresh' | 'soon' | 'old';
@@ -38,6 +40,8 @@ const KINDS: { match: RegExp; months: Partial<Record<PreservePlace, number>> }[]
 const DEFAULT_MONTHS: Record<PreservePlace, number> = { pivnica: 12, mraznicka: 10, chladnicka: 1 };
 /** A thawed dish keeps a day or two in the fridge, however long it was frozen. */
 const THAWED_DAYS = 2;
+/** A cooked dish whose recipe doesn't say how long it keeps (as in the plan's schedule). */
+const LEFTOVER_DAYS = 3;
 
 /** How a recipe says it keeps, when the entry comes from one. */
 export type Keeps = { fridge: number; freezer: number } | undefined;
@@ -61,7 +65,12 @@ export function bestMonths(p: Pick<Preserve, 'name' | 'place'>, keeps?: Keeps): 
 }
 
 /** ISO date until which it's at its best. */
-export function bestBefore(p: Pick<Preserve, 'name' | 'place' | 'made' | 'thawed'>, keeps?: Keeps) {
+export function bestBefore(
+	p: Pick<Preserve, 'name' | 'place' | 'made' | 'thawed' | 'leftover'>,
+	keeps?: Keeps
+) {
+	if (p.place === 'chladnicka' && p.leftover)
+		return isoOf(utc(p.made) + (keeps?.fridge || LEFTOVER_DAYS) * 86_400_000);
 	if (p.place === 'chladnicka' && p.thawed) {
 		const days = Math.min(THAWED_DAYS, keeps?.fridge || THAWED_DAYS);
 		return isoOf(utc(p.thawed) + days * 86_400_000);
@@ -73,7 +82,7 @@ export function bestBefore(p: Pick<Preserve, 'name' | 'place' | 'made' | 'thawed
 
 /** Days from today to the best-before date; negative once it's past. */
 export function daysLeft(
-	p: Pick<Preserve, 'name' | 'place' | 'made' | 'thawed'>,
+	p: Pick<Preserve, 'name' | 'place' | 'made' | 'thawed' | 'leftover'>,
 	today: string,
 	keeps?: Keeps
 ): number {
@@ -82,7 +91,7 @@ export function daysLeft(
 
 /** fresh, soon (the last weeks of its best time; the last day in the fridge) or old (check first). */
 export function preserveAge(
-	p: Pick<Preserve, 'name' | 'place' | 'made' | 'thawed'>,
+	p: Pick<Preserve, 'name' | 'place' | 'made' | 'thawed' | 'leftover'>,
 	today: string,
 	keeps?: Keeps
 ): PreserveAge {
@@ -161,6 +170,7 @@ export function validatePreserves(raw: unknown): Preserve[] | undefined {
 			...(typeof p.recipeId === 'string' && /^[a-z0-9-]{1,80}$/.test(p.recipeId)
 				? { recipeId: p.recipeId }
 				: {}),
-			...(p.place === 'chladnicka' && isDate(p.thawed) ? { thawed: p.thawed } : {})
+			...(p.place === 'chladnicka' && isDate(p.thawed) ? { thawed: p.thawed } : {}),
+			...(p.place === 'chladnicka' && p.leftover === true ? { leftover: true as const } : {})
 		}));
 }

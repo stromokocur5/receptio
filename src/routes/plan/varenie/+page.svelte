@@ -71,12 +71,14 @@
 				(variant ?? original).lines,
 				original.servings,
 				catalog.ingredientsById,
-				original.title
+				original.title,
+				// Cooked ahead: it's all eaten later, from the fridge.
+				0
 			);
 			undos.push(undo);
 			titles.push(original.title);
 		}
-		doneMessage = `Hotovo: ${titles.join(', ')}. Zo špajze ubudlo, čo sa minulo, a porcie na zamrazenie sú v mrazničke.`;
+		doneMessage = `Hotovo: ${titles.join(', ')}. Zo špajze ubudlo, čo sa minulo, a uvarené jedlo je v chladničke a porcie na zamrazenie v mrazničke.`;
 	}
 
 	function toggle(key: string) {

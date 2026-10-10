@@ -6,7 +6,9 @@
 	import CookScene from '$lib/components/CookScene.svelte';
 	import Icon from '$lib/components/Icon.svelte';
 	import RecipeFeedback from '$lib/components/RecipeFeedback.svelte';
+	import LeftoverStepper from '$lib/components/LeftoverStepper.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
+	import { portionsNow } from '$lib/household.svelte';
 	import type { PantryUse } from '$lib/pantry';
 	import {
 		RATING_LABELS,
@@ -16,6 +18,7 @@
 		pantry,
 		rateLastCooked,
 		type Rating,
+		settings,
 		ui
 	} from '$lib/state.svelte';
 	import { startTimer } from '$lib/timers.svelte';
@@ -148,13 +151,15 @@
 			servings,
 			lines,
 			recipeServings,
-			catalog.ingredientsById
+			catalog.ingredientsById,
+			title,
+			portionsNow(settings.current)
 		);
 		cooked = result.used;
 		cookUndo = result.undo;
 	}
 
-	let cookUndo: CookUndo | null = null;
+	let cookUndo = $state<CookUndo | null>(null);
 	/** A mis-tap on "cooked": back to before it, the button shows again. */
 	function uncook() {
 		if (cookUndo) undoCooked(cookUndo);
@@ -408,6 +413,7 @@
 								<Icon name="check" size={18} /> Zapísané do histórie.
 								<button class="btn ghost small" onclick={uncook}>Späť – ešte nie je uvarené</button>
 							</p>
+							{#if cookUndo}<p><LeftoverStepper bind:undo={cookUndo} name={title} /></p>{/if}
 							<div class="rate" role="group" aria-label="Ako chutilo?">
 								<span>Ako chutilo?</span>
 								{#each [3, 2, 1] as const as r (r)}

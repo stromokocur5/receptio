@@ -134,13 +134,22 @@
 			const meals = slots.map(
 				({ label, meal }) =>
 					`${label}: ${titleOf(meal.entry.recipeId)} (${
-						meal.entry.fromFreezer ? 'z mrazničky' : meal.kind === 'cook' ? 'uvariť' : 'zvyšky'
+						meal.entry.inFridge
+							? 'zvyšky'
+							: meal.entry.fromFreezer
+								? 'z mrazničky'
+								: meal.kind === 'cook'
+									? 'uvariť'
+									: 'zvyšky'
 					})`
 			);
 			const next = schedule.days[d + 1];
 			const thaw = next
 				? [next.breakfast, ...next.meals]
-						.filter((m): m is ScheduledMeal => !!m && !!m.entry.fromFreezer && m.kind === 'cook')
+						.filter(
+							(m): m is ScheduledMeal =>
+								!!m && !!m.entry.fromFreezer && !m.entry.inFridge && m.kind === 'cook'
+						)
 						.map((m) => titleOf(m.entry.recipeId))
 				: [];
 			const soon =

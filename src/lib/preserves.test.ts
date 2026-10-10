@@ -39,6 +39,16 @@ describe('preserves', () => {
 				}
 			)
 		).toBe('2026-10-10');
+		// Cooked and not eaten: days in the fridge, as the recipe says or 3.
+		expect(
+			bestBefore(
+				{ name: 'Kari s tofu', made: '2026-10-10', place: 'chladnicka', leftover: true },
+				{ fridge: 4, freezer: 3 }
+			)
+		).toBe('2026-10-14');
+		expect(
+			bestBefore({ name: 'Kari s tofu', made: '2026-10-10', place: 'chladnicka', leftover: true })
+		).toBe('2026-10-13');
 	});
 
 	it('flags jars and bags as they get old', () => {

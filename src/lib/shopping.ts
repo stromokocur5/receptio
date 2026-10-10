@@ -32,6 +32,8 @@ export interface PlanEntry {
 	fromFreezer?: boolean;
 	/** For freezer portions: the day they were frozen, kept if they go back. */
 	frozenOn?: string;
+	/** With `fromFreezer`: already cooked and waiting in the fridge, not frozen. */
+	inFridge?: boolean;
 	/** Household member who cooks it. */
 	cook?: string;
 	/** Just for this household member, outside the shared meals (bought with the rest). */

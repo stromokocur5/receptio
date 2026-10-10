@@ -198,6 +198,7 @@ function validatePlan(raw: unknown): PlanEntry[] | undefined {
 					e.freezeExtra > 0 &&
 					e.freezeExtra < (e.servings as number))) &&
 			(e.fromFreezer === undefined || e.fromFreezer === true) &&
+			(e.inFridge === undefined || e.inFridge === true) &&
 			(e.frozenOn === undefined ||
 				(typeof e.frozenOn === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(e.frozenOn))) &&
 			(e.cook === undefined || (typeof e.cook === 'string' && /^[a-z0-9]{1,16}$/.test(e.cook))) &&
@@ -724,7 +725,14 @@ export const ALL_PERSISTED = {
 };
 
 /** The stores a household puts aside while its own plan, list and pantry are on the device. */
-export const ASIDE = ['plan', 'checkedItems', 'extraItems', 'pantry', 'pantryAdded'] as const;
+export const ASIDE = [
+	'plan',
+	'checkedItems',
+	'extraItems',
+	'pantry',
+	'pantryAdded',
+	'preserves'
+] as const;
 export type AsideParts = {
 	[K in (typeof ASIDE)[number]]: (typeof ALL_PERSISTED)[K]['current'];
 };
@@ -827,12 +835,13 @@ export interface CookUndo {
 	planned?: PlanEntry;
 	plannedIndex: number;
 	preserveId?: string;
+	leftoverId?: string;
 }
 
 /**
- * Records a cooked recipe: subtracts the ingredients from the pantry, adds it to the history
- * and takes the cooked servings off the plan. Returns what came out of the pantry and how to
- * take it all back.
+ * Records a cooked recipe: subtracts the ingredients from the pantry, adds it to the history,
+ * takes the cooked servings off the plan and puts what isn't eaten now in the fridge (and the
+ * planned extra in the freezer). Returns what came out of the pantry and how to take it all back.
  */
 export function markCooked(
 	recipeId: string,
@@ -841,8 +850,10 @@ export function markCooked(
 	lines: RecipeLine[],
 	recipeServings: number,
 	byId: Map<string, Ingredient>,
-	/** The recipe's name, for the freezer label when part of the batch is frozen. */
-	title = recipeId
+	/** The recipe's name, for the freezer and fridge labels. */
+	title = recipeId,
+	/** Portions eaten right away; the rest goes in the fridge. */
+	eatenNow = servings
 ): { used: PantryUse[]; undo: CookUndo } {
 	const { pantry: next, used } = consumeFromPantry(
 		pantry.current,
@@ -880,8 +891,54 @@ export function markCooked(
 			}
 		];
 	}
+	let leftoverId: string | undefined;
+	// Children's smaller portions leave fractions; only whole portions are worth keeping.
+	const left = Math.floor(servings - (planned?.freezeExtra ?? 0) - eatenNow + 1e-9);
+	if (left > 0) {
+		leftoverId = crypto.randomUUID().slice(0, 8);
+		preserves.current = [
+			...preserves.current,
+			{
+				id: leftoverId,
+				name: title,
+				count: left,
+				made: date,
+				place: 'chladnicka',
+				recipeId,
+				leftover: true
+			}
+		];
+	}
 	if (planned) setPlanServings(recipeId, variant, planned.servings - servings);
-	return { used, undo: { used, added, entry, planned, plannedIndex, preserveId } };
+	return {
+		used,
+		undo: { used, added, entry, planned, plannedIndex, preserveId, leftoverId }
+	};
+}
+
+/** How many cooked portions went in the fridge, changed after the fact; 0 takes them out. */
+export function setLeftovers(undo: CookUndo, count: number, name: string): CookUndo {
+	const n = Math.max(0, Math.min(99, Math.round(count)));
+	const id = undo.leftoverId ?? crypto.randomUUID().slice(0, 8);
+	const others = preserves.current.filter((p) => p.id !== id);
+	const kept = preserves.current.find((p) => p.id === id);
+	preserves.current = !n
+		? others
+		: kept
+			? preserves.current.map((p) => (p === kept ? { ...p, count: n } : p))
+			: [
+					...others,
+					{
+						id,
+						name,
+						count: n,
+						made: undo.entry.date,
+						place: 'chladnicka',
+						recipeId: undo.entry.recipeId,
+						leftover: true
+					}
+				];
+	return { ...undo, leftoverId: n ? id : undefined };
 }
 
 /** Takes a "cooked" back: the pantry gets its food, the plan its portions, the history forgets it. */
@@ -901,8 +958,10 @@ export function undoCooked(undo: CookUndo) {
 			h.date === entry.date
 	);
 	if (at !== -1) history.current = history.current.filter((_, i) => i !== at);
-	if (undo.preserveId) {
-		preserves.current = preserves.current.filter((p) => p.id !== undo.preserveId);
+	if (undo.preserveId || undo.leftoverId) {
+		preserves.current = preserves.current.filter(
+			(p) => p.id !== undo.preserveId && p.id !== undo.leftoverId
+		);
 	}
 	const { planned } = undo;
 	if (planned) {
@@ -969,7 +1028,7 @@ export function setPlanFreezeExtra(index: number, double: boolean) {
 	});
 }
 
-/** Takes planned freezer portions off the plan and puts them back in the freezer. */
+/** Takes planned freezer or fridge portions off the plan and puts them back where they were. */
 export function returnToFreezer(index: number, name: string) {
 	const entry = plan.current[index];
 	if (!entry?.fromFreezer) return;
@@ -981,20 +1040,29 @@ export function returnToFreezer(index: number, name: string) {
 			name,
 			count: entry.servings,
 			made: entry.frozenOn ?? localToday(),
-			place: 'mraznicka',
-			recipeId: entry.recipeId
+			place: entry.inFridge ? 'chladnicka' : 'mraznicka',
+			recipeId: entry.recipeId,
+			...(entry.inFridge && { leftover: true })
 		}
 	];
 }
 
-/** Plans portions from the freezer: they're eaten like any meal but cost nothing to buy. */
+/** Plans portions from the freezer or fridge: eaten like any meal but nothing to buy or cook. */
 export function planFromFreezer(preserveId: string, servings: number) {
 	const frozen = preserves.current.find((p) => p.id === preserveId && p.recipeId);
 	if (!frozen) return;
 	const take = Math.max(1, Math.min(frozen.count, servings));
+	const inFridge = frozen.place === 'chladnicka';
 	plan.current = [
 		...plan.current,
-		{ recipeId: frozen.recipeId!, servings: take, fromFreezer: true, frozenOn: frozen.made }
+		{
+			recipeId: frozen.recipeId!,
+			servings: take,
+			fromFreezer: true,
+			// In the fridge it keeps from when it was cooked or thawed, should it go back.
+			frozenOn: (inFridge && frozen.thawed) || frozen.made,
+			...(inFridge && { inFridge: true })
+		}
 	];
 	preserves.current = preserves.current.flatMap((p) =>
 		p.id !== preserveId ? [p] : p.count > take ? [{ ...p, count: p.count - take }] : []

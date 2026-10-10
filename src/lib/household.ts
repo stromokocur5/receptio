@@ -1,6 +1,7 @@
 import { validateGarden, type GardenDiary } from './garden-diary';
 import { canonical } from './member-keys';
 import { ACTIVITY_PROTEIN, type Activity } from './nutrition';
+import { validatePreserves, type Preserve } from './preserves';
 import type { PlanEntry } from './shopping';
 import { ALLERGENS, type Allergen, type Ingredient, type RecipeSummary } from './types';
 
@@ -145,6 +146,8 @@ export interface HouseholdDoc {
 	checked: Record<string, Stamped<boolean>>;
 	/** Hand-added list items, false when deleted. */
 	extras: Record<string, Stamped<{ text: string; checked: boolean } | false>>;
+	/** Jars and freezer bags at home, one by one, false when eaten or thrown out. */
+	preserves: Record<string, Stamped<Omit<Preserve, 'id'> | false>>;
 	/** Shopping list item → the member who'll buy it. */
 	claims: Record<string, Stamped<string | false>>;
 	expenses: Record<string, Stamped<Expense | false>>;
@@ -184,6 +187,7 @@ export interface SharedView {
 	pantry: Record<string, number | null>;
 	checked: Record<string, boolean>;
 	extras: { id: string; text: string; checked: boolean }[];
+	preserves: Preserve[];
 	/** The gardens shared with the household, with their diaries. */
 	gardens: GardenDiary[];
 }
@@ -237,6 +241,7 @@ export function newDoc(name: string, now: number): HouseholdDoc {
 		pantryChanges: {},
 		checked: {},
 		extras: {},
+		preserves: {},
 		claims: {},
 		expenses: {},
 		settled: {},
@@ -445,6 +450,7 @@ export function validatePlanEntries(raw: unknown): PlanEntry[] | undefined {
 			entry.freezeExtra = e.freezeExtra;
 		}
 		if (e.fromFreezer === true) entry.fromFreezer = true;
+		if (e.fromFreezer === true && e.inFridge === true) entry.inFridge = true;
 		if (typeof e.frozenOn === 'string' && DATE_RE.test(e.frozenOn)) {
 			entry.frozenOn = e.frozenOn;
 		}
@@ -534,6 +540,15 @@ export function validateDoc(raw: unknown): HouseholdDoc | null {
 						? { text: x.text, checked: x.checked }
 						: undefined
 			)
+		),
+		preserves: record(raw.preserves, ITEM_ID_RE, (v) =>
+			stamped(v, (x) => {
+				if (x === false) return false;
+				const [p] = validatePreserves([{ ...(isRecord(x) ? x : {}), id: 'x' }]) ?? [];
+				if (!p) return undefined;
+				const { id: _, ...rest } = p;
+				return rest;
+			})
 		),
 		claims: record(raw.claims, ITEM_ID_RE, (v) =>
 			stamped(v, (x) =>
@@ -633,6 +648,7 @@ export function mergeDocs(a: HouseholdDoc, b: HouseholdDoc): HouseholdDoc {
 		pantryChanges: currentChanges(merge(a.pantryChanges, b.pantryChanges), pantry),
 		checked: merge(a.checked, b.checked),
 		extras: merge(a.extras, b.extras),
+		preserves: merge(a.preserves, b.preserves),
 		claims: merge(a.claims, b.claims),
 		// Month sums are old by nature; they're never forgotten like deletions.
 		...mergeMoney(merge(a.expenses, b.expenses), mergeRecord(a.settled, b.settled, 0, 0)),
@@ -714,6 +730,7 @@ const RECORDS = [
 	'pantryChanges',
 	'checked',
 	'extras',
+	'preserves',
 	'claims',
 	'expenses',
 	'wishes',
@@ -772,6 +789,9 @@ export function viewOf(doc: HouseholdDoc): SharedView {
 		),
 		extras: Object.entries(doc.extras).flatMap(([id, [v]]) =>
 			v === false ? [] : [{ id, text: v.text, checked: v.checked }]
+		),
+		preserves: Object.entries(doc.preserves).flatMap(([id, [v]]) =>
+			v === false ? [] : [{ id, ...v }]
 		),
 		gardens: Object.values(doc.gardens).flatMap(([layout]) =>
 			layout === false ? [] : [diaryOf(doc, layout)]
@@ -895,7 +915,8 @@ export function withLocalChanges(
 		pantry: { ...doc.pantry },
 		pantryChanges: { ...doc.pantryChanges },
 		checked: { ...doc.checked },
-		extras: { ...doc.extras }
+		extras: { ...doc.extras },
+		preserves: { ...doc.preserves }
 	};
 	stampPlan(next, before, current, at);
 	for (const id of new Set([...Object.keys(before.pantry), ...Object.keys(current.pantry)])) {
@@ -929,8 +950,20 @@ export function withLocalChanges(
 	for (const id of beforeExtras.keys()) {
 		if (!currentExtras.has(id)) next.extras[id] = [false, at];
 	}
+	stampPreserves(next, before.preserves, current.preserves, at);
 	stampGardens(next, before.gardens, current.gardens, at);
 	return next;
+}
+
+function stampPreserves(next: HouseholdDoc, before: Preserve[], current: Preserve[], at: number) {
+	const was = new Map(before.map((p) => [p.id, p]));
+	const is = new Set(current.map((p) => p.id));
+	for (const { id, ...rest } of current) {
+		if (!ITEM_ID_RE.test(id)) continue;
+		const old = was.get(id);
+		if (!old || !same(old, { id, ...rest })) next.preserves[id] = [rest, at];
+	}
+	for (const id of was.keys()) if (!is.has(id)) next.preserves[id] = [false, at];
 }
 
 function stampPlan(next: HouseholdDoc, before: SharedView, current: SharedView, at: number) {

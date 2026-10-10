@@ -44,7 +44,14 @@ const member = (id: string, extra: Partial<Member> = {}): Member => ({
 	...extra
 });
 
-const empty: SharedView = { plan: [], pantry: {}, checked: {}, extras: [], gardens: [] };
+const empty: SharedView = {
+	plan: [],
+	pantry: {},
+	checked: {},
+	extras: [],
+	preserves: [],
+	gardens: []
+};
 
 describe('household sync', () => {
 	it('keeps both phones’ edits when they merge', () => {
@@ -69,8 +76,35 @@ describe('household sync', () => {
 			pantry: { mrkva: 500, cicer: null },
 			checked: { tofu: true },
 			extras: [{ id: 'x1', text: 'papier', checked: false }],
+			preserves: [],
 			gardens: []
 		});
+	});
+
+	it('shares jars and freezer bags, eaten ones included', () => {
+		const lekvar = {
+			id: 'p1',
+			name: 'Lekvár',
+			count: 3,
+			made: '2026-08-01',
+			place: 'pivnica' as const
+		};
+		const dal = {
+			id: 'p2',
+			name: 'Dal',
+			count: 2,
+			made: '2026-10-01',
+			place: 'mraznicka' as const
+		};
+		const start = withLocalChanges(newDoc('D', 1), empty, { ...empty, preserves: [lekvar] }, 5);
+		const view = viewOf(start);
+		const one = withLocalChanges(start, view, { ...view, preserves: [{ ...lekvar, count: 2 }] }, 8);
+		const two = withLocalChanges(start, view, { ...view, preserves: [lekvar, dal] }, 9);
+		const eaten = withLocalChanges(start, view, { ...view, preserves: [] }, 10);
+		const both = mergeDocs(one, two);
+		expect(validateDoc(JSON.parse(JSON.stringify(both)))).toEqual(both);
+		expect(viewOf(both).preserves).toEqual([{ ...lekvar, count: 2 }, dal]);
+		expect(viewOf(mergeDocs(mergeDocs(one, two), eaten)).preserves).toEqual([dal]);
 	});
 
 	it('lets the newer change win, removals included', () => {
@@ -477,6 +511,7 @@ describe('household log and cooking turns', () => {
 			pantry: { ryza: 500 },
 			checked: { tofu: true },
 			extras: [],
+			preserves: [],
 			gardens: []
 		};
 		const events = changeEvents(before, after, 'a', 7, new Set(['chili']));
