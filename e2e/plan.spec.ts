@@ -87,6 +87,23 @@ test('what is cooked and not eaten waits in the fridge and can go back to the pl
 	]);
 });
 
+test('the budget counts what the receipt says, not the estimate', async ({ page }) => {
+	await visit(page, '/recepty/falafel');
+	await page
+		.getByRole('button', { name: /^Do plánu/ })
+		.first()
+		.click();
+	await page.goto('/plan');
+	await page.waitForLoadState('networkidle');
+	await page.getByRole('checkbox', { name: /Cícer/ }).first().check();
+	await page.getByLabel('Zaplatené podľa bločku').fill('7,85');
+	await page.getByRole('button', { name: /Nakúpené/ }).click();
+	const purchases = await page.evaluate(() =>
+		JSON.parse(localStorage.getItem('receptio:purchases') ?? '[]')
+	);
+	expect(purchases.at(-1).amount).toBe(7.85);
+});
+
 test('clearing the plan goes at once and can be taken back', async ({ page }) => {
 	await visit(page, '/recepty/falafel');
 	await page

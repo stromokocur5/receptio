@@ -15,7 +15,8 @@
 	import Icon from '$lib/components/Icon.svelte';
 	import PlanSettings from '$lib/components/PlanSettings.svelte';
 	import { ALLERGEN_LABELS } from '$lib/nutrition';
-	import { matchRecipe, pantryByGroup, useSoon } from '$lib/pantry';
+	import { isAssumedAtHome, matchRecipe, pantryByGroup, useSoon } from '$lib/pantry';
+	import { shelfCost } from '$lib/pricing';
 	import { recipeSeason } from '$lib/season';
 	import { avoidFilter } from '$lib/avoid';
 	import { hasNeeds, householdFilter, wishesOf } from '$lib/household';
@@ -41,6 +42,21 @@
 	import { toast } from '$lib/toast.svelte';
 
 	const catalog = useCatalog();
+
+	/** Grams in the cheapest pack of each ingredient; looked up once, the planner asks a lot. */
+	const packSizes = new Map<string, number | undefined>();
+	function packOf(id: string): number | undefined {
+		if (packSizes.has(id)) return packSizes.get(id);
+		const ingredient = catalog.ingredientsById.get(id);
+		const shelf =
+			ingredient && !isAssumedAtHome(ingredient)
+				? shelfCost(ingredient, 1, catalog.prices, new Date())
+				: null;
+		// Weighed at the till (a fraction of a "pack"): nothing is left over.
+		const grams = shelf && Number.isInteger(shelf.packs) ? shelf.packGrams : undefined;
+		packSizes.set(id, grams);
+		return grams;
+	}
 	const EXCLUDABLE: Allergen[] = ['soy', 'peanuts', 'nuts', 'sesame'];
 	const month = new Date().getMonth() + 1;
 
@@ -161,7 +177,8 @@
 					(gaps.length ? gapBonus(r.perServing, gaps, targets) : 0) +
 					r.lines.filter((l) => soonIds.has(l.ingredientId)).length +
 					// Someone at home asked for it: a strong reason, more with every person asking.
-					Math.min(3, (wished.get(r.id)?.length ?? 0) * 1.5)
+					Math.min(3, (wished.get(r.id)?.length ?? 0) * 1.5),
+				packOf
 			}
 		};
 	}

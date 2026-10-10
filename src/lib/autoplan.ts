@@ -1,5 +1,5 @@
 import { seededRandom } from './art';
-import { isBreakfastRecipe, type PlanEntry } from './shopping';
+import { isBreakfastRecipe, planLines, type PlanEntry } from './shopping';
 import type { Allergen, RecipeSummary, RecipeVariant } from './types';
 
 export interface AutoPlanOptions {
@@ -38,6 +38,11 @@ export interface AutoPlanContext {
 	 * should be used up soon. 0 = nothing, 1 ≈ one good reason.
 	 */
 	bonus?: (recipe: RecipeSummary) => number;
+	/**
+	 * Grams in the pack an ingredient is bought in; undefined for what's weighed at the till or
+	 * kept at home. With it the plan prefers recipes that finish a pack another recipe opened.
+	 */
+	packOf?: (ingredientId: string) => number | undefined;
 }
 
 export interface AutoPlanResult {
@@ -66,6 +71,8 @@ const PLAIN_VARIANT = 'Bez náhrad';
 const MAX_MEALS_PER_BATCH = 3;
 const MAX_MEALS_VARIED = 2;
 const ATTEMPTS = 120;
+/** Finishing a whole open pack counts about as much as two good reasons (`bonus`). */
+const PACK_WEIGHT = 3;
 
 /** The version of a recipe that satisfies the diet options, or null if none does. */
 function pickVersion(r: RecipeSummary, o: AutoPlanOptions): Candidate | null {
@@ -131,23 +138,68 @@ export function candidates(recipes: RecipeSummary[], o: AutoPlanOptions): Candid
 
 type Chosen = { c: Candidate; meals: number }[];
 
+/** How much of each opened pack is left after the recipes chosen so far. */
+export type OpenPacks = Map<string, number>;
+
+export interface PackNeed {
+	id: string;
+	grams: number;
+	/** Grams in one pack. */
+	pack: number;
+}
+
+/** Grams of each pack-bought ingredient a recipe takes for `portions`. */
+function packNeeds(
+	c: Pick<Candidate, 'recipe' | 'variant'>,
+	portions: number,
+	packOf: (id: string) => number | undefined
+): PackNeed[] {
+	return planLines(c.recipe, c.variant).flatMap((l) => {
+		const pack = packOf(l.ingredientId);
+		return pack && l.grams > 0
+			? [{ id: l.ingredientId, grams: (l.grams * portions) / c.recipe.servings, pack }]
+			: [];
+	});
+}
+
+/** Packs' worth (0.6 = 60 % of a pack) a recipe would use up from what's already open. */
+export function packsFinished(needs: PackNeed[], open: OpenPacks): number {
+	return needs.reduce((sum, n) => sum + Math.min(n.grams, open.get(n.id) ?? 0) / n.pack, 0);
+}
+
+/** Takes what a recipe needs from the open packs, opening new ones for the rest. */
+export function openPacks(needs: PackNeed[], open: OpenPacks): void {
+	for (const n of needs) {
+		const left = open.get(n.id) ?? 0;
+		const rest = n.grams - left;
+		open.set(n.id, rest <= 0 ? left - n.grams : Math.ceil(rest / n.pack - 1e-9) * n.pack - rest);
+	}
+}
+
 /** One randomized greedy pass: cheap, protein-rich, varied picks until `wanted` meals are covered. */
 function greedy(
 	pool: Candidate[],
 	wanted: number,
 	rand: () => number,
 	costWeight: number,
-	ctx: AutoPlanContext
+	ctx: AutoPlanContext,
+	/** Portions eaten at one meal. */
+	perMeal: number
 ): Chosen {
 	const chosen: Chosen = [];
 	const usedCuisines = new Map<string, number>();
+	const open: OpenPacks = new Map();
+	const packOf = ctx.packOf ?? (() => undefined);
 	let left = wanted;
 	while (left > 0) {
 		const options = pool.filter((c) => !chosen.some((x) => x.c.recipe.id === c.recipe.id));
 		if (!options.length) break;
 		const scored = options.map((c) => {
 			const repeat = usedCuisines.get(c.recipe.cuisine) ?? 0;
+			const portions = Math.min(left, c.maxMeals) * perMeal;
 			const score =
+				// Half a bunch of coriander bought for one recipe is worth a second one that uses it.
+				-packsFinished(packNeeds(c, portions, packOf), open) * PACK_WEIGHT +
 				c.cost * costWeight -
 				c.protein * 0.05 +
 				repeat * 0.8 -
@@ -160,6 +212,7 @@ function greedy(
 		scored.sort((a, b) => a.score - b.score);
 		const pick = scored[0].c;
 		const meals = Math.min(left, pick.maxMeals);
+		openPacks(packNeeds(pick, meals * perMeal, packOf), open);
 		chosen.push({ c: pick, meals });
 		usedCuisines.set(pick.recipe.cuisine, (usedCuisines.get(pick.recipe.cuisine) ?? 0) + 1);
 		left -= meals;
@@ -194,8 +247,8 @@ export function autoPlan(
 	let best: { result: AutoPlanResult; score: number } | null = null;
 
 	for (let attempt = 0; attempt < ATTEMPTS && pool.length; attempt++) {
-		const main = greedy(pool, wantedMain, rand, costWeight, ctx);
-		const morning = greedy(morningPool, wantedMorning, rand, costWeight, ctx);
+		const main = greedy(pool, wantedMain, rand, costWeight, ctx, perMain);
+		const morning = greedy(morningPool, wantedMorning, rand, costWeight, ctx, perMorning);
 		const all = [...main, ...morning];
 		const entry = ({ c, meals }: Chosen[number], breakfast: boolean): PlanEntry => ({
 			recipeId: c.recipe.id,
@@ -259,11 +312,21 @@ export function swapEntry(
 	if (!old) return plan;
 	const taken = new Set(plan.entries.map((e) => e.recipeId));
 	const rand = seededRandom(o.seed);
+	const packOf = ctx.packOf ?? (() => undefined);
+	// What the rest of the plan leaves in its packs, for the new recipe to finish.
+	const open: OpenPacks = new Map();
+	const byRecipe = new Map(recipes.map((r) => [r.id, r]));
+	plan.entries.forEach((e, i) => {
+		const recipe = byRecipe.get(e.recipeId);
+		if (i !== index && recipe)
+			openPacks(packNeeds({ recipe, variant: e.variant }, e.servings, packOf), open);
+	});
 	const scored = pool
 		.filter((c) => !taken.has(c.recipe.id))
 		.map((c) => ({
 			c,
 			score:
+				-packsFinished(packNeeds(c, current.servings, packOf), open) * PACK_WEIGHT +
 				Math.abs(c.cost - old.cost) * 2 +
 				(c.recipe.cuisine === old.recipe.cuisine ? 0.6 : 0) -
 				(ctx.pantryScore?.(c.recipe) ?? 0) -

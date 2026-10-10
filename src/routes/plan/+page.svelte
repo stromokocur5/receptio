@@ -30,7 +30,7 @@
 	import { mealSchedule, type ScheduledMeal } from '$lib/schedule';
 	import { useSoon } from '$lib/pantry';
 	import { localToday, type DiaryMeal } from '$lib/journal';
-	import { budgetStatus, spentThisWeek } from '$lib/budget';
+	import { budgetStatus, parsePaid, spentThisWeek } from '$lib/budget';
 	import { encodeSharedPlan } from '$lib/share';
 	import {
 		LIVE_PREFIX,
@@ -61,6 +61,7 @@
 	import {
 		approxPieces,
 		buildShoppingList,
+		packLeftover,
 		isBreakfastEntry,
 		type ShoppingItem
 	} from '$lib/shopping';
@@ -484,6 +485,15 @@
 
 	const things = (n: number) => `${n} ${n === 1 ? 'vec' : n > 1 && n < 5 ? 'veci' : 'vecí'}`;
 	const pieces = (item: ShoppingItem) => approxPieces(item.ingredient, item.buyGrams);
+	const leftoverOf = (item: ShoppingItem) =>
+		packLeftover(pay.get(item.ingredient.id)?.shelf, item.buyGrams);
+	/** What whole packs leave over after this plan, to cook something more with it. */
+	const packLeftovers = $derived(
+		allItems.flatMap((item) => {
+			const grams = leftoverOf(item);
+			return grams ? [{ item, grams }] : [];
+		})
+	);
 
 	async function copyList() {
 		const lines = aisles.flatMap(([category, items]) => [
@@ -546,10 +556,20 @@
 		}
 	}
 
-	function boughtToPantry() {
-		const paid = allItems
+	/** What the basket costs by the known prices; hand-added things count nothing. */
+	const cartEstimate = $derived(
+		allItems
 			.filter((i) => checkedItems.current[i.ingredient.id])
-			.reduce((sum, i) => sum + (pay.get(i.ingredient.id)?.cost ?? 0), 0);
+			.reduce((sum, i) => sum + (pay.get(i.ingredient.id)?.cost ?? 0), 0)
+	);
+	/** The receipt's total as typed; empty means the estimate. */
+	let paidText = $state('');
+	const paidTyped = $derived(parsePaid(paidText));
+
+	function boughtToPantry() {
+		// The budget and the household's money go by what was paid, not by the guess.
+		const paid = paidTyped ?? cartEstimate;
+		paidText = '';
 		recordPurchase(paid);
 		notePurchase(paid);
 		for (const item of allItems) {
@@ -1098,6 +1118,23 @@
 
 					{@render extrasBlock()}
 
+					{#if packLeftovers.length}
+						<details class="cat pack-left disclosure">
+							<summary><h3 class="eyebrow">Z balení zostane ({packLeftovers.length})</h3></summary>
+							<p class="hint">
+								Pôjde to do špajze. Ťukni a nájdeš recepty, ktoré to dojedia – automatický plán ich
+								vyberá sám.
+							</p>
+							<div class="chips">
+								{#each packLeftovers as { item, grams } (item.ingredient.id)}
+									<a class="chip" href="/recepty?s={item.ingredient.id}"
+										>{item.ingredient.name} ~{formatGrams(grams)}</a
+									>
+								{/each}
+							</div>
+						</details>
+					{/if}
+
 					{#if boughtCount}
 						<details class="cat in-cart disclosure" open>
 							<summary><h3 class="eyebrow">V košíku ({boughtCount})</h3></summary>
@@ -1109,12 +1146,36 @@
 									{@render extraRow(x)}
 								{/each}
 							</ul>
+							<label class="paid">
+								<span>Zaplatené podľa bločku</span>
+								<span class="paid-field">
+									<input
+										class="input"
+										bind:value={paidText}
+										inputmode="decimal"
+										placeholder={formatEur(cartEstimate).replace(/\s*€/, '')}
+										aria-describedby="paid-hint"
+										aria-invalid={paidText.trim() !== '' && paidTyped === null}
+									/>
+									€
+								</span>
+								<small class="hint" id="paid-hint">
+									{#if paidText.trim() && paidTyped === null}
+										Napíš sumu, napr. 23,40.
+									{:else}
+										Odhad podľa cien {formatEur(cartEstimate)}{extraItems.current.some(
+											(x) => x.checked
+										)
+											? ' bez vecí pridaných ručne'
+											: ''}. Prázdne = zapíše sa odhad.
+									{/if}
+								</small>
+							</label>
 							<div class="cart-actions">
-								{#if checkedCount}
-									<button class="btn leaf" onclick={boughtToPantry}>
-										<Icon name="jar" size={18} /> Nakúpené → do špajze
-									</button>
-								{/if}
+								<button class="btn leaf" onclick={boughtToPantry}>
+									<Icon name="jar" size={18} />
+									{checkedCount ? 'Nakúpené → do špajze' : 'Nakúpené'}
+								</button>
 								<button class="btn ghost small" onclick={clearChecked}>
 									<Icon name="trash" size={16} /> Vyčistiť košík
 								</button>
@@ -1443,6 +1504,7 @@
 			{formatGrams(item.buyGrams)}{pieces(item)}
 			{#if item.buyGrams < item.needGrams - 0.5}· zvyšok máš doma{/if}
 			{#if item.restock}· stačí najmenšie balenie{/if}
+			{#if leftoverOf(item)}· z balenia zostane ~{formatGrams(leftoverOf(item))}{/if}
 			{#if itemPay?.shelf}
 				<span title={itemPay.shelf.product}
 					>· {Number.isInteger(itemPay.shelf.packs)
@@ -2042,6 +2104,24 @@
 	.extra-field {
 		flex: 1;
 		min-width: 0;
+	}
+	.paid {
+		display: grid;
+		gap: var(--sp-1);
+		margin-top: var(--sp-3);
+		font-weight: 600;
+	}
+	.paid-field {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--sp-1);
+	}
+	.paid-field .input {
+		width: 7.5em;
+		font-variant-numeric: tabular-nums;
+	}
+	.paid .hint {
+		font-weight: 400;
 	}
 	.cart-actions {
 		display: flex;

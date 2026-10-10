@@ -33,6 +33,8 @@ export interface WeekNumbers {
 	/** Spent on shopping this week and the weekly budget, when one is set. */
 	spent: number | null;
 	budget: number | null;
+	/** On sale in the user's shops among what they usually buy: "tofu −30 % (Lidl)". */
+	sales?: string[];
 }
 
 export function weeklyDigest(n: WeekNumbers): DigestText {
@@ -54,9 +56,11 @@ export function weeklyDigest(n: WeekNumbers): DigestText {
 				: `nákupy ${formatEur(n.spent)}, nad rozpočtom o ${formatEur(n.spent - n.budget)}`
 		);
 	}
+	// Sunday is when the next week gets planned: what's cheaper now is worth planning around.
+	const sales = n.sales?.length ? `\nV akcii z toho, čo kupuješ: ${n.sales.join(', ')}` : '';
 	return {
 		title: 'Tvoj týždeň v Receptiu',
-		body: `${parts.join(' · ')}. Naplánuj si ďalší týždeň.`,
+		body: `${parts.join(' · ')}. Naplánuj si ďalší týždeň.${sales}`,
 		url: '/plan#navrh'
 	};
 }

@@ -48,3 +48,20 @@ describe('digests', () => {
 		expect(day?.url).toBe('/zvysky?s=spenat,tofu-natural');
 	});
 });
+
+describe('weekly sales', () => {
+	it('adds what the user buys that is on sale, for planning the next week', () => {
+		const text = weeklyDigest({
+			cooked: 2,
+			cost: 5,
+			plants: 10,
+			plantGoal: 30,
+			proteinPerDay: 50,
+			proteinGoal: 65,
+			spent: null,
+			budget: null,
+			sales: ['tofu −30 % (Lidl)']
+		});
+		expect(text.body.split('\n')[1]).toBe('V akcii z toho, čo kupuješ: tofu −30 % (Lidl)');
+	});
+});

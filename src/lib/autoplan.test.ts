@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { autoPlan, swapEntry, type AutoPlanOptions } from './autoplan';
+import { autoPlan, openPacks, packsFinished, swapEntry, type AutoPlanOptions } from './autoplan';
 import type { RecipeSummary } from './types';
 
 const zero = {
@@ -196,5 +196,50 @@ describe('diary gaps', () => {
 			for (const e of plan.entries) counts[rich.has(e.recipeId) ? 'rich' : 'other']++;
 		}
 		expect(counts.rich).toBeGreaterThan(counts.other);
+	});
+});
+
+describe('open packs', () => {
+	const line = (ingredientId: string, grams: number) => ({
+		ingredientId,
+		grams,
+		amount: grams,
+		unit: 'g' as const
+	});
+
+	it('counts what a recipe uses up from packs already open', () => {
+		const open = new Map<string, number>();
+		openPacks([{ id: 'koriander', grams: 10, pack: 30 }], open);
+		expect(open.get('koriander')).toBe(20);
+		expect(packsFinished([{ id: 'koriander', grams: 15, pack: 30 }], open)).toBe(0.5);
+		openPacks([{ id: 'koriander', grams: 25, pack: 30 }], open);
+		expect(open.get('koriander')).toBe(25);
+	});
+
+	it('prefers a second recipe that finishes the first one’s pack', () => {
+		const recipes = [
+			recipe('kari', { lines: [line('koriander', 10)], costPerServing: 0.5 }),
+			recipe('pho', { lines: [line('koriander', 15)] }),
+			recipe('a'),
+			recipe('b'),
+			recipe('c'),
+			recipe('d')
+		];
+		const together = (packOf?: (id: string) => number | undefined) => {
+			let count = 0;
+			for (let seed = 1; seed <= 60; seed++) {
+				const plan = autoPlan(
+					recipes,
+					{ ...base, days: 4, people: 1, seed, batchCooking: false },
+					{ packOf }
+				);
+				const ids = plan.entries.map((e) => e.recipeId);
+				if (ids.includes('kari') && ids.includes('pho')) count++;
+			}
+			return count;
+		};
+		expect(together((id) => (id === 'koriander' ? 30 : undefined))).toBeGreaterThan(
+			together() * 1.5
+		);
 	});
 });

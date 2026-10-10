@@ -29,7 +29,9 @@
 		unitPrice
 	} from '$lib/pricing';
 	import StorePicker from '$lib/components/StorePicker.svelte';
-	import { settings } from '$lib/state.svelte';
+	import { history, plan, settings, ui } from '$lib/state.svelte';
+	import { localToday } from '$lib/journal';
+	import { usualIngredients } from '$lib/stats';
 	import {
 		INGREDIENT_CATEGORIES,
 		type Ingredient,
@@ -221,6 +223,19 @@
 	let dealSort = $state<'discount' | 'ending' | 'name'>('discount');
 	const DEALS_PAGE = 8;
 	let dealsShown = $state(DEALS_PAGE);
+	/** Only sales of what the user cooks with lately or has planned. */
+	let onlyUsual = $state(false);
+	const usual = $derived(
+		ui.loaded
+			? usualIngredients(
+					history.current,
+					plan.current,
+					catalog.recipesById,
+					catalog.ingredientsById,
+					localToday()
+				)
+			: new Set<string>()
+	);
 
 	/** Sales running now, each with a few everyday recipes that use the ingredient. */
 	const allDeals = $derived(
@@ -240,6 +255,7 @@
 				return { ...deal, ingredient, recipes };
 			})
 	);
+	const usualDeals = $derived(allDeals.filter((d) => usual.has(d.entry.ingredientId)).length);
 	const saleRecipes = $derived(
 		recipesOnSale(
 			catalog.recipes.filter((r) => r.treat.length === 0),
@@ -250,8 +266,9 @@
 		const matches = searchMatcher(ingredientNames, dealSearch);
 		const found = allDeals.filter(
 			(d) =>
-				matches(ingredientSearchText(d.ingredient)) ||
-				d.entry.product.toLowerCase().includes(dealSearch.trim().toLowerCase())
+				(!onlyUsual || usual.has(d.entry.ingredientId)) &&
+				(matches(ingredientSearchText(d.ingredient)) ||
+					d.entry.product.toLowerCase().includes(dealSearch.trim().toLowerCase()))
 		);
 		if (dealSort === 'ending') return found.toSorted((a, b) => a.daysLeft - b.daysLeft);
 		if (dealSort === 'name')
@@ -422,6 +439,18 @@
 						placeholder="Hľadať v akciách…"
 					/>
 				</div>
+				{#if usualDeals}
+					<button
+						class="chip"
+						aria-pressed={onlyUsual}
+						onclick={() => {
+							onlyUsual = !onlyUsual;
+							dealsShown = DEALS_PAGE;
+						}}
+						title="Suroviny z receptov uvarených za posledné 2 mesiace a z plánu"
+						>Čo kupujem ({usualDeals})</button
+					>
+				{/if}
 				<label class="field">
 					<span class="sr-only">Zoradiť</span>
 					<select bind:value={dealSort}>

@@ -24,7 +24,7 @@
 		settings,
 		mainMeals
 	} from '$lib/state.svelte';
-	import { plantsThisWeek, weeklyNutrition } from '$lib/stats';
+	import { plantsThisWeek, usualIngredients, weeklyNutrition } from '$lib/stats';
 
 	/**
 	 * Keeps the texts of the weekly summary and the morning overviews up to date for the service
@@ -55,6 +55,33 @@
 			1
 		)[0];
 		const budget = settings.current.weeklyBudget;
+		const mine = settings.current.myStores;
+		const inMyShops = (storeId: string) => !mine.length || mine.includes(storeId);
+		const nameOf = (id: string) =>
+			catalog.ingredientsById.get(id)?.name.split(' (')[0].toLowerCase() ?? id;
+		const usual = usualIngredients(
+			history.current,
+			plan.current,
+			catalog.recipesById,
+			catalog.ingredientsById,
+			today
+		);
+		// A real cut that's still on tomorrow, when the next week's shopping starts.
+		const usualSales = activeSales(catalog.prices, new Date())
+			.filter(
+				(d) =>
+					usual.has(d.entry.ingredientId) &&
+					inMyShops(d.entry.storeId) &&
+					(d.discount ?? 0) >= 0.1 &&
+					d.daysLeft >= 1
+			)
+			.slice(0, 4)
+			.map(
+				(d) =>
+					`${nameOf(d.entry.ingredientId)} −${Math.round((d.discount ?? 0) * 100)} % (${
+						catalog.storesById.get(d.entry.storeId)?.name
+					})`
+			);
 		const week: DigestStore['week'] = {
 			start: monday,
 			text: weeklyDigest({
@@ -66,7 +93,8 @@
 				proteinPerDay: nutrition.protein,
 				proteinGoal: targets.protein,
 				spent: budget === null ? null : spentThisWeek(purchases.current, today),
-				budget: budget === null ? null : budgetForDays(budget, 7)
+				budget: budget === null ? null : budgetForDays(budget, 7),
+				sales: usualSales
 			})
 		};
 
@@ -116,11 +144,8 @@
 				(id) => catalog.recipesById.get(id)?.lines.map((l) => l.ingredientId) ?? []
 			)
 		);
-		const mine = settings.current.myStores;
 		const sales = activeSales(catalog.prices, new Date()).filter(
-			(d) =>
-				plannedIngredients.has(d.entry.ingredientId) &&
-				(!mine.length || mine.includes(d.entry.storeId))
+			(d) => plannedIngredients.has(d.entry.ingredientId) && inMyShops(d.entry.storeId)
 		);
 		const days: Record<string, DigestText> = {};
 		schedule.days.forEach((day, d) => {

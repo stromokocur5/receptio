@@ -1,4 +1,5 @@
 import { shiftDate, type Journal } from './journal';
+import { isAssumedAtHome } from './pantry';
 import { salesOn, type PriceHistory } from './price-history';
 import type { CookedRecord } from './week';
 import type { Ingredient, RecipeSummary } from './types';
@@ -264,6 +265,34 @@ export function topIngredients(
 		.sort((a, b) => b[1] - a[1])
 		.slice(0, limit)
 		.map(([ingredientId, g]) => ({ ingredientId, grams: g }));
+}
+
+/** How far back cooking counts toward what someone usually buys. */
+export const USUAL_DAYS = 60;
+
+/**
+ * What the user buys: the ingredients of what they cooked lately and of what's planned, the
+ * shop-bought ones only (no spices, oils or leftovers from other food).
+ */
+export function usualIngredients(
+	history: CookedRecord[],
+	planned: Omit<CookedRecord, 'date'>[],
+	recipesById: Map<string, RecipeSummary>,
+	byId: Map<string, Ingredient>,
+	today: string
+): Set<string> {
+	const from = shiftDate(today, -USUAL_DAYS);
+	const ids = new Set<string>();
+	const recent = history.filter((h) => h.date >= from && h.date <= today);
+	for (const h of [...recent, ...planned.map((p) => ({ ...p, date: today }))]) {
+		const recipe = recipesById.get(h.recipeId);
+		if (!recipe) continue;
+		for (const line of cookedData(h, recipe).lines) {
+			const i = byId.get(line.ingredientId);
+			if (i && !i.byproduct && !isAssumedAtHome(i)) ids.add(i.id);
+		}
+	}
+	return ids;
 }
 
 /**

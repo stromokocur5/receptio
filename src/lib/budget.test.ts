@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { budgetForDays, budgetStatus, spentThisWeek, validatePurchases, weekStart } from './budget';
+import {
+	budgetForDays,
+	budgetStatus,
+	parsePaid,
+	spentThisWeek,
+	validatePurchases,
+	weekStart
+} from './budget';
 
 describe('weekly budget', () => {
 	it('starts weeks on Monday', () => {
@@ -30,5 +37,16 @@ describe('weekly budget', () => {
 				{ date: '2026-10-05', amount: -1 }
 			])
 		).toEqual([{ date: '2026-10-05', amount: 10 }]);
+	});
+});
+
+describe('parsePaid', () => {
+	it('reads the receipt total as people type it', () => {
+		expect(parsePaid('23,40')).toBe(23.4);
+		expect(parsePaid('23.4 €')).toBe(23.4);
+		expect(parsePaid('')).toBeNull();
+		expect(parsePaid('0')).toBeNull();
+		expect(parsePaid('abc')).toBeNull();
+		expect(parsePaid('5000')).toBeNull();
 	});
 });

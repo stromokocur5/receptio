@@ -11,6 +11,7 @@ import {
 	streak,
 	supplementStreak,
 	topIngredients,
+	usualIngredients,
 	waterStreak,
 	weeklyNutrition
 } from './stats';
@@ -132,6 +133,19 @@ describe('cooking over time', () => {
 		expect(earlier.portions).toBe(0);
 		expect(last.protein).toBeCloseTo((14 * 2) / 7);
 		expect(last.fiber).toBeCloseTo(2);
+	});
+
+	it('knows what is usually bought: lately cooked or planned, no spices or oil', () => {
+		expect([...usualIngredients(cooked, [], byId, ingredients, '2026-10-06')].sort()).toEqual([
+			'mrkva',
+			'sosovica-cervena'
+		]);
+		// Cooked too long ago, nothing planned: nothing usual.
+		expect(usualIngredients(cooked.slice(1), [], byId, ingredients, '2026-12-20').size).toBe(0);
+		expect(
+			usualIngredients([], [{ recipeId: 'polievka', servings: 2 }], byId, ingredients, '2026-12-20')
+				.size
+		).toBe(2);
 	});
 
 	it('ranks ingredients by weight cooked', () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { consumeFromPantry, rankByLeftovers, rankByPantry, useSoon } from './pantry';
-import { buildShoppingList } from './shopping';
+import { buildShoppingList, packLeftover } from './shopping';
 import {
 	activeSales,
 	bestPrice,
@@ -528,5 +528,15 @@ describe('recipesOnSale', () => {
 		expect(ranked.map((r) => r.recipe.id)).toEqual(['salat', 'polievka']);
 		expect(ranked[0].onSale).toEqual(['mrkva', 'kapusta']);
 		expect(ranked[1].saving).toBeCloseTo(0.12);
+	});
+});
+
+describe('packLeftover', () => {
+	it('tells what a whole pack leaves over, when it is worth saying', () => {
+		expect(packLeftover({ packs: 1, packGrams: 500 }, 200)).toBe(300);
+		expect(packLeftover({ packs: 2, packGrams: 400 }, 790)).toBe(0);
+		// Loose produce is weighed: nothing left over.
+		expect(packLeftover({ packs: 0.3, packGrams: 1000 }, 300)).toBe(0);
+		expect(packLeftover(null, 200)).toBe(0);
 	});
 });

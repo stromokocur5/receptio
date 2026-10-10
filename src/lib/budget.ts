@@ -35,6 +35,13 @@ export function budgetStatus(budget: number, spent: number, toBuy: number): Budg
 	return { budget, spent, toBuy, left: budget - spent - toBuy };
 }
 
+/** "23,40" or "23.4 €" from the receipt, in euros; null when it isn't a sum someone paid. */
+export function parsePaid(raw: string): number | null {
+	const value = Number(raw.replace(/\s|€/g, '').replace(',', '.'));
+	if (!raw.trim() || !Number.isFinite(value) || value <= 0 || value > 2000) return null;
+	return Math.round(value * 100) / 100;
+}
+
 /** The part of a weekly budget a plan of `days` days may use. */
 export function budgetForDays(weekly: number, days: number): number {
 	return (weekly * days) / 7;

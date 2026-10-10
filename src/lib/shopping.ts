@@ -164,6 +164,19 @@ export function buildShoppingList(
 	};
 }
 
+/**
+ * Grams a bought pack leaves over after the plan (300 g of a 500 g bag for 200 g), or 0 when
+ * it's weighed at the till or too little to bother with.
+ */
+export function packLeftover(
+	shelf: Pick<ShelfCost, 'packs' | 'packGrams'> | null | undefined,
+	buyGrams: number
+): number {
+	if (!shelf || !Number.isInteger(shelf.packs)) return 0;
+	const left = shelf.packs * shelf.packGrams - buyGrams;
+	return left >= 20 && left >= shelf.packGrams * 0.15 ? left : 0;
+}
+
 /** " · ~2 ks" for things bought by the piece (onions, lemons), empty otherwise. */
 export function approxPieces(ingredient: Ingredient, grams: number): string {
 	const ks = ingredient.units.ks;
