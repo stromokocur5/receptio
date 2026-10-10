@@ -50,3 +50,8 @@
 - ingredient: rastlinna-smotana
   types: [br]
   include: 'na varenie'
+# Ochutené (vanilka, čokoláda, barista) by pokazili cenu obyčajného nápoja.
+- ingredient: ovseny-napoj
+  types: [bz]
+  exclude: 'van|cok|kak|kav|barista|ban|jahod'
+- { ingredient: rozok, types: [c] }

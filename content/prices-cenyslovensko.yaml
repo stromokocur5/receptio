@@ -61,7 +61,7 @@ entries:
     price: 0.79
   - ingredient: cibula
     store: fresh
-    product: CIBUĽA VOĽNÁ
+    product: CIBUĽA ŽLTÁ 1kg BALENÁ FRESH
     pack: 1 kg
     date: 2026-10-10
     price: 0.85
@@ -80,7 +80,7 @@ entries:
     price: 2.49
   - ingredient: cibula
     store: terno
-    product: Cibuľa žltá voľná
+    product: Cibuľa žltá sieť 1kg
     pack: 1 kg
     date: 2026-10-10
     price: 0.99
@@ -207,7 +207,7 @@ entries:
     sale_until: 2026-10-13
   - ingredient: petrzlen-koren
     store: billa
-    product: CHUTE SLOVENSKA Petržlen praný
+    product: Petržlen praný
     pack: 1 kg
     date: 2026-10-10
     price: 2.99
@@ -591,7 +591,7 @@ entries:
     price: 1.69
   - ingredient: ovsene-vlocky-bezlepkove
     store: kaufland
-    product: Ovsené vločky výberové-bezgluténové 250 g
+    product: Ovsené vločky jemné bezgluténové 250 g
     pack: 250 g
     date: 2026-10-10
     price: 1.38
@@ -673,7 +673,7 @@ entries:
     price: 1.15
   - ingredient: cestoviny-bezlepkove
     store: terno
-    product: Panzani Gluten Free SPAGHETTI 400g
+    product: Panzani Gluten Free COQUILLETTES 400g
     pack: 400 g
     date: 2026-10-10
     price: 2.89
@@ -718,7 +718,7 @@ entries:
     sale_until: 2026-10-14
   - ingredient: olej
     store: lidl
-    product: Vita D'or Repkový olej
+    product: Bell Rastlinný olej repkový
     pack: 1 l
     date: 2026-10-10
     url: https://www.lidl.sk
@@ -757,7 +757,7 @@ entries:
     sale_until: 2026-10-31
   - ingredient: chlieb
     store: kaufland
-    product: Chlieb konzumný 1000 g, Mravec a synovia,s.r.o.
+    product: Chlieb konzumný 1000 g, VAMEX, a.s., Košice
     pack: 1 kg
     date: 2026-10-10
     price: 1.59
@@ -770,7 +770,7 @@ entries:
     price: 1.59
   - ingredient: chlieb
     store: terno
-    product: Chlieb pšenično-ražný 1000g DRAHOVCE
+    product: Chlieb biely 1000g NELAPEK
     pack: 1 kg
     date: 2026-10-10
     price: 1.79
@@ -808,17 +808,17 @@ entries:
     price: 2.49
   - ingredient: chlieb-bezlepkovy
     store: lidl
-    product: Tastino Bezgluténový chlieb krájaný, biely
+    product: Tastino Bezgluténový chlieb krájaný, viaczrnný
     pack: 250 g
     date: 2026-10-10
     url: https://www.lidl.sk
     price: 1.75
   - ingredient: chlieb-bezlepkovy
     store: tesco
-    product: TS Free From bezglutén.chl. tmavý 250 g
+    product: TS Free From bezgluten.chl. svetly 250 g
     pack: 250 g
     date: 2026-10-10
-    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005100547400
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005100547399
     price: 1.55
   - ingredient: sojove-mlieko
     store: billa
@@ -835,10 +835,10 @@ entries:
     price: 1.39
   - ingredient: sojove-mlieko
     store: tesco
-    product: TS Sójový nápoj sladeny 1 l
+    product: TS Sojovy napoj nesladeny 1 l
     pack: 1 l
     date: 2026-10-10
-    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005100766337
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2005100766339
     price: 1.39
   - ingredient: sojovy-jogurt
     store: fresh
@@ -865,3 +865,73 @@ entries:
     date: 2026-10-10
     price: 1.393
     sale_until: 2026-10-13
+  - ingredient: ovseny-napoj
+    store: billa
+    product: Billa Bio ovsenný nápoj s vápnikom
+    pack: 1 l
+    date: 2026-10-10
+    price: 1.79
+  - ingredient: ovseny-napoj
+    store: fresh
+    product: NÁPOJ BIO OVSENÝ BEZLEPKOVÝ 1l SOUL
+    pack: 1 l
+    date: 2026-10-10
+    price: 1.95
+  - ingredient: ovseny-napoj
+    store: lidl
+    product: Vemondo Bio Ovsený nápoj
+    pack: 1 l
+    date: 2026-10-10
+    url: https://www.lidl.sk
+    price: 1.39
+  - ingredient: ovseny-napoj
+    store: terno
+    product: OATLY Ovsený náp. Vit. a miner. bez cukru 1l
+    pack: 1 l
+    date: 2026-10-10
+    price: 2.69
+  - ingredient: rozok
+    store: billa
+    product: ROŽOK 50g pečivo bežné, Danubia a.s.
+    pack: 50 g
+    date: 2026-10-10
+    price: 0.14
+  - ingredient: rozok
+    store: fresh
+    product: ROŽOK BIELY 50g
+    pack: 50 g
+    date: 2026-10-10
+    price: 0.14
+  - ingredient: rozok
+    store: fresh
+    product: ROŽOK REMESELNÝ 50g
+    pack: 50 g
+    date: 2026-10-10
+    price: 0.13
+    sale_until: 2026-12-31
+  - ingredient: rozok
+    store: kaufland
+    product: Rožok 50 g, Senické a skalické pekárne, a.s.
+    pack: 50 g
+    date: 2026-10-10
+    price: 0.14
+  - ingredient: rozok
+    store: lidl
+    product: Rožok bez E
+    pack: 50 g
+    date: 2026-10-10
+    url: https://www.lidl.sk
+    price: 0.14
+  - ingredient: rozok
+    store: terno
+    product: Rožok bez E 50gNELAPEK
+    pack: 50 g
+    date: 2026-10-10
+    price: 0.14
+  - ingredient: rozok
+    store: tesco
+    product: Rožok štandard 50g
+    pack: 50 g
+    date: 2026-10-10
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/2002012558386
+    price: 0.14

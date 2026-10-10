@@ -801,3 +801,35 @@
   store: ebio24
   pack: 170 g
   url: https://ebio24.sk/sk/products/sumac-mlety-170-g-royal-brand-101475
+- ingredient: fazula-cierna
+  store: grizly
+  pack: 1 ks
+  url: https://www.grizly.sk/amaizin-fazula-cierna-sterilizovana-bio-400-g
+- ingredient: citronova-trava
+  store: foodland
+  pack: 200 g
+  url: https://www.foodland.sk/cerstva-zelenina-a-ovocie/citronova-trava-cerstva-200g/
+- ingredient: cierny-caj
+  store: grizly
+  pack: 40 g
+  url: https://www.grizly.sk/apotheke-cierny-caj-ceylon-20-x-2-g
+- ingredient: psyllium
+  store: grizly
+  pack: 500 g
+  url: https://www.grizly.sk/grizly-psyllium-500-g
+- ingredient: horka-cokolada
+  store: grizly
+  pack: 80 g
+  url: https://www.grizly.sk/carla-horka-cokolada-70-80-g
+- ingredient: lasagne-platne
+  store: veganstore
+  pack: 250 g
+  url: https://www.veganstore.sk/p/lasagne-s-krupicou-bio-250g-bio-idea
+- ingredient: vanilka
+  store: grizly
+  pack: 10 ml
+  url: https://www.grizly.sk/gresik-vanilkovy-extrakt-10-ml
+- ingredient: kava
+  store: grizly
+  pack: 250 g
+  url: https://www.grizly.sk/lavazza-qualita-oro-mleta-kava-250-g

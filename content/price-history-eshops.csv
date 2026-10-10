@@ -176,3 +176,117 @@ date,ingredient,store,price,pack,sale_until,product
 2026-10-01,amarant,veganstore,3.03,500 g,,Amarant Bio 500g Country life
 2026-10-01,miso,veganstore,7.05,400 g,,Miso shiro biela ryža 400g Muso
 2026-10-01,vyzivne-drozdie,veganstore,3.03,150 g,,Lahôdkové droždie 150g Country life
+2026-10-10,ryza-jazminova,grizly,2.24,1 kg,,GRIZLY Ryža jazmínová 1 kg
+2026-10-10,ryza-arborio,grizly,4.99,1 kg,,GRIZLY Ryža Arborio 1 kg
+2026-10-10,ryza-sushi,grizly,2.48,1 kg,,GRIZLY Ryža Sushi 1 kg
+2026-10-10,quinoa,grizly,6.49,1 kg,,GRIZLY Quinoa biela 1 kg
+2026-10-10,pohanka,grizly,4.12,1 kg,,GRIZLY Pohánka lúpaná krúpy 1 kg
+2026-10-10,proso,grizly,2.49,1 kg,,GRIZLY Pšeno 1 kg
+2026-10-10,bulgur,grizly,2.99,1 kg,,GRIZLY Bulgur hrubý 1 kg
+2026-10-10,krupy,grizly,1.49,500 g,,PROBIO Bioharmonie Jačmenné krúpy (veľké) 500 g
+2026-10-10,ovsene-vlocky,grizly,2.49,1 kg,,GRIZLY Ovsené vločky 1 kg
+2026-10-10,ovsene-vlocky-bezlepkove,grizly,3.37,1 kg,,GRIZLY Ovsené vločky jemné bezlepkové 1 kg
+2026-10-10,ryzova-muka,grizly,1.49,500 g,,GRIZLY Ryžová múka 500 g
+2026-10-10,cicerova-muka,grizly,3.29,450 g,,PROBIO Bioharmonie Cícerová múka BIO 450 g
+2026-10-10,maniokova-muka,grizly,6.49,1 kg,,GRIZLY manioková (Cassava) múka BIO 1 kg
+2026-10-10,kukuricny-skrob,grizly,3.19,200 g,,Amylon Kukuričný škrob BIO 200 g
+2026-10-10,popcorn,grizly,6.59,1 kg,,Wolfberry Kukurica na popcorn BIO 1 kg
+2026-10-10,sosovica-cervena,grizly,2.62,1 kg,,GRIZLY šošovica červená polená 1 kg
+2026-10-10,sosovica-hneda,grizly,2.99,1 kg,,GRIZLY Šošovica hnedá Laird 1 kg
+2026-10-10,cicer-suchy,grizly,2.62,1 kg,,GRIZLY Cícer Kabul 1 kg
+2026-10-10,zlty-hrach,grizly,1.87,1 kg,,GRIZLY Hrach žltý lúpaný polený 1 kg
+2026-10-10,mungo,grizly,3.74,1 kg,,GRIZLY Fazuľa Mungo 1 kg
+2026-10-10,sojove-zrna,grizly,2.59,500 g,,Country Life Sójové bôby BIO 500 g
+2026-10-10,sojove-granule,grizly,0.89,100 g,,Country Life Sójový granulát 100 g
+2026-10-10,kesu,grizly,10.99,1 kg,,GRIZLY Kešu natural WW320 1 kg
+2026-10-10,kesu,grizly,9.49,1 kg,,GRIZLY Kešu zlomky 1 kg
+2026-10-10,mandle,grizly,12.99,1 kg,,GRIZLY Mandle natural 1 kg
+2026-10-10,vlasske-orechy,grizly,12.99,1 kg,,GRIZLY Vlašské orechy 1 kg
+2026-10-10,lieskove-orechy,grizly,24.99,1 kg,,GRIZLY Lieskové orechy natural 1 kg
+2026-10-10,arasidy,grizly,4.72,1 kg,,GRIZLY Arašidy pražené nesolené 1 kg
+2026-10-10,arasidove-maslo,grizly,7.49,1 kg,,GRIZLY Arašidové maslo jemné 100% 1 kg
+2026-10-10,tahini,grizly,9.99,650 g,,Country Life Tahini bez soli BIO Horizon 650 g
+2026-10-10,tahini,grizly,5.79,400 g,,Wolfberry Tahini sezamová pasta 400 g
+2026-10-10,sezam,grizly,5.62,1 kg,,GRIZLY Sezam lúpaný 1 kg
+2026-10-10,mak,grizly,7.99,1 kg,,GRIZLY Mak mletý 100% 1 kg
+2026-10-10,lanove-semienko,grizly,2.99,1 kg,,GRIZLY Ľanové semienko hnedé 1 kg
+2026-10-10,chia,grizly,6.99,1 kg,,GRIZLY Chia semienka 1 kg
+2026-10-10,konopne-semienka,grizly,12.99,1 kg,,GRIZLY Konopné semienko lúpané 1 kg
+2026-10-10,slnecnicove-semienka,grizly,2.99,1 kg,,GRIZLY Slnečnicové semienka lúpané 1 kg
+2026-10-10,tekvicove-semienka,grizly,8.99,1 kg,,GRIZLY Tekvicové semienko lúpané české 1 kg
+2026-10-10,kokos-struhany,grizly,10.99,1 kg,,GRIZLY Kokos strúhaný 1 kg
+2026-10-10,kokosovy-olej,grizly,9.49,1 kg,,GRIZLY BIO RBD Kokosový olej 1 kg
+2026-10-10,olivovy-olej,grizly,13.12,1 l,,GRIZLY Olivový olej extra panenský 1 l
+2026-10-10,vyzivne-drozdie,grizly,4.95,250 g,,GRIZLY Lahôdkové droždie 250 g
+2026-10-10,drozdie,grizly,1.89,100 g,,Wolfberry Droždie aktívne - instantné kvasnice 100 g
+2026-10-10,kypriaci-prasok,grizly,2.47,200 g,,GRIZLY Prášok kypriaci do pečiva BIO 200 g
+2026-10-10,agar,grizly,1.89,30 g,,Wolfberry Agar 30 g
+2026-10-10,sojova-omacka,grizly,5.09,500 ml,,Country Life Shoyu sójová omáčka 500 ml
+2026-10-10,tamari,grizly,4.29,500 ml,,Country Life Tamari sójová omáčka 500 ml
+2026-10-10,tamarind,grizly,3.89,200 g,,Heera Tamarindová pasta 200 g
+2026-10-10,harissa,grizly,3.59,70 g,,Sonnentor Harissa BIO 70 g
+2026-10-10,kecup,grizly,2.99,520 g,,GRIZLY Kečup sladký 520 g
+2026-10-10,hrozienka,grizly,6.49,1 kg,,GRIZLY Hrozienka Sultánky 1 kg
+2026-10-10,datle,grizly,4.29,1 kg,,GRIZLY Datle sušené 1 kg
+2026-10-10,susene-marhule,grizly,21.99,1 kg,,GRIZLY Marhuľe sušené 1 kg
+2026-10-10,matcha,grizly,13.29,100 g,,GRIZLY Matcha BIO 100 g
+2026-10-10,ibistek,grizly,5.49,250 g,,GRIZLY Ibiškový kvet 250 g
+2026-10-10,kurkuma,grizly,7.99,500 g,,GRIZLY Kurkuma mletá BIO 500 g
+2026-10-10,sladka-paprika,grizly,1.49,50 g,,GRIZLY Paprika sladká mletá 50 g
+2026-10-10,udena-paprika,grizly,1.99,50 g,,GRIZLY Paprika sladká údená mletá 50 g
+2026-10-10,rasca,grizly,5.24,500 g,,GRIZLY Rasca celá 500 g
+2026-10-10,skorica,grizly,4.49,250 g,,GRIZLY Škorica mletá 250 g
+2026-10-10,tymian,grizly,0.99,15 g,,GRIZLY Tymián drhnutý 15 g
+2026-10-10,rozmarin,grizly,2.99,25 g,,Sonnentor Rozmarín bio 25 g
+2026-10-10,kmin,grizly,2.99,100 g,,Heera Rímsky kmín mletý 100 g
+2026-10-10,koriander-mlety,grizly,1.69,100 g,,Heera Koriander mletý dhania 100 g
+2026-10-10,cierne-korenie,grizly,3.49,50 g,,Sonnentor Korenie čierne mleté BIO 50 g
+2026-10-10,cili,grizly,2.89,40 g,,Sonnentor Chilli mleté ​​BIO 40 g
+2026-10-10,garam-masala,grizly,4.49,55 g,,Sonnentor Garam Masala mletá BIO 55 g
+2026-10-10,kari-korenie,grizly,2.28,50 g,,Grešík Indické karí 50 g
+2026-10-10,bobkovy-list,grizly,2.02,10 g,,Grešík Bobkový list celý 10 g
+2026-10-10,klincek,grizly,2.64,20 g,,Grešík - Klinček celý 20 g
+2026-10-10,nove-korenie,grizly,2.79,35 g,,Sonnentor Nové korenie celé bio 35 g
+2026-10-10,badian,grizly,3.89,50 g,,Heera Badián 50 g
+2026-10-10,muskatovy-orech,grizly,4.39,30 g,,Sonnentor Muškátový oriešok mletý bio 30 g
+2026-10-10,kardamom,grizly,6.79,40 g,,Sonnentor Kardamóm BIO celý 40 g
+2026-10-10,horcicne-semienko,grizly,2.39,120 g,,Sonnentor Semienka horčice žltej bio 120 g
+2026-10-10,susene-huby,grizly,4.59,25 g,,Sonnentor Hríby rezané BIO 25 g
+2026-10-10,miso,foodland,3.21,400 g,,Miso Pasta Červená HIKARI 400g
+2026-10-10,miso,foodland,5.95,500 g,,BIO Biela miso pasta HIKARI 500 g
+2026-10-10,nori,foodland,9.04,50 ks,,Morské riasy SUSHINORI na suši RED INAKA 50 listov 50 ks
+2026-10-10,nori,foodland,2.98,10 ks,,Morské riasy na suši YAKI SUSHI NORI JHFOODS 10 listov 10 ks
+2026-10-10,gochujang,foodland,3.57,250 g,,Čili pasta kórejská GOCHUJANG SEMPIO 250g
+2026-10-10,gochujang,foodland,8.33,1 kg,,Čili pasta Kórejská GOCHUJANG SEMPIO 1000g
+2026-10-10,gochugaru,foodland,12.5,1 kg,,Kórejská červená paprika Gochugaru DAE KYUNG 1 kg
+2026-10-10,ryzove-rezance,foodland,3.09,500 g,,Ryžové rezance široké PHO OH! RICEY 500g
+2026-10-10,psenicne-rezance,foodland,2.26,400 g,,Somen biele japonské rezance EAGLOBE 400g
+2026-10-10,tteok,foodland,4.76,500 g,,Kórejské ryžové koláčiky (duté) Tteokbokki JONGGA 500g
+2026-10-10,kecap-manis,foodland,4.76,600 ml,,Sladká sójová omáčka Kecap Manis ABC 600 ml
+2026-10-10,sezamovy-olej,foodland,9.52,650 ml,,Sezamový olej 100% OH AIK GUAN 650 ml
+2026-10-10,sojova-omacka,foodland,7.74,1 l,,Sójová omáčka KIKKOMAN 1000ml
+2026-10-10,kokosove-mlieko,foodland,2.62,400 ml,,Kokosové mlieko AROY-D 400 ml
+2026-10-10,kokosove-mlieko,foodland,4.05,1 l,,Kokosové mlieko AROY-D 1000ml
+2026-10-10,lepkava-ryza,foodland,3.93,1 kg,,Lepkavá ryža ROYAL THAI 1 kg
+2026-10-10,lepkava-ryzova-muka,foodland,1.68,400 g,,Múka z lepkavej ryže COCK BRAND 400 g
+2026-10-10,ryzova-muka,foodland,1.68,400 g,,Ryžová múka VINH THUAN 400g
+2026-10-10,cicerova-muka,foodland,3.57,1 kg,,Cícerová superjemná múka KTC 1000 g
+2026-10-10,tapiokovy-skrob,foodland,1.58,400 g,,Tapiokový škrob COCK BRAND 400 g
+2026-10-10,ryza-sushi,foodland,3.93,1 kg,,Suši ryža OBENTO 1 kg
+2026-10-10,mungo,foodland,2.02,400 g,,Zelená mungo fazuľa nelúpaná COCK BRAND 400g
+2026-10-10,edamame,foodland,2.94,500 g,,Edamame - Sójové struky zmrazené ASIAN CHOICE 500g
+2026-10-10,kala-namak,veganstore,1.63,100 g,,Soľ čierna Kala Namak 100g Cereus
+2026-10-10,tofu-hodvabne,veganstore,1.17,125 g,,Hodvábne Silken tofu extra jemné 125g Veto
+2026-10-10,vegansky-syr,veganstore,4.7,250 g,,Vegánska alternatíva syra pizza 250 g GreenVie
+2026-10-10,amarant,veganstore,3.04,500 g,,Amarant Bio 500g Country life
+2026-10-10,miso,veganstore,7.07,400 g,,Miso shiro biela ryža 400g Muso
+2026-10-10,vyzivne-drozdie,veganstore,2.91,150 g,,Lahôdkové droždie 150g Country life
+2026-10-10,sojove-granule,veganstore,1.09,100 g,,Sójový granulát 100g Country life
+2026-10-10,fazula-cierna,grizly,2.29,1 ks,,Amaizin Fazuľa čierna sterilizovaná BIO 1 ks
+2026-10-10,citronova-trava,foodland,2.73,200 g,,Čerstvá citrónová tráva 200g
+2026-10-10,cierny-caj,grizly,2.69,40 g,,Apotheke Čierny čaj Ceylon 20 x 2 g
+2026-10-10,psyllium,grizly,14.49,500 g,,GRIZLY Psyllium BIO 500 g
+2026-10-10,horka-cokolada,grizly,1.99,80 g,,Carla Horká čokoláda 70% 80 g
+2026-10-10,lasagne-platne,veganstore,2.58,250 g,,Lasagne s krupicou Bio 250g Bio Idea
+2026-10-10,vanilka,grizly,2.93,10 ml,,Grešík Vanilkový extrakt 10 ml
+2026-10-10,kava,grizly,9.99,250 g,,Lavazza Qualitá ORO - mletá káva 250 g

@@ -782,10 +782,10 @@ date,ingredient,store,price,pack,sale_until,product
 2026-10-10,zemiaky,terno,1.19,1 kg,,Zemiaky Larissa/Georgina konz. nesk. voľné
 2026-10-10,zemiaky,tesco,0.99,1 kg,,Zemiaky volne konzumne neskore
 2026-10-10,cibula,billa,0.79,1 kg,,CLEVER cibuľa
-2026-10-10,cibula,fresh,0.85,1 kg,,CIBUĽA VOĽNÁ
+2026-10-10,cibula,fresh,0.85,1 kg,,CIBUĽA ŽLTÁ 1kg BALENÁ FRESH
 2026-10-10,cibula,kaufland,0.55,1 kg,,ZLT Cibuľa žltá 1kg
 2026-10-10,cibula,lidl,2.49,5 kg,,Cibuľa 5kg
-2026-10-10,cibula,terno,0.99,1 kg,,Cibuľa žltá voľná
+2026-10-10,cibula,terno,0.99,1 kg,,Cibuľa žltá sieť 1kg
 2026-10-10,cibula,tesco,0.89,1 kg,,GH Cibuľa balená 1 kg
 2026-10-10,cibula-cervena,billa,0.79,500 g,,CHUTE SLOVENSKA Cibuľa červená
 2026-10-10,cibula-cervena,fresh,1.35,1 kg,,CIBUĽA ČERVENÁ SUCHÁ
@@ -804,7 +804,7 @@ date,ingredient,store,price,pack,sale_until,product
 2026-10-10,mrkva,terno,1.29,1 kg,,Mrkva voľná
 2026-10-10,mrkva,tesco,1.29,1 kg,,EX Mrkva voľná
 2026-10-10,mrkva,tesco,0.79,1 kg,2026-10-13,EX Tesco mrkva balená 1 kg
-2026-10-10,petrzlen-koren,billa,2.99,1 kg,,CHUTE SLOVENSKA Petržlen praný
+2026-10-10,petrzlen-koren,billa,2.99,1 kg,,Petržlen praný
 2026-10-10,petrzlen-koren,fresh,2.65,1 kg,,PETRŽLEN VOĽNÝ
 2026-10-10,petrzlen-koren,kaufland,2.69,1 kg,,Petržlen praný
 2026-10-10,petrzlen-koren,kaufland,1.79,1 kg,2026-10-14,Petržlen praný
@@ -863,7 +863,7 @@ date,ingredient,store,price,pack,sale_until,product
 2026-10-10,ovsene-vlocky,tesco,0.65,500 g,,TESCO OV. VLOCKY JEMNE 500 G
 2026-10-10,ovsene-vlocky-bezlepkove,billa,1.69,500 g,,Bonavita ovs.vločky Celé bez lepku
 2026-10-10,ovsene-vlocky-bezlepkove,fresh,1.69,500 g,,VLOČKY OVSENÉ JEMNÉ BEZLEPKOVÉ 500g
-2026-10-10,ovsene-vlocky-bezlepkove,kaufland,1.38,250 g,,Ovsené vločky výberové-bezgluténové 250 g
+2026-10-10,ovsene-vlocky-bezlepkove,kaufland,1.38,250 g,,Ovsené vločky jemné bezgluténové 250 g
 2026-10-10,ovsene-vlocky-bezlepkove,terno,1.89,350 g,,RAVITA Ovsené vločky bezglutenové hrubé 350g
 2026-10-10,ovsene-vlocky-bezlepkove,tesco,2.39,500 g,,TFF Vlocky ovsene jemne bezglut. 500 g
 2026-10-10,cestoviny,billa,0.55,500 g,,Clever kolienka stredné bezvaječné
@@ -876,33 +876,44 @@ date,ingredient,store,price,pack,sale_until,product
 2026-10-10,cestoviny-bezlepkove,billa,1.79,500 g,,500g SAM MILLS kukuričné kolienka
 2026-10-10,cestoviny-bezlepkove,fresh,1.99,300 g,,CEST. KOLIENKA RYŽ. 300g LUCKA BEZLEP.
 2026-10-10,cestoviny-bezlepkove,kaufland,1.15,500 g,,Kfree Špagety bezlepkové 500 g
-2026-10-10,cestoviny-bezlepkove,terno,2.89,400 g,,Panzani Gluten Free SPAGHETTI 400g
+2026-10-10,cestoviny-bezlepkove,terno,2.89,400 g,,Panzani Gluten Free COQUILLETTES 400g
 2026-10-10,cestoviny-bezlepkove,tesco,2.15,500 g,,TFF SPAGHETTI 500g
 2026-10-10,olej,billa,1.49,1 l,,Clever olej Repkový
 2026-10-10,olej,fresh,1.99,1 l,,OLEJ SLNEČNICOVÝ 1l 100% FRESH
 2026-10-10,olej,fresh,1.78,1 l,2026-12-31,OLEJ SLNEČNICOVÝ 1l 100% FRESH
 2026-10-10,olej,kaufland,1.99,1 l,,K Classic Repkový olej 1 l
 2026-10-10,olej,kaufland,1.59,1 l,2026-10-14,K Classic Slnečnicový olej 1 l
-2026-10-10,olej,lidl,1.49,1 l,,Vita D'or Repkový olej
+2026-10-10,olej,lidl,1.49,1 l,,Bell Rastlinný olej repkový
 2026-10-10,olej,terno,2.39,1 l,,Olej Slnečnicový BELL 1l
 2026-10-10,olej,tesco,1.79,1 l,,TS SLNECNICOVY OLEJ 1 l
 2026-10-10,chlieb,billa,1.55,1 kg,,"CHLIEB PŠENIČNO-RAŽNÝ 1000g chlieb voľný, LZ TRADEMARK"
 2026-10-10,chlieb,fresh,1.75,1 kg,,CHLIEB SVETLÝ PŠEN. 1kg
 2026-10-10,chlieb,fresh,1.54,1 kg,2026-10-31,CHLIEB SVETLÝ PŠEN. 1kg
-2026-10-10,chlieb,kaufland,1.59,1 kg,,"Chlieb konzumný 1000 g, Mravec a synovia,s.r.o."
+2026-10-10,chlieb,kaufland,1.59,1 kg,,"Chlieb konzumný 1000 g, VAMEX, a.s., Košice"
 2026-10-10,chlieb,lidl,1.59,1 kg,,Chlieb konzumný bez E
-2026-10-10,chlieb,terno,1.79,1 kg,,Chlieb pšenično-ražný 1000g DRAHOVCE
+2026-10-10,chlieb,terno,1.79,1 kg,,Chlieb biely 1000g NELAPEK
 2026-10-10,chlieb,tesco,1.59,1 kg,,Chlieb pšenično - ražný konzumný 1kg
 2026-10-10,chlieb-bezlepkovy,billa,3.15,320 g,,"CHLIEB ČIERNY CELOZRNNÝ 320g BEZGLUTÉNOVÝ, Novalim spol.s r.o."
 2026-10-10,chlieb-bezlepkovy,fresh,1.69,300 g,,CHLIEB BOSNIAK BEZLEP. 300g
 2026-10-10,chlieb-bezlepkovy,fresh,0.59,210 g,2027-01-17,CHLIEB BEZLEP. 210g
 2026-10-10,chlieb-bezlepkovy,kaufland,2.49,350 g,,K free Bezgluténový kukurično-ryžový chlieb semienkový krájaný 350 g
-2026-10-10,chlieb-bezlepkovy,lidl,1.75,250 g,,"Tastino Bezgluténový chlieb krájaný, biely"
-2026-10-10,chlieb-bezlepkovy,tesco,1.55,250 g,,TS Free From bezglutén.chl. tmavý 250 g
+2026-10-10,chlieb-bezlepkovy,lidl,1.75,250 g,,"Tastino Bezgluténový chlieb krájaný, viaczrnný"
+2026-10-10,chlieb-bezlepkovy,tesco,1.55,250 g,,TS Free From bezgluten.chl. svetly 250 g
 2026-10-10,sojove-mlieko,billa,1.59,1 l,,Billa Bio sojóvý nápoj natural
 2026-10-10,sojove-mlieko,lidl,1.39,1 l,,Vemondo Bio Sójový nápoj
-2026-10-10,sojove-mlieko,tesco,1.39,1 l,,TS Sójový nápoj sladeny 1 l
+2026-10-10,sojove-mlieko,tesco,1.39,1 l,,TS Sojovy napoj nesladeny 1 l
 2026-10-10,sojovy-jogurt,fresh,2.89,400 g,,JOG. SÓJ. VÝROBOK 400g BIELY BEZ CUKRU ALPRO
 2026-10-10,sojovy-jogurt,kaufland,1.68,500 g,,K Veggie Sojagurt natur 500 g
 2026-10-10,rastlinna-smotana,billa,1.79,250 ml,,Rajo Vegan krém na varenie 15%
 2026-10-10,rastlinna-smotana,billa,1.393,250 ml,2026-10-13,Alpro ryžová smotana na varenie
+2026-10-10,ovseny-napoj,billa,1.79,1 l,,Billa Bio ovsenný nápoj s vápnikom
+2026-10-10,ovseny-napoj,fresh,1.95,1 l,,NÁPOJ BIO OVSENÝ BEZLEPKOVÝ 1l SOUL
+2026-10-10,ovseny-napoj,lidl,1.39,1 l,,Vemondo Bio Ovsený nápoj
+2026-10-10,ovseny-napoj,terno,2.69,1 l,,OATLY Ovsený náp. Vit. a miner. bez cukru 1l
+2026-10-10,rozok,billa,0.14,50 g,,"ROŽOK 50g pečivo bežné, Danubia a.s."
+2026-10-10,rozok,fresh,0.14,50 g,,ROŽOK BIELY 50g
+2026-10-10,rozok,fresh,0.13,50 g,2026-12-31,ROŽOK REMESELNÝ 50g
+2026-10-10,rozok,kaufland,0.14,50 g,,"Rožok 50 g, Senické a skalické pekárne, a.s."
+2026-10-10,rozok,lidl,0.14,50 g,,Rožok bez E
+2026-10-10,rozok,terno,0.14,50 g,,Rožok bez E 50gNELAPEK
+2026-10-10,rozok,tesco,0.14,50 g,,Rožok štandard 50g
