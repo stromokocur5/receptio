@@ -51,6 +51,7 @@
 		if (now.length) shares = now;
 	}
 	const sharedBy = (ids: string[] | undefined) =>
+		// Names stay in the nominative ("delia sa: Ema, Jano"); "za Ema" would need declining them.
 		!ids || list.every((m) => ids.includes(m.id)) ? '' : ids.map(nameOf).join(', ');
 	const date = new Intl.DateTimeFormat('sk-SK', { day: 'numeric', month: 'numeric' });
 
@@ -153,7 +154,7 @@
 						<strong>{nameOf(e.by)}</strong>
 						{#if e.to}→ {nameOf(e.to)}{/if}
 						{#if e.note}<span class="muted">· {e.note}</span>{/if}
-						{#if sharedBy(e.for)}<span class="muted">· za {sharedBy(e.for)}</span>{/if}
+						{#if sharedBy(e.for)}<span class="muted">· delia sa: {sharedBy(e.for)}</span>{/if}
 					</span>
 					<span class="sum">{formatEur(e.amount)}</span>
 					<span class="remove">
