@@ -212,7 +212,7 @@
 - ingredient: javorovy-sirup
   store: grizly
   pack: 250 ml
-  url: https://www.grizly.sk/country-life-sirup-javorovy-grade-a-bio-250-ml
+  url: https://www.grizly.sk/country-life-sirup-javorovy-grade-c-250-ml
 - ingredient: tamarind
   store: grizly
   pack: 200 g
@@ -367,8 +367,8 @@
   url: https://www.foodland.sk/pasty-korenia/cili-pasta-korejska-gochujang-sempio-1000g/
 - ingredient: gochugaru
   store: foodland
-  pack: 454 g
-  url: https://www.foodland.sk/horeca-hotel-restauracia-catering/paprika-paliva-mleta-gochugaru-taekyung-454-g/
+  pack: 1 kg
+  url: https://www.foodland.sk/horeca-hotel-restauracia-catering/korejska-cervena-paprika-gochugaru-dae-kyung-1-kg/
 - ingredient: gochugaru
   store: foodland
   pack: 1 kg
@@ -376,15 +376,15 @@
 - ingredient: ryzovy-papier
   store: foodland
   pack: 400 g
-  url: https://www.foodland.sk/ryzovy-papier/ryzovy-papier-na-cerstve-jarne-rolky-tufoco-400g/
+  url: https://www.foodland.sk/ryzovy-papier/ryzovy-papier-na-cerstve-jarne-rolky-tufoco-400g+3812/
 - ingredient: soba
   store: foodland
   pack: 300 g
-  url: https://www.foodland.sk/pohankove-rezance/soba-pohankove-japonske-rezance-chunsi-300g/
+  url: https://www.foodland.sk/psenicne-rezance/soba-pohankove-rezance-ayuko-300g/
 - ingredient: sklenene-rezance
   store: foodland
   pack: 500 g
-  url: https://www.foodland.sk/sklenene-rezance/sklenene-rezance-zo-sladkych-zemiakov-eaglobe-500-g/
+  url: https://www.foodland.sk/sklenene-rezance/sklenene-rezance-zo-sladkych-zemiakov-ottogi-500g/
 - ingredient: ryzove-rezance
   store: foodland
   pack: 500 g
@@ -400,23 +400,23 @@
 - ingredient: wakame
   store: foodland
   pack: 100 g
-  url: https://www.foodland.sk/susena-zelenina/wakame-morske-riasy-susene-inaka-100g/
+  url: https://www.foodland.sk/susena-zelenina/morske-riasy-wakame-rezane-a-susene-hutaku-100g/
 - ingredient: kombu
   store: foodland
-  pack: 150 g
-  url: https://www.foodland.sk/susena-zelenina/kombu-kelp-morske-riasy-susene-deasang-150g/
+  pack: 170 g
+  url: https://www.foodland.sk/susena-zelenina/kombu-kelp-morske-riasy-susene-wang-korea-170g/
 - ingredient: kecap-manis
   store: foodland
   pack: 600 ml
   url: https://www.foodland.sk/sojove-omacky/sladka-sojova-omacka-kecap-manis-abc-600-ml/
 - ingredient: sriracha
   store: foodland
-  pack: 481 g
-  url: https://www.foodland.sk/sriracha-cili-omacky/cili-omacka-sriracha-huy-fong-481g-pikantna/
+  pack: 455 ml
+  url: https://www.foodland.sk/sriracha-cili-omacky/sriracha-paliva-cili-omacka-flying-goose-455-ml/
 - ingredient: ryzovy-ocot
   store: foodland
-  pack: 355 ml
-  url: https://www.foodland.sk/susi/ryzovy-ocot-mizkan-355ml/
+  pack: 500 ml
+  url: https://www.foodland.sk/susi/ryzovy-ocot-mizkan-komesu-500ml/
 - ingredient: sezamovy-olej
   store: foodland
   pack: 650 ml
@@ -427,8 +427,8 @@
   url: https://www.foodland.sk/sojove-omacky/sojova-omacka-kikkoman-1000ml/
 - ingredient: tamarind
   store: foodland
-  pack: 227 g
-  url: https://www.foodland.sk/pasty-korenia/tamarind-pasta-suree-227-g/
+  pack: 454 g
+  url: https://www.foodland.sk/koreniny/tamarind-koncentrat-na-varenie-cock-brand-454-g/
 - ingredient: kokosove-mlieko
   store: foodland
   pack: 400 ml
