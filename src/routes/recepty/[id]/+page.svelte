@@ -507,16 +507,16 @@
 				</div>
 				{#if recipe.showNutrition}
 					<div>
-						<dt><Icon name="bean" size={16} /> Bielkoviny</dt>
-						<dd>
-							{formatNumber(recipe.perServing.protein, 0)} g <span class="unit">/ porcia</span>
-						</dd>
-					</div>
-					<div>
-						<dt><Icon name="leaf" size={16} /> Vláknina</dt>
-						<dd>
-							{formatNumber(recipe.perServing.fiber, 0)} g <span class="unit">/ porcia</span>
-							<small>z {formatNumber(targets.fiber, 0)} g denne</small>
+						<dt><Icon name="bean" size={16} /> Na porciu</dt>
+						<dd class="per-serving">
+							<span
+								>{formatNumber(recipe.perServing.protein, 0)} g
+								<span class="unit">bielkovín</span></span
+							>
+							<span title="Odporúča sa aspoň {formatNumber(targets.fiber, 0)} g vlákniny denne"
+								>{formatNumber(recipe.perServing.fiber, 0)} g
+								<span class="unit">vlákniny</span></span
+							>
 						</dd>
 					</div>
 				{:else if recipe.yields}
@@ -1351,6 +1351,11 @@
 		color: var(--ink-2);
 		font-weight: 500;
 	}
+	.per-serving {
+		display: flex;
+		flex-direction: column;
+		line-height: 1.25;
+	}
 	.price-note {
 		color: inherit;
 	}
@@ -2165,7 +2170,7 @@
 
 	@media (min-width: 720px) {
 		.facts {
-			grid-template-columns: 0.9fr 1fr 1.3fr 0.9fr 0.9fr;
+			grid-template-columns: 0.9fr 1fr 1.3fr 0.9fr;
 			gap: 10px;
 		}
 		.facts div {

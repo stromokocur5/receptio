@@ -80,6 +80,6 @@ test('a diet filter hides recipes that don’t fit and stays in the URL', async 
 
 test('a recipe shows fibre and where its carbs come from', async ({ page }) => {
 	await visit(page, '/recepty/seitan');
-	await expect(page.locator('.facts').getByText('Vláknina')).toBeVisible();
+	await expect(page.locator('.facts').getByText('vlákniny')).toBeVisible();
 	await expect(page.getByText(/Energia z bielkovín \d+ %/)).toBeVisible();
 });
