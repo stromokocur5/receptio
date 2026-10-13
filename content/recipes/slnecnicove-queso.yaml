@@ -1,0 +1,33 @@
+title: Slnečnicové queso
+description: Teplá ťahavá „syrová“ omáčka zo slnečnice – na nachos, do burrita aj na zemiaky. Za zlomok ceny kešu.
+cuisine: mexicka
+meals: [snack]
+categories: [omacky/dipy, omacky/omacky]
+time: 25
+active: 10
+servings: 6
+difficulty: 1
+tags: [lacne, party]
+keeps: { fridge: 5 }
+related: [tortilla-chipsy, nacho-syrova-omacka, domace-psenicne-tortilly]
+ingredients:
+  - slnecnicove-semienka: 1 hrnček
+  - voda: 1 hrnček | horúca
+  - vyzivne-drozdie: 3 pl
+  - tapiokovy-skrob: 1 pl
+  - limetka: 1 ks | šťava
+  - cesnak: 1 ks
+  - kmin: 1/2 čl
+  - udena-paprika: 1/2 čl
+  - sol: 1 čl
+  - paradajky-sterilizovane: 100 g | nakrájané, voliteľne
+  - cili-papricka: 1 ks | nadrobno
+steps:
+  - Semienka zalej vriacou vodou a var 10 minút, kým nezmäknú. Odlej a vodu vylej, je horká.
+  - Rozmixuj ich s hrnčekom horúcej vody, droždím, škrobom, limetkovou šťavou, cesnakom, kmínom, paprikou a soľou úplne dohladka, aspoň minútu.
+  - Prelej do hrnca a na strednom ohni stále miešaj 2–3 minúty, kým nezhustne a nezačne sa ťahať. Ak je hustá, prilej lyžicu vody.
+  - Vmiešaj paradajky a čili a podávaj teplú.
+tips:
+  - Bez limetky môže slnečnica po čase zozelenieť – je to neškodná reakcia, ale kyselina ju zastaví.
+  - Škrob robí ťahavosť; bez neho je z toho hustý dip, nie queso.
+  - Vychladnutá stuhne, na panvici s lyžicou vody sa znova roztečie.
