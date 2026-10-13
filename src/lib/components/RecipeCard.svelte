@@ -109,7 +109,7 @@
 					{formatNumber(recipe.perServing.protein, 0)} g</span
 				>
 				<span title="Vláknina na porciu"
-					><Icon name="leaf" size={16} /> <span class="sr-only">vláknina</span>
+					><Icon name="wheat" size={16} /> <span class="sr-only">vláknina</span>
 					{formatNumber(recipe.perServing.fiber, 0)} g</span
 				>
 				<span

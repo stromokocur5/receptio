@@ -655,7 +655,7 @@
 		{ label: 'Do 20 minút', search: 'cas=20', icon: 'clock', tone: 'var(--sky)' },
 		{ label: 'Niečo sladké', search: 'chut=sladke', icon: 'cake', tone: 'var(--tomato)' },
 		{ label: 'Veľa bielkovín', search: 'bielkoviny=20', icon: 'bean', tone: 'var(--leaf)' },
-		{ label: 'Veľa vlákniny', search: 'vlaknina=10', icon: 'leaf', tone: 'var(--leaf-2)' },
+		{ label: 'Veľa vlákniny', search: 'vlaknina=10', icon: 'wheat', tone: 'var(--leaf-2)' },
 		{ label: 'Lacno', search: 'sort=cena', icon: 'euro', tone: 'var(--turmeric)' }
 	];
 
@@ -1351,11 +1351,19 @@
 		align-items: center;
 		margin-top: 14px;
 	}
-	/* A mouse can't swipe the row sideways, so on wider screens it wraps instead. */
+	/* A mouse can't swipe the row sideways, so wider screens get two even rows instead. */
 	@media (min-width: 720px) {
 		.ideas {
-			flex-wrap: wrap;
+			display: grid;
+			grid-template-columns: repeat(4, 1fr);
 			overflow-x: visible;
+			margin-bottom: 12px;
+		}
+		.ideas-label {
+			grid-column: 1 / -1;
+		}
+		.ideas .idea {
+			min-width: 0;
 		}
 	}
 	.ideas-label {
