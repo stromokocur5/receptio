@@ -1351,6 +1351,13 @@
 		align-items: center;
 		margin-top: 14px;
 	}
+	/* A mouse can't swipe the row sideways, so on wider screens it wraps instead. */
+	@media (min-width: 720px) {
+		.ideas {
+			flex-wrap: wrap;
+			overflow-x: visible;
+		}
+	}
 	.ideas-label {
 		flex: none;
 		margin-right: 4px;

@@ -1,12 +1,12 @@
 ---
-title: Varenie pre veľa ľudí (Food Not Bombs)
-summary: Ako uvariť teplé, sýte a lacné jedlo pre 20 až 100 ľudí – aj zo zachránených potravín – a bezpečne ho rozdať ľuďom bez domova či v núdzi.
+title: Varenie pre veľa ľudí
+summary: Ako uvariť teplé, sýte a lacné jedlo pre 20 až 100 ľudí – aj zo zachránených potravín – a bezpečne ho rozdať.
 section: navody
 icon: users
 order: 16
 ---
 
-**Food Not Bombs** je hnutie, ktoré vzniklo v roku 1980 v USA: dobrovoľníci zbierajú jedlo, ktoré by sa vyhodilo, uvaria z neho vegánske alebo vegetariánske jedlo a zadarmo ho rozdajú na ulici. Skupiny fungujú samostatne po celom svete. Nasledujúce rady sa hodia pre nich aj pre komunitné kuchyne, tábory, zbierky či rodinné oslavy.
+Rady na varenie vo veľkom – na oslavu, tábor, brigádu, komunitnú kuchyňu alebo rozdávanie jedla.
 
 Recepty nižšie sú napísané rovno pre 20–30 ľudí. Každý iný recept v Receptiu prepočítaš tlačidlami pri porciách – suroviny aj množstvá v postupe sa zmenia.
 
