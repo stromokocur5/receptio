@@ -14,30 +14,50 @@ const recipe = (ids: string[], equipment: string[] = []) =>
 		lines: ids.map((ingredientId) => ({ ingredientId })),
 		equipment,
 		treat: [],
-		categories: ['hlavne/kari']
+		categories: ['hlavne/kari'],
+		diets: [],
+		variants: []
 	}) as unknown as RecipeSummary;
 
 describe('avoidFilter', () => {
 	it('hides recipes with any form of an avoided ingredient', () => {
-		const allowed = avoidFilter({ ingredients: ['cicer-suchy'], tools: [], treats: false }, byId);
+		const allowed = avoidFilter(
+			{ ingredients: ['cicer-suchy'], tools: [], treats: false, diets: [] },
+			byId
+		);
 		expect(allowed(recipe(['cicer-sterilizovany']))).toBe(false);
 		expect(allowed(recipe(['ryza']))).toBe(true);
 	});
 
 	it('hides recipes needing a missing tool', () => {
-		const allowed = avoidFilter({ ingredients: [], tools: ['rura'], treats: false }, byId);
+		const allowed = avoidFilter(
+			{ ingredients: [], tools: ['rura'], treats: false, diets: [] },
+			byId
+		);
 		expect(allowed(recipe(['ryza'], ['rura']))).toBe(false);
 	});
 
 	it('hides fast food and "na občas" dishes only when asked', () => {
 		const fried = { ...recipe(['ryza']), treat: ['vyprazane'] } as RecipeSummary;
 		const kebab = { ...recipe(['ryza']), categories: ['comfort/kebab'] } as RecipeSummary;
-		const off = avoidFilter({ ingredients: [], tools: [], treats: false }, byId);
-		const on = avoidFilter({ ingredients: [], tools: [], treats: true }, byId);
+		const off = avoidFilter({ ingredients: [], tools: [], treats: false, diets: [] }, byId);
+		const on = avoidFilter({ ingredients: [], tools: [], treats: true, diets: [] }, byId);
 		expect([fried, kebab].every(off)).toBe(true);
 		expect([fried, kebab].some(on)).toBe(false);
 		expect(on(recipe(['ryza']))).toBe(true);
-		expect(isAvoiding({ ingredients: [], tools: [], treats: true })).toBe(true);
+		expect(isAvoiding({ ingredients: [], tools: [], treats: true, diets: [] })).toBe(true);
+	});
+
+	it('keeps recipes that fit the diets as written or in a variant', () => {
+		const allowed = avoidFilter(
+			{ ingredients: [], tools: [], treats: false, diets: ['low-fodmap'] },
+			byId
+		);
+		const plain = recipe(['ryza']);
+		expect(allowed(plain)).toBe(false);
+		expect(allowed({ ...plain, diets: ['low-fodmap'] })).toBe(true);
+		const swapped = { ...plain, variants: [{ name: 'Bez cibule', diets: ['low-fodmap'] }] };
+		expect(allowed(swapped as unknown as RecipeSummary)).toBe(true);
 	});
 });
 
@@ -46,7 +66,8 @@ describe('validateAvoid', () => {
 		expect(validateAvoid({ ingredients: ['a', 'a', 3, '<b>'], tools: 'x' })).toEqual({
 			ingredients: ['a'],
 			tools: [],
-			treats: false
+			treats: false,
+			diets: []
 		});
 		expect(validateAvoid([])).toBeUndefined();
 	});

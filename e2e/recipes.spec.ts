@@ -66,3 +66,20 @@ test('an ingredient that isn’t at home offers what to use instead', async ({ p
 	await expect(swap).toHaveAttribute('aria-expanded', 'true');
 	await expect(page.locator('#suroviny .swaps').first()).toBeVisible();
 });
+
+test('a diet filter hides recipes that don’t fit and stays in the URL', async ({ page }) => {
+	await visit(page, '/recepty?q=hummus');
+	await expect(page.getByRole('link', { name: 'Krémový hummus' })).toBeVisible();
+	const filters = page.locator('#filters');
+	if (!(await filters.isVisible())) await page.getByRole('button', { name: /Filtre/ }).click();
+	await filters.getByText('Strava a alergie').click();
+	await filters.getByRole('button', { name: 'Low FODMAP' }).click();
+	await expect(page).toHaveURL(/dieta=low-fodmap/);
+	await expect(page.getByRole('link', { name: 'Krémový hummus' })).toBeHidden();
+});
+
+test('a recipe shows fibre and where its carbs come from', async ({ page }) => {
+	await visit(page, '/recepty/seitan');
+	await expect(page.locator('.facts').getByText('Vláknina')).toBeVisible();
+	await expect(page.getByText(/Energia z bielkovín \d+ %/)).toBeVisible();
+});

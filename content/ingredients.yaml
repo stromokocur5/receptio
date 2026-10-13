@@ -8,6 +8,8 @@
 # co2: kg CO₂e na kg (Our World in Data, Poore & Nemecek 2018); bez údaja platí priemer kategórie
 # group_factor: koľko gramov „bežnej“ formy v skupine urobí 1 g tejto (suchý cícer 2.4 = po uvarení 2,4× ťažší)
 # howto: návody zo sekcie Základy (content/wiki), recept na ne odkáže automaticky
+# diet: fodmap = koľko g na porciu je ešte low FODMAP (Monash, zaokrúhlené, 0 = vysoké v každom množstve),
+#       histamine / oxalate / nightshade: true = veľa histamínu / oxalátov, ľuľkovité
 # free_sugar: podiel pridaného (voľného) cukru v hmotnosti, podľa neho sa recept označí „Na občas“
 
 # ── Obilniny a prílohy ──────────────────────────────────────────
@@ -52,6 +54,7 @@
   name: Quinoa (suchá)
   howto: [quinoa]
   category: obilniny
+  diet: { oxalate: true }
   n: { kcal: 368, p: 14.1, c: 64.2, f: 6.1, fib: 7, salt: 0, fe: 4.6, ca: 47, zn: 3.1, ala: 0.26 }
   units: { hrnček: 170 }
   price: 7
@@ -73,6 +76,7 @@
 - id: pohanka
   name: Pohánka lúpaná (suchá)
   category: obilniny
+  diet: { oxalate: true }
   n: { kcal: 343, p: 13.3, c: 71.5, f: 3.4, fib: 10, salt: 0, fe: 2.2, ca: 18, zn: 2.4 }
   units: { hrnček: 170 }
   price: 3
@@ -94,6 +98,7 @@
 - id: ovsene-vlocky
   name: Ovsené vločky
   category: obilniny
+  diet: { fodmap: 52 }
   gluten: risk
   gf_alternative: ovsene-vlocky-bezlepkove
   note: bežný ovos je kontaminovaný pšenicou, pri celiakii len certifikovaný bezlepkový
@@ -117,6 +122,7 @@
 - id: ovsene-vlocky-bezlepkove
   name: Ovsené vločky certifikované bezlepkové
   category: obilniny
+  diet: { fodmap: 52 }
   group: ovsene-vlocky
   n: { kcal: 379, p: 13.2, c: 67.7, f: 6.5, fib: 10.1, salt: 0, fe: 4.3, ca: 52, zn: 3.6, ala: 0.1 }
   units: { hrnček: 90, pl: 8 }
@@ -132,6 +138,7 @@
   name: Cestoviny pšeničné (suché)
   howto: [cestoviny]
   category: obilniny
+  diet: { fodmap: 20 }
   gluten: contains
   gf_alternative: cestoviny-bezlepkove
   n: { kcal: 371, p: 13, c: 75, f: 1.5, fib: 3.2, salt: 0, fe: 1.3, ca: 21, zn: 1.4 }
@@ -174,6 +181,7 @@
   name: Hladká múka pšeničná
   howto: [zahustovanie]
   category: obilniny
+  diet: { fodmap: 25 }
   gluten: contains
   gf_alternative: ryzova-muka
   n: { kcal: 364, p: 10.3, c: 76, f: 1, fib: 2.7, salt: 0, fe: 1.2, ca: 15, zn: 0.7 }
@@ -269,6 +277,7 @@
   name: Zemiaky
   howto: [supanie]
   category: zelenina
+  diet: { nightshade: true }
   n: { kcal: 77, p: 2, c: 17, f: 0.1, fib: 2.2, salt: 0, fe: 0.8, ca: 12, zn: 0.3 }
   units: { ks: 150 }
   price: 1
@@ -294,6 +303,7 @@
   aliases: [sladký zemiak]
   howto: [supanie, pecenie-zeleniny]
   category: zelenina
+  diet: { fodmap: 75, oxalate: true }
   n: { kcal: 86, p: 1.6, c: 20, f: 0.1, fib: 3, salt: 0.1, fe: 0.6, ca: 30, zn: 0.3 }
   units: { ks: 250 }
   price: 2.5
@@ -318,6 +328,7 @@
   name: Šošovica červená (suchá)
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 10 }
   n: { kcal: 358, p: 24, c: 63, f: 2.2, fib: 11, salt: 0, fe: 7.4, ca: 48, zn: 3.6, ala: 0.1 }
   units: { hrnček: 190 }
   price: 3
@@ -337,6 +348,7 @@
   name: Šošovica hnedá/zelená (suchá)
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 10 }
   n: { kcal: 352, p: 24.6, c: 63, f: 1.1, fib: 10.7, salt: 0, fe: 6.5, ca: 35, zn: 3.3, ala: 0.1 }
   units: { hrnček: 190 }
   price: 3
@@ -359,6 +371,7 @@
   name: Cícer sterilizovaný (scedený)
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 42 }
   group: cicer
   n: { kcal: 140, p: 7.4, c: 22, f: 2.6, fib: 6.5, salt: 0.5, fe: 1.5, ca: 45, zn: 1.2, ala: 0.05 }
   units: { ks: 240 }
@@ -380,6 +393,7 @@
   name: Cícer suchý
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 17 }
   group: cicer
   group_factor: 2.4
   n: { kcal: 378, p: 20.5, c: 63, f: 6, fib: 12.2, salt: 0, fe: 4.3, ca: 57, zn: 2.8, ala: 0.1 }
@@ -398,6 +412,7 @@
   name: Čierna fazuľa sterilizovaná (scedená)
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 40 }
   n: { kcal: 132, p: 8.9, c: 23.7, f: 0.5, fib: 8.7, salt: 0.5, fe: 2.1, ca: 27, zn: 1.1, ala: 0.1 }
   units: { ks: 240 }
   price: 3.5
@@ -415,6 +430,7 @@
   name: Červená fazuľa sterilizovaná (scedená)
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 0 }
   n: { kcal: 127, p: 8.7, c: 22.8, f: 0.5, fib: 6.4, salt: 0.5, fe: 2.9, ca: 35, zn: 1, ala: 0.1 }
   units: { ks: 240 }
   price: 3
@@ -432,6 +448,7 @@
   name: Červená fazuľa suchá
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 0 }
   group: fazula-cervena
   group_factor: 2.4
   n: { kcal: 333, p: 23.6, c: 60, f: 0.8, fib: 15.2, salt: 0, fe: 8.2, ca: 143, zn: 2.8, ala: 0.2 }
@@ -450,6 +467,7 @@
   name: Biela fazuľa suchá
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 0 }
   group: fazula-biela
   group_factor: 2.4
   n: { kcal: 337, p: 22, c: 61, f: 1.5, fib: 15.5, salt: 0, fe: 5.5, ca: 175, zn: 2.5, ala: 0.2 }
@@ -467,6 +485,7 @@
   name: Biela fazuľa sterilizovaná (scedená)
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 0 }
   n: { kcal: 139, p: 9.7, c: 25, f: 0.4, fib: 6.3, salt: 0.5, fe: 3.7, ca: 90, zn: 1.4, ala: 0.1 }
   units: { ks: 240 }
   price: 3
@@ -544,6 +563,7 @@
   name: Cibuľa
   howto: [cibula]
   category: zelenina
+  diet: { fodmap: 0 }
   n: { kcal: 40, p: 1.1, c: 9.3, f: 0.1, fib: 1.7, salt: 0, fe: 0.2, ca: 23, zn: 0.2 }
   units: { ks: 110 }
   price: 1
@@ -568,6 +588,7 @@
   name: Cibuľa červená
   howto: [cibula]
   category: zelenina
+  diet: { fodmap: 0 }
   group: cibula
   n: { kcal: 40, p: 1.1, c: 9.3, f: 0.1, fib: 1.7, salt: 0, fe: 0.2, ca: 23, zn: 0.2 }
   units: { ks: 110 }
@@ -606,6 +627,7 @@
   name: Cesnak (strúčik)
   howto: [cesnak-zazvor]
   category: zelenina
+  diet: { fodmap: 0 }
   n: { kcal: 149, p: 6.4, c: 33, f: 0.5, fib: 2.1, salt: 0, fe: 1.7, ca: 181, zn: 1.2 }
   units: { ks: 5 }
   price: 6
@@ -667,6 +689,7 @@
 - id: zeler-stonkovy
   name: Zeler stonkový
   category: zelenina
+  diet: { fodmap: 10 }
   allergens: [celery]
   n: { kcal: 16, p: 0.7, c: 3, f: 0.2, fib: 1.6, salt: 0.2, fe: 0.2, ca: 40, zn: 0.1 }
   units: { ks: 40 }
@@ -686,6 +709,7 @@
 - id: paprika-cervena
   name: Paprika červená
   category: zelenina
+  diet: { fodmap: 43, nightshade: true }
   n: { kcal: 31, p: 1, c: 6, f: 0.3, fib: 2.1, salt: 0, fe: 0.4, ca: 7, zn: 0.3 }
   units: { ks: 160 }
   price: 3
@@ -711,6 +735,7 @@
   name: Paradajky čerstvé
   howto: [supanie]
   category: zelenina
+  diet: { histamine: true, nightshade: true }
   n: { kcal: 18, p: 0.9, c: 3.9, f: 0.2, fib: 1.2, salt: 0, fe: 0.3, ca: 10, zn: 0.2 }
   units: { ks: 120 }
   price: 2.5
@@ -735,6 +760,7 @@
 - id: paradajky-sterilizovane
   name: Paradajky krájané v plechovke
   category: zelenina
+  diet: { histamine: true, nightshade: true }
   n: { kcal: 24, p: 1.2, c: 4, f: 0.2, fib: 1.3, salt: 0.3, fe: 1, ca: 30, zn: 0.2 }
   units: { ks: 400 }
   price: 2
@@ -764,6 +790,7 @@
 - id: paradajkovy-pretlak
   name: Paradajkový pretlak
   category: zelenina
+  diet: { fodmap: 28, histamine: true, nightshade: true }
   n: { kcal: 82, p: 4.3, c: 19, f: 0.5, fib: 4.1, salt: 0.2, fe: 3, ca: 36, zn: 0.6 }
   units: { pl: 16 }
   price: 5
@@ -808,6 +835,7 @@
   name: Brokolica
   howto: [pecenie-zeleniny]
   category: zelenina
+  diet: { fodmap: 75 }
   n: { kcal: 34, p: 2.8, c: 6.6, f: 0.4, fib: 2.6, salt: 0.1, fe: 0.7, ca: 47, zn: 0.4 }
   units: { ks: 400 }
   price: 3
@@ -829,6 +857,7 @@
   name: Špenát (čerstvý alebo mrazený)
   howto: [umyvanie]
   category: zelenina
+  diet: { histamine: true, oxalate: true }
   n: { kcal: 23, p: 2.9, c: 3.6, f: 0.4, fib: 2.2, salt: 0.2, fe: 2.7, ca: 99, zn: 0.5, ala: 0.1 }
   units: { hrnček: 30 }
   price: 4
@@ -875,6 +904,7 @@
 - id: kukurica
   name: Kukurica sterilizovaná (scedená)
   category: zelenina
+  diet: { fodmap: 75 }
   n: { kcal: 80, p: 2.5, c: 15, f: 1.2, fib: 2.5, salt: 0.5, fe: 0.5, ca: 5, zn: 0.6 }
   units: { ks: 285 }
   price: 3.5
@@ -891,6 +921,7 @@
 - id: avokado
   name: Avokádo
   category: zelenina
+  diet: { fodmap: 30, histamine: true }
   n: { kcal: 160, p: 2, c: 8.5, f: 14.7, fib: 6.7, salt: 0, fe: 0.6, ca: 12, zn: 0.6, ala: 0.1 }
   units: { ks: 150 }
   price: 7
@@ -948,6 +979,7 @@
 - id: limetka
   name: Limetka (šťava)
   category: ovocie
+  diet: { histamine: true }
   n: { kcal: 25, p: 0.4, c: 8.4, f: 0.1, fib: 0.4, salt: 0, fe: 0.1, ca: 14, zn: 0.1 }
   units: { ks: 30, pl: 15 }
   price: 6
@@ -966,6 +998,7 @@
 - id: citron
   name: Citrón (šťava)
   category: ovocie
+  diet: { histamine: true }
   n: { kcal: 22, p: 0.4, c: 6.9, f: 0.2, fib: 0.3, salt: 0, fe: 0.1, ca: 6, zn: 0.1 }
   units: { ks: 45, pl: 15, čl: 5 }
   price: 3
@@ -985,6 +1018,7 @@
 - id: banan
   name: Banán
   category: ovocie
+  diet: { fodmap: 35, histamine: true }
   n: { kcal: 89, p: 1.1, c: 22.8, f: 0.3, fib: 2.6, salt: 0, fe: 0.3, ca: 5, zn: 0.2 }
   units: { ks: 120 }
   price: 1.5
@@ -1002,6 +1036,7 @@
 - id: pomaranc
   name: Pomaranč
   category: ovocie
+  diet: { histamine: true }
   n: { kcal: 47, p: 0.9, c: 11.8, f: 0.1, fib: 2.4, salt: 0, fe: 0.1, ca: 40, zn: 0.1 }
   units: { ks: 150 }
   price: 1.8
@@ -1019,6 +1054,7 @@
 - id: maliny
   name: Maliny (aj mrazené)
   category: ovocie
+  diet: { fodmap: 60 }
   n: { kcal: 52, p: 1.2, c: 12, f: 0.7, fib: 6.5, salt: 0, fe: 0.7, ca: 25, zn: 0.4, ala: 0.1 }
   units: { hrnček: 125 }
   price: 7
@@ -1037,6 +1073,7 @@
 - id: arasidove-maslo
   name: Arašidové maslo (100 % arašidy)
   category: orechy-semienka
+  diet: { histamine: true, oxalate: true }
   allergens: [peanuts]
   n: { kcal: 588, p: 25, c: 20, f: 50, fib: 6, salt: 0, fe: 1.9, ca: 43, zn: 2.9 }
   units: { pl: 16, čl: 6 }
@@ -1058,6 +1095,7 @@
 - id: sezam
   name: Sezam
   category: orechy-semienka
+  diet: { oxalate: true }
   allergens: [sesame]
   n:
     {
@@ -1107,6 +1145,7 @@
 - id: lanove-semienko
   name: Ľanové semienko mleté
   category: orechy-semienka
+  diet: { fodmap: 15 }
   n:
     {
       kcal: 534,
@@ -1137,6 +1176,7 @@
 - id: chia
   name: Chia semienka
   category: orechy-semienka
+  diet: { fodmap: 24 }
   n:
     {
       kcal: 486,
@@ -1167,6 +1207,7 @@
   name: Sójový nápoj s vápnikom (nesladený)
   aliases: [sójové mlieko, mlieko]
   category: rastlinne-mlieka
+  diet: { fodmap: 0 }
   allergens: [soy]
   n:
     {
@@ -1206,6 +1247,7 @@
   name: Ovsený nápoj s vápnikom
   aliases: [ovsené mlieko, oat milk, ovsený nápoj]
   category: rastlinne-mlieka
+  diet: { fodmap: 125 }
   gluten: risk
   note: bežný ovos býva kontaminovaný pšenicou, pri celiakii len s označením bez lepku; vápnik a B12 len v obohatených
   n:
@@ -1273,6 +1315,7 @@
 - id: sojova-omacka
   name: Sójová omáčka
   category: omacky-pasty
+  diet: { histamine: true }
   gluten: contains
   gf_alternative: tamari
   allergens: [soy]
@@ -1298,6 +1341,7 @@
 - id: tamari
   name: Tamari (bezlepková sójová omáčka)
   category: omacky-pasty
+  diet: { histamine: true }
   group: sojova-omacka
   allergens: [soy]
   n: { kcal: 60, p: 10.5, c: 5.6, f: 0.1, fib: 0.8, salt: 14, fe: 2.4, ca: 20, zn: 0.4 }
@@ -1318,6 +1362,7 @@
 - id: zelena-kari-pasta
   name: Zelená kari pasta (vegánska)
   category: omacky-pasty
+  diet: { fodmap: 0, nightshade: true }
   gluten: risk
   n: { kcal: 110, p: 2, c: 12, f: 5, fib: 4, salt: 8, fe: 2, ca: 50, zn: 0.5 }
   units: { pl: 16, čl: 5 }
@@ -1341,6 +1386,7 @@
 - id: zeleninovy-vyvar
   name: Zeleninový vývar (pripravený)
   category: omacky-pasty
+  diet: { fodmap: 0 }
   gluten: risk
   allergens: [celery]
   note: bujóny a kocky často obsahujú pšenicu alebo jačmenný extrakt
@@ -1382,6 +1428,7 @@
 - id: kakao
   name: Kakao nesladené
   category: ine
+  diet: { histamine: true, oxalate: true }
   n: { kcal: 228, p: 19.6, c: 57.9, f: 13.7, fib: 37, salt: 0.1, fe: 13.9, ca: 128, zn: 6.8 }
   units: { pl: 6, čl: 2 }
   price: 12
@@ -1400,6 +1447,7 @@
   name: Výživné droždie (lupienky)
   aliases: [droždie]
   category: ine
+  diet: { histamine: true }
   n: { kcal: 370, p: 45, c: 35, f: 5, fib: 20, salt: 0.1, fe: 4, ca: 30, zn: 7 }
   units: { pl: 5, čl: 2 }
   price: 35
@@ -1434,6 +1482,7 @@
 - id: ocot
   name: Ocot kvasný (liehový)
   category: ine
+  diet: { histamine: true }
   n: { kcal: 18, p: 0, c: 0.1, f: 0, fib: 0, salt: 0, fe: 0, ca: 6, zn: 0 }
   units: { pl: 15, čl: 5 }
   price: 1
@@ -1631,6 +1680,7 @@
 - id: cili
   name: Čili mleté
   category: koreniny
+  diet: { nightshade: true }
   n: { kcal: 318, p: 12, c: 57, f: 17, fib: 27, salt: 0.1, fe: 7.8, ca: 148, zn: 2.5 }
   units: { čl: 2, pl: 6 }
   price: 25
@@ -1655,6 +1705,7 @@
 - id: gochugaru
   name: Gochugaru (kórejské čili vločky)
   category: koreniny
+  diet: { nightshade: true }
   n: { kcal: 290, p: 12, c: 52, f: 11, fib: 35, salt: 0.1, fe: 8, ca: 110, zn: 2.5 }
   units: { pl: 6, čl: 2 }
   price: 40
@@ -1673,6 +1724,7 @@
   name: Údená paprika
   howto: [korenie]
   category: koreniny
+  diet: { nightshade: true }
   n: { kcal: 282, p: 14, c: 54, f: 13, fib: 35, salt: 0.2, fe: 21, ca: 229, zn: 4.3 }
   units: { čl: 2.3 }
   price: 25
@@ -1694,6 +1746,7 @@
   name: Sladká paprika mletá
   howto: [korenie]
   category: koreniny
+  diet: { nightshade: true }
   n: { kcal: 282, p: 14, c: 54, f: 13, fib: 35, salt: 0.2, fe: 21, ca: 229, zn: 4.3 }
   units: { čl: 2.3, pl: 7 }
   price: 15
@@ -1865,6 +1918,7 @@
   name: Berbere (etiópska zmes korenia)
   howto: [korenie]
   category: koreniny
+  diet: { nightshade: true }
   n: { kcal: 300, p: 12, c: 55, f: 12, fib: 30, salt: 0.5, fe: 15, ca: 200, zn: 3 }
   units: { čl: 2.5, pl: 7.5 }
   price: 40
@@ -1982,6 +2036,7 @@
   aliases: [jogurt]
   howto: [nahrady, jogurty]
   category: nahrady
+  diet: { fodmap: 0 }
   allergens: [soy]
   n:
     {
@@ -2039,6 +2094,7 @@
   aliases: [sójové mäso]
   howto: [nahrady]
   category: nahrady
+  diet: { fodmap: 0, oxalate: true }
   allergens: [soy]
   n: { kcal: 330, p: 50, c: 30, f: 1.5, fib: 17, salt: 0, fe: 9, ca: 240, zn: 2.5, ala: 0.1 }
   units: { hrnček: 90 }
@@ -2061,6 +2117,7 @@
 - id: aquafaba
   name: Aquafaba (voda z plechovky cíceru)
   category: ine
+  diet: { fodmap: 0 }
   n: { kcal: 20, p: 1, c: 3, f: 0.2, fib: 0, salt: 0.5, fe: 0.2, ca: 5, zn: 0.1 }
   units: { hrnček: 240, pl: 15 }
   price: 0.001
@@ -2087,6 +2144,7 @@
   name: Tofu hodvábne (silken)
   howto: [tofu]
   category: bielkoviny
+  diet: { fodmap: 0 }
   allergens: [soy]
   n: { kcal: 55, p: 5, c: 2.5, f: 2.7, fib: 0.1, salt: 0, fe: 0.8, ca: 30, zn: 0.5, ala: 0.2 }
   price: 8
@@ -2105,6 +2163,7 @@
 - id: tempeh
   name: Tempeh
   category: bielkoviny
+  diet: { histamine: true }
   allergens: [soy]
   n: { kcal: 192, p: 20.3, c: 7.6, f: 10.8, fib: 4, salt: 0, fe: 2.7, ca: 111, zn: 1.1, ala: 0.1 }
   price: 15
@@ -2145,6 +2204,7 @@
   name: Hrach lúpaný žltý (suchý)
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 0 }
   n: { kcal: 341, p: 24.5, c: 60, f: 1.2, fib: 25.5, salt: 0, fe: 4.4, ca: 55, zn: 3 }
   units: { hrnček: 200 }
   price: 2
@@ -2160,6 +2220,7 @@
 - id: cicerova-muka
   name: Cícerová múka (besan)
   category: obilniny
+  diet: { fodmap: 0 }
   gluten: risk
   note: cícer je bezlepkový, ale múka býva mletá v mlynoch s pšenicou – pri celiakii len certifikovaná
   n: { kcal: 387, p: 22.4, c: 57.8, f: 6.7, fib: 10.8, salt: 0.1, fe: 4.9, ca: 45, zn: 2.8 }
@@ -2186,6 +2247,7 @@
   name: Karfiol
   howto: [pecenie-zeleniny]
   category: zelenina
+  diet: { fodmap: 0 }
   n: { kcal: 25, p: 1.9, c: 5, f: 0.3, fib: 2, salt: 0.1, fe: 0.4, ca: 22, zn: 0.3 }
   units: { ks: 600 }
   price: 3
@@ -2205,6 +2267,7 @@
 - id: cuketa
   name: Cuketa
   category: zelenina
+  diet: { fodmap: 65 }
   n: { kcal: 17, p: 1.2, c: 3.1, f: 0.3, fib: 1, salt: 0, fe: 0.4, ca: 16, zn: 0.3 }
   units: { ks: 250 }
   price: 2.5
@@ -2225,6 +2288,7 @@
   name: Kaleráb
   howto: [supanie]
   category: zelenina
+  diet: { fodmap: 75 }
   n: { kcal: 27, p: 1.7, c: 6.2, f: 0.1, fib: 3.6, salt: 0, fe: 0.4, ca: 24, zn: 0.1 }
   units: { ks: 250 }
   price: 3
@@ -2249,6 +2313,7 @@
   name: Cvikla (surová)
   howto: [supanie, pecenie-zeleniny]
   category: zelenina
+  diet: { fodmap: 20, oxalate: true }
   n: { kcal: 43, p: 1.6, c: 9.6, f: 0.2, fib: 2.8, salt: 0.2, fe: 0.8, ca: 16, zn: 0.4 }
   units: { ks: 150 }
   price: 1.5
@@ -2269,6 +2334,7 @@
 - id: kukurica-klas
   name: Kukurica v klase (čerstvá)
   category: zelenina
+  diet: { fodmap: 38 }
   n: { kcal: 86, p: 3.3, c: 19, f: 1.4, fib: 2, salt: 0, fe: 0.5, ca: 2, zn: 0.5 }
   units: { ks: 150 }
   price: 3.5
@@ -2293,6 +2359,7 @@
   aliases: [lilek]
   howto: [pecenie-zeleniny]
   category: zelenina
+  diet: { fodmap: 75, histamine: true, nightshade: true }
   n: { kcal: 25, p: 1, c: 6, f: 0.2, fib: 3, salt: 0, fe: 0.2, ca: 9, zn: 0.2 }
   units: { ks: 300 }
   price: 3
@@ -2335,6 +2402,7 @@
   aliases: [huby, hríby]
   howto: [umyvanie]
   category: zelenina
+  diet: { fodmap: 0 }
   n: { kcal: 22, p: 3.1, c: 3.3, f: 0.3, fib: 1, salt: 0, fe: 0.5, ca: 3, zn: 0.5 }
   units: { hrnček: 70 }
   price: 5
@@ -2376,6 +2444,7 @@
   name: Sušené huby (hríby)
   aliases: [huby]
   category: zelenina
+  diet: { fodmap: 0 }
   n: { kcal: 300, p: 20, c: 55, f: 3, fib: 20, salt: 0.1, fe: 5, ca: 30, zn: 5 }
   price: 60
   co2: 6.0
@@ -2397,6 +2466,7 @@
 - id: kysla-kapusta
   name: Kyslá kapusta
   category: zelenina
+  diet: { fodmap: 20, histamine: true }
   n: { kcal: 19, p: 0.9, c: 4.3, f: 0.1, fib: 2.9, salt: 1.7, fe: 1.5, ca: 30, zn: 0.2 }
   units: { hrnček: 140 }
   price: 2
@@ -2422,6 +2492,7 @@
 - id: biela-kapusta
   name: Biela hlávková kapusta
   category: zelenina
+  diet: { fodmap: 75 }
   n: { kcal: 25, p: 1.3, c: 5.8, f: 0.1, fib: 2.5, salt: 0, fe: 0.5, ca: 40, zn: 0.2 }
   units: { hrnček: 90 }
   price: 1.2
@@ -2458,6 +2529,7 @@
 - id: zelene-fazulky
   name: Zelené fazuľky (aj mrazené)
   category: zelenina
+  diet: { fodmap: 75 }
   n: { kcal: 31, p: 1.8, c: 7, f: 0.2, fib: 2.7, salt: 0, fe: 1, ca: 37, zn: 0.2 }
   price: 5
   co2: 0.6
@@ -2476,6 +2548,7 @@
 - id: hrasok
   name: Hrášok mrazený
   category: zelenina
+  diet: { fodmap: 15 }
   n: { kcal: 81, p: 5.4, c: 14.5, f: 0.4, fib: 5.1, salt: 0.1, fe: 1.5, ca: 25, zn: 1.2 }
   units: { hrnček: 145 }
   price: 3
@@ -2573,6 +2646,7 @@
 - id: kysle-uhorky
   name: Sterilizované uhorky (kyslé)
   category: zelenina
+  diet: { histamine: true }
   n: { kcal: 20, p: 0.3, c: 5, f: 0.2, fib: 1, salt: 1.5, fe: 0.3, ca: 30, zn: 0.1 }
   units: { ks: 40 }
   price: 3
@@ -2594,6 +2668,7 @@
 - id: passata
   name: Paradajková passata
   category: zelenina
+  diet: { histamine: true, nightshade: true }
   n: { kcal: 30, p: 1.4, c: 5.3, f: 0.2, fib: 1.2, salt: 0.3, fe: 0.8, ca: 18, zn: 0.2 }
   units: { hrnček: 245 }
   price: 2.5
@@ -2710,6 +2785,7 @@
 - id: jablko
   name: Jablko
   category: ovocie
+  diet: { fodmap: 0 }
   n: { kcal: 52, p: 0.3, c: 13.8, f: 0.2, fib: 2.4, salt: 0, fe: 0.1, ca: 6, zn: 0 }
   units: { ks: 180 }
   price: 1.8
@@ -2730,6 +2806,7 @@
 - id: slivky
   name: Slivky
   category: ovocie
+  diet: { fodmap: 0 }
   n: { kcal: 46, p: 0.7, c: 11.4, f: 0.3, fib: 1.4, salt: 0, fe: 0.2, ca: 6, zn: 0.1 }
   units: { ks: 40 }
   price: 2.5
@@ -2749,6 +2826,7 @@
 - id: susene-marhule
   name: Sušené marhule
   category: ovocie
+  diet: { fodmap: 0 }
   allergens: [sulphites]
   note: oranžové bývajú sírené (E220, siričitany), tmavohnedé nesírené sú bez nich
   n: { kcal: 241, p: 3.4, c: 62.6, f: 0.5, fib: 7.3, salt: 0, fe: 2.7, ca: 55, zn: 0.4 }
@@ -2772,6 +2850,7 @@
 - id: datle
   name: Datle (vykôstkované)
   category: ovocie
+  diet: { fodmap: 0 }
   n: { kcal: 282, p: 2.5, c: 75, f: 0.4, fib: 8, salt: 0, fe: 1, ca: 39, zn: 0.3 }
   units: { ks: 8 }
   price: 8
@@ -2793,6 +2872,7 @@
 - id: tahini
   name: Tahini (sezamová pasta)
   category: orechy-semienka
+  diet: { fodmap: 30, oxalate: true }
   allergens: [sesame]
   n: { kcal: 595, p: 17, c: 21, f: 54, fib: 9.3, salt: 0.1, fe: 4.5, ca: 140, zn: 4.6, ala: 0.4 }
   units: { pl: 15, čl: 5 }
@@ -2820,6 +2900,7 @@
   name: Kešu orechy (nepražené)
   howto: [nahrady]
   category: orechy-semienka
+  diet: { fodmap: 0, histamine: true, oxalate: true }
   allergens: [nuts]
   n: { kcal: 553, p: 18.2, c: 30, f: 43.9, fib: 3.3, salt: 0, fe: 6.7, ca: 37, zn: 5.8, ala: 0.1 }
   units: { hrnček: 130, pl: 10 }
@@ -2840,6 +2921,7 @@
 - id: vlasske-orechy
   name: Vlašské orechy
   category: orechy-semienka
+  diet: { histamine: true }
   allergens: [nuts]
   n: { kcal: 654, p: 15.2, c: 13.7, f: 65, fib: 6.7, salt: 0, fe: 2.9, ca: 98, zn: 3.1, ala: 9.1 }
   units: { hrnček: 100, pl: 7 }
@@ -2859,6 +2941,7 @@
 - id: arasidy
   name: Arašidy pražené nesolené
   category: orechy-semienka
+  diet: { histamine: true, oxalate: true }
   allergens: [peanuts]
   n: { kcal: 585, p: 24, c: 21, f: 49.7, fib: 8, salt: 0, fe: 2.3, ca: 54, zn: 3.3 }
   units: { hrnček: 145, pl: 9 }
@@ -2928,6 +3011,7 @@
 - id: chlieb
   name: Chlieb kváskový (pšenično-ražný)
   category: obilniny
+  diet: { fodmap: 100 }
   gluten: contains
   gf_alternative: chlieb-bezlepkovy
   n: { kcal: 250, p: 8.5, c: 48, f: 1.5, fib: 4, salt: 1.3, fe: 2, ca: 30, zn: 0.9 }
@@ -2969,6 +3053,7 @@
   name: Rožok
   aliases: [rožky, žemľa, pečivo]
   category: obilniny
+  diet: { fodmap: 30 }
   gluten: contains
   gf_alternative: pecivo-bezlepkove
   n: { kcal: 280, p: 9, c: 53, f: 3, fib: 2.5, salt: 1.3, fe: 1.8, ca: 40, zn: 0.8 }
@@ -2990,6 +3075,7 @@
 - id: bageta
   name: Bageta pšeničná
   category: obilniny
+  diet: { fodmap: 30 }
   gluten: contains
   gf_alternative: pecivo-bezlepkove
   n: { kcal: 270, p: 9, c: 55, f: 1.5, fib: 2.5, salt: 1.3, fe: 1.5, ca: 20, zn: 0.8 }
@@ -3012,6 +3098,7 @@
 - id: hamburgerova-zemla
   name: Hamburgerová žemľa (vegánska)
   category: obilniny
+  diet: { fodmap: 30 }
   gluten: contains
   gf_alternative: pecivo-bezlepkove
   n: { kcal: 270, p: 9, c: 49, f: 4, fib: 2.5, salt: 1.2, fe: 2, ca: 60, zn: 0.8 }
@@ -3046,6 +3133,7 @@
 - id: struhanka
   name: Strúhanka
   category: obilniny
+  diet: { fodmap: 20 }
   gluten: contains
   gf_alternative: struhanka-bezlepkova
   n: { kcal: 395, p: 13, c: 72, f: 5, fib: 4.5, salt: 1.8, fe: 2, ca: 100, zn: 1.2 }
@@ -3092,6 +3180,7 @@
 - id: lasagne-platne
   name: Lasagne platne (suché)
   category: obilniny
+  diet: { fodmap: 20 }
   gluten: contains
   gf_alternative: lasagne-platne-bezlepkove
   n: { kcal: 371, p: 13, c: 75, f: 1.5, fib: 3.2, salt: 0, fe: 1.3, ca: 21, zn: 1.4 }
@@ -3210,6 +3299,7 @@
 - id: horka-cokolada
   name: Horká čokoláda 70 % (vegánska)
   category: ine
+  diet: { fodmap: 30, histamine: true, oxalate: true }
   free_sugar: 0.3
   n: { kcal: 600, p: 7.8, c: 46, f: 43, fib: 11, salt: 0, fe: 11.9, ca: 73, zn: 3.3 }
   price: 20
@@ -3227,6 +3317,7 @@
 - id: miso
   name: Miso pasta (ryžové/sójové)
   category: omacky-pasty
+  diet: { histamine: true }
   gluten: risk
   allergens: [soy]
   note: mugi miso je jačmenné (lepok), ryžové kome miso nie
@@ -3248,6 +3339,7 @@
 - id: gochujang
   name: Gochujang (kórejská čili pasta)
   category: omacky-pasty
+  diet: { fodmap: 0, histamine: true, nightshade: true }
   gluten: contains
   allergens: [soy]
   note: takmer vždy obsahuje pšenicu alebo jačmeň
@@ -3265,6 +3357,7 @@
 - id: doubanjiang
   name: Doubanjiang (fermentovaná bôbová čili pasta)
   category: omacky-pasty
+  diet: { histamine: true, nightshade: true }
   gluten: contains
   allergens: [soy]
   note: bežne s pšeničnou múkou
@@ -3297,6 +3390,7 @@
 - id: lekvar
   name: Slivkový lekvár
   category: omacky-pasty
+  diet: { fodmap: 0 }
   free_sugar: 0.3
   n: { kcal: 220, p: 1, c: 54, f: 0.3, fib: 3, salt: 0, fe: 0.8, ca: 20, zn: 0.2 }
   units: { pl: 20, čl: 7 }
@@ -3315,6 +3409,7 @@
   name: Kečup
   aliases: [ketchup]
   category: omacky-pasty
+  diet: { fodmap: 13, histamine: true, nightshade: true }
   free_sugar: 0.22
   n: { kcal: 101, p: 1, c: 27, f: 0.1, fib: 0.3, salt: 2.3, fe: 0.4, ca: 15, zn: 0.2 }
   units: { pl: 17, čl: 6 }
@@ -3330,6 +3425,7 @@
 - id: sriracha
   name: Sriracha
   category: omacky-pasty
+  diet: { fodmap: 5, histamine: true, nightshade: true }
   n: { kcal: 93, p: 1.9, c: 19, f: 0.9, fib: 2.2, salt: 5.5, fe: 1.6, ca: 18, zn: 0.3 }
   units: { pl: 17, čl: 6 }
   price: 15
@@ -3394,6 +3490,7 @@
   name: Kari korenie (zmes)
   howto: [korenie]
   category: koreniny
+  diet: { nightshade: true }
   n: { kcal: 325, p: 14, c: 55.8, f: 14, fib: 53, salt: 0.1, fe: 19.1, ca: 525, zn: 4.7 }
   units: { čl: 2, pl: 6 }
   price: 20
@@ -3469,6 +3566,7 @@
   name: Sójové zrná (suché)
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 0, histamine: true, oxalate: true }
   allergens: [soy]
   n: { kcal: 446, p: 36.5, c: 30, f: 20, fib: 9.3, salt: 0, fe: 15.7, ca: 277, zn: 4.9, ala: 1.3 }
   units: { hrnček: 185 }
@@ -3487,6 +3585,7 @@
 - id: edamame
   name: Edamame v strukoch (mrazené)
   category: strukoviny
+  diet: { fodmap: 90 }
   allergens: [soy]
   n: { kcal: 67, p: 6.5, c: 4.9, f: 2.9, fib: 2.9, salt: 0, fe: 1.3, ca: 35, zn: 0.8, ala: 0.2 }
   price: 8
@@ -3504,6 +3603,7 @@
 - id: okara
   name: Okara (zvyšok zo sójového mlieka)
   category: strukoviny
+  diet: { fodmap: 0 }
   allergens: [soy]
   n: { kcal: 77, p: 3.5, c: 12.5, f: 1.7, fib: 5.8, salt: 0, fe: 1.3, ca: 80, zn: 0.6 }
   price: 0.001
@@ -3554,6 +3654,7 @@
 - id: topinambur
   name: Topinambur
   category: zelenina
+  diet: { fodmap: 0 }
   n: { kcal: 73, p: 2, c: 17.4, f: 0, fib: 1.6, salt: 0, fe: 3.4, ca: 14, zn: 0.1 }
   units: { ks: 60 }
   price: 4
@@ -3574,6 +3675,7 @@
 - id: amarant
   name: Amarant (láskavec)
   category: obilniny
+  diet: { oxalate: true }
   n: { kcal: 371, p: 13.6, c: 65, f: 7, fib: 6.7, salt: 0, fe: 7.6, ca: 159, zn: 2.9 }
   units: { hrnček: 195 }
   price: 6
@@ -3629,6 +3731,7 @@
   name: Bôb suchý (fava)
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 0 }
   group: bob
   group_factor: 2.3
   n: { kcal: 341, p: 26, c: 58, f: 1.5, fib: 25, salt: 0, fe: 6.7, ca: 103, zn: 3.1 }
@@ -3651,6 +3754,7 @@
   name: Bôb sterilizovaný (scedený)
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 0 }
   group: bob
   n: { kcal: 110, p: 7.6, c: 19.6, f: 0.4, fib: 5.4, salt: 0.5, fe: 1.5, ca: 36, zn: 1 }
   units: { ks: 240 }
@@ -3670,6 +3774,7 @@
 - id: lupinova-muka
   name: Lupínová múka
   category: strukoviny
+  diet: { fodmap: 0 }
   allergens: [lupin]
   n: { kcal: 370, p: 40, c: 11, f: 9, fib: 30, salt: 0, fe: 4.4, ca: 180, zn: 3 }
   units: { pl: 8, hrnček: 110 }
@@ -3726,6 +3831,7 @@
 - id: mangold
   name: Mangold
   category: zelenina
+  diet: { oxalate: true }
   n: { kcal: 19, p: 1.8, c: 3.7, f: 0.2, fib: 1.6, salt: 0.5, fe: 1.8, ca: 51, zn: 0.4 }
   units: { hrnček: 36, ks: 300 }
   price: 4
@@ -3797,6 +3903,7 @@
 - id: por
   name: Pór
   category: zelenina
+  diet: { fodmap: 0 }
   n: { kcal: 61, p: 1.5, c: 14, f: 0.3, fib: 1.8, salt: 0.1, fe: 2.1, ca: 59, zn: 0.1 }
   units: { ks: 150 }
   price: 2.5
@@ -3815,6 +3922,7 @@
 - id: ruzickovy-kel
   name: Ružičkový kel
   category: zelenina
+  diet: { fodmap: 38 }
   n: { kcal: 43, p: 3.4, c: 9, f: 0.3, fib: 3.8, salt: 0.1, fe: 1.4, ca: 42, zn: 0.4 }
   units: { hrnček: 90 }
   price: 4
@@ -3847,6 +3955,7 @@
 - id: krupy
   name: Jačmenné krúpy
   category: obilniny
+  diet: { fodmap: 0 }
   gluten: contains
   gf_alternative: pohanka
   n: { kcal: 352, p: 9.9, c: 77.7, f: 1.2, fib: 15.6, salt: 0, fe: 2.5, ca: 29, zn: 2.1 }
@@ -3868,6 +3977,7 @@
   name: Urad dal (čierna fazuľka, lúpaná)
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 0 }
   n: { kcal: 341, p: 25, c: 59, f: 1.6, fib: 18, salt: 0, fe: 7.6, ca: 138, zn: 3.4 }
   units: { hrnček: 200, pl: 12 }
   price: 5
@@ -3884,6 +3994,7 @@
   name: Mungo fazuľka
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 20 }
   n: { kcal: 347, p: 23.9, c: 62.6, f: 1.2, fib: 16.3, salt: 0, fe: 6.7, ca: 132, zn: 2.7 }
   units: { hrnček: 200 }
   price: 4
@@ -3932,6 +4043,7 @@
 - id: psenicna-krupica
   name: Pšeničná krupica
   category: obilniny
+  diet: { fodmap: 20 }
   gluten: contains
   gf_alternative: kukuricna-krupica
   n: { kcal: 360, p: 12.7, c: 73, f: 1, fib: 3.9, salt: 0, fe: 1.2, ca: 17, zn: 1 }
@@ -3981,6 +4093,7 @@
   name: Čili paprička čerstvá
   aliases: [chilli, feferónka]
   category: zelenina
+  diet: { nightshade: true }
   n: { kcal: 40, p: 1.9, c: 8.8, f: 0.4, fib: 1.5, salt: 0, fe: 1, ca: 14, zn: 0.3 }
   units: { ks: 15 }
   price: 10
@@ -4002,6 +4115,7 @@
 - id: cervena-kari-pasta
   name: Červená kari pasta
   category: omacky-pasty
+  diet: { fodmap: 0, nightshade: true }
   gluten: risk
   n: { kcal: 120, p: 2, c: 12, f: 7, fib: 4, salt: 8, fe: 2, ca: 40, zn: 0.4 }
   units: { pl: 18, čl: 6 }
@@ -4018,6 +4132,7 @@
 - id: mango
   name: Mango
   category: ovocie
+  diet: { fodmap: 0 }
   n: { kcal: 60, p: 0.8, c: 15, f: 0.4, fib: 1.6, salt: 0, fe: 0.2, ca: 11, zn: 0.1 }
   units: { ks: 200, hrnček: 165 }
   price: 3
@@ -4081,6 +4196,7 @@
   name: Fazuľa čierne oko (suchá)
   howto: [strukoviny]
   category: strukoviny
+  diet: { fodmap: 0 }
   n: { kcal: 336, p: 23.5, c: 60, f: 1.3, fib: 10.6, salt: 0, fe: 8.3, ca: 110, zn: 3.4 }
   units: { hrnček: 170 }
   price: 4
@@ -4176,6 +4292,7 @@
   name: Mladý jackfruit (sterilizovaný, scedený)
   aliases: [trhané mäso]
   category: zelenina
+  diet: { fodmap: 0 }
   n: { kcal: 50, p: 1.2, c: 10, f: 0.3, fib: 3, salt: 0.4, fe: 0.3, ca: 25, zn: 0.2 }
   units: { ks: 280 }
   price: 8
@@ -4193,6 +4310,7 @@
 - id: filo-cesto
   name: Filo cesto
   category: obilniny
+  diet: { fodmap: 20 }
   gluten: contains
   n: { kcal: 300, p: 7, c: 53, f: 6, fib: 1.9, salt: 1, fe: 3.2, ca: 11, zn: 0.5 }
   units: { ks: 20 }
@@ -4209,6 +4327,7 @@
 - id: olivy
   name: Olivy (čierne, kalamata)
   category: zelenina
+  diet: { histamine: true }
   n: { kcal: 115, p: 0.8, c: 6, f: 10.7, fib: 3.2, salt: 1.8, fe: 3.3, ca: 88, zn: 0.2 }
   units: { ks: 4, pl: 10 }
   price: 10
@@ -4272,6 +4391,7 @@
 - id: pita
   name: Pita chlieb
   category: obilniny
+  diet: { fodmap: 30 }
   gluten: contains
   gf_alternative: pecivo-bezlepkove
   n: { kcal: 275, p: 9, c: 55, f: 1.2, fib: 2.2, salt: 1.3, fe: 2.6, ca: 86, zn: 0.8 }
@@ -4291,6 +4411,7 @@
 - id: kuskus
   name: Kuskus
   category: obilniny
+  diet: { fodmap: 20 }
   gluten: contains
   gf_alternative: proso
   n: { kcal: 376, p: 12.8, c: 77, f: 0.6, fib: 5, salt: 0, fe: 1.1, ca: 24, zn: 0.8 }
@@ -4309,6 +4430,7 @@
 - id: bulgur
   name: Bulgur (suchý)
   category: obilniny
+  diet: { fodmap: 0 }
   gluten: contains
   gf_alternative: quinoa
   n: { kcal: 342, p: 12.3, c: 75.9, f: 1.3, fib: 12.5, salt: 0, fe: 2.5, ca: 35, zn: 1.9 }
@@ -4329,6 +4451,7 @@
   name: Pšeničné tortilly (wrapy)
   aliases: [wrap, dürüm, lavaš, pšeničné placky]
   category: obilniny
+  diet: { fodmap: 40 }
   gluten: contains
   gf_alternative: pecivo-bezlepkove
   n: { kcal: 306, p: 8.2, c: 50, f: 8, fib: 3.5, salt: 1.5, fe: 3.6, ca: 140, zn: 0.7 }
@@ -4366,6 +4489,7 @@
 - id: ryzovy-ocot
   name: Ryžový ocot
   category: omacky-pasty
+  diet: { histamine: true }
   n: { kcal: 18, p: 0, c: 1, f: 0, fib: 0, salt: 0, fe: 0, ca: 6, zn: 0 }
   units: { pl: 15, čl: 5 }
   price: 6
@@ -4412,6 +4536,7 @@
 - id: psenicne-rezance
   name: Pšeničné rezance (ramen, udon, lo mein)
   category: obilniny
+  diet: { fodmap: 20 }
   gluten: contains
   gf_alternative: ryzove-rezance
   n: { kcal: 360, p: 12, c: 74, f: 1.5, fib: 3, salt: 0.5, fe: 1.5, ca: 20, zn: 0.8 }
@@ -4457,6 +4582,7 @@
 - id: kecap-manis
   name: Kecap manis (sladká sójová omáčka)
   category: omacky-pasty
+  diet: { histamine: true }
   gluten: contains
   gf_alternative: tamari
   allergens: [soy]
@@ -4475,6 +4601,7 @@
 - id: okra
   name: Okra
   category: zelenina
+  diet: { fodmap: 75, oxalate: true }
   n: { kcal: 33, p: 1.9, c: 7.5, f: 0.2, fib: 3.2, salt: 0, fe: 0.6, ca: 82, zn: 0.6 }
   units: { ks: 12, hrnček: 100 }
   price: 10
@@ -4491,6 +4618,7 @@
 - id: hrozienka
   name: Hrozienka
   category: ovocie
+  diet: { fodmap: 13 }
   n: { kcal: 299, p: 3.1, c: 79, f: 0.5, fib: 3.7, salt: 0, fe: 1.9, ca: 50, zn: 0.2 }
   units: { pl: 10, hrnček: 145 }
   price: 5
@@ -4506,6 +4634,7 @@
 - id: mandle
   name: Mandle
   category: orechy-semienka
+  diet: { fodmap: 12, oxalate: true }
   allergens: [nuts]
   n: { kcal: 579, p: 21, c: 21.6, f: 49.9, fib: 12.5, salt: 0, fe: 3.7, ca: 269, zn: 3.1 }
   units: { pl: 9, hrnček: 140 }
@@ -4522,6 +4651,7 @@
 - id: granatove-jablko
   name: Granátové jablko
   category: ovocie
+  diet: { fodmap: 38 }
   n: { kcal: 83, p: 1.7, c: 18.7, f: 1.2, fib: 4, salt: 0, fe: 0.3, ca: 10, zn: 0.4 }
   units: { ks: 150 }
   price: 4
@@ -4600,6 +4730,7 @@
 - id: harissa
   name: Harissa
   category: omacky-pasty
+  diet: { fodmap: 0, nightshade: true }
   n: { kcal: 180, p: 3, c: 12, f: 14, fib: 5, salt: 3, fe: 3, ca: 40, zn: 0.5 }
   units: { pl: 16, čl: 5 }
   price: 20
@@ -4616,6 +4747,7 @@
 - id: kimchi
   name: Kimchi (vegánske)
   category: zelenina
+  diet: { fodmap: 0, histamine: true, nightshade: true }
   allergens: [soy]
   n: { kcal: 15, p: 1.1, c: 2.4, f: 0.5, fib: 1.6, salt: 1.8, fe: 2.5, ca: 33, zn: 0.2 }
   units: { hrnček: 150 }
@@ -4635,6 +4767,7 @@
 - id: hruska
   name: Hruška
   category: ovocie
+  diet: { fodmap: 0 }
   n: { kcal: 57, p: 0.4, c: 15.2, f: 0.1, fib: 3.1, salt: 0, fe: 0.2, ca: 9, zn: 0.1 }
   units: { ks: 180 }
   price: 2.2
@@ -4653,6 +4786,7 @@
 - id: ceresne
   name: Čerešne
   category: ovocie
+  diet: { fodmap: 0 }
   n: { kcal: 63, p: 1.1, c: 16, f: 0.2, fib: 2.1, salt: 0, fe: 0.4, ca: 13, zn: 0.1 }
   units: { hrnček: 150 }
   price: 5
@@ -4669,6 +4803,7 @@
 - id: visne
   name: Višne
   category: ovocie
+  diet: { fodmap: 0 }
   n: { kcal: 50, p: 1, c: 12.2, f: 0.3, fib: 1.6, salt: 0, fe: 0.3, ca: 16, zn: 0.1 }
   units: { hrnček: 150 }
   price: 4
@@ -4685,6 +4820,7 @@
 - id: marhule
   name: Marhule
   category: ovocie
+  diet: { fodmap: 0 }
   n: { kcal: 48, p: 1.4, c: 11.1, f: 0.4, fib: 2, salt: 0, fe: 0.4, ca: 13, zn: 0.2 }
   units: { ks: 40 }
   price: 3.5
@@ -4702,6 +4838,7 @@
 - id: broskyne
   name: Broskyne
   category: ovocie
+  diet: { fodmap: 0 }
   n: { kcal: 39, p: 0.9, c: 9.5, f: 0.3, fib: 1.5, salt: 0, fe: 0.3, ca: 6, zn: 0.2 }
   units: { ks: 150 }
   price: 3
@@ -4780,6 +4917,7 @@
 - id: cernice
   name: Černice
   category: ovocie
+  diet: { fodmap: 0 }
   n: { kcal: 43, p: 1.4, c: 9.6, f: 0.5, fib: 5.3, salt: 0, fe: 0.6, ca: 29, zn: 0.5 }
   units: { hrnček: 145 }
   price: 10
@@ -4839,6 +4977,7 @@
 - id: jahody
   name: Jahody
   category: ovocie
+  diet: { histamine: true }
   n: { kcal: 32, p: 0.7, c: 7.7, f: 0.3, fib: 2, salt: 0, fe: 0.4, ca: 16, zn: 0.1 }
   units: { hrnček: 150, ks: 12 }
   price: 5
@@ -4869,6 +5008,7 @@
 - id: kiwi
   name: Kiwi
   category: ovocie
+  diet: { histamine: true }
   n: { kcal: 61, p: 1.1, c: 14.7, f: 0.5, fib: 3, salt: 0, fe: 0.3, ca: 34, zn: 0.1 }
   units: { ks: 75 }
   price: 3.5
@@ -4883,6 +5023,7 @@
 - id: lieskove-orechy
   name: Lieskové orechy
   category: orechy-semienka
+  diet: { fodmap: 15, oxalate: true }
   allergens: [nuts]
   n: { kcal: 628, p: 15, c: 16.7, f: 60.8, fib: 9.7, salt: 0, fe: 4.7, ca: 114, zn: 2.5, ala: 0.1 }
   units: { hrnček: 115, pl: 8 }
@@ -4918,6 +5059,7 @@
   aliases: [huby]
   howto: [umyvanie]
   category: zelenina
+  diet: { fodmap: 0 }
   n: { kcal: 34, p: 2.2, c: 6.8, f: 0.5, fib: 2.5, salt: 0, fe: 0.4, ca: 2, zn: 1 }
   price: 14
   co2: 1.5
@@ -4964,6 +5106,7 @@
   name: Čierny čaj (sypaný alebo vrecúška)
   howto: [caje]
   category: ine
+  diet: { histamine: true, oxalate: true }
   n: { kcal: 1, p: 0, c: 0.3, f: 0, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0 }
   units: { čl: 2.5, ks: 2 }
   price: 25
@@ -4978,6 +5121,7 @@
   name: Matcha (mletý zelený čaj)
   howto: [caje, matcha]
   category: ine
+  diet: { histamine: true }
   n: { kcal: 324, p: 30, c: 39, f: 5, fib: 38, salt: 0, fe: 17, ca: 420, zn: 6 }
   units: { čl: 2 }
   price: 120
@@ -5035,6 +5179,7 @@
 - id: jablkovy-must
   name: Jablkový mušt (100 %)
   category: ovocie
+  diet: { fodmap: 0 }
   n: { kcal: 46, p: 0.1, c: 11, f: 0.1, fib: 0.2, salt: 0, fe: 0.1, ca: 8, zn: 0 }
   units: { hrnček: 250 }
   density: 1.04
@@ -5111,6 +5256,7 @@
   name: Zelený čaj (sypaný alebo vrecúška)
   howto: [caje]
   category: ine
+  diet: { histamine: true }
   n: { kcal: 1, p: 0, c: 0.2, f: 0, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0 }
   units: { čl: 2.5, ks: 2 }
   price: 30
@@ -5124,6 +5270,7 @@
 - id: melon
   name: Melón vodový (dužina)
   category: ovocie
+  diet: { fodmap: 0 }
   n: { kcal: 30, p: 0.6, c: 7.6, f: 0.2, fib: 0.4, salt: 0, fe: 0.2, ca: 7, zn: 0.1 }
   units: { hrnček: 150 }
   price: 1
@@ -5139,6 +5286,7 @@
 - id: ananas
   name: Ananás
   category: ovocie
+  diet: { histamine: true }
   n: { kcal: 50, p: 0.5, c: 13, f: 0.1, fib: 1.4, salt: 0, fe: 0.3, ca: 13, zn: 0.1 }
   units: { ks: 900 }
   price: 3
@@ -5215,6 +5363,7 @@
 - id: koji
   name: Koji (sušená ryža s kultúrou)
   category: ine
+  diet: { histamine: true }
   n: { kcal: 350, p: 6, c: 76, f: 1, fib: 1.5, salt: 0, fe: 0.8, ca: 8, zn: 1.2 }
   units: { hrnček: 120, pl: 10 }
   price: 25

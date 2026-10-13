@@ -12,6 +12,9 @@ const ingredient = (overrides: Partial<Ingredient> = {}): Ingredient => ({
 	season: [],
 	gluten: 'free',
 	allergens: [],
+	histamine: false,
+	oxalate: false,
+	nightshade: false,
 	staple: false,
 	per100g: {
 		kcal: 100,

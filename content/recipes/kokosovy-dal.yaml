@@ -37,7 +37,7 @@ tips:
   - Červená šošovica sa nemusí namáčať a rozvarí sa sama, preto je ideálna na rýchle večere.
 variants:
   - name: Bez cibule a cesnaku
-    description: 'Pre citlivé trávenie (low FODMAP). Chuť doženie zelená časť jarnej cibuľky a o štipku viac korenia.'
+    description: 'Pre citlivé trávenie. Chuť doženie zelená časť jarnej cibuľky a o štipku viac korenia.'
     remove: [cibula, cesnak]
     add:
       - jarna-cibulka: 2 ks | len zelená časť

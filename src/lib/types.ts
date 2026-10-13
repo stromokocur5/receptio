@@ -31,6 +31,10 @@ export const ALLERGENS = [
 ] as const;
 export type Allergen = (typeof ALLERGENS)[number];
 
+/** Eating patterns for sensitive digestion and some illnesses, read from the ingredients. */
+export const DIETS = ['low-fodmap', 'low-histamin', 'low-oxalat', 'bez-lulkovitych'] as const;
+export type Diet = (typeof DIETS)[number];
+
 export const INGREDIENT_CATEGORIES = [
 	'zelenina',
 	'ovocie',
@@ -68,6 +72,17 @@ export interface Ingredient {
 	groupFactor: number;
 	gluten: GlutenStatus;
 	allergens: Allergen[];
+	/**
+	 * Grams per serving that are still low FODMAP (Monash, rounded); 0 = high in any amount.
+	 * Undefined = low FODMAP.
+	 */
+	fodmapLimit?: number;
+	/** Rich in histamine or releases it (fermented, tomatoes, citrus, cocoa). */
+	histamine: boolean;
+	/** High in oxalate (spinach, beetroot, almonds, cocoa). */
+	oxalate: boolean;
+	/** Nightshade family: tomato, potato, pepper and chili, eggplant. */
+	nightshade: boolean;
 	/** Assumed to be at home (salt, oil, water) – never blocks a pantry match. */
 	staple: boolean;
 	per100g: Nutrients;
@@ -128,6 +143,8 @@ export interface RecipeComputed {
 	/** True when every ingredient that contains gluten has a GF alternative (risky ones only need a label check). */
 	gfSwappable: boolean;
 	allergens: Allergen[];
+	/** Diets this version fits as written. */
+	diets: Diet[];
 	perServing: Nutrients;
 	costPerServing: number;
 	costIsEstimate: boolean;

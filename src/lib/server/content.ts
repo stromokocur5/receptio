@@ -5,6 +5,7 @@ import { parseAmount, toGrams } from '$lib/amounts';
 import {
 	SALT_HIGH_G,
 	recipeAllergens,
+	recipeDiets,
 	recipeGluten,
 	recipeNutrients,
 	recipeWarnings,
@@ -101,6 +102,16 @@ const ingredientSchema = z
 		group_factor: z.number().positive().default(1),
 		gluten: z.enum(['free', 'risk', 'contains']).default('free'),
 		allergens: z.array(z.enum(ALLERGENS)).default([]),
+		/** fodmap: grams per serving still low FODMAP, 0 = high in any amount. */
+		diet: z
+			.object({
+				fodmap: z.number().min(0).optional(),
+				histamine: z.literal(true).optional(),
+				oxalate: z.literal(true).optional(),
+				nightshade: z.literal(true).optional()
+			})
+			.strict()
+			.default({}),
 		staple: z.boolean().default(false),
 		n: nutrientsSchema,
 		units: z.partialRecord(z.enum(UNITS), z.number().positive()).default({}),
@@ -449,6 +460,10 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		groupFactor: i.group_factor,
 		gluten: i.gluten,
 		allergens: i.allergens,
+		...(i.diet.fodmap !== undefined && { fodmapLimit: i.diet.fodmap }),
+		histamine: i.diet.histamine ?? false,
+		oxalate: i.diet.oxalate ?? false,
+		nightshade: i.diet.nightshade ?? false,
 		staple: i.staple,
 		per100g: {
 			kcal: i.n.kcal,
@@ -651,6 +666,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			gluten: gluten.status,
 			gfSwappable: gluten.swappable,
 			allergens: recipeAllergens(used),
+			diets: recipeDiets(lines, byId, servings),
 			perServing,
 			costPerServing: cost / servings,
 			costIsEstimate,

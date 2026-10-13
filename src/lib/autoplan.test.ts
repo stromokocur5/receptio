@@ -36,6 +36,7 @@ function recipe(
 		gluten: 'free',
 		gfSwappable: true,
 		allergens: [],
+		diets: [],
 		perServing: { ...zero, protein },
 		costPerServing: 1,
 		costIsEstimate: true,

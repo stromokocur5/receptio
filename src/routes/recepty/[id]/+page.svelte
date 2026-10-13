@@ -28,6 +28,7 @@
 	import {
 		ALLERGEN_LABELS,
 		COMPUTED_TAG_LABELS,
+		DIET_META,
 		SALT_HIGH_G,
 		dailyTargets,
 		computedTags,
@@ -38,8 +39,10 @@
 	import { bestPrice, shelfCost } from '$lib/pricing';
 	import { IN_MONTH, recipeSeason } from '$lib/season';
 	import { SITE_ORIGIN } from '$lib/site';
+	import { DIETS, type Diet } from '$lib/types';
 	import {
 		addToPlan,
+		avoid,
 		favorites,
 		history,
 		journal,
@@ -220,6 +223,31 @@
 
 	const targets = $derived(dailyTargets(settings.current.weightKg, journal.current.goals));
 	const tags = $derived(computedTags(recipe));
+
+	/** Most recipes are low in oxalate and nightshade-free; those only matter to who set them. */
+	const ALWAYS_SHOWN: Diet[] = ['low-fodmap', 'low-histamin'];
+	const dietBadges = $derived(
+		DIETS.filter(
+			(d) => ALWAYS_SHOWN.includes(d) || (ui.loaded && avoid.current.diets.includes(d))
+		).flatMap((d): { diet: Diet; variant?: string }[] => {
+			if (recipe.diets.includes(d)) return [{ diet: d }];
+			const v = variant ? undefined : base.variants.find((v) => v.diets.includes(d));
+			return v ? [{ diet: d, variant: v.name }] : [];
+		})
+	);
+	/** Energy split and how much fibre comes with the carbs (whole foods stay under 10 : 1). */
+	const macros = $derived.by(() => {
+		const n = recipe.perServing;
+		const kcal = n.protein * 4 + n.carbs * 4 + n.fat * 9;
+		if (kcal <= 0) return null;
+		const share = (x: number) => Math.round((x / kcal) * 100);
+		return {
+			protein: share(n.protein * 4),
+			carbs: share(n.carbs * 4),
+			fat: share(n.fat * 9),
+			carbsPerFiber: n.fiber >= 0.5 && n.carbs >= 5 ? n.carbs / n.fiber : null
+		};
+	});
 
 	const similar = $derived.by(() => {
 		const mine = new Set(
@@ -484,6 +512,13 @@
 							{formatNumber(recipe.perServing.protein, 0)} g <span class="unit">/ porcia</span>
 						</dd>
 					</div>
+					<div>
+						<dt><Icon name="leaf" size={16} /> Vláknina</dt>
+						<dd>
+							{formatNumber(recipe.perServing.fiber, 0)} g <span class="unit">/ porcia</span>
+							<small>z {formatNumber(targets.fiber, 0)} g denne</small>
+						</dd>
+					</div>
 				{:else if recipe.yields}
 					<div>
 						<dt><Icon name="package" size={16} /> Výťažok</dt>
@@ -499,6 +534,22 @@
 				{/each}
 				{#each recipe.allergens as a (a)}
 					<span class="badge turmeric">{ALLERGEN_LABELS[a]}</span>
+				{/each}
+				{#each dietBadges as { diet, variant: fits } (diet)}
+					{#if fits}
+						<button
+							class="badge sky diet"
+							title={DIET_META[diet].about}
+							onclick={() => (variantName = fits)}
+							>{DIET_META[diet].label} vo verzii „{fits}“</button
+						>
+					{:else}
+						<a
+							class="badge sky diet"
+							href="/wiki/{DIET_META[diet].wiki}"
+							title={DIET_META[diet].about}>{DIET_META[diet].label}</a
+						>
+					{/if}
 				{/each}
 				{#if recipe.treat.length}
 					<span class="badge tomato" title={treatText(recipe.treat)}>Na občas</span>
@@ -1098,6 +1149,21 @@
 						: ['iron', 'calcium', 'zinc', 'ala']}
 				/>
 			</div>
+			{#if macros}
+				<p class="b12-note">
+					<Icon name="info" size={18} />
+					<span>
+						Energia z bielkovín {macros.protein} %, sacharidov {macros.carbs} %, tukov {macros.fat} %.
+						{#if macros.carbsPerFiber !== null}
+							Na {formatNumber(macros.carbsPerFiber, 0)} g sacharidov pripadá 1 g vlákniny – {macros.carbsPerFiber <=
+							10
+								? 'sacharidy prevažne z celých potravín.'
+								: 'skús celozrnnú prílohu alebo viac zeleniny či strukovín.'}
+						{/if}
+						<a href="/wiki/sacharidy">Prečo na tom záleží</a>
+					</span>
+				</p>
+			{/if}
 			{#if fortified}
 				<p class="b12-note">
 					<Icon name="info" size={18} />
@@ -1292,6 +1358,12 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
+	}
+	.diet {
+		border: 0;
+		font-family: inherit;
+		text-decoration: none;
+		cursor: pointer;
 	}
 	.variants {
 		display: flex;
@@ -2093,7 +2165,7 @@
 
 	@media (min-width: 720px) {
 		.facts {
-			grid-template-columns: 0.9fr 1fr 1.3fr 0.9fr;
+			grid-template-columns: 0.9fr 1fr 1.3fr 0.9fr 0.9fr;
 			gap: 10px;
 		}
 		.facts div {

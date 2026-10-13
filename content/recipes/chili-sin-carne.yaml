@@ -42,7 +42,7 @@ tips:
   - Kakao chili nerobí sladkým, len mu dodá hĺbku.
 variants:
   - name: Bez cibule a cesnaku
-    description: 'Pre citlivé trávenie (low FODMAP). Chuť doženie zelená časť jarnej cibuľky a o štipku viac korenia.'
+    description: 'Pre citlivé trávenie. Chuť doženie zelená časť jarnej cibuľky a o štipku viac korenia.'
     remove: [cibula, cesnak]
     add:
       - jarna-cibulka: 4 ks | len zelená časť

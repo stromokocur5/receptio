@@ -1,4 +1,5 @@
-import type { Ingredient, RecipeSummary } from './types';
+import { dietVersion } from './nutrition';
+import { DIETS, type Diet, type Ingredient, type RecipeSummary } from './types';
 
 /**
  * What someone doesn't eat, won't buy or doesn't own. Set once in Špajza; recipe lists,
@@ -11,9 +12,11 @@ export interface Avoid {
 	tools: string[];
 	/** Hide fast food and everything labeled "Na občas" (fried, lots of fat or sugar). */
 	treats: boolean;
+	/** Low FODMAP and the like: recipes fitting all of them as written or in a variant. */
+	diets: Diet[];
 }
 
-export const NO_AVOID: Avoid = { ingredients: [], tools: [], treats: false };
+export const NO_AVOID: Avoid = { ingredients: [], tools: [], treats: false, diets: [] };
 
 const MAX_ITEMS = 200;
 const ID_RE = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -28,12 +31,19 @@ function ids(raw: unknown): string[] {
 
 export function validateAvoid(raw: unknown): Avoid | undefined {
 	if (typeof raw !== 'object' || raw === null || Array.isArray(raw)) return undefined;
-	const { ingredients, tools, treats } = raw as Record<string, unknown>;
-	return { ingredients: ids(ingredients), tools: ids(tools), treats: treats === true };
+	const { ingredients, tools, treats, diets } = raw as Record<string, unknown>;
+	return {
+		ingredients: ids(ingredients),
+		tools: ids(tools),
+		treats: treats === true,
+		diets: Array.isArray(diets) ? DIETS.filter((d) => diets.includes(d)) : []
+	};
 }
 
 export function isAvoiding(avoid: Avoid): boolean {
-	return avoid.ingredients.length > 0 || avoid.tools.length > 0 || avoid.treats;
+	return (
+		avoid.ingredients.length > 0 || avoid.tools.length > 0 || avoid.treats || avoid.diets.length > 0
+	);
 }
 
 /** Fast food by category, or labeled "Na občas" by what's in it – even when a lighter variant exists. */
@@ -50,6 +60,7 @@ export function avoidFilter(
 	const tools = new Set(avoid.tools);
 	return (recipe) =>
 		!(avoid.treats && isTreat(recipe)) &&
+		(!avoid.diets.length || dietVersion(recipe, avoid.diets) !== undefined) &&
 		!recipe.equipment.some((t) => tools.has(t)) &&
 		!recipe.lines.some((l) => groups.has(ingredientsById.get(l.ingredientId)?.group ?? ''));
 }

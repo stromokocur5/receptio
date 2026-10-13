@@ -155,6 +155,7 @@
 			glutenFree,
 			noSubstitutes,
 			excludeAllergens,
+			diets: avoid.current.diets,
 			batchCooking,
 			seed,
 			slots: planSlots(settings.current)

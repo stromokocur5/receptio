@@ -1,6 +1,7 @@
 import {
 	NUTRIENT_KEYS,
 	type Allergen,
+	type Diet,
 	type GlutenStatus,
 	type Ingredient,
 	type NutrientKey,
@@ -93,6 +94,59 @@ export const ALLERGEN_LABELS: Record<Allergen, string> = {
 	lupin: 'vlčí bôb',
 	sulphites: 'siričitany'
 };
+
+export const DIET_META: Record<Diet, { label: string; wiki: string; about: string }> = {
+	'low-fodmap': {
+		label: 'Low FODMAP',
+		wiki: 'citlive-travenie',
+		about: 'Pri dráždivom čreve (IBS) a SIBO – bez cibule, cesnaku a s malými porciami strukovín.'
+	},
+	'low-histamin': {
+		label: 'Málo histamínu',
+		wiki: 'histamin',
+		about: 'Pri intolerancii histamínu – nič kvasené, bez paradajok, citrusov a kakaa.'
+	},
+	'low-oxalat': {
+		label: 'Málo oxalátov',
+		wiki: 'fytaty-oxalaty-lektiny',
+		about: 'Pri obličkových kameňoch – bez špenátu, cvikly, mandlí a kakaa.'
+	},
+	'bez-lulkovitych': {
+		label: 'Bez ľuľkovitých',
+		wiki: 'strava-pri-ochoreniach',
+		about: 'Bez paradajok, zemiakov, papriky, čili a baklažánu.'
+	}
+};
+
+/**
+ * Which diets a version of a recipe fits. FODMAP depends on the amount: a little canned chickpea
+ * is fine, a bowlful isn't. What isn't eaten (simmering broth) doesn't count.
+ */
+export function recipeDiets(
+	lines: RecipeLine[],
+	byId: Map<string, Ingredient>,
+	servings: number
+): Diet[] {
+	const eaten = lines.filter((l) => !l.notEaten).map((l) => byId.get(l.ingredientId)!);
+	const fodmapOk = lines.every((l) => {
+		const limit = byId.get(l.ingredientId)!.fodmapLimit;
+		if (l.notEaten || limit === undefined) return true;
+		return limit > 0 && l.grams / servings <= limit;
+	});
+	const diets: Diet[] = [];
+	if (fodmapOk) diets.push('low-fodmap');
+	if (!eaten.some((i) => i.histamine)) diets.push('low-histamin');
+	if (!eaten.some((i) => i.oxalate)) diets.push('low-oxalat');
+	if (!eaten.some((i) => i.nightshade)) diets.push('bez-lulkovitych');
+	return diets;
+}
+
+/** The recipe as written, or the first variant, that fits every one of the diets. */
+export function dietVersion(r: RecipeSummary, diets: Diet[]): { variant?: string } | undefined {
+	if (diets.every((d) => r.diets.includes(d))) return {};
+	const v = r.variants.find((v) => diets.every((d) => v.diets.includes(d)));
+	return v ? { variant: v.name } : undefined;
+}
 
 export function emptyNutrients(): Nutrients {
 	return Object.fromEntries(NUTRIENT_KEYS.map((k) => [k, 0])) as Nutrients;

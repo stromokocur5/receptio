@@ -1,6 +1,6 @@
 import { seededRandom } from './art';
 import { isBreakfastRecipe, planLines, type PlanEntry } from './shopping';
-import type { Allergen, RecipeSummary, RecipeVariant } from './types';
+import type { Allergen, Diet, RecipeSummary, RecipeVariant } from './types';
 
 export interface AutoPlanOptions {
 	days: number;
@@ -17,6 +17,8 @@ export interface AutoPlanOptions {
 	glutenFree: boolean;
 	noSubstitutes: boolean;
 	excludeAllergens: Allergen[];
+	/** Low FODMAP and the like (set in Špajza): a variant is planned when only it fits. */
+	diets?: Diet[];
 	/** Cook bigger batches and eat leftovers (up to 3 meals per recipe) instead of more variety. */
 	batchCooking: boolean;
 	/** Different seed = a different, equally valid plan. */
@@ -96,6 +98,14 @@ function pickVersion(r: RecipeSummary, o: AutoPlanOptions): Candidate | null {
 		if (!light || variant) return null;
 		data = light;
 		variant = light.name;
+	}
+	const fits = (v: RecipeSummary | RecipeVariant) =>
+		(o.diets ?? []).every((d) => v.diets.includes(d));
+	if (!fits(data)) {
+		const fitting = r.variants.find(fits);
+		if (!fitting || variant) return null;
+		data = fitting;
+		variant = fitting.name;
 	}
 	if (o.excludeAllergens.some((a) => data.allergens.includes(a))) return null;
 	const fridge = r.keeps?.fridge ?? 2;

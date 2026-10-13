@@ -104,9 +104,13 @@
 				{formatMinutes(recipe.time)}</span
 			>
 			{#if recipe.showNutrition}
-				<span
+				<span title="Bielkoviny na porciu"
 					><Icon name="bean" size={16} /> <span class="sr-only">bielkoviny</span>
 					{formatNumber(recipe.perServing.protein, 0)} g</span
+				>
+				<span title="Vláknina na porciu"
+					><Icon name="leaf" size={16} /> <span class="sr-only">vláknina</span>
+					{formatNumber(recipe.perServing.fiber, 0)} g</span
 				>
 				<span
 					><Icon name="flame" size={16} />

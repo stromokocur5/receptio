@@ -29,9 +29,11 @@
 	import {
 		ALLERGEN_LABELS,
 		COMPUTED_TAG_LABELS,
+		DIET_META,
 		SALT_HIGH_G,
 		computedTags,
 		cookingStyle,
+		dietVersion,
 		everydayVersion
 	} from '$lib/nutrition';
 	import { recipeSeason } from '$lib/season';
@@ -50,9 +52,11 @@
 	} from '$lib/state.svelte';
 	import IngredientExcluder from '$lib/components/IngredientExcluder.svelte';
 	import {
+		DIETS,
 		MEALS,
 		TASTES,
 		type Allergen,
+		type Diet,
 		type IngredientCategory,
 		type Meal,
 		type RecipeSummary,
@@ -65,6 +69,7 @@
 		odporucane: 'Odporúčané',
 		'protein-eur': 'Bielkoviny za €',
 		protein: 'Najviac bielkovín',
+		vlaknina: 'Najviac vlákniny',
 		cas: 'Najrýchlejšie',
 		cena: 'Najlacnejšie',
 		spajza: 'Podľa špajze'
@@ -74,6 +79,8 @@
 	const TIME_STEPS = [15, 20, 30, 45, 60, 0];
 	const PROTEIN_STEP = 5;
 	const PROTEIN_MAX = 40;
+	const FIBER_STEP = 2;
+	const FIBER_MAX = 16;
 	/** Calorie caps per serving; the last step means no cap. */
 	const KCAL_STEPS = [300, 400, 500, 600, 700, 800, 0] as const;
 
@@ -90,6 +97,8 @@
 	let spicy = $state<number[]>([]);
 	let maxTimeIndex = $state(TIME_STEPS.length - 1);
 	let minProtein = $state(0);
+	let minFiber = $state(0);
+	let diets = $state<Diet[]>([]);
 	let maxKcalIndex = $state(KCAL_STEPS.length - 1);
 	const maxKcal = $derived(KCAL_STEPS[maxKcalIndex]);
 	let excluded = $state<Allergen[]>([]);
@@ -253,6 +262,8 @@
 		if (meal && !r.meals.includes(meal)) return false;
 		if (maxTime && r.time > maxTime) return false;
 		if (r.perServing.protein < minProtein) return false;
+		if (minFiber && (!r.showNutrition || r.perServing.fiber < minFiber)) return false;
+		if (diets.length && !dietVersion(r, diets)) return false;
 		if (maxKcal && (!r.showNutrition || r.perServing.kcal > maxKcal)) return false;
 		if (excluded.some((a) => r.allergens.includes(a))) return false;
 		if (missingTools.some((t) => r.equipment.includes(t))) return false;
@@ -318,6 +329,7 @@
 			'protein-eur': (a, b) =>
 				b.perServing.protein / b.costPerServing - a.perServing.protein / a.costPerServing,
 			protein: (a, b) => b.perServing.protein - a.perServing.protein,
+			vlaknina: (a, b) => b.perServing.fiber - a.perServing.fiber,
 			cas: (a, b) => a.time - b.time,
 			cena: (a, b) => a.costPerServing - b.costPerServing,
 			spajza: (a, b) => matches.get(b.id)!.score - matches.get(a.id)!.score
@@ -440,6 +452,12 @@
 		if (subs !== 'all') {
 			add('subs', subs === 'bez' ? 'Bez náhrad' : 'S náhradami', 'strava', () => (subs = 'all'));
 		}
+		for (const d of diets) {
+			add(`diet-${d}`, DIET_META[d].label, 'strava', () => toggleDiet(d));
+		}
+		if (minFiber) {
+			add('fiber', `aspoň ${minFiber} g vlákniny`, 'strava', () => (minFiber = 0));
+		}
 		if (minProtein) {
 			add('protein', `aspoň ${minProtein} g bielkovín`, 'strava', () => (minProtein = 0));
 		}
@@ -459,7 +477,8 @@
 			const n = avoid.current.ingredients.length + avoid.current.tools.length;
 			const parts = [
 				...(n ? [`bez toho, čo nemám (${n})`] : []),
-				...(avoid.current.treats ? ['bez fast foodu a jedál na občas'] : [])
+				...(avoid.current.treats ? ['bez fast foodu a jedál na občas'] : []),
+				...avoid.current.diets.map((d) => DIET_META[d].label)
 			];
 			add('avoid', parts.join(', '), 'doma', () => (ignoreAvoid = true));
 		}
@@ -485,6 +504,10 @@
 		excluded = excluded.includes(a) ? excluded.filter((x) => x !== a) : [...excluded, a];
 	}
 
+	function toggleDiet(d: Diet) {
+		diets = diets.includes(d) ? diets.filter((x) => x !== d) : [...diets, d];
+	}
+
 	function toggleQuick(q: Quick) {
 		quick = quick.includes(q) ? quick.filter((x) => x !== q) : [...quick, q];
 	}
@@ -505,6 +528,8 @@
 		spicy = [];
 		maxTimeIndex = TIME_STEPS.length - 1;
 		minProtein = 0;
+		minFiber = 0;
+		diets = [];
 		maxKcalIndex = KCAL_STEPS.length - 1;
 		excluded = [];
 		missingTools = [];
@@ -533,6 +558,8 @@
 		if (spicy.length) p.set('palivost', spicy.join(','));
 		if (maxTime) p.set('cas', String(maxTime));
 		if (minProtein) p.set('bielkoviny', String(minProtein));
+		if (minFiber) p.set('vlaknina', String(minFiber));
+		if (diets.length) p.set('dieta', diets.join(','));
 		if (maxKcal) p.set('kcal', String(maxKcal));
 		if (excluded.length) p.set('alergeny', excluded.join(','));
 		if (withoutIngredients.length) p.set('bez', withoutIngredients.join(','));
@@ -583,6 +610,9 @@
 		if (protein > 0 && protein <= PROTEIN_MAX && protein % PROTEIN_STEP === 0) {
 			minProtein = protein;
 		}
+		const fiber = Number(p.get('vlaknina'));
+		if (fiber > 0 && fiber <= FIBER_MAX && fiber % FIBER_STEP === 0) minFiber = fiber;
+		diets = DIETS.filter((d) => list(p.get('dieta')).includes(d));
 		const kcal = KCAL_STEPS.indexOf(Number(p.get('kcal')) as (typeof KCAL_STEPS)[number]);
 		maxKcalIndex = kcal >= 0 && KCAL_STEPS[kcal] ? kcal : KCAL_STEPS.length - 1;
 		excluded = list(p.get('alergeny')).filter((a): a is Allergen =>
@@ -625,6 +655,7 @@
 		{ label: 'Do 20 minút', search: 'cas=20', icon: 'clock', tone: 'var(--sky)' },
 		{ label: 'Niečo sladké', search: 'chut=sladke', icon: 'cake', tone: 'var(--tomato)' },
 		{ label: 'Veľa bielkovín', search: 'bielkoviny=20', icon: 'bean', tone: 'var(--leaf)' },
+		{ label: 'Veľa vlákniny', search: 'vlaknina=10', icon: 'leaf', tone: 'var(--leaf-2)' },
 		{ label: 'Lacno', search: 'sort=cena', icon: 'euro', tone: 'var(--turmeric)' }
 	];
 
@@ -923,6 +954,26 @@
 					</fieldset>
 
 					<fieldset>
+						<legend>Citlivé trávenie a ochorenia</legend>
+						<div class="chips">
+							{#each DIETS as d (d)}
+								<button
+									class="chip"
+									title={DIET_META[d].about}
+									aria-pressed={diets.includes(d)}
+									onclick={() => toggleDiet(d)}
+								>
+									{DIET_META[d].label}
+								</button>
+							{/each}
+						</div>
+						<p class="hint">
+							Platí aj recept, ktorý sa dá upraviť verziou. Orientačne podľa surovín, nie je to
+							lekárska rada. <a href="/wiki/strava-pri-ochoreniach">Čo ktorá znamená</a>
+						</p>
+					</fieldset>
+
+					<fieldset>
 						<legend>Bez týchto surovín</legend>
 						<IngredientExcluder
 							selected={withoutIngredients}
@@ -966,6 +1017,23 @@
 							aria-label="Minimum bielkovín"
 							aria-valuetext={minProtein ? `aspoň ${minProtein} gramov na porciu` : 'hocikoľko'}
 						/>
+					</fieldset>
+
+					<fieldset>
+						<legend
+							>Vláknina: <strong>{minFiber ? `aspoň ${minFiber} g/porcia` : 'hocikoľko'}</strong
+							></legend
+						>
+						<input
+							type="range"
+							min="0"
+							max={FIBER_MAX}
+							step={FIBER_STEP}
+							bind:value={minFiber}
+							aria-label="Minimum vlákniny"
+							aria-valuetext={minFiber ? `aspoň ${minFiber} gramov na porciu` : 'hocikoľko'}
+						/>
+						<p class="hint">Za deň aspoň 30 g. <a href="/wiki/vlaknina">Prečo</a></p>
 					</fieldset>
 
 					<fieldset>

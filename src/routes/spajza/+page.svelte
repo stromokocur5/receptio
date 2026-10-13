@@ -22,7 +22,8 @@
 		setPantryItem,
 		ui
 	} from '$lib/state.svelte';
-	import { INGREDIENT_CATEGORIES, type Ingredient } from '$lib/types';
+	import { DIETS, INGREDIENT_CATEGORIES, type Diet, type Ingredient } from '$lib/types';
+	import { DIET_META } from '$lib/nutrition';
 	import { enableDigests, remindersSupported, updateDigests } from '$lib/reminders';
 	import { onMount } from 'svelte';
 	import { toast } from '$lib/toast.svelte';
@@ -89,6 +90,14 @@
 		avoid.current = {
 			...avoid.current,
 			tools: tools.includes(id) ? tools.filter((t) => t !== id) : [...tools, id]
+		};
+	}
+
+	function toggleDiet(d: Diet) {
+		const diets = avoid.current.diets;
+		avoid.current = {
+			...avoid.current,
+			diets: diets.includes(d) ? diets.filter((x) => x !== d) : [...diets, d]
 		};
 	}
 
@@ -496,6 +505,25 @@
 					Ťukni na to, čo doma nemáš. <a href="/vybavenie">Čím to nahradiť</a>
 				</p>
 			</div>
+		</div>
+		<div class="never-treats">
+			<h3>Citlivé trávenie a ochorenia</h3>
+			<div class="chips">
+				{#each DIETS as d (d)}
+					<button
+						class="chip"
+						title={DIET_META[d].about}
+						aria-pressed={ui.loaded && avoid.current.diets.includes(d)}
+						onclick={() => toggleDiet(d)}
+					>
+						{DIET_META[d].label}
+					</button>
+				{/each}
+			</div>
+			<p class="hint">
+				Ukáže len recepty, ktoré sa hodia – rovno alebo v upravenej verzii. Je to orientačné podľa
+				surovín. <a href="/wiki/strava-pri-ochoreniach">Čo ktorá znamená</a>
+			</p>
 		</div>
 		<div class="never-treats">
 			<h3>Fast food a jedlá na občas</h3>
