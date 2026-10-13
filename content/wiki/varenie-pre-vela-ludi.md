@@ -69,11 +69,10 @@ Na rozdávanie daj **ceduľku** s tým, čo jedlo obsahuje. Najdôležitejšie s
 
 ## Rozdávanie
 
-- Choď tam, kde ľudia sú, a v rovnaký čas – pravidelnosť je dôležitejšia ako veľkosť.
-- Jedlo podávaj s úsmevom a bez otázok. Nikto nemusí nič vysvetľovať ani dokazovať.
+- Ak rozdávate pravidelne, tak na rovnakom mieste a v rovnaký čas – pravidelnosť je dôležitejšia ako veľkosť.
 - K jedlu pribaľ **chlieb, ovocie a vodu**. V zime teplý čaj, v lete veľa vody.
 - Vegánske jedlo môže jesť takmer každý – bez ohľadu na náboženstvo či stravovanie – a je lacnejšie a bezpečnejšie na prevoz než mäso.
 
 ## Výživa
 
-Ľudia na ulici často nemajú dosť **bielkovín, železa a vitamínov**. Strukoviny s obilninou, zelenina a k tomu ovocie pokryjú veľa. Vitamín B12 z jedla nezískaš – pozri [B12](/wiki/b12).
+Keď je to pre niekoho hlavné jedlo dňa, nech má **bielkoviny, železo a vitamíny**. Strukoviny s obilninou, zelenina a k tomu ovocie pokryjú veľa. Vitamín B12 z jedla nezískaš – pozri [B12](/wiki/b12).
