@@ -11,6 +11,7 @@ tags: [klasika, meal-prep]
 spicy: 1
 ahead: Tofu sa marinuje aspoň hodinu.
 keeps: { fridge: 4 }
+fodmap_swap: false
 ingredients:
   - tofu-natural: 400 g | vylisované, na kocky
   - citron: 2 ks

@@ -16,6 +16,7 @@ import { CATEGORY_PATHS, guessTaste } from '$lib/categories';
 import { techniqueGuides } from '$lib/cooking';
 import { ART_NAMES, artFigure } from '$lib/wiki-art';
 import { normalizeSearch } from '$lib/labels';
+import { rewriteStep } from '$lib/step-swaps';
 import { bestPrice } from '$lib/pricing';
 import {
 	ALLERGENS,
@@ -919,15 +920,24 @@ export function compileContent(raw: RawContent, today: Date): Content {
 				swaps.set(ingredient.id, to.to);
 				return scaledSwap(l, to.to, to.ratio, where);
 			});
-			const low = swaps.size ? compute(mergeLines(fodmapLines), r.servings) : undefined;
+			const low = swaps.size
+				? compute(
+						mergeLines(
+							fodmapLines.map((l) =>
+								l.note ? { ...l, note: rewriteStep(l.note, swaps.keys()) } : l
+							)
+						),
+						r.servings
+					)
+				: undefined;
 			if (low?.diets.includes('low-fodmap')) {
 				const name = (id: string) => byId.get(id)!.name.replace(/\s*\(.*\)/, '');
 				const tips = [
-					swaps.has('cesnak') ? 'Cesnakový olej pridaj tam, kde sa v postupe pridáva cesnak.' : '',
 					[...swaps.values()].includes('jarna-cibulka-vnat')
 						? 'Zelenú časť cibuľky opeč len krátko alebo ju pridaj na konci.'
 						: ''
 				];
+				const steps = r.steps.map((step) => rewriteStep(step, swaps.keys()));
 				variants.push({
 					name: FODMAP_VARIANT_NAME,
 					description: [
@@ -938,6 +948,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 					]
 						.filter(Boolean)
 						.join(' '),
+					...(steps.some((step, i) => step !== r.steps[i]) && { steps }),
 					...low
 				});
 			}

@@ -11,6 +11,7 @@ tags: [pizza, lacne, party]
 keeps: { fridge: 3, freezer: 2 }
 leftovers: 'Chutí aj vlažná alebo studená. Prehrej v rúre na 180 °C 8 minút.'
 related: [pizza-bianca-zemiaky-rozmarin, focaccia, pizzova-omacka]
+fodmap_swap: false
 ingredients:
   - hladka-muka: 500 g
   - drozdie: 1 ks

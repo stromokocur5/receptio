@@ -10,6 +10,7 @@ difficulty: 1
 tags: [klasika, one-pot]
 keeps: { fridge: 4 }
 leftovers: 'Zemiaky v mrazničke zmäknú, preto ho radšej zjedz do 4 dní.'
+fodmap_swap: false
 ingredients:
   - olej: 3 pl
   - cibula: 2 ks | nadrobno

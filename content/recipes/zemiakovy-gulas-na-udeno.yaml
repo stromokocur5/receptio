@@ -10,6 +10,7 @@ difficulty: 1
 tags: [zlatica, klasika, lacne, one-pot]
 keeps: { fridge: 4, freezer: 3 }
 leftovers: 'Na druhý deň je ešte lepší. Zohrej ho s trochou vody.'
+fodmap_swap: false
 ingredients:
   - olej: 2 pl
   - cibula: 2 ks
