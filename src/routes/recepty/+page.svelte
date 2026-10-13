@@ -1387,6 +1387,9 @@
 		border-color: var(--ink);
 		color: var(--paper);
 	}
+	.idea[aria-pressed='true'] {
+		color: var(--paper);
+	}
 	.idea[aria-pressed='true'] .idea-ico {
 		background: color-mix(in srgb, var(--paper) 20%, transparent);
 		color: var(--paper);
