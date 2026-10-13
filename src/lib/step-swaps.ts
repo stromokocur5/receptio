@@ -65,6 +65,18 @@ const FRY_TIME =
  */
 const GREEN_ONION_COOKING: Rule[] = [
 	{ pattern: start(`([sz]) (?=zelen${L}{1,3} cibuľk)`), replace: (_m, p) => `${p}o ` },
+	// "…dozlatista, trvá to asi 8 minút a je to základ chuti" was about the onion.
+	{
+		pattern: new RegExp(
+			`(zelen${L}{1,3} cibuľk${L}*[^.]*?),\\s*trvá to (?:asi |aspoň |zhruba )?\\d+(?:–\\d+)? minút[^.]*`,
+			'giu'
+		),
+		replace: (_m, before) => before
+	},
+	{
+		pattern: start(`(pridaj zelenú cibuľku a )\\d+(?:–\\d+)?\\s+minút${L}*`),
+		replace: (_m, before) => `${before}1 minútu`
+	},
 	{
 		pattern: start(`(${FRY}\\s+zelenú cibuľku)(?! a)(?!,)([^,.]*?)${FRY_TIME}`),
 		replace: (_m, verb, rest) => `${verb}${rest} 1 minútu`
@@ -81,6 +93,27 @@ const GREEN_ONION_COOKING: Rule[] = [
 			`(zelen${L}{1,3} cibuľk${L}*[^.,]*?)(?<!minút${L}{0,2})\\s(?:dozlatista|do zlatista|dotmava)`
 		),
 		replace: (_m, rest) => `${rest} krátko`
+	}
+];
+
+const BEANS_TO_CHICKPEAS: Rule[] = [
+	{ pattern: start(`biel${L}{1,3} (?=fazu)`), replace: () => '' },
+	// Beans are feminine, chickpeas masculine: "namočenú fazuľu" → "namočený cícer".
+	{
+		pattern: start(`(?!čiern)(${L}+)[úá] (?=fazu(?:ľ|l)[ua](?!${L}))`),
+		replace: (_m, stem) => `${stem}ý `
+	},
+	// Black beans next to the white ones stay what they are.
+	{
+		pattern: word(`(?<!čiern${L}{1,3} )fazu(?:ľ|l)(a|e|i|u|ou)`),
+		replace: byEnding({ a: 'cícer', e: 'cíceru', i: 'cíceri', u: 'cícer', ou: 'cícerom' })
+	},
+	// …and so do the pronouns after it in the sentence: "pridaj cícer, roztlač ju".
+	{
+		pattern: new RegExp(`(cícer[^.]*?)(?<!${L})(ju|sama|nej)(?!${L})`, 'giu'),
+		replace: (_m, before, pronoun) =>
+			before +
+			({ ju: 'ho', sama: 'sám', nej: 'neho' } as Record<string, string>)[pronoun.toLowerCase()]
 	}
 ];
 
@@ -166,6 +199,39 @@ const SWAP_RULES: Record<string, Rule[]> = {
 			})
 		},
 		{ pattern: start(`sójov(${L}{1,3} nápoj)`), replace: (_m, rest) => `ryžov${rest}` }
+	],
+	// The beans that aren't fine in any amount give way to ones that are in a small one.
+	'fazula-cervena': [
+		{ pattern: start(`červen(${L}{1,3} fazu)`), replace: (_m, rest) => `čiern${rest}` }
+	],
+	'fazula-cervena-sucha': [
+		{ pattern: start(`červen(${L}{1,3} fazu)`), replace: (_m, rest) => `čiern${rest}` }
+	],
+	'fazula-biela': BEANS_TO_CHICKPEAS,
+	'fazula-biela-sucha': BEANS_TO_CHICKPEAS,
+	// Cashews don't decline, so the case comes from the word before them.
+	kesu: [
+		{
+			pattern: start(`so? ((?:${L}+ými )?)kešu(?: orech${L}*)?(?!${L})`),
+			replace: (_m, adjective) => `so ${adjective}slnečnicovými semienkami`
+		},
+		{
+			pattern: start(`(zo?|bez|do|od|zrnk${L}*|kúsk${L}*) kešu(?: orech${L}*)?(?!${L})`),
+			replace: (_m, before) => `${/^zo?$/i.test(before) ? 'zo' : before} slnečnicových semienok`
+		},
+		{ pattern: word(`kešu(?: orech${L}*)?`), replace: () => 'slnečnicové semienka' }
+	],
+	'sojove-granule': [
+		{
+			pattern: word(`(?:sójov${L}{1,3} )?gran(?:ul|úl)(e|ami|iach|ách)?`),
+			replace: byEnding({
+				'': 'rozdrobeného tofu',
+				e: 'rozdrobené tofu',
+				ami: 'rozdrobeným tofu',
+				iach: 'rozdrobenom tofu',
+				ách: 'rozdrobenom tofu'
+			})
+		}
 	],
 	'sojovy-jogurt': [
 		looseVowel(`sójov${L}{1,3} jogurt`),

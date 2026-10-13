@@ -85,4 +85,31 @@ describe('rewriteStep', () => {
 			'Mrkvu a zelenú cibuľku nakrájaj a opekaj 10 minút.'
 		);
 	});
+
+	it('drops what was said about the onion taking long', () => {
+		expect(
+			rewriteStep('Opeč cibuľu dozlatista, trvá to asi 8 minút a je to základ chuti.', ['cibula'])
+		).toBe('Opeč zelenú cibuľku krátko.');
+		expect(rewriteStep('Pridaj cibuľu a 5 minút restuj.', ['cibula'])).toBe(
+			'Pridaj zelenú cibuľku a 1 minútu restuj.'
+		);
+	});
+
+	it('keeps adjectives agreeing when beans become chickpeas and cashews sunflower seeds', () => {
+		expect(rewriteStep('Namočenú fazuľu sceď. Mokrá fazuľa sa rozpadne.', ['fazula-biela'])).toBe(
+			'Namočený cícer sceď. Mokrý cícer sa rozpadne.'
+		);
+		expect(rewriteStep('Rozmixuj so scedenými kešu a vodou.', ['kesu'])).toBe(
+			'Rozmixuj so scedenými slnečnicovými semienkami a vodou.'
+		);
+		expect(rewriteStep('Zrnká kešu by ostali ako piesok, preto namoč kešu.', ['kesu'])).toBe(
+			'Zrnká slnečnicových semienok by ostali ako piesok, preto namoč slnečnicové semienka.'
+		);
+	});
+
+	it('leaves black beans alone and fixes pronouns after chickpeas', () => {
+		expect(rewriteStep('Pridaj čiernu fazuľu a bielu fazuľu, roztlač ju.', ['fazula-biela'])).toBe(
+			'Pridaj čiernu fazuľu a cícer, roztlač ho.'
+		);
+	});
 });

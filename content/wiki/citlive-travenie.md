@@ -46,7 +46,11 @@ Dá sa, len treba vedieť, kde sú bielkoviny:
 
 Každá surovina má orientačné množstvo na porciu, ktoré je ešte nízko-FODMAP. Cibuľa a cesnak neprejdú v žiadnom množstve. Čísla sú zaokrúhlené nadol podľa verejne dostupných údajov Monash – presné hodnoty má len ich aplikácia, takže ber ich ako vodítko.
 
-Keď recept nevyhovuje len kvôli tomu, čo sa dá vymeniť, Receptio k nemu samo pridá **verziu Low FODMAP**: cesnak nahradí cesnakovým olejom, cibuľu a pór zelenou časťou jarnej cibuľky, vývar vývarom bez cibule a cesnaku, sójové mlieko ryžovým, sójový jogurt kokosovým, šampiňóny hlivou a pšeničné suroviny bezlepkovými. Pri jedlách, kde je cibuľa či cesnak podstatou (cibuľové krúžky, cesnaková polievka), to nerobí.
+Keď recept nevyhovuje len kvôli tomu, čo sa dá vymeniť, Receptio k nemu samo pridá **verziu Low FODMAP**: cesnak nahradí cesnakovým olejom, cibuľu a pór zelenou časťou jarnej cibuľky, vývar vývarom bez cibule a cesnaku, sójové mlieko ryžovým, sójový jogurt kokosovým, šampiňóny hlivou, kešu slnečnicovými semienkami, sójový granulát tofu a pšeničné suroviny bezlepkovými. Červenú a bielu fazuľu vymení za čiernu fazuľu či cícer, ktoré v malom množstve nevadia.
+
+**Strukoviny** zmenší na množstvo, ktoré ešte nevadí, a bielkoviny, ktoré tým ubudnú, doplní pevným tofu. Dal alebo chilli tak bude iné jedlo, ale stále sýte. Pri dezertoch, snackoch a nátierkach (hummus, pečený cícer) tofu nepridáva – tam by to nedávalo zmysel. Ovocie a zeleninu zmenší, len keď ostane aspoň polovica, inak by to bolo iné jedlo.
+
+Postup v tejto verzii sa prepíše podľa náhrad. Pri jedlách, kde je cibuľa či cesnak podstatou (cibuľové krúžky, cesnaková polievka, guláš), verziu nerobí.
 
 Ak máš diétu zapnutú v Špajzi, pri recepte, ktorý nevyhovuje, uvidíš prečo – napríklad „cícer (nad 42 g na porciu)“.
 

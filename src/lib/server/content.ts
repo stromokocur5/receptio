@@ -13,7 +13,7 @@ import {
 	treatReasons
 } from '$lib/nutrition';
 import { CATEGORY_PATHS, guessTaste } from '$lib/categories';
-import { techniqueGuides } from '$lib/cooking';
+import { stepLines, techniqueGuides } from '$lib/cooking';
 import { ART_NAMES, artFigure } from '$lib/wiki-art';
 import { normalizeSearch } from '$lib/labels';
 import { rewriteStep } from '$lib/step-swaps';
@@ -47,6 +47,7 @@ import {
 	type RecipeDetail,
 	type RecipeLine,
 	type RecipeVariant,
+	type Unit,
 	type Store,
 	type Substitute,
 	type WikiPage
@@ -728,6 +729,145 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		};
 	};
 
+	/** Low-FODMAP portion steps: what an amount in this unit is rounded down to. */
+	const PORTION_STEP: Partial<Record<Unit, number>> = {
+		g: 5,
+		ml: 5,
+		ks: 0.25,
+		pl: 0.5,
+		čl: 0.5,
+		hrnček: 0.25
+	};
+	/** The line cut to `factor` of its amount, rounded down; null when nothing is left. */
+	const scaledDown = (line: RecipeLine, factor: number): RecipeLine | null => {
+		if (line.amount === null || line.unit === null) return line;
+		const step = PORTION_STEP[line.unit] ?? 1;
+		const amount = Math.floor((line.amount * factor) / step) * step;
+		if (amount <= 0) return null;
+		return { ...line, amount, grams: (line.grams * amount) / line.amount };
+	};
+	const isProtein = (i: Ingredient) => i.category === 'strukoviny' || i.category === 'bielkoviny';
+	/** Below this share of the amount a fruit or vegetable is cut to, it's a different dish. */
+	const MIN_KEPT = 0.5;
+	const TOFU_ID = 'tofu-natural';
+
+	/**
+	 * Tofu can stand in for beans in a stew or a burger, not in a sweet bean dessert, roasted
+	 * chickpeas or a dip that is the legume.
+	 */
+	const NO_TOFU_CATEGORIES = ['dezerty', 'snacky', 'omacky/dipy', 'ranajky/sladke'];
+
+	function lowFodmapVersion(
+		lines: RecipeLine[],
+		servings: number,
+		steps: string[],
+		handWritten: Record<string, string>,
+		categories: string[],
+		where: string
+	): RecipeVariant | undefined {
+		const topUp = !categories.some((c) => NO_TOFU_CATEGORIES.some((n) => c.startsWith(n)));
+		const replaceable = (i: Ingredient) => topUp && isProtein(i);
+		const name = (id: string) => byId.get(id)!.name.replace(/\s*\(.*\)/, '');
+
+		const blocked = new Set(
+			dietBlockers(lines, byId, servings, 'low-fodmap').map((b) => b.ingredient.id)
+		);
+		const swaps = new Map<string, string>();
+		const swapped = lines.map((l) => {
+			const ingredient = byId.get(l.ingredientId)!;
+			if (l.notEaten || !blocked.has(ingredient.id)) return l;
+			const to =
+				ingredient.fodmapSwap ??
+				(ingredient.gluten === 'contains' && ingredient.gfAlternative
+					? { to: ingredient.gfAlternative, ratio: 1 }
+					: undefined);
+			if (!to) return l;
+			swaps.set(ingredient.id, to.to);
+			return scaledSwap(l, to.to, to.ratio, where);
+		});
+
+		const limits = new Map(
+			dietBlockers(swapped, byId, servings, 'low-fodmap')
+				.filter((b) => b.limit)
+				.map((b) => [b.ingredient.id, b.limit!])
+		);
+		const totals = new Map<string, number>();
+		for (const l of swapped) {
+			if (!l.notEaten) totals.set(l.ingredientId, (totals.get(l.ingredientId) ?? 0) + l.grams);
+		}
+		const reduced = new Set<string>();
+		/** Ids of the original lines whose legumes were cut, to find the step where tofu goes. */
+		const cutLegumes = new Set<string>();
+		let missingProtein = 0;
+		const portioned = swapped.flatMap((l, i) => {
+			const limit = limits.get(l.ingredientId);
+			if (l.notEaten || limit === undefined) return [l];
+			const ingredient = byId.get(l.ingredientId)!;
+			const factor = (limit * servings) / totals.get(l.ingredientId)!;
+			if (!replaceable(ingredient) && factor < MIN_KEPT) return [l];
+			const kept = scaledDown(l, factor);
+			reduced.add(l.ingredientId);
+			if (replaceable(ingredient)) {
+				missingProtein += ((l.grams - (kept?.grams ?? 0)) * ingredient.per100g.protein) / 100;
+				cutLegumes.add(lines[i].ingredientId);
+			}
+			return kept ? [kept] : [];
+		});
+		const tofu = byId.get(TOFU_ID)!;
+		const tofuGrams = Math.round((missingProtein / tofu.per100g.protein) * 2) * 50;
+		if (tofuGrams > 0) {
+			portioned.push({
+				ingredientId: TOFU_ID,
+				grams: tofuGrams,
+				amount: tofuGrams,
+				unit: 'g',
+				note: 'pevné, na kocky alebo rozdrobené – namiesto časti strukovín'
+			});
+		}
+		if (!swaps.size && !reduced.size) return undefined;
+
+		const result = compute(
+			mergeLines(
+				portioned.map((l) => (l.note ? { ...l, note: rewriteStep(l.note, swaps.keys()) } : l))
+			),
+			servings
+		);
+		if (!result.diets.includes('low-fodmap')) return undefined;
+
+		// The last step that mentions the legumes is where they go into the dish, not the soaking.
+		const tofuStep = tofuGrams
+			? steps.findLastIndex((step) =>
+					stepLines(step, lines, byId).some((l) => cutLegumes.has(l.ingredientId))
+				)
+			: -1;
+		const newSteps = steps.map((step, i) => {
+			const text = handWritten[String(i + 1)] ?? rewriteStep(step, swaps.keys());
+			return i === tofuStep && !handWritten[String(i + 1)]
+				? `${text} Spolu so strukovinami pridaj aj tofu.`
+				: text;
+		});
+		const description = [
+			swaps.size
+				? `Pre citlivé trávenie: ${[...swaps]
+						.map(([from, to]) => `${name(from)} → ${name(to).toLowerCase()}`)
+						.join(', ')}.`
+				: 'Pre citlivé trávenie.',
+			reduced.size
+				? `Menej, len toľko, koľko ešte nevadí: ${[...reduced].map((id) => name(id).toLowerCase()).join(', ')}.`
+				: '',
+			tofuGrams ? `Bielkoviny doplní ${tofuGrams} g pevného tofu – jedlo bude iné, ale sýte.` : '',
+			[...swaps.values()].includes('jarna-cibulka-vnat')
+				? 'Zelenú časť cibuľky opeč len krátko alebo ju pridaj na konci.'
+				: ''
+		];
+		return {
+			name: FODMAP_VARIANT_NAME,
+			description: description.filter(Boolean).join(' '),
+			...(newSteps.some((step, i) => step !== steps[i]) && { steps: newSteps }),
+			...result
+		};
+	}
+
 	const equipmentRules = parseWith(
 		z.array(equipmentSchema),
 		parseYaml(raw.equipment),
@@ -904,62 +1044,16 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		}
 
 		// Like the gluten-free version: onion, garlic, soy milk and the like swapped for what's
-		// gentle on the gut, offered only when that's enough to make the recipe low FODMAP.
+		// gentle on the gut; then whatever is fine only in small amounts (legumes, avocado) cut down
+		// to that, with firm tofu making up the protein the legumes took with them. Offered only
+		// when that's enough to make the recipe low FODMAP.
 		if (
 			r.fodmap_swap &&
 			!base.diets.includes('low-fodmap') &&
 			!variants.some((v) => v.diets.includes('low-fodmap'))
 		) {
-			const blocked = new Set(
-				dietBlockers(lines, byId, r.servings, 'low-fodmap').map((b) => b.ingredient.id)
-			);
-			const swaps = new Map<string, string>();
-			const fodmapLines = lines.map((l) => {
-				const ingredient = byId.get(l.ingredientId)!;
-				if (l.notEaten || !blocked.has(ingredient.id)) return l;
-				const to =
-					ingredient.fodmapSwap ??
-					(ingredient.gluten === 'contains' && ingredient.gfAlternative
-						? { to: ingredient.gfAlternative, ratio: 1 }
-						: undefined);
-				if (!to) return l;
-				swaps.set(ingredient.id, to.to);
-				return scaledSwap(l, to.to, to.ratio, where);
-			});
-			const low = swaps.size
-				? compute(
-						mergeLines(
-							fodmapLines.map((l) =>
-								l.note ? { ...l, note: rewriteStep(l.note, swaps.keys()) } : l
-							)
-						),
-						r.servings
-					)
-				: undefined;
-			if (low?.diets.includes('low-fodmap')) {
-				const name = (id: string) => byId.get(id)!.name.replace(/\s*\(.*\)/, '');
-				const tips = [
-					[...swaps.values()].includes('jarna-cibulka-vnat')
-						? 'Zelenú časť cibuľky opeč len krátko alebo ju pridaj na konci.'
-						: ''
-				];
-				const steps = r.steps.map(
-					(step, i) => r.fodmap_steps[String(i + 1)] ?? rewriteStep(step, swaps.keys())
-				);
-				variants.push({
-					name: FODMAP_VARIANT_NAME,
-					description: [
-						`Pre citlivé trávenie: ${[...swaps]
-							.map(([from, to]) => `${name(from)} → ${name(to).toLowerCase()}`)
-							.join(', ')}.`,
-						...tips
-					]
-						.filter(Boolean)
-						.join(' '),
-					...(steps.some((step, i) => step !== r.steps[i]) && { steps }),
-					...low
-				});
-			}
+			const low = lowFodmapVersion(lines, r.servings, r.steps, r.fodmap_steps, r.categories, where);
+			if (low) variants.push(low);
 		}
 
 		for (const toolId of [...r.equipment, ...r.no_equipment]) {

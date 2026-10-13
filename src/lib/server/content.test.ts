@@ -69,6 +69,18 @@ describe('content', () => {
 		const lowSteps = chimichurri.variants.find((v) => v.name === 'Low FODMAP')!.steps!;
 		expect(lowSteps[0]).toMatch(/^Petržlen nasekaj .* s cesnakovým olejom/);
 
+		const masala = content.recipeDetails.get('chana-masala')!;
+		const lowMasala = masala.variants.find((v) => v.name === 'Low FODMAP')!;
+		const chickpeas = lowMasala.lines.find((l) => l.ingredientId === 'cicer-sterilizovany')!;
+		expect(chickpeas.grams / masala.servings).toBeLessThanOrEqual(42);
+		expect(lowMasala.lines.some((l) => l.ingredientId === 'tofu-natural')).toBe(true);
+		expect(lowMasala.perServing.protein).toBeGreaterThan(masala.perServing.protein * 0.8);
+
+		const roasted = content.recipeDetails.get('peceny-cicer')!;
+		expect(
+			roasted.variants.some((v) => v.lines.some((l) => l.ingredientId === 'tofu-natural'))
+		).toBe(false);
+
 		const rings = content.recipeDetails.get('cibulove-kruzky')!;
 		expect(rings.variants.map((v) => v.name)).not.toContain('Low FODMAP');
 	});

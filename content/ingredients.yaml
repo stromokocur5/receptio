@@ -432,7 +432,7 @@
   name: Červená fazuľa sterilizovaná (scedená)
   howto: [strukoviny]
   category: strukoviny
-  diet: { fodmap: 0 }
+  diet: { fodmap: 0, fodmap_swap: fazula-cierna }
   n: { kcal: 127, p: 8.7, c: 22.8, f: 0.5, fib: 6.4, salt: 0.5, fe: 2.9, ca: 35, zn: 1, ala: 0.1 }
   units: { ks: 240 }
   price: 3
@@ -469,7 +469,7 @@
   name: Biela fazuľa suchá
   howto: [strukoviny]
   category: strukoviny
-  diet: { fodmap: 0, oxalate: true }
+  diet: { fodmap: 0, fodmap_swap: cicer-suchy, oxalate: true }
   group: fazula-biela
   group_factor: 2.4
   n: { kcal: 337, p: 22, c: 61, f: 1.5, fib: 15.5, salt: 0, fe: 5.5, ca: 175, zn: 2.5, ala: 0.2 }
@@ -487,7 +487,7 @@
   name: Biela fazuľa sterilizovaná (scedená)
   howto: [strukoviny]
   category: strukoviny
-  diet: { fodmap: 0, oxalate: true }
+  diet: { fodmap: 0, fodmap_swap: cicer-sterilizovany, oxalate: true }
   n: { kcal: 139, p: 9.7, c: 25, f: 0.4, fib: 6.3, salt: 0.5, fe: 3.7, ca: 90, zn: 1.4, ala: 0.1 }
   units: { ks: 240 }
   price: 3
@@ -2099,7 +2099,7 @@
   aliases: [sójové mäso]
   howto: [nahrady]
   category: nahrady
-  diet: { fodmap: 0, oxalate: true }
+  diet: { fodmap: 0, fodmap_swap: tofu-natural, fodmap_ratio: 3, oxalate: true }
   allergens: [soy]
   n: { kcal: 330, p: 50, c: 30, f: 1.5, fib: 17, salt: 0, fe: 9, ca: 240, zn: 2.5, ala: 0.1 }
   units: { hrnček: 90 }
@@ -2906,7 +2906,7 @@
   name: Kešu orechy (nepražené)
   howto: [nahrady]
   category: orechy-semienka
-  diet: { fodmap: 0, histamine: true, oxalate: true }
+  diet: { fodmap: 0, fodmap_swap: slnecnicove-semienka, histamine: true, oxalate: true }
   allergens: [nuts]
   n: { kcal: 553, p: 18.2, c: 30, f: 43.9, fib: 3.3, salt: 0, fe: 6.7, ca: 37, zn: 5.8, ala: 0.1 }
   units: { hrnček: 130, pl: 10 }
