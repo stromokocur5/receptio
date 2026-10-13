@@ -32,6 +32,7 @@ stores:
   - { id: fresh, name: Fresh, color: '#e4002b' }
   - { id: dm, name: dm, color: '#002878' }
   - { id: gymbeam, name: GymBeam, color: '#ff5a00', online: true }
+  - { id: allegro, name: Allegro, color: '#ff5a00', online: true }
   - { id: grizly, name: Grizly, color: '#5b3a1e', online: true }
   - { id: foodland, name: Foodland, color: '#c8102e', online: true }
   - { id: veganstore, name: Veganstore, color: '#3f8f3a', online: true }
@@ -565,3 +566,52 @@ entries:
     price: 1.69
     date: 2026-10-04
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/111274589
+  - ingredient: sosovica-cervena
+    store: allegro
+    product: 'Tar-Groch červená šošovica'
+    pack: 5 kg
+    price: 10.23
+    date: 2026-10-13
+    url: https://allegro.sk/produkt/cervena-sosovica-tar-groch-5-kg-173462bc-3151-4a80-9ebe-172f9fce9496
+  - ingredient: cicer-suchy
+    store: allegro
+    product: 'Cícer Chickpeas'
+    pack: 5 kg
+    price: 11.24
+    date: 2026-10-13
+    url: https://allegro.sk/produkt/cicer-5-kg-87d96208-553f-4b4f-80cf-bd55fb14ffd6
+  - ingredient: ovsene-vlocky
+    store: allegro
+    product: 'Tola ovsené vločky'
+    pack: 5 kg
+    price: 7.49
+    date: 2026-10-13
+    url: https://allegro.sk/produkt/ovsene-vlocky-5kg-prirodne-vysoka-tola-6a42c81a-fc10-4c9f-9b76-0ec02da1dc84
+  - ingredient: vyzivne-drozdie
+    store: allegro
+    product: 'Tola neaktívne kvasinkové vločky'
+    pack: 1 kg
+    price: 10.12
+    date: 2026-10-13
+    url: https://allegro.sk/produkt/drozdove-vlocky-tola-1000-g-195cf1af-c189-4c53-a88a-e4680fdfd4d8
+  - ingredient: chia
+    store: allegro
+    product: 'Real Foods chia semienka'
+    pack: 1 kg
+    price: 4.77
+    date: 2026-10-13
+    url: https://allegro.sk/produkt/chia-semienka-real-foods-1000-g-a430fa51-11d7-418c-8e00-b06f869009c2
+  - ingredient: sojove-granule
+    store: allegro
+    product: 'Brat sójový granulát'
+    pack: 1 kg
+    price: 6.75
+    date: 2026-10-13
+    url: https://allegro.sk/produkt/sojovy-granulat-1-kg-brat-ee20968a-ffa7-487d-8ddc-7754f2c86bde
+  - ingredient: kesu
+    store: allegro
+    product: 'Kešu orechy celé, prírodné'
+    pack: 1 kg
+    price: 8.25
+    date: 2026-10-13
+    url: https://allegro.sk/produkt/cele-prirodne-kesu-orechy-1-kg-bd4db8fa-aaae-4158-b7a1-1dc19b34144f
