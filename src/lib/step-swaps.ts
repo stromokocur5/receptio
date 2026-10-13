@@ -128,6 +128,11 @@ const SWAP_RULES: Record<string, Rule[]> = {
 			pattern: start(`(?:opeč|opraž|speň|orestuj|osmaž)(?=\\s+cesnak(?!${L}))`),
 			replace: () => 'zohrej'
 		},
+		// "druhý strúčik" was one of several; the oil is just what's left.
+		{
+			pattern: start(`(?:druh|posledn)(ý|ým|ého)(?= cesnak)`),
+			replace: (_m, ending) => `zvyšn${ending}`
+		},
 		{
 			pattern: word(`cesnak(u|om)?`),
 			replace: byEnding({ '': 'cesnakový olej', u: 'cesnakového oleja', om: 'cesnakovým olejom' })

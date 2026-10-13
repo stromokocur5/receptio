@@ -65,6 +65,10 @@ describe('content', () => {
 		expect(ids).not.toContain('cibula');
 		expect(low.lines.find((l) => l.ingredientId === 'cesnakovy-olej')!.unit).toBe('čl');
 
+		const chimichurri = content.recipeDetails.get('chimichurri')!;
+		const lowSteps = chimichurri.variants.find((v) => v.name === 'Low FODMAP')!.steps!;
+		expect(lowSteps[0]).toMatch(/^Petržlen nasekaj .* s cesnakovým olejom/);
+
 		const rings = content.recipeDetails.get('cibulove-kruzky')!;
 		expect(rings.variants.map((v) => v.name)).not.toContain('Low FODMAP');
 	});

@@ -12,6 +12,7 @@ ahead: Kvasia 3–5 dní pri izbovej teplote.
 yields: cca 2 poháre po 1,5 l
 keeps: { fridge: 30 }
 howto: [nakladana-zelenina]
+fodmap_swap: false
 ingredients:
   - uhorky-nakladacie: 1,5 kg | čerstvé, malé
   - voda: ~1,5 l | nechlórovaná alebo prevarená a vychladnutá

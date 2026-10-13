@@ -10,6 +10,7 @@ difficulty: 1
 tags: [party, lacne]
 spicy: 0
 keeps: { fridge: 4 }
+fodmap_swap: false
 ingredients:
   - zemiaky: 3 ks | múčne
   - cesnak: 5 ks

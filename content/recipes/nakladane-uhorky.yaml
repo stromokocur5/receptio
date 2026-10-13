@@ -12,6 +12,7 @@ ahead: Uhorky namoč na 2–4 hodiny do ľadovej vody.
 yields: cca 4 poháre po 0,7 l
 keeps: { fridge: 21 }
 howto: [nakladana-zelenina, zavaranie]
+fodmap_swap: false
 ingredients:
   - uhorky-nakladacie: 2 kg | malé, konce odrezané
   - cibula: 2 ks | na kolieska

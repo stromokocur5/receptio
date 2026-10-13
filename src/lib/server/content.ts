@@ -205,6 +205,8 @@ const recipeSchema = z
 		oat_swap: z.boolean().default(true),
 		/** false when onion, garlic or leek is the point of the dish (onion rings, garlic soup). */
 		fodmap_swap: z.boolean().default(true),
+		/** Steps of the low-FODMAP version written by hand where the automatic rewrite reads badly (1-based). */
+		fodmap_steps: z.record(z.string().regex(/^[1-9]\d*$/), z.string().min(1)).default({}),
 		yields: z.string().optional(),
 		nutrition: z.boolean().default(true),
 		related: z.array(slug).default([]),
@@ -762,6 +764,10 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		const r = parseWith(recipeSchema, parseYaml(text), where);
 		if (!cuisineIds.has(r.cuisine)) throw new Error(`${where}: neznáma kuchyňa "${r.cuisine}"`);
 		if (r.active > r.time) throw new Error(`${where}: active nesmie byť viac ako time`);
+		for (const n of Object.keys(r.fodmap_steps)) {
+			if (Number(n) > r.steps.length)
+				throw new Error(`${where}: fodmap_steps ${n} – taký krok nie je`);
+		}
 
 		const lines = r.ingredients.map((entry) => {
 			const [ingredientId, amountText] = Object.entries(entry)[0];
@@ -937,7 +943,9 @@ export function compileContent(raw: RawContent, today: Date): Content {
 						? 'Zelenú časť cibuľky opeč len krátko alebo ju pridaj na konci.'
 						: ''
 				];
-				const steps = r.steps.map((step) => rewriteStep(step, swaps.keys()));
+				const steps = r.steps.map(
+					(step, i) => r.fodmap_steps[String(i + 1)] ?? rewriteStep(step, swaps.keys())
+				);
 				variants.push({
 					name: FODMAP_VARIANT_NAME,
 					description: [
