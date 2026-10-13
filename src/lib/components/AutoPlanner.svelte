@@ -144,6 +144,7 @@
 	} {
 		const groups = pantryByGroup(pantry.current, catalog.ingredientsById);
 		const hasPantry = Object.keys(pantry.current).length > 0;
+		const needs = tableNeeds();
 		const options: AutoPlanOptions = {
 			days: settings.current.planDays,
 			people: settings.current.people,
@@ -155,13 +156,12 @@
 			glutenFree,
 			noSubstitutes,
 			excludeAllergens,
-			diets: avoid.current.diets,
+			diets: [...new Set([...avoid.current.diets, ...(needs?.diets ?? [])])],
 			batchCooking,
 			seed,
 			slots: planSlots(settings.current)
 		};
 		const allowed = avoidFilter(avoid.current, catalog.ingredientsById);
-		const needs = tableNeeds();
 		const atTable = needs ? householdFilter(needs, catalog.ingredientsById) : () => true;
 		const wished =
 			household.doc && !household.solo ? wishesOf(household.doc, tableMembers()) : new Map();

@@ -1213,7 +1213,7 @@ export function updateMember(
 	}
 }
 
-const NEEDS = ['allergens', 'avoid', 'mild', 'glutenFree'] as const;
+const NEEDS = ['allergens', 'avoid', 'mild', 'glutenFree', 'diets'] as const;
 
 export function removeMember(id: string) {
 	const current = household.doc?.members[id];

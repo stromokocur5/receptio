@@ -46,7 +46,7 @@
 	} from '$lib/household.svelte';
 	import { localToday } from '$lib/journal';
 	import { remindersSupported } from '$lib/reminders';
-	import { ALLERGEN_LABELS } from '$lib/nutrition';
+	import { ALLERGEN_LABELS, DIET_META } from '$lib/nutrition';
 	import { addToPlan, plan, ui } from '$lib/state.svelte';
 
 	const catalog = useCatalog();
@@ -262,7 +262,8 @@
 				(id) => `bez: ${shortName(catalog.ingredientsById.get(id)?.name ?? id).toLowerCase()}`
 			),
 			...(member.mild ? ['nepálivo'] : []),
-			...(member.glutenFree ? ['bezlepkovo'] : [])
+			...(member.glutenFree ? ['bezlepkovo'] : []),
+			...(member.diets ?? []).map((d) => DIET_META[d].label.toLowerCase())
 		];
 	}
 </script>

@@ -95,25 +95,33 @@ export const ALLERGEN_LABELS: Record<Allergen, string> = {
 	sulphites: 'siričitany'
 };
 
-export const DIET_META: Record<Diet, { label: string; wiki: string; about: string }> = {
+/** `conflict` names what's wrong with a recipe for someone on the diet, like "orechy" or "lepok". */
+export const DIET_META: Record<
+	Diet,
+	{ label: string; wiki: string; about: string; conflict: string }
+> = {
 	'low-fodmap': {
 		label: 'Low FODMAP',
 		wiki: 'citlive-travenie',
+		conflict: 'veľa FODMAP',
 		about: 'Pri dráždivom čreve (IBS) a SIBO – bez cibule, cesnaku a s malými porciami strukovín.'
 	},
 	'low-histamin': {
 		label: 'Málo histamínu',
 		wiki: 'histamin',
+		conflict: 'histamín',
 		about: 'Pri intolerancii histamínu – nič kvasené, bez paradajok, citrusov a kakaa.'
 	},
 	'low-oxalat': {
 		label: 'Málo oxalátov',
 		wiki: 'fytaty-oxalaty-lektiny',
+		conflict: 'oxaláty',
 		about: 'Pri obličkových kameňoch – bez špenátu, cvikly, mandlí a kakaa.'
 	},
 	'bez-lulkovitych': {
 		label: 'Bez ľuľkovitých',
 		wiki: 'strava-pri-ochoreniach',
+		conflict: 'ľuľkovité',
 		about: 'Bez paradajok, zemiakov, papriky, čili a baklažánu.'
 	}
 };

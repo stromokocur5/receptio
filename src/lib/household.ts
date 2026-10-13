@@ -1,9 +1,16 @@
 import { validateGarden, type GardenDiary } from './garden-diary';
 import { canonical } from './member-keys';
-import { ACTIVITY_PROTEIN, type Activity } from './nutrition';
+import { ACTIVITY_PROTEIN, DIET_META, dietVersion, type Activity } from './nutrition';
 import { validatePreserves, type Preserve } from './preserves';
 import type { PlanEntry } from './shopping';
-import { ALLERGENS, type Allergen, type Ingredient, type RecipeSummary } from './types';
+import {
+	ALLERGENS,
+	DIETS,
+	type Allergen,
+	type Diet,
+	type Ingredient,
+	type RecipeSummary
+} from './types';
 
 /**
  * A household: people who cook and shop together share one plan, shopping list and pantry, and
@@ -58,6 +65,8 @@ export interface Member {
 	/** No spicy food (children, sensitive stomachs). */
 	mild: boolean;
 	glutenFree: boolean;
+	/** Low FODMAP and the like; left out when empty so older profiles keep their signature. */
+	diets?: Diet[];
 	/** Which planned meals they eat at home. */
 	meals: Record<PlanMeal, boolean>;
 	/** Portion size against an adult's (1); null = from the body data, or 1 without it. */
@@ -301,6 +310,8 @@ function validateMember(raw: unknown): Member | undefined {
 			: [],
 		mild: raw.mild === true,
 		glutenFree: raw.glutenFree === true,
+		...(Array.isArray(raw.diets) &&
+			raw.diets.length > 0 && { diets: DIETS.filter((d) => (raw.diets as unknown[]).includes(d)) }),
 		meals: validateMemberMeals(raw.meals),
 		portion:
 			typeof raw.portion === 'number' && raw.portion >= 0.25 && raw.portion <= 2.5
@@ -1028,6 +1039,7 @@ export interface HouseholdNeeds {
 	avoid: string[];
 	mild: boolean;
 	glutenFree: boolean;
+	diets: Diet[];
 }
 
 export function householdNeeds(members: Member[]): HouseholdNeeds {
@@ -1035,7 +1047,8 @@ export function householdNeeds(members: Member[]): HouseholdNeeds {
 		allergens: [...new Set(members.flatMap((m) => m.allergens))],
 		avoid: [...new Set(members.flatMap((m) => m.avoid))],
 		mild: members.some((m) => m.mild),
-		glutenFree: members.some((m) => m.glutenFree)
+		glutenFree: members.some((m) => m.glutenFree),
+		diets: DIETS.filter((d) => members.some((m) => m.diets?.includes(d)))
 	};
 }
 
@@ -1062,7 +1075,10 @@ export function recipeConflicts(
 			...(member.mild && recipe.spicy >= 2 ? ['pálivé'] : []),
 			...(member.glutenFree && recipe.gluten === 'contains'
 				? [recipe.gfSwappable ? 'lepok – uvar bezlepkovú verziu' : 'lepok']
-				: [])
+				: []),
+			...(member.diets ?? [])
+				.filter((d) => !recipe.diets.includes(d))
+				.map((d) => DIET_META[d].conflict)
 		];
 		return reasons.length ? [{ member, reasons }] : [];
 	});
@@ -1081,11 +1097,16 @@ export function householdFilter(
 		!recipe.allergens.some((a) => needs.allergens.includes(a)) &&
 		!(needs.mild && recipe.spicy >= 2) &&
 		!(needs.glutenFree && recipe.gluten === 'contains' && !recipe.gfSwappable) &&
+		(!needs.diets.length || dietVersion(recipe, needs.diets) !== undefined) &&
 		!recipe.lines.some((l) => groups.has(ingredientsById.get(l.ingredientId)?.group ?? ''));
 }
 
 export const hasNeeds = (needs: HouseholdNeeds) =>
-	needs.allergens.length > 0 || needs.avoid.length > 0 || needs.mild || needs.glutenFree;
+	needs.allergens.length > 0 ||
+	needs.avoid.length > 0 ||
+	needs.mild ||
+	needs.glutenFree ||
+	needs.diets.length > 0;
 
 // ── Who did what ───────────────────────────────────────────────
 

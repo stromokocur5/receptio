@@ -24,10 +24,10 @@
 	} from '$lib/household.svelte';
 	import MemberCard from '$lib/components/MemberCard.svelte';
 	import { localToday } from '$lib/journal';
-	import { ACTIVITY_LABELS, ALLERGEN_LABELS, type Activity } from '$lib/nutrition';
+	import { ACTIVITY_LABELS, ALLERGEN_LABELS, DIET_META, type Activity } from '$lib/nutrition';
 	import { journal, settings } from '$lib/state.svelte';
 	import { toast } from '$lib/toast.svelte';
-	import { ALLERGENS } from '$lib/types';
+	import { ALLERGENS, DIETS, type Diet } from '$lib/types';
 
 	let {
 		member,
@@ -52,6 +52,12 @@
 	const editable = $derived(canEdit(member));
 	const targets = $derived(memberTargets(member.body));
 	const away = $derived(member.away);
+
+	function toggleDiet(d: Diet) {
+		const current = member.diets ?? [];
+		const diets = current.includes(d) ? current.filter((x) => x !== d) : [...current, d];
+		updateMember(member.id, { diets: diets.length ? diets : undefined });
+	}
 
 	function toggleAllergen(allergen: (typeof ALLERGENS)[number]) {
 		updateMember(member.id, {
@@ -320,7 +326,19 @@
 					onclick={() => updateMember(member.id, { glutenFree: !member.glutenFree })}
 					><Icon name="wheat" size={16} /> Bezlepkovo</button
 				>
+				{#each DIETS as d (d)}
+					<button
+						class="chip"
+						title={DIET_META[d].about}
+						aria-pressed={member.diets?.includes(d) ?? false}
+						onclick={() => toggleDiet(d)}>{DIET_META[d].label}</button
+					>
+				{/each}
 			</div>
+			<p class="hint">
+				Low FODMAP a ďalšie diéty – plán ponúkne recept rovno alebo v upravenej verzii.
+				<a href="/wiki/strava-pri-ochoreniach">Čo ktorá znamená</a>
+			</p>
 		</fieldset>
 		<fieldset>
 			<legend>Čo neje alebo nechce jesť</legend>

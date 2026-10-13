@@ -337,8 +337,22 @@ describe('cooking for everyone', () => {
 			allergens: ['nuts'],
 			avoid: ['cicer-suchy'],
 			mild: true,
-			glutenFree: true
+			glutenFree: true,
+			diets: []
 		});
+	});
+
+	it('names the diet a recipe breaks', () => {
+		const eva = member('eva', { name: 'Eva', diets: ['low-fodmap'] });
+		const fits = {
+			...recipe,
+			allergens: [],
+			spicy: 0,
+			diets: ['low-fodmap']
+		} as unknown as RecipeSummary;
+		const breaks = { ...fits, diets: [] } as unknown as RecipeSummary;
+		expect(recipeConflicts(fits, [eva], ingredients, labels)).toEqual([]);
+		expect(recipeConflicts(breaks, [eva], ingredients, labels)[0].reasons).toEqual(['veľa FODMAP']);
 	});
 });
 
@@ -354,6 +368,8 @@ describe('household filter', () => {
 	const recipe = (extra: Partial<RecipeSummary>) =>
 		({
 			allergens: [],
+			diets: [],
+			variants: [],
 			spicy: 0,
 			gluten: 'free',
 			gfSwappable: false,
@@ -373,6 +389,17 @@ describe('household filter', () => {
 		expect(ok(recipe({ lines: [{ ingredientId: 'cicer-sterilizovany' }] as never }))).toBe(false);
 		expect(ok(recipe({ gluten: 'contains' }))).toBe(false);
 		expect(ok(recipe({ gluten: 'contains', gfSwappable: true }))).toBe(true);
+	});
+
+	it('keeps a recipe for a diet when it or a variant fits', () => {
+		const strict = householdFilter(
+			householdNeeds([member('b', { diets: ['low-fodmap'] })]),
+			ingredients
+		);
+		expect(strict(recipe({ diets: [], variants: [] }))).toBe(false);
+		expect(strict(recipe({ diets: ['low-fodmap'], variants: [] }))).toBe(true);
+		const variant = { name: 'Bez cibule', diets: ['low-fodmap'] } as never;
+		expect(strict(recipe({ diets: [], variants: [variant] }))).toBe(true);
 	});
 });
 
