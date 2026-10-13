@@ -45,7 +45,7 @@ variants:
     description: 'Pre citlivé trávenie. Chuť doženie zelená časť jarnej cibuľky a o štipku viac korenia.'
     remove: [cibula, cesnak]
     add:
-      - jarna-cibulka: 4 ks | len zelená časť
+      - jarna-cibulka-vnat: 4 ks
   - name: Bez náhrad
     description: Hnedá šošovica namiesto sójových granúl a avokádo namiesto jogurtu. Šošovicu pridaj spolu s paradajkami a var 30–35 minút do mäkka, podlievaj vodou.
     replace:

@@ -16,7 +16,7 @@ Histamín si telo vyrába samo (pri alergii, trávení). V jedle ho rozkladá en
 - **Orechy a kakao:** vlašské orechy, kešu, arašidy, kakao, čokoláda.
 - **Nápoje:** alkohol, čierny a zelený čaj – brzdia DAO.
 
-Zoznamy sa medzi zdrojmi trochu líšia. Receptio sa drží tých najčastejšie uvádzaných.
+Zoznamy sa medzi zdrojmi trochu líšia. Receptio sa drží tých najčastejšie uvádzaných. Pri citróne, limetke a octe záleží na množstve – lyžička do dresingu väčšine ľudí neprekáža, preto ich Receptio pustí v malom množstve na porciu. Kvasené veci, paradajky a kakao nepustí vôbec.
 
 ## Čo pomáha
 

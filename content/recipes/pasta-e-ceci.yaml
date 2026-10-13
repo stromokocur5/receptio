@@ -33,4 +33,4 @@ variants:
     description: 'Namiesto cesnaku opraž s rozmarínom zelenú časť jarnej cibuľky.'
     remove: [cesnak]
     add:
-      - jarna-cibulka: 2 ks | len zelená časť
+      - jarna-cibulka-vnat: 2 ks

@@ -11,6 +11,7 @@ tags: [pizza, party, pecenie]
 keeps: { fridge: 2, freezer: 2 }
 leftovers: 'Prehrej v rúre na 180 °C 5 minút.'
 related: [pizza-new-york, pizzova-omacka, focaccia]
+fodmap_swap: false
 ingredients:
   - hladka-muka: 300 g
   - drozdie: 1 čl

@@ -55,6 +55,20 @@ describe('content', () => {
 		);
 	});
 
+	it('offers a low-FODMAP version when swaps are enough, and not where onion is the point', () => {
+		const soup = content.recipeDetails.get('tekvicova-polievka')!;
+		const low = soup.variants.find((v) => v.name === 'Low FODMAP')!;
+		expect(low.diets).toContain('low-fodmap');
+		const ids = low.lines.map((l) => l.ingredientId);
+		expect(ids).toContain('cesnakovy-olej');
+		expect(ids).not.toContain('cesnak');
+		expect(ids).not.toContain('cibula');
+		expect(low.lines.find((l) => l.ingredientId === 'cesnakovy-olej')!.unit).toBe('čl');
+
+		const rings = content.recipeDetails.get('cibulove-kruzky')!;
+		expect(rings.variants.map((v) => v.name)).not.toContain('Low FODMAP');
+	});
+
 	it('offers a low-salt version of salty recipes', () => {
 		const soup = content.recipeDetails.get('bun-hue-chay')!;
 		const low = soup.variants.find((v) => v.name === 'Menej soli')!;

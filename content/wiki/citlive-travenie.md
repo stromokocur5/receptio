@@ -31,7 +31,7 @@ Dá sa, len treba vedieť, kde sú bielkoviny:
 - **Tofu pevné, tempeh a seitan** sú nízko-FODMAP – pri lisovaní tofu odtečú GOS s vodou. Hodvábne tofu nie.
 - **Strukoviny z plechovky, opláchnuté** – GOS sa rozpustia do nálevu. V malej porcii sú v poriadku: cícer asi 40 g, šošovica asi 45 g na jedlo.
 - **Edamame** – asi 90 g.
-- **Sójové mlieko** zo sójových bôbov je vysoko-FODMAP. Ryžové a v malom množstve ovsené nie.
+- **Sójové mlieko** zo sójových bôbov je vysoko-FODMAP. Ryžové do 200 ml a ovsené do asi 140 ml sú v poriadku.
 - **Orechy:** vlašské, arašidy, makadamové, pekanové v poriadku. Kešu a pistácie nie, mandle len hrsť.
 
 ## Bez cibule a cesnaku, ale s chuťou
@@ -44,7 +44,13 @@ Dá sa, len treba vedieť, kde sú bielkoviny:
 
 ## Ako to počíta Receptio
 
-Každá surovina má orientačné množstvo na porciu, ktoré je ešte nízko-FODMAP. Cibuľa a cesnak neprejdú v žiadnom množstve. Čísla sú zaokrúhlené nadol, podľa verejných údajov Monash. Pozor na **sčítanie**: tri suroviny tesne pod hranicou v jednom jedle môžu spolu vadiť.
+Každá surovina má orientačné množstvo na porciu, ktoré je ešte nízko-FODMAP. Cibuľa a cesnak neprejdú v žiadnom množstve. Čísla sú zaokrúhlené nadol podľa verejne dostupných údajov Monash – presné hodnoty má len ich aplikácia, takže ber ich ako vodítko.
+
+Keď recept nevyhovuje len kvôli tomu, čo sa dá vymeniť, Receptio k nemu samo pridá **verziu Low FODMAP**: cesnak nahradí cesnakovým olejom, cibuľu a pór zelenou časťou jarnej cibuľky, vývar vývarom bez cibule a cesnaku, sójové mlieko ryžovým, sójový jogurt kokosovým, šampiňóny hlivou a pšeničné suroviny bezlepkovými. Pri jedlách, kde je cibuľa či cesnak podstatou (cibuľové krúžky, cesnaková polievka), to nerobí.
+
+Ak máš diétu zapnutú v Špajzi, pri recepte, ktorý nevyhovuje, uvidíš prečo – napríklad „cícer (nad 42 g na porciu)“.
+
+Pozor na **sčítanie**: tri suroviny tesne pod hranicou v jednom jedle môžu spolu vadiť.
 
 ## SIBO
 

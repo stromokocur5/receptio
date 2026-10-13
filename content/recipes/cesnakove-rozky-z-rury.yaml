@@ -8,6 +8,7 @@ active: 10
 servings: 7
 difficulty: 1
 tags: [nasarodinka, zvysky, lacne, snack, party]
+fodmap_swap: false
 ingredients:
   - rozok: 10 ks | starý
   - olivovy-olej: 6 pl

@@ -24,7 +24,7 @@ Na internete koluje, že strukoviny, obilniny a zelenina obsahujú „jedy“, k
 - **Čo robia:** viažu **vápnik** – preto sa zo špenátu takmer nevstrebe. U náchylných ľudí prispievajú k obličkovým kameňom.
 - **Čo pomáha:** varenie a scedenie vody odstráni časť. Vápnik ber z [iných zdrojov](/wiki/vapnik) (obohatené mlieko, tofu s vápnikom, kel, brokolica).
 - **Kto si má dať pozor:** ľudia s oxalátovými obličkovými kameňmi – poraď sa s lekárom. Ostatní môžu špenát jesť pokojne, len ho nepočítať ako zdroj vápnika.
-- **Filter Málo oxalátov** v [Špajzi](/spajza#nemam) a v receptoch vynechá špenát, mangold, cviklu, mandle, kešu, arašidy, lieskovce, sezam, pohánku, amarant, quinou, batáty, okru, sóju, kakao a čierny čaj. Pri kameňoch pi veľa vody a nevynechávaj vápnik – viaže oxaláty v čreve.
+- **Filter Málo oxalátov** v [Špajzi](/spajza#nemam) a v receptoch vynechá špenát, mangold, cviklu, mandle, kešu, arašidy, lieskovce, sezam, mak, pohánku, amarant, quinou, bulgur, otruby, bielu fazuľu, zemiaky, batáty, okru, sóju, kakao a čierny čaj. Zemiakom ubudne veľa oxalátov, keď ich olúpeš a uvaríš vo vode, ktorú zleješ – ak ti lekár povolí malé množstvo, takto. Pri kameňoch pi veľa vody a nevynechávaj vápnik – viaže oxaláty v čreve.
 
 ## Lektíny
 

@@ -35,7 +35,6 @@ function ing(id: string, group = id, extra: Partial<Ingredient> = {}): Ingredien
 		group,
 		gluten: 'free',
 		allergens: [],
-		histamine: false,
 		oxalate: false,
 		nightshade: false,
 		staple: false,

@@ -9,7 +9,9 @@
 # group_factor: koľko gramov „bežnej“ formy v skupine urobí 1 g tejto (suchý cícer 2.4 = po uvarení 2,4× ťažší)
 # howto: návody zo sekcie Základy (content/wiki), recept na ne odkáže automaticky
 # diet: fodmap = koľko g na porciu je ešte low FODMAP (Monash, zaokrúhlené, 0 = vysoké v každom množstve),
-#       histamine / oxalate / nightshade: true = veľa histamínu / oxalátov, ľuľkovité
+#       fodmap_swap (+ fodmap_ratio, g náhrady na 1 g) = čím ju nahradí automatická verzia Low FODMAP
+#       histamine: true = vadí v každom množstve, číslo = koľko g na porciu ešte nevadí
+#       oxalate / nightshade: true = veľa oxalátov, ľuľkovité
 # free_sugar: podiel pridaného (voľného) cukru v hmotnosti, podľa neho sa recept označí „Na občas“
 
 # ── Obilniny a prílohy ──────────────────────────────────────────
@@ -277,7 +279,7 @@
   name: Zemiaky
   howto: [supanie]
   category: zelenina
-  diet: { nightshade: true }
+  diet: { oxalate: true, nightshade: true }
   n: { kcal: 77, p: 2, c: 17, f: 0.1, fib: 2.2, salt: 0, fe: 0.8, ca: 12, zn: 0.3 }
   units: { ks: 150 }
   price: 1
@@ -467,7 +469,7 @@
   name: Biela fazuľa suchá
   howto: [strukoviny]
   category: strukoviny
-  diet: { fodmap: 0 }
+  diet: { fodmap: 0, oxalate: true }
   group: fazula-biela
   group_factor: 2.4
   n: { kcal: 337, p: 22, c: 61, f: 1.5, fib: 15.5, salt: 0, fe: 5.5, ca: 175, zn: 2.5, ala: 0.2 }
@@ -485,7 +487,7 @@
   name: Biela fazuľa sterilizovaná (scedená)
   howto: [strukoviny]
   category: strukoviny
-  diet: { fodmap: 0 }
+  diet: { fodmap: 0, oxalate: true }
   n: { kcal: 139, p: 9.7, c: 25, f: 0.4, fib: 6.3, salt: 0.5, fe: 3.7, ca: 90, zn: 1.4, ala: 0.1 }
   units: { ks: 240 }
   price: 3
@@ -563,7 +565,7 @@
   name: Cibuľa
   howto: [cibula]
   category: zelenina
-  diet: { fodmap: 0 }
+  diet: { fodmap: 0, fodmap_swap: jarna-cibulka-vnat, fodmap_ratio: 0.25 }
   n: { kcal: 40, p: 1.1, c: 9.3, f: 0.1, fib: 1.7, salt: 0, fe: 0.2, ca: 23, zn: 0.2 }
   units: { ks: 110 }
   price: 1
@@ -588,7 +590,7 @@
   name: Cibuľa červená
   howto: [cibula]
   category: zelenina
-  diet: { fodmap: 0 }
+  diet: { fodmap: 0, fodmap_swap: jarna-cibulka-vnat, fodmap_ratio: 0.25 }
   group: cibula
   n: { kcal: 40, p: 1.1, c: 9.3, f: 0.1, fib: 1.7, salt: 0, fe: 0.2, ca: 23, zn: 0.2 }
   units: { ks: 110 }
@@ -607,6 +609,7 @@
 - id: jarna-cibulka
   name: Jarná cibuľka
   category: zelenina
+  diet: { fodmap: 0, fodmap_swap: jarna-cibulka-vnat, fodmap_ratio: 0.6 }
   n: { kcal: 32, p: 1.8, c: 7.3, f: 0.2, fib: 2.6, salt: 0, fe: 1.5, ca: 72, zn: 0.4 }
   units: { ks: 15 }
   price: 6
@@ -627,7 +630,7 @@
   name: Cesnak (strúčik)
   howto: [cesnak-zazvor]
   category: zelenina
-  diet: { fodmap: 0 }
+  diet: { fodmap: 0, fodmap_swap: cesnakovy-olej, fodmap_ratio: 0.9 }
   n: { kcal: 149, p: 6.4, c: 33, f: 0.5, fib: 2.1, salt: 0, fe: 1.7, ca: 181, zn: 1.2 }
   units: { ks: 5 }
   price: 6
@@ -979,7 +982,7 @@
 - id: limetka
   name: Limetka (šťava)
   category: ovocie
-  diet: { histamine: true }
+  diet: { histamine: 5 }
   n: { kcal: 25, p: 0.4, c: 8.4, f: 0.1, fib: 0.4, salt: 0, fe: 0.1, ca: 14, zn: 0.1 }
   units: { ks: 30, pl: 15 }
   price: 6
@@ -998,7 +1001,7 @@
 - id: citron
   name: Citrón (šťava)
   category: ovocie
-  diet: { histamine: true }
+  diet: { histamine: 5 }
   n: { kcal: 22, p: 0.4, c: 6.9, f: 0.2, fib: 0.3, salt: 0, fe: 0.1, ca: 6, zn: 0.1 }
   units: { ks: 45, pl: 15, čl: 5 }
   price: 3
@@ -1130,6 +1133,7 @@
 - id: mak
   name: Mak (mletý)
   category: orechy-semienka
+  diet: { oxalate: true }
   n: { kcal: 525, p: 18, c: 28, f: 42, fib: 20, salt: 0, fe: 9.8, ca: 1438, zn: 7.9, ala: 0.3 }
   units: { pl: 9, hrnček: 140 }
   price: 8
@@ -1207,7 +1211,7 @@
   name: Sójový nápoj s vápnikom (nesladený)
   aliases: [sójové mlieko, mlieko]
   category: rastlinne-mlieka
-  diet: { fodmap: 0 }
+  diet: { fodmap: 0, fodmap_swap: ryzovy-napoj }
   allergens: [soy]
   n:
     {
@@ -1247,7 +1251,7 @@
   name: Ovsený nápoj s vápnikom
   aliases: [ovsené mlieko, oat milk, ovsený nápoj]
   category: rastlinne-mlieka
-  diet: { fodmap: 125 }
+  diet: { fodmap: 140 }
   gluten: risk
   note: bežný ovos býva kontaminovaný pšenicou, pri celiakii len s označením bez lepku; vápnik a B12 len v obohatených
   n:
@@ -1290,7 +1294,7 @@
   name: Kokosové mlieko (plechovka)
   category: rastlinne-mlieka
   n: { kcal: 197, p: 2, c: 2.8, f: 21, fib: 0, salt: 0, fe: 3.3, ca: 18, zn: 0.6 }
-  units: { ks: 400 }
+  units: { ks: 400, hrnček: 240, pl: 15 }
   price: 5
   co2: 1.5
   color: '#fbf6ec'
@@ -1386,7 +1390,7 @@
 - id: zeleninovy-vyvar
   name: Zeleninový vývar (pripravený)
   category: omacky-pasty
-  diet: { fodmap: 0 }
+  diet: { fodmap: 0, fodmap_swap: vyvar-bez-cibule }
   gluten: risk
   allergens: [celery]
   note: bujóny a kocky často obsahujú pšenicu alebo jačmenný extrakt
@@ -1482,7 +1486,7 @@
 - id: ocot
   name: Ocot kvasný (liehový)
   category: ine
-  diet: { histamine: true }
+  diet: { histamine: 10 }
   n: { kcal: 18, p: 0, c: 0.1, f: 0, fib: 0, salt: 0, fe: 0, ca: 6, zn: 0 }
   units: { pl: 15, čl: 5 }
   price: 1
@@ -1918,7 +1922,7 @@
   name: Berbere (etiópska zmes korenia)
   howto: [korenie]
   category: koreniny
-  diet: { nightshade: true }
+  diet: { fodmap: 0, nightshade: true }
   n: { kcal: 300, p: 12, c: 55, f: 12, fib: 30, salt: 0.5, fe: 15, ca: 200, zn: 3 }
   units: { čl: 2.5, pl: 7.5 }
   price: 40
@@ -1964,6 +1968,7 @@
   name: Rastlinná smotana na varenie (sójová)
   howto: [nahrady]
   category: nahrady
+  diet: { fodmap: 0, fodmap_swap: kokosove-mlieko }
   allergens: [soy]
   n: { kcal: 160, p: 2.2, c: 4.5, f: 15, fib: 0.3, salt: 0.1, fe: 0.4, ca: 10, zn: 0.2, ala: 1.2 }
   units: { hrnček: 240 }
@@ -2036,7 +2041,7 @@
   aliases: [jogurt]
   howto: [nahrady, jogurty]
   category: nahrady
-  diet: { fodmap: 0 }
+  diet: { fodmap: 0, fodmap_swap: kokosovy-jogurt }
   allergens: [soy]
   n:
     {
@@ -2402,7 +2407,7 @@
   aliases: [huby, hríby]
   howto: [umyvanie]
   category: zelenina
-  diet: { fodmap: 0 }
+  diet: { fodmap: 0, fodmap_swap: hliva }
   n: { kcal: 22, p: 3.1, c: 3.3, f: 0.3, fib: 1, salt: 0, fe: 0.5, ca: 3, zn: 0.5 }
   units: { hrnček: 70 }
   price: 5
@@ -2428,6 +2433,7 @@
   howto: [umyvanie]
   category: zelenina
   n: { kcal: 33, p: 3.3, c: 6, f: 0.4, fib: 2.3, salt: 0, fe: 1.3, ca: 3, zn: 0.8 }
+  units: { hrnček: 70, ks: 15 }
   price: 8
   co2: 1.5
   color: '#cdbfa6'
@@ -2850,7 +2856,7 @@
 - id: datle
   name: Datle (vykôstkované)
   category: ovocie
-  diet: { fodmap: 0 }
+  diet: { fodmap: 20 }
   n: { kcal: 282, p: 2.5, c: 75, f: 0.4, fib: 8, salt: 0, fe: 1, ca: 39, zn: 0.3 }
   units: { ks: 8 }
   price: 8
@@ -3885,6 +3891,7 @@
 - id: cierny-koren
   name: Čierny koreň (hadomor)
   category: zelenina
+  diet: { fodmap: 0 }
   n: { kcal: 82, p: 3.3, c: 18.6, f: 0.2, fib: 3.3, salt: 0.1, fe: 0.7, ca: 60, zn: 0.4 }
   units: { ks: 60 }
   price: 6
@@ -3903,7 +3910,7 @@
 - id: por
   name: Pór
   category: zelenina
-  diet: { fodmap: 0 }
+  diet: { fodmap: 0, fodmap_swap: jarna-cibulka-vnat, fodmap_ratio: 0.4 }
   n: { kcal: 61, p: 1.5, c: 14, f: 0.3, fib: 1.8, salt: 0.1, fe: 2.1, ca: 59, zn: 0.1 }
   units: { ks: 150 }
   price: 2.5
@@ -4430,7 +4437,7 @@
 - id: bulgur
   name: Bulgur (suchý)
   category: obilniny
-  diet: { fodmap: 0 }
+  diet: { fodmap: 0, oxalate: true }
   gluten: contains
   gf_alternative: quinoa
   n: { kcal: 342, p: 12.3, c: 75.9, f: 1.3, fib: 12.5, salt: 0, fe: 2.5, ca: 35, zn: 1.9 }
@@ -4489,7 +4496,7 @@
 - id: ryzovy-ocot
   name: Ryžový ocot
   category: omacky-pasty
-  diet: { histamine: true }
+  diet: { histamine: 5 }
   n: { kcal: 18, p: 0, c: 1, f: 0, fib: 0, salt: 0, fe: 0, ca: 6, zn: 0 }
   units: { pl: 15, čl: 5 }
   price: 6
@@ -4521,6 +4528,7 @@
 - id: soba
   name: Soba rezance (pohánkové)
   category: obilniny
+  diet: { fodmap: 20 }
   gluten: contains
   gf_alternative: ryzove-rezance
   note: väčšina obsahuje aj pšeničnú múku; 100 % pohánkové sú bez lepku
@@ -5106,7 +5114,7 @@
   name: Čierny čaj (sypaný alebo vrecúška)
   howto: [caje]
   category: ine
-  diet: { histamine: true, oxalate: true }
+  diet: { fodmap: 3, histamine: true, oxalate: true }
   n: { kcal: 1, p: 0, c: 0.3, f: 0, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0 }
   units: { čl: 2.5, ks: 2 }
   price: 25
@@ -5394,6 +5402,7 @@
 - id: ryzove-otruby
   name: Ryžové otruby (nuka)
   category: obilniny
+  diet: { oxalate: true }
   n: { kcal: 316, p: 13, c: 50, f: 21, fib: 21, salt: 0, fe: 18, ca: 57, zn: 6 }
   units: { hrnček: 120 }
   price: 6
@@ -5404,3 +5413,105 @@
     - 'Nukazuke, do pečenia, ako hnojivo do kompostu'
   choose: 'Čerstvé, nie žltkasté ani stuchnuté – obsahujú tuk, ktorý rýchlo zatuchne.'
   storage: 'V chladničke alebo mrazničke, pri izbovej teplote žltnú.'
+
+# ── Náhrady pri citlivom trávení (low FODMAP) ───────────────────
+- id: cesnakovy-olej
+  name: Cesnakový olej
+  aliases: [olej s cesnakom, garlic oil]
+  category: oleje
+  n: { kcal: 884, p: 0, c: 0, f: 100, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0, ala: 9.1 }
+  units: { pl: 13, čl: 4.5 }
+  density: 0.92
+  price: 8
+  color: '#e8d27a'
+  substitutes:
+    - { to: olej, note: '+ štipka asafetidy' }
+  about: 'Olej s chuťou cesnaku bez FODMAP – fruktány z cesnaku sa v tuku nerozpúšťajú. Pridaj ho tam, kde by išiel cesnak.'
+  uses:
+    - 'Namiesto cesnaku pri citlivom trávení'
+    - 'Do dresingov a na opekanie'
+  choose: 'Hotový olej s cesnakovou arómou, alebo domáci: 3 strúčiky na 100 ml oleja opeč 2 minúty na miernom ohni a vyber ich.'
+  storage: 'Kúpený podľa obalu. Domáci len v chladničke a do 4 dní – cesnak v oleji pri izbovej teplote hrozí botulizmom.'
+
+- id: jarna-cibulka-vnat
+  name: Jarná cibuľka – len zelená časť
+  aliases: [zelená cibuľka, vňať jarnej cibuľky]
+  category: zelenina
+  n: { kcal: 32, p: 1.8, c: 7.3, f: 0.2, fib: 2.6, salt: 0, fe: 1.5, ca: 72, zn: 0.4 }
+  units: { ks: 8 }
+  price: 6
+  color: '#6fae4a'
+  season: [4, 5, 6, 7]
+  substitutes:
+    - { to: pazitka }
+  about: 'Zelené listy jarnej cibuľky (alebo póru). Cibuľová chuť bez fruktánov – tie sú v bielej časti. 1 ks = zelená časť jednej cibuľky.'
+  uses:
+    - 'Namiesto cibule pri citlivom trávení – opeč krátko alebo sypaj navrch'
+  storage: 'Bielu časť zasaď do pohára s vodou, zelená dorastie.'
+
+- id: vyvar-bez-cibule
+  name: Zeleninový vývar bez cibule a cesnaku
+  aliases: [low fodmap vývar]
+  category: omacky-pasty
+  n: { kcal: 5, p: 0.2, c: 0.8, f: 0.1, fib: 0, salt: 0.8, fe: 0, ca: 0, zn: 0 }
+  units: { hrnček: 240 }
+  price: 2
+  color: '#d8b56a'
+  substitutes:
+    - { to: voda, note: '+ soľ, bobkový list a zelená časť póru' }
+  about: 'Vývar, v ktorom nie je cibuľa, cesnak ani zeler. Bežné bujóny ich majú skoro vždy.'
+  uses:
+    - 'Polievky, rizoto a omáčky pri citlivom trávení'
+  choose: 'Bujón s označením low FODMAP, alebo domáci z mrkvy, paštrnáka, zemiakových šupiek, zelenej časti póru a byliniek.'
+  storage: 'Domáci v chladničke 5 dní, zamrazený 4 mesiace.'
+
+- id: ryzovy-napoj
+  name: Ryžový nápoj s vápnikom
+  aliases: [ryžové mlieko]
+  category: rastlinne-mlieka
+  diet: { fodmap: 200 }
+  n:
+    {
+      kcal: 47,
+      p: 0.1,
+      c: 9.4,
+      f: 1,
+      fib: 0.1,
+      salt: 0.1,
+      fe: 0,
+      ca: 120,
+      zn: 0.1,
+      ala: 0,
+      b12: 0.38
+    }
+  units: { hrnček: 240, pl: 15 }
+  density: 1.03
+  price: 2
+  color: '#f4efe4'
+  note: vápnik a B12 len v obohatených
+  substitutes:
+    - { to: ovseny-napoj }
+  howto: [rastlinne-mlieka]
+  about: 'Riedky a sladkastý nápoj, takmer bez bielkovín. Pri citlivom trávení znesie aj 200 ml naraz.'
+  uses:
+    - 'Kaša, palacinky, koláče, smoothie'
+  choose: 'S vápnikom, bez pridaného cukru.'
+  storage: 'Neotvorený mesiace, otvorený v chladničke 5 dní.'
+
+- id: kokosovy-jogurt
+  name: Kokosový jogurt nesladený
+  aliases: [jogurt]
+  category: nahrady
+  diet: { fodmap: 125 }
+  n: { kcal: 95, p: 0.6, c: 5, f: 8, fib: 0.5, salt: 0.1, fe: 0.2, ca: 0, zn: 0.1 }
+  units: { hrnček: 245, pl: 15 }
+  price: 7
+  color: '#fbf8f1'
+  note: niektoré sú obohatené vápnikom; bielkovín má minimum
+  substitutes:
+    - { to: sojovy-jogurt, note: 'viac bielkovín, ale nie pri low FODMAP' }
+  about: 'Jogurt z kokosového mlieka – krémový, kyslastý, bez sóje.'
+  uses:
+    - 'Namiesto sójového jogurtu pri citlivom trávení'
+  choose: 'Nesladený, bez inulínu (čakankovej vlákniny), medu a agávy – tie sú vysoko-FODMAP.'
+  storage: 'Otvorený v chladničke 5 dní.'

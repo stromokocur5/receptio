@@ -83,3 +83,14 @@ test('a recipe shows fibre and where its carbs come from', async ({ page }) => {
 	await expect(page.locator('.facts').getByText('vlákniny')).toBeVisible();
 	await expect(page.getByText(/Energia z bielkovín \d+ %/)).toBeVisible();
 });
+
+test('a diet kept in Špajza says why a recipe misses and switches to the fitting version', async ({
+	page
+}) => {
+	await visit(page, '/spajza#nemam');
+	await page.getByRole('button', { name: 'Low FODMAP', exact: true }).click();
+	await visit(page, '/recepty/tekvicova-polievka');
+	await expect(page.getByText(/Pre Low FODMAP nevyhovuje: .*cesnak/)).toBeVisible();
+	await page.getByRole('button', { name: /Prepnúť na verziu „Low FODMAP“/ }).click();
+	await expect(page.getByText(/Cesnak → cesnakový olej/)).toBeVisible();
+});

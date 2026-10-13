@@ -10,6 +10,7 @@ difficulty: 1
 tags: [polievka, lacne, one-pot]
 spicy: 0
 keeps: { fridge: 3, freezer: 3 }
+fodmap_swap: false
 ingredients:
   - rastlinne-maslo: 30 g
   - por: 3 ks | na kolieska, dobre umytý

@@ -77,8 +77,13 @@ export interface Ingredient {
 	 * Undefined = low FODMAP.
 	 */
 	fodmapLimit?: number;
-	/** Rich in histamine or releases it (fermented, tomatoes, citrus, cocoa). */
-	histamine: boolean;
+	/** What the automatic low-FODMAP version uses instead, and grams of it per gram of this. */
+	fodmapSwap?: { to: string; ratio: number };
+	/**
+	 * Grams per serving that are still fine at low histamine; 0 = not in any amount. Undefined =
+	 * no histamine to speak of. Rich in histamine or releases it (fermented, tomatoes, citrus).
+	 */
+	histamineLimit?: number;
 	/** High in oxalate (spinach, beetroot, almonds, cocoa). */
 	oxalate: boolean;
 	/** Nightshade family: tomato, potato, pepper and chili, eggplant. */

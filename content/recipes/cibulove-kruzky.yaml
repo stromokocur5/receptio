@@ -10,6 +10,7 @@ difficulty: 2
 tags: [party, lacne]
 keeps: { fridge: 1 }
 leftovers: 'Najlepšie hneď. Zvyšky prehrej v rúre na 220 °C 5 minút.'
+fodmap_swap: false
 ingredients:
   - cibula: 2 ks | veľké
   - hladka-muka: 1 hrnček

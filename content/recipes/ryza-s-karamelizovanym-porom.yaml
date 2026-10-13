@@ -10,6 +10,7 @@ difficulty: 1
 tags: [zlatica, rychle, lacne]
 keeps: { fridge: 3 }
 leftovers: 'Studená ryža s pórom sa dá opiecť na panvici na oleji ako smažená ryža.'
+fodmap_swap: false
 ingredients:
   - ryza-basmati: 150 g
   - voda: 300 ml

@@ -10,6 +10,7 @@ difficulty: 1
 tags: [rychle, lacne, meal-prep]
 keeps: { fridge: 4, freezer: 3 }
 leftovers: 'Zhustne – zohrej ho s vodou a pridaj kvapku citróna.'
+fodmap_swap: false
 ingredients:
   - sosovica-cervena: 200 g
   - voda: 1,2 l | 750 na šošovicu, 450 na ryžu

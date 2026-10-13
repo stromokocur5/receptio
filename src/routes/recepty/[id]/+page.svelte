@@ -30,6 +30,7 @@
 		COMPUTED_TAG_LABELS,
 		DIET_META,
 		SALT_HIGH_G,
+		dietBlockers,
 		dailyTargets,
 		computedTags,
 		scaleNutrients,
@@ -64,7 +65,13 @@
 	import { formatMinutes } from '$lib/mealprep';
 	import { shortName } from '$lib/avoid';
 	import { recipeConflicts, wishesOf } from '$lib/household';
-	import { household, planFromHousehold, tableMembers, toggleWish } from '$lib/household.svelte';
+	import {
+		household,
+		planFromHousehold,
+		tableMembers,
+		tableNeeds,
+		toggleWish
+	} from '$lib/household.svelte';
 
 	let { data } = $props();
 	const catalog = useCatalog();
@@ -231,10 +238,26 @@
 			(d) => ALWAYS_SHOWN.includes(d) || (ui.loaded && avoid.current.diets.includes(d))
 		).flatMap((d): { diet: Diet; variant?: string }[] => {
 			if (recipe.diets.includes(d)) return [{ diet: d }];
+			// Someone keeping the diet gets the line saying why, with the same switch.
+			if (dietMisses.some((m) => m.diet === d)) return [];
 			const v = variant ? undefined : base.variants.find((v) => v.diets.includes(d));
 			return v ? [{ diet: d, variant: v.name }] : [];
 		})
 	);
+	/** For the diets someone here keeps: what in this version breaks them, and from how much. */
+	const dietMisses = $derived.by(() => {
+		if (!ui.loaded) return [];
+		const kept = new Set([...avoid.current.diets, ...(tableNeeds()?.diets ?? [])]);
+		return DIETS.filter((d) => kept.has(d) && !recipe.diets.includes(d)).map((d) => ({
+			diet: d,
+			blockers: dietBlockers(recipe.lines, catalog.ingredientsById, base.servings, d).map(
+				(b) =>
+					shortName(b.ingredient.name).toLowerCase() +
+					(b.limit ? ` (nad ${formatNumber(b.limit, 0)} g na porciu)` : '')
+			),
+			fits: variant ? undefined : base.variants.find((v) => v.diets.includes(d))?.name
+		}));
+	});
 	/** Energy split and how much fibre comes with the carbs (whole foods stay under 10 : 1). */
 	const macros = $derived.by(() => {
 		const n = recipe.perServing;
@@ -541,7 +564,9 @@
 							class="badge sky diet"
 							title={DIET_META[diet].about}
 							onclick={() => (variantName = fits)}
-							>{DIET_META[diet].label} vo verzii „{fits}“</button
+							>{fits === DIET_META[diet].label
+								? `${fits} po úprave`
+								: `${DIET_META[diet].label} vo verzii „${fits}“`}</button
 						>
 					{:else}
 						<a
@@ -568,6 +593,22 @@
 					>
 				{/if}
 			</div>
+			{#each dietMisses as miss (miss.diet)}
+				<p class="diet-miss">
+					<Icon name="alert" size={16} />
+					<span>
+						<strong>Pre {DIET_META[miss.diet].label} nevyhovuje:</strong>
+						{miss.blockers.join(', ')}.
+						{#if miss.fits}
+							<button class="link" onclick={() => (variantName = miss.fits!)}
+								>Prepnúť na verziu „{miss.fits}“</button
+							>
+						{:else}
+							<a href="/wiki/{DIET_META[miss.diet].wiki}">Čím to nahradiť</a>
+						{/if}
+					</span>
+				</p>
+			{/each}
 
 			<ul class="meta" aria-label="O recepte">
 				<li class="spicy" title="Pálivosť">
@@ -1363,6 +1404,28 @@
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
+	}
+	.diet-miss {
+		display: flex;
+		gap: 6px;
+		align-items: flex-start;
+		margin: 10px 0 0;
+		font-size: var(--fs-sm);
+		color: var(--ink-2);
+	}
+	.diet-miss :global(svg) {
+		flex: none;
+		margin-top: 2px;
+		color: var(--tomato);
+	}
+	.link {
+		border: 0;
+		padding: 0;
+		background: none;
+		font: inherit;
+		color: inherit;
+		text-decoration: underline;
+		cursor: pointer;
 	}
 	.diet {
 		border: 0;

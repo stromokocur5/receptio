@@ -6,6 +6,7 @@ import {
 	SALT_HIGH_G,
 	recipeAllergens,
 	recipeDiets,
+	dietBlockers,
 	recipeGluten,
 	recipeNutrients,
 	recipeWarnings,
@@ -106,7 +107,9 @@ const ingredientSchema = z
 		diet: z
 			.object({
 				fodmap: z.number().min(0).optional(),
-				histamine: z.literal(true).optional(),
+				fodmap_swap: slug.optional(),
+				fodmap_ratio: z.number().positive().optional(),
+				histamine: z.union([z.literal(true), z.number().min(0)]).optional(),
 				oxalate: z.literal(true).optional(),
 				nightshade: z.literal(true).optional()
 			})
@@ -199,6 +202,8 @@ const recipeSchema = z
 		gf_swap: z.boolean().default(true),
 		/** false when the soy protein does the work (mayo, yogurt) and oat drink wouldn't. */
 		oat_swap: z.boolean().default(true),
+		/** false when onion, garlic or leek is the point of the dish (onion rings, garlic soup). */
+		fodmap_swap: z.boolean().default(true),
 		yields: z.string().optional(),
 		nutrition: z.boolean().default(true),
 		related: z.array(slug).default([]),
@@ -324,6 +329,7 @@ const equipmentSchema = z
 	.strict();
 
 const GF_VARIANT_NAME = 'Bezlepková verzia';
+const FODMAP_VARIANT_NAME = 'Low FODMAP';
 const formatProtein = (grams: number) => grams.toFixed(grams < 10 ? 1 : 0).replace('.', ',');
 const LOW_SALT_VARIANT_NAME = 'Menej soli';
 const OAT_VARIANT_NAME = 'S ovseným nápojom';
@@ -461,7 +467,12 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		gluten: i.gluten,
 		allergens: i.allergens,
 		...(i.diet.fodmap !== undefined && { fodmapLimit: i.diet.fodmap }),
-		histamine: i.diet.histamine ?? false,
+		...(i.diet.fodmap_swap && {
+			fodmapSwap: { to: i.diet.fodmap_swap, ratio: i.diet.fodmap_ratio ?? 1 }
+		}),
+		...(i.diet.histamine !== undefined && {
+			histamineLimit: i.diet.histamine === true ? 0 : i.diet.histamine
+		}),
 		oxalate: i.diet.oxalate ?? false,
 		nightshade: i.diet.nightshade ?? false,
 		staple: i.staple,
@@ -500,6 +511,12 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		if (i.gfAlternative && byId.get(i.gfAlternative)?.gluten !== 'free') {
 			throw new Error(
 				`${i.id}: gf_alternative "${i.gfAlternative}" neexistuje alebo nie je bezlepková`
+			);
+		}
+		const swap = i.fodmapSwap && byId.get(i.fodmapSwap.to);
+		if (i.fodmapSwap && (!swap || swap.fodmapLimit === 0)) {
+			throw new Error(
+				`${i.id}: fodmap_swap "${i.fodmapSwap.to}" neexistuje alebo nie je low FODMAP`
 			);
 		}
 	}
@@ -621,6 +638,37 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		} catch {
 			return { ...line, ingredientId: toId, amount: Math.round(line.grams), unit: 'g' };
 		}
+	};
+
+	/**
+	 * A swap by weight (4 garlic cloves → 1½ PL garlic oil), written in the replacement's own
+	 * pieces or spoons when it has them. The note belonged to the old ingredient.
+	 */
+	const scaledSwap = (line: RecipeLine, toId: string, ratio: number, where: string): RecipeLine => {
+		if (ratio === 1) return swapLine(line, toId, where);
+		const to = byId.get(toId)!;
+		const { note: _note, ...rest } = line;
+		if (line.amount === null) return { ...rest, ingredientId: toId };
+		const grams = line.grams * ratio;
+		for (const [unit, step, min] of [
+			['ks', 1, 1],
+			['pl', 0.5, 1],
+			['čl', 0.5, 0.5]
+		] as const) {
+			const per = to.units[unit];
+			if (!per) continue;
+			const amount = Math.max(min, Math.round(grams / per / step) * step);
+			if (grams / per >= min * 0.75 || unit === 'čl') {
+				return { ...rest, ingredientId: toId, amount, unit, grams: amount * per };
+			}
+		}
+		return {
+			...rest,
+			ingredientId: toId,
+			amount: Math.max(1, Math.round(grams)),
+			unit: 'g',
+			grams
+		};
 	};
 
 	/** A swap can leave the same ingredient twice (butter → oil next to oil); merge same-unit lines. */
@@ -843,6 +891,53 @@ export function compileContent(raw: RawContent, today: Date): Content {
 				variants.push({
 					name: LOW_SALT_VARIANT_NAME,
 					description: parts.filter(Boolean).join(' '),
+					...low
+				});
+			}
+		}
+
+		// Like the gluten-free version: onion, garlic, soy milk and the like swapped for what's
+		// gentle on the gut, offered only when that's enough to make the recipe low FODMAP.
+		if (
+			r.fodmap_swap &&
+			!base.diets.includes('low-fodmap') &&
+			!variants.some((v) => v.diets.includes('low-fodmap'))
+		) {
+			const blocked = new Set(
+				dietBlockers(lines, byId, r.servings, 'low-fodmap').map((b) => b.ingredient.id)
+			);
+			const swaps = new Map<string, string>();
+			const fodmapLines = lines.map((l) => {
+				const ingredient = byId.get(l.ingredientId)!;
+				if (l.notEaten || !blocked.has(ingredient.id)) return l;
+				const to =
+					ingredient.fodmapSwap ??
+					(ingredient.gluten === 'contains' && ingredient.gfAlternative
+						? { to: ingredient.gfAlternative, ratio: 1 }
+						: undefined);
+				if (!to) return l;
+				swaps.set(ingredient.id, to.to);
+				return scaledSwap(l, to.to, to.ratio, where);
+			});
+			const low = swaps.size ? compute(mergeLines(fodmapLines), r.servings) : undefined;
+			if (low?.diets.includes('low-fodmap')) {
+				const name = (id: string) => byId.get(id)!.name.replace(/\s*\(.*\)/, '');
+				const tips = [
+					swaps.has('cesnak') ? 'Cesnakový olej pridaj tam, kde sa v postupe pridáva cesnak.' : '',
+					[...swaps.values()].includes('jarna-cibulka-vnat')
+						? 'Zelenú časť cibuľky opeč len krátko alebo ju pridaj na konci.'
+						: ''
+				];
+				variants.push({
+					name: FODMAP_VARIANT_NAME,
+					description: [
+						`Pre citlivé trávenie: ${[...swaps]
+							.map(([from, to]) => `${name(from)} → ${name(to).toLowerCase()}`)
+							.join(', ')}.`,
+						...tips
+					]
+						.filter(Boolean)
+						.join(' '),
 					...low
 				});
 			}

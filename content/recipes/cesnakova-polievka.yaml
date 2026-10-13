@@ -9,6 +9,7 @@ servings: 4
 difficulty: 1
 tags: [polievka, lacne, klasika, one-pot]
 keeps: { fridge: 3 }
+fodmap_swap: false
 ingredients:
   - olej: 3 pl
   - cibula: 1 ks

@@ -10,6 +10,7 @@ difficulty: 1
 tags: [zlatica, lacne, one-pot]
 keeps: { fridge: 3 }
 leftovers: 'Studené je ako šalát. Teplé zohrej s lyžicou vody a kvapkou citróna.'
+fodmap_swap: false
 ingredients:
   - por: 3 ks
   - olivovy-olej: 4 pl | 3 do hrnca, 1 navrch

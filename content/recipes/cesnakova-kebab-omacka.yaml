@@ -11,6 +11,7 @@ tags: [rychle, bez-varenia, party]
 keeps: { fridge: 4 }
 yields: asi 300 ml
 related: [doner-kebab, durum-hliva, kebab-box]
+fodmap_swap: false
 ingredients:
   - sojovy-jogurt: 1 hrnček | hustý, nesladený
   - veganska-majoneza: 3 pl

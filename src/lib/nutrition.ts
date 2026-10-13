@@ -1,6 +1,7 @@
 import {
 	NUTRIENT_KEYS,
 	type Allergen,
+	DIETS,
 	type Diet,
 	type GlutenStatus,
 	type Ingredient,
@@ -135,18 +136,40 @@ export function recipeDiets(
 	byId: Map<string, Ingredient>,
 	servings: number
 ): Diet[] {
-	const eaten = lines.filter((l) => !l.notEaten).map((l) => byId.get(l.ingredientId)!);
-	const fodmapOk = lines.every((l) => {
-		const limit = byId.get(l.ingredientId)!.fodmapLimit;
-		if (l.notEaten || limit === undefined) return true;
-		return limit > 0 && l.grams / servings <= limit;
+	return DIETS.filter((d) => dietBlockers(lines, byId, servings, d).length === 0);
+}
+
+export interface DietBlocker {
+	ingredient: Ingredient;
+	/** Grams per serving it's fine up to, when it's the amount that matters. */
+	limit?: number;
+}
+
+const DIET_LIMIT: Record<Diet, (i: Ingredient) => number | boolean | undefined> = {
+	'low-fodmap': (i) => i.fodmapLimit,
+	'low-histamin': (i) => i.histamineLimit,
+	'low-oxalat': (i) => i.oxalate || undefined,
+	'bez-lulkovitych': (i) => i.nightshade || undefined
+};
+
+/** The ingredients that keep a version of a recipe from fitting a diet, once each. */
+export function dietBlockers(
+	lines: RecipeLine[],
+	byId: Map<string, Ingredient>,
+	servings: number,
+	diet: Diet
+): DietBlocker[] {
+	const grams = new Map<string, number>();
+	for (const l of lines) {
+		if (!l.notEaten) grams.set(l.ingredientId, (grams.get(l.ingredientId) ?? 0) + l.grams);
+	}
+	return [...grams].flatMap(([id, total]) => {
+		const ingredient = byId.get(id)!;
+		const limit = DIET_LIMIT[diet](ingredient);
+		if (limit === undefined || limit === false) return [];
+		if (limit === true || limit === 0) return [{ ingredient }];
+		return total / servings > limit ? [{ ingredient, limit }] : [];
 	});
-	const diets: Diet[] = [];
-	if (fodmapOk) diets.push('low-fodmap');
-	if (!eaten.some((i) => i.histamine)) diets.push('low-histamin');
-	if (!eaten.some((i) => i.oxalate)) diets.push('low-oxalat');
-	if (!eaten.some((i) => i.nightshade)) diets.push('bez-lulkovitych');
-	return diets;
 }
 
 /** The recipe as written, or the first variant, that fits every one of the diets. */

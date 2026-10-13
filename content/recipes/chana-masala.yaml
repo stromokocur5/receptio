@@ -42,7 +42,7 @@ variants:
     description: 'Pre citlivé trávenie. Chuť doženie zelená časť jarnej cibuľky a o štipku viac korenia.'
     remove: [cibula, cesnak]
     add:
-      - jarna-cibulka: 3 ks | len zelená časť
+      - jarna-cibulka-vnat: 3 ks
   - name: Viac bielkovín
     description: 'Pridaj opečené tofu na kocky, porcia bude mať o ~10 g bielkovín viac.'
     add:
