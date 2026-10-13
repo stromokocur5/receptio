@@ -29,19 +29,19 @@ Vláknina je časť rastlín, ktorú nestrávime. Nedostane sa do krvi, ale **ž
 
 ## Kde je (približne na porciu)
 
-| Porcia | Vláknina |
-| --- | --- |
-| Čierna fazuľa, plechovka scedená (240 g) | ~20 g |
-| Cícer, plechovka scedená (240 g) | ~17 g |
-| Šošovica, 80 g suchej | ~9 g |
-| Maliny, 125 g | ~8 g |
-| Chia, 2 PL | ~7 g |
-| Celozrnný chlieb, 2 krajce | ~5–6 g |
-| Hruška s kôrkou | ~5 g |
-| Ovsené vločky, 50 g | ~5 g |
-| Brokolica, 200 g | ~5 g |
-| Ľan mletý, 2 PL | ~4 g |
-| Biela ryža, 75 g suchej | ~1 g |
+| Porcia                                   | Vláknina |
+| ---------------------------------------- | -------- |
+| Čierna fazuľa, plechovka scedená (240 g) | ~20 g    |
+| Cícer, plechovka scedená (240 g)         | ~17 g    |
+| Šošovica, 80 g suchej                    | ~9 g     |
+| Maliny, 125 g                            | ~8 g     |
+| Chia, 2 PL                               | ~7 g     |
+| Celozrnný chlieb, 2 krajce               | ~5–6 g   |
+| Hruška s kôrkou                          | ~5 g     |
+| Ovsené vločky, 50 g                      | ~5 g     |
+| Brokolica, 200 g                         | ~5 g     |
+| Ľan mletý, 2 PL                          | ~4 g     |
+| Biela ryža, 75 g suchej                  | ~1 g     |
 
 ## Ako pridať, aby to nebolelo
 

@@ -22,17 +22,17 @@ Rovnakých 50 g sacharidov z chleba z bielej múky a zo šošovice sa v tele spr
 
 **Pravidlo 10 : 1** – na každých 10 g sacharidov by mal pripadnúť aspoň 1 g vlákniny. Takto sa v štúdiách (Harvard, 2013) najlepšie rozlišovali naozaj celozrnné potraviny od tých, ktoré sa tak len volajú. Na etikete vydeľ sacharidy vlákninou:
 
-| Potravina | Sacharidy : vláknina |
-| --- | --- |
-| Cícer | ~4 : 1 |
-| Šošovica | ~5 : 1 |
-| Ovsené vločky | ~6 : 1 |
-| Celozrnný chlieb | ~6 : 1 |
-| Zemiaky so šupkou | ~8 : 1 |
-| Quinoa | ~9 : 1 |
-| Biele pečivo | ~18 : 1 |
-| Biele cestoviny | ~25 : 1 |
-| Biela ryža | ~60 : 1 |
+| Potravina         | Sacharidy : vláknina |
+| ----------------- | -------------------- |
+| Cícer             | ~4 : 1               |
+| Šošovica          | ~5 : 1               |
+| Ovsené vločky     | ~6 : 1               |
+| Celozrnný chlieb  | ~6 : 1               |
+| Zemiaky so šupkou | ~8 : 1               |
+| Quinoa            | ~9 : 1               |
+| Biele pečivo      | ~18 : 1              |
+| Biele cestoviny   | ~25 : 1              |
+| Biela ryža        | ~60 : 1              |
 
 Pri recepte Receptio počíta tento pomer za celú porciu. Biela ryža k dalu je v poriadku – šošovica pomer vyrovná.
 

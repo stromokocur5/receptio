@@ -28,16 +28,16 @@ Suché strukoviny vychádzajú na porciu **2–3× lacnejšie** ako plechovky a 
 
 Vo veľkom kupuj len to, čo **jete každý týždeň** a čo **dlho vydrží**. Inak ušetrené peniaze skončia v koši.
 
-| Čo | Balenie | Vydrží | Prečo sa oplatí |
-| --- | --- | --- | --- |
-| Červená šošovica, cícer, fazuľa (suché) | 5 kg | 1–2 roky | vo veľkom aj o tretinu lacnejšie na kg, 2–3× lacnejšie ako plechovka |
-| Ryža | 5 kg | roky (hnedá pol roka) | základ k všetkému |
-| Ovsené vločky | 5 kg | rok | raňajky každý deň |
-| Sójové granule | 1 kg | rok | najlacnejšie bielkoviny, ľahké na skladovanie |
-| Výživné droždie | 1 kg | rok | v malom balení je drahé ako šafran |
-| Chia, celý ľan, sezam | 1 kg | rok (celé) | ľan si pomeľ na pár dní dopredu |
-| Korenie | 100–500 g | rok | ázijské a indické obchody, zlomok ceny vrecúšok |
-| Arašidové maslo | 1 kg | pol roka, otvorené | ak ho naozaj jete |
+| Čo                                      | Balenie   | Vydrží                | Prečo sa oplatí                                                      |
+| --------------------------------------- | --------- | --------------------- | -------------------------------------------------------------------- |
+| Červená šošovica, cícer, fazuľa (suché) | 5 kg      | 1–2 roky              | vo veľkom aj o tretinu lacnejšie na kg, 2–3× lacnejšie ako plechovka |
+| Ryža                                    | 5 kg      | roky (hnedá pol roka) | základ k všetkému                                                    |
+| Ovsené vločky                           | 5 kg      | rok                   | raňajky každý deň                                                    |
+| Sójové granule                          | 1 kg      | rok                   | najlacnejšie bielkoviny, ľahké na skladovanie                        |
+| Výživné droždie                         | 1 kg      | rok                   | v malom balení je drahé ako šafran                                   |
+| Chia, celý ľan, sezam                   | 1 kg      | rok (celé)            | ľan si pomeľ na pár dní dopredu                                      |
+| Korenie                                 | 100–500 g | rok                   | ázijské a indické obchody, zlomok ceny vrecúšok                      |
+| Arašidové maslo                         | 1 kg      | pol roka, otvorené    | ak ho naozaj jete                                                    |
 
 **Neoplatí sa vo veľkom:** orechy a mleté semienka (stuchnú – ak, tak do mrazničky), celozrnná múka (pár mesiacov), čerstvá zelenina a ovocie, čokoľvek, čo si ešte neochutnal.
 
