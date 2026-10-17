@@ -1,0 +1,30 @@
+title: Placky z odobratého kvásku s jarnou cibuľkou
+description: Kyslasté chrumkavé placky z kvásku, ktorý by sa inak vyhodil, s jarnou cibuľkou a sezamom. Hotové za 15 minút, k nim sójová omáčka s octom.
+cuisine: moderna
+meals: [snack, vecera]
+categories: [snacky/slane]
+time: 15
+active: 15
+servings: 2
+difficulty: 1
+tags: [zvysky, rychle, lacne]
+spicy: 0
+gf_swap: false
+keeps: { fridge: 1 }
+ingredients:
+  - kvasok-odobraty: 250 g
+  - hladka-muka: 2 pl | len ak je kvások riedky
+  - jarna-cibulka: 4 ks | nakrájaná
+  - sol: 1/4 čl
+  - sezam: 1 pl
+  - olej: 3 pl
+  - sojova-omacka: 2 pl
+  - ryzovy-ocot: 1 pl
+steps:
+  - Kvások zmiešaj so soľou a jarnou cibuľkou. Cesto má byť husté ako na lievance – ak tečie ako palacinkové, primiešaj múku.
+  - Na panvici rozohrej 1,5 PL oleja na strednom ohni. Nalej polovicu cesta, rozotri ho lyžicou na tenkú placku a posyp polovicou sezamu.
+  - Peč 3–4 minúty, kým nie je spodok zlatohnedý a okraje chrumkavé, potom otoč a peč ďalšie 3 minúty. Rovnako upeč druhú placku.
+  - Sójovú omáčku zmiešaj s octom. Placky nakrájaj na trojuholníky a namáčaj.
+tips:
+  - Čím je kvások starší, tým kyslejšie placky. Kvások z chladničky starý vyše týždňa dochuť štipkou sódy bikarbóny.
+  - Namiesto cibuľky funguje nastrúhaná cuketa, kimchi alebo zvyšná zelenina.

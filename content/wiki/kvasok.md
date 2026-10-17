@@ -32,7 +32,7 @@ Na 2.–3. deň často divoko bublá a potom stíchne. To nie je koniec – najp
 - **Pomer 1 : 1 : 1** – 1 diel kvásku, 1 diel múky, 1 diel vody (napr. 30 g + 30 g + 30 g).
 - Pečieš každý deň? Nechaj ho v izbe a kŕm denne.
 - Pečieš raz týždenne? **Drž ho v chladničke**, kŕm raz týždenne. Deň pred pečením ho vyber a nakŕm 1–2×.
-- Vyhodený kvások („discard“) nevyhadzuj – ide do palaciniek, lievancov, krekrov alebo do cesta na pizzu.
+- Vyhodený kvások („discard“) nevyhadzuj – ide do [placiek s jarnou cibuľkou](/recepty/placky-z-odobrateho-kvasku), [krekrov](/recepty/krekry-z-odobrateho-kvasku), palaciniek alebo do cesta na pizzu.
 
 ## Záchrana
 

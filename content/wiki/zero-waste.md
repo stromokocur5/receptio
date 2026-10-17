@@ -31,6 +31,8 @@ Priemerná domácnosť v EÚ vyhodí ročne desiatky kíl jedla – a s ním pen
 | aquafaba z cíceru                                         | [pena, majonéza, sneh](/wiki/aquafaba)                                              |
 | okara zo sójového mlieka                                  | [okarové placky](/recepty/okarove-placky), do cesta a fašírok                       |
 
+Čo s okarou, srvátkou z tofu, výliskami z rastlinných mliek, nálevmi z kvasenia a ďalšími zvyškami z domácej výroby, je v článku **[Čo so zvyškami z domácej výroby](/wiki/zvysky-z-domacej-vyroby)**.
+
 ## Pečivo a ovocie
 
 - **Starý chlieb** – strúhanka (usušiť a pomlieť), krutóny, [ribollita](/recepty/ribollita), [chlebový kvas](/recepty/chlebovy-kvas), žemľovka.

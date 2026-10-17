@@ -11,8 +11,9 @@ tags: [urob-si-sam]
 nutrition: false
 yields: cca 1,5 l mlieka a 300 g okary
 ahead: Sójové zrná namoč na 12 hodín (cez noc) do trojnásobku vody.
-related: [domace-tofu, domaci-sojovy-jogurt, okarove-placky]
+related: [domace-tofu, domaci-sojovy-jogurt, okarove-placky, okarove-mlete, okarova-granola]
 keeps: { fridge: 4 }
+howto: [zvysky-z-domacej-vyroby]
 ingredients:
   - sojove-zrna: 150 g | namočené cez noc
   - voda: 1,5 l
@@ -28,4 +29,4 @@ steps:
 tips:
   - Pred použitím pretras, usadzuje sa.
   - Domáce mlieko nemá pridaný vápnik ani B12 ako obohatené kupované – na to pamätaj.
-  - Z okary sprav okarové placky alebo ju pridaj do chleba či granoly.
+  - Okaru vždy tepelne uprav, je zo surových zŕn. Sprav z nej placky, „mleté“ na tacos alebo granolu.

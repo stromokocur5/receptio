@@ -3608,6 +3608,7 @@
 
 - id: okara
   name: Okara (zvyšok zo sójového mlieka)
+  howto: [zvysky-z-domacej-vyroby]
   category: strukoviny
   diet: { fodmap: 0 }
   allergens: [soy]
@@ -3627,6 +3628,52 @@
   homemade:
     recipe: domace-sojove-mlieko
     note: 'Vzniká ako zvyšok pri výrobe sójového mlieka alebo tofu.'
+
+- id: kvasok-odobraty
+  name: Odobratý kvások
+  aliases: [discard]
+  howto: [zvysky-z-domacej-vyroby]
+  category: obilniny
+  gluten: contains
+  n: { kcal: 182, p: 5.2, c: 38, f: 0.5, fib: 1.4, salt: 0, fe: 0.6, ca: 8, zn: 0.4 }
+  units: { pl: 20, hrnček: 240 }
+  price: 0.001
+  co2: 0
+  byproduct: true
+  color: '#efe3c8'
+  note: 'časť kvásku, ktorá sa pri kŕmení odoberie; múka a voda 1 : 1'
+  about: 'Kvások, ktorý sa pri kŕmení odoberie, aby ho nebolo stále viac. Je kyslý a už nekyprí dosť na chlieb, ale do placiek, krekrov a cesta na pizzu je výborný.'
+  uses:
+    - 'Palacinky a lievance'
+    - 'Krekry'
+    - 'Do cesta na pizzu a chlieb ako dochucovadlo'
+  storage: 'Zbieraj v pohári v chladničke, vydrží 1–2 týždne. Sivá tekutina navrchu je alkohol, zlej ju alebo vmiešaj.'
+  homemade:
+    steps:
+      - 'Pri každom kŕmení kvásku odober všetko okrem 1–2 lyžíc – to je odobratý kvások. Návod je v článku Kvások.'
+
+- id: mandlove-vylisky
+  name: Mandľové výlisky (zvyšok z mandľového mlieka)
+  howto: [zvysky-z-domacej-vyroby]
+  category: orechy-semienka
+  diet: { oxalate: true }
+  allergens: [nuts]
+  n: { kcal: 230, p: 8, c: 8, f: 18, fib: 7, salt: 0, fe: 1.5, ca: 110, zn: 1.2 }
+  units: { pl: 15, hrnček: 120 }
+  price: 0.001
+  co2: 0
+  byproduct: true
+  color: '#ead9bd'
+  note: vlhká drť po precedení mandľového mlieka; zo 150 g mandlí asi 200 g
+  about: 'Drť, ktorá zostane v utierke po mandľovom mlieku. Je v nej ešte veľa tuku a vlákniny, chutí ako jemné mandle.'
+  uses:
+    - 'Guľky a sušienky'
+    - 'Usušená ako mandľová múka'
+    - 'Do granoly a kaše'
+  storage: 'V chladničke 2 dni, zamrazená 3 mesiace. Usušená pri 80 °C a pomletá v pohári 2 mesiace.'
+  homemade:
+    recipe: mandlove-mlieko
+    note: 'Zostane v utierke pri precedení mandľového mlieka.'
 
 - id: nigari
   name: Nigari (chlorid horečnatý na tofu)
