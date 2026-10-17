@@ -9,7 +9,7 @@ entries:
     price: 4.49
   - ingredient: zemiaky
     store: billa
-    product: "CHUTE SLOVENSKA Zemiaky žlté,neskoré, prané, konzumné typ B hľúza oválna, dužina žltomäsá, odroda: u"
+    product: 'CHUTE SLOVENSKA Zemiaky žlté,neskoré, prané, konzumné typ B hľúza oválna, dužina žltomäsá, odroda: u'
     pack: 1 kg
     date: 2026-10-17
     price: 0.69

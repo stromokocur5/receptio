@@ -8,6 +8,7 @@
  * branches charge, plus the promo price when most branches run the same promo.
  */
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { format, resolveConfig } from 'prettier';
 import { parse, stringify } from 'yaml';
 
 const API = 'https://api.cenyslovensko.sk/api';
@@ -236,7 +237,14 @@ const header = [
 	'# ceny posielajú reťazce denne. Obnov cez `pnpm prices:sync`, mapovanie je v cenyslovensko.yaml.',
 	''
 ].join('\n');
-writeFileSync(PRICES_FILE, header + stringify({ entries }, { lineWidth: 0 }));
+// Written the way Prettier leaves it, so `pnpm lint` passes on the synced commit.
+writeFileSync(
+	PRICES_FILE,
+	await format(header + stringify({ entries }, { lineWidth: 0 }), {
+		...(await resolveConfig(PRICES_FILE)),
+		filepath: PRICES_FILE
+	})
+);
 
 const HISTORY_HEADER = 'date,ingredient,store,price,pack,sale_until,product';
 const csvField = (value: string) =>

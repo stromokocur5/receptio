@@ -8,6 +8,7 @@
 import { execFile } from 'node:child_process';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { promisify } from 'node:util';
+import { format, resolveConfig } from 'prettier';
 import { parse, stringify } from 'yaml';
 
 /** grizly.sk asks for a crawl delay of 5 s in robots.txt; the same pause is used everywhere. */
@@ -225,12 +226,12 @@ async function main() {
 	if (fresh < wanted.length / 2) {
 		throw new Error(`Only ${fresh} of ${wanted.length} products could be read – nothing written.`);
 	}
-	writeFileSync(
-		OUT,
+	const text =
 		'# GENEROVANÉ – neupravuj ručne. Ceny zo stránok produktov v e-shopoch, obnov cez\n' +
-			'# `pnpm prices:eshops`; zoznam produktov je v eshops.yaml.\n' +
-			stringify({ entries }, { lineWidth: 0 })
-	);
+		'# `pnpm prices:eshops`; zoznam produktov je v eshops.yaml.\n' +
+		stringify({ entries }, { lineWidth: 0 });
+	// Written the way Prettier leaves it, so `pnpm lint` passes on the synced commit.
+	writeFileSync(OUT, await format(text, { ...(await resolveConfig(OUT)), filepath: OUT }));
 	appendHistory(
 		entries.filter((e) => e.date === today),
 		today
