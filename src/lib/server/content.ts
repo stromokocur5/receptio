@@ -14,6 +14,7 @@ import {
 } from '$lib/nutrition';
 import { CATEGORY_PATHS, guessTaste } from '$lib/categories';
 import { stepLines, techniqueGuides } from '$lib/cooking';
+import { tipParts } from '$lib/tip-links';
 import { ART_NAMES, artFigure } from '$lib/wiki-art';
 import { normalizeSearch } from '$lib/labels';
 import { rewriteStep } from '$lib/step-swaps';
@@ -1130,6 +1131,18 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		});
 	}
 
+	/** Pages a tip may link to; other paths (/sezona, /ceny…) are routes, not content. */
+	const CONTENT_LINKS: Record<string, (id: string) => boolean> = {
+		recepty: (id) => recipeDetails.has(id),
+		wiki: (slug) => wikiBySlug.has(slug),
+		suroviny: (id) => byId.has(id)
+	};
+	const linkTargetExists = (href: string) => {
+		const [, section, id] = href.split('#')[0].split('/');
+		const exists = CONTENT_LINKS[section];
+		return !exists || !id || exists(id);
+	};
+
 	for (const recipe of recipeDetails.values()) {
 		recipe.related = recipe.related.map(({ id: relatedId }) => {
 			const target = recipeDetails.get(relatedId);
@@ -1140,6 +1153,11 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			}
 			return { id: relatedId, title: target.title };
 		});
+		for (const { href } of recipe.tips.flatMap(tipParts)) {
+			if (href && !linkTargetExists(href)) {
+				throw new Error(`content/recipes/${recipe.id}.yaml: tip odkazuje na neexistujúce ${href}`);
+			}
+		}
 	}
 
 	const recipes = [...recipeDetails.values()]

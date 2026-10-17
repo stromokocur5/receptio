@@ -10,6 +10,7 @@
 		vesselFor
 	} from '$lib/categories';
 	import { scaleStep, stepGuides, stepLines } from '$lib/cooking';
+	import { tipParts } from '$lib/tip-links';
 	import { stepTerms } from '$lib/glossary';
 	import { flyToPlan } from '$lib/fly';
 	import CookMode from '$lib/components/CookMode.svelte';
@@ -1111,7 +1112,11 @@
 				<div class="tips">
 					<h3><Icon name="sparkle" size={20} /> Tipy</h3>
 					<ul>
-						{#each recipe.tips as tip, i (i)}<li>{scaleStep(tip, factor)}</li>{/each}
+						{#each recipe.tips as tip, i (i)}<li>
+								{#each tipParts(tip) as part, j (j)}{#if part.href}<a href={part.href}
+											>{part.text}</a
+										>{:else}{scaleStep(part.text, factor)}{/if}{/each}
+							</li>{/each}
 					</ul>
 				</div>
 			{/if}

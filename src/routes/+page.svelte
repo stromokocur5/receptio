@@ -123,7 +123,7 @@
 	const basics = $derived(catalog.wiki.filter((w) => w.section === 'zaklady').slice(0, 6));
 
 	/** The four things Receptio does, each with its main door and a couple of side doors. */
-	const PILLARS: {
+	interface Pillar {
 		title: string;
 		text: string;
 		icon: IconName;
@@ -131,7 +131,8 @@
 		href: string;
 		cta: string;
 		more: { href: string; label: string }[];
-	}[] = [
+	}
+	const PILLARS: Pillar[] = [
 		{
 			title: 'Nájdi, čo uvariť',
 			text: `Stovky receptov z ${catalog.cuisines.length} kuchýň – od babkiných klasík po street food zo sveta. Pri každom vidíš cenu porcie, bielkoviny aj alergény.`,
@@ -152,10 +153,7 @@
 			tone: 'var(--sky)',
 			href: '/plan',
 			cta: 'Plán a nákup',
-			more: [
-				{ href: '/plan#navrh', label: 'Navrhni mi týždeň' },
-				{ href: '/ceny', label: 'Ceny v obchodoch' }
-			]
+			more: [{ href: '/plan#navrh', label: 'Navrhni mi týždeň' }]
 		},
 		{
 			title: 'Var z toho, čo máš',
@@ -166,7 +164,7 @@
 			cta: 'Špajza',
 			more: [
 				{ href: '/zvysky', label: 'Zo zvyškov' },
-				{ href: '/sezona', label: 'Čo je v sezóne' }
+				{ href: '/ceny', label: 'Ceny a akcie' }
 			]
 		},
 		{
@@ -176,7 +174,25 @@
 			tone: 'var(--leaf-2)',
 			href: '/pestuj',
 			cta: 'Pestuj',
-			more: [{ href: '/wiki/ako-zacat-pestovat', label: 'Ako začať' }]
+			more: [
+				{ href: '/wiki/ako-zacat-pestovat', label: 'Ako začať' },
+				{ href: '/sezona', label: 'Čo je v sezóne' }
+			]
+		}
+	];
+	/** The same two halves as the navigation, so the home page explains the switch in the bar. */
+	const HALVES: { title: string; hint: string; icon: IconName; pillars: Pillar[] }[] = [
+		{
+			title: 'Kuchyňa',
+			hint: 'každý deň – čo uvariť, plán a nákup',
+			icon: 'pot',
+			pillars: PILLARS.slice(0, 2)
+		},
+		{
+			title: 'Domov',
+			hint: 'dlhodobo – zásoby, záhrada a ceny',
+			icon: 'home',
+			pillars: PILLARS.slice(2)
 		}
 	];
 
@@ -395,18 +411,29 @@
 	<div class="head">
 		<h2>Čo tu môžeš robiť</h2>
 	</div>
-	<div class="pillars">
-		{#each PILLARS as p, i (p.href)}
-			<article class="card pillar rise" style:--tone={p.tone} style:--i={i}>
-				<span class="p-icon"><Icon name={p.icon} size={28} draw /></span>
-				<h3>{p.title}</h3>
-				<p>{p.text}</p>
-				<div class="p-links">
-					<a class="btn small p-main" href={p.href}>{p.cta} <Icon name="arrow-right" size={16} /></a
-					>
-					{#each p.more as m (m.href)}<a class="p-more" href={m.href}>{m.label}</a>{/each}
+	<div class="halves">
+		{#each HALVES as half, h (half.title)}
+			<div class="half">
+				<p class="half-head">
+					<Icon name={half.icon} size={18} /><strong>{half.title}</strong>
+					<span>{half.hint}</span>
+				</p>
+				<div class="pillars">
+					{#each half.pillars as p, i (p.href)}
+						<article class="card pillar rise" style:--tone={p.tone} style:--i={h * 2 + i}>
+							<span class="p-icon"><Icon name={p.icon} size={28} draw /></span>
+							<h3>{p.title}</h3>
+							<p>{p.text}</p>
+							<div class="p-links">
+								<a class="btn small p-main" href={p.href}
+									>{p.cta} <Icon name="arrow-right" size={16} /></a
+								>
+								{#each p.more as m (m.href)}<a class="p-more" href={m.href}>{m.label}</a>{/each}
+							</div>
+						</article>
+					{/each}
 				</div>
-			</article>
+			</div>
 		{/each}
 	</div>
 </section>
@@ -755,9 +782,30 @@
 		color: var(--ink-2);
 	}
 
+	.halves {
+		display: grid;
+		gap: 22px;
+	}
+	@media (min-width: 1100px) {
+		.halves {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+	.half-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px 8px;
+		margin: 0 0 10px;
+		color: var(--ink-2);
+	}
+	.half-head span {
+		color: var(--muted);
+		font-size: var(--fs-sm);
+	}
 	.pillars {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 		gap: 14px;
 	}
 	.pillar {

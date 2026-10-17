@@ -274,7 +274,10 @@
 			.map((l) => l.label)
 			.join(', ')})"
 	>
-		<span class="ico"><Icon name={MODES[otherMode].icon} size={22} /></span>
+		<span class="ico">
+			<Icon name={MODES[otherMode].icon} size={22} />
+			<span class="swap-badge"><Icon name="swap" size={11} /></span>
+		</span>
 		<span class="lbl">{MODES[otherMode].label}</span>
 	</a>
 	{#key mode}
@@ -559,9 +562,32 @@
 			color 0.2s,
 			background 0.2s;
 	}
+	/* Not a place you are, a door to the other half: muted, with a swap badge and a divider. */
 	.mobile .switch {
-		color: var(--leaf);
+		position: relative;
+		margin-right: 4px;
+	}
+	.mobile .switch::after {
+		content: '';
+		position: absolute;
+		top: 10px;
+		bottom: 10px;
+		right: -3px;
+		width: 1px;
+		background: var(--line);
+	}
+	.swap-badge {
+		position: absolute;
+		right: -13px;
+		bottom: -5px;
+		display: grid;
+		place-items: center;
+		width: 17px;
+		height: 17px;
+		border-radius: 50%;
 		background: var(--leaf-soft);
+		color: var(--leaf);
+		box-shadow: 0 0 0 2px var(--card);
 	}
 	.mobile .swap-in {
 		animation: swap-in 0.3s var(--ease-out);
