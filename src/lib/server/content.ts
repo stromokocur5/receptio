@@ -452,6 +452,7 @@ export interface RawContent {
 	pricesEshops: string;
 	pricesBilla: string;
 	pricesKaufland: string;
+	pricesKosik: string;
 	recipes: Record<string, string>;
 	wiki: Record<string, string>;
 	grow: string;
@@ -570,6 +571,11 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		parseYaml(raw.pricesKaufland),
 		'content/prices-kaufland.yaml'
 	);
+	const pricesKosik = parseWith(
+		syncedPricesSchema,
+		parseYaml(raw.pricesKosik),
+		'content/prices-kosik-sk.yaml'
+	);
 	const stores: Store[] = pricesRaw.stores;
 	const storeIds = new Set(stores.map((s) => s.id));
 	const onlineStores = new Set(stores.filter((s) => s.online).map((s) => s.id));
@@ -590,6 +596,10 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		...pricesKaufland.entries.map((e, index) => ({
 			e,
 			where: `content/prices-kaufland.yaml entries[${index}]`
+		})),
+		...pricesKosik.entries.map((e, index) => ({
+			e,
+			where: `content/prices-kosik-sk.yaml entries[${index}]`
 		}))
 	];
 	const prices: PriceEntry[] = priceEntries.map(({ e, where }) => {
@@ -1416,6 +1426,11 @@ export function getContent(): Content {
 				import: 'default',
 				eager: true
 			})['/content/prices-kaufland.yaml'] as string,
+			pricesKosik: import.meta.glob('/content/prices-kosik-sk.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/prices-kosik-sk.yaml'] as string,
 			recipes: rawRecipes,
 			wiki: import.meta.glob('/content/wiki/*.md', {
 				query: '?raw',

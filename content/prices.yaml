@@ -38,6 +38,25 @@ stores:
   - { id: veganstore, name: Veganstore, color: '#3f8f3a', online: true }
   - { id: ebio24, name: ebio24, color: '#6aa329', online: true }
   - { id: aziske-potraviny, name: Ázijské potraviny, color: '#b8321f' }
+  - { id: kosik, name: Košík, color: '#7ab51d', online: true }
+  - { id: asianshop, name: Asian shop, color: '#c8102e' }
+  - { id: diana, name: Diana Company, color: '#5a8f29', online: true }
+  - { id: ekokoza, name: Ekokoza, color: '#8a6d3b', online: true }
+  - { id: dobrio, name: Dobrio, color: '#e3007d', online: true }
+  - { id: sanusvita, name: Sanusvita, color: '#2e7d32', online: true }
+  - { id: naturaj, name: Naturaj, color: '#6b8e23', online: true }
+  - { id: chillimarket, name: Chillimarket, color: '#d32f2f', online: true }
+  - { id: ugriluj, name: Ugriluj, color: '#333333', online: true }
+  - { id: biopotravinyraj, name: Biopotraviny Raj, color: '#4caf50', online: true }
+  - { id: nakliceno, name: Naklíčené, color: '#7cb342', online: true }
+  - { id: lunys, name: Lunys, color: '#00897b', online: true }
+  - { id: svetchuti, name: Svet chutí, color: '#ff8f00', online: true }
+  - { id: centrum-bylin, name: Centrum bylín, color: '#9c27b0', online: true }
+  - { id: farma-tekvicka, name: Farma Tekvička, color: '#e65100', online: true }
+  - { id: biomamka, name: Biomamka, color: '#689f38', online: true }
+  - { id: himalajcentrum, name: Himalaj centrum, color: '#bf360c', online: true }
+  - { id: nuyu, name: NuYu, color: '#0097a7', online: true }
+  - { id: farmove, name: Farmové, color: '#558b2f', online: true }
 
 entries:
   # Tesco online (potravinydomov.itesco.sk), bežné ceny 26. 9. 2026
@@ -736,3 +755,26 @@ entries:
     price: 3.0
     date: 2026-10-17
     url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/207787876
+  # Allegro, 17. 10. 2026 – špeciality, ktoré iné obchody nemajú (stránky Allegra sa nedajú
+  # čítať automaticky, preto ručne)
+  - ingredient: poha
+    store: allegro
+    product: 'Ryžové vločky Poha Thick Schani 500 g'
+    pack: 500 g
+    price: 1.82
+    date: 2026-10-17
+    url: https://allegro.sk/produkt/ryzove-vlocky-poha-thick-schani-500-g-41e9cabd-9992-4769-9cb0-35d058a99d89
+  - ingredient: doubanjiang
+    store: allegro
+    product: 'Pixian Doubanjiang pasta z bobu a chilli 500 g Juancheng'
+    pack: 500 g
+    price: 3.63
+    date: 2026-10-17
+    url: https://allegro.sk/produkt/pasta-z-bobov-a-chilli-v-oleji-juancheng-chilli-doubanjiang-500g-pixian-7184b9e8-36f0-4d49-a500-82bfcba9303d
+  - ingredient: bob-sterilizovany
+    store: allegro
+    product: 'Bôb obyčajný / Foul Medammes Narenj 400 g'
+    pack: 1 ks
+    price: 1.12
+    date: 2026-10-17
+    url: https://allegro.sk/produkt/bob-obycajny-foul-medammes-narenj-400g-848e97ae-e13c-4fa9-946a-d72cb2696214

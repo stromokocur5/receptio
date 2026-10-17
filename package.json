@@ -20,6 +20,7 @@
 		"prices:eshops": "node scripts/sync-eshops.ts",
 		"prices:billa": "node scripts/sync-billa.ts",
 		"prices:kaufland": "node scripts/sync-kaufland.ts",
+		"prices:kosik": "node scripts/sync-kosik.ts",
 		"test:e2e": "playwright test"
 	},
 	"devDependencies": {

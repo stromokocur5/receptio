@@ -556,6 +556,42 @@ entries:
     url: https://www.billa.sk/produkty/jablka-cervene-ukladane-84225024
     price: 0.99
     sale_until: 2026-10-20
+  - ingredient: jablkovy-must
+    store: billa
+    product: HELLO JABLKO 100% 1L
+    pack: 1 l
+    date: 2026-10-17
+    url: https://www.billa.sk/produkty/hello-jablko-100-1l-84225830
+    price: 1.89
+  - ingredient: jablkovy-must
+    store: billa
+    product: PFANNER JABLKO 100% 1L
+    pack: 1 l
+    date: 2026-10-17
+    url: https://www.billa.sk/produkty/pfanner-jablko-100-1l-84203434
+    price: 2.59
+  - ingredient: jablkovy-must
+    store: billa
+    product: PFANNER JABLKO 100% 1L
+    pack: 1 l
+    date: 2026-10-17
+    url: https://www.billa.sk/produkty/pfanner-jablko-100-1l-84203434
+    price: 1.69
+    sale_until: 2026-10-20
+  - ingredient: jablkovy-must
+    store: billa
+    product: RELAX 100% JABLKO 1L
+    pack: 1 l
+    date: 2026-10-17
+    url: https://www.billa.sk/produkty/relax-100-jablko-1l-84205980
+    price: 1.99
+  - ingredient: jablkovy-must
+    store: billa
+    product: RELAX JABLKO 100% 1L PET
+    pack: 1 l
+    date: 2026-10-17
+    url: https://www.billa.sk/produkty/relax-jablko-100-1l-pet-84245444
+    price: 2.19
   - ingredient: kakao
     store: billa
     product: DR.OETKER HOLANDSKÉ KAKAO 100G

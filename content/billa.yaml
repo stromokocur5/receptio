@@ -108,3 +108,4 @@
 - { ingredient: kypriaci-prasok, include: 'kypriaci prasok' }
 - { ingredient: sladka-paprika, include: 'paprika sladka mleta' }
 - { ingredient: rasca, include: 'rasca cela' }
+- { ingredient: jablkovy-must, include: '^(relax|pfanner|hello) (100% jablko|jablko 100%) 1l' }

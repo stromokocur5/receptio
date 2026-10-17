@@ -937,3 +937,116 @@
   store: ebio24
   pack: 125 g
   url: https://ebio24.sk/sk/products/cerstve-cernice-bio-cca-0-125-kg-77572
+# Špeciality, ktoré veľké e-shopy nemajú
+- ingredient: pak-choi
+  store: asianshop
+  pack: 300 g
+  url: https://asianshop.sk/product/pak-choi-kapusta-300g
+- ingredient: bylinky-koriander
+  store: asianshop
+  pack: 100 g
+  url: https://asianshop.sk/product/cerstvy-koriander-100g
+- ingredient: jackfruit
+  store: asianshop
+  pack: 1 ks
+  url: https://asianshop.sk/product/aroy-d-jackfruit-v-slanom-naleve-565g
+- ingredient: fazula-cierne-oko
+  store: asianshop
+  pack: 400 g
+  url: https://asianshop.sk/product/trs-fazula-black-eye-400g
+- ingredient: kimchi
+  store: asianshop
+  pack: 500 g
+  url: https://asianshop.sk/product/bibigo-kimci-vegan-500g
+- ingredient: doubanjiang
+  store: asianshop
+  pack: 340 g
+  url: https://asianshop.sk/product/haday-sojova-omacka-toban-djan-340g
+- ingredient: fazula-cierne-oko
+  store: diana
+  pack: 500 g
+  url: https://www.diana-company.sk/fazula-cierne-oko-500g/
+- ingredient: lupinova-muka
+  store: diana
+  pack: 300 g
+  url: https://www.diana-company.sk/natural-muka-lupinova-hladka-300g/
+- ingredient: nigari
+  store: ekokoza
+  pack: 250 g
+  url: https://www.ekokoza.sk/nigari-p8464/?vid=6272
+- ingredient: nigari
+  store: dobrio
+  pack: 100 g
+  url: https://www.dobrio.sk/makrobiotika/nigari-100g/
+- ingredient: koji
+  store: dobrio
+  pack: 500 g
+  url: https://www.dobrio.sk/makrobiotika/koji-bio-500g-la-finestra/
+- ingredient: lepok-vital
+  store: sanusvita
+  pack: 500 g
+  url: https://sanusvita.sk/muky-a-zmesi/2665-bielkovina-psenicny-lepok-500g-provita-8594034792786.html
+- ingredient: ryzove-otruby
+  store: naturaj
+  pack: 250 g
+  url: https://www.naturaj.sk/otruby-ryzove-s-klickami-250g-natural-jihlava
+- ingredient: lepok-vital
+  store: naturaj
+  pack: 500 g
+  url: https://www.naturaj.sk/lepok-psenicny-500g-provita
+- ingredient: sumak
+  store: chillimarket
+  pack: 25 g
+  url: https://www.chillimarket.sk/soli-a-koreniace-zmesi/korenie-sumac--25g/
+- ingredient: tekuty-dym
+  store: ugriluj
+  pack: 118 ml
+  url: https://www.ugriluj.sk/p/tekuty-dym-colgin-liquid-smoke-hickory-118ml
+- ingredient: teff
+  store: biopotravinyraj
+  pack: 400 g
+  url: https://biopotravinyraj.sk/obilniny-a-strukoviny/5803-teff-tmavy-cele-zrno-400g
+- ingredient: tempeh-starter
+  store: nakliceno
+  pack: 20 g
+  url: https://www.nakliceno.cz/sk/tempeh-starter/
+- ingredient: acai
+  store: lunys
+  pack: 400 g
+  url: https://www.lunys.sk/mrazena-dren-acai-bez-cukru-400g-sambazon-p375633
+- ingredient: masa-harina
+  store: svetchuti
+  pack: 1 kg
+  url: https://www.svetchuti.eu/masa-harina
+- ingredient: asafetida
+  store: centrum-bylin
+  pack: 50 g
+  url: https://www.centrum-bylin.sk/ASAFOETIDA-Certovo-lajno-Kinjin-Food
+- ingredient: bob-suchy
+  store: farma-tekvicka
+  pack: 500 g
+  url: https://www.farma-tekvicka.sk/strukovinyasemena/bob-500g/
+- ingredient: zaatar
+  store: biomamka
+  pack: 25 g
+  url: https://www.biomamka.sk/korenie-kralov-solomon--zaatar-25-g/
+- ingredient: berbere
+  store: himalajcentrum
+  pack: 120 g
+  url: https://shop.himalajcentrum.sk/5115jvxb/Etiopske-BERBER-BIO-120g-d18.htm
+- ingredient: lasagne-platne-bezlepkove
+  store: nuyu
+  pack: 250 g
+  url: https://www.nuyuzdravo.sk/shop/le-veneziane-bezlepkove-lasagne-platky-250-g
+- ingredient: kukuricne-tortilly
+  store: lunys
+  pack: 12 ks
+  url: https://www.lunys.sk/tortilla-kukuricna-wrap-12ks-15cm-p368962
+- ingredient: mangold
+  store: ebio24
+  pack: 500 g
+  url: https://ebio24.sk/sk/products/mangold-cerstvy-bio-zvazok-cca-0-50-kg-67324
+- ingredient: mangold
+  store: farmove
+  pack: 250 g
+  url: https://www.farmove.sk/mangold-250g

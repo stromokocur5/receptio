@@ -1,0 +1,51 @@
+# Ktoré produkty z katalógu Košíka (kosik.sk) patria ku ktorej surovine. `pnpm prices:kosik`
+# podľa toho zapíše ceny do content/prices-kosik-sk.yaml a všetky potraviny do
+# content/katalog-kosik-sk.csv.
+#
+# include / exclude: regulárny výraz na názov produktu (malé písmená, bez diakritiky)
+# category: regulárny výraz na hlavnú kategóriu produktu (napr. čerstvé bylinky, nie mrazené)
+#
+# Košík vozí domov, tak sa počíta ako e-shop: v nákupe sa jeho cena použije, len keď surovinu
+# nepredáva žiadny kamenný obchod. Limetky len na kusy – surovina je šťava z jednej limetky.
+
+# Bylinky a zelenina
+- { ingredient: bylinky-koriander, include: '^metro chef koriander$', category: ovocie }
+- { ingredient: bylinky-mata, include: '^metro chef mata zelena', category: ovocie }
+- { ingredient: kopor, include: '^metro chef kopor', category: ovocie }
+- { ingredient: bazalka, include: '^metro chef bazalka$', category: ovocie }
+- { ingredient: pazitka, include: '^metro chef pazitka$', category: ovocie }
+- { ingredient: limetka, include: '^limety cerstve' }
+- { ingredient: zeler-stonkovy, include: '^stopkovy zeler' }
+- { ingredient: cinska-kapusta, include: 'kapusta pekinska' }
+- { ingredient: kel, include: '^kel kuceravy' }
+- { ingredient: shiitake, include: '^shiitake$' }
+- { ingredient: pastinak, include: '^pastrnak' }
+- { ingredient: topinambur, include: '^topinambur' }
+- { ingredient: cili-papricka, include: '^chilli papricky cervene' }
+
+# Ovocie
+- { ingredient: egres, include: '^egres' }
+- { ingredient: cernice, include: '^cernice,' }
+- { ingredient: marhule, include: '^marhule,' }
+- { ingredient: broskyne, include: '^broskyne (zltomasite vanicka|ploche)' }
+- { ingredient: ribezle-cervene, include: '^ribezle cervene' }
+- { ingredient: melon, include: '^melon vodovy' }
+- { ingredient: acai, include: '^sambazon organic acai bez cukru' }
+- { ingredient: ribezle-cierne, include: '^metro chef cierne ribezle$' }
+
+# Hotové výrobky (zloženie overené – vegánske)
+- { ingredient: filo-cesto, include: 'filo' }
+- { ingredient: pita, include: '^hermes grecky chlieb pita|^penam arabsky chlieb' }
+- ingredient: kimchi
+  include: '^zivina kimchi (natur|nepalive|palive|stredne)|^kapusta kimchi (classic|extra)'
+- {
+    ingredient: hamburgerova-zemla,
+    include: '^penam (hamburgerove zemle|zemle hamburger)|^jaus hamburger'
+  }
+- { ingredient: rastlinne-maslo, include: '^flora omega' }
+- {
+    ingredient: pecivo-bezlepkove,
+    include: '^penam bagetka svetla bezglutenova|^nutri free xl bezlepkove zemle'
+  }
+- { ingredient: struhanka-bezlepkova, include: '^(nutri free|schar) struhanka bezlepkova' }
+- { ingredient: jablkovy-must, include: '^(fine life|happy day) 100% jablko$' }

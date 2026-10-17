@@ -596,20 +596,15 @@ entries:
     price: 8.33
     date: 2026-10-17
     url: https://www.foodland.sk/pasty-korenia/cili-pasta-korejska-gochujang-sempio-1000g/
-  - ingredient: gochugaru
+  - &a1
+    ingredient: gochugaru
     store: foodland
     product: Kórejská červená paprika Gochugaru DAE KYUNG 1 kg
     pack: 1 kg
     price: 12.5
     date: 2026-10-17
     url: https://www.foodland.sk/horeca-hotel-restauracia-catering/korejska-cervena-paprika-gochugaru-dae-kyung-1-kg/
-  - ingredient: gochugaru
-    store: foodland
-    product: Kórejská červená paprika Gochugaru DAE KYUNG 1 kg
-    pack: 1 kg
-    price: 12.5
-    date: 2026-10-17
-    url: https://www.foodland.sk/horeca-hotel-restauracia-catering/korejska-cervena-paprika-gochugaru-dae-kyung-1-kg/
+  - *a1
   - ingredient: ryzovy-papier
     store: foodland
     product: Ryžový papier na čerstvé jarné rolky TUFOCO 400g
@@ -1387,3 +1382,171 @@ entries:
     price: 1.87
     date: 2026-10-17
     url: https://www.grizly.sk/grizly-jedla-soda-bikarbona-1000-g
+  - ingredient: pak-choi
+    store: asianshop
+    product: Pak choi kapusta 300g
+    pack: 300 g
+    price: 3
+    date: 2026-10-17
+    url: https://asianshop.sk/product/pak-choi-kapusta-300g
+  - ingredient: bylinky-koriander
+    store: asianshop
+    product: Čerstvý koriander 100g
+    pack: 100 g
+    price: 4
+    date: 2026-10-17
+    url: https://asianshop.sk/product/cerstvy-koriander-100g
+  - ingredient: jackfruit
+    store: asianshop
+    product: AROY D Jackfruit v slanom náleve 565g
+    pack: 1 ks
+    price: 4.3
+    date: 2026-10-17
+    url: https://asianshop.sk/product/aroy-d-jackfruit-v-slanom-naleve-565g
+  - ingredient: fazula-cierne-oko
+    store: asianshop
+    product: TRS Fazul'a black eye 400g
+    pack: 400 g
+    price: 2.2
+    date: 2026-10-17
+    url: https://asianshop.sk/product/trs-fazula-black-eye-400g
+  - ingredient: fazula-cierne-oko
+    store: diana
+    product: Fazuľa čierne oko 500g
+    pack: 500 g
+    price: 1.81
+    date: 2026-10-17
+    url: https://www.diana-company.sk/fazula-cierne-oko-500g/
+  - ingredient: lupinova-muka
+    store: diana
+    product: Natural múka lupinová hladká 300g
+    pack: 300 g
+    price: 1.51
+    date: 2026-10-17
+    url: https://www.diana-company.sk/natural-muka-lupinova-hladka-300g/
+  - ingredient: nigari
+    store: ekokoza
+    product: Nigari, 250 g
+    pack: 250 g
+    price: 1.58
+    date: 2026-10-17
+    url: https://www.ekokoza.sk/nigari-p8464/?vid=6272
+  - ingredient: nigari
+    store: dobrio
+    product: Nigari 100g La Finestra sul Cielo
+    pack: 100 g
+    price: 2.6
+    date: 2026-10-17
+    url: https://www.dobrio.sk/makrobiotika/nigari-100g/
+  - ingredient: koji
+    store: dobrio
+    product: Koji BIO 500g La Finestra
+    pack: 500 g
+    price: 19.4
+    date: 2026-10-17
+    url: https://www.dobrio.sk/makrobiotika/koji-bio-500g-la-finestra/
+  - ingredient: lepok-vital
+    store: sanusvita
+    product: Vega Provita Bielkovina pšeničný lepok 500g PROVITA
+    pack: 500 g
+    price: 3.75
+    date: 2026-10-17
+    url: https://sanusvita.sk/muky-a-zmesi/2665-bielkovina-psenicny-lepok-500g-provita-8594034792786.html
+  - ingredient: ryzove-otruby
+    store: naturaj
+    product: Otruby ryžové s klíčkami 250g Natural Jihlava
+    pack: 250 g
+    price: 1.28
+    date: 2026-10-17
+    url: https://www.naturaj.sk/otruby-ryzove-s-klickami-250g-natural-jihlava
+  - ingredient: lepok-vital
+    store: naturaj
+    product: LEPOK pšeničný 500g Provita
+    pack: 500 g
+    price: 3.85
+    date: 2026-10-17
+    url: https://www.naturaj.sk/lepok-psenicny-500g-provita
+  - ingredient: sumak
+    store: chillimarket
+    product: KORENIE SUMAC (25g)
+    pack: 25 g
+    price: 1.5
+    date: 2026-10-17
+    url: https://www.chillimarket.sk/soli-a-koreniace-zmesi/korenie-sumac--25g/
+  - ingredient: tekuty-dym
+    store: ugriluj
+    product: Tekutý dym Colgin - Liquid smoke Hickory, 118ml
+    pack: 118 ml
+    price: 5.6
+    date: 2026-10-17
+    url: https://www.ugriluj.sk/p/tekuty-dym-colgin-liquid-smoke-hickory-118ml
+  - ingredient: teff
+    store: biopotravinyraj
+    product: Danfood Teff tmavý celé zrno 400g
+    pack: 400 g
+    price: 5.8
+    date: 2026-10-17
+    url: https://biopotravinyraj.sk/obilniny-a-strukoviny/5803-teff-tmavy-cele-zrno-400g
+  - ingredient: tempeh-starter
+    store: nakliceno
+    product: Tempeh štartér 20g
+    pack: 20 g
+    price: 11.26
+    date: 2026-10-17
+    url: https://www.nakliceno.cz/sk/tempeh-starter/
+  - ingredient: acai
+    store: lunys
+    product: Mrazená Dreň Acai bez cukru 400g Sambazon
+    pack: 400 g
+    price: 8.99
+    date: 2026-10-17
+    url: https://www.lunys.sk/mrazena-dren-acai-bez-cukru-400g-sambazon-p375633
+  - ingredient: masa-harina
+    store: svetchuti
+    product: NUEVO PROGRESO Kukuričná múka Masa Harina 1Kg
+    pack: 1 kg
+    price: 5.5
+    date: 2026-10-17
+    url: https://www.svetchuti.eu/masa-harina
+  - ingredient: asafetida
+    store: centrum-bylin
+    product: ASAFOETIDA Čertovo lajno 50g | Kinjin Food
+    pack: 50 g
+    price: 2.83
+    date: 2026-10-17
+    url: https://www.centrum-bylin.sk/ASAFOETIDA-Certovo-lajno-Kinjin-Food
+  - ingredient: bob-suchy
+    store: farma-tekvicka
+    product: Bôb 500g
+    pack: 500 g
+    price: 3.81
+    date: 2026-10-17
+    url: https://www.farma-tekvicka.sk/strukovinyasemena/bob-500g/
+  - ingredient: zaatar
+    store: biomamka
+    product: KORENIE KRÁĽOV SOLOMON, ZAATAR 25 g
+    pack: 25 g
+    price: 1.5
+    date: 2026-10-17
+    url: https://www.biomamka.sk/korenie-kralov-solomon--zaatar-25-g/
+  - ingredient: berbere
+    store: himalajcentrum
+    product: Etiopské BERBER BIO 120g
+    pack: 120 g
+    price: 2.3
+    date: 2026-10-17
+    url: https://shop.himalajcentrum.sk/5115jvxb/Etiopske-BERBER-BIO-120g-d18.htm
+  - ingredient: lasagne-platne-bezlepkove
+    store: nuyu
+    product: Le Veneziane Bezlepkové Lasagne Plátky 250 g
+    pack: 250 g
+    price: 3.7
+    date: 2026-10-17
+    url: https://www.nuyuzdravo.sk/shop/le-veneziane-bezlepkove-lasagne-platky-250-g
+  - ingredient: kukuricne-tortilly
+    store: lunys
+    product: Tortilla kukuričná wrap 12ks / 15cm 12 ks
+    pack: 12 ks
+    price: 2.29
+    date: 2026-10-17
+    url: https://www.lunys.sk/tortilla-kukuricna-wrap-12ks-15cm-p368962
