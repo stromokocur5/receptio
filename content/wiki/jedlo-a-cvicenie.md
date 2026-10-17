@@ -33,4 +33,6 @@ Rastlinná strava a šport idú dokopy – vegánov nájdeš medzi maratóncami,
 - **Vitamín D** v zime – **[Vitamín D](/wiki/vitamin-d)**.
 - **Pitný režim** – pri hodine cvičenia pol litra až liter vody navyše.
 
+**Kreatín** – pri silovom tréningu a šprintoch najlepšie preskúmaný doplnok, vegánom pomáha viac, lebo ho z jedla nemajú. 3–5 g denne, kedykoľvek, len každý deň – **[Kreatín](/wiki/kreatin)**.
+
 Proteínový prášok nie je nutný, ale pomôže, ak nestíhaš variť – vyber hrachový alebo sójový bez zbytočných prísad.

@@ -101,7 +101,7 @@ export const SUPPLEMENT_PRESETS: { name: string; time: number; why: string; wiki
 	{ name: 'Omega-3 z rias', time: 13 * 60, why: 'k jedlu s tukom', wiki: 'omega-3' },
 	{ name: 'Jód', time: 8 * 60, why: 'ak nesolíš jódovanou soľou', wiki: 'jod' },
 	{ name: 'Železo', time: 10 * 60, why: 'len ak ti ho odporučil lekár', wiki: 'zelezo' },
-	{ name: 'Kreatín', time: 13 * 60, why: 'pri silovom tréningu', wiki: 'silovy-trening' }
+	{ name: 'Kreatín', time: 13 * 60, why: 'pri silovom tréningu', wiki: 'kreatin' }
 ];
 export const MAX_SUPPLEMENTS = 8;
 const MAX_SUPPLEMENT_NAME = 40;
