@@ -1,0 +1,64 @@
+# Ktoré ponuky z týždennej ponuky Kauflandu (predajne.kaufland.sk) patria ku ktorej surovine.
+# `pnpm prices:kaufland` podľa toho zapíše ceny do content/prices-kaufland.yaml a všetky
+# potravinové ponuky týždňa do content/katalog-kaufland.csv.
+#
+# include / exclude: regulárny výraz na názov ponuky (značka + produkt, malé písmená, bez diakritiky)
+#
+# Ponuka sa mení každý týždeň – keď produkt v ponuke nie je, jeho posledná bežná cena ostane
+# a starne ako každá iná. Zeler stopkatý sa predáva po celých zväzkoch, nie po stonkách, a melón
+# Galia nie je vodový melón, preto tu chýbajú.
+
+# Zelenina
+- { ingredient: zemiaky, include: '^zemiaky konzumne' }
+- { ingredient: batat, include: '^sladke zemiaky' }
+- { ingredient: cibula, include: 'cibula zlta' }
+- { ingredient: cibula-cervena, include: 'cibula cervena' }
+- { ingredient: cesnak, include: '^cesnak' }
+- { ingredient: mrkva, include: '^mrkva' }
+- { ingredient: biela-kapusta, include: 'kapusta biela' }
+- { ingredient: karfiol, include: '^karfiol' }
+- { ingredient: brokolica, include: '^brokolica' }
+- { ingredient: salat, include: '^salat ladovy' }
+- { ingredient: uhorka, include: '^uhorka salatova' }
+- { ingredient: paradajky, include: '^paradajky (strapcove|cherry)' }
+- { ingredient: paprika-cervena, include: '^paprika cervena' }
+- { ingredient: tekvica-hokkaido, include: '^tekvica hokkaido' }
+- { ingredient: hliva, include: '^hliva' }
+- { ingredient: cuketa, include: '^cuket' }
+- { ingredient: baklazan, include: '^baklazan' }
+- { ingredient: por, include: '^por( |$)' }
+- { ingredient: kalerab, include: '^kalerab' }
+- { ingredient: zazvor, include: '^zazvor' }
+- { ingredient: spenat, include: 'spenat' }
+- { ingredient: paradajky-sterilizovane, include: 'giana paradajky' }
+- { ingredient: kukurica, include: 'giana kukurica' }
+
+# Ovocie
+- { ingredient: jablko, include: '^jablk' }
+- { ingredient: hruska, include: '^hrusky' }
+- { ingredient: slivky, include: '^slivky' }
+- { ingredient: hrozno, include: '^hrozno' }
+- { ingredient: banan, include: '^banany' }
+- { ingredient: pomaranc, include: '^pomarance' }
+- { ingredient: citron, include: '^citrony' }
+- { ingredient: limetka, include: '^limetk' }
+- { ingredient: kiwi, include: '^ki[vw]i' }
+- { ingredient: mango, include: '^mango' }
+- { ingredient: granatove-jablko, include: '^granatove jablko' }
+- { ingredient: cucoriedky, include: '^cucoriedky' }
+- { ingredient: maliny, include: '^maliny' }
+- { ingredient: jahody, include: 'jahody' }
+- { ingredient: gastany, include: '^gastany' }
+
+# Trvanlivé
+- { ingredient: olej, include: 'raciol olej|repkovy olej' }
+- { ingredient: olivovy-olej, include: 'olivovy olej' }
+- { ingredient: ovsene-vlocky, include: 'k-classic vlocky|ovsene vlocky' }
+- { ingredient: pohanka, include: 'pohanka' }
+- { ingredient: sosovica-hneda, include: 'k-classic sosovica' }
+- { ingredient: ryza-jazminova, include: 'jazminova ryza' }
+- { ingredient: javorovy-sirup, include: 'javorovy sirup' }
+- { ingredient: vlasske-orechy, include: 'vlass?ke orechy' }
+- { ingredient: kesu, include: 'k-classic kesu' }
+- { ingredient: mandle, include: 'mandle', exclude: 'cokolad|cukrik' }
+- { ingredient: chlieb, include: 'chlieb kvaskov|kvaskovy chlieb' }

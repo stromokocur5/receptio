@@ -10,6 +10,7 @@ REMOTE="${RECEPTIO_REMOTE:-git@github.com:stromokocur5/receptio.git}"
 FILES=(
 	content/prices-cenyslovensko.yaml content/price-history.csv
 	content/prices-billa.yaml content/price-history-billa.csv content/katalog-billa.csv
+	content/prices-kaufland.yaml content/price-history-kaufland.csv content/katalog-kaufland.csv
 )
 
 # systemd starts without the login shell, so nvm's node isn't on PATH yet.
@@ -28,6 +29,7 @@ git reset --hard --quiet origin/main
 pnpm install --frozen-lockfile --silent
 pnpm prices:sync
 pnpm prices:billa
+pnpm prices:kaufland
 pnpm test
 
 git add "${FILES[@]}"
@@ -35,7 +37,7 @@ if git diff --cached --quiet; then
 	echo "Žiadne zmeny."
 	exit 0
 fi
-git commit --quiet -m "Update prices from cenyslovensko.sk and billa.sk ($(date +%F)), synced from home"
+git commit --quiet -m "Update prices from cenyslovensko.sk, billa.sk and kaufland.sk ($(date +%F)), synced from home"
 # Someone may have pushed meanwhile; prices only touch their own files, so a rebase is safe.
 git push --quiet origin HEAD:main || {
 	git pull --rebase --quiet origin main
