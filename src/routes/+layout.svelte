@@ -16,6 +16,8 @@
 		digestReminder,
 		loadLikes,
 		loadPersisted,
+		navMode,
+		type NavMode,
 		plan,
 		settings,
 		storageTrouble,
@@ -35,13 +37,36 @@
 	const catalog = $derived(indexCatalog(data.catalog));
 	provideCatalog(() => catalog);
 
-	/** The four things people come for; everything else lives under "Viac". */
-	const NAV: { href: string; label: string; icon: IconName }[] = [
-		{ href: '/recepty', label: 'Recepty', icon: 'bowl' },
-		{ href: '/plan', label: 'Plán a nákup', icon: 'calendar' },
-		{ href: '/spajza', label: 'Špajza', icon: 'jar' },
-		{ href: '/pestuj', label: 'Pestuj', icon: 'sprout' }
-	];
+	interface NavLink {
+		href: string;
+		label: string;
+		icon: IconName;
+	}
+	/**
+	 * Everyday cooking and the long-run household are two halves of one app; the bar shows one
+	 * half at a time so a first visit isn't a wall of sections. Everything else lives under "Viac".
+	 */
+	const MODES: Record<NavMode, { label: string; icon: IconName; links: NavLink[] }> = {
+		kuchyna: {
+			label: 'Kuchyňa',
+			icon: 'pot',
+			links: [
+				{ href: '/recepty', label: 'Recepty', icon: 'bowl' },
+				{ href: '/plan', label: 'Plán', icon: 'calendar' },
+				{ href: '/plan#nakup', label: 'Nákup', icon: 'basket' }
+			]
+		},
+		domov: {
+			label: 'Domov',
+			icon: 'home',
+			links: [
+				{ href: '/spajza', label: 'Špajza', icon: 'jar' },
+				{ href: '/pestuj', label: 'Pestuj', icon: 'sprout' },
+				{ href: '/ceny', label: 'Ceny', icon: 'tag' }
+			]
+		}
+	};
+	const MODE_IDS = Object.keys(MODES) as NavMode[];
 
 	const planCount = $derived(plan.current.length);
 	/** Sync needs the user's attention (failed upload or two devices disagree). */
@@ -49,9 +74,33 @@
 	const within = (href: string) =>
 		page.url.pathname === href || page.url.pathname.startsWith(`${href}/`);
 	/** Pages that belong to a nav section without living under its path (the shared shopping list). */
-	const ALSO_UNDER: Record<string, string[]> = { '/plan': ['/zoznam'] };
-	const isActive = (href: string) => within(href) || (ALSO_UNDER[href] ?? []).some(within);
+	const ALSO_UNDER: Record<string, string[]> = { '/plan#nakup': ['/zoznam'] };
+	const onShopping = $derived(page.url.pathname === '/plan' && page.url.hash === '#nakup');
+	function isActive(href: string) {
+		const [path, hash] = href.split('#');
+		const here = hash ? onShopping : within(path) && !(path === '/plan' && onShopping);
+		return here || (ALSO_UNDER[href] ?? []).some(within);
+	}
 	const moreActive = $derived(MORE_PATHS.some(isActive));
+
+	/** The half the current page belongs to; on the home page, wiki and the like, none. */
+	const pageMode = $derived(
+		MODE_IDS.find((m) =>
+			MODES[m].links.some((l) => within(l.href.split('#')[0]) || isActive(l.href))
+		)
+	);
+	const mode = $derived(pageMode ?? navMode.current);
+	const otherMode = $derived(MODE_IDS.find((m) => m !== mode)!);
+	/** Switching halves goes back to where you were in that half, not to its first page. */
+	const lastVisited = $state<Record<NavMode, string>>({
+		kuchyna: MODES.kuchyna.links[0].href,
+		domov: MODES.domov.links[0].href
+	});
+	$effect(() => {
+		if (!pageMode) return;
+		lastVisited[pageMode] = page.url.pathname + page.url.search + page.url.hash;
+		if (ui.loaded && navMode.current !== pageMode) navMode.current = pageMode;
+	});
 
 	onMount(() => {
 		loadPersisted();
@@ -120,18 +169,35 @@
 	<div class="wrap bar">
 		<a href="/" class="brand" aria-label="Receptio – domov"><Logo /></a>
 		<nav class="desktop" aria-label="Hlavná navigácia">
-			{#each NAV as item (item.href)}
-				<a
-					href={item.href}
-					class="nav-link draw-host"
-					class:active={isActive(item.href)}
-					aria-current={isActive(item.href) ? 'page' : undefined}
-				>
-					<Icon name={item.icon} size={19} />
-					{item.label}
-					{#if item.href === '/plan' && planCount > 0}<span class="dot">{planCount}</span>{/if}
-				</a>
-			{/each}
+			<div class="modes" aria-label="Časť aplikácie" role="group">
+				{#each MODE_IDS as m (m)}
+					<a
+						href={lastVisited[m]}
+						class="mode"
+						class:on={mode === m}
+						aria-current={mode === m ? 'true' : undefined}
+					>
+						<Icon name={MODES[m].icon} size={17} />
+						{MODES[m].label}
+					</a>
+				{/each}
+			</div>
+			{#key mode}
+				<div class="links">
+					{#each MODES[mode].links as item (item.href)}
+						<a
+							href={item.href}
+							class="nav-link draw-host"
+							class:active={isActive(item.href)}
+							aria-current={isActive(item.href) ? 'page' : undefined}
+						>
+							<Icon name={item.icon} size={19} />
+							{item.label}
+							{#if item.href === '/plan' && planCount > 0}<span class="dot">{planCount}</span>{/if}
+						</a>
+					{/each}
+				</div>
+			{/key}
 			<button class="nav-link draw-host" class:active={moreActive} popovertarget={MORE_MENU_ID}>
 				<Icon name="sparkle" size={19} />
 				Viac
@@ -201,19 +267,32 @@
 
 <div class="nav-fade" aria-hidden="true" data-noprint></div>
 <nav class="mobile" aria-label="Navigácia" data-noprint>
-	{#each NAV as item (item.href)}
-		<a
-			href={item.href}
-			class:active={isActive(item.href)}
-			aria-current={isActive(item.href) ? 'page' : undefined}
-		>
-			<span class="ico">
-				<Icon name={item.icon} size={22} />
-				{#if item.href === '/plan' && planCount > 0}<span class="dot">{planCount}</span>{/if}
-			</span>
-			<span class="lbl">{item.href === '/plan' ? 'Plán' : item.label}</span>
-		</a>
-	{/each}
+	<a
+		class="switch"
+		href={lastVisited[otherMode]}
+		aria-label="Prepnúť na {MODES[otherMode].label} ({MODES[otherMode].links
+			.map((l) => l.label)
+			.join(', ')})"
+	>
+		<span class="ico"><Icon name={MODES[otherMode].icon} size={22} /></span>
+		<span class="lbl">{MODES[otherMode].label}</span>
+	</a>
+	{#key mode}
+		{#each MODES[mode].links as item (item.href)}
+			<a
+				href={item.href}
+				class="swap-in"
+				class:active={isActive(item.href)}
+				aria-current={isActive(item.href) ? 'page' : undefined}
+			>
+				<span class="ico">
+					<Icon name={item.icon} size={22} />
+					{#if item.href === '/plan' && planCount > 0}<span class="dot">{planCount}</span>{/if}
+				</span>
+				<span class="lbl">{item.label}</span>
+			</a>
+		{/each}
+	{/key}
 	<button class:active={moreActive} popovertarget={MORE_MENU_ID}>
 		<span class="ico">
 			<Icon name="sparkle" size={22} />
@@ -280,6 +359,54 @@
 		transition:
 			background 0.2s,
 			color 0.2s;
+	}
+	.modes {
+		display: flex;
+		padding: 3px;
+		margin-right: 10px;
+		border-radius: 999px;
+		background: var(--paper-2);
+		border: 1px solid var(--line);
+	}
+	.mode {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 5px 12px;
+		border-radius: 999px;
+		color: var(--muted);
+		text-decoration: none;
+		font-weight: 700;
+		font-size: var(--fs-sm);
+		transition:
+			background 0.25s,
+			color 0.25s,
+			box-shadow 0.25s;
+	}
+	.mode:hover {
+		color: var(--ink);
+	}
+	.mode.on {
+		background: var(--card);
+		color: var(--ink);
+		box-shadow: 0 1px 3px color-mix(in srgb, var(--ink) 18%, transparent);
+	}
+	/* Between tablet and wide screens the two halves only fit with words, not icons. */
+	@media (max-width: 1099px) {
+		.mode :global(svg) {
+			display: none;
+		}
+	}
+	.links {
+		display: flex;
+		gap: 2px;
+		animation: swap-in 0.3s var(--ease-out);
+	}
+	@keyframes swap-in {
+		from {
+			opacity: 0;
+			transform: translateY(4px);
+		}
 	}
 	.nav-link:hover {
 		background: var(--paper-2);
@@ -431,6 +558,13 @@
 		transition:
 			color 0.2s,
 			background 0.2s;
+	}
+	.mobile .switch {
+		color: var(--leaf);
+		background: var(--leaf-soft);
+	}
+	.mobile .swap-in {
+		animation: swap-in 0.3s var(--ease-out);
 	}
 	.mobile .active {
 		color: var(--ink);

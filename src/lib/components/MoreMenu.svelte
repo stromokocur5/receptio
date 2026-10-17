@@ -11,7 +11,7 @@
 	}
 
 	/**
-	 * Everything outside the four main areas, grouped by what people come for. Page eyebrows
+	 * Everything outside the Kuchyňa and Domov halves of the bar, grouped by what people come for. Page eyebrows
 	 * use the same group names, so the menu and the page say where you are in the same words.
 	 */
 	export const MORE_GROUPS: { title: string; links: MoreLink[]; app?: boolean }[] = [
@@ -34,12 +34,6 @@
 			links: [
 				{ href: '/wiki', label: 'Wiki', hint: 'Základy varenia, suplementy, pohyb', icon: 'book' },
 				{ href: '/kurz', label: 'Kurz varenia', hint: '14 receptov od nuly', icon: 'chef' },
-				{
-					href: '/ceny',
-					label: 'Ceny a akcie',
-					hint: 'Čo koľko stojí, čo je v zľave',
-					icon: 'tag'
-				},
 				{
 					href: '/data',
 					label: 'Dáta',

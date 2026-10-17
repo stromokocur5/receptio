@@ -495,6 +495,15 @@ const openGardenId = new Persisted<string | null>(
 	true
 );
 
+/** Which half of the app the navigation shows on pages that belong to neither. */
+export type NavMode = 'kuchyna' | 'domov';
+export const navMode = new Persisted<NavMode>(
+	'nav-mode',
+	'kuchyna',
+	(raw) => (raw === 'kuchyna' || raw === 'domov' ? raw : undefined),
+	true
+);
+
 /** The garden being looked at; the first one until another is opened. */
 export function activeGarden(): GardenDiary | null {
 	const all = gardens.current;
@@ -753,6 +762,7 @@ export function loadPersisted() {
 	migrateSingleGarden();
 	for (const store of Object.values(ALL_PERSISTED)) store.load();
 	openGardenId.load();
+	navMode.load();
 	waterReminder.load();
 	supplementReminder.load();
 	// Two tabs open: a change saved in one shows in the other instead of being overwritten by it.

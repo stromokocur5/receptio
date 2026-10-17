@@ -28,3 +28,24 @@ test('the season page shows a dozen recipes and the rest on request', async ({ p
 	await expect(recipes).toHaveCount(total);
 	await expect(recipes.nth(12).getByRole('link').first()).toBeFocused();
 });
+
+test('the bar switches between Kuchyňa and Domov and comes back to the same page', async ({
+	page
+}) => {
+	await page.setViewportSize({ width: 1280, height: 800 });
+	await visit(page, '/recepty');
+	const nav = page.getByRole('navigation', { name: 'Hlavná navigácia' });
+	await expect(nav.getByRole('link', { name: 'Recepty' })).toBeVisible();
+	await expect(nav.getByRole('link', { name: 'Špajza' })).toBeHidden();
+	await nav.getByRole('link', { name: 'Domov' }).click();
+	await expect(page).toHaveURL(/\/spajza$/);
+	await nav.getByRole('link', { name: 'Ceny' }).click();
+	await expect(page).toHaveURL(/\/ceny$/);
+	await nav.getByRole('link', { name: 'Kuchyňa' }).click();
+	await expect(page).toHaveURL(/\/recepty$/);
+	await nav.getByRole('link', { name: 'Domov' }).click();
+	await expect(page).toHaveURL(/\/ceny$/);
+	// Pages outside both halves keep the half last used.
+	await visit(page, '/wiki');
+	await expect(nav.getByRole('link', { name: 'Pestuj' })).toBeVisible();
+});
