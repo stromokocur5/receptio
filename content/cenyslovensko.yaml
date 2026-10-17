@@ -18,7 +18,11 @@
 - { ingredient: hladka-muka, types: [g] }
 - { ingredient: cukor, types: [aj] }
 - { ingredient: sosovica-hneda, types: [al] }
-- { ingredient: ovsene-vlocky, types: [bv, bw] }
+# Farebná (strakatá, pinto) fazuľa sa varí a používa rovnako ako červená.
+- { ingredient: fazula-cervena-sucha, types: [am] }
+# Bežná guľatozrnná ryža je na rizoto aj mliečnu ryžu rovnako dobrá ako arborio a lacnejšia.
+- { ingredient: ryza-arborio, types: [an] }
+- { ingredient: ovsene-vlocky, types: [bv, bw, bx] }
 # Pod bezlepkovými sú zaradené aj lepkové výrobky, preto len s bezlepkovým označením v názve.
 - {
     ingredient: ovsene-vlocky-bezlepkove,
@@ -47,6 +51,11 @@
   types: [bo]
   include: 'soj'
   exclude: 'jahod|van|ban|cok|broskyn|malin|ovoc'
+# Kokosové dezerty a ovocné príchute sú v tom istom type ako biely jogurt.
+- ingredient: kokosovy-jogurt
+  types: [bo]
+  include: 'kokos|coco'
+  exclude: 'dezert|dessert|prichut|fruit|ovoc'
 - ingredient: rastlinna-smotana
   types: [br]
   include: 'na varenie'
@@ -54,4 +63,7 @@
 - ingredient: ovseny-napoj
   types: [bz]
   exclude: 'van|cok|kak|kav|barista|ban|jahod'
+- ingredient: ryzovy-napoj
+  types: [cc]
+  exclude: 'kokos'
 - { ingredient: rozok, types: [c] }

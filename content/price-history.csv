@@ -1511,12 +1511,12 @@ date,ingredient,store,price,pack,sale_until,product
 2026-10-17,zemiaky,tesco,0.99,1 kg,,Zemiaky volne konzumne neskore
 2026-10-17,zemiaky,tesco,0.62,1 kg,2026-10-20,Zemiaky volne konzumne neskore
 2026-10-17,cibula,billa,0.79,1 kg,,CLEVER cibuľa
-2026-10-17,cibula,fresh,0.85,1 kg,,CIBUĽA ŽLTÁ 1kg BALENÁ FRESH
+2026-10-17,cibula,fresh,0.85,1 kg,,CIBUĽA VOĽNÁ
 2026-10-17,cibula,kaufland,4.29,5 kg,,ZLT Cibuľa žltá 5kg
 2026-10-17,cibula,kaufland,2.75,5 kg,2026-10-21,ZLT Cibuľa žltá 5kg
 2026-10-17,cibula,lidl,2.49,5 kg,,Cibuľa 5kg
-2026-10-17,cibula,terno,0.99,1 kg,,Cibuľa žltá sieť 1kg
-2026-10-17,cibula,tesco,0.89,1 kg,,Cibuľa voľná
+2026-10-17,cibula,terno,0.99,1 kg,,Cibuľa žltá voľná
+2026-10-17,cibula,tesco,0.89,1 kg,,GH Cibuľa balená 1 kg
 2026-10-17,cibula-cervena,billa,0.79,500 g,,CHUTE SLOVENSKA Cibuľa červená
 2026-10-17,cibula-cervena,billa,0.99,1 kg,2026-10-20,Cibuľa červená
 2026-10-17,cibula-cervena,fresh,1.35,1 kg,,CIBUĽA ČERVENÁ SUCHÁ
@@ -1538,8 +1538,8 @@ date,ingredient,store,price,pack,sale_until,product
 2026-10-17,petrzlen-koren,kaufland,2.69,1 kg,,Petržlen praný
 2026-10-17,petrzlen-koren,lidl,2.69,1 kg,,Petržlen
 2026-10-17,petrzlen-koren,terno,2.99,1 kg,,Petržlen voľný
-2026-10-17,petrzlen-koren,tesco,2.69,1 kg,,EX Petrzlen volny
-2026-10-17,petrzlen-koren,tesco,1.59,1 kg,2026-10-20,EX Petrzlen volny
+2026-10-17,petrzlen-koren,tesco,2.69,1 kg,,Petrzlen volny
+2026-10-17,petrzlen-koren,tesco,1.59,1 kg,2026-10-20,Petrzlen volny
 2026-10-17,citron,billa,1.49,500 g,,CLEVER citróny odroda uvedená na etikete
 2026-10-17,citron,billa,1.69,1 kg,2026-10-20,Citróny I.trieda kvality
 2026-10-17,citron,fresh,2.95,1 kg,,CITRÓNY
@@ -1569,7 +1569,7 @@ date,ingredient,store,price,pack,sale_until,product
 2026-10-17,hladka-muka,fresh,0.65,1 kg,,MÚKA HLADKÁ 00 EXTRA 1kg FRESH
 2026-10-17,hladka-muka,fresh,0.45,1 kg,2026-12-31,MÚKA HLADKÁ 00 EXTRA 1kg FRESH
 2026-10-17,hladka-muka,kaufland,0.45,1 kg,,Z lásky k tradícií Pšeničná múka hladká špecial 00 Extra 1 kg
-2026-10-17,hladka-muka,lidl,0.45,1 kg,,Mlyn Pohronský Ruskov Pšeničná múka hladká
+2026-10-17,hladka-muka,lidl,0.45,1 kg,,"Belbake Pšeničná múka hladká, svetlá, extra 00"
 2026-10-17,hladka-muka,terno,0.59,1 kg,,TERKA Pšeničná múka hladká 00 EXTRA 1kg
 2026-10-17,hladka-muka,tesco,0.5,1 kg,,TS Múka hladká 1kg
 2026-10-17,hladka-muka,tesco,0.45,1 kg,2026-10-20,TS Múka hladká 1kg
@@ -1584,11 +1584,24 @@ date,ingredient,store,price,pack,sale_until,product
 2026-10-17,sosovica-hneda,kaufland,1.19,500 g,,K Classic Šošovica zelená veľkozrnná 500 g
 2026-10-17,sosovica-hneda,lidl,0.99,500 g,,Campo Largo Šošovica zelená
 2026-10-17,sosovica-hneda,tesco,1.19,500 g,,TESCO SOSOVICA 500 G
+2026-10-17,fazula-cervena-sucha,billa,1.25,500 g,,Clever Fazuľa farebná škvrnitá
+2026-10-17,fazula-cervena-sucha,fresh,1.39,500 g,,FAZUĽA FAREBNÁ 500g FRESH
+2026-10-17,fazula-cervena-sucha,fresh,1.24,500 g,2026-12-31,FAZUĽA FAREBNÁ 500g FRESH
+2026-10-17,fazula-cervena-sucha,kaufland,1.58,500 g,,K Classic Fazuľa farebná škvrnitá červená 500 g
+2026-10-17,fazula-cervena-sucha,lidl,1.25,500 g,,Campo Largo Fazuľa strakatá
+2026-10-17,fazula-cervena-sucha,terno,1.69,450 g,,LAGRIS fazuľa farebná 450 g
+2026-10-17,fazula-cervena-sucha,tesco,1.25,500 g,,TS FAZULA FAREB. PINTO 500 G
+2026-10-17,ryza-arborio,billa,1.49,1 kg,,Clever ryža Guľatozrnná
+2026-10-17,ryza-arborio,fresh,1.49,1 kg,,RYŽA GUĽATÁ 1kg MÁNYA
+2026-10-17,ryza-arborio,kaufland,1.35,1 kg,,K Classic Ryža guľatozrnná 1 kg
+2026-10-17,ryza-arborio,lidl,1.19,1 kg,,Golden Sun Guľatozrnná ryža
+2026-10-17,ryza-arborio,terno,2.65,1 kg,,SOS Ryža klasická 1000g
+2026-10-17,ryza-arborio,tesco,1.49,1 kg,,HF RYZA GULATOZRNNA 1 kg
 2026-10-17,ovsene-vlocky,billa,0.65,500 g,,"Clever ovsené vločky Celozrnné, jemné"
-2026-10-17,ovsene-vlocky,fresh,1.05,500 g,,VLOČKY BIO OVSENÉ CELOZRNNÉ JEMNÉ 500g
+2026-10-17,ovsene-vlocky,fresh,0.69,400 g,,VLOČKY OVSENÉ VÝBEROVÉ 400g FRESH
 2026-10-17,ovsene-vlocky,kaufland,0.65,500 g,,K Classic Ovsené vločky jemné 500g
 2026-10-17,ovsene-vlocky,lidl,0.65,500 g,,Crownfield Ovsené vločky jemné
-2026-10-17,ovsene-vlocky,terno,1.79,500 g,,EMCO Ovsené vločky jemné s vlákninou 500g
+2026-10-17,ovsene-vlocky,terno,0.69,400 g,,TERKA Ovsené vločky výberové 400g
 2026-10-17,ovsene-vlocky,tesco,0.65,500 g,,TESCO OV. VLOCKY JEMNE 500 G
 2026-10-17,ovsene-vlocky-bezlepkove,billa,1.69,500 g,,Bonavita ovs.vločky Celé bez lepku
 2026-10-17,ovsene-vlocky-bezlepkove,fresh,1.69,500 g,,VLOČKY OVSENÉ JEMNÉ BEZLEPKOVÉ 500g
@@ -1596,8 +1609,8 @@ date,ingredient,store,price,pack,sale_until,product
 2026-10-17,ovsene-vlocky-bezlepkove,terno,1.89,350 g,,RAVITA Ovsené vločky bezglutenové hrubé 350g
 2026-10-17,ovsene-vlocky-bezlepkove,tesco,2.39,500 g,,TFF Vlocky ovsene jemne bezglut. 500 g
 2026-10-17,cestoviny,billa,0.55,500 g,,Clever kolienka stredné bezvaječné
-2026-10-17,cestoviny,fresh,0.55,400 g,,CEST. KOLIENKA BEZVAJEČNÉ 400g FRESH
-2026-10-17,cestoviny,fresh,0.44,400 g,2026-12-31,CEST. KOLIENKA BEZVAJEČNÉ 400g FRESH
+2026-10-17,cestoviny,fresh,0.55,400 g,,CEST KOL SEKANÉ 400g BEZVAJEČNÉ FRESH
+2026-10-17,cestoviny,fresh,0.44,400 g,2026-12-31,CEST KOL SEKANÉ 400g BEZVAJEČNÉ FRESH
 2026-10-17,cestoviny,kaufland,0.55,500 g,,K Classic Kolienka bezvaječné 500 g
 2026-10-17,cestoviny,lidl,0.55,500 g,,Tiradell Kolienka z mäkkej pšenice
 2026-10-17,cestoviny,terno,0.79,400 g,,IDEÁL Kolienka veľké bezvaječné 400g
@@ -1617,9 +1630,9 @@ date,ingredient,store,price,pack,sale_until,product
 2026-10-17,chlieb,billa,1.55,1 kg,,"CHLIEB PŠENIČNO-RAŽNÝ 1000g chlieb voľný, LZ TRADEMARK"
 2026-10-17,chlieb,fresh,1.75,1 kg,,CHLIEB SVETLÝ PŠEN. 1kg
 2026-10-17,chlieb,fresh,1.54,1 kg,2026-10-31,CHLIEB SVETLÝ PŠEN. 1kg
-2026-10-17,chlieb,kaufland,1.59,1 kg,,"Chlieb konzumný 1000 g, Pekáreň Drahovce s.r.o."
+2026-10-17,chlieb,kaufland,1.59,1 kg,,"Chlieb konzumný 1000 g, PEKÁREŃ JURAJ OREMUS, spol. s r.o."
 2026-10-17,chlieb,lidl,1.59,1 kg,,Chlieb konzumný bez E
-2026-10-17,chlieb,terno,1.79,1 kg,,Chlieb biely 1000g NELAPEK
+2026-10-17,chlieb,terno,1.79,1 kg,,Chlieb pšenično-ražný 1000g PENAM
 2026-10-17,chlieb,tesco,1.59,1 kg,,Chlieb pšenično - ražný konzumný 1kg
 2026-10-17,chlieb-bezlepkovy,billa,3.15,320 g,,"CHLIEB ČIERNY CELOZRNNÝ 320g BEZGLUTÉNOVÝ, Novalim spol.s r.o."
 2026-10-17,chlieb-bezlepkovy,fresh,1.69,300 g,,CHLIEB BOSNIAK BEZLEP. 300g
@@ -1629,19 +1642,23 @@ date,ingredient,store,price,pack,sale_until,product
 2026-10-17,chlieb-bezlepkovy,tesco,1.55,250 g,,TS Free From bezglutén.chl. tmavý 250 g
 2026-10-17,sojove-mlieko,billa,1.59,1 l,,Billa Bio sojóvý nápoj natural
 2026-10-17,sojove-mlieko,lidl,1.39,1 l,,Vemondo Bio Sójový nápoj
-2026-10-17,sojove-mlieko,tesco,1.39,1 l,,TS Sojovy napoj nesladeny 1 l
+2026-10-17,sojove-mlieko,tesco,1.39,1 l,,TS Sójový nápoj sladeny 1 l
 2026-10-17,sojovy-jogurt,fresh,2.89,400 g,,JOG. SÓJ. VÝROBOK 400g BIELY BEZ CUKRU ALPRO
 2026-10-17,sojovy-jogurt,kaufland,1.68,500 g,,K Veggie Sojagurt natur 500 g
+2026-10-17,kokosovy-jogurt,billa,1.19,140 g,,Pure Joy Vegan kokosova alt.jogurtu Classic
+2026-10-17,kokosovy-jogurt,kaufland,1.49,400 g,,K Veggie Kokosový výrobok natur 400 g
+2026-10-17,kokosovy-jogurt,lidl,1.29,400 g,,Vemondo Kokosový jogurt
 2026-10-17,rastlinna-smotana,billa,1.79,250 ml,,Rajo Vegan krém na varenie 15%
-2026-10-17,rastlinna-smotana,billa,1.69,250 ml,2026-11-30,Alpro sójová smotana na varenie
+2026-10-17,rastlinna-smotana,billa,1.69,250 ml,2026-11-30,Alpro ryžová smotana na varenie
 2026-10-17,ovseny-napoj,billa,1.79,1 l,,Billa Bio ovsenný nápoj s vápnikom
 2026-10-17,ovseny-napoj,fresh,1.95,1 l,,NÁPOJ BIO OVSENÝ BEZLEPKOVÝ 1l SOUL
 2026-10-17,ovseny-napoj,lidl,1.39,1 l,,Vemondo Bio Ovsený nápoj
 2026-10-17,ovseny-napoj,terno,2.69,1 l,,Valsoia ovsený nápoj 1L
-2026-10-17,rozok,billa,0.14,50 g,,"ROŽOK 50g pečivo bežné, Danubia a.s."
+2026-10-17,ryzovy-napoj,billa,1.99,1 l,,Billa Bio ryžový nápoj nesladený
+2026-10-17,rozok,billa,0.14,50 g,,"ROŽOK 50g pečivo bežné, Penam"
 2026-10-17,rozok,fresh,0.14,50 g,,ROŽOK BIELY 50g
 2026-10-17,rozok,fresh,0.13,50 g,2026-12-31,ROŽOK REMESELNÝ 50g
-2026-10-17,rozok,kaufland,0.14,50 g,,"Rožok 50 g, PEKÁREŃ JURAJ OREMUS, spol. s r.o."
+2026-10-17,rozok,kaufland,0.14,50 g,,"Rožok 50 g, NELAPEK s.r.o."
 2026-10-17,rozok,lidl,0.14,50 g,,Rožok bez E
-2026-10-17,rozok,terno,0.14,50 g,,Rožok bez E 50gNELAPEK
+2026-10-17,rozok,terno,0.14,50 g,,Rožok 50g DRAHOVCE
 2026-10-17,rozok,tesco,0.14,50 g,,Rožok štandard 50g
