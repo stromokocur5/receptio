@@ -1,0 +1,110 @@
+# Ktoré produkty z katalógu billa.sk patria ku ktorej surovine. `pnpm prices:billa` podľa toho
+# zapíše ceny do content/prices-billa.yaml a celý potravinový katalóg do content/katalog-billa.csv.
+#
+# include / exclude: regulárny výraz na názov produktu (malé písmená, bez diakritiky)
+# categories: voliteľne slugy kategórií z billa.sk, v ktorých produkt musí byť
+#
+# Katalóg billa.sk ukazuje hlavne tovar z aktuálnych a budúcich letákov, takže produkt môže
+# týždeň chýbať – jeho posledná bežná cena ostane a starne ako každá iná.
+
+# Zelenina
+- { ingredient: zemiaky, include: '^zemiaky (neskore|na pecenie)' }
+- { ingredient: batat, include: '^sladke zemiaky' }
+- { ingredient: cibula, include: '^cibula zlta' }
+- { ingredient: cibula-cervena, include: '^cibula cervena' }
+- { ingredient: cesnak, include: '^cesnak volny' }
+- { ingredient: zazvor, include: '^zazvor volny' }
+- { ingredient: mrkva, include: '^(karotka|mrkva) ' }
+- { ingredient: paprika-cervena, include: '^paprika cervena' }
+- { ingredient: paradajky, include: '^(rajciaky|paradajky) (strapcov|koktej|kokteil|cherry|volne)' }
+- { ingredient: uhorka, include: '^uhorka salatova' }
+- { ingredient: salat, include: '^salat (ladovy|hlavkovy)' }
+- { ingredient: brokolica, include: '^brokolica' }
+- { ingredient: karfiol, include: '^karfiol' }
+- { ingredient: cvikla, include: '^cvikla' }
+- { ingredient: tekvica-hokkaido, include: '^tekvica (hokkaido|oranzova volna)' }
+- { ingredient: sampinony, include: '^sampinony' }
+- { ingredient: avokado, include: '^avokado' }
+- { ingredient: klicky, include: 'mungo fazulove klicky' }
+- { ingredient: biela-kapusta, include: '^kapusta (biela|hlavkova)' }
+- { ingredient: cuketa, include: '^cuket' }
+- { ingredient: baklazan, include: '^baklazan' }
+- { ingredient: por, include: '^por ' }
+- { ingredient: kalerab, include: '^kalerab' }
+- { ingredient: redkovka, include: '^redkovk' }
+
+# Ovocie
+- { ingredient: jablko, include: '^jablka ' }
+- { ingredient: banan, include: '^banany' }
+- { ingredient: citron, include: '^(clever )?citrony' }
+- { ingredient: limetka, include: '^limetk' }
+- { ingredient: pomaranc, include: '^pomarance' }
+- { ingredient: hrozno, include: '^stolove hrozno' }
+- { ingredient: maliny, include: '^maliny \d' }
+- { ingredient: cucoriedky, include: '^cucoriedky' }
+- { ingredient: kiwi, include: '^kiwi' }
+- { ingredient: ananas, include: '^ananas kus' }
+- { ingredient: gastany, include: '^gastany jedle' }
+- { ingredient: hruska, include: '^hrusky' }
+- { ingredient: slivky, include: '^slivky (volne|\d)' }
+
+# Strukoviny, obilniny, múka
+- { ingredient: sosovica-cervena, include: 'sosovica cervena' }
+- { ingredient: sosovica-hneda, include: 'sosovica velk', exclude: 'naleve' }
+- { ingredient: cicer-suchy, include: '^lagris cicer' }
+- { ingredient: cicer-sterilizovany, include: 'cicer v sl' }
+- { ingredient: fazula-cervena-sucha, include: 'fazula cervena ladvink' }
+- { ingredient: fazula-cervena, include: 'cervena fazula 425' }
+- { ingredient: fazula-biela-sucha, include: '^lagris fazula biela' }
+- { ingredient: fazula-biela, include: '^giana (fazula biela|biela fazula)' }
+- { ingredient: zlty-hrach, include: 'hrach lupany' }
+- { ingredient: sojove-zrna, include: '^lagris soja' }
+- { ingredient: kukurica, include: 'kukurica zlata' }
+- { ingredient: ryza-basmati, include: 'basmati', exclude: 'vv |var' }
+- { ingredient: ryza-jazminova, include: 'jazminov' }
+- { ingredient: ryza-arborio, include: 'arborio|gulatozrnn', exclude: 'vv |var' }
+- { ingredient: ryza-sushi, include: 'ryza sushi' }
+- { ingredient: hladka-muka, include: 'hlad.*psen.*muka|psen.*muka hlad', exclude: 'spald' }
+- {
+    ingredient: cestoviny,
+    include: 'bezvaj|panzani (makarony|motyliky|penne|spaghetti)',
+    exclude: 'vajecn'
+  }
+- { ingredient: psenicne-tortilly, include: 'psenicna tortilla' }
+
+# Mliečne náhrady
+- { ingredient: sojove-mlieko, include: 'sojovy napoj nesladeny' }
+- { ingredient: ovseny-napoj, include: 'ovseny napoj', exclude: 'barista' }
+- { ingredient: ryzovy-napoj, include: 'ryzovy napoj', exclude: 'kokos' }
+- { ingredient: kokosove-mlieko, include: 'kokosove mlieko', exclude: 'light' }
+
+# Konzervy a omáčky
+- { ingredient: passata, include: 'pasirovane paradajky', exclude: 'bazalk' }
+- { ingredient: paradajkovy-pretlak, include: 'paradajkovy pretlak' }
+- {
+    ingredient: kysle-uhorky,
+    include: '^(efko|giana|novofruct|natur farm) .*uhorky',
+    exclude: 'chilli|sendvic'
+  }
+- { ingredient: horcica, include: 'horcica', exclude: 'bramburky|chips' }
+- { ingredient: kecup, include: 'kecup', exclude: 'uhork|chrumky|pom|stix|slanin|zero' }
+- { ingredient: ryzovy-ocot, include: 'ryzovy ocot' }
+- { ingredient: olej, include: 'repkovy' }
+- { ingredient: olivovy-olej, include: 'olivovy olej', exclude: 'tuniak|pomace' }
+
+# Sušené, orechy, semienka
+- { ingredient: datle, include: '^datle' }
+- { ingredient: hrozienka, include: 'hrozienka' }
+- { ingredient: kesu, include: 'jadra kesu|kesu orechy' }
+- { ingredient: vlasske-orechy, include: 'jadra vlassk' }
+- { ingredient: arasidy, include: 'arasidy praz.*nesol' }
+- { ingredient: sezam, include: 'sezamove semienko' }
+- { ingredient: mak, include: 'mak mlety' }
+
+# Pečenie a korenie
+- { ingredient: cukor, include: 'cukor krystal' }
+- { ingredient: kakao, include: 'holandske kakao' }
+- { ingredient: drozdie, include: 'oetker drozdie' }
+- { ingredient: kypriaci-prasok, include: 'kypriaci prasok' }
+- { ingredient: sladka-paprika, include: 'paprika sladka mleta' }
+- { ingredient: rasca, include: 'rasca cela' }
