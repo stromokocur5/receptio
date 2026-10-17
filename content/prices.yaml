@@ -615,3 +615,124 @@ entries:
     price: 8.25
     date: 2026-10-13
     url: https://allegro.sk/produkt/cele-prirodne-kesu-orechy-1-kg-bd4db8fa-aaae-4158-b7a1-1dc19b34144f
+  # Tesco online, 17. 10. 2026 – čerstvé a bežné suroviny, ktoré inde chýbali
+  - ingredient: paprika-cervena
+    store: tesco
+    product: 'Paprika červená voľná'
+    pack: 1 kg
+    price: 3.0
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206558422
+  - ingredient: por
+    store: tesco
+    product: 'Pór ks'
+    pack: 1 ks
+    price: 0.99
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/120670544
+  - ingredient: kalerab
+    store: tesco
+    product: 'Kaleráb ks'
+    pack: 1 ks
+    price: 0.79
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206557203
+  - ingredient: kalerab
+    store: tesco
+    product: 'Kaleráb ks'
+    pack: 1 ks
+    price: 0.49
+    date: 2026-10-17
+    sale_until: 2026-10-20
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206557203
+  - ingredient: redkovka
+    store: tesco
+    product: 'Tesco Reďkovka červená 300 g'
+    pack: 300 g
+    price: 1.19
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/105442957
+  - ingredient: mango
+    store: tesco
+    product: 'Mango ks'
+    pack: 1 ks
+    price: 1.69
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206558194
+  - ingredient: hruska
+    store: tesco
+    product: 'Hrušky Conference ukladané'
+    pack: 1 kg
+    price: 2.12
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/121036563
+  - ingredient: slivky
+    store: tesco
+    product: 'Slivky voľné'
+    pack: 1 kg
+    price: 2.0
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206558859
+  - ingredient: sol
+    store: tesco
+    product: 'Solné Mlýny Kamenná jedlá soľ jódovaná mletá 1 kg'
+    pack: 1 kg
+    price: 0.45
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/216301162
+  - ingredient: bageta
+    store: tesco
+    product: 'Bageta francúzska 110 g'
+    pack: 110 g
+    price: 0.31
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/211950280
+  - ingredient: ruzickovy-kel
+    store: tesco
+    product: 'Tesco Ružičkový kel 450 g'
+    pack: 450 g
+    price: 1.29
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100547301
+  - ingredient: chren
+    store: tesco
+    product: 'Hels Chren tradičný 200 g'
+    pack: 200 g
+    price: 1.39
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206487630
+  - ingredient: granatove-jablko
+    store: tesco
+    product: 'Granátové jablko ks'
+    pack: 1 ks
+    price: 1.79
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/206556817
+  - ingredient: jahody
+    store: tesco
+    product: 'Tesco Jahody hlbokozmrazené 450 g'
+    pack: 450 g
+    price: 1.99
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100579704
+  - ingredient: instantna-kava
+    store: tesco
+    product: 'Stockwell & Co. Instantná káva sušená granulovaná 200 g'
+    pack: 200 g
+    price: 3.99
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/100429496
+  - ingredient: psenicna-krupica
+    store: tesco
+    product: 'Mlyn Pohronský Ruskov Pšeničná krupica jemná dehydrovaná 500 g'
+    pack: 500 g
+    price: 0.68
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/208825652
+  - ingredient: uhorky-nakladacie
+    store: tesco
+    product: 'Uhorky nakladačky voľné'
+    pack: 1 kg
+    price: 3.0
+    date: 2026-10-17
+    url: https://potravinydomov.itesco.sk/groceries/sk-SK/products/207787876
