@@ -94,3 +94,22 @@ test('a diet kept in Špajza says why a recipe misses and switches to the fittin
 	await page.getByRole('button', { name: /Prepnúť na verziu „Low FODMAP“/ }).click();
 	await expect(page.getByText(/Cesnak → cesnakový olej/)).toBeVisible();
 });
+
+test('a recipe with canned beans switches to the version from dry beans', async ({ page }) => {
+	await visit(page, '/recepty/burrito');
+	await expect(page.getByText('zo suchých 200 g').first()).toBeVisible();
+	await page.getByRole('button', { name: 'Zo suchých strukovín' }).click();
+	await expect(page.getByText(/Večer predtým namoč 200 g suchých strukovín/)).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Čierna fazuľa suchá' })).toBeVisible();
+	await expect(page.getByText(/Namočené strukoviny sceď/)).toBeVisible();
+});
+
+test('recipes from the freezer and the pantry need nothing fresh', async ({ page }) => {
+	await visit(page, '/recepty?rychlo=z-mraznicky');
+	await expect(page.getByRole('button', { name: /Z mrazničky a špajze/ }).first()).toHaveAttribute(
+		'aria-pressed',
+		'true'
+	);
+	await expect(page.locator('.grid > article').first()).toBeVisible();
+	await expect(page.getByRole('link', { name: /Guacamole/ }).first()).toBeHidden();
+});

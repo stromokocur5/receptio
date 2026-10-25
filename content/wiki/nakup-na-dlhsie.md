@@ -27,6 +27,8 @@ Keď do obchodu chodíš raz za dva-tri týždne, netreba jesť len cestoviny. S
 
 **Čo kupovať mrazené:** špenát, brokolica, hrášok, zelené fazuľky, karfiol, kukurica, zeleninové zmesi, kel, cibuľa nakrájaná, bobuľové ovocie, mango, višne.
 
+Recepty, na ktoré netreba nič čerstvé – len mrazničku, špajzu a zeleninu, ktorá vydrží týždne – nájdeš pod filtrom [Z mrazničky a špajze](/recepty?rychlo=z-mraznicky). Pri surovine v recepte je značka **aj mrazené**, keď ju kúpiš aj mrazenú.
+
 ## Čo vydrží ako dlho
 
 | Vydrží                 | Zelenina                                                                                   | Ovocie                                    | Kde skladovať                                           |

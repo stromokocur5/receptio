@@ -12,6 +12,8 @@
 #       fodmap_swap (+ fodmap_ratio, g náhrady na 1 g) = čím ju nahradí automatická verzia Low FODMAP
 #       histamine: true = vadí v každom množstve, číslo = koľko g na porciu ešte nevadí
 #       oxalate / nightshade: true = veľa oxalátov, ľuľkovité
+# shelf: frozen = kúpiš aj mrazené, long = čerstvé vydrží 3+ týždne, pantry = konzerva/sušené/nálev;
+#        podľa toho recept spozná, či sa dá uvariť bez čerstvého nákupu
 # free_sugar: podiel pridaného (voľného) cukru v hmotnosti, podľa neho sa recept označí „Na občas“
 
 # ── Obilniny a prílohy ──────────────────────────────────────────
@@ -299,6 +301,7 @@
   name: Zemiaky
   howto: [supanie]
   category: zelenina
+  shelf: long
   diet: { oxalate: true, nightshade: true }
   n: { kcal: 77, p: 2, c: 17, f: 0.1, fib: 2.2, salt: 0, fe: 0.8, ca: 12, zn: 0.3 }
   units: { ks: 150 }
@@ -325,6 +328,7 @@
   aliases: [sladký zemiak]
   howto: [supanie, pecenie-zeleniny]
   category: zelenina
+  shelf: long
   diet: { fodmap: 75, oxalate: true }
   n: { kcal: 86, p: 1.6, c: 20, f: 0.1, fib: 3, salt: 0.1, fe: 0.6, ca: 30, zn: 0.3 }
   units: { ks: 250 }
@@ -603,6 +607,7 @@
   name: Cibuľa
   howto: [cibula]
   category: zelenina
+  shelf: long
   diet: { fodmap: 0, fodmap_swap: jarna-cibulka-vnat, fodmap_ratio: 0.25 }
   n: { kcal: 40, p: 1.1, c: 9.3, f: 0.1, fib: 1.7, salt: 0, fe: 0.2, ca: 23, zn: 0.2 }
   units: { ks: 110 }
@@ -628,6 +633,7 @@
   name: Cibuľa červená
   howto: [cibula]
   category: zelenina
+  shelf: long
   diet: { fodmap: 0, fodmap_swap: jarna-cibulka-vnat, fodmap_ratio: 0.25 }
   group: cibula
   n: { kcal: 40, p: 1.1, c: 9.3, f: 0.1, fib: 1.7, salt: 0, fe: 0.2, ca: 23, zn: 0.2 }
@@ -668,6 +674,7 @@
   name: Cesnak (strúčik)
   howto: [cesnak-zazvor]
   category: zelenina
+  shelf: long
   diet: { fodmap: 0, fodmap_swap: cesnakovy-olej, fodmap_ratio: 0.9 }
   n: { kcal: 149, p: 6.4, c: 33, f: 0.5, fib: 2.1, salt: 0, fe: 1.7, ca: 181, zn: 1.2 }
   units: { ks: 5 }
@@ -692,6 +699,7 @@
   name: Zázvor čerstvý
   howto: [cesnak-zazvor, supanie]
   category: zelenina
+  shelf: long
   n: { kcal: 80, p: 1.8, c: 18, f: 0.8, fib: 2, salt: 0, fe: 0.6, ca: 16, zn: 0.3 }
   units: { pl: 6, čl: 2 }
   piece: { label: 'cm koreňa', grams: 2.5 }
@@ -710,6 +718,7 @@
   name: Mrkva
   howto: [supanie]
   category: zelenina
+  shelf: long
   n: { kcal: 41, p: 0.9, c: 9.6, f: 0.2, fib: 2.8, salt: 0.2, fe: 0.3, ca: 33, zn: 0.2 }
   units: { ks: 80 }
   price: 1
@@ -772,6 +781,24 @@
   choose: 'Lesklá a pevná, s čerstvou zelenou stopkou.'
   storage: 'V chladničke v zásuvke na zeleninu týždeň.'
 
+- id: paprika-mrazena
+  name: Paprika mrazená (pásiky)
+  aliases: [mrazená paprika]
+  category: zelenina
+  shelf: frozen
+  group: paprika-cervena
+  diet: { fodmap: 43, nightshade: true }
+  n: { kcal: 28, p: 1, c: 5.5, f: 0.2, fib: 1.8, salt: 0, fe: 0.4, ca: 8, zn: 0.2 }
+  price: 3
+  color: '#d8402b'
+  substitutes:
+    - { to: paprika-cervena, note: 'čerstvá, rovnaké množstvo' }
+  about: 'Nakrájaná trojfarebná paprika z mrazničky. Do lečo, kari, fajitas a omáčok – na surovo sa nehodí, po rozmrazení zmäkne.'
+  uses:
+    - 'Lečo, guláš, fajitas, smažená ryža'
+  choose: 'Čistá paprika bez oleja a korenia.'
+  storage: 'V mrazničke 8–12 mesiacov, do varenia rovno zmrazená. Vlastnú zamraz nakrájanú na pásiky, netreba ju blanšírovať.'
+
 - id: paradajky
   name: Paradajky čerstvé
   howto: [supanie]
@@ -801,6 +828,7 @@
 - id: paradajky-sterilizovane
   name: Paradajky krájané v plechovke
   category: zelenina
+  shelf: pantry
   diet: { histamine: true, nightshade: true }
   n: { kcal: 24, p: 1.2, c: 4, f: 0.2, fib: 1.3, salt: 0.3, fe: 1, ca: 30, zn: 0.2 }
   units: { ks: 400 }
@@ -831,6 +859,7 @@
 - id: paradajkovy-pretlak
   name: Paradajkový pretlak
   category: zelenina
+  shelf: pantry
   diet: { fodmap: 28, histamine: true, nightshade: true }
   n: { kcal: 82, p: 4.3, c: 19, f: 0.5, fib: 4.1, salt: 0.2, fe: 3, ca: 36, zn: 0.6 }
   units: { pl: 16 }
@@ -876,6 +905,7 @@
   name: Brokolica
   howto: [pecenie-zeleniny]
   category: zelenina
+  shelf: frozen
   diet: { fodmap: 75 }
   n: { kcal: 34, p: 2.8, c: 6.6, f: 0.4, fib: 2.6, salt: 0.1, fe: 0.7, ca: 47, zn: 0.4 }
   units: { ks: 400 }
@@ -898,6 +928,7 @@
   name: Špenát (čerstvý alebo mrazený)
   howto: [umyvanie]
   category: zelenina
+  shelf: frozen
   diet: { histamine: true, oxalate: true }
   n: { kcal: 23, p: 2.9, c: 3.6, f: 0.4, fib: 2.2, salt: 0.2, fe: 2.7, ca: 99, zn: 0.5, ala: 0.1 }
   units: { hrnček: 30 }
@@ -945,6 +976,7 @@
 - id: kukurica
   name: Kukurica sterilizovaná (scedená)
   category: zelenina
+  shelf: pantry
   diet: { fodmap: 75 }
   n: { kcal: 80, p: 2.5, c: 15, f: 1.2, fib: 2.5, salt: 0.5, fe: 0.5, ca: 5, zn: 0.6 }
   units: { ks: 285 }
@@ -1020,6 +1052,7 @@
 - id: limetka
   name: Limetka (šťava)
   category: ovocie
+  shelf: long
   diet: { histamine: 5 }
   n: { kcal: 25, p: 0.4, c: 8.4, f: 0.1, fib: 0.4, salt: 0, fe: 0.1, ca: 14, zn: 0.1 }
   units: { ks: 30, pl: 15 }
@@ -1039,6 +1072,7 @@
 - id: citron
   name: Citrón (šťava)
   category: ovocie
+  shelf: long
   diet: { histamine: 5 }
   n: { kcal: 22, p: 0.4, c: 6.9, f: 0.2, fib: 0.3, salt: 0, fe: 0.1, ca: 6, zn: 0.1 }
   units: { ks: 45, pl: 15, čl: 5 }
@@ -1077,6 +1111,7 @@
 - id: pomaranc
   name: Pomaranč
   category: ovocie
+  shelf: long
   diet: { histamine: true }
   n: { kcal: 47, p: 0.9, c: 11.8, f: 0.1, fib: 2.4, salt: 0, fe: 0.1, ca: 40, zn: 0.1 }
   units: { ks: 150 }
@@ -1095,6 +1130,7 @@
 - id: maliny
   name: Maliny (aj mrazené)
   category: ovocie
+  shelf: frozen
   diet: { fodmap: 60 }
   n: { kcal: 52, p: 1.2, c: 12, f: 0.7, fib: 6.5, salt: 0, fe: 0.7, ca: 25, zn: 0.4, ala: 0.1 }
   units: { hrnček: 125 }
@@ -2290,6 +2326,7 @@
   name: Karfiol
   howto: [pecenie-zeleniny]
   category: zelenina
+  shelf: frozen
   diet: { fodmap: 0 }
   n: { kcal: 25, p: 1.9, c: 5, f: 0.3, fib: 2, salt: 0.1, fe: 0.4, ca: 22, zn: 0.3 }
   units: { ks: 600 }
@@ -2331,6 +2368,7 @@
   name: Kaleráb
   howto: [supanie]
   category: zelenina
+  shelf: long
   diet: { fodmap: 75 }
   n: { kcal: 27, p: 1.7, c: 6.2, f: 0.1, fib: 3.6, salt: 0, fe: 0.4, ca: 24, zn: 0.1 }
   units: { ks: 250 }
@@ -2356,6 +2394,7 @@
   name: Cvikla (surová)
   howto: [supanie, pecenie-zeleniny]
   category: zelenina
+  shelf: long
   diet: { fodmap: 20, oxalate: true }
   n: { kcal: 43, p: 1.6, c: 9.6, f: 0.2, fib: 2.8, salt: 0.2, fe: 0.8, ca: 16, zn: 0.4 }
   units: { ks: 150 }
@@ -2422,6 +2461,7 @@
   aliases: [tekvica]
   howto: [pecenie-zeleniny]
   category: zelenina
+  shelf: long
   n: { kcal: 40, p: 1, c: 9, f: 0.1, fib: 2, salt: 0, fe: 0.6, ca: 30, zn: 0.2 }
   price: 2
   color: '#ea7d24'
@@ -2488,6 +2528,7 @@
   name: Sušené huby (hríby)
   aliases: [huby]
   category: zelenina
+  shelf: pantry
   diet: { fodmap: 0 }
   n: { kcal: 300, p: 20, c: 55, f: 3, fib: 20, salt: 0.1, fe: 5, ca: 30, zn: 5 }
   price: 60
@@ -2510,6 +2551,7 @@
 - id: kysla-kapusta
   name: Kyslá kapusta
   category: zelenina
+  shelf: pantry
   diet: { fodmap: 20, histamine: true }
   n: { kcal: 19, p: 0.9, c: 4.3, f: 0.1, fib: 2.9, salt: 1.7, fe: 1.5, ca: 30, zn: 0.2 }
   units: { hrnček: 140 }
@@ -2536,6 +2578,7 @@
 - id: biela-kapusta
   name: Biela hlávková kapusta
   category: zelenina
+  shelf: long
   diet: { fodmap: 75 }
   n: { kcal: 25, p: 1.3, c: 5.8, f: 0.1, fib: 2.5, salt: 0, fe: 0.5, ca: 40, zn: 0.2 }
   units: { hrnček: 90 }
@@ -2573,6 +2616,7 @@
 - id: zelene-fazulky
   name: Zelené fazuľky (aj mrazené)
   category: zelenina
+  shelf: frozen
   diet: { fodmap: 75 }
   n: { kcal: 31, p: 1.8, c: 7, f: 0.2, fib: 2.7, salt: 0, fe: 1, ca: 37, zn: 0.2 }
   price: 5
@@ -2592,6 +2636,7 @@
 - id: hrasok
   name: Hrášok mrazený
   category: zelenina
+  shelf: frozen
   diet: { fodmap: 15 }
   n: { kcal: 81, p: 5.4, c: 14.5, f: 0.4, fib: 5.1, salt: 0.1, fe: 1.5, ca: 25, zn: 1.2 }
   units: { hrnček: 145 }
@@ -2606,6 +2651,50 @@
     - 'Rizi-bizi, smažená ryža, pesto cestoviny'
     - 'Hráškový krém s mätou'
   storage: 'V mrazničke mesiace, netreba rozmrazovať.'
+
+- id: zeleninova-zmes
+  name: Zeleninová zmes mrazená
+  aliases: [mrazená zelenina, mexická zmes, polievková zmes]
+  category: zelenina
+  shelf: frozen
+  diet: { fodmap: 0 }
+  n: { kcal: 64, p: 3.3, c: 13, f: 0.5, fib: 4, salt: 0.1, fe: 0.9, ca: 25, zn: 0.5 }
+  units: { hrnček: 135 }
+  price: 2.5
+  co2: 1.0
+  color: '#e0a23a'
+  substitutes:
+    - { to: hrasok }
+    - { to: mrkva, note: 'čerstvá na kocky, var o 5 minút dlhšie' }
+  about: 'Mrkva, hrášok, kukurica a fazuľky už nakrájané – do polievky, smaženej ryže alebo kari rovno z mrazničky.'
+  kinds:
+    - 'Polievková – mrkva, petržlen, zeler, karfiol'
+    - 'Mexická – kukurica, fazuľa, paprika'
+    - 'Wok (ázijská) – brokolica, mrkva, fazuľky, pak choi'
+  uses:
+    - 'Polievky, smažená ryža a rezance, kari, rizoto'
+  choose: 'Čistá zelenina bez omáčky a masla. Keď sa vo vrecku sype, nebola rozmrazená.'
+  storage: 'V mrazničke 8–12 mesiacov. Do varenia ju nerozmrazuj.'
+
+- id: lesne-ovocie
+  name: Lesné ovocie mrazené
+  aliases: [bobuľové ovocie, mrazené ovocie]
+  category: ovocie
+  shelf: frozen
+  diet: { fodmap: 0 }
+  n: { kcal: 50, p: 1, c: 11, f: 0.4, fib: 4.5, salt: 0, fe: 0.7, ca: 22, zn: 0.3 }
+  units: { hrnček: 140 }
+  price: 5
+  co2: 1.2
+  color: '#7a2f4f'
+  substitutes:
+    - { to: cucoriedky }
+    - { to: maliny }
+  about: 'Zmes malín, čučoriedok, černíc a ríbezlí. Mrazená je lacnejšia ako čerstvá a celý rok rovnako dobrá.'
+  uses:
+    - 'Kaše, smoothie, crumble, omáčka k palacinkám'
+  choose: 'Bez cukru. Vrecko, v ktorom sa ovocie sype, nebolo rozmrazené.'
+  storage: 'V mrazničke rok. Do pečenia ho nerozmrazuj, pustí šťavu.'
 
 - id: klicky
   name: Fazuľové klíčky (mungo)
@@ -2652,6 +2741,7 @@
 - id: biela-redkev
   name: Biela reďkev (daikon)
   category: zelenina
+  shelf: long
   n: { kcal: 18, p: 0.6, c: 4.1, f: 0.1, fib: 1.6, salt: 0.1, fe: 0.4, ca: 27, zn: 0.2 }
   units: { ks: 400 }
   price: 2.5
@@ -2672,6 +2762,7 @@
   name: Petržlen koreň
   howto: [supanie]
   category: zelenina
+  shelf: long
   n: { kcal: 55, p: 2.3, c: 12, f: 0.6, fib: 4.4, salt: 0, fe: 0.6, ca: 36, zn: 0.3 }
   units: { ks: 80 }
   price: 3
@@ -2690,6 +2781,7 @@
 - id: kysle-uhorky
   name: Sterilizované uhorky (kyslé)
   category: zelenina
+  shelf: pantry
   diet: { histamine: true }
   n: { kcal: 20, p: 0.3, c: 5, f: 0.2, fib: 1, salt: 1.5, fe: 0.3, ca: 30, zn: 0.1 }
   units: { ks: 40 }
@@ -2712,6 +2804,7 @@
 - id: passata
   name: Paradajková passata
   category: zelenina
+  shelf: pantry
   diet: { histamine: true, nightshade: true }
   n: { kcal: 30, p: 1.4, c: 5.3, f: 0.2, fib: 1.2, salt: 0.3, fe: 0.8, ca: 18, zn: 0.2 }
   units: { hrnček: 245 }
@@ -2739,6 +2832,7 @@
   aliases: [petržlen]
   howto: [bylinky]
   category: zelenina
+  shelf: frozen
   n: { kcal: 36, p: 3, c: 6.3, f: 0.8, fib: 3.3, salt: 0.1, fe: 6.2, ca: 138, zn: 1.1 }
   units: { pl: 4, hrnček: 60 }
   price: 25
@@ -2760,6 +2854,7 @@
   name: Kôpor čerstvý
   howto: [bylinky]
   category: zelenina
+  shelf: frozen
   n: { kcal: 43, p: 3.5, c: 7, f: 1.1, fib: 2.1, salt: 0.1, fe: 6.6, ca: 208, zn: 0.9 }
   units: { pl: 2 }
   price: 30
@@ -2798,6 +2893,7 @@
   name: Pažítka
   howto: [bylinky]
   category: zelenina
+  shelf: frozen
   n: { kcal: 30, p: 3.3, c: 4.4, f: 0.7, fib: 2.5, salt: 0, fe: 1.6, ca: 92, zn: 0.6 }
   units: { pl: 3 }
   price: 30
@@ -2829,6 +2925,7 @@
 - id: jablko
   name: Jablko
   category: ovocie
+  shelf: long
   diet: { fodmap: 0 }
   n: { kcal: 52, p: 0.3, c: 13.8, f: 0.2, fib: 2.4, salt: 0, fe: 0.1, ca: 6, zn: 0 }
   units: { ks: 180 }
@@ -2870,6 +2967,7 @@
 - id: susene-marhule
   name: Sušené marhule
   category: ovocie
+  shelf: pantry
   diet: { fodmap: 0 }
   allergens: [sulphites]
   note: oranžové bývajú sírené (E220, siričitany), tmavohnedé nesírené sú bez nich
@@ -2894,6 +2992,7 @@
 - id: datle
   name: Datle (vykôstkované)
   category: ovocie
+  shelf: pantry
   diet: { fodmap: 20 }
   n: { kcal: 282, p: 2.5, c: 75, f: 0.4, fib: 8, salt: 0, fe: 1, ca: 39, zn: 0.3 }
   units: { ks: 8 }
@@ -3629,6 +3728,7 @@
 - id: edamame
   name: Edamame v strukoch (mrazené)
   category: strukoviny
+  shelf: frozen
   diet: { fodmap: 90 }
   allergens: [soy]
   n: { kcal: 67, p: 6.5, c: 4.9, f: 2.9, fib: 2.9, salt: 0, fe: 1.3, ca: 35, zn: 0.8, ala: 0.2 }
@@ -3884,6 +3984,7 @@
 - id: pastinak
   name: Paštrnák
   category: zelenina
+  shelf: long
   n: { kcal: 75, p: 1.2, c: 18, f: 0.3, fib: 4.9, salt: 0, fe: 0.6, ca: 36, zn: 0.6 }
   units: { ks: 150 }
   price: 3
@@ -3903,6 +4004,7 @@
   name: Kučeravý kel (kale)
   aliases: [kale]
   category: zelenina
+  shelf: frozen
   n: { kcal: 49, p: 4.3, c: 8.8, f: 0.9, fib: 3.6, salt: 0, fe: 1.5, ca: 150, zn: 0.6, ala: 0.18 }
   units: { hrnček: 40, ks: 250 }
   price: 8
@@ -4014,6 +4116,7 @@
 - id: ruzickovy-kel
   name: Ružičkový kel
   category: zelenina
+  shelf: frozen
   diet: { fodmap: 38 }
   n: { kcal: 43, p: 3.4, c: 9, f: 0.3, fib: 3.8, salt: 0.1, fe: 1.4, ca: 42, zn: 0.4 }
   units: { hrnček: 90 }
@@ -4032,6 +4135,7 @@
 - id: chren
   name: Chren (strúhaný)
   category: zelenina
+  shelf: pantry
   n: { kcal: 48, p: 1.2, c: 11, f: 0.7, fib: 3.3, salt: 0.8, fe: 0.4, ca: 56, zn: 0.8 }
   units: { pl: 15, čl: 5 }
   price: 8
@@ -4224,6 +4328,7 @@
 - id: mango
   name: Mango
   category: ovocie
+  shelf: frozen
   diet: { fodmap: 0 }
   n: { kcal: 60, p: 0.8, c: 15, f: 0.4, fib: 1.6, salt: 0, fe: 0.2, ca: 11, zn: 0.1 }
   units: { ks: 200, hrnček: 165 }
@@ -4367,6 +4472,7 @@
 - id: acai
   name: Açaí dreň mrazená (nesladená)
   category: ovocie
+  shelf: frozen
   n: { kcal: 70, p: 1, c: 4, f: 5, fib: 3, salt: 0, fe: 0.6, ca: 35, zn: 0.3 }
   units: { ks: 100 }
   price: 20
@@ -4384,6 +4490,7 @@
   name: Mladý jackfruit (sterilizovaný, scedený)
   aliases: [trhané mäso]
   category: zelenina
+  shelf: pantry
   diet: { fodmap: 0 }
   n: { kcal: 50, p: 1.2, c: 10, f: 0.3, fib: 3, salt: 0.4, fe: 0.3, ca: 25, zn: 0.2 }
   units: { ks: 280 }
@@ -4419,6 +4526,7 @@
 - id: olivy
   name: Olivy (čierne, kalamata)
   category: zelenina
+  shelf: pantry
   diet: { histamine: true }
   n: { kcal: 115, p: 0.8, c: 6, f: 10.7, fib: 3.2, salt: 1.8, fe: 3.3, ca: 88, zn: 0.2 }
   units: { ks: 4, pl: 10 }
@@ -4435,6 +4543,7 @@
 - id: vinicove-listy
   name: Viničové listy v náleve
   category: zelenina
+  shelf: pantry
   n: { kcal: 93, p: 4.3, c: 11.7, f: 2.1, fib: 6.9, salt: 2, fe: 1.5, ca: 290, zn: 0.4 }
   units: { ks: 3 }
   price: 15
@@ -4711,6 +4820,7 @@
 - id: hrozienka
   name: Hrozienka
   category: ovocie
+  shelf: pantry
   diet: { fodmap: 13 }
   n: { kcal: 299, p: 3.1, c: 79, f: 0.5, fib: 3.7, salt: 0, fe: 1.9, ca: 50, zn: 0.2 }
   units: { pl: 10, hrnček: 145 }
@@ -4744,6 +4854,7 @@
 - id: granatove-jablko
   name: Granátové jablko
   category: ovocie
+  shelf: long
   diet: { fodmap: 38 }
   n: { kcal: 83, p: 1.7, c: 18.7, f: 1.2, fib: 4, salt: 0, fe: 0.3, ca: 10, zn: 0.4 }
   units: { ks: 150 }
@@ -4761,6 +4872,7 @@
 - id: cucoriedky
   name: Čučoriedky (aj mrazené)
   category: ovocie
+  shelf: frozen
   n: { kcal: 57, p: 0.7, c: 14.5, f: 0.3, fib: 2.4, salt: 0, fe: 0.3, ca: 6, zn: 0.2 }
   units: { hrnček: 150 }
   price: 12
@@ -4840,6 +4952,7 @@
 - id: kimchi
   name: Kimchi (vegánske)
   category: zelenina
+  shelf: pantry
   diet: { fodmap: 0, histamine: true, nightshade: true }
   allergens: [soy]
   n: { kcal: 15, p: 1.1, c: 2.4, f: 0.5, fib: 1.6, salt: 1.8, fe: 2.5, ca: 33, zn: 0.2 }
@@ -4860,6 +4973,7 @@
 - id: hruska
   name: Hruška
   category: ovocie
+  shelf: long
   diet: { fodmap: 0 }
   n: { kcal: 57, p: 0.4, c: 15.2, f: 0.1, fib: 3.1, salt: 0, fe: 0.2, ca: 9, zn: 0.1 }
   units: { ks: 180 }
@@ -4896,6 +5010,7 @@
 - id: visne
   name: Višne
   category: ovocie
+  shelf: frozen
   diet: { fodmap: 0 }
   n: { kcal: 50, p: 1, c: 12.2, f: 0.3, fib: 1.6, salt: 0, fe: 0.3, ca: 16, zn: 0.1 }
   units: { hrnček: 150 }
@@ -4964,6 +5079,7 @@
 - id: ribezle-cierne
   name: Čierne ríbezle
   category: ovocie
+  shelf: frozen
   n: { kcal: 63, p: 1.4, c: 15.4, f: 0.4, fib: 5, salt: 0, fe: 1.5, ca: 55, zn: 0.3 }
   units: { hrnček: 110 }
   price: 8
@@ -4980,6 +5096,7 @@
 - id: ribezle-cervene
   name: Červené ríbezle
   category: ovocie
+  shelf: frozen
   n: { kcal: 56, p: 1.4, c: 13.8, f: 0.2, fib: 4.3, salt: 0, fe: 1, ca: 33, zn: 0.2 }
   units: { hrnček: 110, pl: 10 }
   price: 7
@@ -5010,6 +5127,7 @@
 - id: cernice
   name: Černice
   category: ovocie
+  shelf: frozen
   diet: { fodmap: 0 }
   n: { kcal: 43, p: 1.4, c: 9.6, f: 0.5, fib: 5.3, salt: 0, fe: 0.6, ca: 29, zn: 0.5 }
   units: { hrnček: 145 }
@@ -5070,6 +5188,7 @@
 - id: jahody
   name: Jahody
   category: ovocie
+  shelf: frozen
   diet: { histamine: true }
   n: { kcal: 32, p: 0.7, c: 7.7, f: 0.3, fib: 2, salt: 0, fe: 0.4, ca: 16, zn: 0.1 }
   units: { hrnček: 150, ks: 12 }
@@ -5101,6 +5220,7 @@
 - id: kiwi
   name: Kiwi
   category: ovocie
+  shelf: long
   diet: { histamine: true }
   n: { kcal: 61, p: 1.1, c: 14.7, f: 0.5, fib: 3, salt: 0, fe: 0.3, ca: 34, zn: 0.1 }
   units: { ks: 75 }
@@ -5272,6 +5392,7 @@
 - id: jablkovy-must
   name: Jablkový mušt (100 %)
   category: ovocie
+  shelf: pantry
   diet: { fodmap: 0 }
   n: { kcal: 46, p: 0.1, c: 11, f: 0.1, fib: 0.2, salt: 0, fe: 0.1, ca: 8, zn: 0 }
   units: { hrnček: 250 }
@@ -5379,6 +5500,7 @@
 - id: ananas
   name: Ananás
   category: ovocie
+  shelf: frozen
   diet: { histamine: true }
   n: { kcal: 50, p: 0.5, c: 13, f: 0.1, fib: 1.4, salt: 0, fe: 0.3, ca: 13, zn: 0.1 }
   units: { ks: 900 }

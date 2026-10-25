@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { rewriteStep } from './step-swaps';
+import { fromCanStep, rewriteStep } from './step-swaps';
 
 describe('rewriteStep', () => {
 	it('swaps onion and garlic in their cases', () => {
@@ -111,5 +111,21 @@ describe('rewriteStep', () => {
 		expect(rewriteStep('Pridaj čiernu fazuľu a bielu fazuľu, roztlač ju.', ['fazula-biela'])).toBe(
 			'Pridaj čiernu fazuľu a cícer, roztlač ho.'
 		);
+	});
+});
+
+describe('fromCanStep', () => {
+	it('turns the can liquid into the cooking water', () => {
+		expect(fromCanStep('Pridaj cícer aj s nálevom a vývar.')).toBe(
+			'Pridaj cícer s vodou z varenia (asi 150 ml na každých 100 g suchých) a vývar.'
+		);
+		expect(fromCanStep('Rozmixuj s 3–4 lyžicami vody z plechovky.')).toBe(
+			'Rozmixuj s 3–4 lyžicami vody z varenia.'
+		);
+	});
+
+	it('leaves canned tomatoes and pickle brine alone', () => {
+		const step = 'Pridaj paradajky z plechovky a lyžicu nálevu z uhoriek.';
+		expect(fromCanStep(step)).toBe(step);
 	});
 });

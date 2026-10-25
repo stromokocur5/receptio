@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { batchPlan, formatMinutes, packingTips, prepList, prepSchedule } from './mealprep';
+import {
+	batchPlan,
+	formatMinutes,
+	legumeBatches,
+	packingTips,
+	prepList,
+	prepSchedule
+} from './mealprep';
 import type { Ingredient, RecipeLine, RecipeSummary } from './types';
 
 function recipe(
@@ -117,5 +124,23 @@ describe('packing tips', () => {
 		expect(tips[0]).toMatch(/Dresing na dno/);
 		expect(tips.some((t) => t.includes('bylinky'))).toBe(true);
 		expect(tips.some((t) => t.includes('mrazničky'))).toBe(false);
+	});
+});
+
+describe('legumeBatches', () => {
+	const canned = { id: 'fazula', groupFactor: 1 } as Ingredient;
+	const dry = { id: 'fazula-sucha', groupFactor: 2.4 } as Ingredient;
+	const byId = new Map([canned, dry].map((i) => [i.id, i]));
+	const dryOf = new Map([['fazula', dry]]);
+
+	it('cooks the plan’s cans and dry beans in one pot of whole packs, the rest frozen', () => {
+		const burrito = recipe('burrito', 40, 25, [['fazula', 480]]);
+		const chili = recipe('chili', 60, 20, [['fazula-sucha', 100]]);
+		const [batch] = legumeBatches([item(burrito), item(chili, 4)], byId, dryOf);
+		// 480 g canned = 200 g dry, plus 200 g dry for twice the chili.
+		expect(batch.dryGrams).toBeCloseTo(400);
+		expect(batch.soakGrams).toBe(500);
+		expect(batch.freezerPortions).toBe(1);
+		expect(batch.usedIn).toEqual(['burrito', 'chili']);
 	});
 });

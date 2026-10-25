@@ -559,226 +559,231 @@ entries:
     product: HIKARI MISO Miso Pasta Červená HIKARI 400g
     pack: 400 g
     price: 3.21
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/pasty-korenia/miso-pasta-cervena-hikari-400g/
   - ingredient: miso
     store: foodland
     product: HIKARI MISO BIO Biela miso pasta HIKARI 500 g
     pack: 500 g
     price: 5.95
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/pasty-korenia/bio-biela-miso-pasta-hikari-500-g/
   - ingredient: nori
     store: foodland
-    product: Morské riasy SUSHINORI na suši RED INAKA 50 listov 50 ks
+    product: Morské riasy SUSHINORI SILVER HUTAKU 50 listov 50 ks
     pack: 50 ks
-    price: 9.04
-    date: 2026-10-17
-    url: https://www.foodland.sk/morske-riasy/morske-riasy-nori-na-susi-inaka-50-listov/
+    price: 10.12
+    date: 2026-10-25
+    url: https://www.foodland.sk/morske-riasy/morske-riasy-sushinori-silver-hutaku-50-listov/
   - ingredient: nori
     store: foodland
     product: Morské riasy na suši YAKI SUSHI NORI JHFOODS 10 listov 10 ks
     pack: 10 ks
     price: 2.98
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/susi/morske-riasy-nori-na-susi-jhfoods-10-listov/
   - ingredient: gochujang
     store: foodland
     product: Čili pasta kórejská GOCHUJANG SEMPIO 250g
     pack: 250 g
     price: 3.57
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/pasty-korenia/cili-pasta-korejska-gochujang-sempio-250g/
   - ingredient: gochujang
     store: foodland
     product: Čili pasta Kórejská GOCHUJANG SEMPIO 1000g
     pack: 1 kg
     price: 8.33
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/pasty-korenia/cili-pasta-korejska-gochujang-sempio-1000g/
-  - &a1
-    ingredient: gochugaru
+  - ingredient: gochugaru
     store: foodland
     product: Kórejská červená paprika Gochugaru DAE KYUNG 1 kg
     pack: 1 kg
     price: 12.5
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/horeca-hotel-restauracia-catering/korejska-cervena-paprika-gochugaru-dae-kyung-1-kg/
-  - *a1
+  - ingredient: gochugaru
+    store: foodland
+    product: Kórejská červená paprika Gochugaru DAE KYUNG 1 kg
+    pack: 1 kg
+    price: 12.5
+    date: 2026-10-25
+    url: https://www.foodland.sk/horeca-hotel-restauracia-catering/korejska-cervena-paprika-gochugaru-dae-kyung-1-kg/
   - ingredient: ryzovy-papier
     store: foodland
     product: Ryžový papier na čerstvé jarné rolky TUFOCO 400g
     pack: 400 g
     price: 2.86
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/ryzovy-papier/ryzovy-papier-na-cerstve-jarne-rolky-tufoco-400g+3812/
   - ingredient: soba
     store: foodland
     product: Soba pohánkové rezance AYUKO 300g
     pack: 300 g
     price: 2.98
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/psenicne-rezance/soba-pohankove-rezance-ayuko-300g/
   - ingredient: sklenene-rezance
     store: foodland
     product: Sklenené rezance zo sladkých zemiakov OTTOGI 500g
     pack: 500 g
     price: 7.74
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/sklenene-rezance/sklenene-rezance-zo-sladkych-zemiakov-ottogi-500g/
   - ingredient: ryzove-rezance
     store: foodland
     product: VINA ACE COOK Ryžové rezance široké PHO OH! RICEY 500g
     pack: 500 g
     price: 3.09
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/ryzove-rezance/ryzove-rezance-siroke-pho-ohricey-500g/
   - ingredient: psenicne-rezance
     store: foodland
     product: Somen biele japonské rezance EAGLOBE 400g
     pack: 400 g
     price: 2.26
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/psenicne-rezance/somen-biele-japonske-rezance-eaglobe-400g/
   - ingredient: tteok
     store: foodland
-    product: Kórejské ryžové koláčiky (duté) Tteokbokki JONGGA 500g
-    pack: 500 g
-    price: 4.76
-    date: 2026-10-10
-    url: https://www.foodland.sk/rezance-nitovky-a-cestoviny/korejske-ryzove-kolaciky-dute-tteokbokki-jongga-500g/
+    product: Kórejské ryžové koláčiky Topokki WANG 600 g
+    pack: 600 g
+    price: 5.95
+    date: 2026-10-25
+    url: https://www.foodland.sk/rezance-nitovky-a-cestoviny/korejske-ryzove-kolaciky-topokki-wang-600-g/
   - ingredient: wakame
     store: foodland
     product: Morské riasy Wakame rezané a sušené HUTAKU 100g
     pack: 100 g
     price: 3.69
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/susena-zelenina/morske-riasy-wakame-rezane-a-susene-hutaku-100g/
   - ingredient: kombu
     store: foodland
     product: HERMAN KUIJPER BV Kombu - Kelp morské riasy sušené - WANG KOREA 170g
     pack: 170 g
     price: 6.78
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/susena-zelenina/kombu-kelp-morske-riasy-susene-wang-korea-170g/
   - ingredient: kecap-manis
     store: foodland
     product: Sladká sójová omáčka Kecap Manis ABC 600 ml
     pack: 600 ml
     price: 4.76
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/sojove-omacky/sladka-sojova-omacka-kecap-manis-abc-600-ml/
   - ingredient: sriracha
     store: foodland
     product: FLYING GOOSE BRAND Sriracha pálivá čili omáčka FLYING GOOSE 455 ml
     pack: 455 ml
     price: 4.76
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/sriracha-cili-omacky/sriracha-paliva-cili-omacka-flying-goose-455-ml/
   - ingredient: ryzovy-ocot
     store: foodland
     product: Ryžový ocot MIZKAN Komesu 500ml
     pack: 500 ml
     price: 4.4
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/susi/ryzovy-ocot-mizkan-komesu-500ml/
   - ingredient: sezamovy-olej
     store: foodland
     product: Sezamový olej 100% OH AIK GUAN 650 ml
     pack: 650 ml
     price: 9.52
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/olej-na-dochucovanie/sezamovy-olej-100-oh-aik-guan-650-ml/
   - ingredient: sojova-omacka
     store: foodland
     product: Sójová omáčka KIKKOMAN 1000ml
     pack: 1 l
     price: 7.74
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/sojove-omacky/sojova-omacka-kikkoman-1000ml/
   - ingredient: tamarind
     store: foodland
     product: Tamarind koncentrát na varenie COCK BRAND 454g
     pack: 454 g
     price: 2.98
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/koreniny/tamarind-koncentrat-na-varenie-cock-brand-454-g/
   - ingredient: kokosove-mlieko
     store: foodland
     product: Thai Agri Foods Public Company Limited Kokosové mlieko AROY-D 400 ml
     pack: 400 ml
     price: 2.62
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/kokosove-mlieko-a-kremy/kokosove-mlieko-aroy-d-400-ml/
   - ingredient: kokosove-mlieko
     store: foodland
     product: Thai Agri Foods Public Company Limited Kokosové mlieko AROY-D 1000ml
     pack: 1 l
     price: 4.05
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/kokosove-mlieko-a-kremy/kokosove-mlieko-aroy-d-1000ml/
   - ingredient: lepkava-ryza
     store: foodland
     product: Lepkavá ryža ROYAL THAI 1 kg
     pack: 1 kg
     price: 3.93
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/lepkava-ryza/lepkava-ryza-royal-thai-1-kg/
   - ingredient: lepkava-ryzova-muka
     store: foodland
-    product: Múka z lepkavej ryže COCK BRAND 400 g
+    product: Lepkavá ryžová múka TAIKY 400g
     pack: 400 g
     price: 1.68
-    date: 2026-10-17
-    url: https://www.foodland.sk/muka/muka-z-lepkavej-ryze-cock-brand-400-g/
+    date: 2026-10-25
+    url: https://www.foodland.sk/muka/lepkava-ryzova-muka-taiky-400g/
   - ingredient: ryzova-muka
     store: foodland
     product: Ryžová múka VINH THUAN 400g
     pack: 400 g
     price: 1.68
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/muka/ryzova-muka-vinh-thuan-400g/
   - ingredient: cicerova-muka
     store: foodland
     product: Cícerová superjemná múka KTC 1000 g
     pack: 1 kg
     price: 3.57
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/muka-skrob-a-ryzovy-papier/cicerova-superjemna-muka-ktc-1000-g/
   - ingredient: tapiokovy-skrob
     store: foodland
     product: Tapiokový škrob COCK BRAND 400 g
     pack: 400 g
     price: 1.58
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/skrob/tapiokovy-skrob-cock-brand-400-g/
   - ingredient: ryza-sushi
     store: foodland
     product: Suši ryža OBENTO 1 kg
     pack: 1 kg
     price: 3.93
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/susi-ryza/susi-ryza-obento-1-kg/
   - ingredient: mungo
     store: foodland
     product: Zelená mungo fazuľa nelúpaná COCK BRAND 400g
     pack: 400 g
     price: 2.02
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/fazula-a-hrach/zelena-mungo-fazula-nelupana-cock-brand-400g/
   - ingredient: secuanske-korenie
     store: foodland
-    product: Sečuánske korenie celé NBH 50g
+    product: NATURE BEST HARVEST Sečuánske korenie celé zelené NBH 50g
     pack: 50 g
     price: 2.74
-    date: 2026-10-01
-    url: https://www.foodland.sk/koreniny/secuanske-korenie-cele-nbh-50g/
+    date: 2026-10-25
+    url: https://www.foodland.sk/koreniny/secuanske-korenie-cele-zelene-nbh-50g/
   - ingredient: edamame
     store: foodland
     product: Edamame - Sójové struky zmrazené ASIAN CHOICE 500g
     pack: 500 g
     price: 2.94
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/mrazene-ovocie-a-zelenina/edamame-sojove-struky-zmrazene-asian-choice-500g/
   - ingredient: kala-namak
     store: veganstore
@@ -1270,6 +1275,20 @@ entries:
     price: 3.81
     date: 2026-10-17
     url: https://ebio24.sk/sk/products/cierna-sol-kala-namak-jemne-mleta-1-kg-44826
+  - ingredient: fazula-cierna-sucha
+    store: foodland
+    product: SON LAM Čierna fazuľa 400g
+    pack: 400 g
+    price: 2.26
+    date: 2026-10-25
+    url: https://www.foodland.sk/fazula-a-hrach/cierna-fazula-400g/
+  - ingredient: fazula-cierna-sucha
+    store: foodland
+    product: Čierna fazuľa COCK BRAND 400 g
+    pack: 400 g
+    price: 3.33
+    date: 2026-10-25
+    url: https://www.foodland.sk/fazula-a-hrach/cierna-fazula-cock-brand-400g/
   - ingredient: fazula-cierna
     store: grizly
     product: Amaizin Fazuľa čierna sterilizovaná BIO 1 ks
@@ -1282,7 +1301,7 @@ entries:
     product: HERMAN KUIJPER BV Čerstvá citrónová tráva 200g
     pack: 200 g
     price: 2.73
-    date: 2026-10-17
+    date: 2026-10-25
     url: https://www.foodland.sk/cerstva-zelenina-a-ovocie/citronova-trava-cerstva-200g/
   - ingredient: cierny-caj
     store: grizly

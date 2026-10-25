@@ -17,6 +17,10 @@ export type Nutrients = Record<NutrientKey, number>;
 export const UNITS = ['g', 'kg', 'ml', 'l', 'ks', 'pl', 'čl', 'hrnček', 'štipka'] as const;
 export type Unit = (typeof UNITS)[number];
 
+/** frozen = sold frozen too, long = fresh keeps 3+ weeks, pantry = canned, dried or pickled. */
+export const SHELF_KINDS = ['frozen', 'long', 'pantry'] as const;
+export type ShelfKind = (typeof SHELF_KINDS)[number];
+
 export type GlutenStatus = 'free' | 'risk' | 'contains';
 
 export const ALLERGENS = [
@@ -90,6 +94,8 @@ export interface Ingredient {
 	nightshade: boolean;
 	/** Assumed to be at home (salt, oil, water) – never blocks a pantry match. */
 	staple: boolean;
+	/** Produce that keeps without a fresh shop: sold frozen, lasts 3+ weeks, or canned/dried. */
+	shelf?: ShelfKind;
 	per100g: Nutrients;
 	/** Grams per unit; `ml` uses density. */
 	units: Partial<Record<Unit, number>>;

@@ -352,7 +352,7 @@
 - ingredient: nori
   store: foodland
   pack: 50 ks
-  url: https://www.foodland.sk/morske-riasy/morske-riasy-nori-na-susi-inaka-50-listov/
+  url: https://www.foodland.sk/morske-riasy/morske-riasy-sushinori-silver-hutaku-50-listov/
 - ingredient: nori
   store: foodland
   pack: 10 ks
@@ -395,8 +395,8 @@
   url: https://www.foodland.sk/psenicne-rezance/somen-biele-japonske-rezance-eaglobe-400g/
 - ingredient: tteok
   store: foodland
-  pack: 500 g
-  url: https://www.foodland.sk/rezance-nitovky-a-cestoviny/korejske-ryzove-kolaciky-dute-tteokbokki-jongga-500g/
+  pack: 600 g
+  url: https://www.foodland.sk/rezance-nitovky-a-cestoviny/korejske-ryzove-kolaciky-topokki-wang-600-g/
 - ingredient: wakame
   store: foodland
   pack: 100 g
@@ -444,7 +444,7 @@
 - ingredient: lepkava-ryzova-muka
   store: foodland
   pack: 400 g
-  url: https://www.foodland.sk/muka/muka-z-lepkavej-ryze-cock-brand-400-g/
+  url: https://www.foodland.sk/muka/lepkava-ryzova-muka-taiky-400g/
 - ingredient: ryzova-muka
   store: foodland
   pack: 400 g
@@ -468,7 +468,7 @@
 - ingredient: secuanske-korenie
   store: foodland
   pack: 50 g
-  url: https://www.foodland.sk/koreniny/secuanske-korenie-cele-nbh-50g/
+  url: https://www.foodland.sk/koreniny/secuanske-korenie-cele-zelene-nbh-50g/
 - ingredient: edamame
   store: foodland
   pack: 500 g
@@ -801,6 +801,14 @@
   store: ebio24
   pack: 170 g
   url: https://ebio24.sk/sk/products/sumac-mlety-170-g-royal-brand-101475
+- ingredient: fazula-cierna-sucha
+  store: foodland
+  pack: 400 g
+  url: https://www.foodland.sk/fazula-a-hrach/cierna-fazula-400g/
+- ingredient: fazula-cierna-sucha
+  store: foodland
+  pack: 400 g
+  url: https://www.foodland.sk/fazula-a-hrach/cierna-fazula-cock-brand-400g/
 - ingredient: fazula-cierna
   store: grizly
   pack: 1 ks

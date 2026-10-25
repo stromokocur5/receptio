@@ -18,6 +18,7 @@
 	import { isAssumedAtHome, matchRecipe, pantryByGroup, useSoon } from '$lib/pantry';
 	import { shelfCost } from '$lib/pricing';
 	import { recipeSeason } from '$lib/season';
+	import { storesVersion } from '$lib/shelf';
 	import { avoidFilter } from '$lib/avoid';
 	import { hasNeeds, householdFilter, wishesOf } from '$lib/household';
 	import {
@@ -127,6 +128,8 @@
 			: Math.round(budgetForDays(settings.current.weeklyBudget, settings.current.planDays) * 100) /
 					100
 	);
+	/** Days a fresh shop lasts: lettuce, tomatoes and herbs are gone after a week. */
+	const FRESH_DAYS = 7;
 	let minProtein = $state(20);
 	let mild = $state(false);
 	let glutenFree = $state(false);
@@ -134,6 +137,9 @@
 	let excludeAllergens = $state<Allergen[]>([]);
 	let usePantry = $state(true);
 	let batchCooking = $state(false);
+	/** One shop for the whole plan: fresh vegetables only in the first week. */
+	let oneShop = $state(false);
+	const longPlan = $derived(settings.current.planDays > FRESH_DAYS);
 	let seed = $state(1);
 	let result = $state<AutoPlanResult | null>(null);
 
@@ -158,6 +164,7 @@
 			excludeAllergens,
 			diets: [...new Set([...avoid.current.diets, ...(needs?.diets ?? [])])],
 			batchCooking,
+			...(oneShop && longPlan && { freshDays: FRESH_DAYS }),
 			seed,
 			slots: planSlots(settings.current)
 		};
@@ -179,7 +186,8 @@
 					r.lines.filter((l) => soonIds.has(l.ingredientId)).length +
 					// Someone at home asked for it: a strong reason, more with every person asking.
 					Math.min(3, (wished.get(r.id)?.length ?? 0) * 1.5),
-				packOf
+				packOf,
+				storesVersion: (r) => storesVersion(r, catalog.ingredientsById)
 			}
 		};
 	}
@@ -309,6 +317,14 @@
 				>
 					Varím na viac dní
 				</button>
+				<button
+					class="chip"
+					aria-pressed={oneShop}
+					onclick={() => (oneShop = !oneShop)}
+					title="Čerstvá zelenina len v prvom týždni, potom jedlá z mrazničky, konzerv a zeleniny, ktorá vydrží"
+				>
+					<Icon name="snowflake" size={14} /> Nakupujem raz na celý plán
+				</button>
 				<button class="chip" aria-pressed={mild} onclick={() => (mild = !mild)}>Nepálivé</button>
 				<button class="chip" aria-pressed={glutenFree} onclick={() => (glutenFree = !glutenFree)}>
 					Bezlepkové
@@ -336,6 +352,14 @@
 						.map((m) => m.name)
 						.join(', ')}). <a href="/domacnost">Upraviť</a>
 				</p>
+			{/if}
+			{#if oneShop && longPlan}
+				<p class="hint">
+					Jedlá s čerstvou zeleninou dá na prvých {FRESH_DAYS} dní, zvyšok z mrazničky, konzerv a zeleniny,
+					ktorá vydrží týždne. <a href="/wiki/nakup-na-dlhsie">Ako nakúpiť na dlhšie</a>
+				</p>
+			{:else if oneShop}
+				<p class="hint">Na nákup raz za dva-tri týždne nastav plán na 14 alebo 21 dní.</p>
 			{/if}
 			<p class="hint">
 				Plánuje {plannedMeals}{planFromHousehold()

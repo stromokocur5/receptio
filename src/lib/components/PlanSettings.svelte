@@ -22,7 +22,7 @@
 				value={settings.current.planDays}
 				onchange={(e) => update({ planDays: Number(e.currentTarget.value) })}
 			>
-				{#each [1, 2, 3, 4, 5, 6, 7, 10, 14] as d (d)}<option value={d}>{d}</option>{/each}
+				{#each [1, 2, 3, 4, 5, 6, 7, 10, 14, 21] as d (d)}<option value={d}>{d}</option>{/each}
 			</select>
 			{settings.current.planDays === 1 ? 'deň' : settings.current.planDays < 5 ? 'dni' : 'dní'}
 		</label>

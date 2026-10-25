@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { autoPlan, openPacks, packsFinished, swapEntry, type AutoPlanOptions } from './autoplan';
+import {
+	autoPlan,
+	candidates,
+	openPacks,
+	packsFinished,
+	swapEntry,
+	type AutoPlanOptions
+} from './autoplan';
 import type { RecipeSummary } from './types';
 
 const zero = {
@@ -132,6 +139,44 @@ describe('autoPlan', () => {
 		);
 		const soup = plan.entries.find((e) => e.recipeId === 'polievka');
 		if (soup) expect(soup.servings).toBe(1);
+	});
+});
+
+describe('one shop for a long plan', () => {
+	const fresh = (id: string) => recipe(id, { costPerServing: 0.4 });
+	const stored = (id: string) => recipe(id, { costPerServing: 1 });
+	const withStoresVersion = recipe('lecho', {
+		costPerServing: 0.5,
+		variants: [{ ...recipe('x'), name: 'Zo zásob', description: '' }]
+	});
+	const recipes = [
+		fresh('salat-1'),
+		fresh('salat-2'),
+		fresh('salat-3'),
+		stored('kari'),
+		stored('dal'),
+		stored('chili'),
+		stored('gulas'),
+		stored('rizoto'),
+		withStoresVersion
+	];
+	const storesVersion = (r: RecipeSummary) =>
+		r.id.startsWith('salat') ? undefined : r.id === 'lecho' ? { variant: 'Zo zásob' } : {};
+	const options = { ...base, days: 14, batchCooking: false, freshDays: 7 };
+
+	it('cooks the meals after the first week from the stores, after the fresh ones', () => {
+		const plan = autoPlan(recipes, options, { storesVersion });
+		expect(plan.meals).toBe(14);
+		const ids = plan.entries.map((e) => e.recipeId);
+		const firstStored = ids.findIndex((id) => !id.startsWith('salat'));
+		expect(ids.slice(firstStored).some((id) => id.startsWith('salat'))).toBe(false);
+		expect(candidates([withStoresVersion], options, storesVersion)[0].variant).toBe('Zo zásob');
+		expect(candidates([fresh('salat-4')], options, storesVersion)).toEqual([]);
+	});
+
+	it('plans as usual without the stores check', () => {
+		const plan = autoPlan(recipes, options);
+		expect(plan.entries.filter((e) => e.recipeId.startsWith('salat')).length).toBe(3);
 	});
 });
 

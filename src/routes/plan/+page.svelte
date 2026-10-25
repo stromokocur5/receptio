@@ -9,6 +9,7 @@
 	import { formatEur, formatGrams } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import AutoPlanner from '$lib/components/AutoPlanner.svelte';
+	import { isPerishable } from '$lib/shelf';
 	import Icon from '$lib/components/Icon.svelte';
 	import PlanNutrition from '$lib/components/PlanNutrition.svelte';
 	import PlanSettings from '$lib/components/PlanSettings.svelte';
@@ -1505,6 +1506,8 @@
 			{#if item.buyGrams < item.needGrams - 0.5}· zvyšok máš doma{/if}
 			{#if item.restock}· stačí najmenšie balenie{/if}
 			{#if leftoverOf(item)}· z balenia zostane ~{formatGrams(leftoverOf(item))}{/if}
+			{#if settings.current.planDays > 7 && isPerishable(item.ingredient)}· minúť do týždňa{/if}
+			{#if item.ingredient.shelf === 'frozen' && !/mrazen/i.test(item.ingredient.name)}· aj mrazené{/if}
 			{#if itemPay?.shelf}
 				<span title={itemPay.shelf.product}
 					>· {Number.isInteger(itemPay.shelf.packs)

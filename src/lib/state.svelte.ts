@@ -335,7 +335,7 @@ function validateSettings(raw: unknown): Settings | undefined {
 	const theme = raw.theme;
 	return {
 		weightKg: typeof weight === 'number' && weight >= 20 && weight <= 250 ? weight : null,
-		planDays: inRange(raw.planDays, 1, 14) ? raw.planDays : DEFAULT_SETTINGS.planDays,
+		planDays: inRange(raw.planDays, 1, 21) ? raw.planDays : DEFAULT_SETTINGS.planDays,
 		people: inRange(raw.people, 1, 12) ? raw.people : DEFAULT_SETTINGS.people,
 		...validateMeals(raw),
 		theme: theme === 'light' || theme === 'dark' ? theme : 'auto',
@@ -1055,6 +1055,20 @@ export function returnToFreezer(index: number, name: string) {
 			...(entry.inFridge && { leftover: true })
 		}
 	];
+}
+
+/** Puts bags of something cooked ahead (beans, stock) in the freezer; returns the new entry's id. */
+export function addToFreezer(name: string, count: number): string {
+	const id = crypto.randomUUID().slice(0, 8);
+	preserves.current = [
+		...preserves.current,
+		{ id, name, count, made: localToday(), place: 'mraznicka' }
+	];
+	return id;
+}
+
+export function removePreserve(id: string) {
+	preserves.current = preserves.current.filter((p) => p.id !== id);
 }
 
 /** Plans portions from the freezer or fridge: eaten like any meal but nothing to buy or cook. */

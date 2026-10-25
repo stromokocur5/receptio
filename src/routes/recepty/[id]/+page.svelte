@@ -1,7 +1,14 @@
 <script lang="ts">
 	import { afterNavigate, pushState } from '$app/navigation';
 	import { page } from '$app/state';
-	import { formatAmount, formatEur, formatGrams, formatNumber, formatPiece } from '$lib/amounts';
+	import {
+		dryForms,
+		formatAmount,
+		formatEur,
+		formatGrams,
+		formatNumber,
+		formatPiece
+	} from '$lib/amounts';
 	import {
 		RECIPE_CATEGORIES,
 		SPICY_LABELS,
@@ -196,6 +203,7 @@
 		servings = recipe.servings;
 	});
 	const factor = $derived(servings / recipe.servings);
+	const dryOf = $derived(dryForms(catalog.ingredients));
 
 	/**
 	 * Buying everything for the recipe from scratch, in whole packs. Spices and oils are left out
@@ -957,10 +965,26 @@
 									{#if alt}<span class="swap">→ {alt.name.split(' (')[0]}</span>{/if}
 								</span>
 							{/if}
+							{#if ingredient.shelf === 'frozen' && !/mrazen/i.test(ingredient.name)}<span
+									class="frozen"
+									title="Kúpiš aj mrazené – do varenia ho netreba rozmrazovať."
+									><Icon name="snowflake" size={13} stroke={2} /> aj mrazené</span
+								>{/if}
 							{#if ingredient.piece && line.grams && line.unit !== 'g'}<span class="note"
 									>{formatPiece(line.grams * factor, ingredient.piece)}</span
 								>{/if}
 							{#if line.note}<span class="note">{line.note}</span>{/if}
+							{#if dryOf.has(line.ingredientId) && line.grams}
+								{@const dry = dryOf.get(line.ingredientId)!}
+								<span class="note"
+									>{line.unit === 'g'
+										? ''
+										: `≈ ${formatGrams(line.grams * factor)} po scedení · `}zo suchých {formatGrams(
+										(line.grams * factor) / dry.groupFactor
+									)} –
+									<a href="/wiki/strukoviny-vo-velkom">ako na to</a></span
+								>
+							{/if}
 						</span>
 						<span class="side">
 							{#if home}<span class="home-dot" title="Máš doma"
@@ -1917,6 +1941,15 @@
 		display: block;
 		font-size: 0.82rem;
 		color: var(--muted);
+	}
+	.frozen {
+		display: inline-flex;
+		align-items: center;
+		gap: 3px;
+		margin-left: 4px;
+		font-size: 0.78rem;
+		color: var(--sky);
+		white-space: nowrap;
 	}
 	.gluten {
 		display: inline-flex;

@@ -1,12 +1,29 @@
 <script lang="ts">
-	import { formatGrams } from '$lib/amounts';
+	import { dryForms, formatGrams } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import { scaleStep } from '$lib/cooking';
 	import Icon from '$lib/components/Icon.svelte';
 	import Seo from '$lib/components/Seo.svelte';
-	import { asPlanned, formatMinutes, packingTips, prepList, prepSchedule } from '$lib/mealprep';
+	import {
+		asPlanned,
+		CAN_GRAMS,
+		formatMinutes,
+		legumeBatches,
+		packingTips,
+		prepList,
+		prepSchedule
+	} from '$lib/mealprep';
 	import { approxPieces } from '$lib/shopping';
-	import { markCooked, plan, ui, undoCooked, type CookUndo } from '$lib/state.svelte';
+	import {
+		addToFreezer,
+		markCooked,
+		plan,
+		removePreserve,
+		ui,
+		undoCooked,
+		type CookUndo
+	} from '$lib/state.svelte';
+	import { toast } from '$lib/toast.svelte';
 
 	const catalog = useCatalog();
 
@@ -28,6 +45,18 @@
 	const schedule = $derived(prepSchedule(chosen));
 	const chopping = $derived(prepList(chosen, catalog.ingredientsById));
 	const aheadNotes = $derived(chosen.filter((e) => e.recipe.ahead));
+	const legumes = $derived(
+		legumeBatches(chosen, catalog.ingredientsById, dryForms(catalog.ingredients))
+	);
+	let frozenLegumes = $state<string[]>([]);
+	function freezeLegumes(dryId: string, name: string, count: number) {
+		const id = addToFreezer(`${name} (uvarené, po ${CAN_GRAMS} g)`, count);
+		frozenLegumes = [...frozenLegumes, dryId];
+		toast(`${count}× do mrazničky`, () => {
+			removePreserve(id);
+			frozenLegumes = frozenLegumes.filter((x) => x !== dryId);
+		});
+	}
 	const ovenCount = $derived(chosen.filter((e) => e.recipe.equipment.includes('rura')).length);
 
 	/** When the session starts, so the plan reads in clock times. */
@@ -195,6 +224,40 @@
 		</section>
 
 		{#if chosen.length}
+			{#if legumes.length}
+				<section class="card box">
+					<h2 class="section-title"><Icon name="bean" size={24} /> Strukoviny naraz</h2>
+					<p class="hint lead">
+						Namiesto plechoviek uvar suché v jednom hrnci. Namoč večer predtým, celé balenie – čo
+						zvýši, zamraz po {CAN_GRAMS} g ako plechovku.
+						<a href="/wiki/strukoviny-vo-velkom">Ako na to</a>
+					</p>
+					<ul class="notes divided">
+						{#each legumes as b (b.dry.id)}
+							{@const name = b.dry.name.replace(/\s*\(.*\)|\s+such\S*/g, '')}
+							<li>
+								<strong>{name}:</strong> namoč {formatGrams(b.soakGrams)} suchej, recepty potrebujú
+								{formatGrams(b.dryGrams)} <small>({b.usedIn.join(' · ')})</small>
+								{#if b.freezerPortions}
+									<span class="legume-freeze">
+										Zvyšok: {b.freezerPortions}× {CAN_GRAMS} g do mrazničky
+										{#if frozenLegumes.includes(b.dry.id)}
+											<Icon name="check" size={16} />
+										{:else}
+											<button
+												class="btn small"
+												onclick={() => freezeLegumes(b.dry.id, name, b.freezerPortions)}
+												>Zapísať do mrazničky</button
+											>
+										{/if}
+									</span>
+								{/if}
+							</li>
+						{/each}
+					</ul>
+				</section>
+			{/if}
+
 			{#if aheadNotes.length}
 				<section class="card box">
 					<h2 class="section-title"><Icon name="moon" size={24} /> Deň vopred</h2>
@@ -383,6 +446,15 @@
 </div>
 
 <style>
+	.legume-freeze {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--sp-2);
+		margin-top: 4px;
+		font-size: 0.9rem;
+		color: var(--muted);
+	}
 	.page {
 		display: grid;
 		gap: 20px;

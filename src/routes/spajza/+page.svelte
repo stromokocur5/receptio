@@ -347,6 +347,13 @@
 								</button>
 							{/each}
 						</div>
+						{#if category === 'strukoviny'}
+							<p class="hint">
+								Uvarenú fazuľu či cícer z mrazničky naklikni ako „sterilizovanú“ – 240 g uvarených
+								je jedna plechovka. Suchú ako suchú, recepty si ju prepočítajú.
+								<a href="/wiki/strukoviny-vo-velkom">Ako ich variť a mraziť</a>
+							</p>
+						{/if}
 					</details>
 				{:else}
 					<p class="muted">Takú surovinu v databáze zatiaľ nemáme.</p>

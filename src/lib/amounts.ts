@@ -100,6 +100,18 @@ export function formatPiece(grams: number, piece: { label: string; grams: number
 	return `≈ ${formatNumber(count)} ${piece.label}`;
 }
 
+/** Canned legume → its dry form in the same pantry group (fazula-cervena → fazula-cervena-sucha). */
+export function dryForms(ingredients: Ingredient[]): Map<string, Ingredient> {
+	return new Map(
+		ingredients
+			.filter((i) => i.category === 'strukoviny' && i.groupFactor === 1)
+			.flatMap((canned) => {
+				const dry = ingredients.find((i) => i.group === canned.group && i.groupFactor > 1);
+				return dry ? [[canned.id, dry] as const] : [];
+			})
+	);
+}
+
 export function formatGrams(grams: number): string {
 	if (grams >= 1000) return `${formatNumber(grams / 1000, 2)} kg`;
 	return `${formatNumber(grams >= 100 ? Math.round(grams / 5) * 5 : Math.round(grams), 0)} g`;

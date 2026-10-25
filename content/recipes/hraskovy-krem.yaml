@@ -1,0 +1,30 @@
+title: Hráškový krém
+description: Sladká zelená polievka z mrazeného hrášku so zemiakom a citrónom. Hrášok sa varí len 4 minúty, aby ostal žiarivo zelený.
+cuisine: moderna
+meals: [obed, vecera]
+categories: [polievky/kremove]
+time: 30
+active: 10
+servings: 4
+difficulty: 1
+tags: [lacne, rychle, polievka, deti]
+spicy: 0
+keeps: { fridge: 3, freezer: 3 }
+leftovers: 'Zamraz po porciách. Pri ohrievaní nevar dlho, zošedne.'
+ingredients:
+  - olej: 2 pl
+  - cibula: 1 ks | nadrobno
+  - cesnak: 2 ks
+  - zemiaky: 200 g | na kocky 1 cm
+  - zeleninovy-vyvar: 1000 ml
+  - hrasok: 600 g | mrazený
+  - bylinky-mata: 2 pl | čerstvá, alebo 1 čl sušenej
+  - sojove-mlieko: 100 ml
+  - citron: 1/2 ks | šťava
+  - sol: podľa chuti
+  - tekvicove-semienka: 2 pl | na posypanie
+steps:
+  - V hrnci opeč cibuľu na oleji na strednom ohni 5 minút, kým nezmäkne. Pridaj cesnak a minútu ho praž.
+  - Pridaj zemiaky a vývar, priveď do varu a var na miernom ohni 12 minút, kým zemiaky nie sú mäkké.
+  - Vsyp hrášok rovno z mrazničky a var len 4 minúty od nového zovretia – dlhším varením zošedne a stratí sladkosť.
+  - Odstav, pridaj mätu, mlieko a citrónovú šťavu a rozmixuj dohladka. Ochutnaj soľ (vývar je slaný). Podávaj posypané tekvicovými semienkami.

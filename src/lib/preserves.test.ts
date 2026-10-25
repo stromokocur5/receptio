@@ -17,6 +17,13 @@ describe('preserves', () => {
 		expect(bestBefore({ name: 'Fazuľky', made: '2025-12-31', place: 'mraznicka' })).toBe(
 			'2026-10-31'
 		);
+		expect(
+			bestBefore({
+				name: 'Čierna fazuľa (uvarené, po 240 g)',
+				made: '2026-01-15',
+				place: 'mraznicka'
+			})
+		).toBe('2026-07-15');
 		expect(bestBefore({ name: 'Chlieb', made: '2026-01-31', place: 'mraznicka' })).toBe(
 			'2026-04-30'
 		);

@@ -88,6 +88,57 @@ export function prepList(
 	);
 }
 
+export interface LegumeBatch {
+	dry: Ingredient;
+	/** Dry grams the plan's recipes need, canned amounts counted as cooked at home. */
+	dryGrams: number;
+	/** Whole packs to soak, so nothing is left half-open in the pantry. */
+	soakGrams: number;
+	/** Can-sized bags (240 g cooked) left over for the freezer. */
+	freezerPortions: number;
+	usedIn: string[];
+}
+
+/** What a dry pack weighs and what a can holds drained – one freezer bag replaces one can. */
+const DRY_PACK = 500;
+export const CAN_GRAMS = 240;
+
+/**
+ * Legumes the plan needs, as one pot per kind: canned amounts become dry ones, the soak is
+ * rounded up to whole packs and the rest goes to the freezer in can-sized bags.
+ */
+export function legumeBatches(
+	items: { entry: PlanEntry; recipe: RecipeSummary }[],
+	byId: Map<string, Ingredient>,
+	dryOf: Map<string, Ingredient>
+): LegumeBatch[] {
+	const found = new Map<string, { dry: Ingredient; dryGrams: number; usedIn: string[] }>();
+	for (const { entry, recipe } of items) {
+		const factor = entry.servings / recipe.servings;
+		for (const line of planLines(recipe, entry.variant)) {
+			const ingredient = byId.get(line.ingredientId);
+			if (!ingredient || line.grams <= 0) continue;
+			const dry =
+				dryOf.get(ingredient.id) ??
+				([...dryOf.values()].some((d) => d.id === ingredient.id) ? ingredient : undefined);
+			if (!dry) continue;
+			const grams = (line.grams * factor) / (dry === ingredient ? 1 : dry.groupFactor);
+			const batch = found.get(dry.id) ?? { dry, dryGrams: 0, usedIn: [] };
+			batch.dryGrams += grams;
+			if (!batch.usedIn.includes(recipe.title)) batch.usedIn.push(recipe.title);
+			found.set(dry.id, batch);
+		}
+	}
+	return [...found.values()].map((b) => {
+		const soakGrams = Math.ceil(b.dryGrams / DRY_PACK - 1e-9) * DRY_PACK;
+		return {
+			...b,
+			soakGrams,
+			freezerPortions: Math.floor(((soakGrams - b.dryGrams) * b.dry.groupFactor) / CAN_GRAMS)
+		};
+	});
+}
+
 /** "1 h 25 min", "40 min". */
 export function formatMinutes(minutes: number): string {
 	const h = Math.floor(minutes / 60);

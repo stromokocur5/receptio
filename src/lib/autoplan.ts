@@ -21,6 +21,11 @@ export interface AutoPlanOptions {
 	diets?: Diet[];
 	/** Cook bigger batches and eat leftovers (up to 3 meals per recipe) instead of more variety. */
 	batchCooking: boolean;
+	/**
+	 * One shop for the whole plan: only meals in the first `freshDays` days may need fresh
+	 * produce, the rest cook from the freezer and the pantry (needs `storesVersion` in the context).
+	 */
+	freshDays?: number;
 	/** Different seed = a different, equally valid plan. */
 	seed: number;
 	/**
@@ -45,6 +50,8 @@ export interface AutoPlanContext {
 	 * kept at home. With it the plan prefers recipes that finish a pack another recipe opened.
 	 */
 	packOf?: (ingredientId: string) => number | undefined;
+	/** How to cook the recipe with nothing fresh (see shelf.ts), undefined = it can't be. */
+	storesVersion?: (recipe: RecipeSummary) => { variant?: string } | undefined;
 }
 
 export interface AutoPlanResult {
@@ -76,8 +83,15 @@ const ATTEMPTS = 120;
 /** Finishing a whole open pack counts about as much as two good reasons (`bonus`). */
 const PACK_WEIGHT = 3;
 
-/** The version of a recipe that satisfies the diet options, or null if none does. */
-function pickVersion(r: RecipeSummary, o: AutoPlanOptions): Candidate | null {
+/**
+ * The version of a recipe that satisfies the diet options, or null if none does. With `stores`,
+ * also one that needs nothing fresh.
+ */
+function pickVersion(
+	r: RecipeSummary,
+	o: AutoPlanOptions,
+	stores?: AutoPlanContext['storesVersion']
+): Candidate | null {
 	let data: RecipeSummary | RecipeVariant = r;
 	let variant: string | undefined;
 	if (o.glutenFree && r.gluten === 'contains') {
@@ -107,6 +121,18 @@ function pickVersion(r: RecipeSummary, o: AutoPlanOptions): Candidate | null {
 		data = fitting;
 		variant = fitting.name;
 	}
+	if (stores && variant) {
+		// A diet's version (low FODMAP, gluten-free) has lines of its own: those must keep too.
+		if (!stores({ ...r, lines: data.lines, variants: [] })) return null;
+	} else if (stores) {
+		const fromStores = stores(r);
+		if (!fromStores) return null;
+		if (fromStores.variant) {
+			data = r.variants.find((v) => v.name === fromStores.variant)!;
+			variant = data.name;
+			if (!fits(data) || data.treat.length) return null;
+		}
+	}
 	if (o.excludeAllergens.some((a) => data.allergens.includes(a))) return null;
 	const fridge = r.keeps?.fridge ?? 2;
 	return {
@@ -124,24 +150,32 @@ function pickVersion(r: RecipeSummary, o: AutoPlanOptions): Candidate | null {
 /** Breakfasts are lighter: a third of the protein asked of a main meal is enough. */
 const BREAKFAST_PROTEIN_SHARE = 1 / 3;
 
-export function breakfastCandidates(recipes: RecipeSummary[], o: AutoPlanOptions): Candidate[] {
+export function breakfastCandidates(
+	recipes: RecipeSummary[],
+	o: AutoPlanOptions,
+	stores?: AutoPlanContext['storesVersion']
+): Candidate[] {
 	return recipes
 		.filter((r) => isBreakfastRecipe(r) && !r.meals.includes('domace'))
 		.filter((r) => r.showNutrition && (!o.mild || r.spicy === 0))
-		.map((r) => pickVersion(r, o))
+		.map((r) => pickVersion(r, o, stores))
 		.filter(
 			(c): c is Candidate => c !== null && c.protein >= o.minProtein * BREAKFAST_PROTEIN_SHARE
 		);
 }
 
-export function candidates(recipes: RecipeSummary[], o: AutoPlanOptions): Candidate[] {
+export function candidates(
+	recipes: RecipeSummary[],
+	o: AutoPlanOptions,
+	stores?: AutoPlanContext['storesVersion']
+): Candidate[] {
 	return (
 		recipes
 			.filter((r) => r.meals.includes('obed') || r.meals.includes('vecera'))
 			// DIY staples (seitan, tofu, hummus) are ingredients, not a meal on their own.
 			.filter((r) => !r.meals.includes('domace'))
 			.filter((r) => r.showNutrition && (!o.mild || r.spicy === 0))
-			.map((r) => pickVersion(r, o))
+			.map((r) => pickVersion(r, o, stores))
 			.filter((c): c is Candidate => c !== null && c.protein >= o.minProtein)
 	);
 }
@@ -194,7 +228,9 @@ function greedy(
 	costWeight: number,
 	ctx: AutoPlanContext,
 	/** Portions eaten at one meal. */
-	perMeal: number
+	perMeal: number,
+	/** Recipes already in another part of the plan. */
+	taken: Chosen = []
 ): Chosen {
 	const chosen: Chosen = [];
 	const usedCuisines = new Map<string, number>();
@@ -202,7 +238,9 @@ function greedy(
 	const packOf = ctx.packOf ?? (() => undefined);
 	let left = wanted;
 	while (left > 0) {
-		const options = pool.filter((c) => !chosen.some((x) => x.c.recipe.id === c.recipe.id));
+		const options = pool.filter(
+			(c) => ![...taken, ...chosen].some((x) => x.c.recipe.id === c.recipe.id)
+		);
 		if (!options.length) break;
 		const scored = options.map((c) => {
 			const repeat = usedCuisines.get(c.recipe.cuisine) ?? 0;
@@ -244,6 +282,14 @@ export function autoPlan(
 	const morningPool = o.breakfasts ? breakfastCandidates(recipes, o) : [];
 	const wantedMain = o.slots?.main ?? o.days * o.mealsPerDay;
 	const wantedMorning = o.breakfasts ? (o.slots?.morning ?? o.days) : 0;
+	// After the first days of a long plan the fresh vegetables are gone: the rest from the stores.
+	const split = o.freshDays && ctx.storesVersion && o.freshDays < o.days;
+	const freshShare = split ? o.freshDays! / o.days : 1;
+	const freshMain = Math.round(wantedMain * freshShare);
+	const freshMorning = Math.round(wantedMorning * freshShare);
+	const storesPool = split ? candidates(recipes, o, ctx.storesVersion) : [];
+	const storesMorningPool =
+		split && o.breakfasts ? breakfastCandidates(recipes, o, ctx.storesVersion) : [];
 	// Portions per meal, on average over the plan.
 	const perMain = o.slots && o.slots.main ? o.slots.mainPortions / o.slots.main : o.people;
 	const perMorning =
@@ -257,8 +303,24 @@ export function autoPlan(
 	let best: { result: AutoPlanResult; score: number } | null = null;
 
 	for (let attempt = 0; attempt < ATTEMPTS && pool.length; attempt++) {
-		const main = greedy(pool, wantedMain, rand, costWeight, ctx, perMain);
-		const morning = greedy(morningPool, wantedMorning, rand, costWeight, ctx, perMorning);
+		const freshPart = greedy(pool, freshMain, rand, costWeight, ctx, perMain);
+		const main = [
+			...freshPart,
+			...greedy(storesPool, wantedMain - freshMain, rand, costWeight, ctx, perMain, freshPart)
+		];
+		const freshMorningPart = greedy(morningPool, freshMorning, rand, costWeight, ctx, perMorning);
+		const morning = [
+			...freshMorningPart,
+			...greedy(
+				storesMorningPool,
+				wantedMorning - freshMorning,
+				rand,
+				costWeight,
+				ctx,
+				perMorning,
+				freshMorningPart
+			)
+		];
 		const all = [...main, ...morning];
 		const entry = ({ c, meals }: Chosen[number], breakfast: boolean): PlanEntry => ({
 			recipeId: c.recipe.id,
@@ -316,7 +378,15 @@ export function swapEntry(
 	ctx: AutoPlanContext = {}
 ): AutoPlanResult {
 	const current = plan.entries[index];
-	const pool = current?.breakfast ? breakfastCandidates(recipes, o) : candidates(recipes, o);
+	const currentRecipe = current && recipes.find((r) => r.id === current.recipeId);
+	// In a plan with one shop, a meal cooked from the stores is replaced by another one like it.
+	const stores =
+		o.freshDays && o.freshDays < o.days && currentRecipe && ctx.storesVersion?.(currentRecipe)
+			? ctx.storesVersion
+			: undefined;
+	const pool = current?.breakfast
+		? breakfastCandidates(recipes, o, stores)
+		: candidates(recipes, o, stores);
 	const byId = new Map(pool.map((c) => [c.recipe.id, c]));
 	const old = current && byId.get(current.recipeId);
 	if (!old) return plan;

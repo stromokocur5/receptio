@@ -37,6 +37,7 @@
 		everydayVersion
 	} from '$lib/nutrition';
 	import { recipeSeason } from '$lib/season';
+	import { storesVersion } from '$lib/shelf';
 	import { isAssumedAtHome, rankByPantry, type PantryMatch } from '$lib/pantry';
 	import { avoidFilter, isAvoiding, missableTools, shortName } from '$lib/avoid';
 	import { hasNeeds, householdFilter } from '$lib/household';
@@ -115,6 +116,7 @@
 		'bez-varenia',
 		'len-rura',
 		'sezonne',
+		'z-mraznicky',
 		'menej-soli',
 		'na-kazdy-den'
 	] as const;
@@ -125,6 +127,7 @@
 		'bez-varenia': COMPUTED_TAG_LABELS['bez-varenia'],
 		'len-rura': COMPUTED_TAG_LABELS['len-rura'],
 		sezonne: 'V sezóne',
+		'z-mraznicky': 'Z mrazničky a špajze',
 		'menej-soli': 'Menej soli',
 		'na-kazdy-den': 'Na každý deň'
 	};
@@ -279,6 +282,8 @@
 		for (const q of quick) {
 			if (q === 'sezonne') {
 				if (!recipeSeason(r, catalog.ingredientsById, month).inSeason) return false;
+			} else if (q === 'z-mraznicky') {
+				if (!storesVersion(r, catalog.ingredientsById)) return false;
 			} else if (q === 'menej-soli') {
 				if (!lowSalt(r)) return false;
 			} else if (q === 'na-kazdy-den') {
@@ -437,7 +442,11 @@
 		if (difficulty) add('difficulty', DIFFICULTY_LABELS[difficulty], 'cas', () => (difficulty = 0));
 		for (const q of quick) {
 			const group: Group =
-				q === 'menej-soli' || q === 'na-kazdy-den' ? 'strava' : q === 'sezonne' ? 'doma' : 'cas';
+				q === 'menej-soli' || q === 'na-kazdy-den'
+					? 'strava'
+					: q === 'sezonne' || q === 'z-mraznicky'
+						? 'doma'
+						: 'cas';
 			add(`quick-${q}`, QUICK_LABELS[q], group, () => toggleQuick(q));
 		}
 		if (gf) add('gf', GF_LABELS[gf], 'strava', () => (gf = 0));
@@ -656,6 +665,7 @@
 		{ label: 'Niečo sladké', search: 'chut=sladke', icon: 'cake', tone: 'var(--tomato)' },
 		{ label: 'Veľa bielkovín', search: 'bielkoviny=20', icon: 'bean', tone: 'var(--leaf)' },
 		{ label: 'Veľa vlákniny', search: 'vlaknina=10', icon: 'wheat', tone: 'var(--leaf-2)' },
+		{ label: 'Z mrazničky', search: 'rychlo=z-mraznicky', icon: 'snowflake', tone: 'var(--sky)' },
 		{ label: 'Lacno', search: 'sort=cena', icon: 'euro', tone: 'var(--turmeric)' }
 	];
 
@@ -1110,6 +1120,15 @@
 								onclick={() => toggleQuick('sezonne')}
 							>
 								<Icon name="leaf" size={16} /> V sezóne
+							</button>
+							<button
+								class="chip"
+								aria-pressed={quick.includes('z-mraznicky')}
+								title="Mrazená zelenina a ovocie, konzervy a zelenina, ktorá vydrží týždne – nič, čo treba kúpiť čerstvé"
+								onclick={() => toggleQuick('z-mraznicky')}
+							>
+								<Icon name="snowflake" size={16} />
+								{QUICK_LABELS['z-mraznicky']}
 							</button>
 						</div>
 						{#if !hasPantry}

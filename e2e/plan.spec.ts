@@ -118,3 +118,20 @@ test('clearing the plan goes at once and can be taken back', async ({ page }) =>
 	await expect(page.getByRole('heading', { name: 'Tvoj týždeň' })).toBeVisible();
 	await expect(page.getByText(/falafel/i).first()).toBeVisible();
 });
+
+test('meal prep cooks the plan’s beans in one pot and freezes the rest', async ({ page }) => {
+	await visit(page, '/plan/varenie');
+	await page.evaluate(() =>
+		localStorage.setItem('receptio:plan', JSON.stringify([{ recipeId: 'burrito', servings: 4 }]))
+	);
+	await page.reload();
+	await page.waitForLoadState('networkidle');
+	const legumes = page.locator('section', { hasText: 'Strukoviny naraz' });
+	// Two cans = 200 g dry; the 500 g pack leaves 300 g dry ≈ three cans for the freezer.
+	await expect(legumes).toContainText('namoč 500 g');
+	await legumes.getByRole('button', { name: 'Zapísať do mrazničky' }).click();
+	const stored = await page.evaluate(() =>
+		JSON.parse(localStorage.getItem('receptio:preserves') ?? '[]')
+	);
+	expect(stored).toMatchObject([{ count: 3, place: 'mraznicka' }]);
+});

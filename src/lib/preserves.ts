@@ -32,6 +32,8 @@ const KINDS: { match: RegExp; months: Partial<Record<PreservePlace, number>> }[]
 	{ match: /kimči|kimchi|kapust|kvas|nakladan|uhor/, months: { pivnica: 12, chladnicka: 6 } },
 	{ match: /chlieb|pečiv|rožk|koláč|buchty|cesto|pizz|tortil/, months: { mraznicka: 3 } },
 	{ match: /pesto|bylink|pažítk|petržlen|bazalk/, months: { mraznicka: 6 } },
+	// Cooked beans, not green beans (fazuľky), which keep the usual 10 months.
+	{ match: /fazu(?!ľk)|cícer|šošov|strukov|bôb/, months: { mraznicka: 6 } },
 	{
 		match: /polievk|vývar|omáčk|guláš|kari|dal|chili|ragú|lasagn|burrito|halušk|knedl|tofu/,
 		months: { mraznicka: 4 }

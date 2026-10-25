@@ -271,3 +271,26 @@ export function rewriteStep(step: string, swapped: Iterable<string>): string {
 		? text
 		: text.replace(/(^|[.!?]\s+)(\p{Ll})/gu, (_m, gap, c) => gap + c.toUpperCase());
 }
+
+/** What the can's liquid becomes when the legumes were cooked at home from dry. */
+const FROM_CAN_RULES: Rule[] = [
+	{
+		// Not pickle brine ("s nálevom z uhoriek").
+		pattern: start('(?:aj )?s nálevom(?! z)'),
+		replace: () => 's vodou z varenia (asi 150 ml na každých 100 g suchých)'
+	},
+	{ pattern: start('(vod[auy]) z plechovky'), replace: (_m, water) => `${water} z varenia` },
+	{ pattern: start('nálev z plechovky'), replace: () => 'vodu z varenia' },
+	{ pattern: start('nálevu z plechovky'), replace: () => 'vody z varenia' }
+];
+
+/** A step of the "from dry legumes" version: the can's liquid is the cooking water now. */
+export function fromCanStep(step: string): string {
+	let text = step;
+	for (const rule of FROM_CAN_RULES) {
+		text = text.replace(rule.pattern, (match, ...args) =>
+			matchCase(match, rule.replace(match, ...args.slice(0, -2)))
+		);
+	}
+	return text;
+}

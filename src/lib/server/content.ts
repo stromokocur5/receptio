@@ -1,9 +1,10 @@
 import { marked } from 'marked';
 import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
-import { formatNumber, parseAmount, toGrams } from '$lib/amounts';
+import { dryForms, formatNumber, parseAmount, toGrams } from '$lib/amounts';
 import {
 	SALT_HIGH_G,
+	cookingStyle,
 	recipeAllergens,
 	recipeDiets,
 	dietBlockers,
@@ -17,7 +18,8 @@ import { stepLines, techniqueGuides } from '$lib/cooking';
 import { tipParts } from '$lib/tip-links';
 import { ART_NAMES, artFigure } from '$lib/wiki-art';
 import { normalizeSearch } from '$lib/labels';
-import { rewriteStep } from '$lib/step-swaps';
+import { fromCanStep, rewriteStep } from '$lib/step-swaps';
+import { freshProduce } from '$lib/shelf';
 import { bestPrice } from '$lib/pricing';
 import {
 	ALLERGENS,
@@ -27,6 +29,7 @@ import {
 	GROW_SUN,
 	INGREDIENT_CATEGORIES,
 	MEALS,
+	SHELF_KINDS,
 	TASTES,
 	UNITS,
 	WIKI_GROUPS,
@@ -119,6 +122,8 @@ const ingredientSchema = z
 			.strict()
 			.default({}),
 		staple: z.boolean().default(false),
+		/** How long it keeps once bought, see SHELF_KINDS. */
+		shelf: z.enum(SHELF_KINDS).optional(),
 		n: nutrientsSchema,
 		units: z.partialRecord(z.enum(UNITS), z.number().positive()).default({}),
 		density: z.number().positive().default(1),
@@ -339,6 +344,19 @@ const formatProtein = (grams: number) => grams.toFixed(grams < 10 ? 1 : 0).repla
 const LOW_SALT_VARIANT_NAME = 'Menej soli';
 const OAT_VARIANT_NAME = 'S ovseným nápojom';
 const DRY_VARIANT_NAME = 'Zo suchých strukovín';
+const STORES_VARIANT_NAME = 'Zo zásob';
+/**
+ * Fresh produce a cooked dish can take from the freezer or the pantry, and grams of the stored
+ * form per gram of fresh (a fresh chili is about 15 g, its dried flakes half a teaspoon).
+ */
+/** Share of the dish's weight above which an ingredient is what the dish is about. */
+const STAR_SHARE = 0.3;
+const FROM_STORES: Record<string, { to: string; ratio: number }> = {
+	paradajky: { to: 'paradajky-sterilizovane', ratio: 1 },
+	'paprika-cervena': { to: 'paprika-mrazena', ratio: 1 },
+	'cili-papricka': { to: 'cili', ratio: 0.05 },
+	'jarna-cibulka': { to: 'pazitka', ratio: 0.5 }
+};
 /** Minutes soaked dry legumes simmer until soft, by pantry group (see the strukoviny guide). */
 const DRY_SIMMER: Record<string, { min: number; max: number }> = {
 	cicer: { min: 60, max: 90 },
@@ -493,6 +511,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		oxalate: i.diet.oxalate ?? false,
 		nightshade: i.diet.nightshade ?? false,
 		staple: i.staple,
+		...(i.shelf && { shelf: i.shelf }),
 		per100g: {
 			kcal: i.n.kcal,
 			protein: i.n.p,
@@ -792,14 +811,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 	const TOFU_ID = 'tofu-natural';
 
 	/** Canned legume → its dry form in the same pantry group (fazula-cervena → fazula-cervena-sucha). */
-	const dryFormOf = new Map(
-		ingredients
-			.filter((i) => i.category === 'strukoviny' && i.groupFactor === 1)
-			.flatMap((canned) => {
-				const dry = ingredients.find((i) => i.group === canned.group && i.groupFactor > 1);
-				return dry && DRY_SIMMER[dry.group] ? [[canned.id, dry] as const] : [];
-			})
-	);
+	const dryFormOf = new Map([...dryForms(ingredients)].filter(([, dry]) => DRY_SIMMER[dry.group]));
 
 	/**
 	 * The same dish from dry legumes instead of cans: a third of the price and less salt, but they
@@ -833,13 +845,53 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			name: DRY_VARIANT_NAME,
 			description: `Suché strukoviny: ${swapped.join(', ')}. Vyjde to asi na tretinu ceny a s menej soľou, ale treba ich deň vopred namočiť a uvariť (+${simmer.max} minút).`,
 			steps: [
-				`Namočené strukoviny sceď, prepláchni a zalej čerstvou vodou na 5 cm nad ne. Prvých 10 minút ich var poriadne, potom na miernom ohni pod pokrievkou ${simmer.min}–${simmer.max} minút do mäkka (v tlakovom hrnci 8–15 minút). Hotové sa dajú ľahko roztlačiť medzi prstami. Sceď a vodu z varenia si odlož – poslúži všade, kde recept pridáva nálev z plechovky.`,
-				...recipe.steps
+				`Namočené strukoviny sceď, prepláchni a zalej čerstvou vodou na 5 cm nad ne. Prvých 10 minút ich var poriadne, potom na miernom ohni pod pokrievkou ${simmer.min}–${simmer.max} minút do mäkka (v tlakovom hrnci 8–15 minút). Hotové sa dajú ľahko roztlačiť medzi prstami. Sceď a vodu z varenia si odlož, môže sa ešte hodiť.`,
+				...recipe.steps.map(fromCanStep)
 			],
 			time: recipe.time + simmer.max,
 			activeTime: recipe.active + 5,
 			ahead: recipe.ahead ? `${soak} ${recipe.ahead}` : soak,
 			...compute(mergeLines(dryLines), recipe.servings)
+		};
+	}
+
+	/**
+	 * The dish cooked without a fresh shop: fresh tomatoes, peppers, chili and spring onion
+	 * swapped for canned, frozen and dried. Offered only when nothing fresh is left after that.
+	 */
+	function fromStoresVersion(
+		lines: RecipeLine[],
+		servings: number,
+		where: string
+	): RecipeVariant | undefined {
+		const eaten = lines.filter((l) => !l.notEaten).reduce((sum, l) => sum + l.grams, 0);
+		// Roasted peppers in ajvar or tomatoes on bruschetta are the dish, not something to swap.
+		if (lines.some((l) => FROM_STORES[l.ingredientId] && l.grams > eaten * STAR_SHARE)) {
+			return undefined;
+		}
+		const swapped: string[] = [];
+		const storedLines = lines.map((l) => {
+			const swap = FROM_STORES[l.ingredientId];
+			if (!swap || l.notEaten) return l;
+			swapped.push(
+				`${byId.get(l.ingredientId)!.name.toLowerCase()} → ${byId.get(swap.to)!.name.toLowerCase()}`
+			);
+			return scaledSwap(l, swap.to, swap.ratio, where);
+		});
+		if (!swapped.length || freshProduce({ lines: storedLines }, byId).length) return undefined;
+		const tomatoes = swapped.some((s) => s.startsWith('paradajky'));
+		return {
+			name: STORES_VARIANT_NAME,
+			description: [
+				`Keď nemáš čerstvú zeleninu: ${swapped.join(', ')}.`,
+				tomatoes
+					? 'Paradajky z konzervy pridaj aj so šťavou a var o 5 minút dlhšie, kým sa šťava neodparí. Kde mali byť surové navrch, ich vynechaj.'
+					: '',
+				'Mrazenú zeleninu daj rovno z mrazničky, nerozmrazuj ju.'
+			]
+				.filter(Boolean)
+				.join(' '),
+			...compute(mergeLines(storedLines), servings)
 		};
 	}
 
@@ -1093,7 +1145,26 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			});
 		}
 
-		const dryVersion = !variants.some((v) => v.name === DRY_VARIANT_NAME)
+		for (const toolId of [...r.equipment, ...r.no_equipment]) {
+			if (!equipmentById.has(toolId)) throw new Error(`${where}: neznáme vybavenie "${toolId}"`);
+		}
+		const tools = detectEquipment(r.steps, lines);
+		for (const toolId of r.equipment) tools.add(toolId);
+		for (const toolId of r.no_equipment) tools.delete(toolId);
+
+		const storesVersion =
+			cookingStyle([...tools]) !== 'bez-varenia' &&
+			!r.categories.some((c) => c.startsWith('salaty')) &&
+			!variants.some((v) => v.name === STORES_VARIANT_NAME)
+				? fromStoresVersion(lines, r.servings, where)
+				: undefined;
+		if (storesVersion) variants.push(storesVersion);
+
+		const dryVersion = !variants.some(
+			(v) =>
+				v.name === DRY_VARIANT_NAME ||
+				v.lines.some((l) => [...dryFormOf.values()].some((d) => d.id === l.ingredientId))
+		)
 			? fromDryVersion(lines, r)
 			: undefined;
 		if (dryVersion) variants.push(dryVersion);
@@ -1153,12 +1224,6 @@ export function compileContent(raw: RawContent, today: Date): Content {
 			if (low) variants.push(low);
 		}
 
-		for (const toolId of [...r.equipment, ...r.no_equipment]) {
-			if (!equipmentById.has(toolId)) throw new Error(`${where}: neznáme vybavenie "${toolId}"`);
-		}
-		const tools = detectEquipment(r.steps, lines);
-		for (const toolId of r.equipment) tools.add(toolId);
-		for (const toolId of r.no_equipment) tools.delete(toolId);
 		const equipmentDetail = [...tools]
 			.map((toolId) => equipmentById.get(toolId)!)
 			.sort((a, b) => levelOrder(a) - levelOrder(b) || a.name.localeCompare(b.name, 'sk'));

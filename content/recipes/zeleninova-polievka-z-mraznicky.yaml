@@ -1,0 +1,29 @@
+title: Zeleninová polievka z mrazničky
+description: Rýchla polievka so zemiakmi a drobnými cestovinami z vrecka mrazenej zeleniny. Hotová za pol hodiny bez krájania mrkvy a zeleru.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [polievky/zeleninove]
+time: 30
+active: 10
+servings: 4
+difficulty: 1
+tags: [lacne, deti, polievka, one-pot]
+spicy: 0
+keeps: { fridge: 3 }
+leftovers: 'Cestoviny sa v polievke rozmočia. Ak ju varíš na viac dní, cestoviny var zvlášť a pridávaj do taniera.'
+ingredients:
+  - olej: 1 pl
+  - cibula: 1 ks | nadrobno
+  - cesnak: 2 ks | nadrobno
+  - zemiaky: 300 g | na kocky 1 cm
+  - zeleninovy-vyvar: 1500 ml
+  - zeleninova-zmes: 500 g | polievková, rovno z mrazničky
+  - cestoviny: 80 g | drobné (písmenká, hviezdičky)
+  - sol: podľa chuti
+  - cierne-korenie: 1/2 čl
+  - petrzlenova-vnat: 2 pl | čerstvá alebo mrazená
+steps:
+  - V hrnci opeč cibuľu na oleji na strednom ohni 5 minút, kým nezmäkne. Pridaj cesnak a minútu ho praž.
+  - Pridaj zemiaky a vývar, priveď do varu a var na miernom ohni 10 minút.
+  - Vsyp zeleninu rovno z mrazničky a cestoviny a var ďalších 8 minút, kým nie sú cestoviny mäkké.
+  - Okoreň, ochutnaj soľ (vývar je slaný, často netreba žiadnu), vmiešaj petržlen a podávaj.
