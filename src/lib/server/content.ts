@@ -1,7 +1,7 @@
 import { marked } from 'marked';
 import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
-import { parseAmount, toGrams } from '$lib/amounts';
+import { formatNumber, parseAmount, toGrams } from '$lib/amounts';
 import {
 	SALT_HIGH_G,
 	recipeAllergens,
@@ -338,6 +338,15 @@ const FODMAP_VARIANT_NAME = 'Low FODMAP';
 const formatProtein = (grams: number) => grams.toFixed(grams < 10 ? 1 : 0).replace('.', ',');
 const LOW_SALT_VARIANT_NAME = 'Menej soli';
 const OAT_VARIANT_NAME = 'S ovseným nápojom';
+const DRY_VARIANT_NAME = 'Zo suchých strukovín';
+/** Minutes soaked dry legumes simmer until soft, by pantry group (see the strukoviny guide). */
+const DRY_SIMMER: Record<string, { min: number; max: number }> = {
+	cicer: { min: 60, max: 90 },
+	'fazula-cervena': { min: 60, max: 90 },
+	'fazula-biela': { min: 60, max: 90 },
+	'fazula-cierna': { min: 50, max: 70 },
+	bob: { min: 45, max: 60 }
+};
 /** Seasonings halved in the low-salt version: salt itself and salty sauces and pastes (g salt / 100 g). */
 const SALTY_SEASONING_MIN = 1.5;
 
@@ -782,6 +791,58 @@ export function compileContent(raw: RawContent, today: Date): Content {
 	const MIN_KEPT = 0.5;
 	const TOFU_ID = 'tofu-natural';
 
+	/** Canned legume → its dry form in the same pantry group (fazula-cervena → fazula-cervena-sucha). */
+	const dryFormOf = new Map(
+		ingredients
+			.filter((i) => i.category === 'strukoviny' && i.groupFactor === 1)
+			.flatMap((canned) => {
+				const dry = ingredients.find((i) => i.group === canned.group && i.groupFactor > 1);
+				return dry && DRY_SIMMER[dry.group] ? [[canned.id, dry] as const] : [];
+			})
+	);
+
+	/**
+	 * The same dish from dry legumes instead of cans: a third of the price and less salt, but they
+	 * soak overnight and simmer before the recipe starts.
+	 */
+	function fromDryVersion(
+		lines: RecipeLine[],
+		recipe: { servings: number; time: number; active: number; ahead?: string; steps: string[] }
+	): RecipeVariant | undefined {
+		const swapped: string[] = [];
+		let dryGrams = 0;
+		let simmer: { min: number; max: number } | undefined;
+		const dryLines = lines.map((l): RecipeLine => {
+			const dry = dryFormOf.get(l.ingredientId);
+			if (!dry || l.notEaten || !l.grams) return l;
+			const grams = Math.max(5, Math.round(l.grams / dry.groupFactor / 5) * 5);
+			dryGrams += grams;
+			const time = DRY_SIMMER[dry.group];
+			if (!simmer || time.max > simmer.max) simmer = time;
+			const cans =
+				l.unit === 'ks' && l.amount
+					? `${formatNumber(l.amount)} ${l.amount === 1 ? 'plechovky' : 'plechoviek'}`
+					: `${Math.round(l.grams)} g z plechovky`;
+			const name = byId.get(l.ingredientId)!.name.replace(/\s*\(.*\)|\s+sterilizovan\S*/g, '');
+			swapped.push(`${name} ${grams} g namiesto ${cans}`);
+			return { ingredientId: dry.id, grams, amount: grams, unit: 'g' };
+		});
+		if (!simmer) return undefined;
+		const soak = `Večer predtým namoč ${dryGrams} g suchých strukovín do trojnásobku studenej vody (8–12 hodín). Rýchlejšie: uvar ich vopred vo veľkom a porciu vyber z mrazničky.`;
+		return {
+			name: DRY_VARIANT_NAME,
+			description: `Suché strukoviny: ${swapped.join(', ')}. Vyjde to asi na tretinu ceny a s menej soľou, ale treba ich deň vopred namočiť a uvariť (+${simmer.max} minút).`,
+			steps: [
+				`Namočené strukoviny sceď, prepláchni a zalej čerstvou vodou na 5 cm nad ne. Prvých 10 minút ich var poriadne, potom na miernom ohni pod pokrievkou ${simmer.min}–${simmer.max} minút do mäkka (v tlakovom hrnci 8–15 minút). Hotové sa dajú ľahko roztlačiť medzi prstami. Sceď a vodu z varenia si odlož – poslúži všade, kde recept pridáva nálev z plechovky.`,
+				...recipe.steps
+			],
+			time: recipe.time + simmer.max,
+			activeTime: recipe.active + 5,
+			ahead: recipe.ahead ? `${soak} ${recipe.ahead}` : soak,
+			...compute(mergeLines(dryLines), recipe.servings)
+		};
+	}
+
 	/**
 	 * Tofu can stand in for beans in a stew or a burger, not in a sweet bean dessert, roasted
 	 * chickpeas or a dip that is the legume.
@@ -1031,6 +1092,11 @@ export function compileContent(raw: RawContent, today: Date): Content {
 				...oat
 			});
 		}
+
+		const dryVersion = !variants.some((v) => v.name === DRY_VARIANT_NAME)
+			? fromDryVersion(lines, r)
+			: undefined;
+		if (dryVersion) variants.push(dryVersion);
 
 		if (
 			r.nutrition &&

@@ -63,3 +63,4 @@ Pre dvoch zdvojnásob, pre rodinu ber cibuľu, mrkvu a jablká vo vreciach – v
 - **Bio nie je nutné.** Bežnú zeleninu a ovocie umy pod tečúcou vodou a zvyšky postrekov sú minimálne – zdravší je ten, kto zje viac zeleniny, nie ten, kto zje menej bio. Ako umývať, je v [umývanie](/wiki/umyvanie).
 - Pri konkrétnej surovine – ako vybrať zrelú, ako skladovať – pozri jej stránku v [surovinách](/suroviny).
 - **Neber viac čerstvého, než zješ za týždeň.** Šalát a bylinky vydržia pár dní, mrkva, kapusta a jablká týždne. Čo nestíhaš, zamraz – [mrazenie](/wiki/mrazenie).
+- **Nakupuješ raz za dva-tri týždne?** Čo vydrží ako dlho, v akom poradí to jesť a čo si dopestovať na parapete, je v návode [keď nechodíš často do obchodu](/wiki/nakup-na-dlhsie).

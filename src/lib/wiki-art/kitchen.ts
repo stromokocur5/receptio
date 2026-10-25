@@ -1,4 +1,4 @@
-import { arrow, drop, label, leader, snow } from './kit';
+import { arrow, drop, label, leader, plant, snow } from './kit';
 
 /** A pot sitting on (x, y) — the bottom centre — `w` wide and `h` tall, with liquid. */
 export function pot(x: number, y: number, w: number, h: number, liquid = 'ta-water', fill = 0.7) {
@@ -623,5 +623,90 @@ export const KITCHEN_ART: Record<string, () => string> = {
 		label(115, 150, 'strukoviny, obilniny, plechovky, korenie', 'middle') +
 		`<path class="ta-sack" d="M246 70c-4 20-6 60 0 100h54c6-40 4-80 0-100-8-8-46-8-54 0Z"/><path class="ta-sack-tie" d="M250 72c12 6 34 6 46 0"/>` +
 		`<text class="ta-label ta-strong" x="273" y="130" text-anchor="middle">5 kg</text>` +
-		label(273, 186, 'vo veľkom lacnejšie', 'middle')
+		label(273, 186, 'vo veľkom lacnejšie', 'middle'),
+
+	'strukoviny-vo-velkom': () =>
+		// One big pot, cooled on a tray, frozen flat in can-sized bags that stand like books.
+		`<path class="ta-hob" d="M10 150h88"/>` +
+		pot(54, 150, 76, 54) +
+		bubbles(54, 112, 66, 4) +
+		flames(54, 162, 0.5) +
+		label(54, 176, 'uvar veľa naraz', 'middle') +
+		arrow(98, 118, 116, 118) +
+		`<rect class="ta-tray" x="120" y="122" width="76" height="10" rx="3"/>` +
+		Array.from(
+			{ length: 10 },
+			(_, i) =>
+				`<ellipse class="ta-bean" cx="${128 + (i % 5) * 15}" cy="${118 - Math.floor(i / 5) * 6}" rx="5.5" ry="3.5"/>`
+		).join('') +
+		label(158, 152, 'schlaď na plechu', 'middle') +
+		label(158, 164, 'do 2 hodín', 'middle') +
+		arrow(198, 118, 214, 118) +
+		`<path class="ta-shelf-board" d="M218 150h96"/>` +
+		[0, 1, 2, 3]
+			.map(
+				(i) =>
+					`<rect class="ta-bag-freezer" x="${222 + i * 23}" y="${70 + (i % 2) * 4}" width="19" height="${80 - (i % 2) * 4}" rx="3"/>` +
+					`<path class="ta-zip" d="M${224 + i * 23} ${76 + (i % 2) * 4}h15"/>` +
+					`<path class="ta-tofu-line" d="M${226 + i * 23} ${96 + (i % 2) * 4}h11M${226 + i * 23} ${102 + (i % 2) * 4}h8"/>`
+			)
+			.join('') +
+		snow(236, 50, 0) +
+		snow(282, 44, 1) +
+		label(266, 168, 'po 250 g, na plocho', 'middle') +
+		label(266, 180, 'ako plechovka', 'middle') +
+		label(10, 30, '1 kg suchej ≈ 10 plechoviek'),
+
+	'druhy-ryze': () => {
+		const kind = (
+			x: number,
+			name: string,
+			ratio: string,
+			rx: number,
+			ry: number,
+			cls = 'ta-rice-grain'
+		) =>
+			[0, 1, 2]
+				.map(
+					(i) =>
+						`<ellipse class="${cls}" cx="${x + (i - 1) * 2}" cy="${70 + i * 16}" rx="${rx}" ry="${ry}" transform="rotate(${-20 + i * 18} ${x + (i - 1) * 2} ${70 + i * 16})"/>`
+				)
+				.join('') +
+			`<text class="ta-label ta-strong" x="${x}" y="136" text-anchor="middle">${name}</text>` +
+			label(x, 150, ratio, 'middle');
+		return (
+			label(160, 28, 'dlhé zrno ostane sypké, guľaté sa lepí', 'middle') +
+			kind(34, 'basmati', '1 : 1,5', 9, 1.8) +
+			kind(97, 'jazmínová', '1 : 1,25', 7, 2.4) +
+			kind(160, 'natural', '1 : 2', 7, 2.6, 'ta-bean-dry') +
+			kind(223, 'arborio', 'risotto', 5, 3.4) +
+			kind(286, 'sushi', '1 : 1,1', 4, 3.4) +
+			arrow(20, 170, 300, 170) +
+			label(20, 184, 'sypká') +
+			label(300, 184, 'lepkavá', 'end')
+		);
+	},
+
+	'nakup-na-dlhsie': () => {
+		const band = (y: number, cls: string, title: string, what: string) =>
+			`<rect class="ta-box ${cls}" x="34" y="${y}" width="170" height="32" rx="6"/>` +
+			`<text class="ta-label ta-strong" x="44" y="${y + 13}">${title}</text>` +
+			label(44, y + 26, what);
+		return (
+			band(14, 'ta-q3', 'prvé dni', 'šalát, bylinky, banány, huby') +
+			band(56, 'ta-q4', '1–2 týždne', 'pór, paprika, cuketa, karfiol') +
+			band(98, 'ta-q1', '3 a viac týždňov', 'cibuľa, mrkva, kapusta, jablká') +
+			band(140, 'ta-q2', 'mraznička: mesiace', 'brokolica, hrášok, špenát, ovocie') +
+			snow(214, 156, 0) +
+			arrow(18, 20, 18, 168) +
+			`<text class="ta-label" x="12" y="96" text-anchor="middle" transform="rotate(-90 12 96)">jedz v tomto poradí</text>` +
+			`<path class="ta-sill" d="M222 150h90"/>` +
+			jar(232, 104, 28, 44, '#d9c08a', false) +
+			plant(246, 116, 22, 0, 'sprout') +
+			`<path class="ta-pot" d="M274 126h30l-4 24h-22Z"/>` +
+			plant(289, 126, 34, 0.4) +
+			label(267, 168, 'doma dorastie', 'middle') +
+			label(267, 180, 'klíčky, bylinky', 'middle')
+		);
+	}
 };

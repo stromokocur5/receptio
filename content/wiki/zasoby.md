@@ -22,7 +22,7 @@ art: zasoby
 
 ## Suché vs. plechovka
 
-Suché strukoviny vychádzajú na porciu **2–3× lacnejšie** ako plechovky a majú menej soli. Namoč ich cez noc, uvar veľký hrniec a porcie zamraz. Receptio v špajzi berie suchý aj sterilizovaný cícer ako tú istú surovinu.
+Suché strukoviny vychádzajú na porciu **2–3× lacnejšie** ako plechovky a majú menej soli. Namoč ich cez noc, uvar veľký hrniec a porcie zamraz – postup, vrecká a ako dlho vydržia, je v návode [strukoviny namiesto plechoviek](/wiki/strukoviny-vo-velkom). Receptio v špajzi berie suchý aj sterilizovaný cícer ako tú istú surovinu.
 
 ## Čo sa oplatí vo veľkom
 

@@ -33,7 +33,7 @@
     - 'Príloha ku kari a dalu'
     - 'Pilaf a jollof rice'
   choose: 'Staršia (aged) basmati je voňavejšia a menej sa lepí.'
-  storage: 'Suchá rok. Uvarenú schlaď do hodiny a zjedz do 3 dní.'
+  storage: 'Suchá rok. Uvarenú schlaď do hodiny a zjedz do 1–2 dní.'
 
 - id: ryza-jazminova
   name: Ryža jazmínová (suchá)
@@ -51,6 +51,26 @@
   uses:
     - 'Kari, teriyaki, smažená ryža (deň stará)'
   storage: 'Suchá rok.'
+
+- id: ryza-natural
+  name: Ryža natural (hnedá, suchá)
+  aliases: [hnedá ryža, celozrnná ryža]
+  howto: [ryza]
+  category: obilniny
+  group: ryza
+  n: { kcal: 362, p: 7.5, c: 76, f: 2.7, fib: 3.4, salt: 0, fe: 1.5, ca: 10, zn: 2 }
+  units: { hrnček: 190 }
+  price: 3.5
+  co2: 4.5
+  color: '#c9a978'
+  substitutes:
+    - { to: ryza-basmati, note: 'var len 12 minút, vody 1 : 1,5' }
+    - { to: quinoa, note: 'za 15 minút, viac bielkovín' }
+  about: 'Ryža s otrubami: viac vlákniny, horčíka a železa ako biela, orieškovej chuti. Varí sa 25–30 minút.'
+  uses:
+    - 'Bowly, šaláty, sýta príloha ku kari'
+    - 'Var ako cestoviny a sceď – menej arzénu'
+  storage: 'Suchá pol roka, tuk v otrubách časom stuchne. Uvarenú schlaď do hodiny a zjedz do 1–2 dní.'
 
 - id: quinoa
   name: Quinoa (suchá)
@@ -371,7 +391,7 @@
 
 - id: cicer-sterilizovany
   name: Cícer sterilizovaný (scedený)
-  howto: [strukoviny]
+  howto: [strukoviny, strukoviny-vo-velkom]
   category: strukoviny
   diet: { fodmap: 42 }
   group: cicer
@@ -393,7 +413,7 @@
 
 - id: cicer-suchy
   name: Cícer suchý
-  howto: [strukoviny]
+  howto: [strukoviny, strukoviny-vo-velkom]
   category: strukoviny
   diet: { fodmap: 17 }
   group: cicer
@@ -412,7 +432,7 @@
 
 - id: fazula-cierna
   name: Čierna fazuľa sterilizovaná (scedená)
-  howto: [strukoviny]
+  howto: [strukoviny, strukoviny-vo-velkom]
   category: strukoviny
   diet: { fodmap: 40 }
   n: { kcal: 132, p: 8.9, c: 23.7, f: 0.5, fib: 8.7, salt: 0.5, fe: 2.1, ca: 27, zn: 1.1, ala: 0.1 }
@@ -428,9 +448,27 @@
     - 'Burrito bowl, tacos, burgre, feijoada'
   storage: 'Otvorená v chladničke 3 dni.'
 
+- id: fazula-cierna-sucha
+  name: Čierna fazuľa suchá
+  howto: [strukoviny, strukoviny-vo-velkom]
+  category: strukoviny
+  diet: { fodmap: 0 }
+  group: fazula-cierna
+  group_factor: 2.4
+  n: { kcal: 341, p: 21.6, c: 62.4, f: 1.4, fib: 15.5, salt: 0, fe: 5, ca: 123, zn: 3.7, ala: 0.2 }
+  units: { hrnček: 190 }
+  price: 4
+  color: '#3a2f33'
+  substitutes:
+    - { to: fazula-cierna, note: '2,4× viac podľa hmotnosti, bez namáčania a varenia' }
+  about: 'Menšia ako červená a varí sa o niečo rýchlejšie. V zdravých výživách a ázijských obchodoch ju kúpiš aj po kilách.'
+  uses:
+    - 'Burrito, tacos, polievka z čiernej fazule – keď sa varí veľa'
+  storage: 'Suchá 1–2 roky. Uvarenú zamraz po porciách aj s trochou vody.'
+
 - id: fazula-cervena
   name: Červená fazuľa sterilizovaná (scedená)
-  howto: [strukoviny]
+  howto: [strukoviny, strukoviny-vo-velkom]
   category: strukoviny
   diet: { fodmap: 0, fodmap_swap: fazula-cierna }
   n: { kcal: 127, p: 8.7, c: 22.8, f: 0.5, fib: 6.4, salt: 0.5, fe: 2.9, ca: 35, zn: 1, ala: 0.1 }
@@ -448,7 +486,7 @@
 
 - id: fazula-cervena-sucha
   name: Červená fazuľa suchá
-  howto: [strukoviny]
+  howto: [strukoviny, strukoviny-vo-velkom]
   category: strukoviny
   diet: { fodmap: 0 }
   group: fazula-cervena
@@ -467,7 +505,7 @@
 
 - id: fazula-biela-sucha
   name: Biela fazuľa suchá
-  howto: [strukoviny]
+  howto: [strukoviny, strukoviny-vo-velkom]
   category: strukoviny
   diet: { fodmap: 0, fodmap_swap: cicer-suchy, oxalate: true }
   group: fazula-biela
@@ -485,7 +523,7 @@
 
 - id: fazula-biela
   name: Biela fazuľa sterilizovaná (scedená)
-  howto: [strukoviny]
+  howto: [strukoviny, strukoviny-vo-velkom]
   category: strukoviny
   diet: { fodmap: 0, fodmap_swap: cicer-sterilizovany, oxalate: true }
   n: { kcal: 139, p: 9.7, c: 25, f: 0.4, fib: 6.3, salt: 0.5, fe: 3.7, ca: 90, zn: 1.4, ala: 0.1 }
@@ -3782,7 +3820,7 @@
 
 - id: bob-suchy
   name: Bôb suchý (fava)
-  howto: [strukoviny]
+  howto: [strukoviny, strukoviny-vo-velkom]
   category: strukoviny
   diet: { fodmap: 0 }
   group: bob
@@ -3805,7 +3843,7 @@
 
 - id: bob-sterilizovany
   name: Bôb sterilizovaný (scedený)
-  howto: [strukoviny]
+  howto: [strukoviny, strukoviny-vo-velkom]
   category: strukoviny
   diet: { fodmap: 0 }
   group: bob

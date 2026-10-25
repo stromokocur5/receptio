@@ -1,31 +1,54 @@
 title: Mac and cheese
-description: Krémové makaróny v „syrovej“ omáčke zo zemiakov, mrkvy, kešu a výživného droždia. Deti nepoznajú rozdiel.
+description: Krémové makaróny v „syrovej“ omáčke zo zemiakov, mrkvy, kešu a výživného droždia. Miso a horčica jej dajú slanosť a ostrosť ako čedar, zapečená má navrch chrumkavú strúhanku.
 cuisine: americka
 meals: [obed, vecera]
 categories: [hlavne/cestoviny]
-time: 30
+time: 35
 active: 20
 servings: 4
 difficulty: 1
-tags: [deti, rychle, klasika]
+tags: [deti, klasika, lacne]
 spicy: 0
 keeps: { fridge: 3 }
+leftovers: 'Omáčka v chladničke zhustne. Prehrej s 3–4 lyžicami vody alebo sójového nápoja na miernom ohni, alebo zapeč so strúhankou 15 minút na 200 °C.'
+related: [nacho-syrova-omacka, kesu-syr]
+howto: [cestoviny]
 ingredients:
-  - cestoviny: 350 g | makaróny
-  - zemiaky: 2 ks | na kocky
-  - mrkva: 1 ks | na kolieska
-  - cibula: 1/2 ks
-  - kesu: 50 g
-  - vyzivne-drozdie: 4 pl
+  - cestoviny: 350 g | makaróny alebo kolienka
+  - sol: ~1 pl | do vody na cestoviny
+  - zemiaky: 300 g | múčnaté, na kocky 2 cm
+  - mrkva: 100 g | na tenké kolieska
+  - cibula: 1/2 ks | na štvrtiny
+  - cesnak: 2 ks
+  - kesu: 60 g
+  - vyzivne-drozdie: 5 pl
+  - miso: 1 pl
   - horcica: 1 čl
-  - citron: 1/2 ks
-  - cesnak: 1 ks
+  - citron: 1/2 ks | šťava
   - udena-paprika: 1/2 čl
-  - sol: 1 čl
-  - olej: 2 pl
+  - kurkuma: 1/4 čl | na farbu
+  - sol: 1/2 čl
+  - olivovy-olej: 2 pl
   - sojove-mlieko: 150 ml
 steps:
-  - Zemiaky, mrkvu, cibuľu a kešu zalej 500 ml vody a var na miernom ohni 15 minút do mäkka.
-  - Uvar cestoviny.
-  - Zeleninu s kešu a 150 ml vody z varenia rozmixuj so všetkým ostatným dohladka.
-  - Omáčku premiešaj s cestovinami a podávaj. Zapečená so strúhankou 15 minút na 200 °C je ešte lepšia.
+  - Zemiaky, mrkvu, cibuľu, cesnak a kešu daj do menšieho hrnca, zalej 500 ml vody a var pod pokrievkou na miernom ohni 15 minút, kým sa zemiaky nerozpadávajú. Kešu za ten čas zmäkne, netreba ho namáčať.
+  - Medzitým vo veľkom hrnci priveď do varu 3 litre vody, osoľ ju lyžicou soli a daj variť cestoviny o 1 minútu kratšie, ako píše obal.
+  - Zeleninu s kešu vylov do mixéra a pridaj 200 ml vody, v ktorej sa varila. Pridaj droždie, miso, horčicu, citrónovú šťavu, papriku, kurkumu, 1/2 čl soli, olej a sójový nápoj a mixuj 1–2 minúty úplne dohladka. Ochutnaj – omáčka má byť výrazne slaná a kyslastá, cestoviny ju stlmia.
+  - Odober hrnček vody z cestovín a cestoviny sceď. Vráť ich do hrnca, vlej omáčku a na miernom ohni miešaj 2 minúty, kým nezhustne a neobalí každú cestovinu. Ak je hustá, pridaj vodu z cestovín po lyžiciach. Podávaj hneď, chladnutím hustne.
+tips:
+  - Omáčka bez mixéra nebude hladká – kešu sa musí rozmixovať. Bez kešu (alergia) daj o 1 zemiak viac a 2 PL oleja, bude ľahšia, ale stále krémová.
+  - Deťom, ktoré nemajú rady „zeleninové“, rozmixuj mrkvu úplne – farba je ako zo syra.
+variants:
+  - name: Zapečené so strúhankou
+    description: Cestoviny s omáčkou zapečené v rúre s chrumkavou strúhankou na olivovom oleji.
+    add:
+      - struhanka: 5 pl
+      - olivovy-olej: 1 pl
+    time: 55
+    active: 25
+    steps:
+      - Rúru zapni na 200 °C. Zemiaky, mrkvu, cibuľu, cesnak a kešu daj do menšieho hrnca, zalej 500 ml vody a var pod pokrievkou na miernom ohni 15 minút, kým sa zemiaky nerozpadávajú.
+      - Medzitým vo veľkom hrnci priveď do varu 3 litre vody, osoľ ju lyžicou soli a daj variť cestoviny o 2 minúty kratšie, ako píše obal – v rúre ešte zmäknú.
+      - Zeleninu s kešu vylov do mixéra a pridaj 200 ml vody, v ktorej sa varila. Pridaj droždie, miso, horčicu, citrónovú šťavu, papriku, kurkumu, 1/2 čl soli, 2 PL oleja a sójový nápoj a mixuj 1–2 minúty úplne dohladka.
+      - Cestoviny sceď a premiešaj s omáčkou – má byť redšia ako na tanier, v rúre zhustne. Zapekaciu misu vymasti olejom a cestoviny do nej rozotri.
+      - Strúhanku premiešaj so zvyšnou 1 PL oleja a štipkou soli, posyp navrch a peč 15–20 minút, kým nie je strúhanka zlatá a omáčka na okrajoch nebublá. Pred podávaním nechaj 5 minút postáť.

@@ -96,6 +96,22 @@ describe('content', () => {
 		);
 	});
 
+	it('offers a version from dry legumes where the recipe uses cans', () => {
+		const burrito = content.recipeDetails.get('burrito')!;
+		const dry = burrito.variants.find((v) => v.name === 'Zo suchých strukovín')!;
+		expect(dry.lines.find((l) => l.ingredientId === 'fazula-cierna-sucha')?.grams).toBe(200);
+		expect(dry.lines.some((l) => l.ingredientId === 'fazula-cierna')).toBe(false);
+		expect(dry.steps![0]).toContain('Namočené strukoviny');
+		expect(dry.steps!.slice(1)).toEqual(burrito.steps);
+		expect(dry.time).toBeGreaterThan(burrito.time);
+		expect(dry.ahead).toContain('200 g suchých strukovín');
+		expect(dry.description).toContain('Čierna fazuľa 200 g namiesto 2 plechoviek');
+		expect(dry.costPerServing).toBeLessThan(burrito.costPerServing);
+		expect(content.recipeDetails.get('mac-and-cheese')!.variants.map((v) => v.name)).not.toContain(
+			'Zo suchých strukovín'
+		);
+	});
+
 	it('labels comfort food "na občas" and clears it for lighter versions', () => {
 		const falafel = content.recipeDetails.get('falafel')!;
 		expect(falafel.treat).toContain('vyprazane');
