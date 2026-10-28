@@ -3822,10 +3822,27 @@
   price: 30
   note: zrážadlo na tofu, kúpiš online alebo v bio obchodoch; alternatíva je síran vápenatý (E516)
   substitutes:
-    - { note: 'síran vápenatý alebo citrónová šťava – tofu bude drobivejšie' }
+    - { to: siran-vapenaty, note: 'mäkšie tofu s veľa vápnika' }
+    - { note: 'citrónová šťava – tofu bude drobivejšie a jemne kyslé' }
   about: 'Chlorid horečnatý – zrážadlo na domáce tofu.'
   uses:
     - 'Domáce tofu'
+  storage: 'Suchý roky.'
+
+- id: siran-vapenaty
+  name: Síran vápenatý (E516, na tofu)
+  aliases: [sadra na tofu, gypsum]
+  category: ine
+  n: { kcal: 0, p: 0, c: 0, f: 0, fib: 0, salt: 0, fe: 0, ca: 0, zn: 0 }
+  units: { čl: 4 }
+  price: 15
+  note: zrážadlo na tofu, kúpiš online alebo v obchodoch pre domácich pivovarníkov – len potravinársky
+  substitutes:
+    - { to: nigari, note: 'pevnejšie tofu, bez vápnika navyše' }
+  about: 'Najbežnejšie zrážadlo na tofu v Číne a v Amerike. Tofu je mäkké, hladké a má veľa vápnika.'
+  uses:
+    - 'Domáce tofu'
+  choose: 'Potravinársky (E516), nie stavebná sadra.'
   storage: 'Suchý roky.'
 
 - id: tempeh-starter
