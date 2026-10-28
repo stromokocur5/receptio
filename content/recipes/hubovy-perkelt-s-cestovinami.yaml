@@ -1,0 +1,35 @@
+title: Hubový perkelt s cestovinami
+description: Šampiňóny dusené s cibuľou, paprikou a passatou, zjemnené smotanou. Hotové za pol hodiny, cestoviny sa varia popri tom.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [hlavne/cestoviny, hlavne/zelenina]
+time: 30
+active: 25
+servings: 4
+difficulty: 1
+tags: [rychle, lacne, klasika, do-krabicky]
+spicy: 0
+keeps: { fridge: 3 }
+leftovers: 'Zohrej s lyžicou vody, omáčka v chladničke zhustne.'
+ingredients:
+  - olej: 2 pl
+  - cibula: 2 ks | nadrobno
+  - sampinony: 600 g | na plátky
+  - cesnak: 2 ks | nasekaný
+  - sladka-paprika: 1 pl
+  - rasca: 1/2 čl
+  - passata: 400 g
+  - sol: 1 čl
+  - cierne-korenie: 1/4 čl
+  - rastlinna-smotana: 200 ml | na varenie
+  - cestoviny: 400 g | kolienka alebo široké rezance
+  - petrzlenova-vnat: 2 pl | nasekaná
+steps:
+  - V hrnci priveď do varu osolenú vodu na cestoviny.
+  - V širokej panvici rozohrej olej na strednom ohni a cibuľu opekaj 5 minút do sklovita.
+  - Pridaj huby, zvýš oheň a opekaj 7 minút, kým nepustia vodu a tá sa neodparí.
+  - Medzitým uvar cestoviny podľa obalu, zvyčajne 8–10 minút, a sceď.
+  - Stiahni oheň, pridaj cesnak, papriku a rascu a miešaj 30 sekúnd – paprika na veľkom ohni zhorkne. Hneď vlej passatu, osoľ, okoreň a var 8 minút.
+  - Vmiešaj smotanu, len prehrej a podávaj s cestovinami posypané vňaťou.
+tips:
+  - Namiesto cestovín sa hodí ryža alebo varené zemiaky.

@@ -1,0 +1,47 @@
+title: Vyprážané šampiňóny s tatárkou a zemiakmi
+description: Celé klobúčiky v chrumkavom trojobale, vnútri šťavnaté. K tomu varené zemiaky s petržlenovou vňaťou a tatárska omáčka – jedáleňská klasika.
+cuisine: slovenska
+meals: [obed, vecera]
+categories: [comfort/vyprazane, hlavne/zelenina]
+time: 45
+active: 35
+servings: 3
+difficulty: 1
+tags: [klasika, lacne, deti]
+spicy: 0
+keeps: { fridge: 2 }
+leftovers: 'Prehrej v rúre na 200 °C 8 minút, v mikrovlnke obal zmäkne.'
+related: [tatarska-omacka, vyprazany-syr-tofu]
+howto: [vyprazanie]
+ingredients:
+  - sampinony: 500 g | stredne veľké, celé
+  - sol: 1 čl | 1/2 na huby, 1/2 do trojobalu
+  - cierne-korenie: 1/4 čl
+  - hladka-muka: 4 pl
+  - sojove-mlieko: 1/2 hrnček
+  - kukuricny-skrob: 2 pl
+  - horcica: 1 čl
+  - struhanka: 1 hrnček
+  - olej: 8 pl | na vyprážanie
+  - zemiaky: 800 g
+  - petrzlenova-vnat: 2 pl | nasekaná
+  - veganska-majoneza: 5 pl
+  - kysle-uhorky: 2 ks | nadrobno
+steps:
+  - Zemiaky očisti, nakrájaj na štvrtiny, zalej studenou osolenou vodou a var 20 minút do mäkka.
+  - Medzitým huby očisti suchou utierkou a stopky zrež tesne pri klobúčiku. Posyp ich 1/2 ČL soli a korením a premiešaj – obal by inak chutil po soli, ale huby nie.
+  - Priprav trojobal do troch misiek – múka; mlieko vyšľahané so škrobom, horčicou a zvyšnou soľou; strúhanka.
+  - Huby obaľ v múke, v mlieku a v strúhanke, ešte raz v mlieku a strúhanke, aby obal počas vyprážania nepraskol.
+  - Na panvici rozohrej olej na strednom ohni, nech ho je asi 1 cm. Huby vyprážaj po dávkach 5–6 minút, priebežne ich otáčaj, kým nie sú zo všetkých strán zlatisté. Vyber ich na papierovú utierku.
+  - Medzitým zmiešaj majonézu s uhorkami, to je tatárka. Uvarené zemiaky sceď a premiešaj s petržlenovou vňaťou.
+  - Podávaj hneď, kým je obal chrumkavý.
+tips:
+  - Menšie huby sa vyprážajú rýchlejšie, veľké nakrájaj na polovice.
+variants:
+  - name: Ľahšia verzia
+    description: Obalené huby polož na plech vystlaný papierom na pečenie, pokvapkaj olejom a peč 20 minút na 220 °C, v polovici otoč. Tatárku sprav z polovice majonézy a polovice sójového jogurtu.
+    replace:
+      - { from: olej, to: olej, amount: 2 pl }
+      - { from: veganska-majoneza, to: veganska-majoneza, amount: 3 pl }
+    add:
+      - sojovy-jogurt: 3 pl

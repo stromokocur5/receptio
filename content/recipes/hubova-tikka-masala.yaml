@@ -1,0 +1,41 @@
+title: Hubová tikka masala
+description: Šampiňóny opečené s korením v krémovej paradajkovej omáčke s kokosovým mliekom, zázvorom a garam masalou. S basmati ryžou ako z indickej reštaurácie.
+cuisine: indicka-sever
+meals: [obed, vecera]
+categories: [hlavne/kari, hlavne/zelenina]
+time: 45
+active: 30
+servings: 4
+difficulty: 1
+tags: [lacne, do-krabicky]
+spicy: 1
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Zohrej pomaly s lyžicou vody, cez noc sa chute prepoja.'
+ingredients:
+  - sampinony: 600 g | veľké na polovice, malé celé
+  - olej: 3 pl
+  - garam-masala: 2 čl | 1 na huby, 1 na koniec
+  - udena-paprika: 1 čl
+  - sol: 1 čl | 1/2 na huby, 1/2 do omáčky
+  - cibula: 1 ks | nadrobno
+  - cesnak: 4 ks | nasekaný
+  - zazvor: 1 pl | nastrúhaný
+  - kurkuma: 1/2 čl
+  - kmin: 1 čl
+  - cili: podľa chuti
+  - passata: 400 g
+  - kokosove-mlieko: 1 ks
+  - javorovy-sirup: 1 čl
+  - citron: 1 pl | šťava
+  - bylinky-koriander: 2 pl | alebo petržlenová vňať
+  - ryza-basmati: 300 g
+steps:
+  - Huby premiešaj s 1 PL oleja, 1 ČL garam masaly, údenou paprikou a 1/2 ČL soli.
+  - Medzitým uvar ryžu – prepláchni ju v site, zalej 450 ml vody, osoľ a priveď do varu. Prikry a na najmenšom ohni var 12 minút, potom odstav a nechaj 10 minút dôjsť pod pokrievkou.
+  - Vo veľkej panvici rozohrej 1 PL oleja na veľkom ohni a huby opekaj 8 minút, kým nezhnednú a voda sa neodparí. Vyber ich.
+  - Pridaj zvyšný olej a cibuľu a opekaj na strednom ohni 6 minút. Pridaj cesnak, zázvor, kurkumu, kmín a čili a minútu miešaj.
+  - Vlej passatu, pridaj zvyšnú soľ a var 10 minút, kým omáčka nezhustne.
+  - Vmiešaj kokosové mlieko, sirup a huby a var 5 minút. Dochuť zvyšnou garam masalou a citrónovou šťavou.
+  - Posyp koriandrom a podávaj s ryžou.
+tips:
+  - Na krémovejšiu omáčku ju pred vrátením húb rozmixuj ponorným mixérom.

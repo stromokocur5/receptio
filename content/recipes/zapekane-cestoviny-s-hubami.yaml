@@ -1,0 +1,34 @@
+title: Zapekané cestoviny s hubami a paradajkovou omáčkou
+description: Penne v paradajkovej omáčke so šampiňónmi a špenátom, zapečené so syrom dozlatista. Dá sa pripraviť dopredu a len vsunúť do rúry.
+cuisine: talianska
+meals: [obed, vecera]
+categories: [hlavne/cestoviny, hlavne/rura]
+time: 50
+active: 25
+servings: 4
+difficulty: 1
+tags: [deti, meal-prep, do-krabicky]
+spicy: 0
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Prehrej prikryté alobalom v rúre na 180 °C 15 minút.'
+ingredients:
+  - cestoviny: 350 g | penne
+  - olivovy-olej: 2 pl
+  - cibula: 1 ks | nadrobno
+  - sampinony: 400 g | na plátky
+  - cesnak: 3 ks | nasekaný
+  - passata: 700 g
+  - oregano: 1 čl
+  - sol: 1 čl
+  - cierne-korenie: 1/4 čl
+  - spenat: 100 g | baby, alebo nasekaný
+  - rastlinna-smotana: 100 ml | na varenie
+  - vegansky-syr: 120 g | strúhaný
+steps:
+  - Rozohrej rúru na 200 °C. Cestoviny var v osolenej vode o 3 minúty kratšie, ako píše obal – dovaria sa v rúre. Sceď ich.
+  - Medzitým vo veľkej panvici rozohrej olej na strednom ohni a cibuľu opekaj 5 minút. Pridaj huby, zvýš oheň a opekaj 7 minút, kým sa neodparí voda.
+  - Pridaj cesnak, po 30 sekundách vlej passatu, pridaj oregano, soľ a korenie a var 5 minút. Vmiešaj špenát a smotanu, len kým špenát nezvädne.
+  - Zapekaciu misu vymasti kvapkou oleja. Cestoviny premiešaj s omáčkou, nalej do misy a posyp syrom.
+  - Peč 20 minút, kým syr nezačne hnednúť. Pred krájaním nechaj 5 minút postáť.
+tips:
+  - Bez syra posyp cestoviny strúhankou zmiešanou s lyžicou oleja – bude chrumkavá kôrka.

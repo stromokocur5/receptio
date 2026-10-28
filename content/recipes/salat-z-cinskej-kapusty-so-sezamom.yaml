@@ -1,0 +1,31 @@
+title: Šalát z čínskej kapusty so sezamovým dresingom
+description: Chrumkavé prúžky čínskej kapusty a mrkvy v sladko-kyslom sezamovom dresingu. Hotový za 10 minút, ako príloha k ryži, rezancom aj k vyprážaným hubám.
+cuisine: cinska
+meals: [obed, vecera]
+categories: [salaty/prilohove]
+time: 10
+active: 10
+servings: 4
+difficulty: 1
+tags: [rychle, lacne, bez-varenia]
+spicy: 0
+keeps: { fridge: 1 }
+leftovers: 'Na druhý deň zmäkne, chuť ostane. Dresing drž zvlášť, ak ho chystáš dopredu.'
+ingredients:
+  - cinska-kapusta: 500 g | asi pol hlávky
+  - mrkva: 1 ks | nastrúhaná na hrubo
+  - jarna-cibulka: 2 ks | na kolieska
+  - sojova-omacka: 2 pl
+  - ryzovy-ocot: 2 pl
+  - javorovy-sirup: 1 pl
+  - sezamovy-olej: 1 pl
+  - cesnak: 1 ks | prelisovaný
+  - sezam: 2 pl | nasucho opražený
+steps:
+  - Kapustu nakrájaj nadrobno na tenké prúžky, aj biele časti. Premiešaj s mrkvou a jarnou cibuľkou.
+  - V pohári vyšľahaj sójovú omáčku, ocot, sirup, sezamový olej a cesnak.
+  - Sezam opraž na suchej panvici na strednom ohni 2 minúty, kým nezavonia.
+  - Dresing vmiešaj do kapusty tesne pred podávaním a posyp sezamom.
+tips:
+  - Bezlepková verzia – namiesto sójovej omáčky tamari.
+  - Na pikantnú verziu pridaj do dresingu štipku čili.

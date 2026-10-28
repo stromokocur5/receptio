@@ -1,0 +1,33 @@
+title: Rezance s hubami a čínskou kapustou
+description: Pšeničné rezance, opečené šampiňóny a kapusta v cesnakovo-sójovej omáčke. Večera za 20 minút z jednej panvice.
+cuisine: cinska
+meals: [obed, vecera]
+categories: [hlavne/cestoviny, hlavne/zelenina]
+time: 20
+active: 20
+servings: 3
+difficulty: 1
+tags: [rychle, lacne]
+spicy: 0
+keeps: { fridge: 2 }
+leftovers: 'Prehrej na panvici s lyžicou vody.'
+ingredients:
+  - psenicne-rezance: 250 g
+  - olej: 2 pl
+  - sampinony: 300 g | na plátky
+  - cinska-kapusta: 400 g | na prúžky 2 cm
+  - cesnak: 3 ks | nasekaný
+  - zazvor: 1 čl | nastrúhaný
+  - sojova-omacka: 3 pl
+  - javorovy-sirup: 1 pl
+  - ryzovy-ocot: 1 pl
+  - sezamovy-olej: 1 čl
+  - jarna-cibulka: 2 ks | na kolieska
+steps:
+  - Rezance uvar podľa obalu, zvyčajne 4–5 minút, sceď a prepláchni studenou vodou, nech sa nezlepia.
+  - Medzitým vo veľkej panvici rozohrej olej na veľkom ohni a huby opekaj 5 minút, kým nezhnednú.
+  - Pridaj biele časti kapusty a opekaj 2 minúty, potom zelené listy, cesnak a zázvor a opekaj ešte minútu.
+  - Zmiešaj sójovú omáčku, sirup a ocot, vlej do panvice spolu s rezancami a 1–2 minúty prehadzuj, kým sa omáčka nevpije.
+  - Pokvapkaj sezamovým olejom a posyp jarnou cibuľkou.
+tips:
+  - Bezlepková verzia – ryžové rezance a tamari namiesto sójovej omáčky.
