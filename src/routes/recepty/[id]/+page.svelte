@@ -48,7 +48,9 @@
 	import { bestPrice, shelfCost } from '$lib/pricing';
 	import { IN_MONTH, recipeSeason } from '$lib/season';
 	import { SITE_ORIGIN } from '$lib/site';
-	import { DIETS, type Diet } from '$lib/types';
+	import { avoidFilter } from '$lib/avoid';
+	import { fetchSimilar } from '$lib/similar';
+	import { DIETS, type Diet, type RecipeSummary } from '$lib/types';
 	import {
 		addToPlan,
 		avoid,
@@ -281,7 +283,21 @@
 		};
 	});
 
-	const similar = $derived.by(() => {
+	/** Nearest in meaning from the vector index; the shared-ingredients guess until it answers. */
+	let similarByMeaning = $state<{ id: string; list: RecipeSummary[] }>({ id: '', list: [] });
+	$effect(() => {
+		const id = recipe.id;
+		void fetchSimilar({ ids: [id] }).then((ids) => {
+			similarByMeaning = {
+				id,
+				list: ids
+					.flatMap((s) => catalog.recipesById.get(s) ?? [])
+					.filter((r) => !ui.loaded || avoidFilter(avoid.current, catalog.ingredientsById)(r))
+					.slice(0, 6)
+			};
+		});
+	});
+	const similarByIngredients = $derived.by(() => {
 		const mine = new Set(
 			recipe.lines.map((l) => catalog.ingredientsById.get(l.ingredientId)!.group)
 		);
@@ -300,6 +316,11 @@
 			.slice(0, 3)
 			.map((x) => x.r);
 	});
+	const similar = $derived(
+		similarByMeaning.id === recipe.id && similarByMeaning.list.length
+			? similarByMeaning.list
+			: similarByIngredients
+	);
 
 	function isHome(ingredientId: string) {
 		const ingredient = catalog.ingredientsById.get(ingredientId)!;

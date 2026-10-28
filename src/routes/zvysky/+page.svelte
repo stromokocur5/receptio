@@ -8,6 +8,7 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import { ingredientSearchText, searchMatcher } from '$lib/labels';
 	import { ingredientsInText, isAssumedAtHome, rankByLeftovers } from '$lib/pantry';
+	import { fetchSimilar } from '$lib/similar';
 
 	const catalog = useCatalog();
 	const MAX_CHOSEN = 8;
@@ -58,6 +59,33 @@
 				).slice(0, SHOWN)
 			: []
 	);
+
+	/**
+	 * Recipes the chosen food suits by meaning, though they don't list it – a soup for the
+	 * zucchini that lists only "zelenina" – after the exact matches.
+	 */
+	const ALSO_SHOWN = 4;
+	let alsoIds = $state<{ key: string; ids: string[] }>({ key: '', ids: [] });
+	const chosenKey = $derived(chosen.join(','));
+	$effect(() => {
+		const key = chosenKey;
+		if (!key) return;
+		const names = chosen.map((id) => nameOf(id).split(' (')[0].toLowerCase());
+		const timer = setTimeout(async () => {
+			const ids = await fetchSimilar({ q: `Jedlo zo surovín: ${names.join(', ')}` });
+			if (chosenKey === key) alsoIds = { key, ids };
+		}, 400);
+		return () => clearTimeout(timer);
+	});
+	const also = $derived.by(() => {
+		if (alsoIds.key !== chosenKey) return [];
+		const shown = new Set(matches.map((m) => m.recipe.id));
+		const allowed = ui.loaded ? avoidFilter(avoid.current, catalog.ingredientsById) : () => true;
+		return alsoIds.ids
+			.flatMap((id) => catalog.recipesById.get(id) ?? [])
+			.filter((r) => !shown.has(r.id) && allowed(r))
+			.slice(0, ALSO_SHOWN);
+	});
 
 	function add(id: string) {
 		if (chosen.length < MAX_CHOSEN) chosen = [...chosen, id];
@@ -193,6 +221,19 @@
 				<p class="empty">Žiadny recept tieto suroviny nepoužíva. Skús inú.</p>
 			{/if}
 		</section>
+		{#if also.length}
+			<section class="also">
+				<h2>Hodia sa aj</h2>
+				<p class="muted">
+					Ďalšie recepty, ktoré sa k týmto surovinám hodia, vybrané podľa významu.
+				</p>
+				<div class="results">
+					{#each also as recipe, i (recipe.id)}
+						<RecipeCard {recipe} index={i} />
+					{/each}
+				</div>
+			</section>
+		{/if}
 	{/if}
 </div>
 
@@ -220,6 +261,15 @@
 	}
 	.results .empty {
 		grid-column: 1 / -1;
+	}
+	.also {
+		margin-top: 40px;
+	}
+	.also h2 {
+		margin: 0 0 4px;
+	}
+	.also .results {
+		margin-top: 16px;
 	}
 	.why {
 		margin: 0;

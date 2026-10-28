@@ -73,7 +73,7 @@ async function embed(ai: Ai, texts: string[]): Promise<number[][]> {
 export async function syncRecipeIndex(env: {
 	DB: D1Database;
 	AI: Ai;
-	RECIPE_INDEX: VectorizeIndex;
+	RECIPE_INDEX: Vectorize;
 	ASSETS: Fetcher;
 }): Promise<void> {
 	const response = await env.ASSETS.fetch(`https://assets.local${RECIPE_INDEX_PATH}`);
@@ -119,11 +119,37 @@ export async function syncRecipeIndex(env: {
 /** Recipe ids nearest in meaning to the query, best first. */
 export async function similarRecipeIds(
 	ai: Ai,
-	index: VectorizeIndex,
+	index: Vectorize,
 	query: string,
 	topK: number
 ): Promise<{ id: string; score: number }[]> {
 	const [vector] = await embed(ai, [query]);
 	const { matches } = await index.query(vector, { topK });
 	return matches.map((m) => ({ id: m.id, score: m.score }));
+}
+
+/**
+ * Recipes nearest to a few recipes at once ("Pre teba" from what was liked and cooked, or the
+ * one recipe being read): each seed's neighbours, scores summed, the seeds left out.
+ * Uses only the stored vectors – no Workers AI call.
+ */
+export async function similarToRecipes(
+	index: Vectorize,
+	seedIds: string[],
+	topK: number
+): Promise<string[]> {
+	const seeds = new Set(seedIds);
+	const results = await Promise.all(
+		seedIds.map((id) => index.queryById(id, { topK: topK + seedIds.length }))
+	);
+	const scores = new Map<string, number>();
+	for (const { matches } of results) {
+		for (const m of matches) {
+			if (!seeds.has(m.id)) scores.set(m.id, (scores.get(m.id) ?? 0) + m.score);
+		}
+	}
+	return [...scores]
+		.sort((a, b) => b[1] - a[1])
+		.slice(0, topK)
+		.map(([id]) => id);
 }

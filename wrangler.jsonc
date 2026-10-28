@@ -37,7 +37,7 @@
 		{
 			"name": "SEMANTIC_LIMITER",
 			"namespace_id": "1005",
-			"simple": { "limit": 20, "period": 60 }
+			"simple": { "limit": 40, "period": 60 }
 		}
 	],
 	// Admin panel (/admin) sits behind Cloudflare Access; the Worker verifies its token too.

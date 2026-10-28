@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { recipeEmbeddingText, syncRecipeIndex, type IndexedRecipe } from './semantic';
+import {
+	recipeEmbeddingText,
+	similarToRecipes,
+	syncRecipeIndex,
+	type IndexedRecipe
+} from './semantic';
 
 describe('recipeEmbeddingText', () => {
 	it('describes the dish in words: kind, meal, ingredients and traits', () => {
@@ -66,7 +71,7 @@ function fakeEnv(recipes: IndexedRecipe[], rows: { id: string; hash: string }[])
 			deleteByIds: async (ids: string[]) => {
 				deleted.push(...ids);
 			}
-		} as unknown as VectorizeIndex
+		} as unknown as Vectorize
 	};
 	return { env, stored, embedded, upserted, deleted };
 }
@@ -95,5 +100,33 @@ describe('syncRecipeIndex', () => {
 		expect(second.embedded).toEqual(['C']);
 		expect(second.deleted).toEqual(['b']);
 		expect([...second.stored.keys()].sort()).toEqual(['a', 'c']);
+	});
+});
+
+describe('similarToRecipes', () => {
+	it('sums the neighbours of every seed and leaves the seeds out', async () => {
+		const neighbours: Record<string, [string, number][]> = {
+			kari: [
+				['kari', 1],
+				['dal', 0.8],
+				['polievka', 0.5]
+			],
+			wok: [
+				['wok', 1],
+				['kari', 0.6],
+				['polievka', 0.5],
+				['rezance', 0.7]
+			]
+		};
+		const index = {
+			queryById: async (id: string) => ({
+				matches: neighbours[id].map(([match, score]) => ({ id: match, score }))
+			})
+		} as unknown as Vectorize;
+		expect(await similarToRecipes(index, ['kari', 'wok'], 3)).toEqual([
+			'polievka',
+			'dal',
+			'rezance'
+		]);
 	});
 });

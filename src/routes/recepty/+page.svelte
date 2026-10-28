@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { cleanSearchTerm } from '$lib/search-miss';
+	import { fetchSimilar } from '$lib/similar';
 	import Seo from '$lib/components/Seo.svelte';
 	import { onMount, tick } from 'svelte';
 	import { goto, replaceState } from '$app/navigation';
@@ -400,34 +401,33 @@
 	});
 
 	/**
-	 * A wish the words don't find ("niečo hrejivé s hubami") – the recipes nearest in meaning,
-	 * from the vector index. Asked only after typing stops; word matches stay the fallback.
+	 * Recipes nearest in meaning to the search ("niečo hrejivé na večer"), from the vector index.
+	 * When the words find nothing they take the place of the empty result; for a phrase of two
+	 * or more words they show above the word matches. Asked only after typing stops.
 	 */
-	let similar = $state<{ query: string; list: RecipeSummary[] }>({ query: '', list: [] });
-	const similarShown = $derived(
-		nearest.kind !== 'filters' && similar.query === q.trim() ? similar.list : []
+	const SIMILAR_ON_TOP = 4;
+	let similar = $state<{ query: string; ids: string[] }>({ query: '', ids: [] });
+	const wantsSimilar = $derived(
+		q.trim().length >= 3 && nearest.kind !== 'filters' && (!results.length || countTerms(q) >= 2)
 	);
+	const similarLoading = $derived(wantsSimilar && similar.query !== q.trim());
+	const similarShown = $derived.by(() => {
+		if (!wantsSimilar || similar.query !== q.trim()) return [];
+		const onTop = new Set(results.slice(0, SIMILAR_ON_TOP).map((r) => r.id));
+		const list = similar.ids
+			.flatMap((id) => catalog.recipesById.get(id) ?? [])
+			.filter((r) => !onTop.has(r.id) && (!avoiding || allowedByAvoid(r)));
+		return results.length ? list.slice(0, SIMILAR_ON_TOP) : list;
+	});
 	$effect(() => {
-		if (results.length || nearest.kind === 'filters') return;
+		if (!wantsSimilar) return;
 		const query = q.trim();
-		if (query.length < 3 || similar.query === query) return;
-		const controller = new AbortController();
+		if (similar.query === query) return;
 		const timer = setTimeout(async () => {
-			try {
-				const response = await fetch(`/api/podobne?q=${encodeURIComponent(query)}`, {
-					signal: controller.signal
-				});
-				if (!response.ok) return;
-				const { ids } = (await response.json()) as { ids: string[] };
-				similar = { query, list: ids.flatMap((id) => catalog.recipesById.get(id) ?? []) };
-			} catch {
-				// Offline, or a newer query took over: the word matches stay.
-			}
-		}, 700);
-		return () => {
-			clearTimeout(timer);
-			controller.abort();
-		};
+			const ids = await fetchSimilar({ q: query });
+			if (q.trim() === query) similar = { query, ids };
+		}, 600);
+		return () => clearTimeout(timer);
 	});
 
 	/** Keeps the search, drops everything that narrows it. */
@@ -1298,6 +1298,20 @@
 					</span>
 				</p>
 			{/if}
+			{#if results.length && similarShown.length}
+				<section class="by-meaning" aria-label="Podľa významu">
+					<p class="by-meaning-head">
+						<Icon name="sparkle" size={16} />
+						<strong>Podľa významu</strong>
+						<span class="muted">– nemusia mať tie isté slová</span>
+					</p>
+					<div class="grid">
+						{#each similarShown as recipe, i (recipe.id)}
+							<RecipeCard {recipe} index={i} />
+						{/each}
+					</div>
+				</section>
+			{/if}
 			{#if results.length}
 				<div class="grid">
 					{#each shown as recipe, i (recipe.id)}
@@ -1316,6 +1330,25 @@
 						</button>
 					</div>
 				{/if}
+			{:else if similarShown.length}
+				<section class="by-meaning" aria-label="Podľa významu">
+					<p class="by-meaning-head">
+						<Icon name="sparkle" size={16} />
+						<strong>Presne takto nič, podľa významu sa hodia tieto</strong>
+					</p>
+					<div class="grid">
+						{#each similarShown as recipe, i (recipe.id)}
+							<RecipeCard {recipe} index={i} />
+						{/each}
+					</div>
+					<p class="muted by-meaning-foot">
+						Nie je medzi nimi, čo hľadáš? <a href="/navrhni">Napíš mi</a> a recept pridám.
+					</p>
+				</section>
+			{:else if similarLoading}
+				<p class="muted by-meaning-head" aria-live="polite">
+					<Icon name="sparkle" size={16} /> Hľadám podľa významu…
+				</p>
 			{:else}
 				<div class="empty card">
 					<svg viewBox="0 0 120 90" width="140" aria-hidden="true">
@@ -1339,9 +1372,6 @@
 							„{q.trim()}“ tu je, len ho filtre schovali. Bez nich nájdeš napríklad:
 						</p>
 						<button class="btn" onclick={clearFilters}>Zrušiť filtre, hľadanie nechať</button>
-					{:else if similarShown.length}
-						<h3>Presne takto nič, ale tieto sú najbližšie</h3>
-						<p class="muted">Vybrané podľa významu toho, čo hľadáš, nie podľa slov.</p>
 					{:else if nearest.kind === 'words' && nearest.list.length}
 						<h3>Všetko naraz v žiadnom recepte nie je</h3>
 						<p class="muted">Tieto majú z hľadaného najviac:</p>
@@ -1358,9 +1388,9 @@
 						<button class="btn" onclick={reset}>Zrušiť filtre</button>
 					{/if}
 				</div>
-				{#if similarShown.length || nearest.list.length}
+				{#if nearest.list.length}
 					<div class="grid nearest">
-						{#each similarShown.length ? similarShown : nearest.list as recipe, i (recipe.id)}
+						{#each nearest.list as recipe, i (recipe.id)}
 							<RecipeCard {recipe} index={i} />
 						{/each}
 					</div>
@@ -1624,6 +1654,22 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 		gap: 18px;
+	}
+	.by-meaning {
+		margin-bottom: 28px;
+	}
+	.by-meaning-head {
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin: 0 0 12px;
+	}
+	.by-meaning-head :global(svg) {
+		color: var(--leaf);
+	}
+	.by-meaning-foot {
+		margin: 16px 0 0;
 	}
 	.more {
 		display: flex;

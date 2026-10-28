@@ -20,7 +20,17 @@
 	import { install } from '$lib/install.svelte';
 	import InstallCard from '$lib/components/InstallCard.svelte';
 	import { onboarding } from '$lib/onboarding.svelte';
-	import { avoid, favorites, gardens, pantry, plan, settings, ui } from '$lib/state.svelte';
+	import {
+		avoid,
+		favorites,
+		gardens,
+		history,
+		pantry,
+		plan,
+		settings,
+		ui
+	} from '$lib/state.svelte';
+	import { fetchSimilar, MAX_SIMILAR_SEEDS } from '$lib/similar';
 	import type { GrowGuide } from '$lib/types';
 	import { activeSales, recipesOnSale } from '$lib/pricing';
 
@@ -224,6 +234,42 @@
 	const inPantry = $derived(ui.loaded ? Object.keys(pantry.current).length : 0);
 	const favCount = $derived(ui.loaded ? Object.keys(favorites.current).length : 0);
 
+	/** What this device liked: cooked lately (not "nabudúce inak"), saved, planned – newest first. */
+	const forYouSeeds = $derived.by(() => {
+		if (!ui.loaded) return [];
+		const cooked = [...history.current]
+			.reverse()
+			.filter((e) => e.rating !== 1)
+			.map((e) => e.recipeId);
+		const ids = [
+			...cooked,
+			...Object.keys(favorites.current),
+			...plan.current.map((e) => e.recipeId)
+		];
+		return [...new Set(ids)]
+			.filter((id) => catalog.recipesById.has(id))
+			.slice(0, MAX_SIMILAR_SEEDS);
+	});
+	const FOR_YOU_SHOWN = 6;
+	/** Two weeks: what was just cooked isn't suggested again. */
+	const RECENT_DAYS = 14;
+	let forYouIds = $state<string[]>([]);
+	$effect(() => {
+		const seeds = forYouSeeds;
+		if (!seeds.length) return;
+		void fetchSimilar({ ids: seeds }).then((ids) => (forYouIds = ids));
+	});
+	const forYou = $derived.by(() => {
+		if (!forYouSeeds.length) return [];
+		const since = new Date(Date.now() - RECENT_DAYS * 86400000).toISOString().slice(0, 10);
+		const recent = new Set(history.current.filter((e) => e.date >= since).map((e) => e.recipeId));
+		const allowed = avoidFilter(avoid.current, catalog.ingredientsById);
+		return forYouIds
+			.flatMap((id) => catalog.recipesById.get(id) ?? [])
+			.filter((r) => !recent.has(r.id) && allowed(r))
+			.slice(0, FOR_YOU_SHOWN);
+	});
+
 	function search(event: SubmitEvent) {
 		event.preventDefault();
 		void goto(`/recepty${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ''}`);
@@ -352,6 +398,23 @@
 				<span><strong>Uložené</strong><small>{favCount} {pluralRecipes(favCount)}</small></span>
 			</a>
 		{/if}
+	</section>
+{/if}
+
+{#if forYou.length}
+	<section class="wrap block">
+		<div class="head">
+			<h2>Pre teba</h2>
+			<a class="btn ghost small" href="/moje">Moje recepty <Icon name="arrow-right" size={16} /></a>
+		</div>
+		<p class="muted season-note">
+			Podobné receptom, ktoré už poznáš – uvareným, uloženým a v pláne.
+		</p>
+		<div class="grid">
+			{#each forYou as recipe, i (recipe.id)}
+				<RecipeCard {recipe} index={i} />
+			{/each}
+		</div>
 	</section>
 {/if}
 
