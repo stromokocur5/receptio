@@ -399,6 +399,37 @@
 		return () => clearTimeout(timer);
 	});
 
+	/**
+	 * A wish the words don't find ("niečo hrejivé s hubami") – the recipes nearest in meaning,
+	 * from the vector index. Asked only after typing stops; word matches stay the fallback.
+	 */
+	let similar = $state<{ query: string; list: RecipeSummary[] }>({ query: '', list: [] });
+	const similarShown = $derived(
+		nearest.kind !== 'filters' && similar.query === q.trim() ? similar.list : []
+	);
+	$effect(() => {
+		if (results.length || nearest.kind === 'filters') return;
+		const query = q.trim();
+		if (query.length < 3 || similar.query === query) return;
+		const controller = new AbortController();
+		const timer = setTimeout(async () => {
+			try {
+				const response = await fetch(`/api/podobne?q=${encodeURIComponent(query)}`, {
+					signal: controller.signal
+				});
+				if (!response.ok) return;
+				const { ids } = (await response.json()) as { ids: string[] };
+				similar = { query, list: ids.flatMap((id) => catalog.recipesById.get(id) ?? []) };
+			} catch {
+				// Offline, or a newer query took over: the word matches stay.
+			}
+		}, 700);
+		return () => {
+			clearTimeout(timer);
+			controller.abort();
+		};
+	});
+
 	/** Keeps the search, drops everything that narrows it. */
 	function clearFilters() {
 		const query = q;
@@ -1308,6 +1339,9 @@
 							„{q.trim()}“ tu je, len ho filtre schovali. Bez nich nájdeš napríklad:
 						</p>
 						<button class="btn" onclick={clearFilters}>Zrušiť filtre, hľadanie nechať</button>
+					{:else if similarShown.length}
+						<h3>Presne takto nič, ale tieto sú najbližšie</h3>
+						<p class="muted">Vybrané podľa významu toho, čo hľadáš, nie podľa slov.</p>
 					{:else if nearest.kind === 'words' && nearest.list.length}
 						<h3>Všetko naraz v žiadnom recepte nie je</h3>
 						<p class="muted">Tieto majú z hľadaného najviac:</p>
@@ -1324,9 +1358,9 @@
 						<button class="btn" onclick={reset}>Zrušiť filtre</button>
 					{/if}
 				</div>
-				{#if nearest.list.length}
+				{#if similarShown.length || nearest.list.length}
 					<div class="grid nearest">
-						{#each nearest.list as recipe, i (recipe.id)}
+						{#each similarShown.length ? similarShown : nearest.list as recipe, i (recipe.id)}
 							<RecipeCard {recipe} index={i} />
 						{/each}
 					</div>

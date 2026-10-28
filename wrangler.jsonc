@@ -18,6 +18,8 @@
 	],
 	// Households' live rooms: phones keep a WebSocket, a saved change tells them at once.
 	// SQLite-backed, as the Workers Free plan requires.
+	"ai": { "binding": "AI" },
+	"vectorize": [{ "binding": "RECIPE_INDEX", "index_name": "receptio-recipes" }],
 	"durable_objects": {
 		"bindings": [{ "name": "HOUSEHOLD_ROOM", "class_name": "HouseholdRoom" }]
 	},
@@ -31,7 +33,12 @@
 			"simple": { "limit": 3, "period": 60 }
 		},
 		{ "name": "SUGGEST_LIMITER", "namespace_id": "1003", "simple": { "limit": 2, "period": 60 } },
-		{ "name": "SYNC_LIMITER", "namespace_id": "1004", "simple": { "limit": 60, "period": 60 } }
+		{ "name": "SYNC_LIMITER", "namespace_id": "1004", "simple": { "limit": 60, "period": 60 } },
+		{
+			"name": "SEMANTIC_LIMITER",
+			"namespace_id": "1005",
+			"simple": { "limit": 20, "period": 60 }
+		}
 	],
 	// Admin panel (/admin) sits behind Cloudflare Access; the Worker verifies its token too.
 	"vars": {

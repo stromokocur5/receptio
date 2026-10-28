@@ -2597,6 +2597,7 @@
 
 - id: cinska-kapusta
   name: Čínska kapusta
+  aliases: [pekingská kapusta]
   category: zelenina
   n: { kcal: 16, p: 1.2, c: 3.2, f: 0.2, fib: 1.2, salt: 0, fe: 0.3, ca: 77, zn: 0.2 }
   units: { ks: 1000, hrnček: 75 }

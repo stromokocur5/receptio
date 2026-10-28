@@ -7,14 +7,16 @@
 	import RecipeCard from '$lib/components/RecipeCard.svelte';
 	import Seo from '$lib/components/Seo.svelte';
 	import { ingredientSearchText, searchMatcher } from '$lib/labels';
-	import { isAssumedAtHome, rankByLeftovers } from '$lib/pantry';
+	import { ingredientsInText, isAssumedAtHome, rankByLeftovers } from '$lib/pantry';
 
 	const catalog = useCatalog();
-	const MAX_CHOSEN = 5;
+	const MAX_CHOSEN = 8;
 	const SHOWN = 12;
 
 	let q = $state('');
 	let chosen = $state<string[]>([]);
+	/** Words from a typed list that aren't any known food, so nothing disappears silently. */
+	let notFound = $state<string[]>([]);
 
 	const ingredientNames = catalog.ingredients.map(ingredientSearchText);
 	/** What is most often left over, to start with one tap instead of typing. */
@@ -60,6 +62,15 @@
 	function add(id: string) {
 		if (chosen.length < MAX_CHOSEN) chosen = [...chosen, id];
 		q = '';
+		notFound = [];
+	}
+	/** "šampiňóny, pekingská kapusta, tofu" – everything named in what was typed. */
+	const typedList = $derived(/[,;\n]/.test(q) || q.trim().split(/\s+/).length > 2);
+	function addTyped() {
+		const { ids, unknown } = ingredientsInText(q, catalog.ingredients);
+		chosen = [...new Set([...chosen, ...ids])].slice(0, MAX_CHOSEN);
+		notFound = unknown;
+		q = '';
 	}
 	function remove(id: string) {
 		chosen = chosen.filter((c) => c !== id);
@@ -94,8 +105,9 @@
 		<p class="eyebrow">Nič nevyhodiť</p>
 		<h1>Čo uvariť zo zvyškov</h1>
 		<p class="lede">
-			Vyber 1 až {MAX_CHOSEN} vecí, ktoré treba minúť. Hore budú recepty, ktoré ich použijú čo najviac
-			a potrebujú čo najmenej ďalšieho. Na celú špajzu je <a href="/spajza">Špajza</a>.
+			Vyber 1 až {MAX_CHOSEN} vecí, ktoré treba minúť, alebo ich napíš naraz, oddelené čiarkou. Hore budú
+			recepty, ktoré ich použijú čo najviac a potrebujú čo najmenej ďalšieho. Na celú špajzu je
+			<a href="/spajza">Špajza</a>.
 		</p>
 	</header>
 
@@ -108,14 +120,18 @@
 				bind:value={q}
 				placeholder={chosen.length >= MAX_CHOSEN
 					? `Najviac ${MAX_CHOSEN} surovín`
-					: 'Cuketa, ryža, cícer…'}
+					: 'Cuketa, ryža, cícer… aj viac naraz'}
 				disabled={chosen.length >= MAX_CHOSEN}
 				onkeydown={(e) => {
-					if (e.key === 'Enter' && suggestions[0]) add(suggestions[0].id);
+					if (e.key !== 'Enter') return;
+					if (typedList) addTyped();
+					else if (suggestions[0]) add(suggestions[0].id);
 				}}
 			/>
 		</label>
-		{#if suggestions.length}
+		{#if typedList && !suggestions.length}
+			<button class="chip" onclick={addTyped}>Pridať všetko z textu</button>
+		{:else if suggestions.length}
 			<ul class="chips suggest" aria-label="Návrhy">
 				{#each suggestions as i (i.id)}
 					<li>
@@ -138,6 +154,9 @@
 					{/each}
 				</ul>
 			</div>
+		{/if}
+		{#if notFound.length}
+			<p class="hint">Nepoznám: {notFound.join(', ')}</p>
 		{/if}
 		{#if chosen.length}
 			<div class="chips">

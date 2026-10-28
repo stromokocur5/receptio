@@ -1,3 +1,4 @@
+import { ingredientSearchText, normalizeSearch, searchMatcher, termsFound } from './labels';
 import type { Ingredient, RecipeLine, RecipeSummary } from './types';
 
 /** ingredientId → grams at home, or null for "have enough, didn't weigh it". */
@@ -169,6 +170,65 @@ export interface LeftoverMatch {
 	uses: Ingredient[];
 	/** Other ingredients to buy or have (spices and oils not counted). */
 	others: Ingredient[];
+}
+
+/** Words around the food in "mám doma pol cukety a trochu ryže" – never an ingredient. */
+const FILLER_WORDS = new Set(
+	'mam mame doma este aj nieco trochu kus kusy kusok pol zvysok zvysky ostalo ostala ostali v vo z zo s so na do od a co chcem treba minut uvarit mi chladnicke chladnicka spajzi'.split(
+		' '
+	)
+);
+/** The longest name looked for in a row of words ("biela fazula v tomate"). */
+const LONGEST_NAME = 3;
+
+/**
+ * The ingredients named in free text ("mám šampiňóny, pekingskú kapustu a tofu"), without AI:
+ * the text is split at commas and lines, filler words dropped, and each run of words matched
+ * against names and aliases with the recipe search (other endings, typos). Longer names win
+ * ("kokosové mlieko" over "kokosové"); among equal matches the one named so wins over a
+ * category or alias hit, then the one listed first (the plain kind: tofu natural, not smoked).
+ * Spices, oils and water are skipped without a word – they are assumed at home.
+ */
+export function ingredientsInText(
+	text: string,
+	ingredients: Ingredient[]
+): { ids: string[]; unknown: string[] } {
+	const texts = ingredients.map(ingredientSearchText);
+	const names = ingredients.map((i) => normalizeSearch(i.name.split(' (')[0]));
+	const ids: string[] = [];
+	const unknown: string[] = [];
+
+	function best(query: string): Ingredient | undefined {
+		const matches = searchMatcher(texts, query);
+		let found: { index: number; named: number } | undefined;
+		ingredients.forEach((_, index) => {
+			if (!matches(texts[index])) return;
+			const named = termsFound(names[index], query);
+			if (!found || named > found.named) found = { index, named };
+		});
+		return found && ingredients[found.index];
+	}
+
+	for (const part of text.split(/[,;\n]+/)) {
+		const words = normalizeSearch(part)
+			.split(/[^\p{L}\p{N}]+/u)
+			.filter((w) => w.length > 1 && !FILLER_WORDS.has(w));
+		let at = 0;
+		while (at < words.length) {
+			let size = Math.min(LONGEST_NAME, words.length - at);
+			let hit = best(words.slice(at, at + size).join(' '));
+			while (!hit && size > 1) hit = best(words.slice(at, at + --size).join(' '));
+			if (hit) {
+				const atHome = isAssumedAtHome(hit) || hit.id === TAP_WATER_ID;
+				if (!atHome && !ids.includes(hit.id)) ids.push(hit.id);
+				at += size;
+			} else {
+				unknown.push(words[at]);
+				at++;
+			}
+		}
+	}
+	return { ids, unknown };
 }
 
 /**

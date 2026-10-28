@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { consumeFromPantry, rankByLeftovers, rankByPantry, useSoon } from './pantry';
+import {
+	consumeFromPantry,
+	ingredientsInText,
+	rankByLeftovers,
+	rankByPantry,
+	useSoon
+} from './pantry';
 import { buildShoppingList, packLeftover } from './shopping';
 import {
 	activeSales,
@@ -343,6 +349,36 @@ describe('consumeFromPantry', () => {
 		const { pantry, used } = consumeFromPantry({ 'cicer-suchy': null }, hummus.lines, 1, byId);
 		expect(pantry).toEqual({ 'cicer-suchy': null });
 		expect(used).toEqual([]);
+	});
+});
+
+describe('ingredientsInText', () => {
+	const food = [
+		ing('sampinony', 'sampinony', { name: 'Šampiňóny', category: 'zelenina' }),
+		ing('kokosovy-olej', 'kokosovy-olej', { name: 'Kokosový olej', category: 'oleje' }),
+		ing('kokosove-mlieko', 'kokosove-mlieko', { name: 'Kokosové mlieko (plechovka)' }),
+		ing('cinska-kapusta', 'cinska-kapusta', {
+			name: 'Čínska kapusta',
+			aliases: ['pekingská kapusta']
+		}),
+		ing('tofu-natural', 'tofu-natural', { name: 'Tofu natural' }),
+		ing('tofu-udene', 'tofu-udene', { name: 'Tofu údené' }),
+		ing('sol', 'sol', { name: 'Soľ', category: 'koreniny' })
+	];
+
+	it('finds each food in a typed sentence, with other endings and without diacritics', () => {
+		const found = ingredientsInText(
+			'mam sampinony, pekingsku kapustu a kokosove mlieko, tofu',
+			food
+		);
+		expect(found.ids).toEqual(['sampinony', 'cinska-kapusta', 'kokosove-mlieko', 'tofu-natural']);
+		expect(found.unknown).toEqual([]);
+	});
+
+	it('reads a list without commas, skips salt and names what it does not know', () => {
+		const found = ingredientsInText('Údené tofu šampiňóny soľ banány', food);
+		expect(found.ids).toEqual(['tofu-udene', 'sampinony']);
+		expect(found.unknown).toEqual(['banany']);
 	});
 });
 
