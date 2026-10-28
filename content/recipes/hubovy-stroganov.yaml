@@ -1,0 +1,35 @@
+title: Hubový stroganov
+description: Šampiňóny opečené dohneda v krémovej omáčke s horčicou, paprikou a cesnakom. Cestoviny sa varia popri tom, hotové za 25 minút.
+cuisine: moderna
+meals: [obed, vecera]
+categories: [hlavne/zelenina, hlavne/cestoviny]
+time: 25
+active: 25
+servings: 3
+difficulty: 1
+tags: [rychle, lacne, do-krabicky]
+spicy: 0
+keeps: { fridge: 3 }
+leftovers: 'Zohrej s lyžicou vody, omáčka zhustne.'
+ingredients:
+  - cestoviny: 300 g | široké rezance alebo kolienka
+  - olej: 2 pl
+  - sampinony: 500 g | na hrubšie plátky
+  - cibula: 1 ks | nadrobno
+  - cesnak: 3 ks | nasekaný
+  - sladka-paprika: 1 čl
+  - horcica: 1 pl
+  - sojova-omacka: 1 pl
+  - rastlinna-smotana: 250 ml | na varenie, alebo kokosové mlieko
+  - citron: 1 čl | šťava
+  - cierne-korenie: 1/4 čl
+  - petrzlenova-vnat: 2 pl | nasekaná
+steps:
+  - V hrnci priveď do varu osolenú vodu a uvar cestoviny podľa obalu, zvyčajne 8–10 minút. Pred scedením odober pol hrnčeka vody z cestovín.
+  - Medzitým vo veľkej panvici rozohrej olej na veľkom ohni. Huby rozlož v jednej vrstve a 3 minúty nemiešaj, potom opekaj ešte 4 minúty, kým nezhnednú.
+  - Stiahni oheň na stredný, pridaj cibuľu a opekaj 4 minúty, potom cesnak a papriku na 30 sekúnd.
+  - Vmiešaj horčicu, sójovú omáčku a smotanu a var 3 minúty, kým omáčka nezhustne. Ak je príliš hustá, rozrieď ju vodou z cestovín.
+  - Dochuť citrónom a korením, vmiešaj cestoviny a posyp vňaťou.
+tips:
+  - S kokosovým mliekom namiesto smotany je omáčka sladšia – pridaj o kvapku citróna viac.
+  - Bezlepková verzia – bezlepkové cestoviny a tamari.
