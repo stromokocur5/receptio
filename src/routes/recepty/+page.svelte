@@ -763,12 +763,7 @@
 		<div class="field grow">
 			<Icon name="search" size={20} />
 			<label for="q" class="sr-only">Hľadať</label>
-			<input
-				id="q"
-				type="search"
-				bind:value={q}
-				placeholder="Názov, surovina alebo chuť…"
-			/>
+			<input id="q" type="search" bind:value={q} placeholder="Názov, surovina alebo chuť…" />
 		</div>
 		<label class="field sort">
 			<span class="sr-only">Zoradiť</span>
