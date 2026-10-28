@@ -1,0 +1,38 @@
+title: Kari zemiaky s hubami
+description: Kocky zemiakov a šampiňóny dusené s kmínom, kurkumou a passatou, na konci zjemnené kokosovým mliekom. Jedno jedlo z jednej panvice, bez prílohy.
+cuisine: indicka-sever
+meals: [obed, vecera]
+categories: [hlavne/kari, hlavne/zelenina]
+time: 35
+active: 20
+servings: 3
+difficulty: 1
+tags: [lacne, one-pot, do-krabicky]
+spicy: 1
+keeps: { fridge: 3, freezer: 2 }
+leftovers: 'Zohrej s lyžicou vody.'
+ingredients:
+  - olej: 2 pl
+  - kmin: 1 čl | celý alebo mletý
+  - cibula: 1 ks | nadrobno
+  - sampinony: 500 g | na štvrtiny
+  - cesnak: 3 ks | nasekaný
+  - zazvor: 1 pl | nastrúhaný
+  - kurkuma: 1 čl
+  - kari-korenie: 2 čl
+  - cili: podľa chuti
+  - zemiaky: 600 g | na kocky 2 cm
+  - passata: 200 g
+  - voda: 1 hrnček
+  - sol: 1 čl
+  - kokosove-mlieko: 1/2 ks | nepovinné
+  - citron: 1 pl | šťava
+  - bylinky-koriander: 2 pl | alebo petržlenová vňať
+steps:
+  - V širokej panvici s pokrievkou rozohrej olej na strednom ohni, pridaj kmín a po 30 sekundách cibuľu. Opekaj 5 minút.
+  - Pridaj huby, zvýš oheň a opekaj 6 minút, kým sa neodparí voda.
+  - Stiahni oheň, pridaj cesnak, zázvor, kurkumu, kari a čili a minútu miešaj.
+  - Pridaj zemiaky, passatu, vodu a soľ, premiešaj, prikry a var na miernom ohni 18 minút, kým zemiaky nezmäknú. V polovici premiešaj, nech sa nepripália.
+  - Vmiešaj kokosové mlieko, prehrej a dochuť citrónom. Posyp koriandrom.
+tips:
+  - Bez kokosového mlieka je jedlo ľahšie a výraznejšie paradajkové, s ním krémovejšie.
