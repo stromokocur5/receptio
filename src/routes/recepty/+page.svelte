@@ -406,6 +406,8 @@
 	 * or more words they show above the word matches. Asked only after typing stops.
 	 */
 	const SIMILAR_ON_TOP = 4;
+	/** Shown under the empty search box, so it's clear a wish works, not only a name. */
+	const PHRASE_EXAMPLES = ['niečo hrejivé na večer', 'rýchly obed do krabičky', 'sladké na oslavu'];
 	let similar = $state<{ query: string; ids: string[] }>({ query: '', ids: [] });
 	const wantsSimilar = $derived(
 		q.trim().length >= 3 && nearest.kind !== 'filters' && (!results.length || countTerms(q) >= 2)
@@ -761,7 +763,12 @@
 		<div class="field grow">
 			<Icon name="search" size={20} />
 			<label for="q" class="sr-only">Hľadať</label>
-			<input id="q" type="search" bind:value={q} placeholder="Názov, surovina, kuchyňa…" />
+			<input
+				id="q"
+				type="search"
+				bind:value={q}
+				placeholder="Názov, surovina alebo chuť…"
+			/>
 		</div>
 		<label class="field sort">
 			<span class="sr-only">Zoradiť</span>
@@ -781,6 +788,15 @@
 			{#if activeFilterCount}<span class="count">{activeFilterCount}</span>{/if}
 		</button>
 	</div>
+	{#if !q.trim()}
+		<p class="phrase-hint">
+			<Icon name="sparkle" size={15} />
+			<span>Funguje aj celá veta:</span>
+			{#each PHRASE_EXAMPLES as example (example)}
+				<button class="chip" onclick={() => (q = example)}>{example}</button>
+			{/each}
+		</p>
+	{/if}
 
 	<CategoryTiles counts={categoryCounts} selected={category} onpick={pickCategory} />
 	{#if category}
@@ -1492,6 +1508,18 @@
 	}
 	.grow {
 		flex: 1 1 260px;
+	}
+	.phrase-hint {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px 8px;
+		margin: -6px 0 18px;
+		color: var(--muted);
+		font-size: 0.9rem;
+	}
+	.phrase-hint :global(svg) {
+		color: var(--leaf);
 	}
 	.sort {
 		flex: 0 1 220px;
