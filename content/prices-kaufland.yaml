@@ -26,14 +26,14 @@ entries:
     store: kaufland
     product: Kapusta biela
     pack: 1 kg
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 0.89
   - ingredient: biela-kapusta
     store: kaufland
     product: Kapusta biela
     pack: 1 kg
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 0.49
     sale_until: 2026-11-11
@@ -69,14 +69,14 @@ entries:
     store: kaufland
     product: Kváskový chlieb Delikates
     pack: 405 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.79
   - ingredient: chlieb
     store: kaufland
     product: Kváskový chlieb Delikates
     pack: 405 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.39
     sale_until: 2026-11-11
@@ -87,25 +87,32 @@ entries:
     date: 2026-11-04
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.99
+  - ingredient: chlieb
+    store: kaufland
+    product: Z lásky k tradícii Kváskový chlieb pšeničný
+    pack: 505 g
+    date: 2026-11-10
+    url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
+    price: 2.15
   - ingredient: cibula
     store: kaufland
     product: Z lásky k tradícii Cibuľa žltá
     pack: 5 kg
-    date: 2026-11-01
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 4.29
   - ingredient: cibula-cervena
     store: kaufland
     product: Čerstvé zo Slovenska Cibuľa červená
     pack: 1 kg
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.49
   - ingredient: cibula-cervena
     store: kaufland
     product: Čerstvé zo Slovenska Cibuľa červená
     pack: 1 kg
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 0.89
     sale_until: 2026-11-11
@@ -116,6 +123,13 @@ entries:
     date: 2026-11-06
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 2.99
+  - ingredient: citron
+    store: kaufland
+    product: Citróny bezjadierkové
+    pack: 450 g
+    date: 2026-11-10
+    url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
+    price: 2.19
   - ingredient: cucoriedky
     store: kaufland
     product: Čučoriedky
@@ -141,14 +155,14 @@ entries:
     store: kaufland
     product: Gaštany
     pack: 100 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 0.69
   - ingredient: granatove-jablko
     store: kaufland
     product: Granátové jablko
     pack: 1 ks
-    date: 2026-10-28
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.79
   - ingredient: hliva
@@ -190,17 +204,24 @@ entries:
     store: kaufland
     product: Hrozno tmavé bezjadierkové
     pack: 500 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 2.79
   - ingredient: hrozno
     store: kaufland
     product: Hrozno tmavé bezjadierkové
     pack: 500 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.89
     sale_until: 2026-11-11
+  - ingredient: hruska
+    store: kaufland
+    product: Hrušky Abate
+    pack: 1 kg
+    date: 2026-11-10
+    url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
+    price: 2.89
   - ingredient: hruska
     store: kaufland
     product: Hrušky Konferencia
@@ -212,14 +233,14 @@ entries:
     store: kaufland
     product: Hrušky Xénia
     pack: 800 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 2.89
   - ingredient: hruska
     store: kaufland
     product: Hrušky Xénia
     pack: 800 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.99
     sale_until: 2026-11-11
@@ -227,17 +248,31 @@ entries:
     store: kaufland
     product: Hrušky zelené
     pack: 1 kg
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.99
   - ingredient: hruska
     store: kaufland
     product: Hrušky zelené
     pack: 1 kg
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.39
     sale_until: 2026-11-11
+  - ingredient: jablko
+    store: kaufland
+    product: Jablko Crimson snow
+    pack: 1 kg
+    date: 2026-11-10
+    url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
+    price: 2.59
+  - ingredient: jablko
+    store: kaufland
+    product: Jablko červené
+    pack: 2 kg
+    date: 2026-11-10
+    url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
+    price: 2.49
   - ingredient: jablko
     store: kaufland
     product: Jablko Gala
@@ -291,14 +326,14 @@ entries:
     store: kaufland
     product: K-Classic Jahody
     pack: 750 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 2.99
   - ingredient: jahody
     store: kaufland
     product: K-Classic Jahody
     pack: 750 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 2.39
     sale_until: 2026-11-11
@@ -313,14 +348,14 @@ entries:
     store: kaufland
     product: Kaleráb
     pack: 1 ks
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 0.79
   - ingredient: kalerab
     store: kaufland
     product: Kaleráb
     pack: 1 ks
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 0.49
     sale_until: 2026-11-11
@@ -328,16 +363,16 @@ entries:
     store: kaufland
     product: Karfiol
     pack: 1 ks
-    date: 2026-10-19
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
-    price: 2.39
+    price: 1.99
   - ingredient: kesu
     store: kaufland
     product: K-Classic Kešu
-    pack: 500 g
-    date: 2026-10-19
+    pack: 200 g
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
-    price: 7.99
+    price: 2.95
   - ingredient: kesu
     store: kaufland
     product: K-Classic Kešu orechy
@@ -349,14 +384,14 @@ entries:
     store: kaufland
     product: Kivi
     pack: 1 ks
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 0.59
   - ingredient: kiwi
     store: kaufland
     product: Kivi
     pack: 1 ks
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 0.39
     sale_until: 2026-11-11
@@ -377,10 +412,10 @@ entries:
   - ingredient: mandle
     store: kaufland
     product: K-Classic Mandle
-    pack: 100 g
-    date: 2026-10-19
+    pack: 200 g
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
-    price: 1.55
+    price: 2.99
   - ingredient: mandle
     store: kaufland
     product: K-Favourites Mandle
@@ -392,14 +427,14 @@ entries:
     store: kaufland
     product: Poex Mandle
     pack: 100 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.99
   - ingredient: mandle
     store: kaufland
     product: Poex Mandle
     pack: 100 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.49
     sale_until: 2026-11-11
@@ -407,51 +442,65 @@ entries:
     store: kaufland
     product: Mango
     pack: 1 ks
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.79
   - ingredient: mango
     store: kaufland
     product: Mango
     pack: 1 ks
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.19
     sale_until: 2026-11-11
+  - ingredient: mango
+    store: kaufland
+    product: Mango zrelé
+    pack: 1 ks
+    date: 2026-11-10
+    url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
+    price: 2.39
   - ingredient: mrkva
     store: kaufland
     product: Mrkva
     pack: 1 kg
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.39
   - ingredient: mrkva
     store: kaufland
     product: Mrkva
     pack: 1 kg
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 0.79
     sale_until: 2026-11-11
   - ingredient: olej
     store: kaufland
     product: RACIOL Olej
-    pack: 1 l
-    date: 2026-10-19
+    pack: 5 l
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
-    price: 2.99
+    price: 13.49
+  - ingredient: olivovy-olej
+    store: kaufland
+    product: BORGES Olivový olej
+    pack: 1 l
+    date: 2026-11-10
+    url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
+    price: 14.99
   - ingredient: olivovy-olej
     store: kaufland
     product: Costa d´Oro Olivový olej
     pack: 1 l
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 7.99
   - ingredient: olivovy-olej
     store: kaufland
     product: Costa d´Oro Olivový olej
     pack: 1 l
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 5.99
     sale_until: 2026-11-11
@@ -480,9 +529,9 @@ entries:
     store: kaufland
     product: Paradajky strapcové
     pack: 1 kg
-    date: 2026-10-19
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
-    price: 2.99
+    price: 3.19
   - ingredient: paradajky-sterilizovane
     store: kaufland
     product: Giana Paradajky
@@ -518,11 +567,18 @@ entries:
     date: 2026-10-19
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 3.79
+  - ingredient: ryza-jazminova
+    store: kaufland
+    product: Mánya Jazmínová ryža
+    pack: 2 kg
+    date: 2026-11-10
+    url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
+    price: 4.89
   - ingredient: salat
     store: kaufland
     product: Šalát ľadový
     pack: 1 ks
-    date: 2026-10-19
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.59
   - ingredient: slivky
@@ -532,6 +588,13 @@ entries:
     date: 2026-10-19
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.69
+  - ingredient: slivky
+    store: kaufland
+    product: Slivky sušené prémium
+    pack: 500 g
+    date: 2026-11-10
+    url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
+    price: 4.99
   - ingredient: sosovica-hneda
     store: kaufland
     product: K-Classic Šošovica
@@ -557,14 +620,14 @@ entries:
     store: kaufland
     product: Špenát baby
     pack: 125 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 1.39
   - ingredient: spenat
     store: kaufland
     product: Špenát baby
     pack: 125 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 0.79
     sale_until: 2026-11-11
@@ -586,9 +649,9 @@ entries:
     store: kaufland
     product: Uhorka šalátová
     pack: 1 ks
-    date: 2026-11-02
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
-    price: 1.09
+    price: 0.99
   - ingredient: vlasske-orechy
     store: kaufland
     product: K-Classic Vlašske orechy
@@ -600,14 +663,14 @@ entries:
     store: kaufland
     product: Vlašské orechy
     pack: 500 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 7.99
   - ingredient: vlasske-orechy
     store: kaufland
     product: Vlašské orechy
     pack: 500 g
-    date: 2026-11-09
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
     price: 5.59
     sale_until: 2026-11-11
@@ -629,13 +692,13 @@ entries:
     store: kaufland
     product: Zemiaky konzumné
     pack: 10 kg
-    date: 2026-10-19
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
-    price: 4.9
+    price: 8.98
   - ingredient: zemiaky
     store: kaufland
     product: Zemiaky konzumné neprané
     pack: 5 kg
-    date: 2026-10-19
+    date: 2026-11-10
     url: https://predajne.kaufland.sk/aktualna-ponuka/prehlad.html?kloffer-week=current
-    price: 2.45
+    price: 4.49
