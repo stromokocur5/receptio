@@ -12,21 +12,21 @@ entries:
     store: billa
     product: NICE BITES ARAŠIDY PRAŽ. NESOLENÉ 200G
     pack: 200 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/nice-bites-arasidy-praz-nesolene-200g-84253683
     price: 1.35
   - ingredient: avokado
     store: billa
     product: AVOKÁDO KUS
     pack: 1 ks
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/avokado-kus-84181676
     price: 1.99
   - ingredient: avokado
     store: billa
     product: AVOKÁDO KUS
     pack: 1 ks
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/avokado-kus-84181676
     price: 0.99
     sale_until: 2026-11-17
@@ -34,28 +34,28 @@ entries:
     store: billa
     product: AVOKÁDO ZRELÉ KUS BONVIA PREMIUM
     pack: 1 ks
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/avokado-zrele-kus-bonvia-premium-84257591
     price: 2.79
   - ingredient: banan
     store: billa
     product: BANÁNY OBLÁTKA 42G
     pack: 42 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/banany-oblatka-42g-84263535
     price: 0.65
   - ingredient: banan
     store: billa
     product: BANÁNY VOĽNÉ BONVIA
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/banany-volne-bonvia-84258612
     price: 1.59
   - ingredient: banan
     store: billa
     product: BANÁNY VOĽNÉ BONVIA
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/banany-volne-bonvia-84258612
     price: 1.05
     sale_until: 2026-11-17
@@ -63,7 +63,7 @@ entries:
     store: billa
     product: SLADKÉ ZEMIAKY VOĽNÉ BATATY
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/sladke-zemiaky-volne-bataty-84243519
     price: 2.99
   - ingredient: biela-kapusta
@@ -84,14 +84,14 @@ entries:
     store: billa
     product: BROKOLICA 500G
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/brokolica-500g-84181736
     price: 1.99
   - ingredient: brokolica
     store: billa
     product: BROKOLICA 500G
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/brokolica-500g-84181736
     price: 0.99
     sale_until: 2026-11-17
@@ -99,14 +99,14 @@ entries:
     store: billa
     product: BROKOLICA 500G / BON VIA
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/brokolica-500g-bon-via-84233646
     price: 1.99
   - ingredient: brokolica
     store: billa
     product: BROKOLICA 500G / BON VIA
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/brokolica-500g-bon-via-84233646
     price: 0.99
     sale_until: 2026-11-17
@@ -135,49 +135,49 @@ entries:
     store: billa
     product: PANZANI EXPRESS SPAGHETTI BEZVAJ.500G
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/panzani-express-spaghetti-bezvaj500g-84211191
     price: 2.79
   - ingredient: cestoviny
     store: billa
     product: PANZANI MAKARÓNY 500G
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/panzani-makarony-500g-84215514
     price: 2.69
   - ingredient: cestoviny
     store: billa
     product: PANZANI MOTÝLIKY CES.Z TVR.PŠENICE 500G
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/panzani-motyliky-cesz-tvrpsenice-500g-84172240
     price: 2.69
   - ingredient: cestoviny
     store: billa
     product: PANZANI PENNE 1KG
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/panzani-penne-1kg-84261369
     price: 3.49
   - ingredient: cestoviny
     store: billa
     product: PANZANI SPAGHETTI 1KG
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/panzani-spaghetti-1kg-84261367
     price: 3.49
   - ingredient: cestoviny
     store: billa
     product: SHAN SHI MIE REZANCE BEZVAJ.250G
     pack: 250 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/shan-shi-mie-rezance-bezvaj250g-84266435
     price: 3.19
   - ingredient: cibula
     store: billa
     product: CIBUĽA ŽLTÁ VOĽNÁ CHUTE SLOVENSKA
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/cibula-zlta-volna-chute-slovenska-84226045
     price: 0.99
   - ingredient: cibula-cervena
@@ -191,7 +191,7 @@ entries:
     store: billa
     product: GIANA CÍCER V SL.NÁLEVE 425ML
     pack: 240 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/giana-cicer-v-slnaleve-425ml-84217272
     price: 1.09
   - ingredient: cicer-suchy
@@ -205,14 +205,14 @@ entries:
     store: billa
     product: CITRÓNY VOĽNÉ / BON VIA
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/citrony-volne-bon-via-84233668
     price: 2.99
   - ingredient: citron
     store: billa
     product: CITRÓNY VOĽNÉ / BON VIA
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/citrony-volne-bon-via-84233668
     price: 1.99
     sale_until: 2026-11-17
@@ -220,21 +220,21 @@ entries:
     store: billa
     product: CLEVER CITRÓNY 500G
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/clever-citrony-500g-84193101
     price: 0.79
   - ingredient: cucoriedky
     store: billa
     product: CUCORIEDKY 125G
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/cucoriedky-125g-84184733
     price: 2.69
   - ingredient: cucoriedky
     store: billa
     product: CUCORIEDKY 125G
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/cucoriedky-125g-84184733
     price: 1.99
     sale_until: 2026-11-17
@@ -242,14 +242,14 @@ entries:
     store: billa
     product: CUCORIEDKY 125G CHUTE SLOVENSKA
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/cucoriedky-125g-chute-slovenska-84223102
     price: 2.69
   - ingredient: cucoriedky
     store: billa
     product: CUCORIEDKY 125G CHUTE SLOVENSKA
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/cucoriedky-125g-chute-slovenska-84223102
     price: 1.99
     sale_until: 2026-11-17
@@ -257,14 +257,14 @@ entries:
     store: billa
     product: CUCORIEDKY 125G/BON VIA
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/cucoriedky-125gbon-via-84263234
     price: 2.69
   - ingredient: cucoriedky
     store: billa
     product: CUCORIEDKY 125G/BON VIA
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/cucoriedky-125gbon-via-84263234
     price: 1.99
     sale_until: 2026-11-17
@@ -272,28 +272,28 @@ entries:
     store: billa
     product: CUCORIEDKY 250G
     pack: 250 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/cucoriedky-250g-84245955
     price: 4.99
   - ingredient: cucoriedky
     store: billa
     product: CUCORIEDKY 250G/BON VIA
     pack: 250 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/cucoriedky-250gbon-via-84263235
     price: 4.99
   - ingredient: cucoriedky
     store: billa
     product: ČUČORIEDKY 125G BON VIA
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/cucoriedky-125g-bon-via-84237827
     price: 2.69
   - ingredient: cucoriedky
     store: billa
     product: ČUČORIEDKY 125G BON VIA
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/cucoriedky-125g-bon-via-84237827
     price: 1.99
     sale_until: 2026-11-17
@@ -301,14 +301,14 @@ entries:
     store: billa
     product: ČUČORIEDKY 250G CHUTE SLOVENSKA
     pack: 250 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/cucoriedky-250g-chute-slovenska-84239557
     price: 4.99
   - ingredient: cukor
     store: billa
     product: KORUNNÝ CUKOR KRYŠTÁLOVÝ 1KG
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/korunny-cukor-krystalovy-1kg-84206595
     price: 1.29
   - ingredient: cukor
@@ -364,14 +364,14 @@ entries:
     store: billa
     product: GIANA BIELA FAZUĽA MASLOVÁ 425ML
     pack: 240 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/giana-biela-fazula-maslova-425ml-84215589
     price: 1.29
   - ingredient: fazula-biela
     store: billa
     product: GIANA FAZUĽA BIELA V SLAN.NÁL. 425ML
     pack: 240 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/giana-fazula-biela-v-slannal-425ml-84178319
     price: 1.29
   - ingredient: fazula-biela-sucha
@@ -399,7 +399,7 @@ entries:
     store: billa
     product: GIANA ČERVENÁ FAZUĽA 425ML
     pack: 240 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/giana-cervena-fazula-425ml-84215590
     price: 1.29
   - ingredient: fazula-cervena-sucha
@@ -420,28 +420,28 @@ entries:
     store: billa
     product: BABIČ.VOĽBA HLAD.PŠEN.MÚKA 1KG
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/babicvolba-hladpsenmuka-1kg-84212660
     price: 1.39
   - ingredient: hladka-muka
     store: billa
     product: VITAFLÓRA PŠEN.MÚKA HLAD.ŠPEC.EXTRA 1KG
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/vitaflora-psenmuka-hladspecextra-1kg-84261049
     price: 0.85
   - ingredient: horcica
     store: billa
     product: DUPETKY PRACLÍKY HORČICA MED CIB.70G
     pack: 70 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/dupetky-pracliky-horcica-med-cib70g-84233585
     price: 1.05
   - ingredient: horcica
     store: billa
     product: DUPETKY PRACLÍKY HORČICA MED CIB.70G
     pack: 70 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/dupetky-pracliky-horcica-med-cib70g-84233585
     price: 0.79
     sale_until: 2026-11-17
@@ -449,14 +449,14 @@ entries:
     store: billa
     product: SNICO KRÁĽOVSKÁ HORČICA KREMŽSKÁ 350G
     pack: 350 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/snico-kralovska-horcica-kremzska-350g-84201540
-    price: 1.39
+    price: 1.29
   - ingredient: horcica
     store: billa
     product: SNICO KRÁĽOVSKÁ HORČICA PLNOTUČNÁ 350G
     pack: 350 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/snico-kralovska-horcica-plnotucna-350g-84201539
     price: 1.19
   - ingredient: horcica
@@ -477,21 +477,21 @@ entries:
     store: billa
     product: NICE BITES HROZIENKA THOMPSON 200G
     pack: 200 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/nice-bites-hrozienka-thompson-200g-84253857
     price: 1.59
   - ingredient: hrozienka
     store: billa
     product: NICE BITES HROZIENKA V MLIEČ.ČOKOL.130G
     pack: 130 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/nice-bites-hrozienka-v-mlieccokol130g-84257465
     price: 2.25
   - ingredient: hrozienka
     store: billa
     product: NICE BITES HROZIENKA V MLIEČ.ČOKOL.130G
     pack: 130 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/nice-bites-hrozienka-v-mlieccokol130g-84257465
     price: 1.79
     sale_until: 2026-11-17
@@ -499,21 +499,21 @@ entries:
     store: billa
     product: NICE BITES HROZIENKA ZLATÉ JUMBO 200G
     pack: 200 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/nice-bites-hrozienka-zlate-jumbo-200g-84253839
     price: 2.49
   - ingredient: hrozno
     store: billa
     product: STOLOVÉ HROZNO BIELE 500G
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/stolove-hrozno-biele-500g-84182588
     price: 3.29
   - ingredient: hrozno
     store: billa
     product: STOLOVÉ HROZNO BIELE 500G / BON VIA
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/stolove-hrozno-biele-500g-bon-via-84236166
     price: 3.29
   - ingredient: hrozno
@@ -548,21 +548,21 @@ entries:
     store: billa
     product: JABLKÁ CERVENÉ VOĽNÉ
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/jablka-cervene-volne-84181696
     price: 1.39
   - ingredient: jablko
     store: billa
     product: JABLKÁ ČERVENÉ UKLADANÉ
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/jablka-cervene-ukladane-84225024
     price: 1.65
   - ingredient: jablko
     store: billa
     product: JABLKÁ ČERVENÉ UKLADANÉ
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/jablka-cervene-ukladane-84225024
     price: 0.99
     sale_until: 2026-11-17
@@ -570,7 +570,7 @@ entries:
     store: billa
     product: JABLKÁ EVELINA UKLADANÉ CHUTE SLOVENSKA
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/jablka-evelina-ukladane-chute-slovenska-84214461
     price: 2.69
   - ingredient: jablko
@@ -591,14 +591,14 @@ entries:
     store: billa
     product: PFANNER JABLKO 100% 1L
     pack: 1 l
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/pfanner-jablko-100-1l-84203434
     price: 2.59
   - ingredient: jablkovy-must
     store: billa
     product: RELAX 100% JABLKO 1L
     pack: 1 l
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/relax-100-jablko-1l-84205980
     price: 1.99
   - ingredient: jablkovy-must
@@ -626,21 +626,21 @@ entries:
     store: billa
     product: HAMÉ KECUP SLADKÝ 900G
     pack: 900 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/hame-kecup-sladky-900g-84201851
     price: 3.89
   - ingredient: kecup
     store: billa
     product: HAMÉ KEČUP OSTRÝ 300G
     pack: 300 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/hame-kecup-ostry-300g-84177634
     price: 1.95
   - ingredient: kecup
     store: billa
     product: HAMÉ KEČUP SLADKÝ 300G
     pack: 300 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/hame-kecup-sladky-300g-84177635
     price: 1.95
   - ingredient: kecup
@@ -689,35 +689,35 @@ entries:
     store: billa
     product: HELLMANN'S KEČUP 500ML
     pack: 500 ml
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/hellmanns-kecup-500ml-84263568
     price: 3.99
   - ingredient: kecup
     store: billa
     product: HELLMANN'S KEČUP JEMNÝ 477G
     pack: 477 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/hellmanns-kecup-jemny-477g-84262757
     price: 2.99
   - ingredient: kecup
     store: billa
     product: HELLMANNS KEČUP CHUŤ ITÁLIE 470ML
     pack: 470 ml
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/hellmanns-kecup-chut-italie-470ml-84258805
     price: 2.99
   - ingredient: kecup
     store: billa
     product: HELLMANNS KEČUP JEMNE PÁLIVÝ 470G
     pack: 470 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/hellmanns-kecup-jemne-palivy-470g-84234305
     price: 2.99
   - ingredient: kecup
     store: billa
     product: HELLMANNS KEČUP PRE DETI -50% CUK.460G
     pack: 460 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/hellmanns-kecup-pre-deti-50-cuk460g-84255213
     price: 2.99
   - ingredient: kecup
@@ -752,35 +752,35 @@ entries:
     store: billa
     product: OTMA GURMÁN KECUP JEMNÝ PLAST 375G
     pack: 375 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/otma-gurman-kecup-jemny-plast-375g-84266003
     price: 2.89
   - ingredient: kecup
     store: billa
     product: OTMA GURMÁN KECUP OSTRÝ PLAST 375G
     pack: 375 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/otma-gurman-kecup-ostry-plast-375g-84266002
     price: 2.89
   - ingredient: kecup
     store: billa
     product: OTMA GURMÁN KEČUP JEMNÝ 860G
     pack: 860 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/otma-gurman-kecup-jemny-860g-84262161
     price: 3.99
   - ingredient: kecup
     store: billa
     product: OTMA KECUP JEMNÝ SKLO 520G
     pack: 520 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/otma-kecup-jemny-sklo-520g-84266005
     price: 2.89
   - ingredient: kecup
     store: billa
     product: OTMA OTMÁNEK KECUP PLAST 375G
     pack: 375 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/otma-otmanek-kecup-plast-375g-84266004
     price: 1.99
   - ingredient: kecup
@@ -829,14 +829,14 @@ entries:
     store: billa
     product: TOMATA KEČUP JEMNÝ 900G PLAST
     pack: 900 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/tomata-kecup-jemny-900g-plast-84229269
     price: 2.95
   - ingredient: kecup
     store: billa
     product: TOMATA KEČUP JEMNÝ 900G PLAST
     pack: 900 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/tomata-kecup-jemny-900g-plast-84229269
     price: 1.69
     sale_until: 2026-11-17
@@ -844,14 +844,14 @@ entries:
     store: billa
     product: TOMATA KEČUP OSTRÝ 900G PLAST
     pack: 900 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/tomata-kecup-ostry-900g-plast-84229270
     price: 2.95
   - ingredient: kecup
     store: billa
     product: TOMATA KEČUP OSTRÝ 900G PLAST
     pack: 900 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/tomata-kecup-ostry-900g-plast-84229270
     price: 1.69
     sale_until: 2026-11-17
@@ -859,28 +859,28 @@ entries:
     store: billa
     product: NICE BITES JADRÁ KEŠU ORECHOV 500G
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/nice-bites-jadra-kesu-orechov-500g-84253875
     price: 8.99
   - ingredient: kesu
     store: billa
     product: NICE BITES TO GO JADRÁ KESU ORECH. 70G
     pack: 70 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/nice-bites-to-go-jadra-kesu-orech-70g-84253852
     price: 1.39
   - ingredient: kesu
     store: billa
     product: SLOVAKIA KEŠU ORECHY 125G
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/slovakia-kesu-orechy-125g-84255839
     price: 4.99
   - ingredient: kesu
     store: billa
     product: SLOVAKIA KEŠU ORECHY 125G
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/slovakia-kesu-orechy-125g-84255839
     price: 3.49
     sale_until: 2026-11-17
@@ -888,21 +888,21 @@ entries:
     store: billa
     product: KIWI GOLD KUS
     pack: 1 ks
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/kiwi-gold-kus-84224027
     price: 0.89
   - ingredient: kiwi
     store: billa
     product: KIWI KUS / BON VIA
     pack: 1 ks
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/kiwi-kus-bon-via-84233703
     price: 0.59
   - ingredient: kiwi
     store: billa
     product: KIWI KUS / BON VIA
     pack: 1 ks
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/kiwi-kus-bon-via-84233703
     price: 0.35
     sale_until: 2026-11-17
@@ -910,7 +910,7 @@ entries:
     store: billa
     product: SHAN SHI MUNGO FAZUĽOVÉ KLÍČKY 330G
     pack: 180 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/shan-shi-mungo-fazulove-klicky-330g-84215592
     price: 3.49
   - ingredient: kokosove-mlieko
@@ -924,14 +924,14 @@ entries:
     store: billa
     product: SHAN SHI KOKOSOVÉ MLIEKO 165 ML
     pack: 165 ml
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/shan-shi-kokosove-mlieko-165-ml-84195948
     price: 1.99
   - ingredient: kokosove-mlieko
     store: billa
     product: SHAN SHI KOKOSOVÉ MLIEKO 400ML
     pack: 400 ml
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/shan-shi-kokosove-mlieko-400ml-84207194
     price: 3.55
   - ingredient: kukurica
@@ -945,56 +945,56 @@ entries:
     store: billa
     product: DR.OETKER KYPRIACI PRÁŠOK 5-BAL. 5X12G
     pack: 60 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/droetker-kypriaci-prasok-5bal-5x12g-84179432
     price: 0.89
   - ingredient: kysle-uhorky
     store: billa
     product: EFKO KORENENÉ UHORKY 720ML-670G
     pack: 370 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/efko-korenene-uhorky-720ml670g-84184057
     price: 3.59
   - ingredient: kysle-uhorky
     store: billa
     product: EFKO UHORKY BEZ PRIDANÉHO CUKRU 670G
     pack: 360 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/efko-uhorky-bez-pridaneho-cukru-670g-84261930
     price: 3.99
   - ingredient: kysle-uhorky
     store: billa
     product: EFKO UHORKY DELIKATES 1,7L
     pack: 870 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/efko-uhorky-delikates-17l-84214105
     price: 6.39
   - ingredient: kysle-uhorky
     store: billa
     product: EFKO UHORKY DELIKATES 3-6 CM 670 G
     pack: 390 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/efko-uhorky-delikates-36-cm-670-g-84258406
     price: 3.99
   - ingredient: kysle-uhorky
     store: billa
     product: EFKO UHORKY DELIKATES 370ML-330G
     pack: 185 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/efko-uhorky-delikates-370ml330g-84162276
     price: 2.69
   - ingredient: kysle-uhorky
     store: billa
     product: EFKO UHORKY DELIKATES 5-8CM 720ML-670G
     pack: 360 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/efko-uhorky-delikates-58cm-720ml670g-84162275
     price: 3.89
   - ingredient: kysle-uhorky
     store: billa
     product: GIANA UHORKY V SKN 720ML-680G
     pack: 360 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/giana-uhorky-v-skn-720ml680g-84225333
     price: 1.99
   - ingredient: kysle-uhorky
@@ -1015,7 +1015,7 @@ entries:
     store: billa
     product: CLEVER MAK MLETÝ MODRÝ 200G
     pack: 200 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/clever-mak-mlety-modry-200g-84265957
     price: 1.29
   - ingredient: mak
@@ -1029,14 +1029,14 @@ entries:
     store: billa
     product: MALINY 125G
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/maliny-125g-84172719
     price: 2.99
   - ingredient: maliny
     store: billa
     product: MALINY 125G
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/maliny-125g-84172719
     price: 2.29
     sale_until: 2026-11-17
@@ -1044,14 +1044,14 @@ entries:
     store: billa
     product: MALINY 125G BONVIA
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/maliny-125g-bonvia-84264620
     price: 2.99
   - ingredient: maliny
     store: billa
     product: MALINY 125G BONVIA
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/maliny-125g-bonvia-84264620
     price: 2.29
     sale_until: 2026-11-17
@@ -1059,7 +1059,7 @@ entries:
     store: billa
     product: KAROTKA PRANÁ VOĽNÁ CHUTE SLOVENSKA
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/karotka-prana-volna-chute-slovenska-84226429
     price: 1.39
   - ingredient: olej
@@ -1073,21 +1073,21 @@ entries:
     store: billa
     product: VÉNUSZ REPKOVÝ OLEJ 1L
     pack: 1 l
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/venusz-repkovy-olej-1l-84200342
     price: 3.35
   - ingredient: olivovy-olej
     store: billa
     product: BILLA EV OLIVOVÝ OLEJ 500ML ŠPAN.
     pack: 500 ml
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/billa-ev-olivovy-olej-500ml-span-84235536
     price: 8.49
   - ingredient: olivovy-olej
     store: billa
     product: BILLA EV OLIVOVÝ OLEJ 500ML ŠPAN.
     pack: 500 ml
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/billa-ev-olivovy-olej-500ml-span-84235536
     price: 4.99
     sale_until: 2026-11-17
@@ -1095,14 +1095,14 @@ entries:
     store: billa
     product: BILLA OLIVOVÝ OLEJ EXTRA VIRGIN 750ML
     pack: 750 ml
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/billa-olivovy-olej-extra-virgin-750ml-84224359
     price: 10.99
   - ingredient: olivovy-olej
     store: billa
     product: BILLA OLIVOVÝ OLEJ EXTRA VIRGIN 750ML
     pack: 750 ml
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/billa-olivovy-olej-extra-virgin-750ml-84224359
     price: 6.99
     sale_until: 2026-11-17
@@ -1124,28 +1124,28 @@ entries:
     store: billa
     product: ALPRO OVSENÝ NÁPOJ 1L
     pack: 1 l
-    date: 2026-11-10
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/alpro-ovseny-napoj-1l-84220580
     price: 3.39
   - ingredient: paradajkovy-pretlak
     store: billa
     product: PODRAVKA PARADAJKOVÝ PRETLAK 3X200G
     pack: 600 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/podravka-paradajkovy-pretlak-3x200g-84211190
     price: 2.35
   - ingredient: paradajky
     store: billa
     product: PARADAJKY KOKTEILOVÉ CIERNE 250G BVP
     pack: 250 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/paradajky-kokteilove-cierne-250g-bvp-84266167
     price: 3.99
   - ingredient: paradajky
     store: billa
     product: PARADAJKY KOKTEILOVÉ CIERNE 250G BVP
     pack: 250 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/paradajky-kokteilove-cierne-250g-bvp-84266167
     price: 2.99
     sale_until: 2026-11-17
@@ -1181,14 +1181,14 @@ entries:
     store: billa
     product: RAJČIAKY CHERRY POHÁR 250G CHUTE SK
     pack: 250 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/rajciaky-cherry-pohar-250g-chute-sk-84201750
     price: 2.99
   - ingredient: paradajky
     store: billa
     product: RAJČIAKY CHERRY POHÁR 250G CHUTE SK
     pack: 250 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/rajciaky-cherry-pohar-250g-chute-sk-84201750
     price: 1.99
     sale_until: 2026-11-24
@@ -1196,7 +1196,7 @@ entries:
     store: billa
     product: RAJČIAKY KOKTEILOVÉ STRAP.400G CHUTE SK
     pack: 400 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/rajciaky-kokteilove-strap400g-chute-sk-84222526
     price: 3.49
   - ingredient: paradajky
@@ -1210,28 +1210,28 @@ entries:
     store: billa
     product: RAJČIAKY STRAPCOVÉ VOĽNÉ CHUTE SLOVENSKA
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/rajciaky-strapcove-volne-chute-slovenska-84226427
     price: 3.49
   - ingredient: passata
     store: billa
     product: PODRAVKA PASÍROVANÉ PARADAJKY 500G
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/podravka-pasirovane-paradajky-500g-84211189
     price: 1.59
   - ingredient: pomaranc
     store: billa
     product: POMARANCE VOĽNÉ-84/233604
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/pomarance-volne84233604-84181722
     price: 2.19
   - ingredient: pomaranc
     store: billa
     product: POMARANCE VOĽNÉ-84/233604
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/pomarance-volne84233604-84181722
     price: 1.49
     sale_until: 2026-11-17
@@ -1239,14 +1239,14 @@ entries:
     store: billa
     product: POMARANČE VOĽNÉ / BON VIA
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/pomarance-volne-bon-via-84233604
     price: 2.19
   - ingredient: pomaranc
     store: billa
     product: POMARANČE VOĽNÉ / BON VIA
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/pomarance-volne-bon-via-84233604
     price: 1.49
     sale_until: 2026-11-24
@@ -1261,14 +1261,14 @@ entries:
     store: billa
     product: VITANA RASCA CELÁ 28G
     pack: 28 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/vitana-rasca-cela-28g-84226677
     price: 0.79
   - ingredient: redkovka
     store: billa
     product: REĎKOVKA ČERVENÁ ZVÄZOK / BON VIA
     pack: 1 ks
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/redkovka-cervena-zvaezok-bon-via-84233666
     price: 0.89
   - ingredient: ryza-arborio
@@ -1282,28 +1282,28 @@ entries:
     store: billa
     product: GIANA RYŽA GUĽATOZRNNÁ 1KG
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/giana-ryza-gulatozrnna-1kg-84214093
     price: 1.99
   - ingredient: ryza-arborio
     store: billa
     product: LAGRIS RYŽA ARBORIO 500G
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/lagris-ryza-arborio-500g-84219972
     price: 3.29
   - ingredient: ryza-arborio
     store: billa
     product: LAGRIS RYŽA GUĽATOZRNNÁ 1KG STOJ.SÁČOK
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/lagris-ryza-gulatozrnna-1kg-stojsacok-84182790
     price: 2.65
   - ingredient: ryza-basmati
     store: billa
     product: LAGRIS BASMATI RYZA 500G
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/lagris-basmati-ryza-500g-84261381
     price: 2.59
   - ingredient: ryza-basmati
@@ -1317,14 +1317,14 @@ entries:
     store: billa
     product: SOS BASMATI DLHOZRNNÁ RYŽA 1KG
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/sos-basmati-dlhozrnna-ryza-1kg-84261417
     price: 3.99
   - ingredient: ryza-basmati
     store: billa
     product: SOS BASMATI DLHOZRNNÁ RYŽA 1KG
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/sos-basmati-dlhozrnna-ryza-1kg-84261417
     price: 2.99
     sale_until: 2026-11-17
@@ -1332,28 +1332,28 @@ entries:
     store: billa
     product: LAGRIS JAZMÍNOVÁ RYŽA 500G
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/lagris-jazminova-ryza-500g-84182234
     price: 2.69
   - ingredient: ryza-jazminova
     store: billa
     product: LAGRIS RYŽA JAZMÍNOVÁ VV 4X100G
     pack: 400 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/lagris-ryza-jazminova-vv-4x100g-84261397
     price: 1.99
   - ingredient: ryza-jazminova
     store: billa
     product: SOS RYŽA JAZMÍNOVÁ 1KG
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/sos-ryza-jazminova-1kg-84234324
     price: 3.56
   - ingredient: ryza-jazminova
     store: billa
     product: SOS RYŽA JAZMÍNOVÁ 1KG
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/sos-ryza-jazminova-1kg-84234324
     price: 2.19
     sale_until: 2026-11-17
@@ -1361,42 +1361,42 @@ entries:
     store: billa
     product: LAGRIS RYŽA SUSHI 500GR
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/lagris-ryza-sushi-500gr-84219970
     price: 2.69
   - ingredient: ryzovy-napoj
     store: billa
     product: ALPRO RYŽOVÝ NÁPOJ 1L
     pack: 1 l
-    date: 2026-11-10
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/alpro-ryzovy-napoj-1l-84219624
     price: 3.39
   - ingredient: ryzovy-ocot
     store: billa
     product: SHAN SHI RYŽOVÝ OCOT 150ML
     pack: 150 ml
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/shan-shi-ryzovy-ocot-150ml-84238756
     price: 2.99
   - ingredient: salat
     store: billa
     product: SALÁT ĽADOVÝ KUS
     pack: 1 ks
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/salat-ladovy-kus-84181729
     price: 1.59
   - ingredient: salat
     store: billa
     product: SALÁT ĽADOVÝ KUS / BON VIA
     pack: 1 ks
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/salat-ladovy-kus-bon-via-84233602
     price: 1.59
   - ingredient: salat
     store: billa
     product: ŠALÁT ĽADOVÝ KUS CHUTE SLOVENSKA
     pack: 1 ks
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/salat-ladovy-kus-chute-slovenska-84228560
     price: 1.59
   - ingredient: sampinony
@@ -1410,21 +1410,21 @@ entries:
     store: billa
     product: VITANA SEZAMOVÉ SEMIENKO 28G
     pack: 28 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/vitana-sezamove-semienko-28g-84226679
     price: 1.05
   - ingredient: sladka-paprika
     store: billa
     product: VITANA PAPRIKA SLADKÁ MLETÁ 23G
     pack: 23 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/vitana-paprika-sladka-mleta-23g-84226675
     price: 0.95
   - ingredient: sojove-mlieko
     store: billa
     product: ALPRO SÓJOVÝ NÁPOJ NESLADENÝ 1L
     pack: 1 l
-    date: 2026-11-10
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/alpro-sojovy-napoj-nesladeny-1l-84208644
     price: 3.19
   - ingredient: sojove-zrna
@@ -1473,14 +1473,14 @@ entries:
     store: billa
     product: UHORKA SALÁTOVÁ KUS
     pack: 1 ks
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/uhorka-salatova-kus-84181731
     price: 0.99
   - ingredient: uhorka
     store: billa
     product: UHORKA SALÁTOVÁ KUS
     pack: 1 ks
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/uhorka-salatova-kus-84181731
     price: 0.55
     sale_until: 2026-11-24
@@ -1495,21 +1495,21 @@ entries:
     store: billa
     product: NICE BITES JADRÁ VLAŠSKÝCH ORECHOV 150G
     pack: 150 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/nice-bites-jadra-vlasskych-orechov-150g-84254296
     price: 2.99
   - ingredient: zazvor
     store: billa
     product: ZÁZVOR VOĽNÝ KG
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/zazvor-volny-kg-84204785
     price: 5.9
   - ingredient: zazvor
     store: billa
     product: ZÁZVOR VOĽNÝ KG
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/zazvor-volny-kg-84204785
     price: 3.9
     sale_until: 2026-11-17
@@ -1524,14 +1524,14 @@ entries:
     store: billa
     product: ZEMIAKY NESKORÉ PRA.VOĽNÉ KG/CHUTE SK
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/zemiaky-neskore-pravolne-kgchute-sk-84226047
     price: 0.99
   - ingredient: zemiaky
     store: billa
     product: ZEMIAKY NESKORÉ PRA.VOĽNÉ KG/CHUTE SK
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.billa.sk/produkty/zemiaky-neskore-pravolne-kgchute-sk-84226047
     price: 0.75
     sale_until: 2026-11-24

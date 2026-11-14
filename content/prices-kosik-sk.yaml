@@ -5,14 +5,14 @@ entries:
     store: kosik
     product: Sambazon Organic Acai bez cukru
     pack: 400 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p7628-sambazon-organic-acai-bez-cukru
     price: 9.59
   - ingredient: bazalka
     store: kosik
     product: Metro Chef Bazalka
     pack: 100 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p18496-metro-chef-bazalka
     price: 3.79
   - ingredient: broskyne
@@ -33,7 +33,7 @@ entries:
     store: kosik
     product: Metro Chef Koriander
     pack: 100 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p7832-metro-chef-koriander
     price: 2.89
   - ingredient: bylinky-koriander
@@ -47,22 +47,22 @@ entries:
     store: kosik
     product: Metro Chef Mäta zelená
     pack: 100 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p4232-metro-chef-maeta-zelena
     price: 2.99
   - ingredient: cernice
     store: kosik
     product: Černice, vanička
     pack: 125 g
-    date: 2026-11-13
-    url: https://www.kosik.sk/p14494-cernice-vanicka
+    date: 2026-11-14
+    url: https://www.kosik.sk/p17448-cernice-vanicka
     price: 3.99
   - ingredient: cernice
     store: kosik
     product: Černice, vanička
     pack: 125 g
     date: 2026-11-13
-    url: https://www.kosik.sk/p17448-cernice-vanicka
+    url: https://www.kosik.sk/p14494-cernice-vanicka
     price: 3.99
   - ingredient: cernice
     store: kosik
@@ -75,7 +75,7 @@ entries:
     store: kosik
     product: Chilli papričky červené, pálivosť 5
     pack: 250 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p28754-chilli-papricky-cervene-palivost-5
     price: 4.99
   - ingredient: cinska-kapusta
@@ -103,133 +103,133 @@ entries:
     store: kosik
     product: 7 Days Filo Lístkové cesto
     pack: 450 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p4368-7-days-filo-listkove-cesto
     price: 5.59
   - ingredient: hamburgerova-zemla
     store: kosik
     product: Jaus Hamburger sezamový 6x50 g
     pack: 300 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p11188-jaus-hamburger-sezamovy-6x50-g
     price: 2.99
   - ingredient: hamburgerova-zemla
     store: kosik
     product: Penam Hamburgerové žemle posypané sezamom (4x75g)
     pack: 300 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p3594-penam-hamburgerove-zemle-posypane-sezamom-4x75g
     price: 3.39
   - ingredient: hamburgerova-zemla
     store: kosik
     product: Penam Žemle hamburger so sezamom 6x50 g
     pack: 300 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p9410-penam-zemle-hamburger-so-sezamom-6x50-g
     price: 2.89
   - ingredient: jablkovy-must
     store: kosik
     product: Fine Life 100% Jablko
     pack: 1 l
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p35052-fine-life-100-jablko
     price: 0.99
   - ingredient: jablkovy-must
     store: kosik
     product: Fine Life 100% Jablko
     pack: 200 ml
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p35060-fine-life-100-jablko
     price: 0.39
   - ingredient: jablkovy-must
     store: kosik
     product: HAPPY DAY 100% Jablko
     pack: 1 l
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p32472-happy-day-100-jablko
     price: 2.69
   - ingredient: kel
     store: kosik
     product: Kel kučeravý čierny
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p55752-kel-kuceravy-cierny
     price: 7.5
   - ingredient: kel
     store: kosik
     product: Kel kučeravý zelený
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p42918-kel-kuceravy-zeleny
     price: 7
   - ingredient: kimchi
     store: kosik
     product: Kapusta Kimchi classic heat
     pack: 390 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p7990-kapusta-kimchi-classic-heat
     price: 10.49
   - ingredient: kimchi
     store: kosik
     product: Kapusta Kimchi Extra hot
     pack: 390 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p7898-kapusta-kimchi-extra-hot
     price: 10.49
   - ingredient: kimchi
     store: kosik
     product: Živina Kimchi natur stredne pálivé
     pack: 300 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p43842-zivina-kimchi-natur-stredne-palive
     price: 7.19
   - ingredient: kimchi
     store: kosik
     product: Živina Kimchi Nepálivé
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p43852-zivina-kimchi-nepalive
     price: 10.49
   - ingredient: kimchi
     store: kosik
     product: Živina Kimchi Nepálivé
     pack: 300 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p43848-zivina-kimchi-nepalive
     price: 7.19
   - ingredient: kimchi
     store: kosik
     product: Živina Kimchi Pálivé
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p43846-zivina-kimchi-palive
     price: 10.49
   - ingredient: kimchi
     store: kosik
     product: Živina Kimchi Pálivé
     pack: 300 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p43850-zivina-kimchi-palive
     price: 7.19
   - ingredient: kimchi
     store: kosik
     product: Živina Kimchi stredne pikantné (natur)
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p43742-zivina-kimchi-stredne-pikantne-natur
     price: 10.49
   - ingredient: kopor
     store: kosik
     product: Metro Chef Kôpor
     pack: 100 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p2824-metro-chef-kopor
     price: 2.99
   - ingredient: kopor
     store: kosik
     product: Metro Chef Kôpor
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p20898-metro-chef-kopor
     price: 14.99
   - ingredient: kopor
@@ -243,14 +243,14 @@ entries:
     store: kosik
     product: Metro Chef Kôpor čerstvý
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p18586-metro-chef-kopor-cerstvy
     price: 8.39
   - ingredient: limetka
     store: kosik
     product: Limety čerstvé, balenie
     pack: 3 ks
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p7880-limety-cerstve-balenie
     price: 1.79
   - ingredient: marhule
@@ -264,7 +264,7 @@ entries:
     store: kosik
     product: Melón vodový bezsemenný
     pack: 3,35 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p18660-melon-vodovy-bezsemenny
     price: 8.34
   - ingredient: melon
@@ -285,84 +285,84 @@ entries:
     store: kosik
     product: Melón vodový so semenami
     pack: 6 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p17346-melon-vodovy-so-semenami
     price: 5.76
   - ingredient: pastinak
     store: kosik
     product: Paštrnák praný
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p8056-pastrnak-prany
     price: 2.29
   - ingredient: pazitka
     store: kosik
     product: Metro Chef Pažítka
     pack: 100 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p7838-metro-chef-pazitka
     price: 3.49
   - ingredient: pecivo-bezlepkove
     store: kosik
     product: Nutri Free XL bezlepkové žemle
     pack: 200 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p52792-nutri-free-xl-bezlepkove-zemle
     price: 4.19
   - ingredient: pecivo-bezlepkove
     store: kosik
     product: Penam Bagetka svetlá bezgluténová
     pack: 240 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p17982-penam-bagetka-svetla-bezglutenova
     price: 5.69
   - ingredient: pita
     store: kosik
     product: Hermes Grécky chlieb pita, 10 ks
     pack: 750 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p718-hermes-grecky-chlieb-pita-10-ks
     price: 4.99
   - ingredient: pita
     store: kosik
     product: Penam Arabský chlieb 5ks
     pack: 330 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p11194-penam-arabsky-chlieb-5ks
     price: 2.29
   - ingredient: rastlinne-maslo
     store: kosik
     product: Flora Omega 3&6 Gold
     pack: 400 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p17232-flora-omega-3-6-gold
     price: 2.79
   - ingredient: rastlinne-maslo
     store: kosik
     product: Flora Omega 3&6 Light
     pack: 400 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p17230-flora-omega-3-6-light
     price: 2.79
   - ingredient: rastlinne-maslo
     store: kosik
     product: Flora Omega 3&6 Original
     pack: 400 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p17228-flora-omega-3-6-original
     price: 2.79
   - ingredient: rastlinne-maslo
     store: kosik
     product: Flora Omega 3&6 Original
     pack: 225 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p27592-flora-omega-3-6-original
     price: 2.89
   - ingredient: ribezle-cervene
     store: kosik
     product: Ríbezle červené, vanička
     pack: 125 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p33018-ribezle-cervene-vanicka
     price: 3.89
   - ingredient: ribezle-cervene
@@ -376,37 +376,44 @@ entries:
     store: kosik
     product: Metro Chef Čierne ríbezle
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p7686-metro-chef-cierne-ribezle
     price: 11.99
   - ingredient: shiitake
     store: kosik
     product: Shiitake
     pack: 200 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p7896-shiitake
     price: 3.19
   - ingredient: struhanka-bezlepkova
     store: kosik
     product: Nutri Free Strúhanka bezlepková
     pack: 500 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p16162-nutri-free-struhanka-bezlepkova
     price: 3.69
   - ingredient: struhanka-bezlepkova
     store: kosik
     product: Schär Strúhanka bezlepková
     pack: 300 g
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p17198-schar-struhanka-bezlepkova
     price: 3.09
   - ingredient: topinambur
     store: kosik
     product: Topinambur
     pack: 1 kg
-    date: 2026-11-13
+    date: 2026-11-14
     url: https://www.kosik.sk/p3884-topinambur
     price: 6.79
+  - ingredient: topinambur
+    store: kosik
+    product: Topinambur
+    pack: 1 kg
+    date: 2026-11-14
+    url: https://www.kosik.sk/p1000003884-topinambur?sale=1
+    price: 4.75
   - ingredient: zeler-stonkovy
     store: kosik
     product: Stopkový zeler
