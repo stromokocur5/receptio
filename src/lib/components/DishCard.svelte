@@ -4,7 +4,8 @@
 	import type { Dish, DishMatch } from '$lib/dish';
 	import type { Plate } from '$lib/plate';
 	import Icon from './Icon.svelte';
-	import PlateArt from './PlateArt.svelte';
+	import BuiltPlate from './BuiltPlate.svelte';
+	import { placeParts } from '$lib/plate-art';
 
 	let {
 		dish,
@@ -28,8 +29,8 @@
 </script>
 
 <article class="dish card draw-host rise" style:--i={index}>
-	<div class="art">
-		<PlateArt seed={dish.id} lines={plate.lines} byId={catalog().ingredientsById} animate={false} />
+	<div class="art" style:view-transition-name="plate-{dish.id}">
+		<BuiltPlate filled={placeParts(plate.parts)} byId={catalog().ingredientsById} steam={false} />
 		{#if match && !missing.length}
 			<span class="badge leaf sticker have"
 				><Icon name="check" size={14} stroke={2.4} /> Máš všetko</span
@@ -74,7 +75,7 @@
 		transform: translateY(-3px);
 		box-shadow: var(--shadow-lift);
 	}
-	.dish:hover :global(svg.plate) {
+	.dish:hover :global(svg.built) {
 		transform: rotate(8deg) scale(1.03);
 	}
 	.art {
@@ -88,8 +89,8 @@
 			transparent 70%
 		);
 	}
-	.art :global(svg.plate) {
-		width: min(180px, 70%);
+	.art :global(svg.built) {
+		width: min(190px, 76%);
 		transition: transform 0.6s var(--ease-spring);
 	}
 	.have {
@@ -173,7 +174,7 @@
 			animation: none;
 		}
 		.dish,
-		.art :global(svg.plate) {
+		.art :global(svg.built) {
 			transition: none;
 		}
 	}

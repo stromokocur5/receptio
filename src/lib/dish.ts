@@ -99,6 +99,26 @@ export const PART_KINDS = [
 ] as const;
 export type PartKind = (typeof PART_KINDS)[number];
 
+/** Kitchens a part belongs to, for suggesting what goes with what. None = goes with anything. */
+export const STYLES = [
+	'azijske',
+	'indicke',
+	'stredomorske',
+	'mexicke',
+	'domace',
+	'sladke'
+] as const;
+export type Style = (typeof STYLES)[number];
+
+export const STYLE_LABELS: Record<Style, string> = {
+	azijske: 'ázijské',
+	indicke: 'indické',
+	stredomorske: 'stredomorské',
+	mexicke: 'mexické',
+	domace: 'domáce',
+	sladke: 'sladké'
+};
+
 /** Everything that follows from the ingredients, per serving, so a combination just adds up. */
 export interface PartFacts {
 	perServing: Nutrients;
@@ -113,6 +133,7 @@ export interface Part {
 	id: string;
 	name: string;
 	kind: PartKind;
+	style: Style[];
 	servings: number;
 	/** First one is the usual way. */
 	methods: PartMethod[];
@@ -145,6 +166,8 @@ export interface Dish {
 	/** Putting it together once every part is ready. */
 	finish: PartStep[];
 	tips: string[];
+	/** A plate put together freely: every slot starts empty. */
+	free?: boolean;
 }
 
 /** Which option was picked for each slot; null = an optional slot left out. */
@@ -163,8 +186,13 @@ export function pickMethod(part: Part, kitchen: Kitchen, wanted?: string): PartM
 	return usable.find((m) => m.label === wanted) ?? usable[0];
 }
 
+/** What a slot holds before anything is picked: the usual option, or nothing on a free plate. */
+export function slotDefault(dish: Dish, slot: DishSlot): string | null {
+	return dish.free ? null : slot.options[0];
+}
+
 export function defaultChoice(dish: Dish): Choice {
-	return Object.fromEntries(dish.slots.map((s) => [s.id, s.options[0]]));
+	return Object.fromEntries(dish.slots.map((s) => [s.id, slotDefault(dish, s)]));
 }
 
 export interface ChosenPart {
@@ -185,7 +213,7 @@ export function chosenParts(
 	kitchen: Kitchen
 ): ChosenPart[] {
 	return dish.slots.flatMap((slot) => {
-		const id = slot.id in choice ? choice[slot.id] : slot.options[0];
+		const id = slot.id in choice ? choice[slot.id] : slotDefault(dish, slot);
 		if (id === null) return [];
 		const part = partsById.get(id && slot.options.includes(id) ? id : slot.options[0]);
 		if (!part) return [];
@@ -376,8 +404,9 @@ export function buildToParams(dish: Dish, build: Build): URLSearchParams {
 	const params = new URLSearchParams();
 	if (build.servings !== dish.servings) params.set('porcie', String(build.servings));
 	for (const slot of dish.slots) {
-		const picked = slot.id in build.choice ? build.choice[slot.id] : slot.options[0];
-		if (picked !== slot.options[0]) params.set(slot.id, picked ?? NONE);
+		const fallback = slotDefault(dish, slot);
+		const picked = slot.id in build.choice ? build.choice[slot.id] : fallback;
+		if (picked !== fallback) params.set(slot.id, picked ?? NONE);
 	}
 	for (const [partId, label] of Object.entries(build.methods)) params.set(`ako-${partId}`, label);
 	return params;
@@ -395,7 +424,7 @@ export function buildFromParams(
 		const value = params.get(slot.id);
 		if (value === NONE && slot.optional) choice[slot.id] = null;
 		else if (value && slot.options.includes(value)) choice[slot.id] = value;
-		else choice[slot.id] = slot.options[0];
+		else choice[slot.id] = slotDefault(dish, slot);
 	}
 	const methods: Record<string, string> = {};
 	for (const [key, label] of params) {

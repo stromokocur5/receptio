@@ -1,5 +1,6 @@
 name: Cestoviny
 kind: priloha
+style: [stredomorske, domace]
 servings: 2
 ingredients:
   - cestoviny: 200 g | špagety, penne alebo iné

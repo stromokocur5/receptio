@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { formatEur, formatMinutes, formatNumber } from '$lib/amounts';
-	import { useCatalog } from '$lib/catalog';
+	import { findDish, useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
-	import PlateArt from '$lib/components/PlateArt.svelte';
+	import BuiltPlate from '$lib/components/BuiltPlate.svelte';
+	import { placeParts } from '$lib/plate-art';
 	import { buildFromParams, buildToParams, MAX_SERVINGS, type Dish } from '$lib/dish';
 	import { CATEGORY_LABELS } from '$lib/labels';
 	import { composePlate, type Plate } from '$lib/plate';
@@ -30,9 +31,9 @@
 
 	const planned = $derived.by((): Planned[] => {
 		if (!ui.loaded) return [];
-		const { dishesById, partsById, ingredientsById } = catalog();
+		const { partsById, ingredientsById } = catalog();
 		return plan.current.flatMap((item) => {
-			const dish = dishesById.get(item.dish);
+			const dish = findDish(catalog(), item.dish);
 			if (!dish) return [];
 			const build = buildFromParams(dish, new URLSearchParams(item.query), partsById);
 			return [
@@ -68,7 +69,7 @@
 	function remove(p: Planned) {
 		const before = plan.current;
 		removeFromPlan(p.item.id);
-		toast(`${p.dish.name} z týždňa preč`, () => (plan.current = before));
+		toast(`${p.plate.name} z týždňa preč`, () => (plan.current = before));
 	}
 
 	const hrefOf = (p: Planned, cook = false) =>
@@ -173,16 +174,15 @@
 			{#each planned as p (p.item.id)}
 				<li class="plate card">
 					<a class="art" href={hrefOf(p)} aria-hidden="true" tabindex="-1">
-						<PlateArt
-							seed={p.dish.id}
-							lines={p.plate.lines}
+						<BuiltPlate
+							filled={placeParts(p.plate.parts)}
 							byId={catalog().ingredientsById}
-							animate={false}
+							steam={false}
 						/>
 					</a>
 					<div class="info">
-						<a class="name" href={hrefOf(p)}>{p.dish.name}</a>
-						{#if p.plate.parts.length > 1}
+						<a class="name" href={hrefOf(p)}>{p.plate.name}</a>
+						{#if p.plate.parts.length > 1 && !p.dish.free}
 							<span class="with"
 								>+ {p.plate.parts
 									.slice(1)
@@ -199,7 +199,7 @@
 						</span>
 					</div>
 					<div class="controls">
-						<div class="stepper" role="group" aria-label="Porcie: {p.dish.name}">
+						<div class="stepper" role="group" aria-label="Porcie: {p.plate.name}">
 							<button
 								class="icon-btn plain"
 								onclick={() => setServings(p, p.servings - 1)}
@@ -219,7 +219,7 @@
 						<button
 							class="icon-btn plain"
 							onclick={() => remove(p)}
-							aria-label="Odobrať {p.dish.name}"><Icon name="trash" size={18} /></button
+							aria-label="Odobrať {p.plate.name}"><Icon name="trash" size={18} /></button
 						>
 					</div>
 				</li>

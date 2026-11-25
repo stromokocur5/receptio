@@ -59,7 +59,7 @@ function method(
 }
 
 function part(id: string, methods: PartMethod[], servings = 2): Part {
-	return { id, name: id, kind: 'priloha', servings, methods, early: false, tips: [] };
+	return { id, name: id, kind: 'priloha', style: [], servings, methods, early: false, tips: [] };
 }
 
 const tofu = part('tofu', [

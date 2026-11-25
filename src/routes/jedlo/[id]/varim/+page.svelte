@@ -2,11 +2,13 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { formatAmount, formatMinutes } from '$lib/amounts';
-	import { useCatalog } from '$lib/catalog';
+	import { findDish, useCatalog } from '$lib/catalog';
 	import { scaleStep, splitStep } from '$lib/cooking';
 	import Icon from '$lib/components/Icon.svelte';
-	import PlateArt from '$lib/components/PlateArt.svelte';
+	import BuiltPlate from '$lib/components/BuiltPlate.svelte';
+	import { placeParts } from '$lib/plate-art';
 	import TimelineChart, { laneColor } from '$lib/components/TimelineChart.svelte';
+	import KitchenScene from '$lib/components/KitchenScene.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
 	import { APPLIANCE_LABELS, buildFromParams, buildToParams, type Build } from '$lib/dish';
 	import { consumeFromPantry } from '$lib/pantry';
@@ -17,7 +19,7 @@
 	import { toast } from '$lib/toast.svelte';
 
 	const catalog = useCatalog();
-	const dish = $derived(catalog().dishesById.get(page.params.id!)!);
+	const dish = $derived(findDish(catalog(), page.params.id!)!);
 
 	let build = $state<Build>({ servings: 2, choice: {}, methods: {} });
 	let ready = $state(false);
@@ -175,7 +177,7 @@
 </script>
 
 <svelte:head>
-	<title>Varím: {dish.name} – Receptio</title>
+	<title>Varím: {plate.name} – Receptio</title>
 	<meta name="robots" content="noindex" />
 </svelte:head>
 
@@ -185,7 +187,7 @@
 			><Icon name="x" size={22} /></a
 		>
 		<div class="title">
-			<strong>{dish.name}</strong>
+			<strong>{plate.name}</strong>
 			<span class="muted">
 				{build.servings}
 				{build.servings === 1 ? 'porcia' : build.servings < 5 ? 'porcie' : 'porcií'} · {formatMinutes(
@@ -217,13 +219,7 @@
 		{:else if startedAt === null}
 			<section class="intro">
 				<div class="intro-plate">
-					<PlateArt
-						seed={dish.id}
-						lines={plate.lines}
-						byId={catalog().ingredientsById}
-						steam
-						detail
-					/>
+					<BuiltPlate filled={placeParts(plate.parts)} byId={catalog().ingredientsById} />
 				</div>
 				<h1>Priprav si</h1>
 				{#if plate.ahead.length}
@@ -256,13 +252,7 @@
 		{:else if finished}
 			<section class="end">
 				<div class="intro-plate">
-					<PlateArt
-						seed={dish.id}
-						lines={plate.lines}
-						byId={catalog().ingredientsById}
-						steam
-						detail
-					/>
+					<BuiltPlate filled={placeParts(plate.parts)} byId={catalog().ingredientsById} />
 				</div>
 				<h1>Dobrú chuť!</h1>
 				<p class="lede">Hotovo za {formatMinutes(Math.round(elapsed))}.</p>
@@ -283,6 +273,15 @@
 			</section>
 		{:else if current}
 			{@const segments = splitStep(textOf(current))}
+			{#if steps.some((s) => s.on === 'platna' || s.on === 'rura')}
+				<KitchenScene
+					{steps}
+					at={current.start}
+					burners={kitchen.current.burners}
+					oven={kitchen.current.tools.includes('rura') && steps.some((s) => s.on === 'rura')}
+					{colorOf}
+				/>
+			{/if}
 			<section class="now-card card" style:--c={colorOf(current)}>
 				<p class="who">
 					<span class="dot"></span>

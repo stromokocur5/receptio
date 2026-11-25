@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
+	import PantryShelf from '$lib/components/PantryShelf.svelte';
 	import { KITCHEN_TOOLS, TOOL_META } from '$lib/dish';
 	import { CATEGORY_LABELS, ingredientSearchText, normalizeSearch } from '$lib/labels';
 	import { isAssumedAtHome } from '$lib/pantry';
@@ -15,7 +16,7 @@
 		ui
 	} from '$lib/state.svelte';
 	import { toast } from '$lib/toast.svelte';
-	import { INGREDIENT_CATEGORIES, type IngredientLite } from '$lib/types';
+	import type { IngredientLite } from '$lib/types';
 
 	const catalog = useCatalog();
 
@@ -73,6 +74,13 @@
 		else setPantryItem(ingredient.id, null);
 	}
 
+	/** Cooktop drawing: burners in one, two or three columns. */
+	const hob = $derived.by(() => {
+		const n = kitchen.current.burners;
+		const cols = n <= 2 ? n : n <= 4 ? 2 : 3;
+		return { n, cols, rows: Math.ceil(n / cols), w: n <= 4 ? 120 : 170 };
+	});
+
 	const items = $derived(
 		ui.loaded
 			? Object.keys(pantry.current)
@@ -80,14 +88,12 @@
 					.filter((i): i is IngredientLite => !!i)
 			: []
 	);
-	const byCategory = $derived(
-		INGREDIENT_CATEGORIES.map((c) => ({
-			category: c,
-			items: items
-				.filter((i) => i.category === c)
-				.sort((a, b) => a.name.localeCompare(b.name, 'sk'))
-		})).filter((g) => g.items.length)
-	);
+
+	function takeOut(ingredient: IngredientLite) {
+		const before = pantry.current;
+		removePantryItem(ingredient.id);
+		toast(`${ingredient.name} preč zo špajze`, () => (pantry.current = before));
+	}
 
 	function clearAll() {
 		const before = pantry.current;
@@ -123,14 +129,30 @@
 					disabled={kitchen.current.burners <= 1}
 					aria-label="Menej platní"><Icon name="minus" size={18} /></button
 				>
-				<div class="burner-art" aria-live="polite">
-					{#each Array.from({ length: MAX_BURNERS }, (_, i) => i) as i (i)}
-						<span class="burner" class:on={i < kitchen.current.burners}>
-							<Icon name="burner" size={26} />
-						</span>
+				<svg
+					class="cooktop"
+					viewBox="0 0 {kitchen.current.burners <= 2
+						? 120
+						: kitchen.current.burners <= 4
+							? 120
+							: 170} 110"
+					role="img"
+					aria-label="{kitchen.current.burners} {kitchen.current.burners === 1
+						? 'platňa'
+						: kitchen.current.burners < 5
+							? 'platne'
+							: 'platní'}"
+				>
+					<rect x="2" y="2" width={hob.w - 4} height="106" rx="12" class="glass-top" />
+					{#each Array.from({ length: hob.n }, (_, i) => i) as i (i)}
+						{@const x = ((i % hob.cols) + 0.5) * ((hob.w - 4) / hob.cols) + 2}
+						{@const y = (Math.floor(i / hob.cols) + 0.5) * (106 / hob.rows) + 2}
+						<g class="hob" style:--i={i}>
+							<circle cx={x} cy={y} r={hob.rows > 1 ? 18 : 26} class="hob-ring" />
+							<circle cx={x} cy={y} r={hob.rows > 1 ? 10 : 15} class="hob-ring inner" />
+						</g>
 					{/each}
-					<span class="sr-only">{kitchen.current.burners}</span>
-				</div>
+				</svg>
 				<button
 					class="icon-btn"
 					onclick={() => setBurners(kitchen.current.burners + 1)}
@@ -212,27 +234,9 @@
 			{/each}
 		</div>
 
-		{#if byCategory.length}
+		{#if items.length}
 			<div class="have">
-				{#each byCategory as group (group.category)}
-					<div class="cat">
-						<h3>{CATEGORY_LABELS[group.category]}</h3>
-						<ul class="chips">
-							{#each group.items as i (i.id)}
-								<li>
-									<button
-										class="chip on"
-										onclick={() => removePantryItem(i.id)}
-										aria-label="Odobrať {i.name}"
-									>
-										{i.name}
-										<Icon name="x" size={14} stroke={2.4} />
-									</button>
-								</li>
-							{/each}
-						</ul>
-					</div>
-				{/each}
+				<PantryShelf {items} onremove={takeOut} />
 			</div>
 			<div class="foot-actions">
 				<a class="btn leaf" href="/"><Icon name="pot" size={18} /> Čo z toho uvarím</a>
@@ -274,21 +278,34 @@
 		align-items: center;
 		gap: var(--sp-2);
 	}
-	.burner-art {
-		display: grid;
-		grid-template-columns: repeat(3, auto);
-		gap: 2px 4px;
+	.cooktop {
+		width: 150px;
+		height: auto;
 	}
-	.burner {
-		display: grid;
-		color: var(--line);
-		transition:
-			color 0.3s,
-			transform 0.4s var(--ease-spring);
+	.glass-top {
+		fill: #22282a;
 	}
-	.burner.on {
-		color: var(--tomato);
-		transform: rotate(45deg);
+	.hob {
+		animation: hob-in 0.45s var(--ease-spring) both;
+		animation-delay: calc(var(--i) * 40ms);
+		transform-box: fill-box;
+		transform-origin: center;
+	}
+	@keyframes hob-in {
+		from {
+			opacity: 0;
+			transform: scale(0.4);
+		}
+	}
+	.hob-ring {
+		fill: none;
+		stroke: var(--tomato);
+		stroke-width: 3;
+		filter: drop-shadow(0 0 3px var(--tomato));
+	}
+	.hob-ring.inner {
+		stroke-width: 2;
+		opacity: 0.6;
 	}
 	.tools {
 		display: grid;
@@ -401,17 +418,6 @@
 		margin-top: var(--sp-4);
 		padding-top: var(--sp-2);
 		border-top: 1px dashed var(--line);
-	}
-	.cat h3 {
-		margin: var(--sp-3) 0 var(--sp-2);
-		color: var(--muted);
-		font-size: var(--fs-sm);
-	}
-	.have .chips {
-		flex-wrap: wrap;
-		margin: 0;
-		padding: 0;
-		list-style: none;
 	}
 	.foot-actions {
 		display: flex;

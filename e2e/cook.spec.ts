@@ -10,7 +10,7 @@ test('pantry ranks dishes, a side and method swap, cooking runs step by step', a
 	await page.getByRole('button', { name: /Ryža jazmínová/ }).click();
 
 	await page.getByRole('link', { name: 'Čo z toho uvarím' }).click();
-	await expect(page.getByRole('heading', { name: 'Čo dnes uvaríš?' })).toBeVisible();
+	await expect(page.getByRole('heading', { name: 'Poskladaj si tanier' })).toBeVisible();
 	await page.getByRole('link', { name: 'Misa s tofu a arašidovou omáčkou' }).click();
 
 	await page.getByRole('radio', { name: 'Quinoa' }).click();
@@ -40,4 +40,27 @@ test('a kitchen without an oven or gadgets disables what it cannot cook', async 
 	await visit(page, '/jedlo/vyprazane-sampinony');
 	await expect(page.getByRole('radio', { name: /V rúre/ }).first()).toBeDisabled();
 	await expect(page.getByRole('radio', { name: 'Chrumkavé hranolky' })).toBeDisabled();
+});
+
+test('the plate builder fills spots, suggests what fits and opens cooking', async ({ page }) => {
+	await visit(page, '/');
+	await page.getByRole('button', { name: 'Hlavná časť: vybrať' }).click();
+	await page.getByRole('button', { name: /Chrumkavé tofu/ }).click();
+	await expect(page).toHaveURL(/hlavne=chrumkave-tofu/);
+	await page.getByRole('button', { name: 'Základ: vybrať' }).click();
+	await page.getByRole('button', { name: /Jazmínová ryža/ }).click();
+	await page.getByRole('button', { name: 'Omáčka: vybrať' }).click();
+	await expect(page.getByRole('heading', { name: /Hodí sa/ })).toBeVisible();
+	await page.getByRole('button', { name: /Arašidová omáčka/ }).click();
+	await expect(page.getByText(/Overené: Misa s tofu/)).toBeVisible();
+
+	await page.getByRole('link', { name: 'Variť' }).click();
+	await expect(page).toHaveURL(/\/jedlo\/vlastne\/varim\?/);
+	await expect(page.getByText('Chrumkavé tofu · jazmínová ryža · arašidová omáčka')).toBeVisible();
+});
+
+test('Prekvap ma puts something on the plate', async ({ page }) => {
+	await visit(page, '/');
+	await page.getByRole('button', { name: 'Prekvap ma' }).click();
+	await expect(page.getByRole('link', { name: 'Variť' })).toBeVisible();
 });

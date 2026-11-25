@@ -5,6 +5,7 @@ import {
 	APPLIANCES,
 	KITCHEN_TOOLS,
 	PART_KINDS,
+	STYLES,
 	type Dish,
 	type Part,
 	type PartFacts,
@@ -42,6 +43,7 @@ const partSchema = z
 	.object({
 		name: z.string().min(1),
 		kind: z.enum(PART_KINDS),
+		style: z.array(z.enum(STYLES)).default([]),
 		servings: z.number().int().positive(),
 		early: z.boolean().default(false),
 		ahead: z.string().min(1).optional(),
@@ -204,6 +206,7 @@ export function compileParts(
 				id,
 				name: raw.name,
 				kind: raw.kind,
+				style: raw.style,
 				servings: raw.servings,
 				methods,
 				...(raw.ahead && { ahead: raw.ahead }),

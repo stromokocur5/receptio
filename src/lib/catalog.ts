@@ -1,4 +1,5 @@
 import { getContext, setContext } from 'svelte';
+import { FREE_DISH_ID, freeDish } from './builder';
 import type { Dish, Part } from './dish';
 import type { UnitPrice } from './shopping';
 import type { IngredientLite } from './types';
@@ -14,6 +15,8 @@ export interface CatalogPayload {
 }
 
 export interface Catalog extends CatalogPayload {
+	/** The free plate: every part, slots empty. */
+	freeDish: Dish;
 	ingredientsById: Map<string, IngredientLite>;
 	partsById: Map<string, Part>;
 	dishesById: Map<string, Dish>;
@@ -22,6 +25,7 @@ export interface Catalog extends CatalogPayload {
 export function indexCatalog(payload: CatalogPayload): Catalog {
 	return {
 		...payload,
+		freeDish: freeDish(payload.parts),
 		ingredientsById: new Map(payload.ingredients.map((i) => [i.id, i])),
 		partsById: new Map(payload.parts.map((p) => [p.id, p])),
 		dishesById: new Map(payload.dishes.map((d) => [d.id, d]))
@@ -36,4 +40,9 @@ export function provideCatalog(get: () => Catalog) {
 
 export function useCatalog(): () => Catalog {
 	return getContext<() => Catalog>(KEY);
+}
+
+/** A curated dish, or the free plate for its id. */
+export function findDish(catalog: Catalog, id: string): Dish | undefined {
+	return id === FREE_DISH_ID ? catalog.freeDish : catalog.dishesById.get(id);
 }

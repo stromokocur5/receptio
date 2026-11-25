@@ -1,5 +1,6 @@
 name: Chlieb
 kind: pecivo
+style: [domace, stredomorske, indicke]
 servings: 2
 ingredients:
   - chlieb: 2 ks | krajce

@@ -1,116 +1,197 @@
 <script lang="ts">
+	import { onMount, tick } from 'svelte';
+	import { replaceState } from '$app/navigation';
+	import { page } from '$app/state';
+	import { formatEur, formatMinutes, formatNumber } from '$lib/amounts';
+	import {
+		BUILDER_SLOTS,
+		FREE_DISH_ID,
+		fits,
+		plateName,
+		plateStyles,
+		surprise,
+		verifiedDish,
+		type BuilderSlot,
+		type Candidate
+	} from '$lib/builder';
 	import { useCatalog } from '$lib/catalog';
+	import BuiltPlate from '$lib/components/BuiltPlate.svelte';
 	import DishCard from '$lib/components/DishCard.svelte';
 	import Icon from '$lib/components/Icon.svelte';
+	import PartArt from '$lib/components/PartArt.svelte';
 	import {
+		buildFromParams,
 		buildToParams,
 		defaultChoice,
 		matchDish,
+		matchPart,
+		pickMethod,
 		rankDishes,
+		STYLE_LABELS,
 		TOOL_META,
 		type Build,
-		type Dish,
-		type DishMatch
+		type Choice,
+		type Part
 	} from '$lib/dish';
-	import { normalizeSearch, searchMatcher } from '$lib/labels';
-	import { composePlate, type Plate } from '$lib/plate';
-	import { kitchen, pantry, settings, ui } from '$lib/state.svelte';
+	import { normalizeSearch } from '$lib/labels';
+	import { pantryByGroup } from '$lib/pantry';
+	import { SPOTS } from '$lib/plate-art';
+	import { composePlate } from '$lib/plate';
+	import { addToPlan, kitchen, pantry, plan, ui } from '$lib/state.svelte';
+	import { toast } from '$lib/toast.svelte';
 
 	const catalog = useCatalog();
+	const dish = $derived(catalog().freeDish);
 
-	type MealFilter = 'vsetko' | 'ranajky' | 'jedlo';
-	const FILTERS: { id: MealFilter; label: string }[] = [
-		{ id: 'vsetko', label: 'Všetko' },
-		{ id: 'ranajky', label: 'Raňajky' },
-		{ id: 'jedlo', label: 'Obed a večera' }
-	];
-	let filter = $state<MealFilter>('vsetko');
-	let query = $state('');
+	let choice = $state<Choice>({});
+	let ready = $state(false);
 
-	const pantryCount = $derived(ui.loaded ? Object.keys(pantry.current).length : 0);
-	const hasPantry = $derived(pantryCount > 0);
+	onMount(() => {
+		choice = buildFromParams(
+			dish,
+			new URLSearchParams(location.search),
+			catalog().partsById
+		).choice;
+		ready = true;
+	});
 
-	interface Entry {
-		dish: Dish;
-		match?: DishMatch;
-		plate: Plate;
-		href: string;
-		/** Names of the dish, its parts and their ingredients, for the search. */
-		text: string;
+	const build = $derived<Build>({ servings: dish.servings, choice, methods: {} });
+	const query = $derived(buildToParams(dish, build).toString());
+	$effect(() => {
+		if (!ready) return;
+		const next = query ? `/?${query}` : '/';
+		void tick().then(() => replaceState(next, page.state));
+	});
+
+	const plate = $derived(
+		composePlate(dish, build, kitchen.current, catalog().partsById, catalog().ingredientsById)
+	);
+	const picked = $derived(plate.parts.map((p) => p.part));
+	const filled = $derived(
+		plate.parts.map((p) => ({ slot: p.slot.id, part: p.part, method: p.method }))
+	);
+	const empty = $derived(BUILDER_SLOTS.filter((s) => !choice[s.id]).map((s) => s.id));
+	const verified = $derived(verifiedDish(picked, catalog().dishes));
+	const styles = $derived(plateStyles(picked));
+
+	const groups = $derived(
+		ui.loaded ? pantryByGroup(pantry.current, catalog().ingredientsById) : new Map()
+	);
+	const hasPantry = $derived(ui.loaded && Object.keys(pantry.current).length > 0);
+
+	/** Every part of each spot with what it'd take to cook it here. */
+	const candidates = $derived.by((): Record<string, Candidate[]> => {
+		const { partsById, ingredientsById } = catalog();
+		return Object.fromEntries(
+			dish.slots.map((slot) => [
+				slot.id,
+				slot.options.map((id) => {
+					const part = partsById.get(id)!;
+					const method = pickMethod(part, kitchen.current);
+					const m = method
+						? matchPart(part, method, dish.servings, groups, ingredientsById)
+						: undefined;
+					return {
+						part,
+						missing: m ? m.missing.length + m.short.length : 99,
+						cookable: !!method
+					};
+				})
+			])
+		);
+	});
+
+	function surpriseMe() {
+		choice = surprise(candidates);
 	}
 
-	const entries = $derived.by((): Entry[] => {
+	function clear() {
+		const before = choice;
+		choice = defaultChoice(dish);
+		toast('Tanier je prázdny', () => (choice = before));
+	}
+
+	function planIt() {
+		if (addToPlan(FREE_DISH_ID, query)) {
+			toast('Tanier je v týždni', () => (plan.current = plan.current.slice(0, -1)));
+		}
+	}
+
+	let sheet = $state<HTMLDialogElement>();
+	let open = $state<BuilderSlot | null>(null);
+	let search = $state('');
+	function openPicker(slot: BuilderSlot) {
+		open = slot;
+		search = '';
+		sheet?.showModal();
+	}
+	function pick(id: string | null) {
+		if (open) choice = { ...choice, [open.id]: id };
+		sheet?.close();
+	}
+
+	/** The rest of the plate decides what fits; the spot being changed doesn't count. */
+	const sections = $derived.by(() => {
+		if (!open) return [];
+		const slot = open;
+		const st = plateStyles(plate.parts.filter((p) => p.slot.id !== slot.id).map((p) => p.part));
+		const q = normalizeSearch(search.trim());
+		const list = (candidates[slot.id] ?? []).filter(
+			(c) => !q || normalizeSearch(c.part.name).includes(q)
+		);
+		const sort = (a: Candidate, b: Candidate) =>
+			a.missing - b.missing || a.part.name.localeCompare(b.part.name, 'sk');
+		const home = hasPantry
+			? list.filter((c) => c.cookable && c.missing === 0 && fits(c.part, st))
+			: [];
+		const good = list.filter((c) => c.cookable && fits(c.part, st) && !home.includes(c)).sort(sort);
+		const rest = list.filter((c) => !home.includes(c) && !good.includes(c)).sort(sort);
+		const goodTitle = st.size
+			? `Hodí sa – ${[...st].map((s) => STYLE_LABELS[s]).join(', ')}`
+			: 'Všetko';
+		return [
+			{ title: 'Máš doma', items: home },
+			{ title: goodTitle, items: good },
+			{ title: 'Ďalšie', items: rest }
+		].filter((s) => s.items.length);
+	});
+
+	function missingNames(part: Part): string {
+		const method = pickMethod(part, kitchen.current);
+		if (!method) return '';
+		return matchPart(part, method, dish.servings, groups, catalog().ingredientsById)
+			.missing.map((i) => i.name.toLowerCase())
+			.slice(0, 3)
+			.join(', ');
+	}
+	const minutesOf = (part: Part) =>
+		(pickMethod(part, kitchen.current) ?? part.methods[0]).steps.reduce((s, x) => s + x.min, 0);
+
+	/** Curated dishes as inspiration, cookable ones first. */
+	const inspiration = $derived.by(() => {
 		const { dishes, partsById, ingredientsById } = catalog();
-		const matches = hasPantry
-			? rankDishes(
-					dishes.flatMap((d) => {
-						const m = matchDish(d, pantry.current, partsById, ingredientsById, kitchen.current);
-						return m ? [m] : [];
-					})
-				)
-			: null;
-		const ordered: { dish: Dish; match?: DishMatch }[] =
-			matches?.map((match) => ({ dish: match.dish, match })) ?? dishes.map((dish) => ({ dish }));
-		return ordered.map(({ dish, match }) => {
-			const build: Build = {
-				servings: dish.servings,
-				choice: match?.choice ?? defaultChoice(dish),
-				methods: {}
-			};
-			const plate = composePlate(dish, build, kitchen.current, partsById, ingredientsById);
-			const params = buildToParams(dish, build).toString();
-			const names = dish.slots.flatMap((s) =>
-				s.options.flatMap((id) => {
-					const part = partsById.get(id)!;
-					return [
-						part.name,
-						...part.methods[0].lines.map((l) => ingredientsById.get(l.ingredientId)?.name ?? '')
-					];
-				})
-			);
+		const ranked = rankDishes(
+			dishes.flatMap((d) => {
+				const m = matchDish(
+					d,
+					ui.loaded ? pantry.current : {},
+					partsById,
+					ingredientsById,
+					kitchen.current
+				);
+				return m ? [m] : [];
+			})
+		);
+		return ranked.map((match) => {
+			const b = { servings: match.dish.servings, choice: match.choice, methods: {} };
+			const params = buildToParams(match.dish, b).toString();
 			return {
-				dish,
 				match,
-				plate,
-				href: `/jedlo/${dish.id}${params ? `?${params}` : ''}`,
-				text: normalizeSearch([dish.name, dish.description, ...names].join(' '))
+				plate: composePlate(match.dish, b, kitchen.current, partsById, ingredientsById),
+				href: `/jedlo/${match.dish.id}${params ? `?${params}` : ''}`
 			};
 		});
 	});
-
-	const visible = $derived.by(() => {
-		const matches = searchMatcher(
-			entries.map((e) => e.text),
-			query
-		);
-		return entries.filter(
-			(e) =>
-				matches(e.text) &&
-				(filter === 'vsetko' ||
-					(filter === 'ranajky'
-						? e.dish.meals.includes('ranajky')
-						: e.dish.meals.some((m) => m === 'obed' || m === 'vecera')))
-		);
-	});
-
-	const missingCount = (e: Entry) => (e.match ? e.match.missing.length + e.match.short.length : 0);
-	const groups = $derived(
-		hasPantry
-			? [
-					{
-						title: 'Môžeš hneď',
-						hint: 'Všetko máš doma.',
-						items: visible.filter((e) => missingCount(e) === 0)
-					},
-					{
-						title: 'Skoro',
-						hint: 'Chýba jedna alebo dve veci.',
-						items: visible.filter((e) => missingCount(e) > 0 && missingCount(e) <= 2)
-					},
-					{ title: 'Na nákup', hint: '', items: visible.filter((e) => missingCount(e) > 2) }
-				].filter((g) => g.items.length)
-			: [{ title: '', hint: '', items: visible }]
-	);
 
 	const kitchenSummary = $derived(
 		[
@@ -118,193 +199,508 @@
 			...kitchen.current.tools.map((t) => TOOL_META[t].label.toLowerCase())
 		].join(' · ')
 	);
+	const pct = (n: number) => `${(n / 300) * 100}%`;
 </script>
 
 <svelte:head>
-	<title>Receptio – čo dnes uvaríš</title>
+	<title>Receptio – poskladaj si tanier</title>
 	<meta
 		name="description"
-		content="Vegánske jedlá poskladané z toho, čo máš doma, a uvarené tým, čo máš v kuchyni."
+		content="Vegánske jedlo poskladané z toho, čo máš doma, a naplánované pre tvoju kuchyňu."
 	/>
 </svelte:head>
 
 <div class="wrap page">
 	<header class="hero">
-		<p class="eyebrow">Vegánska kuchyňa</p>
-		<h1>Čo dnes uvaríš?</h1>
-		<p class="lede">
-			{#if hasPantry}
-				Máš doma {pantryCount}
-				{pantryCount === 1 ? 'vec' : pantryCount < 5 ? 'veci' : 'vecí'} – tu je, čo z nich spravíš. Prílohu
-				aj spôsob prípravy si v jedle vymeníš.
-			{:else}
-				Jedlá poskladané z častí – prílohu, omáčku aj spôsob prípravy si vymeníš. Povedz, čo máš
-				doma, a zoradia sa podľa toho.
-			{/if}
-		</p>
-		<a class="kitchen-strip draw-host" href="/kuchyna">
-			<Icon name="jar" size={18} />
-			<span>
-				<strong>{hasPantry ? `Špajza: ${pantryCount}` : 'Špajza je prázdna'}</strong>
-				<span class="muted"> · {kitchenSummary}</span>
-			</span>
-			<Icon name="arrow-right" size={16} />
+		<h1>Poskladaj si tanier</h1>
+		<a class="kitchen-strip" href="/kuchyna">
+			<Icon name="jar" size={16} />
+			{hasPantry ? `Špajza ${Object.keys(pantry.current).length}` : 'Prázdna špajza'} · {kitchenSummary}
 		</a>
 	</header>
 
-	{#if ui.loaded && !settings.current.kitchenSet}
-		<aside class="setup card">
-			<div class="tools-art" aria-hidden="true">
-				<Icon name="oven" size={30} />
-				<Icon name="airfryer" size={30} />
-				<Icon name="pressure-cooker" size={30} />
-			</div>
-			<div>
-				<h2>Čím varíš?</h2>
-				<p>
-					Máš airfryer, ale nie rúru? Dve platne namiesto štyroch? Recepty sa prispôsobia – ukážu
-					spôsob, ktorý zvládneš, a čas, ktorý naozaj potrebuješ.
-				</p>
-			</div>
-			<a class="btn leaf" href="/kuchyna#vybavenie"
-				><Icon name="sliders" size={18} /> Nastaviť kuchyňu</a
-			>
-		</aside>
-	{/if}
-
-	<div class="controls">
-		<div class="segmented" role="group" aria-label="Jedlo dňa">
-			{#each FILTERS as f (f.id)}
-				<button aria-pressed={filter === f.id} onclick={() => (filter = f.id)}>{f.label}</button>
+	<section class="builder">
+		<div class="stage" style:view-transition-name="plate">
+			<BuiltPlate
+				{filled}
+				{empty}
+				byId={catalog().ingredientsById}
+				label={picked.length ? plateName(picked) : 'Prázdny tanier'}
+			/>
+			{#each BUILDER_SLOTS as slot (slot.id)}
+				{@const current = plate.parts.find((p) => p.slot.id === slot.id)}
+				<button
+					class="spot"
+					class:filled={!!current}
+					class:sauce={slot.id === 'omacka'}
+					style:left={pct(SPOTS[slot.id].x)}
+					style:top={pct(SPOTS[slot.id].y)}
+					onclick={() => openPicker(slot)}
+					aria-label="{slot.label}: {current ? current.part.name : 'vybrať'}"
+				>
+					{#if current}
+						<span class="tag">{current.part.name}</span>
+					{:else}
+						<span class="plus"><Icon name="plus" size={18} stroke={2.4} /></span>
+						<span class="tag empty-tag">{slot.label}</span>
+					{/if}
+				</button>
 			{/each}
 		</div>
-		<label class="field search">
-			<Icon name="search" size={18} />
-			<span class="sr-only">Hľadať jedlo alebo surovinu</span>
-			<input type="search" placeholder="Jedlo alebo surovina…" bind:value={query} />
-		</label>
-	</div>
 
-	{#each groups as group (group.title)}
-		<section class="group">
-			{#if group.title}
-				<h2 class="group-title">
-					{group.title}
-					<span class="badge">{group.items.length}</span>
-				</h2>
-				{#if group.hint}<p class="hint">{group.hint}</p>{/if}
+		<div class="panel">
+			<div class="actions">
+				<button class="btn leaf surprise draw-host" onclick={surpriseMe}>
+					<Icon name="sparkle" size={18} /> Prekvap ma
+				</button>
+				{#if picked.length}
+					<button class="btn ghost small" onclick={clear}>
+						<Icon name="undo" size={16} /> Odznova
+					</button>
+				{/if}
+			</div>
+
+			{#if picked.length}
+				<div class="summary card">
+					<p class="name">{plateName(picked)}</p>
+					{#if verified}
+						<a class="badge leaf" href="/jedlo/{verified.id}">
+							<Icon name="check" size={13} stroke={2.6} /> Overené: {verified.name}
+						</a>
+					{:else}
+						<span class="badge">
+							Vlastná kombinácia{styles.size
+								? ` · ${[...styles].map((s) => STYLE_LABELS[s]).join(', ')}`
+								: ''}
+						</span>
+					{/if}
+					<ul class="facts">
+						<li><Icon name="clock" size={15} /> {formatMinutes(plate.timeline.total)}</li>
+						<li>
+							<Icon name="bean" size={15} />
+							{formatNumber(plate.facts.perServing.protein, 0)} g
+						</li>
+						<li>
+							<Icon name="flame" size={15} />
+							{formatNumber(plate.facts.perServing.kcal, 0)} kcal
+						</li>
+						<li>
+							<Icon name="euro" size={15} />
+							{plate.facts.costIsEstimate ? '~' : ''}{formatEur(plate.facts.costPerServing)}
+						</li>
+					</ul>
+					<div class="go">
+						<a class="btn leaf" href="/jedlo/{FREE_DISH_ID}/varim?{query}">
+							<Icon name="play" size={16} /> Variť
+						</a>
+						<a class="btn ghost" href="/jedlo/{FREE_DISH_ID}?{query}">Detail</a>
+						<button class="icon-btn" onclick={planIt} aria-label="Do týždňa" title="Do týždňa">
+							<Icon name="calendar" size={18} />
+						</button>
+					</div>
+				</div>
+			{:else}
+				<p class="hint lead">
+					Ťukni na miesto na tanieri a vyber, čo tam dáš. Navrchu uvidíš, čo máš doma a čo sa k tomu
+					hodí.
+				</p>
 			{/if}
-			<div class="grid">
-				{#each group.items as entry, i (entry.dish.id)}
+		</div>
+	</section>
+
+	<section class="inspiration">
+		<h2>Overené kombinácie</h2>
+		<div class="scroller cards">
+			{#each inspiration as entry, i (entry.match.dish.id)}
+				<div class="card-slot">
 					<DishCard
-						dish={entry.dish}
+						dish={entry.match.dish}
 						plate={entry.plate}
-						match={entry.match}
+						match={hasPantry ? entry.match : undefined}
 						href={entry.href}
 						index={i}
 					/>
-				{/each}
-			</div>
-		</section>
-	{:else}
-		<div class="empty">
-			<Icon name="search" size={28} />
-			<p>Nič také tu zatiaľ nie je. Skús iné slovo.</p>
+				</div>
+			{/each}
 		</div>
-	{/each}
+	</section>
 </div>
+
+<dialog
+	class="sheet"
+	bind:this={sheet}
+	onclose={() => (open = null)}
+	onclick={(e) => e.target === sheet && sheet?.close()}
+>
+	{#if open}
+		{@const current = choice[open.id]}
+		<div class="sheet-body">
+			<header class="sheet-head">
+				<span class="sheet-icon"><Icon name={open.icon} size={20} /></span>
+				<h2>{open.label}</h2>
+				<button class="icon-btn plain" onclick={() => sheet?.close()} aria-label="Zavrieť">
+					<Icon name="x" size={20} />
+				</button>
+			</header>
+			<label class="field">
+				<Icon name="search" size={16} />
+				<span class="sr-only">Hľadať</span>
+				<input type="search" placeholder="Hľadať…" bind:value={search} />
+			</label>
+			{#if current}
+				<button class="remove" onclick={() => pick(null)}>
+					<Icon name="x" size={16} /> Nechať prázdne
+				</button>
+			{/if}
+			{#each sections as section (section.title)}
+				<h3>{section.title}</h3>
+				<ul class="options">
+					{#each section.items as c (c.part.id)}
+						{@const method = pickMethod(c.part, kitchen.current) ?? c.part.methods[0]}
+						<li>
+							<button
+								class="option"
+								aria-pressed={current === c.part.id}
+								disabled={!c.cookable}
+								onclick={() => pick(c.part.id)}
+							>
+								<span class="opt-art">
+									<PartArt part={c.part} {method} byId={catalog().ingredientsById} />
+								</span>
+								<span class="opt-text">
+									<strong>{c.part.name}</strong>
+									<small>
+										{#if !c.cookable}
+											chýba spotrebič
+										{:else if hasPantry && c.missing === 0}
+											máš všetko · ~{formatMinutes(minutesOf(c.part))}
+										{:else if hasPantry}
+											kúpiť: {missingNames(c.part)}{c.missing > 3 ? '…' : ''}
+										{:else}
+											~{formatMinutes(minutesOf(c.part))}
+										{/if}
+									</small>
+								</span>
+								{#if current === c.part.id}<Icon name="check" size={18} stroke={2.4} />{/if}
+							</button>
+						</li>
+					{/each}
+				</ul>
+			{/each}
+		</div>
+	{/if}
+</dialog>
 
 <style>
 	.hero {
-		display: grid;
-		gap: var(--sp-2);
-		margin-bottom: var(--sp-5);
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		justify-content: space-between;
+		gap: var(--sp-2) var(--sp-4);
+		margin-bottom: var(--sp-3);
 	}
 	.hero h1 {
 		margin: 0;
-		font-size: clamp(2.2rem, 7vw, 3.6rem);
-	}
-	.hero .lede {
-		margin: 0;
+		font-size: clamp(2rem, 6vw, 3rem);
 	}
 	.kitchen-strip {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--sp-2);
-		justify-self: start;
-		max-width: 100%;
-		margin-top: var(--sp-2);
-		padding: var(--sp-2) var(--sp-4);
-		border: 1.5px solid var(--line);
-		border-radius: 999px;
-		background: var(--card);
-		color: var(--ink);
-		text-decoration: none;
+		gap: 6px;
+		color: var(--muted);
 		font-size: var(--fs-sm);
-		transition: border-color 0.2s;
+		text-decoration: none;
 	}
 	.kitchen-strip:hover {
-		border-color: var(--ink-2);
+		color: var(--ink);
 	}
-	.kitchen-strip > span {
-		min-width: 0;
-	}
-	.setup {
+	.builder {
 		display: grid;
-		gap: var(--sp-3) var(--sp-5);
+		gap: var(--sp-4);
 		align-items: center;
-		margin-bottom: var(--sp-5);
-		padding: var(--sp-5);
-		background: linear-gradient(135deg, var(--leaf-soft), var(--card) 70%);
 	}
-	.setup h2 {
-		margin: 0 0 var(--sp-1);
+	.stage {
+		position: relative;
+		width: min(100%, 460px);
+		margin: 0 auto;
 	}
-	.setup p {
-		margin: 0;
-		color: var(--ink-2);
-		max-width: 60ch;
+	.spot {
+		position: absolute;
+		translate: -50% -50%;
+		display: grid;
+		justify-items: center;
+		align-content: center;
+		gap: 4px;
+		width: 30%;
+		aspect-ratio: 1;
+		border: 0;
+		border-radius: 50%;
+		background: none;
+		color: var(--ink);
+		font: inherit;
+		cursor: pointer;
 	}
-	.setup .btn {
-		justify-self: start;
+	.spot.sauce {
+		width: 20%;
 	}
-	.tools-art {
-		display: flex;
-		gap: var(--sp-3);
+	.spot:focus-visible {
+		outline: 3px solid var(--leaf);
+	}
+	.plus {
+		display: grid;
+		place-items: center;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		background: var(--card);
+		box-shadow: var(--shadow);
 		color: var(--leaf);
+		transition: transform 0.3s var(--ease-spring);
 	}
-	.controls {
+	.spot:hover .plus {
+		transform: scale(1.12) rotate(90deg);
+	}
+	.tag {
+		max-width: 150%;
+		padding: 2px 9px;
+		border-radius: 999px;
+		background: color-mix(in srgb, var(--card) 90%, transparent);
+		box-shadow: var(--shadow);
+		font-size: var(--fs-xs);
+		font-weight: 700;
+		line-height: 1.3;
+		text-align: center;
+	}
+	.filled .tag {
+		translate: 0 80%;
+		opacity: 0;
+		transition: opacity 0.2s;
+	}
+	.filled:hover .tag,
+	.filled:focus-visible .tag {
+		opacity: 1;
+	}
+	.empty-tag {
+		color: var(--ink-2);
+	}
+	.panel {
+		display: grid;
+		gap: var(--sp-3);
+	}
+	.actions {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--sp-3);
+		justify-content: center;
+		gap: var(--sp-2);
+	}
+	.surprise {
+		padding: 0.8em 1.4em;
+	}
+	.lead {
+		margin: 0;
+		text-align: center;
+	}
+	.summary {
+		display: grid;
+		gap: var(--sp-2);
+		padding: var(--sp-4);
+		animation: in 0.4s var(--ease-out);
+	}
+	@keyframes in {
+		from {
+			opacity: 0;
+			transform: translateY(8px);
+		}
+	}
+	.name {
+		margin: 0;
+		font-family: var(--font-display);
+		font-size: var(--fs-lg);
+		font-weight: 650;
+		line-height: 1.25;
+	}
+	.summary .badge {
+		justify-self: start;
+		white-space: normal;
+		text-decoration: none;
+	}
+	.facts {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--sp-1) var(--sp-3);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		color: var(--ink-2);
+		font-size: var(--fs-sm);
+		font-weight: 650;
+	}
+	.facts li {
+		display: inline-flex;
 		align-items: center;
-		margin-bottom: var(--sp-5);
+		gap: 5px;
 	}
-	.search {
-		flex: 1 1 240px;
-		max-width: 420px;
-	}
-	.group + .group {
-		margin-top: var(--sp-6);
-	}
-	.group-title {
+	.go {
 		display: flex;
 		align-items: center;
 		gap: var(--sp-2);
+	}
+	.go .btn.leaf {
+		flex: 1;
+		justify-content: center;
+	}
+	.inspiration {
+		margin-top: var(--sp-6);
+	}
+	.inspiration h2 {
+		margin: 0 0 var(--sp-2);
+		font-size: var(--fs-xl);
+	}
+	.cards {
+		padding-bottom: var(--sp-3);
+	}
+	.card-slot {
+		display: grid;
+		flex: none;
+		width: min(72vw, 250px);
+	}
+	.sheet {
+		width: min(560px, 100vw);
+		max-width: 100vw;
+		max-height: 88dvh;
+		margin: auto auto 0;
+		padding: 0;
+		border: 0;
+		border-radius: var(--radius) var(--radius) 0 0;
+		background: var(--paper);
+		color: var(--ink);
+		box-shadow: var(--shadow-lift);
+	}
+	.sheet[open] {
+		animation: sheet-up 0.35s var(--ease-out);
+	}
+	@keyframes sheet-up {
+		from {
+			transform: translateY(40px);
+			opacity: 0;
+		}
+	}
+	.sheet::backdrop {
+		background: var(--backdrop);
+	}
+	.sheet-body {
+		display: grid;
+		gap: var(--sp-2);
+		padding: var(--sp-3) var(--gutter) calc(var(--sp-5) + env(safe-area-inset-bottom));
+	}
+	.sheet-head {
+		position: sticky;
+		top: calc(-1 * var(--sp-3));
+		z-index: 1;
+		display: flex;
+		align-items: center;
+		gap: var(--sp-2);
+		padding: var(--sp-2) 0;
+		background: var(--paper);
+	}
+	.sheet-head h2 {
+		flex: 1;
 		margin: 0;
 	}
-	.group .hint {
-		margin: var(--sp-1) 0 0;
-	}
-	.grid {
+	.sheet-icon {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr));
-		gap: var(--sp-4);
-		margin-top: var(--sp-4);
+		place-items: center;
+		width: 36px;
+		height: 36px;
+		border-radius: 50%;
+		background: var(--leaf-soft);
+		color: var(--leaf);
 	}
-	@media (min-width: 720px) {
-		.setup {
-			grid-template-columns: auto 1fr auto;
+	.sheet h3 {
+		margin: var(--sp-3) 0 0;
+		color: var(--muted);
+		font-size: var(--fs-sm);
+	}
+	.remove {
+		display: inline-flex;
+		align-items: center;
+		justify-self: start;
+		gap: 6px;
+		border: 0;
+		background: none;
+		color: var(--tomato);
+		font: inherit;
+		font-weight: 650;
+		cursor: pointer;
+	}
+	.options {
+		display: grid;
+		gap: 4px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.option {
+		display: grid;
+		grid-template-columns: 52px 1fr auto;
+		align-items: center;
+		gap: var(--sp-3);
+		width: 100%;
+		padding: var(--sp-2);
+		border: 1.5px solid transparent;
+		border-radius: var(--radius-sm);
+		background: var(--card);
+		color: var(--ink);
+		font: inherit;
+		text-align: left;
+		cursor: pointer;
+		transition:
+			border-color 0.2s,
+			transform 0.2s var(--ease-spring);
+	}
+	.option:hover:not(:disabled) {
+		border-color: var(--line);
+		transform: translateX(3px);
+	}
+	.option[aria-pressed='true'] {
+		border-color: var(--leaf);
+		background: var(--leaf-soft);
+	}
+	.option:disabled {
+		opacity: 0.45;
+		cursor: not-allowed;
+	}
+	.opt-art {
+		width: 52px;
+	}
+	.opt-text {
+		display: grid;
+		min-width: 0;
+	}
+	.opt-text small {
+		color: var(--muted);
+	}
+	@media (min-width: 900px) {
+		.builder {
+			grid-template-columns: 1.1fr 1fr;
+			gap: var(--sp-6);
+		}
+		.actions {
+			justify-content: flex-start;
+		}
+		.lead {
+			text-align: left;
+		}
+		.sheet {
+			margin: auto;
+			border-radius: var(--radius);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.summary,
+		.sheet[open] {
+			animation: none;
 		}
 	}
 </style>

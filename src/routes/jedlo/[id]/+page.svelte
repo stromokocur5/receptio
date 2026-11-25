@@ -3,9 +3,11 @@
 	import { replaceState } from '$app/navigation';
 	import { page } from '$app/state';
 	import { formatAmount, formatEur, formatMinutes, formatNumber } from '$lib/amounts';
-	import { useCatalog } from '$lib/catalog';
+	import { findDish, useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
-	import PlateArt from '$lib/components/PlateArt.svelte';
+	import BuiltPlate from '$lib/components/BuiltPlate.svelte';
+	import PartArt from '$lib/components/PartArt.svelte';
+	import { placeParts } from '$lib/plate-art';
 	import TimelineChart from '$lib/components/TimelineChart.svelte';
 	import {
 		buildFromParams,
@@ -28,7 +30,7 @@
 	import { toast } from '$lib/toast.svelte';
 
 	const catalog = useCatalog();
-	const dish = $derived(catalog().dishesById.get(page.params.id!)!);
+	const dish = $derived(findDish(catalog(), page.params.id!)!);
 
 	let build = $state<Build>({ servings: 2, choice: {}, methods: {} });
 	let ready = $state(false);
@@ -124,23 +126,26 @@
 		}
 		justPlanned = true;
 		setTimeout(() => (justPlanned = false), 1800);
-		toast(`${dish.name} je v týždni`, () => (plan.current = plan.current.slice(0, -1)));
+		toast(`${plate.name} je v týždni`, () => (plan.current = plan.current.slice(0, -1)));
 	}
 
 	const cookHref = $derived(`/jedlo/${dish.id}/varim${query ? `?${query}` : ''}`);
 </script>
 
 <svelte:head>
-	<title>{dish.name} – Receptio</title>
+	<title>{plate.name} – Receptio</title>
 	<meta name="description" content={dish.description} />
 </svelte:head>
 
 <div class="wrap page">
-	<a class="back" href="/"><Icon name="arrow-left" size={16} /> Čo uvarím</a>
+	<a class="back" href={dish.free ? `/${query ? `?${query}` : ''}` : '/'}>
+		<Icon name="arrow-left" size={16} />
+		{dish.free ? 'Späť na tanier' : 'Poskladaj si tanier'}
+	</a>
 
 	<div class="layout">
 		<header class="head">
-			<h1>{dish.name}</h1>
+			<h1>{plate.name}</h1>
 			<p class="lede">{dish.description}</p>
 			<div class="servings" role="group" aria-label="Počet porcií">
 				<button
@@ -163,18 +168,16 @@
 		</header>
 		<aside class="stage">
 			<div class="plate-box">
-				{#key plate.parts.map((p) => p.part.id).join()}
-					<div class="plate-pop">
-						<PlateArt
-							seed={dish.id}
-							lines={plate.lines}
-							byId={catalog().ingredientsById}
-							steam
-							detail
-							label={dish.name}
-						/>
-					</div>
-				{/key}
+				<div
+					class="plate-pop"
+					style:view-transition-name={dish.free ? 'plate' : `plate-${dish.id}`}
+				>
+					<BuiltPlate
+						filled={placeParts(plate.parts)}
+						byId={catalog().ingredientsById}
+						label={plate.name}
+					/>
+				</div>
 			</div>
 
 			<dl class="facts">
@@ -218,12 +221,12 @@
 
 		<div class="content">
 			<section class="builder" aria-label="Zloženie jedla">
-				{#each dish.slots as slot (slot.id)}
+				{#each dish.free ? dish.slots.filter((sl) => picked(sl) !== null) : dish.slots as slot (slot.id)}
 					{@const current = picked(slot)}
 					<div class="slot card">
 						<div class="slot-head">
 							<h2>{slot.label}</h2>
-							{#if slot.optional}
+							{#if slot.optional && !dish.free}
 								<button
 									class="toggle"
 									role="switch"
@@ -236,7 +239,7 @@
 							{/if}
 						</div>
 						{#if current !== null}
-							{#if slot.options.length > 1}
+							{#if slot.options.length > 1 && !dish.free}
 								<div class="options" role="radiogroup" aria-label={slot.label}>
 									{#each slot.options as id (id)}
 										{@const option = partOf(id)}
@@ -250,11 +253,10 @@
 											onclick={() => choose(slot, id)}
 										>
 											<span class="mini">
-												<PlateArt
-													seed={id}
-													lines={option.methods[0].lines}
+												<PartArt
+													part={option}
+													method={option.methods[0]}
 													byId={catalog().ingredientsById}
-													animate={false}
 												/>
 											</span>
 											<span class="option-name">{option.name}</span>
@@ -403,14 +405,7 @@
 		place-items: center;
 	}
 	.plate-pop {
-		width: min(320px, 78vw);
-		animation: pop 0.55s var(--ease-spring);
-	}
-	@keyframes pop {
-		from {
-			transform: scale(0.88) rotate(-12deg);
-			opacity: 0.4;
-		}
+		width: min(340px, 82vw);
 	}
 	.facts {
 		display: grid;
@@ -691,8 +686,5 @@
 		}
 	}
 	@media (prefers-reduced-motion: reduce) {
-		.plate-pop {
-			animation: none;
-		}
 	}
 </style>
