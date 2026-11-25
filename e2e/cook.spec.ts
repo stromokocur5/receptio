@@ -78,3 +78,26 @@ test('sweet and savoury plates never mix', async ({ page }) => {
 	await page.getByRole('button', { name: 'Hlavná časť: vybrať' }).click();
 	await expect(page.getByRole('button', { name: /Ovsená kaša/ })).toHaveCount(0);
 });
+
+test('a recipe composed from ingredients goes on the plate and cooks', async ({ page }) => {
+	await visit(page, '/');
+	await page.getByRole('button', { name: 'Hlavná časť: vybrať' }).click();
+	await page.getByRole('link', { name: /Zložiť zo surovín/ }).click();
+	await page.getByRole('button', { name: /Wok/ }).click();
+	for (const name of ['Tofu', 'Mrkva', 'Brokolica', 'Cesnak']) {
+		await page
+			.getByRole('button', { name: new RegExp(`^${name}`) })
+			.first()
+			.click();
+	}
+	await expect(page.getByRole('heading', { name: /Wok: tofu, mrkva a brokolica/ })).toBeVisible();
+	await page.getByRole('button', { name: 'Na tanier' }).click();
+	await expect(page).toHaveURL(/hlavne=x\.wok\./);
+	await page.getByRole('link', { name: 'Variť' }).click();
+	await page.getByRole('button', { name: 'Začať variť' }).click();
+	await expect(page.locator('.step-text')).toContainText('Priprav suroviny');
+
+	await visit(page, '/');
+	await page.getByRole('button', { name: 'Hlavná časť: vybrať' }).click();
+	await expect(page.getByRole('heading', { name: 'Moje recepty' })).toBeVisible();
+});

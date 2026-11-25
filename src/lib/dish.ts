@@ -189,6 +189,11 @@ export function pickMethod(part: Part, kitchen: Kitchen, wanted?: string): PartM
 	return usable.find((m) => m.label === wanted) ?? usable[0];
 }
 
+/** A free plate also takes recipes put together from ingredients, which no list holds. */
+function allowed(dish: Dish, slot: DishSlot, id: string, parts: Map<string, Part>): boolean {
+	return slot.options.includes(id) || (!!dish.free && id.startsWith('x.') && parts.has(id));
+}
+
 /** What a slot holds before anything is picked: the usual option, or nothing on a free plate. */
 export function slotDefault(dish: Dish, slot: DishSlot): string | null {
 	return dish.free ? null : slot.options[0];
@@ -218,7 +223,7 @@ export function chosenParts(
 	return dish.slots.flatMap((slot) => {
 		const id = slot.id in choice ? choice[slot.id] : slotDefault(dish, slot);
 		if (id === null) return [];
-		const part = partsById.get(id && slot.options.includes(id) ? id : slot.options[0]);
+		const part = partsById.get(id && allowed(dish, slot, id, partsById) ? id : slot.options[0]);
 		if (!part) return [];
 		const method = pickMethod(part, kitchen, methods[part.id]) ?? part.methods[0];
 		return [{ slot, part, method }];
@@ -426,7 +431,7 @@ export function buildFromParams(
 	for (const slot of dish.slots) {
 		const value = params.get(slot.id);
 		if (value === NONE && slot.optional) choice[slot.id] = null;
-		else if (value && slot.options.includes(value)) choice[slot.id] = value;
+		else if (value && allowed(dish, slot, value, parts)) choice[slot.id] = value;
 		else choice[slot.id] = slotDefault(dish, slot);
 	}
 	const methods: Record<string, string> = {};

@@ -33,6 +33,10 @@ export type Texture =
 	| 'berries';
 
 const BY_ID: [RegExp, Texture][] = [
+	[/^x\.plech/, 'roast'],
+	[/^x\.salat/, 'leaves'],
+	[/^x\.polievka/, 'soup'],
+	[/^x\.(wok|hrniec)/, 'stew'],
 	[/palacinky/, 'crepes'],
 	[/zmrzlina/, 'scoops'],
 	[/lesne-ovocie/, 'berries'],

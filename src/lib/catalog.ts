@@ -1,6 +1,7 @@
 import { getContext, setContext } from 'svelte';
 import { BUILDER_MODES, FREE_DISH_IDS, freeDish, type BuilderMode } from './builder';
 import type { Dish, Part } from './dish';
+import { composePart, decodeComposition, isComposedId, type ComposerData } from './composer';
 import type { UnitPrice } from './shopping';
 import type { IngredientLite } from './types';
 
@@ -11,6 +12,8 @@ export interface CatalogPayload {
 	dishes: Dish[];
 	/** Best shelf price of every ingredient the parts use, for the shopping list. */
 	prices: Record<string, UnitPrice>;
+	/** Ingredients, techniques and flavour bases for recipes put together from scratch. */
+	composer: ComposerData;
 	builtAt: string;
 }
 
@@ -48,4 +51,25 @@ export function useCatalog(): () => Catalog {
 export function findDish(catalog: Catalog, id: string): Dish | undefined {
 	const mode = BUILDER_MODES.find((m) => FREE_DISH_IDS[m] === id);
 	return mode ? catalog.freeDishes[mode] : catalog.dishesById.get(id);
+}
+
+/**
+ * Recipes put together from ingredients live only in links and saved lists: build any of these
+ * ids into parts the first time they're seen, so plates can use them like any other part.
+ */
+export function resolveComposed(catalog: Catalog, ids: Iterable<string>): void {
+	for (const id of ids) {
+		if (!isComposedId(id) || catalog.partsById.has(id)) continue;
+		const c = decodeComposition(id, catalog.composer);
+		if (!c) continue;
+		const hasProtein = c.items.some((i) => catalog.composer.ingredients[i]?.group === 'bielkovina');
+		const part = composePart(
+			c,
+			catalog.composer,
+			catalog.ingredientsById,
+			catalog.prices,
+			hasProtein ? 'hlavne' : 'zelenina'
+		);
+		catalog.partsById.set(part.id, part);
+	}
 }

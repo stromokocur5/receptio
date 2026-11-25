@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
 	import { formatAmount, formatMinutes } from '$lib/amounts';
-	import { findDish, useCatalog } from '$lib/catalog';
+	import { findDish, resolveComposed, useCatalog } from '$lib/catalog';
 	import { scaleStep, splitStep } from '$lib/cooking';
 	import Icon from '$lib/components/Icon.svelte';
 	import BuiltPlate from '$lib/components/BuiltPlate.svelte';
@@ -32,7 +32,9 @@
 	const query = $derived(buildToParams(dish, build).toString());
 
 	onMount(() => {
-		build = buildFromParams(dish, new URLSearchParams(location.search), catalog().partsById);
+		const params = new URLSearchParams(location.search);
+		resolveComposed(catalog(), params.values());
+		build = buildFromParams(dish, params, catalog().partsById);
 		try {
 			const saved = JSON.parse(localStorage.getItem(storageKey) ?? 'null');
 			// Picking up where the phone went to sleep, only for the same plate and the same day.

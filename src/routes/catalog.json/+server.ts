@@ -6,7 +6,7 @@ import { getContent } from '$lib/server/content';
 export const prerender = true;
 
 export function GET() {
-	const { ingredients, parts, dishes, prices } = getContent();
+	const { ingredients, parts, dishes, prices, composer } = getContent();
 	const today = new Date();
 	const used = new Set(
 		parts.flatMap((p) => p.methods.flatMap((m) => m.lines.map((l) => l.ingredientId)))
@@ -36,6 +36,7 @@ export function GET() {
 					return [i.id, { perKg: Math.round(best.perKg * 100) / 100, estimate: best.isEstimate }];
 				})
 		),
+		composer,
 		builtAt: new Date().toISOString().slice(0, 10)
 	};
 	return json(payload);

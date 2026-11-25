@@ -15,6 +15,8 @@ import {
 	type Store,
 	type Substitute
 } from '$lib/types';
+import type { ComposerData } from '$lib/composer';
+import { compileComposer } from './composer';
 import { compileDishes, compileParts } from './dishes';
 
 const slug = z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'id musí byť kebab-case bez diakritiky');
@@ -191,6 +193,7 @@ export interface Content {
 	equipment: EquipmentFull[];
 	parts: Part[];
 	dishes: Dish[];
+	composer: ComposerData;
 }
 
 export interface RawContent {
@@ -205,6 +208,7 @@ export interface RawContent {
 	pricesKosik: string;
 	parts: Record<string, string>;
 	dishes: Record<string, string>;
+	composer: string;
 }
 
 export function compileContent(raw: RawContent, today: Date): Content {
@@ -375,7 +379,10 @@ export function compileContent(raw: RawContent, today: Date): Content {
 	const parts = compileParts(raw.parts, byId, { prices, today });
 	const dishes = compileDishes(raw.dishes, new Set(parts.map((p) => p.id)));
 
+	const composer = compileComposer(raw.composer, byId);
+
 	return {
+		composer,
 		ingredients,
 		substitutes: substitutesById,
 		stores,
@@ -450,6 +457,13 @@ export function getContent(): Content {
 				import: 'default',
 				eager: true
 			}),
+			composer: rawFile(
+				import.meta.glob('/content/skladacka.yaml', {
+					query: '?raw',
+					import: 'default',
+					eager: true
+				})
+			),
 			dishes: import.meta.glob('/content/jedla/*.yaml', {
 				query: '?raw',
 				import: 'default',

@@ -134,6 +134,19 @@ export const kitchen = new Persisted<Kitchen>('kitchen', DEFAULT_KITCHEN, valida
 export const settings = new Persisted<Settings>('settings', DEFAULT_SETTINGS, validateSettings);
 /** `week-plan`, not `plan`: the old app stored a different shape under that key. */
 export const plan = new Persisted<PlanItem[]>('week-plan', [], validatePlan);
+/** Recipes put together from ingredients and kept, newest first. */
+export const myParts = new Persisted<string[]>('moje-recepty', [], (raw) =>
+	Array.isArray(raw)
+		? raw
+				.filter((x): x is string => typeof x === 'string' && /^x\.[a-z0-9.+-]{1,300}$/.test(x))
+				.slice(0, 30)
+		: undefined
+);
+
+export function keepPart(id: string) {
+	myParts.current = [id, ...myParts.current.filter((x) => x !== id)].slice(0, 30);
+}
+
 /** Shopping list items ticked off, by ingredient id. */
 export const ticked = new Persisted<Record<string, boolean>>('ticked', {}, validateFlags);
 

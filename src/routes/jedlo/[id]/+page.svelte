@@ -4,7 +4,7 @@
 	import { page } from '$app/state';
 	import { formatAmount, formatEur, formatMinutes, formatNumber } from '$lib/amounts';
 	import { FREE_DISH_IDS } from '$lib/builder';
-	import { findDish, useCatalog } from '$lib/catalog';
+	import { findDish, resolveComposed, useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import BuiltPlate from '$lib/components/BuiltPlate.svelte';
 	import PartArt from '$lib/components/PartArt.svelte';
@@ -43,7 +43,9 @@
 	});
 
 	onMount(() => {
-		build = buildFromParams(dish, new URLSearchParams(location.search), catalog().partsById);
+		const params = new URLSearchParams(location.search);
+		resolveComposed(catalog(), params.values());
+		build = buildFromParams(dish, params, catalog().partsById);
 		ready = true;
 	});
 
@@ -279,6 +281,13 @@
 							<p class="part-desc">
 								{#if slot.options.length > 1 && !dish.free}<strong>{part.name}:</strong>{/if}
 								{part.description}
+								{#if part.id.startsWith('x.')}
+									<a
+										href="/zloz?recept={encodeURIComponent(
+											part.id
+										)}&miesto={slot.id}&spat={encodeURIComponent(query)}">Upraviť recept</a
+									>
+								{/if}
 							</p>
 							{#if part.methods.length > 1}
 								<div class="methods" role="radiogroup" aria-label="Ako pripraviť: {part.name}">

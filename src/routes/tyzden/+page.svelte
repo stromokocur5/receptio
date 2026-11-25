@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { formatEur, formatMinutes, formatNumber } from '$lib/amounts';
-	import { findDish, useCatalog } from '$lib/catalog';
+	import { findDish, resolveComposed, useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import BuiltPlate from '$lib/components/BuiltPlate.svelte';
 	import { placeParts } from '$lib/plate-art';
@@ -35,7 +35,9 @@
 		return plan.current.flatMap((item) => {
 			const dish = findDish(catalog(), item.dish);
 			if (!dish) return [];
-			const build = buildFromParams(dish, new URLSearchParams(item.query), partsById);
+			const params = new URLSearchParams(item.query);
+			resolveComposed(catalog(), params.values());
+			const build = buildFromParams(dish, params, partsById);
 			return [
 				{
 					item,

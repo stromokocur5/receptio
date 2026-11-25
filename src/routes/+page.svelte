@@ -16,7 +16,7 @@
 		type BuilderSlot,
 		type Candidate
 	} from '$lib/builder';
-	import { useCatalog } from '$lib/catalog';
+	import { resolveComposed, useCatalog } from '$lib/catalog';
 	import BuiltPlate from '$lib/components/BuiltPlate.svelte';
 	import DishCard from '$lib/components/DishCard.svelte';
 	import Icon from '$lib/components/Icon.svelte';
@@ -39,7 +39,7 @@
 	import { pantryByGroup } from '$lib/pantry';
 	import { SPOTS } from '$lib/plate-art';
 	import { composePlate } from '$lib/plate';
-	import { addToPlan, kitchen, pantry, plan, ui } from '$lib/state.svelte';
+	import { addToPlan, kitchen, myParts, pantry, plan, ui } from '$lib/state.svelte';
 	import { toast } from '$lib/toast.svelte';
 
 	const catalog = useCatalog();
@@ -53,6 +53,7 @@
 	onMount(() => {
 		const params = new URLSearchParams(location.search);
 		if (params.get('typ') === 'sladke') mode = 'sladke';
+		resolveComposed(catalog(), [...params.values(), ...myParts.current]);
 		choice = buildFromParams(catalog().freeDishes[mode], params, catalog().partsById).choice;
 		ready = true;
 	});
@@ -158,12 +159,32 @@
 		const goodTitle = st.size
 			? `Hodí sa – ${[...st].map((s) => STYLE_LABELS[s]).join(', ')}`
 			: 'Všetko';
+		const mine: Candidate[] = myParts.current
+			.map((id) => catalog().partsById.get(id))
+			.filter((p): p is Part => !!p && slot.kinds.includes(p.kind) && mode === 'slane')
+			.filter((p) => !q || normalizeSearch(p.name).includes(q))
+			.map((p) => {
+				const method = pickMethod(p, kitchen.current);
+				const m = method
+					? matchPart(p, method, dish.servings, groups, catalog().ingredientsById)
+					: undefined;
+				return { part: p, missing: m ? m.missing.length + m.short.length : 99, cookable: !!method };
+			});
 		return [
+			{ title: 'Moje recepty', items: mine },
 			{ title: 'Máš doma', items: home },
 			{ title: goodTitle, items: good },
 			{ title: 'Ďalšie', items: rest }
 		].filter((s) => s.items.length);
 	});
+
+	/** Composing from ingredients fits the savoury main and vegetable spots. */
+	const composable = $derived(
+		mode === 'slane' && (open?.id === 'hlavne' || open?.id === 'zelenina')
+	);
+	const composeHref = $derived(
+		`/zloz?miesto=${open?.id ?? 'hlavne'}${query ? `&spat=${encodeURIComponent(query)}` : ''}`
+	);
 
 	function missingNames(part: Part): string {
 		const method = pickMethod(part, kitchen.current);
@@ -365,6 +386,16 @@
 				<span class="sr-only">Hľadať</span>
 				<input type="search" placeholder="Hľadať…" bind:value={search} />
 			</label>
+			{#if composable}
+				<a class="compose draw-host" href={composeHref}>
+					<span class="compose-icon"><Icon name="chef" size={22} /></span>
+					<span>
+						<strong>Zložiť zo surovín</strong>
+						<small>Vyber spôsob a čo máš – recept sa poskladá sám</small>
+					</span>
+					<Icon name="arrow-right" size={18} />
+				</a>
+			{/if}
 			{#if current}
 				<button class="remove" onclick={() => pick(null)}>
 					<Icon name="x" size={16} /> Nechať prázdne
@@ -645,6 +676,33 @@
 		margin: var(--sp-3) 0 0;
 		color: var(--muted);
 		font-size: var(--fs-sm);
+	}
+	.compose {
+		display: grid;
+		grid-template-columns: auto 1fr auto;
+		align-items: center;
+		gap: var(--sp-3);
+		padding: var(--sp-3);
+		border-radius: var(--radius-sm);
+		background: linear-gradient(135deg, var(--leaf-soft), var(--card));
+		border: 1.5px solid var(--leaf);
+		color: var(--ink);
+		text-decoration: none;
+	}
+	.compose span:nth-child(2) {
+		display: grid;
+	}
+	.compose small {
+		color: var(--ink-2);
+	}
+	.compose-icon {
+		display: grid;
+		place-items: center;
+		width: 40px;
+		height: 40px;
+		border-radius: 50%;
+		background: var(--leaf);
+		color: var(--paper);
 	}
 	.remove {
 		display: inline-flex;

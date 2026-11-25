@@ -1,0 +1,581 @@
+# Skladačka zo surovín: z čoho a ako sa dá zložiť vlastný recept.
+#
+# sposoby – spôsoby prípravy. Kroky sa skladajú v src/lib/composer.ts.
+# suroviny – pre každú surovinu: skupina, porcia (na osobu, chýba = podiel zo zeleniny),
+#   krajanie, min (koľko minút trvá príprava), a pre každý spôsob čas v minútach
+#   (wok, plech, hrniec, polievka) alebo false, keď sa naň nehodí. salat: true / iný text krájania.
+#   ochutit: bielkovina, ktorá sa pred tepelnou úpravou nechá nasiaknuť v sójovke (tofu, tempeh).
+# zaklady – základ chuti (omáčka, korenie, nálev, dresing) na porciu, pre ktoré spôsoby.
+#   text – ako ho spomína krok, množstvá pre 2 porcie (wok, šalát: čo zmiešať; plech: s čím, 7. pád;
+#   hrniec, polievka: čo sa prileje).
+# navrch – čo sa dá posypať navrch.
+
+sposoby:
+  wok:
+    name: Wok
+    popis: Na veľkom ohni za pár minút, zelenina ostane chrumkavá.
+  plech:
+    name: Plech v rúre
+    popis: Všetko na jeden plech, rúra spraví zvyšok. Hnedé okraje, minimum práce.
+  hrniec:
+    name: Hrniec
+    popis: Kari, paprikáš, ragú – zelenina a strukoviny dusené v omáčke.
+  polievka:
+    name: Polievka
+    popis: Zelenina uvarená vo vývare, čistá alebo rozmixovaná dohladka.
+  salat:
+    name: Šalát
+    popis: Bez varenia, surová zelenina s dresingom. Sýty so strukovinami.
+
+suroviny:
+  tofu-natural:
+    skupina: bielkovina
+    porcia: 100 g
+    krajanie: na kocky 2 cm
+    ochutit: true
+    wok: 8
+    plech: 25
+    hrniec: 5
+    polievka: 5
+    salat: false
+  tofu-udene:
+    skupina: bielkovina
+    porcia: 80 g
+    krajanie: na kocky 1,5 cm
+    wok: 4
+    plech: 15
+    hrniec: 5
+    polievka: 5
+    salat: true
+  tempeh:
+    skupina: bielkovina
+    porcia: 80 g
+    krajanie: na tenké plátky
+    ochutit: true
+    wok: 6
+    plech: 20
+    hrniec: 8
+    polievka: false
+    salat: false
+  cicer-sterilizovany:
+    skupina: bielkovina
+    porcia: 120 g
+    krajanie: sceď, prepláchni a osuš
+    min: 2
+    wok: 4
+    plech: 25
+    hrniec: 10
+    polievka: 10
+    salat: true
+  fazula-cierna:
+    skupina: bielkovina
+    porcia: 120 g
+    krajanie: sceď a prepláchni
+    min: 1
+    wok: 3
+    plech: false
+    hrniec: 10
+    polievka: 10
+    salat: true
+  fazula-cervena:
+    skupina: bielkovina
+    porcia: 120 g
+    krajanie: sceď a prepláchni
+    min: 1
+    wok: false
+    plech: false
+    hrniec: 10
+    polievka: 10
+    salat: true
+  fazula-biela:
+    skupina: bielkovina
+    porcia: 120 g
+    krajanie: sceď a prepláchni
+    min: 1
+    wok: false
+    plech: false
+    hrniec: 10
+    polievka: 10
+    salat: true
+  sosovica-cervena:
+    skupina: bielkovina
+    porcia: 50 g
+    krajanie: prepláchni v site
+    min: 1
+    tekutina: 1 hrnček
+    wok: false
+    plech: false
+    hrniec: 20
+    polievka: 20
+    salat: false
+  sosovica-hneda:
+    skupina: bielkovina
+    porcia: 50 g
+    krajanie: prepláchni v site
+    min: 1
+    tekutina: 1 hrnček
+    wok: false
+    plech: false
+    hrniec: 30
+    polievka: 30
+    salat: false
+  sampinony:
+    skupina: bielkovina
+    porcia: 120 g
+    krajanie: na plátky
+    wok: 5
+    plech: 20
+    hrniec: 10
+    polievka: 10
+    salat: false
+  hliva:
+    skupina: bielkovina
+    porcia: 100 g
+    krajanie: natrhaj na pásiky
+    wok: 5
+    plech: 18
+    hrniec: 8
+    polievka: 8
+    salat: false
+
+  mrkva:
+    skupina: zelenina
+    krajanie: na tenké kolieska
+    wok: 4
+    plech: 30
+    hrniec: 15
+    polievka: 15
+    salat: nastrúhaj nahrubo
+  paprika-cervena:
+    skupina: zelenina
+    krajanie: na pásiky
+    wok: 3
+    plech: 20
+    hrniec: 10
+    polievka: 10
+    salat: true
+  brokolica:
+    skupina: zelenina
+    krajanie: na ružičky, stonku ošúp a nakrájaj na plátky
+    min: 4
+    wok: 4
+    plech: 15
+    hrniec: 6
+    polievka: 8
+    salat: false
+  karfiol:
+    skupina: zelenina
+    krajanie: na malé ružičky
+    min: 4
+    wok: 5
+    plech: 25
+    hrniec: 12
+    polievka: 12
+    salat: false
+  cuketa:
+    skupina: zelenina
+    krajanie: na polmesiačiky
+    wok: 3
+    plech: 20
+    hrniec: 8
+    polievka: 8
+    salat: false
+  baklazan:
+    skupina: zelenina
+    krajanie: na kocky 2 cm
+    wok: 6
+    plech: 25
+    hrniec: 15
+    polievka: false
+    salat: false
+  batat:
+    skupina: zelenina
+    krajanie: ošúp a nakrájaj na kocky 2 cm
+    min: 4
+    wok: false
+    plech: 30
+    hrniec: 15
+    polievka: 15
+    salat: false
+  zemiaky:
+    skupina: zelenina
+    krajanie: ošúp a nakrájaj na kocky 2 cm
+    min: 4
+    wok: false
+    plech: 35
+    hrniec: 20
+    polievka: 15
+    salat: false
+  tekvica-hokkaido:
+    skupina: zelenina
+    krajanie: vydlab semienka a nakrájaj aj so šupkou na kocky 2 cm
+    min: 5
+    wok: false
+    plech: 30
+    hrniec: 15
+    polievka: 15
+    salat: false
+  cvikla:
+    skupina: zelenina
+    krajanie: ošúp a nakrájaj na kocky 2 cm
+    min: 4
+    wok: false
+    plech: 40
+    hrniec: false
+    polievka: false
+    salat: ošúp a nastrúhaj nahrubo
+  kalerab:
+    skupina: zelenina
+    krajanie: ošúp a nakrájaj na kocky
+    min: 4
+    wok: 4
+    plech: 30
+    hrniec: 12
+    polievka: 12
+    salat: ošúp a nakrájaj na tenké prúžky
+  por:
+    skupina: zelenina
+    krajanie: na kolieska, medzi listami umy piesok
+    wok: 3
+    plech: 20
+    hrniec: 10
+    polievka: 10
+    salat: false
+  cinska-kapusta:
+    skupina: zelenina
+    krajanie: na kusy 3 cm, biele časti zvlášť
+    wok: 3
+    plech: false
+    hrniec: 5
+    polievka: 5
+    salat: nakrájaj na tenké prúžky
+  biela-kapusta:
+    skupina: zelenina
+    krajanie: na tenké pásiky
+    wok: 4
+    plech: 25
+    hrniec: 10
+    polievka: 12
+    salat: nakrájaj alebo nastrúhaj čo najtenšie
+  paradajky:
+    skupina: zelenina
+    krajanie: na kocky
+    min: 2
+    wok: false
+    plech: 15
+    hrniec: 10
+    polievka: 10
+    salat: true
+  hrasok:
+    skupina: zelenina
+    krajanie: rovno z mrazničky
+    min: 0
+    wok: 2
+    plech: false
+    hrniec: 4
+    polievka: 4
+    salat: false
+  kukurica:
+    skupina: zelenina
+    krajanie: sceď
+    min: 1
+    wok: 2
+    plech: false
+    hrniec: 4
+    polievka: 4
+    salat: true
+  uhorka:
+    skupina: zelenina
+    krajanie: na plátky
+    min: 2
+    wok: false
+    plech: false
+    hrniec: false
+    polievka: false
+    salat: true
+  redkovka:
+    skupina: zelenina
+    krajanie: na tenké plátky
+    min: 2
+    wok: false
+    plech: false
+    hrniec: false
+    polievka: false
+    salat: true
+  salat:
+    skupina: zelenina
+    krajanie: natrhaj na kúsky, umy a osuš
+    wok: false
+    plech: false
+    hrniec: false
+    polievka: false
+    salat: true
+  avokado:
+    skupina: zelenina
+    porcia: 1/2 ks
+    krajanie: na kocky
+    min: 2
+    wok: false
+    plech: false
+    hrniec: false
+    polievka: false
+    salat: true
+
+  spenat:
+    skupina: listy
+    porcia: 40 g
+    krajanie: umy, väčšie listy natrhaj
+    min: 1
+    wok: 1
+    plech: false
+    hrniec: 2
+    polievka: 2
+    salat: true
+  kel:
+    skupina: listy
+    porcia: 40 g
+    krajanie: natrhaj na kúsky, tvrdé stonky vyhoď
+    wok: 2
+    plech: 8
+    hrniec: 4
+    polievka: 4
+    salat: natrhaj nadrobno a premasíruj s kvapkou oleja a soli, kým nezmäkne
+
+  cibula:
+    skupina: aroma
+    porcia: 1/2 ks
+    krajanie: nadrobno
+    wok: 3
+    plech: 25
+    hrniec: 6
+    polievka: 6
+    salat: false
+  cesnak:
+    skupina: aroma
+    porcia: 1 ks
+    krajanie: nasekaj alebo prelisuj
+    min: 1
+    wok: 1
+    plech: 1
+    hrniec: 1
+    polievka: 1
+    salat: prelisuj do dresingu
+  zazvor:
+    skupina: aroma
+    porcia: 1/2 čl
+    krajanie: nastrúhaj
+    min: 1
+    wok: 1
+    plech: false
+    hrniec: 1
+    polievka: 1
+    salat: nastrúhaj do dresingu
+  cili-papricka:
+    skupina: aroma
+    porcia: 1/4 ks
+    krajanie: nadrobno, bez semienok je menej pálivá
+    min: 1
+    wok: 1
+    plech: false
+    hrniec: 1
+    polievka: 1
+    salat: true
+  jarna-cibulka:
+    skupina: aroma
+    porcia: 1 ks
+    krajanie: na kolieska
+    min: 1
+    wok: 1
+    plech: false
+    hrniec: false
+    polievka: false
+    salat: true
+
+zaklady:
+  sojovo-zazvorova:
+    name: Sójovo-zázvorová omáčka
+    text: 2 PL sójovej omáčky, 1 PL sirupu, 1 PL ryžového octu, 1 ČL škrobu a 3 PL vody
+    sposoby: [wok]
+    styl: [azijske]
+    suroviny:
+      sojova-omacka: 1 pl
+      javorovy-sirup: 1/2 pl
+      ryzovy-ocot: 1/2 pl
+      kukuricny-skrob: 1/2 čl
+      voda: 1,5 pl
+  sladko-pikantna:
+    name: Sladko-pikantná omáčka
+    text: 2 PL sójovej omáčky, 1 ČL srirachy, 1 PL sirupu, 1 PL ryžového octu, 1 ČL škrobu a 3 PL vody
+    sposoby: [wok]
+    styl: [azijske]
+    suroviny:
+      sojova-omacka: 1 pl
+      sriracha: 1/2 čl
+      javorovy-sirup: 1/2 pl
+      ryzovy-ocot: 1/2 pl
+      kukuricny-skrob: 1/2 čl
+      voda: 1,5 pl
+  arasidova-wok:
+    name: Arašidová omáčka
+    text: 2 PL arašidového masla, 1,5 PL sójovej omáčky, šťavu z polovice limetky, 1 ČL sirupu a 4 PL teplej vody
+    sposoby: [wok]
+    styl: [azijske]
+    suroviny:
+      arasidove-maslo: 1 pl
+      sojova-omacka: 3/4 pl
+      limetka: 1/4 ks
+      javorovy-sirup: 1/2 čl
+      voda: 2 pl
+  udena-paprika:
+    name: Údená paprika a olivový olej
+    text: údenou paprikou a soľou
+    sposoby: [plech]
+    styl: [stredomorske, domace]
+    suroviny:
+      olivovy-olej: 1 pl
+      udena-paprika: 1/2 čl
+      sol: 1/4 čl
+  bylinky:
+    name: Oregano a tymian
+    text: oreganom, tymianom a soľou
+    sposoby: [plech]
+    styl: [stredomorske]
+    suroviny:
+      olivovy-olej: 1 pl
+      oregano: 1/2 čl
+      tymian: 1/4 čl
+      sol: 1/4 čl
+  kari-plech:
+    name: Kari korenie
+    text: kari korením a soľou
+    sposoby: [plech]
+    styl: [indicke]
+    suroviny:
+      olej: 1 pl
+      kari-korenie: 1 čl
+      sol: 1/4 čl
+  kokosove-kari:
+    name: Kokosové kari
+    text: kokosové mlieko a krájané paradajky
+    sposoby: [hrniec]
+    styl: [indicke]
+    suroviny:
+      olej: 1/2 pl
+      kari-korenie: 1 čl
+      kurkuma: 1/4 čl
+      kokosove-mlieko: 1/4 ks
+      paradajky-sterilizovane: 1/4 ks
+      sol: 1/4 čl
+  masala:
+    name: Indická paradajková masala
+    text: krájané paradajky a vodu
+    sposoby: [hrniec]
+    styl: [indicke]
+    suroviny:
+      olej: 1/2 pl
+      kmin: 1/4 čl
+      koriander-mlety: 1/2 čl
+      garam-masala: 1/2 čl
+      kurkuma: 1/4 čl
+      paradajky-sterilizovane: 1/2 ks
+      voda: 1/4 hrnček
+      sol: 1/4 čl
+  paradajkova:
+    name: Paradajková s oreganom
+    text: krájané paradajky, oregano a štipku cukru
+    sposoby: [hrniec]
+    styl: [stredomorske]
+    suroviny:
+      olivovy-olej: 1/2 pl
+      paradajky-sterilizovane: 1/2 ks
+      oregano: 1/2 čl
+      cukor: 1 štipka
+      sol: 1/4 čl
+  paprikas:
+    name: Paprikáš
+    text: vodu
+    sposoby: [hrniec]
+    styl: [domace]
+    suroviny:
+      olej: 1/2 pl
+      sladka-paprika: 1/2 pl
+      udena-paprika: 1/4 čl
+      paradajkovy-pretlak: 1/2 pl
+      rasca: 1/4 čl
+      voda: 1/2 hrnček
+      sol: 1/4 čl
+  vyvar-cisty:
+    name: Čistá zeleninová
+    text: vývar
+    sposoby: [polievka]
+    styl: [domace]
+    suroviny:
+      olej: 1/2 pl
+      zeleninovy-vyvar: 1,5 hrnček
+      majoranka: 1/4 čl
+      sol: podľa chuti
+  vyvar-kremovy:
+    name: Krémová (rozmixovaná)
+    text: vývar
+    sposoby: [polievka]
+    styl: [domace]
+    mixovat: true
+    suroviny:
+      olej: 1/2 pl
+      zeleninovy-vyvar: 1,25 hrnček
+      citron: 1 čl
+      sol: podľa chuti
+  kokosova-polievka:
+    name: Kokosová s kari
+    text: vývar a kokosové mlieko
+    sposoby: [polievka]
+    styl: [azijske, indicke]
+    suroviny:
+      olej: 1/2 pl
+      zeleninovy-vyvar: 1 hrnček
+      kokosove-mlieko: 1/4 ks
+      kari-korenie: 1/2 čl
+      limetka: 1/4 ks
+      sol: podľa chuti
+  citronovy-dresing:
+    name: Citrónovo-olivový dresing
+    text: 2 PL olivového oleja, šťavu z polovice citróna, trochu horčice a štipku soli
+    sposoby: [salat]
+    styl: [stredomorske, domace]
+    suroviny:
+      olivovy-olej: 1 pl
+      citron: 1/4 ks
+      horcica: 1/4 čl
+      sol: 1 štipka
+  sezamovy-dresing:
+    name: Sójovo-sezamový dresing
+    text: 1 PL sójovej omáčky, 1 PL ryžového octu, 1 ČL sezamového oleja a 1 ČL sirupu
+    sposoby: [salat]
+    styl: [azijske]
+    suroviny:
+      sojova-omacka: 1/2 pl
+      ryzovy-ocot: 1/2 pl
+      sezamovy-olej: 1/2 čl
+      javorovy-sirup: 1/2 čl
+  tahini-dresing:
+    name: Tahini dresing
+    text: 2 PL tahini, šťavu z polovice citróna, štipku soli a 3 PL studenej vody
+    sposoby: [salat]
+    styl: [stredomorske]
+    suroviny:
+      tahini: 1 pl
+      citron: 1/4 ks
+      voda: 1,5 pl
+      sol: 1 štipka
+
+navrch:
+  sezam: 1 čl
+  arasidy: 1 pl
+  kesu: 1 pl
+  tekvicove-semienka: 1 pl
+  jarna-cibulka: 1/2 ks
+  bylinky-koriander: 1 pl
+  petrzlenova-vnat: 1 pl
+  bazalka: 1 pl
+  limetka: 1/4 ks
+  citron: 1/4 ks
