@@ -1,0 +1,14 @@
+name: Kari s trhaným tofu
+description: Trhané tofu s chrumkavou krustou v krémovej oranžovej omáčke z hladkej cibuľovo-zázvorovej pasty. Na basmati ryži.
+meals: [obed, vecera]
+servings: 4
+slots:
+  kari:
+    label: Kari
+    options: [kari-trhane-tofu]
+  priloha:
+    label: Príloha
+    options: [ryza-basmati, chlieb]
+finish:
+  - text: Kari nalož na ryžu.
+    min: 1

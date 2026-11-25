@@ -1,0 +1,14 @@
+name: Chrumkavá zelenina
+kind: zelenina
+servings: 2
+early: true
+ingredients:
+  - mrkva: 1 ks
+  - uhorka: 1/2 ks
+  - spenat: 40 g | baby listy
+  - sezam: 1 čl
+methods:
+  - label: Surová
+    steps:
+      - text: Mrkvu nastrúhaj nahrubo alebo nakrájaj škrabkou na tenké pásiky, uhorku na plátky. Špenát umy a osuš.
+        min: 5

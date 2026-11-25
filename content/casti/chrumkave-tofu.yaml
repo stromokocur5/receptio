@@ -1,0 +1,47 @@
+name: Chrumkavé tofu
+kind: bielkovina
+servings: 2
+ingredients:
+  - tofu-natural: 200 g | pevné
+  - sojova-omacka: 1 pl
+  - kukuricny-skrob: 1 pl
+  - olej: 1 pl
+prep:
+  - text: Tofu osuš utierkou, nakrájaj na kocky 2 cm a premiešaj so sójovou omáčkou.
+    min: 3
+  - text: Nechaj ho 10 minút postáť, nech sa ochutí aj vnútri.
+    min: 10
+    free: true
+methods:
+  - label: Na panvici
+    steps:
+      - text: Obaľ ho v škrobe, aby bola každá kocka poprášená zo všetkých strán.
+        min: 1
+        pause: true
+      - text: Na panvici rozohrej olej na veľkom ohni a tofu opekaj 8 minút, obracaj ho, kým nie je zo všetkých strán chrumkavé.
+        min: 8
+        on: platna
+  - label: V airfryeri
+    needs: [airfryer]
+    amounts:
+      olej: 1 čl
+    steps:
+      - text: Premiešaj ho s olejom a potom so škrobom, aby bola každá kocka poprášená.
+        min: 1
+        pause: true
+      - text: Peč na 200 °C 15 minút, v polovici košom zatras.
+        min: 15
+        on: airfryer
+        temp: 200
+        free: true
+  - label: V rúre
+    needs: [rura]
+    steps:
+      - text: Premiešaj ho s olejom a potom so škrobom, aby bola každá kocka poprášená.
+        min: 1
+        pause: true
+      - text: Rozlož ho na plech s papierom na pečenie a peč v rúre na 220 °C 22 minút, v polovici ho obráť.
+        min: 22
+        on: rura
+        temp: 220
+        free: true

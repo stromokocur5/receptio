@@ -1,0 +1,15 @@
+name: Mrkvová polievka s červenou šošovicou
+description: Hladká, sýta polievka – šošovica sa rozvarí a zahustí ju bez smotany. S chlebom alebo pečeným cícerom navrch.
+meals: [obed, vecera]
+servings: 4
+slots:
+  polievka:
+    label: Polievka
+    options: [mrkvova-polievka]
+  navrch:
+    label: Navrch
+    options: [peceny-cicer, chlieb]
+    optional: true
+finish:
+  - text: Polievku nalej do tanierov a posyp cícerom alebo podávaj s chlebom.
+    min: 1

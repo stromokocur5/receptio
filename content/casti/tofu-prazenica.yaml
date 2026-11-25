@@ -1,0 +1,32 @@
+name: Tofu praženica
+kind: hlavne
+servings: 2
+ingredients:
+  - olej: 1 pl
+  - cibula: 1/2 ks
+  - paprika-cervena: 1/2 ks
+  - tofu-natural: 200 g
+  - kurkuma: 1/2 čl
+  - vyzivne-drozdie: 1 pl
+  - sojove-mlieko: 3 pl
+  - spenat: 60 g
+  - kala-namak: 1/2 čl
+  - cierne-korenie: podľa chuti
+prep:
+  - text: Cibuľu nakrájaj nadrobno, papriku na malé kocky. Tofu vyber z obalu, zlej vodu a osuš ho utierkou.
+    min: 4
+methods:
+  - label: Na panvici
+    steps:
+      - text: Na panvici rozohrej olej na strednom ohni a cibuľu s paprikou opekaj 4–5 minút, kým cibuľa nezmäkne.
+        min: 5
+        on: platna
+      - text: Tofu rozdrv rukami priamo do panvice na nerovnomerné kúsky a 2 minúty opekaj bez miešania, nech trochu zozlatne.
+        min: 2
+        on: platna
+      - text: Pridaj kurkumu, droždie a mlieko a 3 minúty restuj, kým sa tekutina nevstrebe.
+        min: 3
+        on: platna
+      - text: Vmiešaj špenát, a keď zvädne, odstav, posyp kala namak a okoreň. Kala namak pridávaj až na konci, teplom stráca vajíčkovú vôňu.
+        min: 2
+        on: platna

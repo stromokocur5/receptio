@@ -1,0 +1,20 @@
+name: Arašidová omáčka
+kind: omacka
+servings: 2
+early: true
+ingredients:
+  - arasidove-maslo: 2 pl
+  - sojova-omacka: 1 pl
+  - limetka: 1/2 ks
+  - javorovy-sirup: 1 čl
+  - zazvor: 1/2 čl | nastrúhaný
+  - cesnak: 1/2 ks
+  - sriracha: 1/2 čl | podľa chuti
+  - voda: 3 pl | teplá
+methods:
+  - label: V miske
+    steps:
+      - text: Arašidové maslo rozmiešaj so sójovou omáčkou, limetkovou šťavou, sirupom, zázvorom a pretlačeným cesnakom. Po lyžiciach prilievaj teplú vodu, kým omáčka nie je hladká a netečie z lyžice. Dochuť srirachou.
+        min: 5
+tips:
+  - V chladničke zhustne – pred použitím ju rozrieď lyžicou teplej vody.

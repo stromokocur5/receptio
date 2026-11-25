@@ -1,0 +1,42 @@
+name: Tofu s hubami a kapustou na woku
+kind: hlavne
+servings: 2
+ingredients:
+  - tofu-natural: 200 g | pevné
+  - sojova-omacka: 2 pl | 1/2 na tofu, zvyšok do omáčky
+  - kukuricny-skrob: 1 pl | 1/2 na tofu, 1/2 do omáčky
+  - olej: 1,5 pl
+  - sampinony: 150 g | na plátky
+  - cinska-kapusta: 300 g
+  - cesnak: 2 ks
+  - zazvor: 1/2 pl | nastrúhaný
+  - ryzovy-ocot: 1/2 pl
+  - javorovy-sirup: 1/2 pl
+  - voda: 2 pl
+  - sezamovy-olej: 1/2 čl
+  - jarna-cibulka: 1 ks
+prep:
+  - text: Tofu osuš utierkou, nakrájaj na kocky 2 cm a premiešaj s 1/2 PL sójovej omáčky.
+    min: 3
+  - text: Nechaj ho 10 minút postáť. Medzitým kapustu pozdĺžne rozpoľ a nakrájaj na kusy 3 cm, biele časti daj zvlášť. Cesnak nasekaj, cibuľku nakrájaj na kolieska.
+    min: 10
+  - text: V miske zmiešaj zvyšnú sójovú omáčku, ocot, sirup, vodu a 1/2 PL škrobu. Tofu obaľ vo zvyšnom škrobe.
+    min: 2
+    pause: true
+methods:
+  - label: Na woku
+    steps:
+      - text: Vo woku alebo veľkej panvici rozohrej 1 PL oleja na veľkom ohni a tofu opekaj 8 minút, kým nie je chrumkavé. Vyber ho.
+        min: 8
+        on: platna
+      - text: Na suchom woku opekaj huby 5 minút, kým nepustia vodu a nezhnednú. Vyber ich k tofu.
+        min: 5
+        on: platna
+      - text: Pridaj zvyšný olej a biele časti kapusty a 3 minúty opekaj bez veľkého miešania, nech chytia farbu. Pridaj zelené listy, cesnak a zázvor a opekaj ešte 2 minúty.
+        min: 5
+        on: platna
+      - text: Vráť tofu a huby, omáčku v miske premiešaj (škrob klesne ku dnu) a vlej ju do woku. Minútu prehadzuj, kým omáčka nezhustne a nezaleskne sa. Pokvapkaj sezamovým olejom a posyp cibuľkou.
+        min: 2
+        on: platna
+tips:
+  - Ak máš malú panvicu, kapustu opekaj na dvakrát – naložená naraz sa dusí a pustí veľa vody.

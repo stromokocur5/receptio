@@ -1,0 +1,18 @@
+name: Fazuľa na hrianke
+description: Biela fazuľa v údenej paradajkovej omáčke na chrumkavom chlebe. Sýte raňajky alebo rýchla večera.
+meals: [ranajky, vecera]
+servings: 4
+slots:
+  fazula:
+    label: Fazuľa
+    options: [fazula-v-paradajkovej-omacke]
+  pecivo:
+    label: K tomu
+    options: [hrianky, chlieb]
+  zelenina:
+    label: Zelenina
+    options: [izraelsky-salat]
+    optional: true
+finish:
+  - text: Fazuľu naber na hrianky.
+    min: 1

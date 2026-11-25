@@ -1,0 +1,27 @@
+name: Sladko-pikantná omáčka General Tso
+kind: omacka
+servings: 2
+ingredients:
+  - olej: 1 čl
+  - sojova-omacka: 1,5 pl
+  - ryzovy-ocot: 1 pl
+  - cukor: 1 pl
+  - paradajkovy-pretlak: 1/2 pl
+  - voda: 4 pl
+  - kukuricny-skrob: 1 čl
+  - cesnak: 2 ks
+  - zazvor: 1/2 pl | nastrúhaný
+  - cili: 1/2 čl | alebo 2 sušené papričky
+  - jarna-cibulka: 1 ks | na posypanie
+prep:
+  - text: Zmiešaj sójovú omáčku, ocot, cukor, pretlak, vodu a škrob. Cesnak nasekaj, zázvor nastrúhaj, cibuľku nakrájaj.
+    min: 4
+methods:
+  - label: Na panvici
+    steps:
+      - text: Na panvici rozohrej olej na strednom ohni a opraž cesnak, zázvor a čili 30 sekúnd, kým nezavoňajú.
+        min: 1
+        on: platna
+      - text: Vlej omáčku a miešaj, kým nezhustne a nebude lesklá.
+        min: 2
+        on: platna

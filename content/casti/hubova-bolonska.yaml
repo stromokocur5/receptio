@@ -1,0 +1,48 @@
+name: Hubová bolonská omáčka
+kind: omacka
+servings: 4
+ingredients:
+  - sampinony: 500 g
+  - olivovy-olej: 3 pl
+  - cibula: 1 ks
+  - mrkva: 1 ks | nastrúhaná najemno
+  - cesnak: 3 ks
+  - paradajkovy-pretlak: 2 pl
+  - sojova-omacka: 1 pl
+  - passata: 500 g
+  - oregano: 1 čl
+  - sol: 1/2 čl
+  - cierne-korenie: 1/4 čl
+  - bazalka: 3 pl | čerstvá, nepovinné
+prep:
+  - text: Huby nasekaj nadrobno nožom na kúsky veľkosti hrášku. Cibuľu nakrájaj nadrobno, mrkvu nastrúhaj, cesnak nasekaj.
+    min: 10
+methods:
+  - label: Na panvici
+    steps:
+      - text: Vo veľkej panvici rozohrej 2 PL oleja na veľkom ohni a huby opekaj 10 minút. Najprv pustia vodu – nechaj ju celú odpariť a opekaj ich, kým nezhnednú.
+        min: 10
+        on: platna
+      - text: Stiahni oheň na stredný, pridaj zvyšný olej, cibuľu a mrkvu a opekaj 5 minút. Pridaj cesnak a pretlak a minútu miešaj.
+        min: 6
+        on: platna
+      - text: Vlej sójovú omáčku a passatu, pridaj oregano, soľ a korenie a var 10 minút na miernom ohni.
+        min: 10
+        on: platna
+        free: true
+  - label: So sekáčikom
+    needs: [[tycovy-mixer, mixer]]
+    steps:
+      - text: Huby pulzne nasekaj v sekáčiku na kúsky veľkosti hrášku – nie na kašu.
+        min: 3
+        on: mixer
+      - text: Vo veľkej panvici rozohrej 2 PL oleja na veľkom ohni a huby opekaj 10 minút. Najprv pustia vodu – nechaj ju celú odpariť a opekaj ich, kým nezhnednú.
+        min: 10
+        on: platna
+      - text: Stiahni oheň na stredný, pridaj zvyšný olej, cibuľu a mrkvu a opekaj 5 minút. Pridaj cesnak a pretlak a minútu miešaj.
+        min: 6
+        on: platna
+      - text: Vlej sójovú omáčku a passatu, pridaj oregano, soľ a korenie a var 10 minút na miernom ohni.
+        min: 10
+        on: platna
+        free: true

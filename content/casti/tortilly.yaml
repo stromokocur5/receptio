@@ -1,0 +1,11 @@
+name: Teplé tortilly
+kind: pecivo
+servings: 2
+ingredients:
+  - kukuricne-tortilly: 6 ks | malé
+methods:
+  - label: Na panvici
+    steps:
+      - text: Tortilly zohrej po jednej na suchej panvici na strednom ohni, 20–30 sekúnd z každej strany, a zabaľ ich do utierky, nech ostanú mäkké.
+        min: 4
+        on: platna

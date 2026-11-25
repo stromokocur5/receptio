@@ -1,0 +1,23 @@
+name: Paradajková omáčka s bazalkou
+kind: omacka
+servings: 2
+ingredients:
+  - olivovy-olej: 2 pl
+  - cesnak: 3 ks | na tenké plátky
+  - paradajky-sterilizovane: 1 ks | krájané
+  - sol: 1/2 čl
+  - cukor: 1 štipka
+  - oregano: 1/2 čl
+  - bazalka: 10 g | hrsť lístkov
+methods:
+  - label: Na panvici
+    steps:
+      - text: Na panvici zohrej olej na miernom ohni a cesnak opekaj 2 minúty, kým nezačne voňať – nesmie zhnednúť.
+        min: 2
+        on: platna
+      - text: Pridaj paradajky, soľ, štipku cukru a oregano a var na strednom ohni 12 minút, kým omáčka nezhustne.
+        min: 12
+        on: platna
+        free: true
+      - text: Natrhaj do nej bazalku a dochuť soľou.
+        min: 1

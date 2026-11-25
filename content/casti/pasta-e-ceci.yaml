@@ -1,0 +1,36 @@
+name: Pasta e ceci
+kind: hlavne
+servings: 4
+ingredients:
+  - olivovy-olej: 3 pl | 2 na varenie, 1 na pokvapkanie
+  - cesnak: 3 ks
+  - rozmarin: 2 ks | vetvičky
+  - cili: 1 štipka
+  - paradajkovy-pretlak: 2 pl
+  - cicer-sterilizovany: 2 ks
+  - zeleninovy-vyvar: 4 hrnček
+  - cestoviny: 250 g | malé tvary, napr. ditalini
+  - sol: podľa chuti
+  - cierne-korenie: podľa chuti
+prep:
+  - text: Cesnak nakrájaj na plátky, cícer sceď a prepláchni.
+    min: 3
+methods:
+  - label: V hrnci
+    needs: [[tycovy-mixer, mixer]]
+    steps:
+      - text: Na 2 PL oleja na miernom ohni zľahka opraž cesnak s rozmarínom a čili, kým nezavonia, potom pridaj pretlak a minútu miešaj.
+        min: 3
+        on: platna
+      - text: Pridaj cícer a vývar a var na miernom ohni 10 minút.
+        min: 10
+        on: platna
+        free: true
+      - text: Rozmarín vyber a asi tretinu polievky rozmixuj ponorným mixérom priamo v hrnci.
+        min: 2
+        on: mixer
+      - text: Pridaj cestoviny a var ich priamo v hrnci podľa obalu, zvyčajne 10–12 minút, často miešaj aj pri dne. Ak hustne priveľmi, podlej vodou – má to byť husté.
+        min: 12
+        on: platna
+      - text: Dochuť soľou a korením a polej zvyšným olejom.
+        min: 1

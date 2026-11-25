@@ -1,0 +1,31 @@
+name: Paradajková polievka
+kind: hlavne
+servings: 4
+ingredients:
+  - olivovy-olej: 2 pl
+  - cibula: 1 ks
+  - mrkva: 1 ks | nastrúhaná
+  - cesnak: 2 ks
+  - paradajky: 10 ks | zrelé
+  - paradajkovy-pretlak: 1 pl
+  - zeleninovy-vyvar: 3 hrnček
+  - cukor: 1/2 pl | podľa kyslosti paradajok
+  - sol: podľa chuti
+  - bazalka: 2 pl
+prep:
+  - text: Cibuľu nakrájaj nadrobno, mrkvu nastrúhaj, paradajky nakrájaj nahrubo.
+    min: 8
+methods:
+  - label: V hrnci
+    needs: [[tycovy-mixer, mixer]]
+    steps:
+      - text: Na oleji na strednom ohni speň cibuľu a mrkvu 5 minút. Pridaj cesnak a pretlak a minútu opekaj.
+        min: 6
+        on: platna
+      - text: Pridaj paradajky a vývar a var na miernom ohni 20 minút.
+        min: 20
+        on: platna
+        free: true
+      - text: Polievku rozmixuj tyčovým mixérom dohladka. Dochuť cukrom a soľou – vývar je slaný, ochutnaj najprv. Podávaj s bazalkou.
+        min: 4
+        on: mixer

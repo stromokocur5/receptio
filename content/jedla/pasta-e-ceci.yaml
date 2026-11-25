@@ -1,0 +1,11 @@
+name: Pasta e ceci
+description: Talianska hustá polievka z cícera a malých cestovín uvarených priamo v nej, s rozmarínom a cesnakom.
+meals: [obed, vecera]
+servings: 4
+slots:
+  pasta:
+    label: Pasta e ceci
+    options: [pasta-e-ceci]
+finish:
+  - text: Nalej do misiek, kým je horúca – postátím hustne.
+    min: 1

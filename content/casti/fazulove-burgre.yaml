@@ -1,0 +1,65 @@
+name: Fazuľové burgre
+kind: hlavne
+servings: 2
+ingredients:
+  - fazula-cierna: 1 ks | plechovka, dobre scedená
+  - ovsene-vlocky: 1/4 hrnček | jemné
+  - olej: 2 pl
+  - cibula: 1/2 ks
+  - cesnak: 1 ks
+  - udena-paprika: 1/2 čl
+  - kmin: 1/2 čl
+  - sojova-omacka: 1/2 pl
+  - paradajkovy-pretlak: 1/2 pl
+  - hamburgerova-zemla: 2 ks
+  - veganska-majoneza: 2 pl
+  - salat: 20 g
+  - paradajky: 1/2 ks | na plátky
+  - kysle-uhorky: 1 ks | na plátky
+prep:
+  - text: Cibuľu nakrájaj nadrobno, cesnak nasekaj. Fazuľu sceď, prepláchni a nechaj odkvapkať.
+    min: 4
+methods:
+  - label: Na panvici
+    needs: [rura]
+    steps:
+      - text: Fazuľu rozprestri na plech s papierom na pečenie a vysuš ju 8 minút v rúre na 220 °C. Toto je trik proti kašovitým burgrom.
+        min: 8
+        on: rura
+        temp: 220
+        free: true
+      - text: Medzitým na 1 PL oleja na strednom ohni opekaj cibuľu s cesnakom 4 minúty, kým nezmäknú.
+        min: 4
+        on: platna
+      - text: Fazuľu roztlač vidličkou, nech ostanú kúsky, a vmiešaj cibuľu, vločky, papriku, kmín, sójovú omáčku a pretlak. Soľ netreba – fazuľa, sójovka aj uhorky sú slané. Vytvaruj 2 placky.
+        min: 5
+      - text: Placky daj na 15 minút do chladničky stuhnúť.
+        min: 15
+        free: true
+      - text: Na zvyšnom oleji ich opekaj na strednom ohni 4 minúty z každej strany. Obracaj ich opatrne širokou obracačkou.
+        min: 9
+        on: platna
+        pause: true
+      - text: Žemle rozkroj, krátko opeč reznou stranou na suchej panvici, natri majonézou a zlož burger so šalátom, paradajkou a uhorkou.
+        min: 4
+        on: platna
+  - label: Bez rúry
+    steps:
+      - text: Fazuľu osuš utierkou a opekaj ju na suchej panvici na strednom ohni 5 minút, kým sa nezačne trhať – vyparí sa z nej voda.
+        min: 5
+        on: platna
+      - text: Pridaj 1 PL oleja, cibuľu a cesnak a opekaj ešte 4 minúty.
+        min: 4
+        on: platna
+      - text: Všetko roztlač vidličkou, nech ostanú kúsky, a vmiešaj vločky, papriku, kmín, sójovú omáčku a pretlak. Soľ netreba – fazuľa, sójovka aj uhorky sú slané. Vytvaruj 2 placky.
+        min: 5
+      - text: Placky daj na 15 minút do chladničky stuhnúť.
+        min: 15
+        free: true
+      - text: Na zvyšnom oleji ich opekaj na strednom ohni 4 minúty z každej strany. Obracaj ich opatrne širokou obracačkou.
+        min: 9
+        on: platna
+        pause: true
+      - text: Žemle rozkroj, krátko opeč reznou stranou na suchej panvici, natri majonézou a zlož burger so šalátom, paradajkou a uhorkou.
+        min: 4
+        on: platna

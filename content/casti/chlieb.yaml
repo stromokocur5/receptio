@@ -1,0 +1,10 @@
+name: Chlieb
+kind: pecivo
+servings: 2
+ingredients:
+  - chlieb: 2 ks | krajce
+methods:
+  - label: Nakrájaný
+    steps:
+      - text: Chlieb nakrájaj na krajce. Ak je starší, opeč ho nasucho na panvici alebo v hriankovači.
+        min: 2

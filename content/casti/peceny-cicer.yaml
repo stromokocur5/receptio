@@ -1,0 +1,34 @@
+name: Pečený cícer s paprikou
+kind: bielkovina
+servings: 2
+ingredients:
+  - cicer-sterilizovany: 1 ks | plechovka
+  - olivovy-olej: 1 pl
+  - udena-paprika: 1 čl
+  - kmin: 1/2 čl
+  - sol: 1/4 čl
+prep:
+  - text: Cícer sceď, prepláchni a poriadne osuš utierkou. Šupky, ktoré odpadnú, vyhoď.
+    min: 4
+methods:
+  - label: V rúre
+    needs: [rura]
+    steps:
+      - text: Premiešaj ho s olejom, paprikou, kmínom a soľou, rozlož na plech s papierom na pečenie a peč v rúre na 220 °C 22 minút, v polovici plechom zatras.
+        min: 22
+        on: rura
+        temp: 220
+        free: true
+  - label: V airfryeri
+    needs: [airfryer]
+    steps:
+      - text: Premiešaj ho s olejom, paprikou, kmínom a soľou a peč na 200 °C 14 minút, každých 5 minút košom zatras.
+        min: 14
+        on: airfryer
+        temp: 200
+        free: true
+  - label: Na panvici
+    steps:
+      - text: Na panvici rozohrej olej na strednom ohni a cícer opekaj 10 minút, často miešaj. Papriku, kmín a soľ pridaj až na poslednú minútu, inak sa paprika pripáli.
+        min: 10
+        on: platna

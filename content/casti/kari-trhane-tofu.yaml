@@ -1,0 +1,56 @@
+name: Kari s trhaným tofu
+kind: hlavne
+servings: 4
+ingredients:
+  - tofu-natural: 500 g | čo najtvrdšie
+  - sojova-omacka: 1 pl | na tofu
+  - kukuricny-skrob: 2 pl
+  - olivovy-olej: 2 pl
+  - sol: 1 čl | do omáčky
+  - cibula: 1 ks | veľká
+  - cesnak: 5 ks
+  - zazvor: 30 g | kúsok veľký ako palec
+  - voda: 2 pl
+  - rastlinne-maslo: 50 g
+  - kari-korenie: 1,5 pl
+  - kurkuma: 1 čl
+  - udena-paprika: 1 čl
+  - skorica: 1/2 čl
+  - cierne-korenie: 1/2 čl
+  - garam-masala: 1 čl | až na koniec
+  - passata: 400 g
+  - javorovy-sirup: 1 pl | nepovinné, zjemní kyslosť paradajok
+  - cili: podľa chuti
+  - rastlinna-smotana: 200 ml | hustá, na varenie
+  - citron: 1 pl
+  - tekvicove-semienka: 30 g | nasucho opražené
+prep:
+  - text: Tofu neumývaj ani nekrájaj – len z neho utierkou vysaj vodu a rukami ho natrhaj na kúsky veľké ako vlašský orech. Trhané okraje majú väčší povrch a omáčka sa na ne lepšie chytí.
+    min: 4
+  - text: Pokvapkaj ho sójovou omáčkou, premiešaj a nechaj 10 minút nasiaknuť – krusta ochutí len povrch.
+    min: 10
+    free: true
+  - text: Medzitým v sekáčiku alebo mixéri rozmixuj cibuľu (na štvrtiny), cesnak, olúpaný zázvor a 2 PL vody na úplne hladkú pastu.
+    min: 5
+    on: mixer
+methods:
+  - label: V panvici
+    needs: [[tycovy-mixer, mixer]]
+    steps:
+      - text: Tofu posyp škrobom a pretrep, kým sa všetko neobalí. Na olivovom oleji ho opekaj na strednom ohni 8–10 minút, kým nemá zlatistú tvrdú krustu. Daj bokom.
+        min: 10
+        on: platna
+        pause: true
+      - text: V hlbokej panvici na strednom ohni rozpusť maslo, vlej pastu a za stáleho miešania restuj 5–7 minút, kým sa voda neodparí a pasta nezozlatne.
+        min: 7
+        on: platna
+      - text: Stiahni oheň, pridaj kari, kurkumu, údenú papriku, škoricu a čierne korenie a miešaj 30 sekúnd – dlhšie nie, zhorklo by.
+        min: 1
+        on: platna
+      - text: Vlej passatu, pridaj soľ, sirup a čili a 8–10 minút mierne var, kým omáčka nestmavne do tehlovej farby.
+        min: 10
+        on: platna
+        free: true
+      - text: Vmiešaj smotanu, pridaj tofu a zohrievaj 1–2 minúty, aby krusta nasala omáčku, ale nerozpadla sa. Odstav, vmiešaj garam masalu a citrónovú šťavu, dosoľ a posyp semienkami.
+        min: 3
+        on: platna

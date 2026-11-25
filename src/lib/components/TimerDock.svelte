@@ -31,7 +31,7 @@
 						<path class="hand" d="M12 12V5" transform="rotate({(1 - share) * 360} 12 12)" />
 					</svg>
 				{/if}
-				<a class="label" href="/recepty/{timer.recipeId}">{timer.label}</a>
+				<a class="label" href="/jedlo/{timer.recipeId}">{timer.label}</a>
 				<span class="time" aria-live={ringing ? 'assertive' : 'off'}>
 					{ringing ? 'Hotovo!' : formatDuration(left)}
 				</span>

@@ -1,0 +1,22 @@
+name: Vyprážané šampiňóny
+description: Chrumkavé šampiňóny v trojobale bez vajec. Vyprážané, z rúry alebo z airfryeru, so zemiakmi podľa chuti a tatárkou.
+meals: [obed, vecera]
+servings: 2
+slots:
+  huby:
+    label: Huby
+    options: [obalene-sampinony]
+  priloha:
+    label: Príloha
+    options: [varene-zemiaky, opekane-zemiaky, zemiakova-kasa, hranolky]
+  omacka:
+    label: Omáčka
+    options: [tatarka]
+    optional: true
+  salat:
+    label: Šalát
+    options: [uhorkovy-salat]
+    optional: true
+finish:
+  - text: Naservíruj hneď, kým je obal chrumkavý – huby, prílohu a tatárku vedľa seba.
+    min: 2

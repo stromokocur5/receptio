@@ -1,0 +1,44 @@
+name: Hubový guláš so zemiakmi
+kind: hlavne
+servings: 4
+ingredients:
+  - olej: 3 pl
+  - cibula: 3 ks | nadrobno
+  - sampinony: 600 g | na štvrtiny
+  - cesnak: 4 ks | nasekaný
+  - sladka-paprika: 2 pl
+  - udena-paprika: 1 čl
+  - rasca: 1 čl
+  - paradajkovy-pretlak: 2 pl
+  - passata: 200 g
+  - zemiaky: 800 g | na kocky 2 cm
+  - voda: 1 l
+  - bobkovy-list: 2 ks
+  - majoranka: 2 čl
+  - sol: 1,5 čl
+  - cierne-korenie: 1/2 čl
+prep:
+  - text: Cibuľu nakrájaj nadrobno, huby na štvrtiny, cesnak nasekaj.
+    min: 8
+methods:
+  - label: V hrnci
+    steps:
+      - text: V hrnci rozohrej olej na strednom ohni a cibuľu opekaj 10 minút, občas premiešaj, kým nezmäkne a nezačne hnednúť. Pomalá cibuľa je základ chuti gulášu.
+        min: 10
+        on: platna
+        free: true
+      - text: Medzitým ošúp zemiaky a nakrájaj ich na kocky 2 cm.
+        min: 8
+      - text: Pridaj huby, zvýš oheň a opekaj 8 minút, kým nepustia vodu a tá sa neodparí.
+        min: 8
+        on: platna
+      - text: Stiahni oheň, pridaj cesnak, obe papriky, rascu a pretlak a miešaj 1 minútu – paprika nesmie zhorknúť.
+        min: 1
+        on: platna
+      - text: Hneď vlej passatu a vodu, pridaj zemiaky, bobkové listy, soľ a korenie. Priveď do varu, prikry a var na miernom ohni 30 minút, kým zemiaky nezmäknú.
+        min: 32
+        on: platna
+        free: true
+      - text: Niekoľko kúskov zemiakov rozmačkaj o stenu hrnca, nech guláš zhustne. Vmiešaj majoránku rozmrvenú v dlaniach a var ešte 5 minút. Bobkové listy vyber.
+        min: 5
+        on: platna

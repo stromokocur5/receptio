@@ -1,0 +1,16 @@
+name: Opečené jablko so skoricou
+kind: navrch
+servings: 2
+ingredients:
+  - jablko: 1 ks
+  - olej: 1 čl
+  - skorica: 1/4 čl
+  - javorovy-sirup: 1 čl
+methods:
+  - label: Na panvici
+    steps:
+      - text: Jablko zbav jadrovníka a nakrájaj na kocky.
+        min: 2
+      - text: Na panvici zohrej olej na strednom ohni a jablko opekaj 4 minúty, kým nezmäkne. Pridaj skoricu a sirup a minútu miešaj, kým sa jablko nezaleskne.
+        min: 5
+        on: platna

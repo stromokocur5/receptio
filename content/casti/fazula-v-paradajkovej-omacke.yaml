@@ -1,0 +1,31 @@
+name: Fazuľa v údenej paradajkovej omáčke
+kind: hlavne
+servings: 4
+ingredients:
+  - olej: 1 pl
+  - cibula: 1 ks
+  - cesnak: 2 ks
+  - udena-paprika: 1 čl
+  - passata: 2 hrnček
+  - fazula-biela: 3 ks | scedená
+  - javorovy-sirup: 1 pl
+  - sojova-omacka: 1 pl
+  - horcica: 1 čl
+  - ocot: 1 pl
+  - cierne-korenie: 1/4 čl
+prep:
+  - text: Cibuľu nakrájaj nadrobno, fazuľu sceď a prepláchni.
+    min: 4
+methods:
+  - label: V hrnci
+    steps:
+      - text: Na oleji na strednom ohni speň cibuľu 5 minút. Pridaj prelisovaný cesnak a údenú papriku a pol minúty miešaj.
+        min: 6
+        on: platna
+      - text: Prilej passatu, pridaj sirup, sójovú omáčku, horčicu, ocot a korenie a priveď do varu.
+        min: 3
+        on: platna
+      - text: Vsyp fazuľu a var na miernom ohni 12–15 minút, kým omáčka nezhustne a neobalí fazuľu. Ak hustne priskoro, prilej 2–3 lyžice vody. Soľ netreba, fazuľa aj sójovka sú slané.
+        min: 14
+        on: platna
+        free: true

@@ -1,0 +1,20 @@
+name: Quinoa
+kind: priloha
+servings: 2
+ingredients:
+  - quinoa: 120 g
+  - voda: 240 ml
+  - sol: 1/4 čl
+methods:
+  - label: V hrnci
+    steps:
+      - text: Quinou prepláchni v site, inak horkne. Daj ju do hrnca s 240 ml vody a soľou a priveď do varu.
+        min: 3
+        on: platna
+      - text: Prikry ju a var na miernom ohni 15 minút, kým sa voda nevpije.
+        min: 15
+        on: platna
+        free: true
+      - text: Odstav ju, nechaj 5 minút pod pokrievkou a prehrab vidličkou.
+        min: 5
+        free: true

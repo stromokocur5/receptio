@@ -1,0 +1,11 @@
+name: Teplá pita
+kind: pecivo
+servings: 2
+ingredients:
+  - pita: 2 ks
+methods:
+  - label: Na panvici
+    steps:
+      - text: Pity zohrej na suchej panvici na strednom ohni, 30 sekúnd z každej strany, nech zmäknú a dajú sa otvoriť.
+        min: 2
+        on: platna

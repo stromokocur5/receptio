@@ -120,3 +120,10 @@ export function formatGrams(grams: number): string {
 export function formatEur(value: number): string {
 	return new Intl.NumberFormat('sk-SK', { style: 'currency', currency: 'EUR' }).format(value);
 }
+
+export function formatMinutes(minutes: number): string {
+	const h = Math.floor(minutes / 60);
+	const m = Math.round(minutes % 60);
+	if (!h) return `${m} min`;
+	return m ? `${h} h ${m} min` : `${h} h`;
+}

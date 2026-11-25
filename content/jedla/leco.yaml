@@ -1,0 +1,14 @@
+name: Lečo s červenou šošovicou
+description: Paprika opečená do hnedých škvŕn, paradajky a šošovica, ktorá sa rozvarí a lečo zahustí. So zemiakmi, ryžou alebo chlebom.
+meals: [obed, vecera]
+servings: 3
+slots:
+  leco:
+    label: Lečo
+    options: [leco-so-sosovicou]
+  priloha:
+    label: Príloha
+    options: [opekane-zemiaky, varene-zemiaky, ryza, chlieb]
+finish:
+  - text: Lečo nalož k prílohe.
+    min: 1

@@ -1,0 +1,21 @@
+name: Pečená zelenina s hummusom
+description: Batát, cuketa a paprika s hnedými okrajmi na hummuse, s bulgurom a pečeným cícerom.
+meals: [obed, vecera]
+servings: 2
+slots:
+  zelenina:
+    label: Zelenina
+    options: [pecena-zelenina]
+  dip:
+    label: Dip
+    options: [hummus, tahini-omacka]
+  zaklad:
+    label: Základ
+    options: [bulgur, quinoa, pita]
+  bielkovina:
+    label: Bielkovina
+    options: [peceny-cicer, falafel]
+    optional: true
+finish:
+  - text: Na tanier rozotri hummus, navrch daj základ, zeleninu a cícer.
+    min: 2

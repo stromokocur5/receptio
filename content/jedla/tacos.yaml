@@ -1,0 +1,21 @@
+name: Fazuľové tacos
+description: Kukuričné tortilly s údenou fazuľou, salsou a guacamole. Každý si poskladá svoje.
+meals: [obed, vecera]
+servings: 2
+slots:
+  napln:
+    label: Náplň
+    options: [fazulova-napln, chrumkave-tofu]
+  tortilly:
+    label: Tortilly
+    options: [tortilly]
+  salsa:
+    label: Salsa
+    options: [salsa]
+  guacamole:
+    label: Guacamole
+    options: [guacamole]
+    optional: true
+finish:
+  - text: Daj všetko na stôl a každý si do tortilly naloží náplň, salsu a guacamole.
+    min: 1

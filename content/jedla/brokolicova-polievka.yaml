@@ -1,0 +1,15 @@
+name: Krémová brokolicová polievka
+description: Hladká polievka zahustená kešu a zemiakom, bez smotany. Navrch tekvicové semienka.
+meals: [obed, vecera]
+servings: 4
+slots:
+  polievka:
+    label: Polievka
+    options: [brokolicova-polievka]
+  pecivo:
+    label: K tomu
+    options: [hrianky, chlieb]
+    optional: true
+finish:
+  - text: Polievku nalej do tanierov.
+    min: 1

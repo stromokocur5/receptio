@@ -1,0 +1,24 @@
+name: Brokolica
+kind: zelenina
+servings: 2
+ingredients:
+  - brokolica: 1/2 ks
+  - sol: 1 štipka
+methods:
+  - label: V hrnci
+    steps:
+      - text: Brokolicu rozober na ružičky, stonku ošúp a nakrájaj na plátky.
+        min: 3
+      - text: Var ju v osolenej vode alebo nad parou 3 minúty, kým nie je jasne zelená a ešte chrumká. Sceď ju.
+        min: 4
+        on: platna
+        free: true
+  - label: V mikrovlnke
+    needs: [mikrovlnka]
+    steps:
+      - text: Brokolicu rozober na ružičky, stonku ošúp a nakrájaj na plátky.
+        min: 3
+      - text: Daj ju do misky s 2 lyžicami vody, prikry tanierom a ohrievaj na plný výkon 3 minúty.
+        min: 3
+        on: mikrovlnka
+        free: true

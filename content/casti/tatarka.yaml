@@ -1,0 +1,13 @@
+name: Tatárka
+kind: omacka
+servings: 2
+early: true
+ingredients:
+  - veganska-majoneza: 4 pl
+  - kysle-uhorky: 2 ks | nadrobno
+  - horcica: 1/2 čl
+methods:
+  - label: V miske
+    steps:
+      - text: Uhorky nasekaj nadrobno a zmiešaj s majonézou a horčicou. Ak je hustá, rozrieď ju lyžicou láku z uhoriek.
+        min: 4

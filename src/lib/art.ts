@@ -1,4 +1,4 @@
-import type { Ingredient, RecipeLine } from './types';
+import type { IngredientLite, RecipeLine } from './types';
 
 export function hashString(text: string): number {
 	let h = 2166136261;
@@ -51,6 +51,9 @@ export function blobPath(
 	return `${d}Z`;
 }
 
+/** Drinks are drawn in a glass or a mug instead of on a plate. */
+export type Vessel = 'plate' | 'glass' | 'milk' | 'mug';
+
 export interface PlateLayer {
 	kind: 'base' | 'side' | 'grain' | 'chunk' | 'herb' | 'speck';
 	d: string;
@@ -68,7 +71,7 @@ const SIDE_CATEGORIES = new Set(['obilniny']);
 export function plateLayers(
 	seedText: string,
 	lines: RecipeLine[],
-	byId: Map<string, Ingredient>,
+	byId: Map<string, IngredientLite>,
 	/** Lite mode (cards, thumbnails) drops fine texture to keep list pages small. */
 	detail = true
 ): PlateLayer[] {
@@ -202,7 +205,7 @@ const hexToRgb = (hex: string) => {
 };
 
 /** A drink's colour from its ingredients weighed by grams, paler the more water it has. */
-export function drinkLook(lines: RecipeLine[], byId: Map<string, Ingredient>): DrinkLook {
+export function drinkLook(lines: RecipeLine[], byId: Map<string, IngredientLite>): DrinkLook {
 	let water = 0;
 	let coloured = 0;
 	const rgb = [0, 0, 0];

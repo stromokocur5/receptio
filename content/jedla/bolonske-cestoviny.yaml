@@ -1,0 +1,14 @@
+name: Bolonské cestoviny
+description: Hustá omáčka zo šošovice alebo z nadrobno opečených húb, s mrkvou a paradajkami. Uvar viac a zamraz – je to rýchla večera na horší deň.
+meals: [obed, vecera]
+servings: 4
+slots:
+  omacka:
+    label: Omáčka
+    options: [sosovicova-bolonska, hubova-bolonska]
+  cestoviny:
+    label: Cestoviny
+    options: [cestoviny]
+finish:
+  - text: Cestoviny premiešaj s omáčkou priamo v hrnci, a ak je hustá, prilej trochu vody z varenia.
+    min: 2

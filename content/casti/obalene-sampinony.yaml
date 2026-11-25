@@ -1,0 +1,52 @@
+name: Obalené šampiňóny
+kind: hlavne
+servings: 2
+ingredients:
+  - sampinony: 500 g | stredne veľké, celé
+  - sol: 1/2 čl | 1/4 na huby, 1/4 do cesta
+  - cierne-korenie: 1/4 čl
+  - hladka-muka: 10 pl | 4 na obaľovanie, 6 do cesta
+  - sojove-mlieko: 1/2 hrnček | nesladené, alebo studená voda
+  - kukuricny-skrob: 2 pl
+  - horcica: 1 čl
+  - struhanka: 3/4 hrnček
+  - olej: 3 pl | na vyprážanie, toľko vsiakne
+  - olej: ~5 pl | zvyšok v panvici, dá sa precediť a použiť znova
+prep:
+  - text: Huby očisti suchou utierkou a stopky zrež tesne pri klobúčiku. Posyp ich 1/4 ČL soli a korením a premiešaj – obal by inak chutil po soli, ale huby nie.
+    min: 5
+  - text: Priprav do troch misiek 4 PL múky; riedke cesto z mlieka vyšľahaného so zvyšnými 6 PL múky, škrobom, horčicou a zvyšnou soľou, husté ako na palacinky – drží strúhanku namiesto vajca; a strúhanku.
+    min: 4
+  - text: Huby obaľ v múke, v ceste a v strúhanke, potom ešte raz v ceste a strúhanke, aby obal nepraskol.
+    min: 10
+methods:
+  - label: Vyprážané na panvici
+    steps:
+      - text: Na panvici rozohrej olej na strednom ohni, nech ho je asi 1 cm. Huby vyprážaj po dávkach 5–6 minút, priebežne ich otáčaj, kým nie sú zo všetkých strán zlatisté. Vyber ich na papierovú utierku.
+        min: 12
+        on: platna
+        pause: true
+  - label: V rúre
+    needs: [rura]
+    amounts:
+      olej: 2 pl | na pokvapkanie
+    steps:
+      - text: Polož ich na plech s papierom na pečenie, pokvapkaj olejom a peč v rúre na 220 °C 20 minút, v polovici ich otoč.
+        min: 20
+        on: rura
+        temp: 220
+        free: true
+        pause: true
+  - label: V airfryeri
+    needs: [airfryer]
+    amounts:
+      olej: 1 pl | na potretie
+    steps:
+      - text: Polož ich do koša v jednej vrstve, potri olejom a peč na 190 °C 12 minút, v polovici ich otoč. Čo sa nezmestí, upeč v druhej dávke.
+        min: 24
+        on: airfryer
+        temp: 190
+        free: true
+        pause: true
+tips:
+  - Menšie huby sa vyprážajú rýchlejšie, veľké rozkroj na polovice.

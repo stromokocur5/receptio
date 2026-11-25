@@ -1,0 +1,26 @@
+name: Ovsená kaša
+kind: hlavne
+servings: 2
+ingredients:
+  - ovsene-vlocky: 1 hrnček | jemné
+  - sojove-mlieko: 1 hrnček
+  - voda: 1 hrnček
+  - sol: 1 štipka
+  - skorica: 1/2 čl
+methods:
+  - label: V hrnci
+    steps:
+      - text: Vločky zalej mliekom a vodou, pridaj štipku soli a skoricu a priveď do varu.
+        min: 4
+        on: platna
+      - text: Var na miernom ohni 4–5 minút za stáleho miešania, kým kaša nezhustne. Odstav a nechaj minútu dôjsť – ešte zhustne.
+        min: 6
+        on: platna
+  - label: V mikrovlnke
+    needs: [mikrovlnka]
+    steps:
+      - text: Vločky zalej v hlbokej miske mliekom a vodou, pridaj soľ a skoricu.
+        min: 1
+      - text: Ohrievaj na plný výkon 2 minúty, premiešaj a ohrievaj ešte 1–2 minúty, kým kaša nezhustne. Miska musí byť veľká – kaša kypí.
+        min: 4
+        on: mikrovlnka
