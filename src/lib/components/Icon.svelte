@@ -155,6 +155,14 @@
 			'<path d="M5.5 3.5h13l-1.6 16a2 2 0 0 1-2 1.9H9.1a2 2 0 0 1-2-1.9Z"/><path d="M6.4 11.5h11.2"/><path d="M14 3.5l3-2"/><circle cx="10" cy="15" r=".8"/><circle cx="13.5" cy="17" r=".6"/>',
 		snowflake:
 			'<path d="M12 2.5v19M3.8 7.2l16.4 9.6M3.8 16.8l16.4-9.6"/><path d="m9.5 4 2.5 2.5L14.5 4M9.5 20l2.5-2.5 2.5 2.5"/>',
+		airfryer:
+			'<path d="M6 4.5h12a2 2 0 0 1 2 2V19a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19V6.5a2 2 0 0 1 2-2Z"/><circle cx="12" cy="9" r="2.5"/><path d="M7 14.5h10v3.5H7Z"/><path d="M10 16.2h4"/>',
+		microwave:
+			'<rect x="2.5" y="5" width="19" height="14" rx="2.5"/><rect x="5" y="8" width="10" height="8" rx="1.2"/><path d="M18 8.5v.1M18 11.5v.1M18 14.5v2"/>',
+		'pressure-cooker':
+			'<path d="M5 11h14v6.5a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3Z"/><path d="M4 11h16"/><path d="M7 11c0-3 2.2-4.5 5-4.5s5 1.5 5 4.5"/><path d="M12 6.5V4.5M10.5 4.5h3"/><path d="M2.5 13.5H5M19 13.5h2.5"/>',
+		burner:
+			'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2"/>',
 		fridge:
 			'<rect x="5.5" y="2.5" width="13" height="19" rx="2.5"/><path d="M5.5 9.5h13M8.5 5.5v2M8.5 12.5v3"/>',
 		printer:

@@ -1,0 +1,22 @@
+name: Tofu rezeň
+description: Ochutené tofu v chrumkavom obale. Klasika s kašou a uhorkovým šalátom, alebo so zemiakmi podľa chuti.
+meals: [obed, vecera]
+servings: 2
+slots:
+  rezen:
+    label: Rezeň
+    options: [tofu-rezne]
+  priloha:
+    label: Príloha
+    options: [zemiakova-kasa, varene-zemiaky, opekane-zemiaky, hranolky]
+  salat:
+    label: Šalát
+    options: [uhorkovy-salat]
+    optional: true
+  omacka:
+    label: Omáčka
+    options: [tatarka]
+    optional: true
+finish:
+  - text: Rezne podávaj hneď s prílohou a šalátom.
+    min: 1

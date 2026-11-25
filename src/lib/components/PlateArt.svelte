@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { drinkLook, plateLayers } from '$lib/art';
-	import type { Vessel } from '$lib/categories';
-	import type { Ingredient, RecipeLine } from '$lib/types';
+	import { drinkLook, plateLayers, type Vessel } from '$lib/art';
+	import type { IngredientLite, RecipeLine } from '$lib/types';
 
 	let {
 		seed,
@@ -15,7 +14,7 @@
 	}: {
 		seed: string;
 		lines: RecipeLine[];
-		byId: Map<string, Ingredient>;
+		byId: Map<string, IngredientLite>;
 		steam?: boolean;
 		animate?: boolean;
 		detail?: boolean;

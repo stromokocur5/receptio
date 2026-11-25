@@ -1,0 +1,18 @@
+name: Cestoviny s paradajkovou omáčkou
+description: Rýchla cesnaková omáčka z konzervy s bazalkou. Pridaj chrumkavé tofu alebo pečený cícer a je to plnohodnotné jedlo.
+meals: [obed, vecera]
+servings: 2
+slots:
+  omacka:
+    label: Omáčka
+    options: [paradajkova-omacka]
+  cestoviny:
+    label: Cestoviny
+    options: [cestoviny]
+  bielkovina:
+    label: Bielkovina
+    options: [peceny-cicer, chrumkave-tofu]
+    optional: true
+finish:
+  - text: Cestoviny premiešaj s omáčkou, a ak je hustá, prilej trochu vody z varenia. Navrch daj cícer alebo tofu.
+    min: 2

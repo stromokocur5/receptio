@@ -1,0 +1,20 @@
+name: Misa s tofu a arašidovou omáčkou
+description: Teplý základ, chrumkavá bielkovina, surová zelenina a omáčka, ktorá to spojí. Každú časť si vymeníš podľa toho, čo máš.
+meals: [obed, vecera]
+servings: 2
+slots:
+  bielkovina:
+    label: Bielkovina
+    options: [chrumkave-tofu, peceny-cicer]
+  zaklad:
+    label: Základ
+    options: [ryza, quinoa, ryzove-rezance]
+  omacka:
+    label: Omáčka
+    options: [arasidova-omacka, tahini-omacka]
+  zelenina:
+    label: Zelenina
+    options: [zelenina-do-misy, pecena-zelenina]
+finish:
+  - text: Do misiek daj základ, vedľa seba tofu a zeleninu a polej omáčkou.
+    min: 2

@@ -37,8 +37,8 @@
 			: 'Chyba je na našej strane. Skús to o chvíľu znova.'}
 	</p>
 	<div class="ways">
-		<a class="btn leaf" href="/recepty"><Icon name="search" size={18} /> Hľadať recept</a>
-		<a class="btn ghost" href="/"><Icon name="home" size={18} /> Domov</a>
+		<a class="btn leaf" href="/"><Icon name="pot" size={18} /> Čo uvarím</a>
+		<a class="btn ghost" href="/kuchyna"><Icon name="jar" size={18} /> Moja kuchyňa</a>
 	</div>
 </div>
 

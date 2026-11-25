@@ -1,0 +1,13 @@
+name: Banán a vlašské orechy
+kind: navrch
+servings: 2
+early: true
+ingredients:
+  - banan: 1 ks
+  - vlasske-orechy: 20 g
+  - javorovy-sirup: 1 čl
+methods:
+  - label: Nakrájané
+    steps:
+      - text: Banán nakrájaj na kolieska a orechy nahrubo nalámaj.
+        min: 2

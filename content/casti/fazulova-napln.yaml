@@ -1,0 +1,30 @@
+name: Fazuľa s údenou paprikou
+kind: bielkovina
+servings: 2
+ingredients:
+  - olej: 1 pl
+  - cibula: 1/2 ks
+  - cesnak: 1 ks
+  - fazula-cierna: 1 ks | plechovka
+  - udena-paprika: 1 čl
+  - kmin: 1 čl
+  - paradajkovy-pretlak: 1 pl
+  - voda: 4 pl
+  - limetka: 1/2 ks
+  - sol: 1/4 čl
+prep:
+  - text: Cibuľu nakrájaj nadrobno, cesnak nasekaj, fazuľu sceď a prepláchni.
+    min: 4
+methods:
+  - label: Na panvici
+    steps:
+      - text: Na panvici rozohrej olej na strednom ohni a cibuľu opekaj 5 minút, kým nezmäkne.
+        min: 5
+        on: platna
+        free: true
+      - text: Pridaj cesnak, papriku, kmín a pretlak a minútu miešaj. Potom pridaj fazuľu a vodu.
+        min: 2
+        on: platna
+      - text: Var 5 minút a asi polovicu fazule roztlač vidličkou, nech náplň drží pokope. Dochuť limetkovou šťavou a soľou.
+        min: 5
+        on: platna

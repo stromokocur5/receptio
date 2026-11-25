@@ -1,0 +1,14 @@
+name: Cícerové kari so špenátom
+description: Krémové kari z kokosového mlieka, cícera a paradajok. Hotové za pol hodiny a na druhý deň ešte lepšie.
+meals: [obed, vecera]
+servings: 4
+slots:
+  kari:
+    label: Kari
+    options: [cicerove-kari]
+  priloha:
+    label: Príloha
+    options: [ryza, chlieb]
+finish:
+  - text: Kari nalož do misiek s ryžou alebo chlebom.
+    min: 1

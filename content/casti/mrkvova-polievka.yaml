@@ -1,0 +1,32 @@
+name: Mrkvová polievka s červenou šošovicou
+kind: hlavne
+servings: 4
+ingredients:
+  - olej: 1 pl
+  - cibula: 1 ks
+  - cesnak: 2 ks
+  - sladka-paprika: 1/2 čl
+  - kmin: 1/4 čl
+  - mrkva: 4 ks
+  - zemiaky: 150 g
+  - sosovica-cervena: 125 g
+  - voda: 1 l
+  - sol: 1 čl
+  - citron: 1 pl | šťava
+prep:
+  - text: Cibuľu nakrájaj nadrobno, mrkvu na kolieska, zemiaky ošúp a nakrájaj na kocky. Šošovicu prepláchni v site.
+    min: 8
+methods:
+  - label: V hrnci
+    needs: [[tycovy-mixer, mixer]]
+    steps:
+      - text: V hrnci zohrej olej na strednom ohni a cibuľu opekaj 5 minút, kým nezmäkne. Pridaj prelisovaný cesnak, papriku a kmín a miešaj 30 sekúnd.
+        min: 6
+        on: platna
+      - text: Pridaj mrkvu, zemiaky, šošovicu, vodu a soľ. Priveď do varu, stíš na mierny oheň a var prikryté 20 minút, kým mrkva nezmäkne a šošovica sa nerozpadne.
+        min: 22
+        on: platna
+        free: true
+      - text: Polievku rozmixuj tyčovým mixérom dohladka a vmiešaj citrónovú šťavu. Ak je hustá, prilej vodu. Ochutnaj soľ.
+        min: 3
+        on: mixer

@@ -1,0 +1,20 @@
+name: Jazmínová ryža
+kind: priloha
+servings: 2
+ingredients:
+  - ryza-jazminova: 150 g
+  - voda: 225 ml
+  - sol: 1/4 čl
+methods:
+  - label: V hrnci
+    steps:
+      - text: Ryžu prepláchni v site, kým voda nie je skoro číra. Daj ju do hrnca s 225 ml vody a soľou a priveď do varu.
+        min: 4
+        on: platna
+      - text: Prikry ju a var na najmenšom ohni 12 minút.
+        min: 12
+        on: platna
+        free: true
+      - text: Odstav ju a nechaj 10 minút dôjsť pod pokrievkou – pokrievku nedvíhaj.
+        min: 10
+        free: true

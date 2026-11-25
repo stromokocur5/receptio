@@ -1,0 +1,14 @@
+name: Tofu s hubami a kapustou na woku
+description: Kapusta opečená na veľkom ohni, kým jej okraje nezhnednú, šampiňóny a chrumkavé tofu v cesnakovo-sójovej omáčke.
+meals: [obed, vecera]
+servings: 2
+slots:
+  wok:
+    label: Wok
+    options: [tofu-so-zeleninou-na-woku]
+  zaklad:
+    label: Základ
+    options: [ryza, ryzove-rezance]
+finish:
+  - text: Do misiek daj ryžu alebo rezance a navrch obsah woku.
+    min: 1

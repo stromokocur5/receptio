@@ -1,0 +1,59 @@
+name: Falafel
+kind: bielkovina
+servings: 4
+ahead: Večer predtým namoč suchý cícer do trojnásobku studenej vody (8–12 hodín). Musí byť surový – varený ani z plechovky nedrží pokope.
+ingredients:
+  - cicer-suchy: 250 g | namočený cez noc, nevarený
+  - cibula: 1 ks
+  - cesnak: 2 ks
+  - petrzlenova-vnat: 1 hrnček | lístky aj tenké stonky
+  - bylinky-koriander: 4 pl | alebo viac petržlenu
+  - kmin: 2 čl
+  - koriander-mlety: 1 čl
+  - cili: 1/2 čl
+  - sol: 1 čl
+  - kypriaci-prasok: 1 čl
+  - ryzova-muka: 2 pl | len ak sa zmes rozpadá
+  - olej: 5 pl | na vyprážanie, toľko vsiakne
+  - olej: ~2 hrnček | zvyšok v hrnci, dá sa precediť a použiť znova
+prep:
+  - text: Namočený cícer sceď a osuš utierkou. Cibuľu nakrájaj na štvrtiny.
+    min: 3
+  - text: V sekáčiku zomeľ cícer s cibuľou, cesnakom, bylinkami, korením a soľou na hrubú drvinu, ktorá drží pokope, keď ju stlačíš v dlani – nie na hladkú pastu.
+    min: 5
+    on: mixer
+  - text: Vmiešaj prášok do pečiva a zmes daj na 20 minút do chladničky.
+    min: 20
+    free: true
+  - text: Vytvaruj guľky alebo placky veľkosti vlašského orecha. Ak sa rozpadajú, vmiešaj ryžovú múku.
+    min: 8
+    pause: true
+methods:
+  - label: Vyprážaný
+    needs: [[tycovy-mixer, mixer]]
+    steps:
+      - text: V hrnci rozohrej olej na 175 °C – kúsok zmesi musí hneď zasyčať a vyplávať. Falafel vyprážaj po dávkach 3–4 minúty do tmavozlatista a vyber na papierovú utierku.
+        min: 15
+        on: platna
+  - label: V rúre
+    needs: [[tycovy-mixer, mixer], rura]
+    amounts:
+      olej: 3 pl | na potretie
+    steps:
+      - text: Placky (nie guľky, tie sa neprepečú) potri olejom, rozlož na plech s papierom na pečenie a peč v rúre na 220 °C 22 minút, v polovici ich otoč.
+        min: 22
+        on: rura
+        temp: 220
+        free: true
+  - label: V airfryeri
+    needs: [[tycovy-mixer, mixer], airfryer]
+    amounts:
+      olej: 2 pl | na potretie
+    steps:
+      - text: Placky potri olejom a peč po dávkach na 190 °C 12–14 minút, v polovici ich otoč.
+        min: 26
+        on: airfryer
+        temp: 190
+        free: true
+tips:
+  - Surovú zmes môžeš zamraziť a piecť alebo vyprážať rovno zmrazenú, len o pár minút dlhšie.

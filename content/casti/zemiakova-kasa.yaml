@@ -1,0 +1,26 @@
+name: Zemiaková kaša
+kind: priloha
+servings: 2
+ingredients:
+  - zemiaky: 700 g | múčnaté (typ C)
+  - sol: ~1/2 čl | do vody
+  - sol: 1/4 čl | do kaše, podľa chuti
+  - sojove-mlieko: 1/2 hrnček | nesladené
+  - olivovy-olej: 2 pl
+methods:
+  - label: V hrnci
+    steps:
+      - text: Zemiaky ošúp, nakrájaj na rovnaké kusy, zalej studenou vodou, pridaj 1/2 ČL soli a priveď do varu.
+        min: 6
+        on: platna
+      - text: Var ich pod pokrievkou na strednom ohni 20 minút, kým sa nezačnú rozpadať.
+        min: 20
+        on: platna
+        free: true
+      - text: Sceď ich, vráť do hrnca a nechaj minútu odpariť. Medzitým zohrej mlieko.
+        min: 2
+        on: platna
+      - text: Prilej teplé mlieko a olej a roztlač zemiaky dohladka. Osoľ podľa chuti, asi 1/4 ČL.
+        min: 3
+tips:
+  - Kašu nemixuj tyčovým mixérom – z múčnatých zemiakov by bolo lepidlo. Roztláčadlo alebo vidlička stačí.

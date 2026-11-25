@@ -1,0 +1,15 @@
+name: Hubový guláš
+description: Hustý guláš zo šampiňónov a zemiakov na pomaly opečenej cibuli, s paprikou a majoránkou.
+meals: [obed, vecera]
+servings: 4
+slots:
+  gulas:
+    label: Guláš
+    options: [hubovy-gulas]
+  pecivo:
+    label: K tomu
+    options: [chlieb]
+    optional: true
+finish:
+  - text: Guláš nalej do tanierov a podávaj s chlebom.
+    min: 1

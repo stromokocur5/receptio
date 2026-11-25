@@ -1,0 +1,39 @@
+name: Cícerové kari so špenátom
+kind: hlavne
+servings: 4
+ingredients:
+  - olej: 2 pl
+  - cibula: 1 ks
+  - cesnak: 3 ks
+  - zazvor: 1 pl | nastrúhaný
+  - garam-masala: 2 čl
+  - kmin: 1 čl
+  - kurkuma: 1/2 čl
+  - paradajky-sterilizovane: 1 ks | krájané
+  - kokosove-mlieko: 1 ks
+  - cicer-sterilizovany: 2 ks
+  - sol: 1 čl
+  - spenat: 100 g
+  - citron: 1/2 ks
+prep:
+  - text: Cibuľu nakrájaj nadrobno, cesnak a zázvor nastrúhaj. Cícer sceď a prepláchni.
+    min: 5
+methods:
+  - label: V hrnci
+    steps:
+      - text: V hrnci rozohrej olej na strednom ohni a cibuľu opekaj 8 minút, občas premiešaj, kým nezmäkne a nezačne zlatnúť.
+        min: 8
+        on: platna
+        free: true
+      - text: Pridaj cesnak, zázvor, garam masalu, kmín a kurkumu a 1 minútu miešaj, kým korenie nezavonia.
+        min: 1
+        on: platna
+      - text: Pridaj paradajky, kokosové mlieko, cícer a soľ. Var na miernom ohni 15 minút, občas premiešaj.
+        min: 15
+        on: platna
+        free: true
+      - text: Vmiešaj špenát, nechaj ho minútu zvädnúť a dochuť citrónovou šťavou a soľou.
+        min: 2
+        on: platna
+tips:
+  - Na druhý deň je ešte lepšie. V chladničke vydrží 3 dni, v mrazničke 3 mesiace.

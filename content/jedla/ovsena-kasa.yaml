@@ -1,0 +1,14 @@
+name: Ovsená kaša
+description: Teplé raňajky za 10 minút. Navrch banán s orechmi alebo opečené jablko so skoricou.
+meals: [ranajky]
+servings: 2
+slots:
+  kasa:
+    label: Kaša
+    options: [ovsena-kasa]
+  navrch:
+    label: Navrch
+    options: [ovocie-a-orechy, jablko-so-skoricou]
+finish:
+  - text: Kašu rozdeľ do misiek a polož navrch ovocie.
+    min: 1

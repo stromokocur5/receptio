@@ -1,0 +1,26 @@
+name: Falafel s tahini omáčkou
+description: Domáci falafel zo surového cícera – vyprážaný, z rúry alebo z airfryeru. S pitou alebo bulgurom, šalátom a hummusom.
+meals: [obed, vecera]
+servings: 2
+slots:
+  falafel:
+    label: Falafel
+    options: [falafel]
+  priloha:
+    label: Príloha
+    options: [pita, bulgur]
+  salat:
+    label: Šalát
+    options: [izraelsky-salat]
+  omacka:
+    label: Omáčka
+    options: [tahini-omacka]
+  dip:
+    label: Dip
+    options: [hummus]
+    optional: true
+finish:
+  - text: Pitu otvor a naplň falafelom a šalátom, alebo všetko nalož do misky na bulgur. Polej tahini omáčkou.
+    min: 2
+tips:
+  - Falafel v pite je s lepkom – bez lepku ho jedz s bulgurom nahradeným ryžou alebo len so šalátom.

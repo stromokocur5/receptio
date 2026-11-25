@@ -1,0 +1,52 @@
+name: Šošovicová bolonská omáčka
+kind: omacka
+servings: 4
+ingredients:
+  - olivovy-olej: 2 pl
+  - cibula: 1 ks
+  - mrkva: 1 ks
+  - cesnak: 2 ks
+  - sosovica-hneda: 150 g | suchá
+  - paradajkovy-pretlak: 2 pl
+  - paradajky-sterilizovane: 2 ks | krájané
+  - voda: 300 ml
+  - oregano: 1 čl
+  - sojova-omacka: 1 pl
+  - sol: 1/2 čl
+  - cierne-korenie: 1/4 čl
+prep:
+  - text: Cibuľu a mrkvu nakrájaj nadrobno, cesnak nasekaj. Šošovicu prepláchni v site.
+    min: 6
+methods:
+  - label: V hrnci
+    steps:
+      - text: V hrnci rozohrej olej na strednom ohni a cibuľu s mrkvou opekaj 8 minút, občas premiešaj, kým nezmäknú.
+        min: 8
+        on: platna
+        free: true
+      - text: Pridaj cesnak a pretlak a 1 minútu miešaj, kým pretlak nestmavne.
+        min: 1
+        on: platna
+      - text: Pridaj šošovicu, paradajky, 300 ml vody, oregano a sójovú omáčku. Prikry a var na miernom ohni 30 minút, kým šošovica nezmäkne. Občas premiešaj a ak omáčka hustne priveľmi, prilej vodu.
+        min: 30
+        on: platna
+        free: true
+      - text: Dochuť soľou a korením.
+        min: 1
+  - label: V tlakovom hrnci
+    needs: [tlakovy-hrniec]
+    steps:
+      - text: V tlakovom hrnci bez veka rozohrej olej na strednom ohni a cibuľu s mrkvou opekaj 6 minút.
+        min: 6
+        on: platna
+      - text: Pridaj cesnak a pretlak a 1 minútu miešaj.
+        min: 1
+        on: platna
+      - text: Pridaj šošovicu, paradajky, 300 ml vody, oregano a sójovú omáčku, zatvor hrniec a var pod tlakom 10 minút. Nechaj tlak klesnúť sám.
+        min: 20
+        on: platna
+        free: true
+      - text: Dochuť soľou a korením.
+        min: 1
+tips:
+  - Zvyšok zamraz po porciách – vydrží 3 mesiace a za 10 minút je večera.

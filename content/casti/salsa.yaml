@@ -1,0 +1,16 @@
+name: Paradajková salsa
+kind: omacka
+servings: 2
+early: true
+ingredients:
+  - paradajky: 2 ks
+  - cibula-cervena: 1/4 ks
+  - bylinky-koriander: 2 pl | alebo petržlen
+  - limetka: 1/2 ks
+  - sol: 1/4 čl
+  - cili: 1 štipka
+methods:
+  - label: V miske
+    steps:
+      - text: Paradajky nakrájaj na malé kocky, cibuľu nadrobno a koriander nasekaj. Zmiešaj s limetkovou šťavou, soľou a čili a nechaj aspoň 5 minút postáť.
+        min: 6

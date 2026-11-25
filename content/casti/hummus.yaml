@@ -1,0 +1,24 @@
+name: Hummus
+kind: omacka
+servings: 4
+early: true
+ingredients:
+  - cicer-sterilizovany: 1 ks | vodu z plechovky odlož
+  - tahini: 3 pl
+  - citron: 1/2 ks
+  - cesnak: 1/2 ks
+  - kmin: 1/4 čl
+  - sol: 1/2 čl
+  - aquafaba: 3 pl | voda z plechovky, alebo ľadová voda
+  - olivovy-olej: 1 pl | na pokvapkanie
+methods:
+  - label: V mixéri
+    needs: [[tycovy-mixer, mixer]]
+    steps:
+      - text: Cícer ošúp – stláčaj zrná medzi prstami a šupky odpadnú. Hummus bude oveľa jemnejší.
+        min: 5
+      - text: Tahini vyšľahaj s citrónovou šťavou, kým nezbelie a nezhustne. Pridaj cesnak, kmín, soľ a cícer a mixuj 2 minúty, po lyžiciach prilievaj aquafabu, kým hummus nie je hladký a nadýchaný.
+        min: 4
+        on: mixer
+      - text: Dochuť soľou a citrónom, v miske sprav lyžicou vlnky a polej olivovým olejom.
+        min: 1

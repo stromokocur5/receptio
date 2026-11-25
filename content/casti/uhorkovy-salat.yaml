@@ -1,0 +1,17 @@
+name: Uhorkový šalát
+kind: zelenina
+servings: 2
+early: true
+ingredients:
+  - uhorka: 1 ks
+  - ocot: 1 pl
+  - voda: 3 pl
+  - cukor: 1/2 čl
+  - sol: 1/4 čl
+  - cesnak: 1/2 ks
+  - sladka-paprika: 1 štipka
+methods:
+  - label: V miske
+    steps:
+      - text: Uhorku nakrájaj alebo nastrúhaj na tenké plátky. Zmiešaj ocot, vodu, cukor, soľ a prelisovaný cesnak, zalej uhorky a nechaj aspoň 10 minút postáť. Posyp paprikou.
+        min: 5

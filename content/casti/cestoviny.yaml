@@ -1,0 +1,19 @@
+name: Cestoviny
+kind: priloha
+servings: 2
+ingredients:
+  - cestoviny: 200 g | špagety, penne alebo iné
+  - sol: ~1 pl | do vody
+methods:
+  - label: V hrnci
+    steps:
+      - text: V hrnci priveď do varu 2 l vody.
+        min: 10
+        on: platna
+        free: true
+      - text: Vodu osoľ, vsyp cestoviny a var ich podľa obalu, zvyčajne 9–11 minút, občas premiešaj.
+        min: 10
+        on: platna
+        free: true
+      - text: Sceď ich. Hrnček vody z varenia si odlož – zriedi omáčku, ak je hustá.
+        min: 1

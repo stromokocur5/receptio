@@ -1,0 +1,14 @@
+name: Šošovicové bolonské cestoviny
+description: Hustá omáčka zo šošovice, mrkvy a paradajok. Uvar viac a zamraz – je to rýchla večera na horší deň.
+meals: [obed, vecera]
+servings: 4
+slots:
+  omacka:
+    label: Omáčka
+    options: [sosovicova-bolonska]
+  cestoviny:
+    label: Cestoviny
+    options: [cestoviny]
+finish:
+  - text: Cestoviny premiešaj s omáčkou priamo v hrnci, a ak je hustá, prilej trochu vody z varenia.
+    min: 2

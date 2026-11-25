@@ -1,0 +1,13 @@
+name: Ryžové rezance
+kind: priloha
+servings: 2
+ingredients:
+  - ryzove-rezance: 150 g
+methods:
+  - label: V miske
+    steps:
+      - text: Rezance zalej vriacou vodou z kanvice a nechaj ich podľa obalu 5–8 minút zmäknúť, občas ich rozhrab paličkami.
+        min: 8
+        free: true
+      - text: Sceď ich a prepláchni studenou vodou, aby sa nezlepili.
+        min: 1

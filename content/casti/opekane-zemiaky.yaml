@@ -1,0 +1,49 @@
+name: Opekané zemiaky s rascou
+kind: priloha
+servings: 2
+ingredients:
+  - zemiaky: 600 g | pevné (typ A alebo B)
+  - sol: ~1/2 čl | do vody
+  - sol: 1/4 čl | na konci
+  - olej: 2 pl
+  - rasca: 1/2 čl
+prep:
+  - text: Zemiaky očisti, nakrájaj na kocky 2–3 cm, zalej studenou vodou, pridaj 1/2 ČL soli a priveď do varu.
+    min: 6
+    on: platna
+  - text: Var ich 8 minút, kým okraje nezmäknú a stred je ešte pevný.
+    min: 8
+    on: platna
+    free: true
+  - text: Sceď ich a zatras cedidlom, nech sa okraje trochu rozstrapkajú.
+    min: 1
+  - text: Nechaj ich 3 minúty odpariť – suché sa opečú do chrumkava, mokré sa dusia.
+    min: 3
+    free: true
+methods:
+  - label: Na panvici
+    steps:
+      - text: Na panvici rozohrej olej na veľkom ohni a zemiaky opekaj 10 minút, prvé 3 minúty bez miešania, potom ich obracaj, kým nie sú zlatisté. Posyp ich rascou a 1/4 ČL soli.
+        min: 10
+        on: platna
+        pause: true
+  - label: V rúre
+    needs: [rura]
+    steps:
+      - text: Premiešaj ich s olejom, rascou a 1/4 ČL soli, rozlož na plech s papierom na pečenie a peč v rúre na 220 °C 25 minút, v polovici ich obráť.
+        min: 25
+        on: rura
+        temp: 220
+        free: true
+        pause: true
+  - label: V airfryeri
+    needs: [airfryer]
+    amounts:
+      olej: 1 pl
+    steps:
+      - text: Premiešaj ich s olejom, rascou a 1/4 ČL soli a peč na 200 °C 18 minút, každých 5 minút košom zatras.
+        min: 18
+        on: airfryer
+        temp: 200
+        free: true
+        pause: true

@@ -1,0 +1,50 @@
+name: Tofu rezne
+kind: bielkovina
+servings: 2
+ingredients:
+  - tofu-natural: 200 g | pevné
+  - sojova-omacka: 1,5 pl
+  - cesnak: 1 ks | prelisovaný
+  - voda: 2 pl
+  - hladka-muka: 5 pl | 2 na obaľovanie, 3 do cesta
+  - sojove-mlieko: 4 pl
+  - horcica: 1/2 čl
+  - struhanka: 1/2 hrnček
+  - udena-paprika: 1/2 čl
+  - olej: 3 pl | na vyprážanie, toľko vsiakne
+  - olej: ~3 pl | zvyšok v panvici
+prep:
+  - text: Tofu osuš utierkou a nakrájaj na 4 plátky hrubé najviac 1,5 cm. Sójovú omáčku zmiešaj s cesnakom a vodou, plátky polož do misky a polej ich.
+    min: 3
+  - text: Nechaj ich nasiaknuť 10 minút z každej strany – obal ochutí len povrch, chuť musí byť vnútri.
+    min: 20
+    free: true
+  - text: Priprav do troch misiek 2 PL múky; cesto z mlieka vyšľahaného so zvyšnou múkou a horčicou; a strúhanku zmiešanú s paprikou. Plátky obaľ v múke, v ceste a v strúhanke.
+    min: 6
+    pause: true
+methods:
+  - label: Na panvici
+    steps:
+      - text: Na panvici rozohrej olej na strednom ohni, nech ho je asi 3 mm. Rezne vyprážaj 3–4 minúty z každej strany do zlatista a vyber ich na papierovú utierku.
+        min: 8
+        on: platna
+  - label: V airfryeri
+    needs: [airfryer]
+    amounts:
+      olej: 1 pl | na potretie
+    steps:
+      - text: Rezne potri z oboch strán olejom a peč na 190 °C 12 minút, v polovici ich otoč.
+        min: 12
+        on: airfryer
+        temp: 190
+        free: true
+  - label: V rúre
+    needs: [rura]
+    amounts:
+      olej: 2 pl | na potretie
+    steps:
+      - text: Rezne polož na plech s papierom na pečenie, potri olejom a peč v rúre na 220 °C 18 minút, v polovici ich otoč.
+        min: 18
+        on: rura
+        temp: 220
+        free: true

@@ -122,6 +122,21 @@ export interface Ingredient {
 	season: number[];
 }
 
+/** What the browser needs of an ingredient: names for search, groups for the pantry, colours for the plate. */
+export type IngredientLite = Pick<
+	Ingredient,
+	| 'id'
+	| 'name'
+	| 'aliases'
+	| 'category'
+	| 'group'
+	| 'groupFactor'
+	| 'staple'
+	| 'color'
+	| 'units'
+	| 'piece'
+>;
+
 export interface Substitute {
 	/** Another ingredient from the database, when the swap is one. */
 	to?: { id: string; name: string };

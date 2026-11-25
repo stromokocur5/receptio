@@ -1,0 +1,17 @@
+name: Bulgur
+kind: priloha
+servings: 2
+ingredients:
+  - bulgur: 1/2 hrnček
+  - voda: 1 hrnček
+  - sol: 1/4 čl
+methods:
+  - label: V hrnci
+    steps:
+      - text: Vodu so soľou priveď do varu, vsyp bulgur, prikry a na najmenšom ohni var 10 minút.
+        min: 12
+        on: platna
+        free: true
+      - text: Odstav ho, nechaj 5 minút pod pokrievkou a prehrab vidličkou.
+        min: 5
+        free: true

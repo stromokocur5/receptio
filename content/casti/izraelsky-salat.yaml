@@ -1,0 +1,17 @@
+name: Paradajkovo-uhorkový šalát
+kind: zelenina
+servings: 2
+early: true
+ingredients:
+  - paradajky: 2 ks
+  - uhorka: 1 ks
+  - cibula-cervena: 1/4 ks
+  - petrzlenova-vnat: 2 pl | nasekaná
+  - citron: 1/2 ks
+  - olivovy-olej: 1 pl
+  - sol: 1/4 čl
+methods:
+  - label: V miske
+    steps:
+      - text: Paradajky, uhorku a cibuľu nakrájaj na malé kocky. Pridaj vňať, citrónovú šťavu, olej a soľ a premiešaj.
+        min: 7

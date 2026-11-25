@@ -1,0 +1,20 @@
+name: Varené zemiaky s vňaťou
+kind: priloha
+servings: 2
+ingredients:
+  - zemiaky: 600 g | pevné (typ A alebo B)
+  - sol: ~1 čl | do vody
+  - olivovy-olej: 1 pl
+  - petrzlenova-vnat: 2 pl | nasekaná
+methods:
+  - label: V hrnci
+    steps:
+      - text: Zemiaky ošúp, nakrájaj na štvrtiny, zalej studenou vodou, osoľ a priveď do varu.
+        min: 6
+        on: platna
+      - text: Var ich pod pokrievkou na strednom ohni 20 minút, kým do nich nôž ľahko nevojde.
+        min: 20
+        on: platna
+        free: true
+      - text: Sceď ich, nechaj minútu odpariť a premiešaj s olejom a vňaťou.
+        min: 2

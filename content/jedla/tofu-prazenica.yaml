@@ -1,0 +1,18 @@
+name: Tofu praženica
+description: Rozdrobené tofu s kurkumou, paprikou a špenátom. Kala namak mu dá vajíčkovú vôňu.
+meals: [ranajky, vecera]
+servings: 2
+slots:
+  prazenica:
+    label: Praženica
+    options: [tofu-prazenica]
+  pecivo:
+    label: K tomu
+    options: [chlieb, tortilly]
+  zelenina:
+    label: Zelenina
+    options: [izraelsky-salat]
+    optional: true
+finish:
+  - text: Praženicu podávaj hneď s chlebom alebo zabalenú v tortille.
+    min: 1
