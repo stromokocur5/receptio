@@ -1,0 +1,36 @@
+name: Krémová brokolicová polievka
+kind: hlavne
+servings: 4
+ingredients:
+  - olej: 1 pl
+  - cibula: 1 ks
+  - cesnak: 2 ks
+  - brokolica: 2 ks | ružičky aj ošúpaná stonka
+  - zemiaky: 150 g
+  - zeleninovy-vyvar: 4 hrnček
+  - kesu: 40 g
+  - vyzivne-drozdie: 2 pl
+  - citron: 1/2 ks
+  - sol: podľa chuti
+  - tekvicove-semienka: 2 pl | opražené, na posypanie
+prep:
+  - text: Kešu zalej horúcou vodou a nechaj namáčať, kým varíš – potom sa rozmixuje dohladka.
+    min: 1
+  - text: Cibuľu a cesnak nasekaj, brokolicu rozober na ružičky, stonku ošúp a nakrájaj, zemiak ošúp a nakrájaj na kocky.
+    min: 8
+methods:
+  - label: V hrnci
+    needs: [[tycovy-mixer, mixer]]
+    steps:
+      - text: Na oleji na strednom ohni speň cibuľu a cesnak 4 minúty.
+        min: 4
+        on: platna
+      - text: Pridaj brokolicu, zemiak a vývar a var na miernom ohni 12 minút, len kým brokolica nezmäkne – dlhším varením zošedne.
+        min: 13
+        on: platna
+        free: true
+      - text: Pridaj scedené kešu a droždie a rozmixuj tyčovým mixérom dohladka.
+        min: 3
+        on: mixer
+      - text: Dochuť citrónom a soľou – vývar je slaný, ochutnaj najprv. Posyp semienkami.
+        min: 1

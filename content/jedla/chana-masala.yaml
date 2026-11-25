@@ -1,0 +1,14 @@
+name: Chana masala
+description: Cícer v korenistej paradajkovej omáčke na pomaly opečenej cibuli. S basmati ryžou alebo chlebom.
+meals: [obed, vecera]
+servings: 4
+slots:
+  kari:
+    label: Kari
+    options: [chana-masala]
+  priloha:
+    label: Príloha
+    options: [ryza-basmati, chlieb]
+finish:
+  - text: Nalož ryžu do misiek a navrch chana masalu.
+    min: 1

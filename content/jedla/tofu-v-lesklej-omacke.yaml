@@ -1,0 +1,24 @@
+name: Chrumkavé tofu v lesklej omáčke
+description: Jedno tofu, tri omáčky – sladká teriyaki, pikantné kung pao s arašidmi alebo sladko-kyslá General Tso. S ryžou a brokolicou.
+meals: [obed, vecera]
+servings: 2
+slots:
+  tofu:
+    label: Tofu
+    options: [chrumkave-tofu]
+  omacka:
+    label: Omáčka
+    options: [teriyaki-omacka, kung-pao-omacka, general-tso-omacka]
+  zaklad:
+    label: Základ
+    options: [ryza, ryzove-rezance]
+  zelenina:
+    label: Zelenina
+    options: [brokolica-na-pare]
+    optional: true
+finish:
+  - text: Tofu vhoď do panvice s omáčkou a premiešaj, kým sa každý kúsok neobalí. Nalož na ryžu a vedľa daj brokolicu.
+    min: 1
+    on: platna
+tips:
+  - Omáčka zhustne za minútu a v miske ďalej hustne – ak je ako lepidlo, rozrieď ju lyžicou vody.

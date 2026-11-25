@@ -1,0 +1,22 @@
+name: Teriyaki omáčka
+kind: omacka
+servings: 2
+ingredients:
+  - sojova-omacka: 2 pl
+  - javorovy-sirup: 1 pl
+  - ocot: 1/2 pl
+  - voda: 2 pl
+  - zazvor: 1/2 pl | nastrúhaný
+  - cesnak: 1 ks
+  - kukuricny-skrob: 1 čl
+  - sezam: 1/2 pl | na posypanie
+  - jarna-cibulka: 1 ks | na posypanie
+methods:
+  - label: Na panvici
+    steps:
+      - text: V miske zmiešaj sójovú omáčku, sirup, ocot, vodu, zázvor, prelisovaný cesnak a škrob. Cibuľku nakrájaj na kolieska.
+        min: 3
+      - text: Vlej omáčku do panvice a na strednom ohni za stáleho miešania 1 minútu var, kým nezhustne a nezaleskne sa.
+        min: 2
+        on: platna
+        pause: true

@@ -1,0 +1,17 @@
+name: Paradajková polievka
+description: Z čerstvých zrelých paradajok, rozmixovaná dohladka, s bazalkou. Navrch pečený cícer alebo hrianky.
+meals: [obed, vecera]
+servings: 4
+slots:
+  polievka:
+    label: Polievka
+    options: [paradajkova-polievka]
+  navrch:
+    label: Navrch
+    options: [peceny-cicer, hrianky]
+    optional: true
+finish:
+  - text: Polievku nalej do tanierov a posyp cícerom alebo podávaj s hriankami.
+    min: 1
+tips:
+  - Najlepšia je v lete z prezretých paradajok. V zime použi 2 plechovky krájaných.

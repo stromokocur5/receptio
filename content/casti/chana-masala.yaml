@@ -1,0 +1,41 @@
+name: Chana masala
+kind: hlavne
+servings: 4
+ingredients:
+  - olej: 2 pl
+  - cibula: 2 ks
+  - cesnak: 4 ks
+  - zazvor: 1 pl | nastrúhaný
+  - kmin: 1 čl
+  - koriander-mlety: 2 čl
+  - kurkuma: 1 čl
+  - cili: 1/2 čl
+  - paradajky-sterilizovane: 1 ks | krájané
+  - cicer-sterilizovany: 2 ks
+  - voda: 1/2 hrnček
+  - sol: 1 čl
+  - garam-masala: 2 čl
+  - citron: 1/2 ks
+  - bylinky-koriander: 2 pl | na posypanie
+prep:
+  - text: Cibuľu nakrájaj nadrobno, cesnak prelisuj, zázvor nastrúhaj. Cícer sceď a prepláchni.
+    min: 6
+methods:
+  - label: V hrnci
+    steps:
+      - text: V hrnci rozohrej olej na strednom ohni a cibuľu opekaj 8 minút dozlatista, občas premiešaj – je to základ chuti, neponáhľaj sa.
+        min: 8
+        on: platna
+        free: true
+      - text: Pridaj cesnak, zázvor, kmín, koriander, kurkumu a čili a 1 minútu miešaj, kým korenie nezavonia.
+        min: 1
+        on: platna
+      - text: Vlej paradajky, pridaj cícer, vodu a soľ. Prikry a var na miernom ohni 15 minút, kým omáčka nezhustne.
+        min: 15
+        on: platna
+        free: true
+      - text: Vmiešaj garam masalu a citrónovú šťavu, dochuť soľou a posyp koriandrom.
+        min: 1
+        on: platna
+tips:
+  - Na druhý deň je ešte lepšia. V chladničke vydrží 3 dni, v mrazničke 3 mesiace.

@@ -36,11 +36,17 @@ describe('content', () => {
 
 	it('makes whole plates of a sensible size', () => {
 		for (const dish of content.dishes) {
-			const parts = chosenParts(dish, defaultChoice(dish), {}, partsById, FULL);
-			const facts = combineFacts(parts.map((p) => p.method));
-			expect(facts.perServing.kcal, dish.id).toBeGreaterThan(250);
-			expect(facts.perServing.kcal, dish.id).toBeLessThan(1400);
-			expect(facts.perServing.salt, dish.id).toBeLessThan(5);
+			for (const slot of dish.slots) {
+				for (const option of slot.options) {
+					const choice = { ...defaultChoice(dish), [slot.id]: option };
+					const parts = chosenParts(dish, choice, {}, partsById, FULL);
+					const facts = combineFacts(parts.map((p) => p.method));
+					const where = `${dish.id} ${option}`;
+					expect(facts.perServing.kcal, where).toBeGreaterThan(250);
+					expect(facts.perServing.kcal, where).toBeLessThan(1400);
+					expect(facts.perServing.salt, where).toBeLessThan(5);
+				}
+			}
 		}
 	});
 

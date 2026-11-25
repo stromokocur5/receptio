@@ -88,14 +88,16 @@ function withPreheat(part: TimelinePart): Planned[] {
 }
 
 /**
- * Splits a part where a break does no harm: before a step marked `pause`, and after any step that
- * leaves nothing cooking (cut vegetables or a marinating tofu can wait, a boiling pot can't).
+ * Splits a part where a break does no harm: before a step marked `pause`, before switching the
+ * oven on, and after any step that leaves nothing cooking (cut vegetables or a marinating tofu can
+ * wait, a boiling pot can't). Plain waiting ("let it steam off") stays with the step before it.
  */
 function segments(steps: Planned[]): Segment[] {
 	const out: Segment[] = [];
 	steps.forEach((step, i) => {
 		const prev = steps[i - 1];
-		if (!out.length || step.pause || (!prev.on && !step.preheat)) out.push([step]);
+		const waiting = step.free && !step.on;
+		if (!out.length || step.pause || step.preheat || (!prev.on && !waiting)) out.push([step]);
 		else out[out.length - 1].push(step);
 	});
 	return out;
@@ -138,15 +140,18 @@ export function planTimeline(
 
 	let best: { placed: Placed[]; total: number; score: number } | undefined;
 	for (const order of orders(warm)) {
-		const run = schedule(
-			[...order, ...cold].map((c) => ({ chain: c.segments, warm: !c.part.early })),
-			finish,
-			kitchen
-		);
-		const score = run.total + WAIT_WEIGHT * run.waiting;
-		if (!best || score < best.score) best = { ...run, score };
+		for (const interleave of [false, true]) {
+			const run = schedule(
+				[...order, ...cold].map((c) => ({ chain: c.segments, warm: !c.part.early })),
+				finish,
+				kitchen,
+				interleave
+			);
+			const score = run.total + WAIT_WEIGHT * run.waiting;
+			if (!best || score < best.score) best = { ...run, score };
+		}
 	}
-	const { placed, total } = best ?? schedule([], finish, kitchen);
+	const { placed, total } = best ?? schedule([], finish, kitchen, false);
 
 	const steps: TimedStep[] = placed.map(({ step, from }) => ({
 		partId: step.partId,
@@ -175,7 +180,8 @@ interface Placed {
 function schedule(
 	chains: { chain: Segment[]; warm: boolean }[],
 	finish: PartStep[],
-	kitchen: Kitchen
+	kitchen: Kitchen,
+	interleave: boolean
 ): { placed: Placed[]; total: number; waiting: number } {
 	const burners = Math.max(1, kitchen.burners);
 	/** Usage per minute counted backwards from serving. */
@@ -223,7 +229,8 @@ function schedule(
 	const placed: Placed[] = [];
 
 	/** Earliest reverse time from `lowest` where the whole segment fits, last step first. */
-	const place = (segment: Segment, lowest: number): number => {
+	/** Earliest reverse time from `lowest` where the whole segment fits, last step first. */
+	const slot = (segment: Segment, lowest: number): number => {
 		for (let r = lowest; r < HORIZON; r++) {
 			let offset = r;
 			let ok = true;
@@ -231,16 +238,20 @@ function schedule(
 				ok = fits(segment[i], offset);
 				offset += segment[i].min;
 			}
-			if (!ok) continue;
-			offset = r;
-			for (let i = segment.length - 1; i >= 0; i--) {
-				take(segment[i], offset);
-				placed.push({ step: segment[i], from: offset });
-				offset += segment[i].min;
-			}
-			return r;
+			if (ok) return r;
 		}
 		throw new Error('timeline: kroky sa nezmestili do 24 hodín');
+	};
+
+	const place = (segment: Segment, lowest: number): number => {
+		const r = slot(segment, lowest);
+		let offset = r;
+		for (let i = segment.length - 1; i >= 0; i--) {
+			take(segment[i], offset);
+			placed.push({ step: segment[i], from: offset });
+			offset += segment[i].min;
+		}
+		return r;
 	};
 
 	const finishSteps = finish.map((s) => ({
@@ -252,12 +263,32 @@ function schedule(
 	const finishLength = finishSteps.length ? place(finishSteps, 0) + duration(finishSteps) : 0;
 
 	let waiting = 0;
-	for (const { chain, warm } of chains) {
-		let lowest = finishLength;
-		for (let i = chain.length - 1; i >= 0; i--) {
-			const r = place(chain[i], lowest);
-			if (warm && i === chain.length - 1) waiting += r - finishLength;
-			lowest = r + duration(chain[i]);
+	if (interleave) {
+		// Segment by segment across parts: whichever can go closest to serving goes next, so
+		// one part's prep can slip into another's simmering.
+		const next = chains.map((c) => ({ ...c, i: c.chain.length - 1, lowest: finishLength }));
+		for (;;) {
+			let pick: (typeof next)[number] | undefined;
+			let pickAt = Infinity;
+			for (const c of next) {
+				if (c.i < 0) continue;
+				const r = slot(c.chain[c.i], c.lowest);
+				if (r < pickAt) [pick, pickAt] = [c, r];
+			}
+			if (!pick) break;
+			const r = place(pick.chain[pick.i], pick.lowest);
+			if (pick.warm && pick.i === pick.chain.length - 1) waiting += r - finishLength;
+			pick.lowest = r + duration(pick.chain[pick.i]);
+			pick.i--;
+		}
+	} else {
+		for (const { chain, warm } of chains) {
+			let lowest = finishLength;
+			for (let i = chain.length - 1; i >= 0; i--) {
+				const r = place(chain[i], lowest);
+				if (warm && i === chain.length - 1) waiting += r - finishLength;
+				lowest = r + duration(chain[i]);
+			}
 		}
 	}
 

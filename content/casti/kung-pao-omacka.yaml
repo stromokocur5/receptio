@@ -1,0 +1,29 @@
+name: Kung pao s arašidmi
+kind: omacka
+servings: 2
+ingredients:
+  - olej: 1/2 pl
+  - cili: 1/2 čl | alebo 4 sušené papričky
+  - secuanske-korenie: 1/2 čl | nepovinné
+  - cesnak: 2 ks
+  - zazvor: 1/2 pl
+  - jarna-cibulka: 3 ks | na 2 cm kúsky
+  - paprika-cervena: 1/2 ks | na kocky
+  - sojova-omacka: 1,5 pl
+  - ryzovy-ocot: 1 pl
+  - cukor: 1/2 pl
+  - voda: 2 pl
+  - kukuricny-skrob: 1 čl
+  - arasidy: 30 g | pražené
+prep:
+  - text: Zmiešaj sójovú omáčku, ocot, cukor, vodu a škrob. Cesnak nasekaj, zázvor nastrúhaj, cibuľku a papriku nakrájaj.
+    min: 5
+methods:
+  - label: Na panvici
+    steps:
+      - text: Na panvici rozohrej olej na veľkom ohni a krátko opraž čili a sečuánske korenie. Pridaj cesnak, zázvor, papriku a cibuľku a 2 minúty opekaj.
+        min: 3
+        on: platna
+      - text: Vlej omáčku, pridaj arašidy a miešaj, kým omáčka nezhustne a nezaleskne sa.
+        min: 1
+        on: platna

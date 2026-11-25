@@ -1,0 +1,21 @@
+name: Burrito misa
+description: Všetko z burrita bez tortilly – ryža, údená fazuľa, salsa a guacamole. Alebo s chrumkavým tofu.
+meals: [obed, vecera]
+servings: 2
+slots:
+  zaklad:
+    label: Základ
+    options: [ryza, quinoa]
+  napln:
+    label: Bielkovina
+    options: [fazulova-napln, chrumkave-tofu]
+  salsa:
+    label: Salsa
+    options: [salsa]
+  guacamole:
+    label: Guacamole
+    options: [guacamole]
+    optional: true
+finish:
+  - text: Do misiek daj ryžu, vedľa seba fazuľu, salsu a guacamole.
+    min: 2

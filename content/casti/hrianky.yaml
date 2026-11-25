@@ -1,0 +1,11 @@
+name: Hrianky
+kind: pecivo
+servings: 2
+ingredients:
+  - chlieb: 2 ks | krajce
+methods:
+  - label: Na panvici
+    steps:
+      - text: Chlieb opeč na suchej panvici na strednom ohni 2 minúty z každej strany, kým nie je chrumkavý.
+        min: 4
+        on: platna
