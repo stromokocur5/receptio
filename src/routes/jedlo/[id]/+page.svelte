@@ -24,7 +24,7 @@
 	import { ALLERGEN_LABELS, treatText } from '$lib/nutrition';
 	import { isAssumedAtHome, pantryByGroup } from '$lib/pantry';
 	import { composePlate } from '$lib/plate';
-	import { kitchen, pantry, ui } from '$lib/state.svelte';
+	import { addToPlan, kitchen, pantry, plan, ui } from '$lib/state.svelte';
 	import { toast } from '$lib/toast.svelte';
 
 	const catalog = useCatalog();
@@ -116,6 +116,17 @@
 		...plate.parts.map(({ part }) => ({ id: part.id, name: part.name })),
 		...(dish.finish.length ? [{ id: null, name: 'Na tanier' }] : [])
 	]);
+	let justPlanned = $state(false);
+	function planIt() {
+		if (!addToPlan(dish.id, query)) {
+			toast('Týždeň je plný – niečo z neho najprv uvar alebo vyhoď');
+			return;
+		}
+		justPlanned = true;
+		setTimeout(() => (justPlanned = false), 1800);
+		toast(`${dish.name} je v týždni`, () => (plan.current = plan.current.slice(0, -1)));
+	}
+
 	const cookHref = $derived(`/jedlo/${dish.id}/varim${query ? `?${query}` : ''}`);
 </script>
 
@@ -357,6 +368,10 @@
 </div>
 
 <div class="cta-bar">
+	<button class="btn ghost cta" onclick={planIt}>
+		<Icon name={justPlanned ? 'check' : 'calendar'} size={18} />
+		{justPlanned ? 'V týždni' : 'Do týždňa'}
+	</button>
 	<a class="btn leaf cta" href={cookHref}>
 		<Icon name="play" size={18} /> Variť · {formatMinutes(plate.timeline.total)}
 	</a>
@@ -646,14 +661,18 @@
 		z-index: 30;
 		display: flex;
 		justify-content: center;
+		gap: var(--sp-2);
 		padding: var(--sp-2) var(--gutter);
 		pointer-events: none;
 	}
 	.cta {
 		pointer-events: auto;
-		padding: 0.9em 1.6em;
+		padding: 0.9em 1.3em;
 		font-size: var(--fs-base);
 		box-shadow: var(--shadow-lift);
+	}
+	.cta.ghost {
+		background: var(--card);
 	}
 	@media (min-width: 900px) {
 		.layout {

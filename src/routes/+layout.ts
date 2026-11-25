@@ -3,7 +3,7 @@ import type { LayoutLoad } from './$types';
 
 export const prerender = true;
 
-const EMPTY: CatalogPayload = { ingredients: [], parts: [], dishes: [], builtAt: '' };
+const EMPTY: CatalogPayload = { ingredients: [], parts: [], dishes: [], prices: {}, builtAt: '' };
 
 export const load: LayoutLoad = async ({ fetch }) => {
 	try {

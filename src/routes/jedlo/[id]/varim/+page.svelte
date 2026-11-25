@@ -11,7 +11,7 @@
 	import { APPLIANCE_LABELS, buildFromParams, buildToParams, type Build } from '$lib/dish';
 	import { consumeFromPantry } from '$lib/pantry';
 	import { composePlate } from '$lib/plate';
-	import { kitchen, pantry, ui } from '$lib/state.svelte';
+	import { kitchen, pantry, plan, removeFromPlan, ui } from '$lib/state.svelte';
 	import type { TimedStep } from '$lib/timeline';
 	import { startTimer } from '$lib/timers.svelte';
 	import { toast } from '$lib/toast.svelte';
@@ -146,6 +146,16 @@
 		done = [];
 	}
 
+	const planned = $derived(
+		ui.loaded ? plan.current.find((p) => p.dish === dish.id && p.query === query) : undefined
+	);
+	function crossOff() {
+		if (!planned) return;
+		const before = plan.current;
+		removeFromPlan(planned.id);
+		toast('Odškrtnuté z týždňa', () => (plan.current = before));
+	}
+
 	let usedUp = $state(false);
 	function takeFromPantry() {
 		const { pantry: next, used } = consumeFromPantry(
@@ -260,6 +270,11 @@
 					{#if ui.loaded && Object.keys(pantry.current).length && !usedUp}
 						<button class="btn leaf" onclick={takeFromPantry}>
 							<Icon name="jar" size={18} /> Odpočítať suroviny zo špajze
+						</button>
+					{/if}
+					{#if planned}
+						<button class="btn leaf" onclick={crossOff}>
+							<Icon name="calendar" size={18} /> Odškrtnúť z týždňa
 						</button>
 					{/if}
 					<a class="btn ghost" href="/"><Icon name="pot" size={18} /> Čo ďalej</a>

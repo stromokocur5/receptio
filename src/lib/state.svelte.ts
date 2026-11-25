@@ -76,6 +76,40 @@ export function validateKitchen(raw: unknown): Kitchen | undefined {
 	return { burners, tools: [...new Set(tools)] };
 }
 
+/** A built plate put on the week: the dish and its build as URL parameters. */
+export interface PlanItem {
+	id: string;
+	dish: string;
+	/** `buildToParams` output, read back with `buildFromParams`. */
+	query: string;
+}
+
+export const MAX_PLAN = 30;
+
+function validatePlan(raw: unknown): PlanItem[] | undefined {
+	if (!Array.isArray(raw)) return undefined;
+	return raw
+		.filter(
+			(e): e is PlanItem =>
+				isRecord(e) &&
+				typeof e.id === 'string' &&
+				/^[a-z0-9-]{1,40}$/.test(e.id) &&
+				typeof e.dish === 'string' &&
+				/^[a-z0-9-]{1,80}$/.test(e.dish) &&
+				typeof e.query === 'string' &&
+				e.query.length <= 500
+		)
+		.slice(0, MAX_PLAN);
+}
+
+function validateFlags(raw: unknown): Record<string, boolean> | undefined {
+	if (!isRecord(raw)) return undefined;
+	return Object.fromEntries(Object.entries(raw).filter(([, v]) => v === true)) as Record<
+		string,
+		boolean
+	>;
+}
+
 export type Theme = 'auto' | 'light' | 'dark';
 
 export interface Settings {
@@ -98,6 +132,10 @@ function validateSettings(raw: unknown): Settings | undefined {
 export const pantry = new Persisted<Pantry>('pantry', {}, validatePantry);
 export const kitchen = new Persisted<Kitchen>('kitchen', DEFAULT_KITCHEN, validateKitchen);
 export const settings = new Persisted<Settings>('settings', DEFAULT_SETTINGS, validateSettings);
+/** `week-plan`, not `plan`: the old app stored a different shape under that key. */
+export const plan = new Persisted<PlanItem[]>('week-plan', [], validatePlan);
+/** Shopping list items ticked off, by ingredient id. */
+export const ticked = new Persisted<Record<string, boolean>>('ticked', {}, validateFlags);
 
 export const ui = $state({ loaded: false });
 
@@ -124,4 +162,18 @@ export function toggleTool(tool: KitchenTool) {
 		? kitchen.current.tools.filter((t) => t !== tool)
 		: [...kitchen.current.tools, tool];
 	kitchen.current = { ...kitchen.current, tools };
+}
+
+export function addToPlan(dish: string, query: string): boolean {
+	if (plan.current.length >= MAX_PLAN) return false;
+	plan.current = [...plan.current, { id: crypto.randomUUID().slice(0, 8), dish, query }];
+	return true;
+}
+
+export function removeFromPlan(id: string) {
+	plan.current = plan.current.filter((p) => p.id !== id);
+}
+
+export function setPlanQuery(id: string, query: string) {
+	plan.current = plan.current.map((p) => (p.id === id ? { ...p, query } : p));
 }

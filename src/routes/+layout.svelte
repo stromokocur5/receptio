@@ -8,7 +8,7 @@
 	import Logo from '$lib/components/Logo.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
 	import Toasts from '$lib/components/Toasts.svelte';
-	import { loadPersisted, pantry, settings } from '$lib/state.svelte';
+	import { loadPersisted, pantry, plan, settings } from '$lib/state.svelte';
 	import { loadTimers } from '$lib/timers.svelte';
 
 	let { data, children } = $props();
@@ -18,9 +18,13 @@
 
 	const LINKS: { href: string; label: string; icon: IconName }[] = [
 		{ href: '/', label: 'Uvar', icon: 'pot' },
+		{ href: '/tyzden', label: 'Týždeň', icon: 'calendar' },
 		{ href: '/kuchyna', label: 'Kuchyňa', icon: 'jar' }
 	];
 	const pantryCount = $derived(Object.keys(pantry.current).length);
+	const planCount = $derived(plan.current.length);
+	const countOf = (href: string) =>
+		href === '/kuchyna' ? pantryCount : href === '/tyzden' ? planCount : 0;
 	const isActive = (href: string) =>
 		href === '/'
 			? page.url.pathname === '/' || page.url.pathname.startsWith('/jedlo')
@@ -81,9 +85,7 @@
 					>
 						<Icon name={link.icon} size={19} />
 						{link.label}
-						{#if link.href === '/kuchyna' && pantryCount > 0}
-							<span class="count">{pantryCount}</span>
-						{/if}
+						{#if countOf(link.href) > 0}<span class="count">{countOf(link.href)}</span>{/if}
 					</a>
 				{/each}
 			</nav>
@@ -123,9 +125,7 @@
 			>
 				<span class="ico">
 					<Icon name={link.icon} size={22} />
-					{#if link.href === '/kuchyna' && pantryCount > 0}
-						<span class="count">{pantryCount}</span>
-					{/if}
+					{#if countOf(link.href) > 0}<span class="count">{countOf(link.href)}</span>{/if}
 				</span>
 				<span class="lbl">{link.label}</span>
 			</a>
@@ -279,7 +279,7 @@
 		display: flex;
 		align-items: center;
 		gap: 8px;
-		padding: 10px 20px;
+		padding: 10px 16px;
 		border-radius: 999px;
 		color: var(--muted);
 		text-decoration: none;
