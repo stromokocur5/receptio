@@ -1,0 +1,15 @@
+name: Vanilkový jogurt
+description: Sójový jogurt s vanilkou a kvapkou sirupu – krémový základ na raňajky.
+kind: hlavne
+style: [sladke]
+servings: 2
+early: true
+ingredients:
+  - sojovy-jogurt: 1,5 hrnček
+  - javorovy-sirup: 1/2 pl | nepovinné
+  - vanilka: 1/2 čl
+methods:
+  - label: V miske
+    steps:
+      - text: Jogurt zmiešaj so sirupom a vanilkou a rozdeľ do misiek.
+        min: 2

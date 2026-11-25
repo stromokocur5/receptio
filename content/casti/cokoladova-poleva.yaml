@@ -1,0 +1,15 @@
+name: Čokoládová poleva
+description: Kakao so sirupom a kokosovým olejom – na studenom jedle trochu stuhne.
+kind: omacka
+style: [sladke]
+servings: 2
+early: true
+ingredients:
+  - kakao: 1 pl
+  - javorovy-sirup: 1,5 pl
+  - kokosovy-olej: 1 pl | rozpustený
+methods:
+  - label: V miske
+    steps:
+      - text: Ak je kokosový olej tuhý, rozpusť ho v miske nad horúcou vodou. Vmiešaj kakao a sirup dohladka – na studenom jedle poleva trochu stuhne.
+        min: 3

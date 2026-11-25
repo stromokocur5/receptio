@@ -1,0 +1,19 @@
+name: Banánová zmrzlina
+description: Zamrazené banány rozmixované na krém ako mäkká zmrzlina, bez cukru a smotany.
+kind: hlavne
+style: [sladke]
+servings: 2
+ahead: Deň vopred nakrájaj zrelé banány (aj s hnedými škvrnami) na kolieska a zamraz ich vo vrecku.
+ingredients:
+  - banan: 3 ks | zrelé, zamrazené na kolieskach
+  - sojove-mlieko: 3 pl
+methods:
+  - label: V mixéri
+    needs: [[tycovy-mixer, mixer]]
+    steps:
+      - text: Zamrazené banány nechaj 3 minúty povoliť.
+        min: 3
+        free: true
+      - text: Mixuj ich s mliekom a priebežne zotieraj steny, kým z hrudiek nie je hladký krém ako mäkká zmrzlina. Podávaj hneď.
+        min: 3
+        on: mixer

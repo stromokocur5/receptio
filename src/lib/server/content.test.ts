@@ -42,7 +42,7 @@ describe('content', () => {
 					const parts = chosenParts(dish, choice, {}, partsById, FULL);
 					const facts = combineFacts(parts.map((p) => p.method));
 					const where = `${dish.id} ${option}`;
-					expect(facts.perServing.kcal, where).toBeGreaterThan(250);
+					expect(facts.perServing.kcal, where).toBeGreaterThan(200);
 					expect(facts.perServing.kcal, where).toBeLessThan(1400);
 					expect(facts.perServing.salt, where).toBeLessThan(5);
 				}

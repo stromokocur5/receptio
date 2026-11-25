@@ -1,4 +1,5 @@
 name: Chlieb
+description: Krajce chleba na podávanie, čerstvé alebo nasucho opečené.
 kind: pecivo
 style: [domace, stredomorske, indicke]
 servings: 2

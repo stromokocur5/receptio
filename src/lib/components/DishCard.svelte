@@ -39,6 +39,7 @@
 	</div>
 	<div class="body">
 		<h3><a class="stretched" {href}>{dish.name}</a></h3>
+		<p class="desc">{dish.description}</p>
 		{#if picked.length}<p class="with">+ {picked.join(' · ')}</p>{/if}
 		<ul class="meta" aria-label="Na porciu">
 			<li><Icon name="clock" size={16} /> {formatMinutes(plate.timeline.total)}</li>
@@ -123,9 +124,20 @@
 		outline: 3px solid var(--leaf);
 		outline-offset: -3px;
 	}
+	.desc {
+		display: -webkit-box;
+		margin: 0;
+		overflow: hidden;
+		color: var(--ink-2);
+		font-size: var(--fs-sm);
+		line-height: 1.4;
+		-webkit-line-clamp: 3;
+		line-clamp: 3;
+		-webkit-box-orient: vertical;
+	}
 	.with {
 		margin: 0;
-		color: var(--ink-2);
+		color: var(--muted);
 		font-size: var(--fs-sm);
 	}
 	.meta {

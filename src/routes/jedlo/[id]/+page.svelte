@@ -3,6 +3,7 @@
 	import { replaceState } from '$app/navigation';
 	import { page } from '$app/state';
 	import { formatAmount, formatEur, formatMinutes, formatNumber } from '$lib/amounts';
+	import { FREE_DISH_IDS } from '$lib/builder';
 	import { findDish, useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import BuiltPlate from '$lib/components/BuiltPlate.svelte';
@@ -129,6 +130,13 @@
 		toast(`${plate.name} je v týždni`, () => (plan.current = plan.current.slice(0, -1)));
 	}
 
+	/** A free plate goes back to the builder it came from, sweet or savoury. */
+	const backHref = $derived.by(() => {
+		if (!dish.free) return '/';
+		const all = [dish.id === FREE_DISH_IDS.sladke ? 'typ=sladke' : '', query].filter(Boolean);
+		return all.length ? `/?${all.join('&')}` : '/';
+	});
+
 	const cookHref = $derived(`/jedlo/${dish.id}/varim${query ? `?${query}` : ''}`);
 </script>
 
@@ -138,7 +146,7 @@
 </svelte:head>
 
 <div class="wrap page">
-	<a class="back" href={dish.free ? `/${query ? `?${query}` : ''}` : '/'}>
+	<a class="back" href={backHref}>
 		<Icon name="arrow-left" size={16} />
 		{dish.free ? 'Späť na tanier' : 'Poskladaj si tanier'}
 	</a>
@@ -268,6 +276,10 @@
 							{/if}
 							{@const part = partOf(current)}
 							{@const method = methodOf(part)}
+							<p class="part-desc">
+								{#if slot.options.length > 1 && !dish.free}<strong>{part.name}:</strong>{/if}
+								{part.description}
+							</p>
 							{#if part.methods.length > 1}
 								<div class="methods" role="radiogroup" aria-label="Ako pripraviť: {part.name}">
 									{#each part.methods as m (m.label)}
@@ -490,6 +502,11 @@
 	.only {
 		margin: 0;
 		font-weight: 650;
+	}
+	.part-desc {
+		margin: 0;
+		color: var(--ink-2);
+		font-size: var(--fs-sm);
 	}
 	.slot .hint {
 		margin: 0;

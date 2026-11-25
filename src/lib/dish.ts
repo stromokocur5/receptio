@@ -94,6 +94,7 @@ export const PART_KINDS = [
 	'priloha',
 	'omacka',
 	'zelenina',
+	'ovocie',
 	'pecivo',
 	'navrch'
 ] as const;
@@ -132,6 +133,8 @@ export interface PartFacts {
 export interface Part {
 	id: string;
 	name: string;
+	/** One sentence on what it is. */
+	description: string;
 	kind: PartKind;
 	style: Style[];
 	servings: number;

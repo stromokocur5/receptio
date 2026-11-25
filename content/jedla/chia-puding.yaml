@@ -1,0 +1,18 @@
+name: Chia puding
+description: Pripravíš ho večer, ráno len doplníš ovocie a semienka.
+meals: [ranajky, dezert]
+servings: 2
+slots:
+  puding:
+    label: Puding
+    options: [chia-puding]
+  ovocie:
+    label: Ovocie
+    options: [lesne-ovocie-teple, cerstve-ovocie]
+  navrch:
+    label: Navrch
+    options: [orechy-a-semienka, prazene-vlocky]
+    optional: true
+finish:
+  - text: Na puding daj ovocie a posyp semienkami.
+    min: 1

@@ -1,0 +1,23 @@
+name: Datľový karamel
+description: Datle rozmixované s vodou a štipkou soli, hustý karamel bez varenia cukru.
+kind: omacka
+style: [sladke]
+servings: 2
+early: true
+ingredients:
+  - datle: 6 ks | mäkké
+  - voda: 4 pl | horúca
+  - vanilka: 1/4 čl
+  - sol: 1 štipka
+methods:
+  - label: V mixéri
+    needs: [[tycovy-mixer, mixer]]
+    steps:
+      - text: Datle vykôstkuj a zalej horúcou vodou.
+        min: 2
+      - text: Nechaj ich 10 minút zmäknúť.
+        min: 10
+        free: true
+      - text: Rozmixuj ich aj s vodou, vanilkou a štipkou soli dohladka – štipka soli z nich spraví karamel.
+        min: 2
+        on: mixer

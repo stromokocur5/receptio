@@ -1,0 +1,19 @@
+name: Pražené vločky s orechmi
+description: Ovsené vločky s orechmi opražené nasucho so skoricou, chrumkavé ako granola.
+kind: navrch
+style: [sladke]
+servings: 2
+early: true
+ingredients:
+  - ovsene-vlocky: 1/2 hrnček
+  - vlasske-orechy: 20 g | nasekané
+  - javorovy-sirup: 1 čl
+  - skorica: 1/4 čl
+methods:
+  - label: Na panvici
+    steps:
+      - text: Na suchej panvici na strednom ohni opraž vločky s orechmi 5 minút, často miešaj, kým nezavoňajú. Na konci pridaj sirup a škoricu a ešte minútu miešaj, kým sa nezlepia do hrudiek.
+        min: 6
+        on: platna
+tips:
+  - Sprav ich viac – v pohári vydržia chrumkavé týždeň.

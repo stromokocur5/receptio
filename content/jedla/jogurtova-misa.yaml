@@ -1,0 +1,17 @@
+name: Jogurtová misa
+description: Vanilkový jogurt s ovocím a chrumkavými praženými vločkami. Raňajky za 10 minút.
+meals: [ranajky]
+servings: 2
+slots:
+  jogurt:
+    label: Jogurt
+    options: [jogurtova-misa]
+  ovocie:
+    label: Ovocie
+    options: [cerstve-ovocie, lesne-ovocie-teple]
+  navrch:
+    label: Navrch
+    options: [prazene-vlocky, orechy-a-semienka]
+finish:
+  - text: Do misiek daj jogurt, navrch ovocie a vločky až tesne pred jedením, nech ostanú chrumkavé.
+    min: 1

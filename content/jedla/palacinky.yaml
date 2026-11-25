@@ -1,0 +1,17 @@
+name: Palacinky
+description: Tenké palacinky bez vajec s arašidovou alebo čokoládovou polevou a ovocím.
+meals: [ranajky, dezert]
+servings: 2
+slots:
+  palacinky:
+    label: Palacinky
+    options: [palacinky]
+  plnka:
+    label: Plnka
+    options: [arasidova-poleva, cokoladova-poleva, datlovy-karamel]
+  ovocie:
+    label: Ovocie
+    options: [cerstve-ovocie, opeceny-banan, lesne-ovocie-teple]
+finish:
+  - text: Palacinky natri plnkou, pridaj ovocie a zroluj alebo prelož na štvrtiny.
+    min: 3

@@ -64,3 +64,17 @@ test('Prekvap ma puts something on the plate', async ({ page }) => {
 	await page.getByRole('button', { name: 'Prekvap ma' }).click();
 	await expect(page.getByRole('link', { name: 'Variť' })).toBeVisible();
 });
+
+test('sweet and savoury plates never mix', async ({ page }) => {
+	await visit(page, '/');
+	await page.getByRole('button', { name: 'Sladké' }).click();
+	await expect(page.getByRole('heading', { name: 'Poskladaj si misku' })).toBeVisible();
+	await page.getByRole('button', { name: 'Základ: vybrať' }).click();
+	await expect(page.getByRole('button', { name: /Palacinky/ })).toBeVisible();
+	await expect(page.getByRole('button', { name: /Chrumkavé tofu/ })).toHaveCount(0);
+	await page.getByRole('button', { name: /Palacinky/ }).click();
+	await expect(page).toHaveURL(/typ=sladke/);
+	await page.getByRole('button', { name: 'Slané' }).click();
+	await page.getByRole('button', { name: 'Hlavná časť: vybrať' }).click();
+	await expect(page.getByRole('button', { name: /Ovsená kaša/ })).toHaveCount(0);
+});

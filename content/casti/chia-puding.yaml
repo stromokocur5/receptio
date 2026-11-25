@@ -1,0 +1,17 @@
+name: Chia puding
+description: Chia semienka nasiaknuté v mlieku cez noc – zhustne na krémový puding.
+kind: hlavne
+style: [sladke]
+servings: 2
+early: true
+ahead: Večer predtým vyšľahaj mlieko so sirupom a vanilkou, vmiešaj chia a po 10 minútach znova premiešaj, aby sa neurobili hrudky. Prikry a nechaj v chladničke cez noc (aspoň 4 hodiny).
+ingredients:
+  - chia: 4 pl
+  - sojove-mlieko: 1 hrnček
+  - javorovy-sirup: 1 pl
+  - vanilka: 1/2 čl
+methods:
+  - label: Z chladničky
+    steps:
+      - text: Puding vyber z chladničky, premiešaj a ak je priveľmi hustý, rozrieď ho lyžicou mlieka. Rozdeľ do misiek.
+        min: 2

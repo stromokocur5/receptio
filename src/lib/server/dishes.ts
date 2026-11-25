@@ -42,6 +42,8 @@ const lineSchema = z
 const partSchema = z
 	.object({
 		name: z.string().min(1),
+		/** One sentence on what it is, shown while picking. */
+		description: z.string().min(10).max(140),
 		kind: z.enum(PART_KINDS),
 		style: z.array(z.enum(STYLES)).default([]),
 		servings: z.number().int().positive(),
@@ -205,6 +207,7 @@ export function compileParts(
 			return {
 				id,
 				name: raw.name,
+				description: raw.description,
 				kind: raw.kind,
 				style: raw.style,
 				servings: raw.servings,

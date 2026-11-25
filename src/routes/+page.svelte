@@ -4,8 +4,10 @@
 	import { page } from '$app/state';
 	import { formatEur, formatMinutes, formatNumber } from '$lib/amounts';
 	import {
+		BUILDER_MODES,
 		BUILDER_SLOTS,
-		FREE_DISH_ID,
+		MODE_LABELS,
+		type BuilderMode,
 		fits,
 		plateName,
 		plateStyles,
@@ -41,17 +43,17 @@
 	import { toast } from '$lib/toast.svelte';
 
 	const catalog = useCatalog();
-	const dish = $derived(catalog().freeDish);
+	let mode = $state<BuilderMode>('slane');
+	const dish = $derived(catalog().freeDishes[mode]);
+	const slots = $derived(BUILDER_SLOTS[mode]);
 
 	let choice = $state<Choice>({});
 	let ready = $state(false);
 
 	onMount(() => {
-		choice = buildFromParams(
-			dish,
-			new URLSearchParams(location.search),
-			catalog().partsById
-		).choice;
+		const params = new URLSearchParams(location.search);
+		if (params.get('typ') === 'sladke') mode = 'sladke';
+		choice = buildFromParams(catalog().freeDishes[mode], params, catalog().partsById).choice;
 		ready = true;
 	});
 
@@ -59,7 +61,8 @@
 	const query = $derived(buildToParams(dish, build).toString());
 	$effect(() => {
 		if (!ready) return;
-		const next = query ? `/?${query}` : '/';
+		const all = [mode === 'sladke' ? 'typ=sladke' : '', query].filter(Boolean).join('&');
+		const next = all ? `/?${all}` : '/';
 		void tick().then(() => replaceState(next, page.state));
 	});
 
@@ -70,7 +73,7 @@
 	const filled = $derived(
 		plate.parts.map((p) => ({ slot: p.slot.id, part: p.part, method: p.method }))
 	);
-	const empty = $derived(BUILDER_SLOTS.filter((s) => !choice[s.id]).map((s) => s.id));
+	const empty = $derived(slots.filter((s) => !choice[s.id]).map((s) => s.id));
 	const verified = $derived(verifiedDish(picked, catalog().dishes));
 	const styles = $derived(plateStyles(picked));
 
@@ -102,7 +105,13 @@
 	});
 
 	function surpriseMe() {
-		choice = surprise(candidates);
+		choice = surprise(candidates, slots);
+	}
+
+	function switchMode(next: BuilderMode) {
+		if (next === mode) return;
+		mode = next;
+		choice = defaultChoice(catalog().freeDishes[next]);
 	}
 
 	function clear() {
@@ -112,7 +121,7 @@
 	}
 
 	function planIt() {
-		if (addToPlan(FREE_DISH_ID, query)) {
+		if (addToPlan(dish.id, query)) {
 			toast('Tanier je v týždni', () => (plan.current = plan.current.slice(0, -1)));
 		}
 	}
@@ -170,17 +179,21 @@
 	/** Curated dishes as inspiration, cookable ones first. */
 	const inspiration = $derived.by(() => {
 		const { dishes, partsById, ingredientsById } = catalog();
+		const sweet = (d: (typeof dishes)[number]) =>
+			d.slots.some((sl) => partsById.get(sl.options[0])?.style.includes('sladke'));
 		const ranked = rankDishes(
-			dishes.flatMap((d) => {
-				const m = matchDish(
-					d,
-					ui.loaded ? pantry.current : {},
-					partsById,
-					ingredientsById,
-					kitchen.current
-				);
-				return m ? [m] : [];
-			})
+			dishes
+				.filter((d) => sweet(d) === (mode === 'sladke'))
+				.flatMap((d) => {
+					const m = matchDish(
+						d,
+						ui.loaded ? pantry.current : {},
+						partsById,
+						ingredientsById,
+						kitchen.current
+					);
+					return m ? [m] : [];
+				})
 		);
 		return ranked.map((match) => {
 			const b = { servings: match.dish.servings, choice: match.choice, methods: {} };
@@ -212,7 +225,12 @@
 
 <div class="wrap page">
 	<header class="hero">
-		<h1>Poskladaj si tanier</h1>
+		<h1>Poskladaj si {mode === 'sladke' ? 'misku' : 'tanier'}</h1>
+		<div class="segmented mode" role="group" aria-label="Druh jedla">
+			{#each BUILDER_MODES as m (m)}
+				<button aria-pressed={mode === m} onclick={() => switchMode(m)}>{MODE_LABELS[m]}</button>
+			{/each}
+		</div>
 		<a class="kitchen-strip" href="/kuchyna">
 			<Icon name="jar" size={16} />
 			{hasPantry ? `Špajza ${Object.keys(pantry.current).length}` : 'Prázdna špajza'} · {kitchenSummary}
@@ -227,7 +245,7 @@
 				byId={catalog().ingredientsById}
 				label={picked.length ? plateName(picked) : 'Prázdny tanier'}
 			/>
-			{#each BUILDER_SLOTS as slot (slot.id)}
+			{#each slots as slot (slot.id)}
 				{@const current = plate.parts.find((p) => p.slot.id === slot.id)}
 				<button
 					class="spot"
@@ -290,10 +308,10 @@
 						</li>
 					</ul>
 					<div class="go">
-						<a class="btn leaf" href="/jedlo/{FREE_DISH_ID}/varim?{query}">
+						<a class="btn leaf" href="/jedlo/{dish.id}/varim?{query}">
 							<Icon name="play" size={16} /> Variť
 						</a>
-						<a class="btn ghost" href="/jedlo/{FREE_DISH_ID}?{query}">Detail</a>
+						<a class="btn ghost" href="/jedlo/{dish.id}?{query}">Detail</a>
 						<button class="icon-btn" onclick={planIt} aria-label="Do týždňa" title="Do týždňa">
 							<Icon name="calendar" size={18} />
 						</button>
@@ -369,6 +387,7 @@
 								</span>
 								<span class="opt-text">
 									<strong>{c.part.name}</strong>
+									<span class="desc">{c.part.description}</span>
 									<small>
 										{#if !c.cookable}
 											chýba spotrebič
@@ -403,6 +422,11 @@
 	.hero h1 {
 		margin: 0;
 		font-size: clamp(2rem, 6vw, 3rem);
+	}
+	.mode {
+		order: 3;
+		flex-basis: 100%;
+		max-width: max-content;
 	}
 	.kitchen-strip {
 		display: inline-flex;
@@ -643,7 +667,7 @@
 	}
 	.option {
 		display: grid;
-		grid-template-columns: 52px 1fr auto;
+		grid-template-columns: 56px 1fr auto;
 		align-items: center;
 		gap: var(--sp-3);
 		width: 100%;
@@ -672,7 +696,8 @@
 		cursor: not-allowed;
 	}
 	.opt-art {
-		width: 52px;
+		align-self: start;
+		width: 56px;
 	}
 	.opt-text {
 		display: grid;
@@ -680,6 +705,11 @@
 	}
 	.opt-text small {
 		color: var(--muted);
+	}
+	.desc {
+		color: var(--ink-2);
+		font-size: var(--fs-sm);
+		line-height: 1.35;
 	}
 	@media (min-width: 900px) {
 		.builder {

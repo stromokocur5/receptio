@@ -1,0 +1,18 @@
+name: Banánová zmrzlina s čokoládou
+description: Krémová zmrzlina z jedinej suroviny – zamrazených banánov. S čokoládovou polevou a orechmi.
+meals: [dezert]
+servings: 2
+slots:
+  zmrzlina:
+    label: Zmrzlina
+    options: [bananova-zmrzlina]
+  poleva:
+    label: Poleva
+    options: [cokoladova-poleva, arasidova-poleva, datlovy-karamel]
+  navrch:
+    label: Navrch
+    options: [orechy-a-semienka, prazene-vlocky]
+    optional: true
+finish:
+  - text: Zmrzlinu nalož do misiek, polej polevou a posyp orechmi.
+    min: 1

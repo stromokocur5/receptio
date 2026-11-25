@@ -1,0 +1,17 @@
+name: Opečený banán
+description: Banán opečený na panvici, kým nekaramelizuje, so skoricou.
+kind: ovocie
+style: [sladke]
+servings: 2
+ingredients:
+  - banan: 1 ks
+  - kokosovy-olej: 1/2 čl
+  - skorica: 1/4 čl
+methods:
+  - label: Na panvici
+    steps:
+      - text: Banán rozpoľ pozdĺžne a potom na polovicu.
+        min: 1
+      - text: Na panvici rozohrej olej na strednom ohni a banán opekaj 2 minúty z každej strany, kým nezozlatne a nekaramelizuje. Posyp škoricou.
+        min: 4
+        on: platna

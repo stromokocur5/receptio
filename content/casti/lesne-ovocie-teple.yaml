@@ -1,0 +1,20 @@
+name: Teplé lesné ovocie
+description: Mrazené lesné ovocie zohriate do sladko-kyslej šťavy, ako rýchly kompót.
+kind: ovocie
+style: [sladke]
+servings: 2
+ingredients:
+  - lesne-ovocie: 1 hrnček | mrazené
+  - javorovy-sirup: 1/2 pl
+  - citron: 1 čl | šťava
+  - kukuricny-skrob: 1/2 čl
+methods:
+  - label: V hrnci
+    steps:
+      - text: Mrazené ovocie daj do malého hrnca so sirupom a citrónovou šťavou a na strednom ohni zohrievaj 5 minút, kým nepustí šťavu.
+        min: 5
+        on: platna
+        free: true
+      - text: Škrob rozmiešaj v lyžici studenej vody, vlej k ovociu a minútu var, kým šťava nezhustne.
+        min: 1
+        on: platna

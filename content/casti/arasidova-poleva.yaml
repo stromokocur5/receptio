@@ -1,0 +1,15 @@
+name: Arašidová poleva
+description: Arašidové maslo rozriedené so sirupom, tečie z lyžice. Sýte a slano-sladké.
+kind: omacka
+style: [sladke]
+servings: 2
+early: true
+ingredients:
+  - arasidove-maslo: 2 pl
+  - javorovy-sirup: 1 pl
+  - voda: 1 pl | teplá
+methods:
+  - label: V miske
+    steps:
+      - text: Arašidové maslo rozmiešaj so sirupom a teplou vodou, kým poleva netečie z lyžice.
+        min: 2

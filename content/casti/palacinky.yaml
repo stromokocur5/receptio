@@ -1,0 +1,27 @@
+name: Palacinky
+description: Tenké palacinky bez vajec z múky, mlieka a perlivej vody.
+kind: hlavne
+style: [sladke]
+servings: 2
+ingredients:
+  - hladka-muka: 125 g
+  - sojove-mlieko: 1 hrnček
+  - voda: 1/4 hrnček | ideálne perlivá
+  - olej: 1,5 pl
+  - cukor: 1/2 pl
+  - sol: 1 štipka
+prep:
+  - text: Múku, mlieko, vodu, 1 PL oleja, cukor a soľ vyšľahaj na hladké riedke cesto.
+    min: 3
+  - text: Nechaj ho 15 minút odpočívať – palacinky sa potom netrhajú.
+    min: 15
+    free: true
+methods:
+  - label: Na panvici
+    steps:
+      - text: Panvicu rozohrej na strednom až vysokom ohni a potri ju tenkou vrstvou oleja. Nalej naberačku cesta, krúživým pohybom ho roztiahni a peč asi minútu, kým sa okraj neodlupuje. Otoč a dopeč 30 sekúnd. Opakuj, kým neminieš cesto – vyjde asi 6 palaciniek.
+        min: 15
+        on: platna
+        pause: true
+tips:
+  - Prvá palacinka sa skoro vždy pokazí – panvica sa ešte len zohrieva. To je v poriadku.

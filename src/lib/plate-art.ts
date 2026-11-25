@@ -26,9 +26,17 @@ export type Texture =
 	| 'leaves'
 	| 'roast'
 	| 'sauce'
-	| 'toppings';
+	| 'toppings'
+	| 'crepes'
+	| 'scoops'
+	| 'fruit'
+	| 'berries';
 
 const BY_ID: [RegExp, Texture][] = [
+	[/palacinky/, 'crepes'],
+	[/zmrzlina/, 'scoops'],
+	[/lesne-ovocie/, 'berries'],
+	[/puding|jogurt/, 'porridge'],
 	[/polievka|pasta-e-ceci/, 'soup'],
 	[/kasa$|^ovsena/, 'porridge'],
 	[/zemiakova-kasa/, 'mash'],
@@ -50,6 +58,7 @@ export function textureOf(part: Part): Texture {
 	if (part.kind === 'omacka') return 'sauce';
 	if (part.kind === 'navrch') return 'toppings';
 	if (part.kind === 'zelenina') return 'leaves';
+	if (part.kind === 'ovocie') return 'fruit';
 	return 'stew';
 }
 
@@ -294,6 +303,64 @@ export function partShapes(
 			}
 			break;
 		}
+		case 'crepes': {
+			for (let i = 0; i < 3; i++) {
+				const cy = y - r * 0.45 + i * r * 0.42;
+				shapes.push({
+					type: 'rect',
+					x: x - r * 0.8,
+					y: cy - 9,
+					w: r * 1.6,
+					h: 20,
+					rot: -12 + i * 6,
+					fill: '#e9c27a',
+					rx: 10
+				});
+				shapes.push({
+					type: 'path',
+					d: `M${x - r * 0.6},${cy}h${r * 1.2}`,
+					fill: 'none',
+					stroke: '#d6a24f'
+				});
+			}
+			break;
+		}
+		case 'scoops': {
+			for (const [sx, sy] of scatter(rand, x, y, r * 0.45, 3)) {
+				shapes.push({ type: 'path', d: blobPath(sx, sy, r * 0.42, rand, 0.12, 9), fill: main });
+				shapes.push({ type: 'circle', cx: sx - 6, cy: sy - 7, r: 5, fill: '#fff', opacity: 0.35 });
+			}
+			break;
+		}
+		case 'fruit': {
+			for (const [fx, fy] of scatter(rand, x, y, r * 0.7, 9)) {
+				const c = colors[Math.floor(rand() * Math.max(1, colors.length))] ?? main;
+				shapes.push({ type: 'circle', cx: fx, cy: fy, r: 9, fill: c });
+				shapes.push({ type: 'circle', cx: fx, cy: fy, r: 4, fill: '#fff8e8', opacity: 0.55 });
+			}
+			break;
+		}
+		case 'berries': {
+			base(main, r * 0.75, 0.2);
+			for (const [bx, by] of scatter(rand, x, y, r * 0.65, 16)) {
+				shapes.push({
+					type: 'circle',
+					cx: bx,
+					cy: by,
+					r: 5,
+					fill: rand() > 0.5 ? '#5b2a6e' : '#b8314a'
+				});
+				shapes.push({
+					type: 'circle',
+					cx: bx - 1.5,
+					cy: by - 1.5,
+					r: 1.6,
+					fill: '#fff',
+					opacity: 0.45
+				});
+			}
+			break;
+		}
 		case 'toppings': {
 			for (const [tx, ty] of scatter(rand, x, y, r * 0.7, 12)) {
 				shapes.push({
@@ -318,6 +385,7 @@ const SPOT_PREFERENCE: Record<Part['kind'], string[]> = {
 	priloha: ['zaklad', 'zelenina', 'hlavne'],
 	pecivo: ['zaklad', 'zelenina', 'hlavne'],
 	zelenina: ['zelenina', 'zaklad', 'hlavne'],
+	ovocie: ['zelenina', 'zaklad', 'omacka'],
 	omacka: ['omacka', 'zelenina'],
 	navrch: ['omacka', 'zelenina']
 };

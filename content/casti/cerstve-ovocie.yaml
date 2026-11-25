@@ -1,0 +1,14 @@
+name: Jahody a banán
+description: Nakrájané jahody a banán, sladké a šťavnaté.
+kind: ovocie
+style: [sladke]
+servings: 2
+early: true
+ingredients:
+  - jahody: 1 hrnček | čerstvé alebo mrazené
+  - banan: 1 ks
+methods:
+  - label: Nakrájané
+    steps:
+      - text: Jahody nakrájaj na polovice, mrazené nechaj chvíľu povoliť. Banán nakrájaj na kolieska.
+        min: 3

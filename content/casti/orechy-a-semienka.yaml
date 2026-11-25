@@ -1,0 +1,15 @@
+name: Orechy a semienka
+description: Nasekané mandle, tekvicové semienka a kokos na posypanie.
+kind: navrch
+style: [sladke]
+servings: 2
+early: true
+ingredients:
+  - mandle: 1 pl | nasekané
+  - tekvicove-semienka: 1 pl
+  - kokos-struhany: 1 pl
+methods:
+  - label: Nasypané
+    steps:
+      - text: Mandle nasekaj nahrubo a zmiešaj so semienkami a kokosom.
+        min: 2

@@ -2,57 +2,129 @@ import type { IconName } from './components/Icon.svelte';
 import type { Choice, Dish, Part, PartKind, Style } from './dish';
 
 export interface BuilderSlot {
+	/** One of the four spots on the plate (see SPOTS in plate-art). */
 	id: string;
 	label: string;
 	kinds: PartKind[];
 	/** Shown on an empty spot of the plate. */
 	hint: string;
 	icon: IconName;
+	/** A plate is fine without it; Prekvap ma leaves it out now and then. */
+	extra: boolean;
 }
 
-/** The four spots of the plate, in the order they're usually picked. */
-export const BUILDER_SLOTS: BuilderSlot[] = [
-	{
-		id: 'hlavne',
-		label: 'Hlavná časť',
-		kinds: ['hlavne', 'bielkovina'],
-		hint: 'tofu, strukoviny, kari',
-		icon: 'bean'
-	},
-	{
-		id: 'zaklad',
-		label: 'Základ',
-		kinds: ['priloha', 'pecivo'],
-		hint: 'ryža, zemiaky, chlieb',
-		icon: 'wheat'
-	},
-	{ id: 'zelenina', label: 'Zelenina', kinds: ['zelenina'], hint: 'šalát, pečená', icon: 'salad' },
-	{ id: 'omacka', label: 'Omáčka', kinds: ['omacka', 'navrch'], hint: 'dip, navrch', icon: 'drop' }
-];
+export const BUILDER_MODES = ['slane', 'sladke'] as const;
+export type BuilderMode = (typeof BUILDER_MODES)[number];
 
-export const FREE_DISH_ID = 'vlastne';
+export const MODE_LABELS: Record<BuilderMode, string> = { slane: 'Slané', sladke: 'Sladké' };
+
+/** The four spots of each kind of plate, in the order they're usually picked. */
+export const BUILDER_SLOTS: Record<BuilderMode, BuilderSlot[]> = {
+	slane: [
+		{
+			id: 'hlavne',
+			label: 'Hlavná časť',
+			kinds: ['hlavne', 'bielkovina'],
+			hint: 'tofu, strukoviny, kari',
+			icon: 'bean',
+			extra: false
+		},
+		{
+			id: 'zaklad',
+			label: 'Základ',
+			kinds: ['priloha', 'pecivo'],
+			hint: 'ryža, zemiaky, chlieb',
+			icon: 'wheat',
+			extra: false
+		},
+		{
+			id: 'zelenina',
+			label: 'Zelenina',
+			kinds: ['zelenina'],
+			hint: 'šalát, pečená',
+			icon: 'salad',
+			extra: true
+		},
+		{
+			id: 'omacka',
+			label: 'Omáčka',
+			kinds: ['omacka', 'navrch'],
+			hint: 'dip, navrch',
+			icon: 'drop',
+			extra: true
+		}
+	],
+	sladke: [
+		{
+			id: 'hlavne',
+			label: 'Základ',
+			kinds: ['hlavne', 'priloha'],
+			hint: 'kaša, palacinky, jogurt',
+			icon: 'bowl',
+			extra: false
+		},
+		{
+			id: 'zelenina',
+			label: 'Ovocie',
+			kinds: ['ovocie'],
+			hint: 'čerstvé, teplé',
+			icon: 'heart',
+			extra: false
+		},
+		{
+			id: 'zaklad',
+			label: 'Navrch',
+			kinds: ['navrch'],
+			hint: 'orechy, vločky',
+			icon: 'seed',
+			extra: true
+		},
+		{
+			id: 'omacka',
+			label: 'Poleva',
+			kinds: ['omacka'],
+			hint: 'čokoláda, karamel',
+			icon: 'drop',
+			extra: true
+		}
+	]
+};
+
+export const FREE_DISH_IDS: Record<BuilderMode, string> = {
+	slane: 'vlastne',
+	sladke: 'vlastne-sladke'
+};
+/** The savoury free plate, the one most links go to. */
+export const FREE_DISH_ID = FREE_DISH_IDS.slane;
+
+/** Sweet parts only on a sweet plate, savoury ones only on a savoury plate. */
+const inMode = (part: Part, mode: BuilderMode) =>
+	part.style.includes('sladke') === (mode === 'sladke');
 
 /** A dish whose slots hold every part of their kinds, all empty to start with. */
-export function freeDish(parts: Part[]): Dish {
+export function freeDish(parts: Part[], mode: BuilderMode = 'slane'): Dish {
 	return {
-		id: FREE_DISH_ID,
-		name: 'Vlastný tanier',
+		id: FREE_DISH_IDS[mode],
+		name: mode === 'sladke' ? 'Vlastná sladká misa' : 'Vlastný tanier',
 		description: 'Poskladané z častí podľa teba.',
-		meals: ['obed', 'vecera'],
+		meals: mode === 'sladke' ? ['ranajky', 'dezert'] : ['obed', 'vecera'],
 		servings: 2,
 		free: true,
-		slots: BUILDER_SLOTS.map((slot) => ({
+		slots: BUILDER_SLOTS[mode].map((slot) => ({
 			id: slot.id,
 			label: slot.label,
 			options: parts
-				.filter((p) => slot.kinds.includes(p.kind))
+				.filter((p) => slot.kinds.includes(p.kind) && inMode(p, mode))
 				.sort((a, b) => a.name.localeCompare(b.name, 'sk'))
 				.map((p) => p.id),
 			optional: true
 		})),
 		finish: [
 			{
-				text: 'Všetko nalož na tanier vedľa seba, omáčku navrch alebo do misky bokom.',
+				text:
+					mode === 'sladke'
+						? 'Do misky daj základ, navrch ovocie, posyp a polej polevou.'
+						: 'Všetko nalož na tanier vedľa seba, omáčku navrch alebo do misky bokom.',
 				min: 2,
 				free: false,
 				pause: false
@@ -112,6 +184,7 @@ export interface Candidate {
  */
 export function surprise(
 	candidates: Record<string, Candidate[]>,
+	slots: BuilderSlot[] = BUILDER_SLOTS.slane,
 	random: () => number = Math.random
 ): Choice {
 	const choice: Choice = {};
@@ -122,12 +195,14 @@ export function surprise(
 		const near = list.filter((c) => c.missing <= best + 1);
 		return near[Math.floor(random() * near.length)];
 	};
-	for (const slot of BUILDER_SLOTS) {
-		const optional = slot.id === 'zelenina' || slot.id === 'omacka';
+	for (const slot of slots) {
+		const optional = slot.extra;
 		const styles = plateStyles(picked);
 		const list = (candidates[slot.id] ?? []).filter((c) => c.cookable && fits(c.part, styles));
 		// A soup or a curry is a meal of its own: a base or a salad is a bonus, not a must.
-		const complete = picked.some((p) => p.kind === 'hlavne');
+		const complete =
+			slot.extra === false &&
+			picked.some((p) => p.kind === 'hlavne' && !p.style.includes('sladke'));
 		const chosen = (optional || complete) && random() < 0.3 ? undefined : pick(list);
 		choice[slot.id] = chosen?.part.id ?? null;
 		if (chosen) picked.push(chosen.part);

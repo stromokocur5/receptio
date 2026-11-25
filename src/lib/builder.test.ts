@@ -13,6 +13,7 @@ import { buildFromParams, buildToParams, defaultChoice, type Dish, type Part } f
 const part = (id: string, kind: Part['kind'], style: Part['style'] = []): Part => ({
 	id,
 	name: id[0].toUpperCase() + id.slice(1),
+	description: '',
 	kind,
 	style,
 	servings: 2,
@@ -27,7 +28,8 @@ const ryza = part('ryza', 'priloha', ['azijske', 'indicke']);
 const knedla = part('knedla', 'priloha', ['domace']);
 const teriyaki = part('teriyaki', 'omacka', ['azijske']);
 const kasa = part('kasa', 'hlavne', ['sladke']);
-const parts = [tofu, kari, ryza, knedla, teriyaki, kasa];
+const jahody = part('jahody', 'ovocie', ['sladke']);
+const parts = [tofu, kari, ryza, knedla, teriyaki, kasa, jahody];
 const byId = new Map(parts.map((p) => [p.id, p]));
 
 describe('freeDish', () => {
@@ -35,7 +37,13 @@ describe('freeDish', () => {
 
 	it('starts empty and keeps every part of a kind in its slot', () => {
 		expect(Object.values(defaultChoice(dish))).toEqual([null, null, null, null]);
-		expect(dish.slots.find((s) => s.id === 'hlavne')!.options).toEqual(['kari', 'kasa', 'tofu']);
+		expect(dish.slots.find((s) => s.id === 'hlavne')!.options).toEqual(['kari', 'tofu']);
+	});
+
+	it('keeps sweet parts on the sweet plate only', () => {
+		const sweet = freeDish(parts, 'sladke');
+		expect(sweet.id).toBe('vlastne-sladke');
+		expect(sweet.slots.map((s) => s.options)).toEqual([['kasa'], ['jahody'], [], []]);
 	});
 
 	it('writes only what was picked into the URL', () => {
@@ -98,6 +106,7 @@ describe('surprise', () => {
 				zelenina: [],
 				omacka: [c(teriyaki)]
 			},
+			undefined,
 			() => 0.9
 		);
 		expect(choice).toEqual({ hlavne: 'kari', zaklad: 'ryza', zelenina: null, omacka: null });
