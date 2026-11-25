@@ -2,6 +2,8 @@
 	import { formatEur, formatMinutes, formatNumber } from '$lib/amounts';
 	import { findDish, resolveComposed, useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
+	import NutritionPanel from '$lib/components/NutritionPanel.svelte';
+	import { emptyNutrients } from '$lib/nutrition';
 	import BuiltPlate from '$lib/components/BuiltPlate.svelte';
 	import { placeParts } from '$lib/plate-art';
 	import { buildFromParams, buildToParams, MAX_SERVINGS, type Dish } from '$lib/dish';
@@ -59,6 +61,16 @@
 					servings
 			: 0
 	);
+	const average = $derived.by(() => {
+		const sum = emptyNutrients();
+		for (const p of planned) {
+			for (const k of Object.keys(sum) as (keyof typeof sum)[]) {
+				sum[k] += p.plate.facts.perServing[k] * p.servings;
+			}
+		}
+		for (const k of Object.keys(sum) as (keyof typeof sum)[]) sum[k] /= Math.max(1, servings);
+		return sum;
+	});
 	const minutes = $derived(planned.reduce((sum, p) => sum + p.plate.timeline.total, 0));
 
 	function setServings(p: Planned, next: number) {
@@ -227,6 +239,10 @@
 				</li>
 			{/each}
 		</ul>
+		<section class="card box nutri">
+			<h2 class="section-title"><Icon name="leaf" size={20} /> Výživa – priemer na porciu</h2>
+			<NutritionPanel values={average} label="Priemer na porciu zo všetkých jedál týždňa" />
+		</section>
 		<a class="btn ghost small add" href="/"><Icon name="plus" size={16} /> Pridať jedlo</a>
 
 		<section id="nakup" class="card box shop">
@@ -382,6 +398,9 @@
 		min-width: 2.2em;
 		text-align: center;
 		font-weight: 700;
+	}
+	.nutri {
+		margin-top: var(--sp-4);
 	}
 	.add {
 		margin-top: var(--sp-3);

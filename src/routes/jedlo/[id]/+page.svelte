@@ -7,6 +7,7 @@
 	import { findDish, resolveComposed, useCatalog } from '$lib/catalog';
 	import Icon from '$lib/components/Icon.svelte';
 	import BuiltPlate from '$lib/components/BuiltPlate.svelte';
+	import NutritionPanel from '$lib/components/NutritionPanel.svelte';
 	import PartArt from '$lib/components/PartArt.svelte';
 	import { placeParts } from '$lib/plate-art';
 	import TimelineChart from '$lib/components/TimelineChart.svelte';
@@ -334,6 +335,11 @@
 					</div>
 				</div>
 			{/if}
+
+			<section class="card box">
+				<h2 class="section-title"><Icon name="leaf" size={20} /> Výživa na porciu</h2>
+				<NutritionPanel values={plate.facts.perServing} />
+			</section>
 
 			<section class="card box plan">
 				<h2 class="section-title"><Icon name="timer" size={20} /> Ako to pôjde</h2>

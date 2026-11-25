@@ -4,6 +4,7 @@
 	import { formatEur, formatMinutes, formatNumber } from '$lib/amounts';
 	import { useCatalog } from '$lib/catalog';
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
+	import NutritionPanel from '$lib/components/NutritionPanel.svelte';
 	import PartArt from '$lib/components/PartArt.svelte';
 	import {
 		amountText,
@@ -226,6 +227,12 @@
 					{/each}
 				</div>
 			</section>
+			{#if method}
+				<section>
+					<h2><Icon name="leaf" size={22} /> Výživa na porciu</h2>
+					<NutritionPanel values={method.perServing} />
+				</section>
+			{/if}
 		</div>
 
 		<aside class="preview card">

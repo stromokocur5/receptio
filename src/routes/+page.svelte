@@ -20,6 +20,7 @@
 	import BuiltPlate from '$lib/components/BuiltPlate.svelte';
 	import DishCard from '$lib/components/DishCard.svelte';
 	import Icon from '$lib/components/Icon.svelte';
+	import NutritionPanel from '$lib/components/NutritionPanel.svelte';
 	import PartArt from '$lib/components/PartArt.svelte';
 	import {
 		buildFromParams,
@@ -316,18 +317,11 @@
 					<ul class="facts">
 						<li><Icon name="clock" size={15} /> {formatMinutes(plate.timeline.total)}</li>
 						<li>
-							<Icon name="bean" size={15} />
-							{formatNumber(plate.facts.perServing.protein, 0)} g
-						</li>
-						<li>
-							<Icon name="flame" size={15} />
-							{formatNumber(plate.facts.perServing.kcal, 0)} kcal
-						</li>
-						<li>
 							<Icon name="euro" size={15} />
-							{plate.facts.costIsEstimate ? '~' : ''}{formatEur(plate.facts.costPerServing)}
+							{plate.facts.costIsEstimate ? '~' : ''}{formatEur(plate.facts.costPerServing)} za porciu
 						</li>
 					</ul>
+					<NutritionPanel values={plate.facts.perServing} compact />
 					<div class="go">
 						<a class="btn leaf" href="/jedlo/{dish.id}/varim?{query}">
 							<Icon name="play" size={16} /> Variť
