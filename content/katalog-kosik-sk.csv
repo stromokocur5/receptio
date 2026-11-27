@@ -3,7 +3,6 @@ id,product,category,pack,price,sale_price,sale_until
 15312,19 Crimes Cabernet Sauvignon,Nápoje,750 ml,9.99,,
 31964,19 Crimes Red Wine,Nápoje,750 ml,9.99,,
 40098,19 Crimes The Banished Dark Red,Nápoje,750 ml,11.99,,
-31684,19 Crimes The Uprising Red,Nápoje,750 ml,11.99,,
 47348,1906 Vodka 38%,Nápoje,700 ml,9.19,,
 31966,365 Primitivo D.O.P.,Nápoje,750 ml,19.99,,
 47350,365 Prosecco Millesimato DOC Extra Dry,Nápoje,750 ml,13.49,,
@@ -79,16 +78,16 @@ id,product,category,pack,price,sale_price,sale_until
 12462,Activia Probiotický jogurtový nápoj Lesné plody,Mliečne a chladené,280 g,1.25,,
 12114,Activia Sladký biely jogurt,Mliečne a chladené,120 g,0.72,0.39,2026-12-01
 30228,Ad Finedine Čerešňové papriky plnené syrom,Údeniny a lahôdky,140 g,3.29,,
-30230,Ad Finedine Feferóny plnené syrom,Údeniny a lahôdky,140 g,3.29,,
+30230,Ad Finedine Feferóny plnené syrom,Údeniny a lahôdky,140 g,3.29,2.49,2026-12-04
 11732,Ad Finedine Korfu,Údeniny a lahôdky,250 g,5.39,,
 11730,Ad Finedine Palma,Údeniny a lahôdky,250 g,6.49,,
-16124,Ad Finedine Papričky oranžové plnené syrom,Údeniny a lahôdky,140 g,3.29,,
+16124,Ad Finedine Papričky oranžové plnené syrom,Údeniny a lahôdky,140 g,3.29,2.49,2026-12-04
 12080,Ad Finedine Paradajky sušené plnené syrom,Trvanlivé,150 g,3.09,,
 11702,Ad Finedine Patizóny žlté plnené syrom,Údeniny a lahôdky,210 g,3.69,,
 55582,Ad Finedine Rolky z pršutu plnené syrom,Údeniny a lahôdky,100 g,4.29,,
 55580,Ad Finedine Rolky z údeného bôčika plnené syrom,Údeniny a lahôdky,100 g,3.79,,
 55578,Ad Finedine Rolky zo salámy plnené syrom,Údeniny a lahôdky,100 g,3.29,,
-22956,"Ad Finedine Šalát s fetou, olivami a feferónkami",Údeniny a lahôdky,150 g,3.09,,
+22956,"Ad Finedine Šalát s fetou, olivami a feferónkami",Údeniny a lahôdky,150 g,3.09,2.29,2026-12-04
 30232,Ad Finedine Zmes zelených a čiernych olív,Údeniny a lahôdky,150 g,3.09,,
 17972,Adano Margarétky,Pekáreň a cukráreň,400 g,4.79,,
 33804,Adriana ZOO cestoviny,Trvanlivé,500 g,1.99,,
@@ -126,7 +125,6 @@ id,product,category,pack,price,sale_price,sale_until
 54640,Agravital A2A2 zakysanka,Mliečne a chladené,450 g,1.35,,
 12390,Agrofarma Bryndza 40% dýha,Mliečne a chladené,250 g,3.69,,
 12226,Agrofarma Bryndza plnotučná 40%,Mliečne a chladené,125 g,2.99,,
-1000012226,Agrofarma Bryndza plnotučná 40%,Mliečne a chladené,125 g,2.99,2.69,2026-11-28
 30360,Agrofarma Gazdovská parenica neúdená,Mliečne a chladené,110 g,1.75,,
 30358,Agrofarma Gazdovská parenica údená,Mliečne a chladené,110 g,1.79,,
 21006,Agrofarma Gazdovské maslo,Mliečne a chladené,250 g,3.39,,
@@ -166,7 +164,6 @@ id,product,category,pack,price,sale_price,sale_until
 26362,Alaska kukuričné trubičky s kakaovým krémom,Trvanlivé,18 g,0.21,,
 26292,Alaska kukuričné trubičky s mliečnym krémom,Trvanlivé,18 g,0.21,,
 26360,Alaska kukuričné trubičky s orieškovým krémom,Trvanlivé,18 g,0.21,,
-8912,Albert Michler Gin Genuine 44%,Nápoje,700 ml,30.99,,
 9064,Albert Michler Old Bert Spiced 40%,Nápoje,700 ml,30.99,,
 31220,Alberto Torresi Prosecco,Nápoje,750 ml,6.09,,
 6036,Alfa Bio Francúzska Tofu nátierka,Zdravie a životný štýl,75 g,1.39,,
@@ -193,7 +190,6 @@ id,product,category,pack,price,sale_price,sale_until
 11394,Alibona Brusnice,Trvanlivé,270 g,3.49,,
 22032,Alibona Čerešne so sladidlom,Trvanlivé,660 g,4.39,,
 21044,Alibona Deko steril.,Trvanlivé,100 g,0.32,,
-22030,Alibona Marhule so sladidlom,Trvanlivé,650 g,4.29,,
 22034,Alibona Višne so sladidlom,Trvanlivé,660 g,4.99,,
 9376,Alika Figy sušené natural,Trvanlivé,500 g,9.39,,
 37366,Alika Rozprávka mix dóza,Trvanlivé,550 g,10.99,,
@@ -244,10 +240,10 @@ id,product,category,pack,price,sale_price,sale_until
 8840,Amaretto La Bella 18%,Nápoje,700 ml,8.49,,
 1772,Ambrosi Burrata,Mliečne a chladené,200 g,4.89,,
 4840,Ambrosi Grana Padano strúhaný syr DOP,Mliečne a chladené,100 g,3.19,,
-730,Ambrosi Grana Padano tvrdý zrejúci syr DOP,Mliečne a chladené,200 g,7.49,,
+730,Ambrosi Grana Padano tvrdý zrejúci syr DOP,Mliečne a chladené,200 g,7.49,5.99,2026-12-04
 21016,Ambrosi Mascarpone,Mliečne a chladené,500 g,8.39,,
 732,Ambrosi Mix di formaggi stagionati,Mliečne a chladené,100 g,2.59,,
-956,Ambrosi Parmigiano Reggiano strúhaný,Mliečne a chladené,100 g,6.39,,
+956,Ambrosi Parmigiano Reggiano strúhaný,Mliečne a chladené,100 g,6.39,4.99,2026-12-04
 5344,Ambrosi Parmigiano Reggiano tvrdý zrejúci syr DOP,Mliečne a chladené,200 g,8.89,,
 1044,Ambrosi Pecorino Romano tvrdý zrejúci ovčí syr DOP,Mliečne a chladené,200 g,7.69,,
 5350,Ambrosi Provolone Valpadana Dolce DOP,Mliečne a chladené,250 g,5.49,,
@@ -271,7 +267,7 @@ id,product,category,pack,price,sale_price,sale_until
 38830,"Aperol 11,5% + Cinzano",Nápoje,"1,45 l",29.99,,
 3200,Aperol Aperitiva (11%),Nápoje,1 l,19.99,,
 8690,Aperol Aperitivo 11%,Nápoje,700 ml,14.99,,
-47358,Aperol Spritz Bitter 9% 3 x 200 ml,Nápoje,600 ml,13.49,,
+47358,Aperol Spritz Bitter 9% 3 x 200 ml,Nápoje,600 ml,13.49,9.99,2026-12-04
 2276,Apetit Cordon Bleu s varenými zemiakmi,Údeniny a lahôdky,380 g,4.59,,
 6146,Apetit Hovädzí guláš so žemľovou knedľou,Údeniny a lahôdky,510 g,4.59,,
 9776,Apex BIO Bonitas Arónia sušená,Ovocie a zelenina,100 g,1.99,,
@@ -288,11 +284,9 @@ id,product,category,pack,price,sale_price,sale_until
 26568,Appel Sleďové filety tomate,Trvanlivé,200 g,3.89,,
 31972,Ar Grüner Veltliner,Nápoje,750 ml,5.39,,
 49030,Arado Tyčinky solené,Trvanlivé,400 g,2.79,,
-8700,Ararat 20 y.o. 40% - darčekové balenie,Nápoje,700 ml,91.99,73.59,2026-12-01
 23462,Ararat 5 y.o. 40%,Nápoje,700 ml,19.99,,
 8684,Ararat Ani 7 y.o. 40%,Nápoje,700 ml,22.59,,
 1550,Ararat Brandy 10 y.o. 40%,Nápoje,700 ml,27.49,25.49,2026-12-01
-8642,Ararat Vaspurakan 15 y.o. 40%,Nápoje,700 ml,72.99,57.89,2026-12-01
 44896,Arcobaleno Mochi kokosové,Mrazené,210 g,6.49,,
 44898,Arcobaleno Mochi mangové,Mrazené,210 g,6.49,,
 52866,Arcobaleno Mochi Pumpkin spice,Mrazené,210 g,6.49,,
@@ -333,7 +327,6 @@ id,product,category,pack,price,sale_price,sale_until
 18918,Aro Emmentaler plátky (45% tuku),Mliečne a chladené,500 g,5.89,,
 15854,Aro Fazuľa biela v náleve,Trvanlivé,425 g,0.69,,
 22042,Aro Fazuľa biela v paradajkovej omáčke,Trvanlivé,400 g,0.95,,
-41452,Aro Fazuľa červená,Trvanlivé,425 ml,0.69,,
 37558,Aro Fazuľa červená,Trvanlivé,850 g,1.99,,
 22040,Aro Fazuľa v chilli omáčke,Trvanlivé,425 g,0.69,,
 15934,Aro Fazuľka zelená,Mrazené,400 g,1.25,,
@@ -341,7 +334,7 @@ id,product,category,pack,price,sale_price,sale_until
 10588,Aro Gazda parenica neúdená,Mliečne a chladené,112 g,1.15,,
 10586,Aro Gazda parenica údená,Mliečne a chladené,110 g,1.15,,
 1976,Aro Gnocchi con patate 40%,Trvanlivé,500 g,1.59,,
-2688,Aro Gnocchi spinachi,Údeniny a lahôdky,500 g,1.59,,
+2688,Aro Gnocchi spinachi,Údeniny a lahôdky,500 g,1.59,1.19,2026-12-04
 29702,Aro Gouda plátky (48% tuku),Mliečne a chladené,500 g,4.99,,
 42644,Aro Gouda plátky 48%,Mliečne a chladené,1 kg,9.99,,
 1778,Aro Horčica plnotučná,Trvanlivé,950 g,1.95,,
@@ -396,14 +389,14 @@ id,product,category,pack,price,sale_price,sale_until
 13910,Aro Morská šťuka filety,Mrazené,900 g,8.99,,
 10538,Aro Mozzarella,Mliečne a chladené,100 g,0.79,,
 5072,Aro Mozzarella Mini,Mliečne a chladené,150 g,1.25,,
-16406,Aro Múka hladká,Trvanlivé,1 kg,0.56,,
-16408,Aro Múka hrubá,Trvanlivé,1 kg,0.56,,
-16410,Aro Múka polohrubá,Trvanlivé,1 kg,0.56,,
+16406,Aro Múka hladká,Trvanlivé,1 kg,0.53,,
+16408,Aro Múka hrubá,Trvanlivé,1 kg,0.53,,
+16410,Aro Múka polohrubá,Trvanlivé,1 kg,0.53,,
 31164,Aro Nátierka s ovčím syrom,Mliečne a chladené,125 g,1.29,,
 10402,Aro Niťovky bezvaječné cestoviny,Trvanlivé,500 g,0.59,,
 26232,Aro Nitran saláma,Údeniny a lahôdky,600 g,5.69,,
 26234,Aro Nitran saláma plátky,Údeniny a lahôdky,490 g,5.63,,
-16656,Aro Ocot kvasný liehový 8%,Trvanlivé,1 l,0.49,,
+16656,Aro Ocot kvasný liehový 8%,Trvanlivé,1 l,0.55,,
 1828,Aro Olivový olej z výliskov,Trvanlivé,1 l,6.29,,
 9886,Aro Olivy zelené celé bez kôstky,Trvanlivé,935 g,4.49,,
 9884,Aro Olivy zelené krájané,Trvanlivé,935 g,4.49,,
@@ -468,8 +461,8 @@ id,product,category,pack,price,sale_price,sale_until
 22056,Aro Tekuté korenie do polievky,Trvanlivé,1 l,5.09,,
 10634,Aro Treska v majonézovej omáčke,Údeniny a lahôdky,140 g,1.15,,
 51164,Aro Treska v majonézovej omáčke,Údeniny a lahôdky,1 kg,6.99,,
-50658,"Aro Trvanlivé mlieko 3,5 % UHT",Mliečne a chladené,1 l,0.89,,
-12028,"Aro Trvanlivé mlieko UHT 3,5%",Mliečne a chladené,1 l,0.89,,
+50658,"Aro Trvanlivé mlieko 3,5 % UHT",Mliečne a chladené,1 l,0.9,,
+12028,"Aro Trvanlivé mlieko UHT 3,5%",Mliečne a chladené,1 l,0.9,,
 56516,Aro Tuniak drvený v slnečnicovom oleji,Trvanlivé,185 g,1.25,,
 15966,Aro Tuniak kúsky vo vlastnej šťave,Trvanlivé,185 g,1.49,,
 51368,Aro Tuniak kúsky vo vlastnej šťave,Trvanlivé,"1,71 kg",19.99,,
@@ -564,7 +557,7 @@ id,product,category,pack,price,sale_price,sale_until
 18716,Baker Street Závin kváskový s makovou náplňou balený (náplň 60%),Pekáreň a cukráreň,400 g,4.39,,
 18720,Baker Street Závin kváskový s orechovou náplňou balený (náplň 60%),Pekáreň a cukráreň,400 g,4.39,,
 37876,Bakery Chlieb tmavý pšenično-ražný balený krájaný,Pekáreň a cukráreň,450 g,1.25,,
-49988,Baklažán,Ovocie a zelenina,360 g,0.97,,
+49988,Baklažán,Ovocie a zelenina,290 g,0.78,,
 29348,"Baklažán, balený",Ovocie a zelenina,360 g,1.36,,
 50226,Balconi Panettone Pistachio,Pekáreň a cukráreň,500 g,8.99,,
 50224,Balconi Panettone Tiramisu,Pekáreň a cukráreň,500 g,8.99,,
@@ -586,6 +579,7 @@ id,product,category,pack,price,sale_price,sale_until
 50684,Balila Kukuričné vankúšiky citrón,Trvanlivé,70 g,0.59,,
 50690,Balila Kukuričné vankúšiky kakao,Trvanlivé,70 g,0.59,,
 50696,Balila Kukuričné vankúšiky škorica,Trvanlivé,70 g,0.59,,
+50820,Ballantine's Cola,Nápoje,330 ml,3.39,,
 1790,Ballantine's Finest whisky 40%,Nápoje,1 l,19.49,,
 8982,Ballantine's Finest Whisky 40%,Nápoje,700 ml,15.49,,
 47370,Ballantine's Sweet Blend 30%,Nápoje,700 ml,15.99,,
@@ -595,6 +589,7 @@ id,product,category,pack,price,sale_price,sale_until
 35824,Balticovo Vaječná melanž,Mliečne a chladené,1 l,5.99,,
 268,Balticovo Vaječné bielka,Mliečne a chladené,1 l,4.69,,
 270,Balticovo Vaječné žĺtka,Mliečne a chladené,1 l,15.99,,
+46690,Balvenie 12 y.o. Doublewood,Nápoje,700 ml,79.99,,
 19476,Bambino Čedar Toast & Burger plátkový syr,Mliečne a chladené,130 g,2.35,,
 47190,Bambino Ementál Toast & Burger plátky,Mliečne a chladené,130 g,2.35,,
 47192,Bambino Chilli Čedar Toast & Burger plátky,Mliečne a chladené,120 g,2.49,,
@@ -610,6 +605,7 @@ id,product,category,pack,price,sale_price,sale_until
 37336,Banán,Ovocie a zelenina,180 g,0.3,0.21,2026-12-01
 39038,Baranie mäso,Mrazené,"1,9 kg",37.98,,
 8544,"Barcelo Grand Anejo 37,5%",Nápoje,700 ml,27.99,20.09,2026-12-01
+8546,Barcelo Imperial 38%,Nápoje,700 ml,35.99,31.39,2026-12-01
 33944,Barebell Banana Dream proteínová tyčinka,Zdravie a životný štýl,55 g,2.89,,
 33946,Barebell Coco Choco Soft proteínová tyčinka,Zdravie a životný štýl,55 g,2.89,,
 13164,Barebells Proteínová tyčinka Caramel & cashew,Zdravie a životný štýl,55 g,2.89,,
@@ -618,20 +614,20 @@ id,product,category,pack,price,sale_price,sale_until
 21904,Barebells Soft Protein tyčinka caramel choco,Zdravie a životný štýl,55 g,2.89,,
 21910,Barebells Soft Protein tyčinka peanut caramel,Zdravie a životný štýl,55 g,2.89,,
 13612,Barilla Collezione Tagliatelle N° 16 cestoviny,Trvanlivé,500 g,3.69,,
-31292,Barilla Coquillettes Senza Glutine bezlepkové cestoviny,Trvanlivé,400 g,4.59,,
-3724,Barilla Fusilli N° 98 cestoviny,Trvanlivé,1 kg,4.89,,
-31136,Barilla Omáčka Arrabbiata,Trvanlivé,400 g,3.09,,
+31292,Barilla Coquillettes Senza Glutine bezlepkové cestoviny,Trvanlivé,400 g,4.59,3.49,2026-12-04
+3724,Barilla Fusilli N° 98 cestoviny,Trvanlivé,1 kg,3.69,,
+31136,Barilla Omáčka Arrabbiata,Trvanlivé,400 g,3.09,2.59,2026-12-04
 31142,Barilla Omáčka Napoletana,Trvanlivé,400 g,3.09,,
-13578,Barilla Penne Rigate N° 73 cestoviny,Trvanlivé,1 kg,4.89,,
-31294,Barilla Penne Rigate Senza Glutine bezlepkové cestoviny,Trvanlivé,400 g,4.59,,
+13578,Barilla Penne Rigate N° 73 cestoviny,Trvanlivé,1 kg,3.69,,
+31294,Barilla Penne Rigate Senza Glutine bezlepkové cestoviny,Trvanlivé,400 g,4.59,3.49,2026-12-04
 12804,Barilla Pesto,Trvanlivé,190 g,5.89,,
-51944,Barilla Pesto bazalkové vegan,Trvanlivé,195 g,5.89,,
+51944,Barilla Pesto bazalkové vegan,Trvanlivé,195 g,5.89,4.39,2026-12-04
 13610,Barilla Spaghetti N° 5 cestoviny,Trvanlivé,500 g,2.1,,
-13580,Barilla Spaghetti N° 5 cestoviny,Trvanlivé,1 kg,4.89,,
-31296,Barilla Spaghetti Senza Glutine bezlepkové cestoviny,Trvanlivé,400 g,4.59,,
+13580,Barilla Spaghetti N° 5 cestoviny,Trvanlivé,1 kg,3.69,,
+31296,Barilla Spaghetti Senza Glutine bezlepkové cestoviny,Trvanlivé,400 g,4.59,3.49,2026-12-04
 3650,Barilla Spaghettini N° 3 cestoviny,Trvanlivé,500 g,2.1,,
 32668,"Baron Čingov saláma,plátky",Údeniny a lahôdky,100 g,1.69,,
-13994,Baron Domáca gazdovská slanina (97% mäso),Údeniny a lahôdky,520 g,5.14,,
+13994,Baron Domáca gazdovská slanina (97% mäso),Údeniny a lahôdky,460 g,4.55,,
 7150,Baron Klobása,Údeniny a lahôdky,300 g,3.99,,
 29726,Baron Klobása na pizzu plátky,Údeniny a lahôdky,500 g,6.5,,
 26484,"Baron Kuracia šunka špeciál, plátky (82% mäsa)",Údeniny a lahôdky,500 g,6.09,,
@@ -639,7 +635,7 @@ id,product,category,pack,price,sale_price,sale_until
 32368,Baron MATELKOVÉ PÁRKY,Údeniny a lahôdky,250 g,4.29,,
 7362,Baron Moravské mäso formované plátky,Údeniny a lahôdky,300 g,4.99,,
 7220,Baron Nitran saláma plátky,Údeniny a lahôdky,100 g,1.65,,
-13992,Baron Paprikový lalok (85% mäso),Údeniny a lahôdky,500 g,5,,
+13992,Baron Paprikový lalok (85% mäso),Údeniny a lahôdky,490 g,4.9,,
 44720,Baron Spišské párky,Údeniny a lahôdky,500 g,6.39,,
 7234,Baron Spišské párky (80% mäsa),Údeniny a lahôdky,420 g,6.49,,
 32570,Baron Špekačky ako kedysi (80% mäsa),Údeniny a lahôdky,350 g,3.29,,
@@ -648,8 +644,8 @@ id,product,category,pack,price,sale_price,sale_until
 21752,Bask Zemiakové cesto,Trvanlivé,400 g,2.99,,
 28250,"Batáty oranžové, sieť",Ovocie a zelenina,1 kg,3.19,2.39,2026-12-01
 52380,Bauli Limoncino koláč,Pekáreň a cukráreň,400 g,12.49,,
-33734,Bauli Panettone Mini Uvetta,Pekáreň a cukráreň,90 g,2.49,,
-33472,Bauli Panettone Scaglie Cioccolato,Pekáreň a cukráreň,90 g,2.69,,
+33734,Bauli Panettone Mini Uvetta,Pekáreň a cukráreň,90 g,2.49,1.99,2026-12-04
+33472,Bauli Panettone Scaglie Cioccolato,Pekáreň a cukráreň,90 g,2.69,2.09,2026-12-04
 27604,Bayernland Mozzarella Minis,Mliečne a chladené,100 g,2.99,,
 23656,Bažant celý,Mrazené,850 g,10.19,,
 17630,Bažantie stehná s kosťou,Mrazené,"1,5 kg",13.79,,
@@ -673,8 +669,10 @@ id,product,category,pack,price,sale_price,sale_until
 2020,"Beefeater Blood Orange gin 37,5%",Nápoje,700 ml,16.99,,
 9256,"Beefeater Blood Orange Gin 37,5%",Nápoje,1 l,20.99,,
 8668,Beefeater Gin 40%,Nápoje,1 l,19.49,,
+8894,Beefeater Gin 40%,Nápoje,700 ml,16.99,,
 30262,Beefeater Grapefruit,Nápoje,700 ml,16.99,,
 50822,Beefeater Lemon,Nápoje,250 ml,2.49,,
+14652,"Beefeater London Dry Gin and Tonic 4,9%",Nápoje,250 ml,3.09,,
 38896,"Beefeater Pink 37,5% + pohár 1ks, darčekové balenie",Nápoje,700 ml,22.99,,
 3490,"Beefeater Pink Gin 37,5%",Nápoje,700 ml,16.99,,
 28576,Becherovka 38%,Nápoje,350 ml,7.99,,
@@ -689,6 +687,7 @@ id,product,category,pack,price,sale_price,sale_until
 3486,Becherovka Originálne (38%),Nápoje,700 ml,11.99,,
 35708,"Becherovka Vodka 37,5%",Nápoje,700 ml,10.49,,
 52854,"Becherovka Vodka Soda Cactus 4,5 %, vratná plechovka",Nápoje,500 ml,3.19,,
+52852,"Becherovka Vodka Soda Orange 4,5 %, vratná plechovka",Nápoje,500 ml,3.19,,
 26800,Belizean Blue Rum 40%,Nápoje,700 ml,49.99,,
 42728,Bella Glamour Nealkoholické šumivé víno,Nápoje,750 ml,10.99,,
 47374,Beluga Noble vodka 40%,Nápoje,1 l,55.99,,
@@ -698,16 +697,16 @@ id,product,category,pack,price,sale_price,sale_until
 12326,Ben & Jerry's Peanut Butter Cup,Mrazené,465 ml,10.99,,
 44950,Ben & Jerry's Strawberry Doughnut-eee,Mrazené,465 ml,10.99,,
 43980,Beneoliva Arbequina & Picual Extra panenský olivový olej,Trvanlivé,750 ml,16.99,,
-30826,Beneoliva Ceramic Olives Arbequina Extra Virgin olivový olej,Trvanlivé,500 ml,19.99,,
-30830,Beneoliva Ceramic Red Arbequina Extra Virgin olivový olej,Trvanlivé,500 ml,19.99,,
-48046,Beneoliva Extra panenský olivový olej Bombacha multicolor,Trvanlivé,500 ml,21.99,,
+30826,Beneoliva Ceramic Olives Arbequina Extra Virgin olivový olej,Trvanlivé,500 ml,19.99,16.99,2026-12-04
+30830,Beneoliva Ceramic Red Arbequina Extra Virgin olivový olej,Trvanlivé,500 ml,19.99,16.99,2026-12-04
+48046,Beneoliva Extra panenský olivový olej Bombacha multicolor,Trvanlivé,500 ml,21.99,16.99,2026-12-04
 48048,Beneoliva Extra panenský olivový olej Hojiblanca,Trvanlivé,500 ml,13.99,,
 48052,Beneoliva Extra panenský olivový olej s bielymi hľuzovkami,Trvanlivé,250 ml,8.69,,
 48050,Beneoliva Extra panenský olivový olej Sorrento Line,Trvanlivé,500 ml,21.99,,
 30828,Beneoliva Extra Virgin olivový olej s čiernymi hľuzovkami,Trvanlivé,250 ml,8.69,,
 30824,Beneoliva Primula Extra Virgin olivový olej,Trvanlivé,500 ml,13.99,,
 39522,Beretta Jamon Serrano sušená šunka,Údeniny a lahôdky,500 g,13.99,,
-6874,Beretta Mortadella bologna,Údeniny a lahôdky,150 g,4.19,,
+6874,Beretta Mortadella bologna,Údeniny a lahôdky,150 g,4.19,2.99,2026-12-04
 25816,Beretta Prosciutto di San Daniele DOP – talianska sušená šunka plátky,Údeniny a lahôdky,70 g,6.49,,
 27202,Beretta Salame Milano krájaná saláma bez lepku a laktózy,Údeniny a lahôdky,120 g,3.89,,
 5198,BERGADER Bavaria Blu polmesiac syr s modrou plesňou,Mliečne a chladené,175 g,3.69,,
@@ -717,7 +716,7 @@ id,product,category,pack,price,sale_price,sale_until
 640,Berger Extra jemná saláma- plátky,Údeniny a lahôdky,150 g,2.49,,
 22884,Berger Chili Schinken – pikantná bravčová šunka 100 % rakúske mäso,Údeniny a lahôdky,100 g,2.69,,
 25840,Berger Kuracia šunka (85% mäsa),Údeniny a lahôdky,100 g,2.69,,
-37992,Berger Leberkäse sekaná,Údeniny a lahôdky,"1,51 kg",12.82,,
+37992,Berger Leberkäse sekaná,Údeniny a lahôdky,"1,47 kg",12.48,,
 39530,Berger Morčacia šunka,Údeniny a lahôdky,500 g,11.99,,
 13198,Berger Morčacia šunka výberová (85 % mäso),Údeniny a lahôdky,100 g,2.69,,
 39534,Berger Raňajková šunka,Údeniny a lahôdky,500 g,11.99,,
@@ -842,8 +841,8 @@ id,product,category,pack,price,sale_price,sale_until
 47386,Biotech Usa Protein Max pistáciová proteínová tyčinka,Zdravie a životný štýl,45 g,1.99,,
 47390,Biotech Usa Protein Power čokoládový proteínový nápoj v prášku,Zdravie a životný štýl,500 g,15.49,,
 13808,Biraghi Gran Biraghi Petali tenké hobliny,Mliečne a chladené,80 g,3.99,,
-4806,Biraghi Gran Biraghi tvrdý strúhaný zrejúci syr,Mliečne a chladené,50 g,2.19,,
-4874,Biraghi Pecorino strúhaný syr,Mliečne a chladené,100 g,3.39,,
+4806,Biraghi Gran Biraghi tvrdý strúhaný zrejúci syr,Mliečne a chladené,50 g,2.19,1.69,2026-12-04
+4874,Biraghi Pecorino strúhaný syr,Mliečne a chladené,100 g,3.39,2.69,2026-12-04
 48126,"Birell 0,0 % nealkoholický pomelo-grep",Nápoje,500 ml,1.25,,
 43450,"Birell 0,0% Citrón & Mäta nealko",Nápoje,500 ml,1.25,,
 43452,"Birell 0,0% Malina & Limetka nealko",Nápoje,500 ml,1.25,,
@@ -863,10 +862,10 @@ id,product,category,pack,price,sale_price,sale_until
 31992,Birell Za studena chmelený pivo nealkoholické 6x500ml,Nápoje,3 l,7.59,5.39,2026-12-01
 2882,Blue Mauritius Gold 40%,Nápoje,700 ml,52.99,,
 36992,Blue Moon Belgian White ALE,Nápoje,330 ml,1.79,,
-32894,Bluver Baby chobotničky s olivami,Údeniny a lahôdky,110 g,7.19,,
-32896,Bluver Mušle s cesnakom v oleji,Mäso a ryby,200 g,4.99,,
-32898,Bluver Sépie s cesnakom v oleji,Údeniny a lahôdky,200 g,6.99,,
-32900,Bluver Talianske ančovičky biele,Trvanlivé,2 kg,5.79,,
+32894,Bluver Baby chobotničky s olivami,Údeniny a lahôdky,110 g,7.19,4.99,2026-12-04
+32896,Bluver Mušle s cesnakom v oleji,Mäso a ryby,200 g,4.99,3.99,2026-12-04
+32898,Bluver Sépie s cesnakom v oleji,Údeniny a lahôdky,200 g,6.99,5.49,2026-12-04
+32900,Bluver Talianske ančovičky biele,Trvanlivé,2 kg,5.79,4.29,2026-12-04
 43812,Body&Future High Protein Blueberry rastlinný nápoj 25 g proteínu,Zdravie a životný štýl,400 ml,3.59,,
 43810,Body&Future High Protein Choco rastlinný nápoj 25 g proteínu,Zdravie a životný štýl,400 ml,3.59,,
 43814,Body&Future High Protein Vanilla rastlinný nápoj 25 g proteínu,Zdravie a životný štýl,400 ml,3.59,,
@@ -1031,6 +1030,7 @@ id,product,category,pack,price,sale_price,sale_until
 41062,Bonvin Frankovka modrá,Nápoje,1 l,3.49,,
 41056,Bonvin Ryzling vlašský,Nápoje,1 l,3.49,,
 41058,Bonvin Veltlínske zelené,Nápoje,1 l,3.49,,
+46358,Borec Borovička 35% grep,Nápoje,700 ml,12.49,,
 50946,"Borec Grepovička 4,9% miešaný nápoj",Nápoje,250 ml,3.09,,
 24844,"Borec London Dry gin 37,5%",Nápoje,700 ml,12.49,,
 9190,Borec St. Nicolaus Borovička 38%,Nápoje,700 ml,12.49,9.89,2026-12-01
@@ -1049,7 +1049,6 @@ id,product,category,pack,price,sale_price,sale_until
 48432,Božkov Republica Espresso 30%,Nápoje,700 ml,18.99,,
 48430,Božkov Republica Exclusive 35%,Nápoje,700 ml,18.99,,
 43898,Božkov Republica Exclusive 35%,Nápoje,500 ml,11.99,,
-8632,Božkov Republica Exclusive 38% - darčekové balenie,Nápoje,700 ml,22.99,,
 48428,Božkov Republica Honey 30%,Nápoje,700 ml,18.99,,
 43896,Božkov Republica Solera 38%,Nápoje,500 ml,11.99,,
 24914,Božkov Republica Solera 38%,Nápoje,700 ml,18.99,15.69,2026-12-01
@@ -1127,12 +1126,12 @@ id,product,category,pack,price,sale_price,sale_until
 8618,Bumbu Cream 15%,Nápoje,700 ml,31.99,,
 38806,"Bumbu Original 40% + poháre 2ks, darčekové balenie",Nápoje,700 ml,52.99,,
 47676,Bumbu Original 40% tuba,Nápoje,700 ml,43.99,,
+8620,Bumbu XO Rum 40%,Nápoje,700 ml,49.99,,
 30186,Bunbi Ryžové rezance tenké,Trvanlivé,200 g,2.59,,
 9168,Bushmills Irish Whisky 40%,Nápoje,700 ml,24.99,,
-8800,Bvd Hruškovica destilát 45%,Nápoje,500 ml,41.99,,
-8854,Bvd Marhuľovica destilát 45%,Nápoje,500 ml,41.99,,
 8856,Bvd Slivovica destilát 45%,Nápoje,500 ml,41.99,,
-44844,CABRITO Blanco tequila,Nápoje,700 ml,35.99,,
+28892,Ca' Ernesto Prosecco,Nápoje,750 ml,11.49,,
+52826,Ca’ Val Prosecco Millesimato Brut,Nápoje,750 ml,11.99,,
 42028,Cafe Peppino Milano káva zrnková,Nápoje,1 kg,19.99,,
 42012,Cafe Peppino Roma káva zrnková,Nápoje,1 kg,19.99,,
 42014,Cafe Peppino Venezia káva zrnková,Nápoje,1 kg,19.99,,
@@ -1153,12 +1152,10 @@ id,product,category,pack,price,sale_price,sale_until
 27364,"Calvo Tuniak v slnečnicovom oleji, kúsky 3x65 g",Trvanlivé,195 g,6.59,,
 15574,"Calvo Tuniak vo vlastnej šťave, 3x80g",Trvanlivé,240 g,5.89,,
 15608,"Calvo Zero Tuniak vo vlastnej šťave, filety 3x65g",Trvanlivé,195 g,8.19,,
-47680,Camino de Castilla Joven,Nápoje,750 ml,6.29,,
 8506,Campari Bitter 25%,Nápoje,1 l,25.99,,
 8280,Campari Cinzano Extra Dry Vermut 18%,Nápoje,750 ml,10.99,,
-8282,Campari Cinzano Rosso Vermut 15%,Nápoje,750 ml,10.99,,
+8282,Campari Cinzano Rosso Vermut 15%,Nápoje,750 ml,10.99,8.99,2026-12-04
 3492,Campari Horké (25%),Nápoje,700 ml,21.99,,
-15362,Campari Soda 10% 5x98 ml,Nápoje,490 ml,9.89,,
 45576,Caňa Mistica Reserva rum 40%,Nápoje,700 ml,41.99,,
 52842,Canada Dry Ginger Ale,Nápoje,"1,5 l",2.09,,
 52840,Canada Dry Ginger Ale,Nápoje,500 ml,1.59,,
@@ -1185,8 +1182,8 @@ id,product,category,pack,price,sale_price,sale_until
 26968,Cappy Lemonade Zero jahoda a citrón vratná PET fľaša,Nápoje,"1,25 l",2.59,,
 11204,Cappy Limonáda citrón,Nápoje,"1,25 l",2.59,,
 45984,"Cappy Pomarančový Nektár 58%, vratná PET fľaša",Nápoje,330 ml,1.29,,
-11182,Cappy Pulpy nektár pomaranč,Nápoje,1 l,2.99,,
 47684,Cappy Pulpy nektár pomaranč,Nápoje,330 ml,1.29,,
+11182,Cappy Pulpy nektár pomaranč,Nápoje,1 l,2.99,,
 52016,Capri Sonne Elektrolyt malina a černica,Nápoje,330 ml,1.35,,
 50846,Capri Sonne Elektrolyt Mango,Nápoje,330 ml,1.35,,
 26862,Capri Sonne Fairy Drink,Nápoje,200 ml,0.62,,
@@ -1254,8 +1251,8 @@ id,product,category,pack,price,sale_price,sale_until
 1000018812,Carte d'Or Sachertorte,Mrazené,825 ml,7.64,,
 18822,Carte d'Or Strawberry & Meringues,Mrazené,825 ml,8.49,,
 1000018822,Carte d'Or Strawberry & Meringues,Mrazené,825 ml,8.49,7.64,2026-12-12
-18816,Carte d'Or Tiramisu,Mrazené,825 ml,8.49,,
-1000018816,Carte d'Or Tiramisu,Mrazené,825 ml,7.64,,
+18816,Carte d'Or Tiramisu,Mrazené,825 ml,8.49,6.99,2026-12-04
+1000018816,Carte d'Or Tiramisu,Mrazené,825 ml,6.29,,
 48726,Carte d'Or Trio Creamy,Mrazené,1 l,8.69,,
 48724,Carte d'Or Trio Fresh,Mrazené,1 l,8.69,,
 18854,Carte d'Or Vanilla,Mrazené,1 l,8.49,,
@@ -1263,12 +1260,13 @@ id,product,category,pack,price,sale_price,sale_until
 10184,Casa Defra Prosecco DOC,Nápoje,750 ml,9.89,7.89,2026-12-01
 36840,Casa Charlize Pinot Grigio IGT,Nápoje,750 ml,6.79,,
 35544,Casa Charlize Primitivo,Nápoje,750 ml,6.79,,
-5502,Cascina Verdesole Girasoli con Mozzarella e Pomodoro,Údeniny a lahôdky,250 g,2.99,,
-5488,Cascina Verdesole Margherite con Ricotta e Spinaci,Údeniny a lahôdky,250 g,2.99,,
-5490,Cascina Verdesole Perle con Prosciutto Crudo,Údeniny a lahôdky,250 g,2.99,,
-5500,Cascina Verdesole Spaghetti Chitarra all’uovo,Údeniny a lahôdky,250 g,2.29,,
-1734,Cascina Verdesole Tagliatelle all’uovo – čerstvé vaječné cestoviny,Údeniny a lahôdky,250 g,2.29,,
-5498,Cascina Verdesole Tagliolini,Údeniny a lahôdky,250 g,2.29,,
+50992,CASAL GARCIA Vinho Rosé,Nápoje,750 ml,9.39,,
+5502,Cascina Verdesole Girasoli con Mozzarella e Pomodoro,Údeniny a lahôdky,250 g,2.99,2.29,2026-12-04
+5488,Cascina Verdesole Margherite con Ricotta e Spinaci,Údeniny a lahôdky,250 g,2.99,2.29,2026-12-04
+5490,Cascina Verdesole Perle con Prosciutto Crudo,Údeniny a lahôdky,250 g,2.99,2.29,2026-12-04
+5500,Cascina Verdesole Spaghetti Chitarra all’uovo,Údeniny a lahôdky,250 g,2.29,1.69,2026-12-04
+1734,Cascina Verdesole Tagliatelle all’uovo – čerstvé vaječné cestoviny,Údeniny a lahôdky,250 g,2.29,1.69,2026-12-04
+5498,Cascina Verdesole Tagliolini,Údeniny a lahôdky,250 g,2.29,1.69,2026-12-04
 31564,Casino Bazalkové pesto,Trvanlivé,190 g,3.39,,
 31562,Casino Bezlepkové cestoviny v tvare kolienok,Trvanlivé,400 g,2.89,,
 31538,Casino Bezlepkové cookies,Trvanlivé,150 g,4.49,,
@@ -1306,7 +1304,8 @@ id,product,category,pack,price,sale_price,sale_until
 31530,Casino Terina s hríbikmi,Trvanlivé,180 g,2.39,,
 31678,Casino Tuniak vo vlastnej šťave,Trvanlivé,200 g,2.59,,
 31400,"Casino Zelený čaj, 25 vrecúšok",Nápoje,40 g,1.39,,
-43622,Castellino Bianco,Nápoje,1 l,4.19,,
+31270,CASSOVIA Zlatá Borovička,Nápoje,"1,5 l",48.99,,
+43622,Castellino Bianco,Nápoje,1 l,4.19,3.29,2026-12-04
 38014,Caula Chorizo,Údeniny a lahôdky,"1,8 kg",31.48,,
 47186,Celá kačica s drobmi,Mrazené,"2,2 kg",14.99,,
 50486,Celebrations Darčeková fľaša,Trvanlivé,269 g,16.99,,
@@ -1314,8 +1313,8 @@ id,product,category,pack,price,sale_price,sale_until
 30112,Celihope Oblátky kokosové máčané,Trvanlivé,34 g,0.75,,
 30110,Celihope Oblátky lieskovoorieškové,Trvanlivé,35 g,0.75,,
 30136,Celihope Oblátky s citrónovou príchuťou,Trvanlivé,25 g,0.65,,
-33302,Celita Grissini paradajka a rozmarín,Trvanlivé,85 g,2.29,,
-33300,Celita Grissini s olivovým olejom,Trvanlivé,85 g,2.29,,
+33302,Celita Grissini paradajka a rozmarín,Trvanlivé,85 g,2.29,1.79,2026-12-04
+33300,Celita Grissini s olivovým olejom,Trvanlivé,85 g,2.29,1.79,2026-12-04
 31568,Celita Sójový suk klasik,Trvanlivé,50 g,0.34,,
 54642,Centrum Kids Gummies želé vitamíny malina a jahoda,Zdravie a životný štýl,60 ks,9.79,,
 54692,Centrum Kids Gummies želé vitamíny Multifruit,Zdravie a životný štýl,60 ks,9.79,,
@@ -1341,33 +1340,32 @@ id,product,category,pack,price,sale_price,sale_until
 11008,Cessi Turbanky bezvaječné cestoviny,Trvanlivé,400 g,1.15,,
 10966,Cessi Vretienka bezvaječné cestoviny,Trvanlivé,400 g,1.15,,
 14490,"Cibuľa biela, 50/70, čerstvá, sieť",Ovocie a zelenina,1 kg,2.79,,
-26596,"Cibuľa lahôdková, zväzok",Ovocie a zelenina,200 g,0.95,,
 14486,Cibuľa šalotka banánová,Ovocie a zelenina,500 g,2.09,1.69,2026-12-01
 14496,Cibuľa žltá,Ovocie a zelenina,"1,5 kg",1.29,,
 20992,Cibuľa žltá lúpaná celá,Ovocie a zelenina,1 kg,2.39,,
 39436,Cibule Bistro Kurací vývar,Údeniny a lahôdky,1 l,4.89,,
 39444,Cibule Bistro Paradajková polievka,Údeniny a lahôdky,1 l,6.29,,
 39438,Cibule Bistro Zeleninový vývar,Údeniny a lahôdky,1 l,4.89,,
+41944,"Cibuľka lahôdková, zväzok",Ovocie a zelenina,200 g,0.89,0.59,2026-12-01
 15014,Cielo Pinot Grigio IGT,Nápoje,187 ml,2.89,,
 37044,Cimbaľák Bravčová tlačenka,Údeniny a lahôdky,350 g,3.49,,
-48386,Cimbaľák Dargovská klobása,Údeniny a lahôdky,"1,43 kg",12.86,,
+48386,Cimbaľák Dargovská klobása,Údeniny a lahôdky,"1,05 kg",9.44,,
 39520,Cimbaľák Lúpežnícka saláma,Údeniny a lahôdky,620 g,4.59,,
 38012,Cimbaľák Tornádo saláma,Údeniny a lahôdky,"1,5 kg",20.24,,
 37046,Cimbaľák Zemplínske jaternice,Údeniny a lahôdky,1 kg,6.99,,
 38002,Cimbaľák Zolly saláma so syrom,Údeniny a lahôdky,700 g,10.49,,
-1970,Cinzano Ast,Nápoje,750 ml,14.49,10.59,2026-12-01
 3460,Cinzano Bianco 15%,Nápoje,1 l,12.99,,
 8278,Cinzano Bianco 15%,Nápoje,750 ml,10.99,,
 2472,"Cinzano Pro-Spritz 11,5%",Nápoje,750 ml,9.89,8.49,2026-12-01
-39716,Cirio Paradajky krájané,Trvanlivé,400 g,2.39,,
+39716,Cirio Paradajky krájané,Trvanlivé,400 g,2.39,1.79,2026-12-04
 39718,Cirio Paradajky krájané s bazalkou,Trvanlivé,400 g,2.39,,
-39720,Cirio Paradajky krájané s bylinkami,Trvanlivé,400 g,2.39,,
-32420,Cirio Pasírované paradajky,Trvanlivé,500 g,2.09,,
-42512,Cirio Pasírované paradajky,Trvanlivé,200 g,2.49,,
+39720,Cirio Paradajky krájané s bylinkami,Trvanlivé,400 g,2.39,1.79,2026-12-04
+32420,Cirio Pasírované paradajky,Trvanlivé,500 g,2.09,1.49,2026-12-04
+42512,Cirio Pasírované paradajky,Trvanlivé,200 g,2.49,1.89,2026-12-04
 54986,"Citadelle gin 0,0%",Nápoje,700 ml,20.99,,
-37328,Citrón Primofiori,Ovocie a zelenina,140 g,0.4,,
+37328,Citrón Primofiori,Ovocie a zelenina,140 g,0.42,,
 27522,Citronová tráva,Ovocie a zelenina,50 g,1.99,,
-20892,Citróny Verna,Ovocie a zelenina,500 g,1.75,1.19,2026-12-01
+42112,"Citróny, sieť",Ovocie a zelenina,500 g,1.75,1.19,2026-12-01
 28450,CLAN CAMPBELL 40%,Nápoje,700 ml,15.49,,
 28290,Clausthaler Nealkoholické pivo nefiltrované 330 ml,Nápoje,330 ml,1.45,,
 17056,Coca-Cola 2l,Nápoje,2 l,3.09,,
@@ -1412,6 +1410,7 @@ id,product,category,pack,price,sale_price,sale_until
 31392,Copa Café zmrzlina,Mrazené,150 ml,1.15,,
 14266,"Corgoň 10° pivo, 6x550ml, plech",Nápoje,3 l,5.19,,
 15888,"Corgoň 10° pivo, pet",Nápoje,"1,5 l",1.95,,
+1000015888,"Corgoň 10° pivo, pet",Nápoje,"1,5 l",1.95,1.75,2026-12-16
 14268,"Corgoň 12° pivo, 6x550ml, plech",Nápoje,500 ml,5.99,,
 15862,"Corgoň Pivo 10%, sklo",Nápoje,500 ml,0.61,,
 1000015850,"Corgoň Pivo 12%, sklo",Nápoje,500 ml,0.81,0.72,2026-12-12
@@ -1437,8 +1436,42 @@ id,product,category,pack,price,sale_price,sale_until
 22100,Corny Protein Tyčinka mango,Zdravie a životný štýl,50 g,2.09,,
 34170,Corny Proteinová 30% tyčinka arašídy a karamel,Zdravie a životný štýl,50 g,2.15,1.59,2026-12-01
 5362,Coronis Syrové nite,Mliečne a chladené,300 g,5.69,,
+53852,Cortelazzi Burro della Bruna maslo,Mliečne a chladené,250 g,3.69,2.89,2026-12-04
+53998,Cortelazzi Coati pikantná saláma,Údeniny a lahôdky,"1,2 kg",15.49,,
+44550,Cortelazzi Čerstvé cestoviny Calamarata – Orogiallo,Trvanlivé,500 g,2.99,,
+44552,Cortelazzi Čerstvé cestoviny Orecchiette – Orogiallo,Trvanlivé,500 g,2.99,,
+44544,Cortelazzi Čerstvé vaječné cestoviny Pappardelle – Orogiallo,Trvanlivé,500 g,2.89,,
+44548,Cortelazzi Čerstvé vaječné cestoviny Tagliatelle – Orogiallo,Trvanlivé,500 g,2.89,,
+44546,Cortelazzi Čerstvé vaječné lasagne – Orogiallo,Trvanlivé,500 g,2.89,,
+53990,Cortelazzi La Casara Caciottina s čiernym korením,Mliečne a chladené,300 g,10.49,,
+53994,Cortelazzi La Casara Caciottina s hľuzovkou,Mliečne a chladené,300 g,13.49,,
+53992,Cortelazzi La Casara Caciottina s chilli,Mliečne a chladené,300 g,10.49,7.99,2026-12-04
+53988,Cortelazzi La Casara Caciottina s pažítkou,Mliečne a chladené,300 g,10.49,7.99,2026-12-04
+53978,Cortelazzi Mamma Emma Bezlepkové zemiakové gnocchi,Trvanlivé,350 g,5.29,,
+53974,Cortelazzi Mamma Emma Gnocchi so špenátom a ricottou,Trvanlivé,400 g,5.59,4.39,2026-12-04
+54010,Cortelazzi Mamma Emma Tekvicové gnocchi,Trvanlivé,400 g,5.59,4.39,2026-12-04
+53976,Cortelazzi Mamma Emma Zemiakové gnocchi,Trvanlivé,400 g,4.79,3.79,2026-12-04
+54042,Cortelazzi Mäsové guľky s hráškom,Mrazené,200 g,10.99,,
+54040,Cortelazzi Mäsové ragú,Mrazené,500 g,15.99,12.99,2026-12-04
+54004,Cortelazzi Mortadella Primula jemná bravčová saláma,Údeniny a lahôdky,500 g,9.69,,
+53984,Cortelazzi Nonno Nanni Burrata,Mliečne a chladené,125 g,2.99,,
+53850,Cortelazzi Nonno Nanni Mascarpone,Mliečne a chladené,250 g,3.69,2.99,2026-12-04
+53986,Cortelazzi Nonno Nanni Mozzarella,Mliečne a chladené,125 g,2.99,,
+54036,Cortelazzi Parma marinované kuracie prsia s paprikou,Mrazené,250 g,8.59,,
+54048,Cortelazzi Parma rizoto s červenou čakankou,Mrazené,250 g,7.89,,
+54050,Cortelazzi Parma rizoto s hríbmi,Mrazené,250 g,8.59,6.99,2026-12-04
+54044,Cortelazzi Parma špagety alla Carbonara,Mrazené,220 g,7.89,,
+54046,Cortelazzi Parma špagety Cacio e Pepe,Mrazené,220 g,7.89,,
+54038,Cortelazzi Parma Vitello Tonnato varené hovädzie mäso,Mrazené,150 g,8.49,,
+44288,Cortelazzi Pecorino s čiernym korením Formaggeria Toscana,Mliečne a chladené,70 g,5.29,,
+44554,Cortelazzi Plnené cestoviny Grantortelli s hubami – Brema,Trvanlivé,250 g,5.99,4.79,2026-12-04
+44352,Cortelazzi Premium Salame Napoli,Údeniny a lahôdky,100 g,6.59,,
+53980,Cortelazzi San Salvatore Mozzarella di Bufala Campana,Mliečne a chladené,250 g,5.69,4.99,2026-12-04
+53982,Cortelazzi San Salvatore Paradiso Mozzarella di Bufala Campana,Mliečne a chladené,125 g,2.99,2.39,2026-12-04
+44560,"Cortelazzi Tortelloni so žihľavou, orechmi a mascarpone – Bennati",Trvanlivé,250 g,7.69,5.99,2026-12-04
 5276,Coulommiers Mon Pere syr s bielou plesňou,Mliečne a chladené,320 g,6.79,,
 5288,Coulommiers Val de saone syr s plesňou,Mliečne a chladené,340 g,6.79,,
+50418,Courvoisier VS 40%,Nápoje,700 ml,33.99,,
 41016,Croco Krekry sezam a mak,Trvanlivé,100 g,0.84,,
 41014,Croco Mini tyčinky slané,Trvanlivé,250 g,1.39,,
 33842,Croco Mix krekry a praclíky,Trvanlivé,250 g,1.39,,
@@ -1449,7 +1482,7 @@ id,product,category,pack,price,sale_price,sale_until
 32602,Csabai Suchá klobása,Údeniny a lahôdky,80 g,1.79,,
 9096,Cseresznye St. Nicolaus Cseresznye 40%,Nápoje,500 ml,6.79,,
 7884,Cuketa baby,Ovocie a zelenina,200 g,5.99,,
-26752,Cukety balené,Ovocie a zelenina,"1,17 kg",3.03,,
+26752,Cukety balené,Ovocie a zelenina,"1,24 kg",3.21,,
 33064,CukFresh Dobošový rez,Pekáreň a cukráreň,300 g,4.99,,
 33066,CukFresh Lístkové trubičky,Pekáreň a cukráreň,200 g,5.49,,
 33068,CukFresh Medový krémeš,Pekáreň a cukráreň,220 g,3.89,,
@@ -1478,7 +1511,7 @@ id,product,category,pack,price,sale_price,sale_until
 34418,Čestr Perigordská omáčka,Údeniny a lahôdky,,13.99,,
 28240,Čokoládové buchty,Údeniny a lahôdky,360 g,3.19,,
 5640,Čučoriedkové knedle,Mrazené,1 kg,6.89,,
-40258,"Čučoriedky kanadské, vanička",Ovocie a zelenina,125 g,2.79,,
+40258,"Čučoriedky kanadské, vanička",Ovocie a zelenina,125 g,2.99,,
 15486,D&K BIO Rulandské šedé,Nápoje,750 ml,15.49,,
 15488,D&K BIO Sauvignon,Nápoje,750 ml,16.99,,
 41732,Dafo Cibuľa smažená,Trvanlivé,500 g,4.39,,
@@ -1538,8 +1571,8 @@ id,product,category,pack,price,sale_price,sale_until
 27858,Demänovka Horká bylinný likér 38%,Nápoje,40 ml,1.79,,
 8884,Demänovka Horká Likér 38%,Nápoje,700 ml,13.99,11.49,2026-12-01
 45552,Demänovka Orange & Cocoa bylinný likér 30%,Nápoje,700 ml,13.99,,
-23918,Denigris Vínny ocot biely,Trvanlivé,1 l,3.79,,
-23920,Denigris Vínny ocot červený,Trvanlivé,1 l,3.79,,
+23918,Denigris Vínny ocot biely,Trvanlivé,1 l,3.59,2.79,2026-12-04
+23920,Denigris Vínny ocot červený,Trvanlivé,1 l,3.59,2.79,2026-12-04
 7598,"Desperados Mojito, 4x500ml, plech",Nápoje,2 l,4.99,4.19,2026-12-01
 2304,Desperados Originál pivo tequila non - fľaša,Nápoje,330 ml,1.25,1.09,2026-12-01
 7562,"Desperados Original, 4x500ml, plech",Nápoje,2 l,4.99,4.19,2026-12-01
@@ -1563,14 +1596,12 @@ id,product,category,pack,price,sale_price,sale_until
 47514,Dibeta Oblátky jahodové bez laktózy,Trvanlivé,60 g,1.25,,
 47524,Dibeta Oblátky s brusnicovou arómou bez laktózy,Trvanlivé,25 g,0.54,,
 47518,Dibeta Piškóty celozrnné,Trvanlivé,120 g,2.69,,
-39198,Dictador 12 y.o. 40% rum,Nápoje,700 ml,45.99,,
 600,Dilmah Čajový zelený jazmín,Nápoje,20 ks,3.89,,
 6198,Dilmah Earl grey gourmet čierny čaj,Nápoje,25 ks,4.39,,
 6196,Dilmah English breakfast gourmet čierny čaj,Nápoje,25 ks,4.39,,
 6102,Dilmah Pure Green čistý zelený čaj,Nápoje,20 ks,3.89,,
 6144,Dilmah Strawberry čierny čaj,Nápoje,20 ks,3.89,,
 36520,Dilmah Vianočný čaj,Nápoje,90 g,14.49,,
-828,Dimple Scottish whisky 15yo 40%,Nápoje,700 ml,64.99,,
 43462,"Diplomático 40% Reserva Exclusiva, darčekové balenie",Nápoje,700 ml,41.99,,
 35706,Diplomático MANTUANO 40%,Nápoje,700 ml,25.99,,
 35696,Diplomático Reserva Exclusiva 40%,Nápoje,700 ml,41.99,,
@@ -1597,7 +1628,7 @@ id,product,category,pack,price,sale_price,sale_until
 48970,Divella Šošovica,Trvanlivé,400 g,1.95,,
 13620,Divella Ziti 2,Trvanlivé,500 g,3.09,,
 32752,Dmi Trading Čierne olivy pečené,Trvanlivé,250 g,4.79,,
-32750,Dmi Trading Grécke olivy mix bezkôstkové,Údeniny a lahôdky,150 g,4.29,,
+32750,Dmi Trading Grécke olivy mix bezkôstkové,Údeniny a lahôdky,150 g,4.29,2.99,2026-12-04
 5828,Dmi Trading Hosan Soba rezance,Trvanlivé,300 g,2.29,,
 34898,Dmi Trading KIMCHI ZÁKLAD,Trvanlivé,453 g,8.49,,
 6762,Dmi Trading Pizza saláma plátky,Údeniny a lahôdky,500 g,11.49,,
@@ -1632,13 +1663,11 @@ id,product,category,pack,price,sale_price,sale_until
 8622,Domovina Borovička 45%,Nápoje,700 ml,35.99,,
 8624,Domovina Hruškovica 42%,Nápoje,700 ml,35.99,,
 9240,Domovina Marhuľovica 42%,Nápoje,700 ml,35.99,,
-8734,Don Julio Tequila Blanco 38%,Nápoje,700 ml,81.99,,
 31246,Don Pablo Pineapple,Nápoje,700 ml,21.99,15.49,2026-12-01
 1554,Don Pablo Porto rubín,Nápoje,750 ml,15.99,,
 8422,Don Pablo Porto Tawny 19%,Nápoje,750 ml,15.99,,
 8436,Don Pablo Porto White 19%,Nápoje,750 ml,15.99,,
 31250,Don Pablo Spiced,Nápoje,700 ml,21.99,15.49,2026-12-01
-56978,Don Papa Baroko 40 %,Nápoje,700 ml,44.09,,
 23522,Don Papa Baroko 40% rum tuba,Nápoje,700 ml,53.99,,
 38416,Don Pepe Orange Espresso,Nápoje,330 ml,2.99,,
 3344,Don Peppe Bezlepkové jahodové knedlíky,Mrazené,600 g,3.59,,
@@ -1658,6 +1687,7 @@ id,product,category,pack,price,sale_price,sale_until
 13468,Don Peppe Zemiakové knedličky s údeným mäsom,Mrazené,320 g,2.79,,
 6308,Don Peppe Zemiakové šišky s makovou náplňou,Mrazené,300 g,2.49,,
 906,Don Peppe Zemiakové šúľance s makom,Mrazené,1 kg,4.89,,
+41408,Doppio Passo Appassimento,Nápoje,750 ml,8.99,,
 46286,"Doppio Passo Bianco 0,0%",Nápoje,750 ml,9.99,,
 47690,Doppio Passo Pinot Grigio,Nápoje,750 ml,11.99,,
 35558,Doppio Passo Primitivo,Nápoje,750 ml,8.99,,
@@ -1670,9 +1700,9 @@ id,product,category,pack,price,sale_price,sale_until
 50498,DORITOS Sweet Chilli kukuričné tortilla chipsy,Trvanlivé,90 g,2.09,,
 47692,Double Cross Vodka 40%,Nápoje,1 l,61.99,,
 4490,Doves Farm Univerzálna zmes bezlepková,Zdravie a životný štýl,1 kg,5.49,,
+56832,Dr Pepper Original,Nápoje,"1,25 l",2.09,,
 56838,Dr Pepper Original,Nápoje,330 ml,1.09,,
 56830,Dr Pepper Original,Nápoje,500 ml,1.39,,
-56832,Dr Pepper Original,Nápoje,"1,25 l",2.09,,
 23840,Dr. Ensa Arašidy pražené nelúpané,Trvanlivé,400 g,3.49,,
 22006,Dr. Ensa Arašidy pražené solené,Trvanlivé,100 g,0.58,,
 20468,Dr. Ensa Datle s kôstkou čerstvé,Trvanlivé,200 g,1.09,,
@@ -1690,6 +1720,7 @@ id,product,category,pack,price,sale_price,sale_until
 20562,Dr. Gerard Trubičky arašídové 20ks,Trvanlivé,144 g,1.75,,
 26382,Dr. Gerard Trubičky čokoládové 20ks,Trvanlivé,144 g,1.75,,
 26380,Dr. Gerard Trubičky kokosové 20ks,Trvanlivé,144 g,1.75,,
+15490,Dr. Loosen Riesling,Nápoje,750 ml,12.49,,
 4516,Dr. Oetker BB puding kakaový,Trvanlivé,250 g,2.49,1.89,2026-12-01
 24118,Dr. Oetker BISTRO Baguette Pepperoni,Mrazené,250 g,2.59,,
 24120,Dr. Oetker Bistro Baguette Speciale,Mrazené,250 g,2.59,,
@@ -1851,6 +1882,7 @@ id,product,category,pack,price,sale_price,sale_until
 30940,Dublin Dairy Irske maslo solené,Mliečne a chladené,200 g,3.49,,
 5160,Dublin Dairy Red Cheddar syr plátky (48% tuku),Mliečne a chladené,150 g,3.09,2.39,2026-12-01
 40906,Dukacso Feferónový krém,Trvanlivé,130 g,1.49,,
+36732,Dulong Rouge Bordeaux,Nápoje,750 ml,6.89,,
 42642,Ďumbier Oštiepok,Mliečne a chladené,800 g,7.19,,
 31048,Ďumbier Tavený krémový trojuholníky,Mliečne a chladené,140 g,1.25,,
 14706,Dunaj Vinárstvo Naše vinohrady 2019 suché víno,Nápoje,750 ml,8.39,,
@@ -1895,7 +1927,7 @@ id,product,category,pack,price,sale_price,sale_until
 2354,Efko Chren strúhaný ostrý,Trvanlivé,60 g,3.09,,
 20462,Efko Chren strúhaný ostrý,Trvanlivé,500 g,13.49,,
 24174,Efko Chren strúhaný ostrý,Ovocie a zelenina,1 kg,19.49,,
-10152,Efko Kukuričky,Trvanlivé,212 g,4.19,,
+10152,Efko Kukuričky,Trvanlivé,212 g,4.19,2.99,2026-12-04
 35096,Efko Mrkva s ananásom,Trvanlivé,340 g,3.89,,
 10160,Efko Pálivé feferóny,Trvanlivé,300 g,2.59,,
 3530,Efko Uhorky delikates 3-6 cm,Trvanlivé,670 g,3.99,,
@@ -1912,7 +1944,6 @@ id,product,category,pack,price,sale_price,sale_until
 54874,Ehrmann High Protein Skyr,Mliečne a chladené,150 g,0.98,,
 40490,EKLAND Instantný čaj Citrón,Nápoje,300 g,4.39,,
 14732,EL COTO Crianza DOC,Nápoje,750 ml,12.99,,
-14734,EL COTO Rosado DOC,Nápoje,750 ml,9.59,,
 39222,El Enemigo Malbec,Nápoje,750 ml,32.99,,
 4810,El Pastor Kozí syr plátky,Mliečne a chladené,70 g,3.19,,
 5178,El Pastor Manchego D.O.P Semicurado syr z ovčieho mlieka,Mliečne a chladené,150 g,6.29,,
@@ -1922,12 +1953,11 @@ id,product,category,pack,price,sale_price,sale_until
 35804,Elesko Daniel lopatka bez kosti,Mrazené,"1,5 kg",32.99,,
 14092,Elesko Daniel močing bez kosti,Mrazené,"1,5 kg",29.99,,
 13846,Elesko Daniel stehno bez kosti,Mrazené,"1,5 kg",29.99,,
-13822,Elesko Daniel sviečková,Mrazené,500 g,21.99,,
+13822,Elesko Daniel sviečková,Mrazené,500 g,22,,
 6896,Elesko Danielia klobása pikantná,Údeniny a lahôdky,160 g,3.99,,
 17638,Elesko Diviak - chrbát bez kosti,Mrazené,1 kg,26.99,,
 13852,Elesko Diviak plece bez kosti,Mrazené,1 kg,16.49,,
-14088,Elesko Diviak stehno bez kosti,Mrazené,"1,08 kg",21.59,,
-14834,Elesko Dunaj výber z hrozna D.S.C.,Nápoje,750 ml,16.49,,
+14088,Elesko Diviak stehno bez kosti,Mrazené,"1,5 kg",29.99,,
 13820,Elesko Jeleň karé bez kosti,Mrazené,"1,5 kg",58.49,,
 13844,Elesko Jeleň krkovica bez kosti,Mrazené,"1,5 kg",28.49,,
 13850,Elesko Jeleň lopatka bez kosti,Mrazené,1 kg,21.99,,
@@ -1986,6 +2016,7 @@ id,product,category,pack,price,sale_price,sale_until
 21828,Emco Super ovocie tyčinka jahoda,Trvanlivé,30 g,1.09,,
 21830,Emco Super ovocie tyčinka lesné ovocie,Trvanlivé,30 g,1.09,,
 17208,Emco Super sirup čakankový,Trvanlivé,350 g,8.39,,
+11746,Emco Super sušienky jablko,Trvanlivé,60 g,0.85,,
 11748,Emco Super sušienky kakao a kokos,Trvanlivé,60 g,0.85,,
 52482,Emco Sušienky & Protein Čokoláda,Trvanlivé,60 g,0.85,,
 12996,Emco Tyčinka Orech a proteín s čokoládou a mandľami,Zdravie a životný štýl,40 g,1.19,,
@@ -2057,11 +2088,9 @@ id,product,category,pack,price,sale_price,sale_until
 8552,Familia Borovička 40%,Nápoje,1 l,12.49,,
 35858,Familia GAS Karpatská horká 23%,Nápoje,1 l,10.49,,
 8550,Familia Gin 40%,Nápoje,1 l,13.99,,
-9000,Familia Gin 40%,Nápoje,500 ml,7.39,,
 8508,Familia Lieh De Luxe 80%,Nápoje,1 l,27.99,,
 8510,Familia Tuzemský Run 40%,Nápoje,1 l,12.49,,
 8554,Familia Vodka De luxe 40%,Nápoje,1 l,12.49,,
-40100,Familia Vodka Premium 38%,Nápoje,700 ml,10.99,,
 29530,FAMILY Roládka,Mliečne a chladené,360 g,3.52,,
 47710,Fanta Crimson Cherry sýtený nápoj,Nápoje,"1,5 l",2.49,,
 47708,Fanta Crimson Cherry sýtený nápoj,Nápoje,330 ml,1.19,,
@@ -2086,7 +2115,7 @@ id,product,category,pack,price,sale_price,sale_until
 48088,Fatra Prírodná minerálna voda sýtená,Nápoje,500 ml,1.19,,
 48086,Fatra Prírodná minerálna voda sýtená,Nápoje,330 ml,0.89,,
 6928,"Fatra Prírodná minerálna voda sýtená, 6x1L",Nápoje,6 l,7.99,,
-30364,Fattorie Garofalo Garofalo Bufala Mozzarella DOP,Mliečne a chladené,125 g,3.49,,
+30364,Fattorie Garofalo Garofalo Bufala Mozzarella DOP,Mliečne a chladené,125 g,3.49,2.59,2026-12-04
 43978,Fazuľa škvrnitá veľká,Trvanlivé,400 g,3.59,,
 7938,Fazuľové lusky guľaté,Ovocie a zelenina,500 g,4.99,,
 7754,"Feferónka Habanero červená, čerstvá, pálivosť 9",Ovocie a zelenina,50 g,1.79,,
@@ -2097,7 +2126,7 @@ id,product,category,pack,price,sale_price,sale_until
 13706,Fekolini Pierre Baguette Bageta debrecínska,Údeniny a lahôdky,210 g,4.39,,
 13696,Fekolini Pierre Baguette Bageta kuracie stripsy,Údeniny a lahôdky,240 g,4.39,,
 13670,Fekolini Pierre Baguette Sendvič tuniakový,Údeniny a lahôdky,200 g,4.39,,
-4218,Fenikel,Ovocie a zelenina,670 g,3.48,,
+4218,Fenikel,Ovocie a zelenina,530 g,2.75,,
 43908,Fermato Fermentovaná chilli omáčka,Trvanlivé,200 ml,9.09,,
 43912,Fermato Fermentovaná paradajková zálievka - Bazalka,Trvanlivé,347 ml,8.39,,
 43914,Fermato Fermentovaná paradajková zálievka - Citrón,Trvanlivé,347 ml,8.39,,
@@ -2118,7 +2147,6 @@ id,product,category,pack,price,sale_price,sale_until
 8898,Ferrand Cognac 10 Generations 46%,Nápoje,500 ml,38.99,,
 2764,Ferrero Mon Chéri,Trvanlivé,157 g,6.99,,
 47282,Ferrero Pocket Coffee nanuk,Mrazené,200 ml,6.59,,
-23974,Ferrero Prestige,Trvanlivé,166 g,12.49,,
 47284,Ferrero Raffaello Peach & Hibiscus nanuk,Mrazené,180 ml,5.69,,
 39700,Ferrero Rocher Diamant,Trvanlivé,300 g,17.49,,
 20382,Ferrero Rocher mliečna čokoláda s lieskovými orieškami,Trvanlivé,90 g,2.79,,
@@ -2146,12 +2174,13 @@ id,product,category,pack,price,sale_price,sale_until
 44016,Figaro Siesta kokosová čokoládová tyčinka,Trvanlivé,45 g,0.86,,
 40718,Figaro Siesta mliečna oblátka,Trvanlivé,45 g,0.86,,
 30082,Figaro Snehulky mentol,Trvanlivé,90 g,1.39,0.99,2026-12-01
+24708,Figaro Šišky plnené vaječným a čokoládovým likérom,Trvanlivé,220 g,12.49,,
 24710,Figaro Šišky plnené whisky a cherry likérom,Trvanlivé,220 g,12.49,,
 24562,Figaro Yami Salónky želé pomaranč,Trvanlivé,450 g,15.49,,
 29946,Figaro Yami želé tyčinka v čokoláde malina,Trvanlivé,25 g,0.55,,
 29934,Figaro Yami želé tyčinka v čokoláde s pomarančovou kôrou,Trvanlivé,25 g,0.55,,
 26594,"Figy, tácka",Ovocie a zelenina,4 ks,4.29,,
-8848,Fine Destillery Marhuľovica Exclusive 52%,Nápoje,500 ml,36.99,,
+8634,Fine Destillery Borovička 40%,Nápoje,700 ml,22.99,,
 35052,Fine Life 100% Jablko,Nápoje,1 l,0.99,,
 35060,Fine Life 100% Jablko,Nápoje,200 ml,0.39,,
 35054,Fine Life 100% Multivitamín,Nápoje,1 l,1.19,,
@@ -2222,6 +2251,7 @@ id,product,category,pack,price,sale_price,sale_until
 37312,Fine Life Eidam neúdený 30% plátky,Mliečne a chladené,100 g,0.92,,
 37284,Fine Life Eidam údený 30% plátky,Mliečne a chladené,100 g,0.92,,
 38448,Fine Life Exclusive mandle v čokoláde,Trvanlivé,200 g,6.99,,
+30128,Fine Life Fajnuk kokos,Mrazené,35 g,0.45,,
 30126,Fine Life FAJNUK malina v bielej čokoláde,Mrazené,51 g,0.58,,
 29808,Fine Life FAJNUK tvaroh,Mrazené,47 g,0.58,,
 3114,"Fine Life Farfalle, semolinové cestoviny",Trvanlivé,500 g,0.95,,
@@ -2340,7 +2370,7 @@ id,product,category,pack,price,sale_price,sale_until
 56600,Fine Life Paradajky balené,Ovocie a zelenina,1 kg,3.19,,
 17848,Fine Life Paradajky krájané,Trvanlivé,400 g,0.79,,
 17850,Fine Life Paradajky lúpané,Trvanlivé,400 g,0.99,,
-48554,Fine Life Paradajky sušené,Trvanlivé,280 g,4.19,,
+48554,Fine Life Paradajky sušené,Trvanlivé,280 g,4.19,2.99,2026-12-04
 12150,Fine Life Parenica neúdená,Mliečne a chladené,120 g,1.65,,
 1650,Fine Life Parenica údená,Mliečne a chladené,120 g,1.65,,
 3156,Fine Life Parížsky šalát,Údeniny a lahôdky,140 g,0.89,,
@@ -2393,6 +2423,7 @@ id,product,category,pack,price,sale_price,sale_until
 2894,Fine Life Šunka od kosti najvyššej kvality (95% mäso),Údeniny a lahôdky,100 g,1.59,,
 7226,Fine Life Šunka pre deti najvyššej kvality shaved (92% mäso),Údeniny a lahôdky,100 g,1.75,,
 2552,Fine Life Šunková saláma plátky,Údeniny a lahôdky,100 g,1.25,,
+13600,Fine Life Tagliatelle cestoviny,Trvanlivé,500 g,2.49,,
 22122,Fine Life Tatárska omáčka,Mliečne a chladené,340 g,1.49,,
 10394,Fine Life Termix kakao,Mliečne a chladené,90 g,0.49,,
 10396,Fine Life Termix vanilka,Mliečne a chladené,90 g,0.49,,
@@ -2411,7 +2442,7 @@ id,product,category,pack,price,sale_price,sale_until
 30944,Fine Life Tvaroh jemný polotučný,Mliečne a chladené,250 g,0.82,,
 30946,Fine Life Tvaroh jemný tučný,Mliečne a chladené,250 g,0.98,,
 48078,Fine Life Tymián drvený sušený,Trvanlivé,10 g,0.36,,
-13898,Fine Life Údená makrela celá váakum,Mäso a ryby,370 g,5.55,4.7,2026-12-01
+13898,Fine Life Údená makrela celá váakum,Mäso a ryby,380 g,5.7,4.82,2026-12-01
 3066,Fine Life Údené nite,Mliečne a chladené,100 g,1.69,,
 27278,Fine Life Uhorky kvasené 7 - 12 cm,Trvanlivé,800 g,2.69,,
 55916,"Fine Life UHT mlieko 1,5 % bezlaktózové",Mliečne a chladené,1 l,1.39,0.89,2026-12-01
@@ -2437,8 +2468,8 @@ id,product,category,pack,price,sale_price,sale_until
 17606,"Fine Life Zemiaky, neskoré, varný typ B",Ovocie a zelenina,"1,5 kg",1.89,1.59,2026-12-01
 48066,Fine Life Zmes na ryby,Trvanlivé,25 g,0.38,,
 22120,Fine Life Želatína plátky,Trvanlivé,10 g,1.15,,
-19796,Finlandia 40% vodka,Nápoje,700 ml,17.99,,
 28578,Finlandia 40% vodka,Nápoje,500 ml,13.99,,
+19796,Finlandia 40% vodka,Nápoje,700 ml,17.99,,
 20348,"Finlandia Coconut 37,5% vodka",Nápoje,700 ml,17.49,,
 3388,Finlandia Vodka (40%),Nápoje,1 l,17.99,,
 1010,Fino Fresco Šalát Mesclun nepraný kvetový,Ovocie a zelenina,125 g,2.19,,
@@ -2485,7 +2516,6 @@ id,product,category,pack,price,sale_price,sale_until
 3040,Four Roses Bourbon 40%,Nápoje,700 ml,20.99,,
 30634,Fragile Zmrzlina jahodovo-citrónová,Mrazené,150 ml,0.99,,
 43872,FRANC LIZÊR Spumante Blanc de Blancs nealkoholické,Nápoje,750 ml,13.49,,
-36740,François Martenot Bourgogne Pinot Noir,Nápoje,750 ml,19.49,,
 36738,François Martenot Chardonnay,Nápoje,750 ml,15.99,,
 28292,Franklin & Sons Light tonic,Nápoje,200 ml,2.09,,
 7474,Franklin & Sons Malinová limonáda,Nápoje,275 ml,2.35,,
@@ -2551,7 +2581,7 @@ id,product,category,pack,price,sale_price,sale_until
 8444,Freixenet Cordon Negro šumivé víno suché,Nápoje,750 ml,8.99,,
 8440,Freixenet Prosecco D.O.C.,Nápoje,750 ml,13.49,,
 42150,Frescobaldi NIPOZZANO Chianti Rufina Riserva,Nápoje,750 ml,22.99,,
-42126,Freschi di Natura Pesto Con Basilico Genovese,Údeniny a lahôdky,330 g,6.19,,
+42126,Freschi di Natura Pesto Con Basilico Genovese,Údeniny a lahôdky,330 g,6.19,4.99,2026-12-04
 1536,"Fria Bagetky viaczrnné bezlepkové, 4x70g",Mrazené,280 g,5.59,,
 18094,"Fria Bezlepkové škoricové slimáky 4×57,5 g",Pekáreň a cukráreň,230 g,6.89,,
 4120,Friall Falafel,Mrazené,1 kg,11.99,,
@@ -2565,7 +2595,6 @@ id,product,category,pack,price,sale_price,sale_until
 9610,Frigoexim Pangas filety Welltrimed glazúra 20%,Mrazené,1 kg,8.39,,
 2160,Frigoexim Tilapie filé,Mrazené,750 g,11.99,,
 12520,Fritol Fritovací olej,Trvanlivé,2 l,7.49,,
-8768,Frndžalica 65%,Nápoje,700 ml,47.99,,
 19496,Fromage Des Ducs Camembert,Mliečne a chladené,220 g,4.19,,
 56184,FRoSTA Gnocchi s kuracím mäsom,Mrazené,450 g,5.99,,
 56192,FRoSTA Indian Butter Chicken s kuracím mäsom,Mrazené,450 g,4.89,,
@@ -2585,6 +2614,7 @@ id,product,category,pack,price,sale_price,sale_until
 6530,Frozitta Fazuľová polievka,Mrazené,450 g,2.59,,
 6466,Frozitta Gulášová polievka,Mrazené,450 g,2.59,,
 41882,Frtus Winery Milia Premium,Nápoje,750 ml,15.99,,
+36314,Frucona Barack ízű szeszesital 38%,Nápoje,500 ml,7.49,6.39,2026-12-01
 36304,Frucona Cseresznye ízű szeszesital 38%,Nápoje,500 ml,7.49,,
 9048,Frucona Gazdova Čerešňa 35%,Nápoje,500 ml,6.59,,
 9154,Frucona Gazdova Hruška 38%,Nápoje,500 ml,6.39,,
@@ -2592,6 +2622,7 @@ id,product,category,pack,price,sale_price,sale_until
 9106,Frucona Gazdova Malina 38%,Nápoje,500 ml,6.39,,
 9152,Frucona Gazdova Marhuľa 35%,Nápoje,500 ml,6.59,,
 35596,Frucona Gazdovská marhuľovica 43%,Nápoje,700 ml,20.99,,
+35854,Frucona Gazdovská slivovica 52%,Nápoje,1 l,35.99,,
 8598,Frucona Gazdovská Slivovica 52%,Nápoje,700 ml,20.99,,
 36306,Frucona Karpatská horká bylinný likér 30%,Nápoje,1 l,11.49,,
 24904,Frucona R Tuzemský 38%,Nápoje,500 ml,7.19,,
@@ -2599,9 +2630,10 @@ id,product,category,pack,price,sale_price,sale_until
 55876,Frucona Slovenská borovička 38%,Nápoje,500 ml,7.19,,
 36316,Frucona Spišská borovička 38%,Nápoje,700 ml,10.49,,
 36298,Frucona Spišská borovička 38%,Nápoje,1 l,15.49,,
+35598,Frucona Spišská borovička 38%,Nápoje,500 ml,7.69,,
+36318,Frucona Spišská borovička 38%,Nápoje,"1,5 l",46.99,,
 36300,Frucona Spišská borovička dubové drievko 38%,Nápoje,700 ml,10.49,,
 23712,Frucona TRIUMPH Vodka 38%,Nápoje,700 ml,11.49,,
-55886,Frucona Vodka 38%,Nápoje,1 l,13.99,,
 35856,Frucona Vodka jemná 38%,Nápoje,500 ml,7.19,,
 36310,Frucona Zlatá borovička Cassovia 38%,Nápoje,700 ml,17.99,,
 1820,Fruiss Malina,Nápoje,700 ml,6.49,,
@@ -2651,6 +2683,7 @@ id,product,category,pack,price,sale_price,sale_until
 652,Gastro Lososová pasta,Údeniny a lahôdky,100 g,3.99,,
 22962,Gastro Menu Aspiková kvetinka,Údeniny a lahôdky,150 g,1.89,1.29,2026-12-01
 22960,Gastro Menu Aspiková miska,Údeniny a lahôdky,150 g,1.89,1.29,2026-12-01
+1000022960,Gastro Menu Aspiková miska,Údeniny a lahôdky,150 g,1.89,1.16,2026-11-30
 10988,Gastro Menu Cesnaková pomazánka so syrom,Údeniny a lahôdky,120 g,1.79,,
 5562,Gastro Menu Cesnaková vegan pomazánka,Zdravie a životný štýl,120 g,1.35,,
 38850,Gastro Menu Feferónový šalát,Údeniny a lahôdky,140 g,0.89,,
@@ -2697,9 +2730,9 @@ id,product,category,pack,price,sale_price,sale_until
 7924,Gaštany predvarené,Ovocie a zelenina,400 g,8.89,,
 17764,Gazda Biely jogurt z 55 % ovčieho mlieka,Mliečne a chladené,145 g,0.95,,
 36406,Gelato di Natura Amarena zmrzlina,Mrazené,"2,5 l",19.99,,
-36408,Gelato di Natura Mango zmrzlina,Mrazené,"2,5 l",19.99,,
+36408,Gelato di Natura Mango zmrzlina,Mrazené,"2,5 l",19.99,14.99,2026-12-04
 12010,Gelato di Natura Panna cotta/ pannacotta zmrzlina,Mrazené,"2,5 l",19.99,,
-36410,Gelato di Natura Tiramisu zmrzlina,Mrazené,"2,5 l",19.99,,
+36410,Gelato di Natura Tiramisu zmrzlina,Mrazené,"2,5 l",19.99,14.99,2026-12-04
 36412,Gelato di Natura Vanilla zmrzlina,Mrazené,"2,5 l",19.99,,
 11926,Gemerka Botanica Mg a Ca minerálna voda rakytník,Nápoje,"1,5 l",1.45,1.09,2026-12-01
 38628,Gemerka Botanica s príchuťou citrón a mäta jemne perlivá,Nápoje,"1,5 l",1.45,1.09,2026-12-01
@@ -2798,17 +2831,16 @@ id,product,category,pack,price,sale_price,sale_until
 36928,Giffard Grenadína sirup,Nápoje,1 l,16.49,,
 28300,Giffard kokos sirup,Nápoje,1 l,21.99,,
 28302,Giffard limetka sirup,Nápoje,1 l,18.99,,
-8686,"Gin Gin 43,2%",Nápoje,700 ml,35.99,,
 38796,"Gin Mare Lucerna 42,7% darčekové balenie",Nápoje,700 ml,53.99,,
 50692,Ginno 100 % zázvorové kocky,Mrazené,440 g,30.99,,
 31272,GLEN BROCH Single Malt Scotch Whisky,Nápoje,700 ml,21.99,,
 8590,Glenfiddich 12 y.o. Whisky 40%,Nápoje,700 ml,42.99,,
-56876,Glenfiddich 12 YO Single Malt Whisky 40 % + 2 poháre,Nápoje,700 ml,53.99,,
-8592,Glenfiddich 15 y.o. Whisky 40%,Nápoje,700 ml,60.99,,
 26772,Glenfiddich 18 y.o. 40% darčekové balenie,Nápoje,700 ml,93.99,,
+31274,Glengannon Whisky,Nápoje,700 ml,20.99,,
 37864,GLÜHWEIN Hüttenglut varené víno,Nápoje,1 l,2.99,,
 19370,Goat Farm Kozí a ovčí syr plátky,Mliečne a chladené,100 g,2.79,1.79,2026-12-01
 37298,Goat Farm Kozí syr,Mliečne a chladené,130 g,3.79,,
+36256,Gold of Mauritius Classic Edition 40%,Nápoje,700 ml,48.99,,
 43282,Gold plus Cereálna tyčinka s kokosom,Trvanlivé,40 g,1.15,,
 43286,Gold plus Cereálna tyčinka s lieskovými orieškami,Trvanlivé,40 g,1.15,,
 43284,Gold plus Cereálna tyčinka so sušenými brusnicami,Trvanlivé,40 g,1.15,,
@@ -2834,8 +2866,11 @@ id,product,category,pack,price,sale_price,sale_until
 48888,Goodlok x Košík Cold press shot Immune,Nápoje,60 ml,2.99,,
 1000048888,Goodlok x Košík Cold press shot Immune,Nápoje,60 ml,2.99,2.69,2026-11-27
 48870,Goodlok x Košík Cold press šťava Celery Hydrate,Nápoje,250 ml,3.79,,
+1000048870,Goodlok x Košík Cold press šťava Celery Hydrate,Nápoje,250 ml,3.79,3.41,2026-11-27
 48868,Goodlok x Košík Cold press šťava Green Reset,Nápoje,250 ml,3.79,,
+1000048868,Goodlok x Košík Cold press šťava Green Reset,Nápoje,250 ml,3.79,3.41,2026-11-27
 48866,Goodlok x Košík Cold press šťava Root Balance,Nápoje,250 ml,3.79,,
+1000048866,Goodlok x Košík Cold press šťava Root Balance,Nápoje,250 ml,3.79,3.41,2026-11-27
 48880,Goodlok x Košík Kolagénový kefír Cacao Velvet,Mliečne a chladené,250 g,3.29,,
 48884,Goodlok x Košík Kolagénový kefír Matcha Velve,Mliečne a chladené,250 g,3.29,,
 48876,Goodlok x Košík Kombucha Jasmine Haze,Nápoje,250 ml,4.19,,
@@ -2843,7 +2878,6 @@ id,product,category,pack,price,sale_price,sale_until
 48874,Goodlok x Košík Kombucha Raw,Nápoje,250 ml,4.19,,
 1000048874,Goodlok x Košík Kombucha Raw,Nápoje,250 ml,4.19,3.77,2026-11-30
 48882,Goodlok x Košík Proteínový kefír Banana Velvet,Mliečne a chladené,250 g,3.29,,
-8588,Goral Slivovica 52%,Nápoje,700 ml,37.99,,
 10752,Goral Šproty údené v oleji,Trvanlivé,160 g,1.99,,
 56874,Goral Vodka 40 % + Borovička 40 % + 3 poháre,Nápoje,"1,4 l",37.99,,
 9284,Goral Vodka 40%,Nápoje,700 ml,14.99,,
@@ -2925,7 +2959,6 @@ id,product,category,pack,price,sale_price,sale_until
 15190,Habánské Sklepy Chardonnay,Nápoje,750 ml,5.59,,
 15192,Habánské Sklepy Rulanské šedé,Nápoje,750 ml,5.59,,
 15194,Habánské Sklepy Veltlínske zelené,Nápoje,750 ml,5.29,,
-1280,Halls Bonbóny EXTRA STRONG mentol a eukalyptus,Trvanlivé,34 g,0.89,,
 47536,Halls Cukríky Coolwave mentol a eukalyptus,Trvanlivé,34 g,0.89,,
 1000047536,Halls Cukríky Coolwave mentol a eukalyptus,Trvanlivé,34 g,0.89,0.8,2026-12-10
 34834,Hamánek Piškóty bezgluténové,Trvanlivé,120 g,1.35,,
@@ -2984,6 +3017,7 @@ id,product,category,pack,price,sale_price,sale_until
 19966,Hamé Paštéta Pionier,Trvanlivé,160 g,1.49,,
 10718,Hamé Paštéta s údeným mäsom,Trvanlivé,48 g,0.86,,
 34186,Hamé Paštéta škvarková,Trvanlivé,75 g,0.99,,
+49934,Hamé Paštéta z údeného mäsa,Trvanlivé,75 g,0.99,,
 10892,Hamé Pečeňová paštéta,Trvanlivé,160 g,1.55,,
 12174,Hamé Pečeňová tehla,Údeniny a lahôdky,225 g,1.99,,
 49936,Hamé Pečeňovka,Trvanlivé,160 g,1.55,,
@@ -3009,7 +3043,7 @@ id,product,category,pack,price,sale_price,sale_until
 19798,"Hamsik Aqua sýtená 6x 1,5 l vratná PET fľaša",Nápoje,9 l,4.99,,
 8378,Hamsik Prosecco D.O.C. Treviso,Nápoje,200 ml,5.49,,
 8468,Hamsik Prosecco Extra Dry,Nápoje,750 ml,9.99,,
-8454,Hamsik Prosecco Treviso D.O.C. Extra Dry,Nápoje,750 ml,12.49,,
+8470,Hamsik Valdobbiadene Prosecco D.O.C.G.,Nápoje,750 ml,17.99,,
 36454,Hanácká Griotte 25%,Nápoje,700 ml,11.99,,
 33880,"Hanácká Vodka 37,5%",Nápoje,700 ml,10.99,,
 7110,Handl Tirolský sušený bok údený,Údeniny a lahôdky,300 g,13.99,,
@@ -3045,7 +3079,6 @@ id,product,category,pack,price,sale_price,sale_until
 21956,Happylife Happy Moments koliečka jahoda a kokos,Trvanlivé,38 g,1.69,,
 55332,"Harahorn Gin & Tonic 6,5%",Nápoje,250 ml,4.69,,
 55330,"Harahorn Pink Collins 6,5%",Nápoje,250 ml,4.69,,
-55870,Harahorn pink gin 40%,Nápoje,500 ml,38.99,,
 55868,Harahorn Tropical Gin 40%,Nápoje,500 ml,38.99,,
 42584,Haribo Anguria želé cukríky,Trvanlivé,175 g,2.39,1.19,2026-12-01
 36960,Haribo Balla stixx jahoda,Trvanlivé,80 g,1.19,,
@@ -3081,6 +3114,7 @@ id,product,category,pack,price,sale_price,sale_until
 11666,Hašlerky Originál cukríky,Trvanlivé,90 g,1.35,,
 11626,"Hašlerky Zelené Jablko, cukríky s príchuťou bylín, mentolu a jabĺk",Trvanlivé,90 g,1.35,,
 9034,Havana Anejo 7 Aňos 40%,Nápoje,700 ml,27.99,,
+28718,"Havana Club Club Original 3 ročná 37,5%",Nápoje,1 l,21.99,,
 28716,"Havana Club Especial 37,5 %",Nápoje,700 ml,17.49,,
 50996,Havana Club Lime Mojito,Nápoje,250 ml,2.49,,
 48114,"Havana Club Original 3 ročná 37,5%",Nápoje,700 ml,17.49,,
@@ -3198,6 +3232,7 @@ id,product,category,pack,price,sale_price,sale_until
 16436,Hels Ocot kvasný liehový,Trvanlivé,1 l,0.79,,
 48122,"Hendrick's Another 41,4%",Nápoje,700 ml,32.99,,
 2108,"Hendrick's Gin (41,40%)",Nápoje,700 ml,32.99,,
+38418,Hendrick's Gin 41.4% + šálka (darčekové balenie),Nápoje,700 ml,39.99,,
 25608,Hennessy V.S.O.P. 40%,Nápoje,700 ml,90.99,,
 40210,Hennessy Very Special 40%,Nápoje,350 ml,25.99,,
 42796,Hennessy Very Special 40% - darčekové balenie,Nápoje,700 ml,43.99,,
@@ -3213,10 +3248,10 @@ id,product,category,pack,price,sale_price,sale_until
 40196,HERBERRY GIN 44%,Nápoje,700 ml,42.99,,
 48528,Hermelín Protein,Mliečne a chladené,100 g,1.65,1.39,2026-12-01
 598,"Hermes Čierne olivy ""Kalamata"" s kôstkou",Trvanlivé,950 g,11.49,,
-838,Hermes Čierne olivy Kalamata s kôstkou,Trvanlivé,150 g,3.09,,
+838,Hermes Čierne olivy Kalamata s kôstkou,Trvanlivé,150 g,3.09,2.19,2026-12-04
 718,"Hermes Grécky chlieb pita, 10 ks",Mrazené,750 g,4.99,,
-904,Hermes Greek Food Zelené olivy s mandľou,Trvanlivé,150 g,4.29,,
-22964,Hermes Olivy zelené bez kôstky,Trvanlivé,140 g,2.99,,
+904,Hermes Greek Food Zelené olivy s mandľou,Trvanlivé,150 g,4.29,2.99,2026-12-04
+22964,Hermes Olivy zelené bez kôstky,Trvanlivé,140 g,2.99,2.09,2026-12-04
 830,Hermes Zelené olivy bez kôstky,Trvanlivé,950 g,11.49,,
 902,Hermes Zelené olivy s paprikovou pastou,Trvanlivé,150 g,4.29,,
 54344,HiPP BIO mliečna kaša na dobrú noc,Deti,250 g,6.09,,
@@ -3304,7 +3339,7 @@ id,product,category,pack,price,sale_price,sale_until
 37210,"Hruška zelená, 1ks",Ovocie a zelenina,90 g,0.2,,
 21562,Hrušky Guyot,Ovocie a zelenina,4 ks,1.89,1.49,2026-12-01
 7158,Hsh Hydinová tlačenka,Údeniny a lahôdky,350 g,2.39,,
-27004,Hsh Polievková zmes,Mrazené,"1,27 kg",3.42,,
+27004,Hsh Polievková zmes,Mrazené,"1,2 kg",3.23,,
 33744,Hubert Blanc šumivý nápoj nealkoholický,Nápoje,750 ml,5.49,,
 8466,Hubert Club Ice sekt,Nápoje,750 ml,5.99,,
 39506,"Hubert DE LUXE 6x200ml, darčekové balenie",Nápoje,"1,2 l",16.49,,
@@ -3380,21 +3415,21 @@ id,product,category,pack,price,sale_price,sale_until
 27468,Chateau Topoľčianky PINOT GRIS Orange DSC,Nápoje,750 ml,9.99,7.09,2026-12-01
 15210,Chateau Topoľčianky Pinot noir výber z hrozna,Nápoje,750 ml,9.79,,
 35258,Chateau Topoľčianky Prezident Rosé nealko,Nápoje,750 ml,7.59,,
+39184,Chateau Topoľčianky Rizling rýnsky – Slamové víno,Nápoje,375 ml,20.99,,
 40092,Chateau Topoľčianky Rizling vlašský,Nápoje,1 l,4.19,2.99,2026-12-01
 39188,Chateau Topoľčianky Rizling vlašský + Pinot Noir 2x750 ml,Nápoje,"1,5 l",24.99,,
 40084,Chateau Topoľčianky Rulandské Modré Rosé – Mladé víno,Nápoje,750 ml,3.59,,
 15246,Chateau Topoľčianky Rulandské šedé výber z hrozna,Nápoje,750 ml,11.99,,
 56880,Chateau Topoľčianky Sekt 1933 Prestige Cuvée Brut,Nápoje,3 l,121.99,,
 49740,Chateau Topoľčianky Vinohradnícky Výber Váh bobuľový výber,Nápoje,750 ml,11.49,9.99,2026-12-01
-36242,Chateau Topoľčianky VZT DSC Nitria Rosé,Nápoje,750 ml,9.99,,
 25534,Chateau Topoľčianky VZT Frizzante Blanc dry vratná plechovka,Nápoje,250 ml,2.29,,
 836,Chavroux Kozí syr,Mliečne a chladené,150 g,4.79,,
 30962,Cheesupers Syrové tyčinky,Mliečne a chladené,80 g,2.39,,
 43710,Chef Grade Kečup,Trvanlivé,500 g,5.19,,
-34414,Chef Grade Okurky,Trvanlivé,670 g,7.99,,
+34414,Chef Grade Okurky,Trvanlivé,670 g,5.99,,
 12856,Chef Tekutý koncentrát hovädzí,Trvanlivé,1 l,35.99,,
 12888,Chef Tekutý koncentrát kurací,Trvanlivé,1 l,35.99,,
-18542,Cherry paradajky datlové červené,Ovocie a zelenina,250 g,2.99,,
+18542,Cherry paradajky datlové červené,Ovocie a zelenina,250 g,2.99,2.39,2026-12-04
 31904,"Cherry paradajky datľové oranžové, shaker",Ovocie a zelenina,250 g,3.99,,
 39384,"Cherry paradajky, vanička",Ovocie a zelenina,500 g,3.99,3.29,2026-12-01
 28754,"Chilli papričky červené, pálivosť 5",Ovocie a zelenina,250 g,4.99,,
@@ -3419,7 +3454,7 @@ id,product,category,pack,price,sale_price,sale_until
 56782,Chocoland Nugeta vianočná arašidová,Trvanlivé,400 g,5.79,,
 40660,Chodura Pivná saláma plátky,Údeniny a lahôdky,100 g,1.65,,
 55288,Chorizo Extra saláma krájaná,Údeniny a lahôdky,500 g,7.29,,
-4210,"Chren, 1ks",Ovocie a zelenina,200 g,1.96,,
+4210,"Chren, 1ks",Ovocie a zelenina,180 g,1.76,,
 928,"Christanell Prosciutto Crudo Dolce – sušená šunka plátky, taliansky typ",Údeniny a lahôdky,100 g,3.89,,
 16950,Christis Original Halloumi syr,Mliečne a chladené,200 g,3.99,,
 49914,Chung Jung One Morské riasy sušené,Údeniny a lahôdky,150 g,11.49,,
@@ -3432,7 +3467,7 @@ id,product,category,pack,price,sale_price,sale_until
 25520,I Heart Prosecco Frizzante Doc,Nápoje,750 ml,5.89,,
 45920,Iberico pluma,Mrazené,1 kg,20.99,,
 45922,Iberico secreto,Mrazené,1 kg,15.49,,
-22872,"Ibis Bresaola della Valtellina IGP – sušené hovädzie mäso plátky, talianska špecialita",Údeniny a lahôdky,80 g,5.99,,
+22872,"Ibis Bresaola della Valtellina IGP – sušené hovädzie mäso plátky, talianska špecialita",Údeniny a lahôdky,80 g,5.99,4.39,2026-12-04
 25814,Ibis Coppa,Údeniny a lahôdky,100 g,4.39,,
 22870,Ibis Prosciutto Crudo ATP,Údeniny a lahôdky,100 g,4.19,,
 2646,Ice Service Drvený ľad,Mrazené,2 kg,2.79,,
@@ -3451,10 +3486,10 @@ id,product,category,pack,price,sale_price,sale_until
 34178,Ideál Vaječné fliačky,Trvanlivé,400 g,0.98,,
 34140,Ideál Vaječné stredné kolienka,Trvanlivé,400 g,1.15,,
 13380,Iglo Rybie prsty bezlepkové,Mrazené,360 g,7.59,,
-13360,Iglo Rybie tyčinky,Mrazené,420 g,6.79,,
 13522,Iglo Rybie tyčinky,Mrazené,280 g,4.79,,
+13360,Iglo Rybie tyčinky,Mrazené,420 g,6.79,,
 42290,Il Palagio Sting Bottle Vermentino,Nápoje,750 ml,18.49,,
-5036,illy Espresso Caffé Classico káva mletá,Nápoje,250 g,11.99,,
+5036,illy Espresso Caffé Classico káva mletá,Nápoje,250 g,11.99,8.99,2026-12-04
 5038,"illy Espresso Caffé káva mletá, bez kofeínu",Nápoje,250 g,11.99,,
 5056,illy Espresso Caffé káva zrnková,Nápoje,250 g,11.99,,
 21150,Imber Cyklam sladidlo,Trvanlivé,,1.59,,
@@ -3486,9 +3521,9 @@ id,product,category,pack,price,sale_price,sale_until
 27366,"Isabel Tuniak v slnečnicovom oleji, filety 3x80 g",Trvanlivé,240 g,5.79,,
 4568,Isofruit Izotonický nápoj grep,Nápoje,500 ml,1.45,,
 4570,Isofruit Izotonický nápoj pomaranč,Nápoje,500 ml,1.45,,
-29714,Istermeat Bravčové rebrá z boku údené,Mäso a ryby,"1,4 kg",7.69,,
+29714,Istermeat Bravčové rebrá z boku údené,Mäso a ryby,"1,3 kg",7.14,,
 13996,Istermeat Domáca klobása,Údeniny a lahôdky,"1,3 kg",12.99,,
-14120,Istermeat Slanina údená z chrbta - Mangalica,Údeniny a lahôdky,560 g,4.92,,
+14120,Istermeat Slanina údená z chrbta - Mangalica,Údeniny a lahôdky,610 g,5.36,,
 17010,Italat Ricotta,Mliečne a chladené,200 g,1.75,,
 24880,J.J WHITLEY Pink cherry gin 38%,Nápoje,700 ml,18.49,,
 36156,"J.P. Chenet Blanc 0,0%",Nápoje,750 ml,4.99,,
@@ -3512,7 +3547,6 @@ id,product,category,pack,price,sale_price,sale_until
 36160,"J.P. Chenet Rouge 0,0%",Nápoje,250 ml,2.59,,
 36240,"J.P. Chenet Sparkling 0,0%",Nápoje,750 ml,8.19,,
 7442,Jablčno Bylinka,Nápoje,275 ml,2.69,,
-7572,"Jablčno Sajder 5,5 %, sklo",Nápoje,750 ml,7.49,,
 7438,Jablčno Tonik,Nápoje,275 ml,2.69,,
 28742,"Jablká červené, vrecko",Ovocie a zelenina,1 kg,1.75,,
 26578,Jablká Evelina,Ovocie a zelenina,6 ks,2.49,,
@@ -3521,13 +3555,13 @@ id,product,category,pack,price,sale_price,sale_until
 8076,"Jablká Golden Delicious, 60+, čerstvé",Ovocie a zelenina,2 kg,3.99,,
 30726,"Jablka Golden Delicious, vrecko",Ovocie a zelenina,1 kg,1.69,,
 1384,"Jablká Mix, 4 ks",Ovocie a zelenina,800 g,1.99,,
-36878,Jablko Evelina 1ks,Ovocie a zelenina,150 g,0.39,,
-37490,"Jablko Gala, 1ks",Ovocie a zelenina,140 g,0.29,,
+36878,Jablko Evelina 1ks,Ovocie a zelenina,140 g,0.36,,
+37490,"Jablko Gala, 1ks",Ovocie a zelenina,130 g,0.27,,
 37208,Jablko Golden Delicious,Ovocie a zelenina,150 g,0.3,,
 37206,"Jablko Golden Delicious, 1ks",Ovocie a zelenina,150 g,0.3,,
 37488,"Jablko Granny Smith, 1ks",Ovocie a zelenina,150 g,0.36,,
-41930,Jablko Red Delicious,Ovocie a zelenina,170 g,0.36,,
-41932,"Jablko Smeralda, 1 ks",Ovocie a zelenina,200 g,0.48,,
+41930,Jablko Red Delicious,Ovocie a zelenina,180 g,0.38,,
+41932,"Jablko Smeralda, 1 ks",Ovocie a zelenina,180 g,0.43,,
 7486,Jablková šťava Evelina 100%,Nápoje,750 ml,3.39,,
 50458,Jack Daniel's & Coca-Cola miešaný nápoj,Nápoje,330 ml,2.99,,
 38810,"Jack Daniel's 40% + poháre 2ks, darčekové balenie",Nápoje,700 ml,33.99,,
@@ -3576,6 +3610,7 @@ id,product,category,pack,price,sale_price,sale_until
 38858,"Jagermeister 35% + panáky 2ks, darčekové balenie",Nápoje,700 ml,22.99,,
 28704,Jagermeister Orange 33%,Nápoje,700 ml,18.99,,
 35724,Jagermeister Orange 33%,Nápoje,500 ml,13.99,,
+28702,Jagermeister Orange 33%,Nápoje,1 l,21.99,,
 38856,"Jagermeister Orange 33% + panáky 2ks, darčekové balenie",Nápoje,700 ml,22.99,,
 55274,"Jagermeister Winter, 25%",Nápoje,700 ml,17.99,,
 39040,Jahňací chrbát,Mrazené,1 kg,54.99,,
@@ -3592,7 +3627,6 @@ id,product,category,pack,price,sale_price,sale_until
 40200,Jameson Single Pot Still 46%,Nápoje,700 ml,63.99,,
 8990,Jameson Whisky 40%,Nápoje,700 ml,18.99,,
 55290,Jamón Serrano šunka krájaná,Údeniny a lahôdky,500 g,12.99,11.79,2026-12-01
-504,Jan II. London Dry Gin 40%,Nápoje,700 ml,19.49,,
 12436,Jana Prírodná minerálna voda,Nápoje,1 l,1.19,,
 11928,Jana Prírodná minerálna voda jahoda a guava,Nápoje,"1,5 l",2.09,,
 7164,"Jana Prírodná minerálna voda, 6x1,5L",Nápoje,9 l,8.19,,
@@ -3623,16 +3657,17 @@ id,product,category,pack,price,sale_price,sale_until
 33592,Jim Jerky Hovädzie sušené mäso s príchuťou chilli sriracha,Zdravie a životný štýl,23 g,3.49,,
 33596,Jim Jerky Morčacie sušené mäso,Zdravie a životný štýl,23 g,3.49,,
 9228,Jogaila Black 38% Rum,Nápoje,700 ml,19.99,,
-8728,Johnnie Walker 18 y.o. 40%,Nápoje,700 ml,119.99,98.09,2026-12-01
 3554,Johnnie Walker Červená štítok Scotch Whisky 40%,Nápoje,700 ml,18.49,14.49,2026-12-01
+36444,Johnnie Walker Gold Label Reserve 40%,Nápoje,700 ml,66.99,54.89,2026-12-01
+11524,Jojo Jahôdky cukríky,Trvanlivé,80 g,1.19,0.89,2026-12-01
 30066,Jojo Jednorožci želé cukríky s ovocnými príchuťami,Trvanlivé,80 g,1.19,0.89,2026-12-01
 11476,Jojo Kyslé dážďovky cukríky,Trvanlivé,80 g,1.19,0.89,2026-12-01
 11474,Jojo Kyslé rybičky cukríky,Trvanlivé,80 g,1.19,0.89,2026-12-01
 47550,Jojo Marshmallow,Trvanlivé,80 g,1.29,0.89,2026-12-01
 11504,Jojo Medvedíky cukríky,Trvanlivé,80 g,1.29,,
 30054,Jojo Medvedíky želé cukríky s ovocnými príchuťami,Trvanlivé,170 g,1.99,,
+11508,Jojo Mixle Pixle kyslé cukríky,Trvanlivé,80 g,1.29,,
 11506,Jojo Mixle Pixle želé cukríky s ovocnými príchuťami,Trvanlivé,80 g,0.99,0.89,2026-12-01
-11734,Jojo Mixle Pixle želé cukríky s ovocnými príchuťami,Trvanlivé,170 g,1.99,,
 33156,Jojo Party Twists marshmallows,Trvanlivé,80 g,0.99,0.89,2026-12-01
 30052,Jojo Smoothies želé cukríky s jogurtovo-ovocnými príchuťami,Trvanlivé,80 g,0.99,0.89,2026-12-01
 33702,Jojo Špuntíci,Trvanlivé,80 g,0.99,0.89,2026-12-01
@@ -3643,6 +3678,7 @@ id,product,category,pack,price,sale_price,sale_until
 43772,JOMO Mramorová bábovka,Pekáreň a cukráreň,400 g,2.69,,
 32912,JOMO Mramorový koláč,Pekáreň a cukráreň,400 g,3.19,,
 32916,JOMO Punčový rez,Pekáreň a cukráreň,330 g,2.79,,
+33892,Jose Cuervo Especial Reposado 38% Tequila,Nápoje,700 ml,22.99,,
 45522,Jupí Extra sirup bazový kvet,Nápoje,700 ml,3.69,,
 45520,Jupí Extra sirup jahoda,Nápoje,700 ml,3.69,,
 45526,Jupí Extra sirup ľadový čaj broskyňa,Nápoje,700 ml,3.69,,
@@ -3668,7 +3704,7 @@ id,product,category,pack,price,sale_price,sale_until
 26868,Jupík Sparky Hype,Nápoje,330 ml,0.85,,
 23228,Jura Comté zrejúci syr 9 mesiacov AOP,Mliečne a chladené,200 g,9.29,,
 16866,Kačacia pečeň,Mrazené,1 kg,9.19,,
-16864,Kačacie chrbáty,Mrazené,"1,4 kg",4.05,,
+16864,Kačacie chrbáty,Mrazené,"1,27 kg",3.67,,
 1236,Kačacie prsia bez kosti s kožou 2x200g,Mrazené,400 g,6.29,,
 54456,Kačacie stehná,Mrazené,500 g,6.49,,
 26664,Kačacie stehná,Mrazené,550 g,9.89,6.39,2026-12-01
@@ -3702,9 +3738,9 @@ id,product,category,pack,price,sale_price,sale_until
 10488,Kapucín Smotana do kávy 10x10ml 10%,Mliečne a chladené,100 ml,0.65,,
 12384,Kapucín Šľahačka v spreji rastlinná 18%,Mliečne a chladené,250 g,2.19,,
 1172,Kapusta biela kvasená,Ovocie a zelenina,1 kg,1.49,,
-44314,Kapusta biela neskorá,Ovocie a zelenina,"1,54 kg",1.99,,
+44314,Kapusta biela neskorá,Ovocie a zelenina,"1,68 kg",2.17,,
 1106,"Kapusta biela, fľaša",Nápoje,500 ml,1.89,,
-25252,Kapusta červená,Ovocie a zelenina,"1,56 kg",2.32,,
+25252,Kapusta červená,Ovocie a zelenina,"1,66 kg",2.47,,
 27272,"Kapusta hlávková biela, strúhaná",Ovocie a zelenina,1 kg,2.39,,
 27274,"Kapusta hlávková červená, strúhaná",Ovocie a zelenina,1 kg,2.69,,
 7990,Kapusta Kimchi classic heat,Trvanlivé,390 g,10.49,,
@@ -3745,7 +3781,6 @@ id,product,category,pack,price,sale_price,sale_until
 33332,Karička Syr typu halloumi na panvicu a gril med a horčica,Mliečne a chladené,200 g,3.99,,
 48440,Karička Tavený smotanový syr,Mliečne a chladené,125 g,1.59,,
 23258,"Karička Tavený syr, 8ks",Mliečne a chladené,125 g,1.59,,
-8774,Karloff Czechoslovakia Vodka 40%,Nápoje,700 ml,20.99,,
 27822,Karloff Tatranský čaj 52% original,Nápoje,350 ml,14.49,,
 8834,Karloff Tatranský čaj 62% Forest Fruit 62%,Nápoje,700 ml,24.99,,
 8798,Karloff Tatranský čaj Coconut 22%,Nápoje,700 ml,14.99,,
@@ -3753,13 +3788,11 @@ id,product,category,pack,price,sale_price,sale_until
 9134,Karloff Tatranský čaj Outlaw 72%,Nápoje,700 ml,23.99,,
 41972,Karpatská Perla BIO Dunaj,Nápoje,750 ml,13.99,,
 16256,Karpatská Perla Devín,Nápoje,750 ml,14.99,,
-14844,Karpatská Perla Pinot Gris,Nápoje,750 ml,14.99,,
 41974,Karpatská Perla Pinot Noir,Nápoje,750 ml,15.99,,
-8652,Karpatské Brandy Hubert J.E. Exclusive 40%,Nápoje,700 ml,137.99,,
+15496,Karpatská Perla Rizling rýnsky,Nápoje,750 ml,14.99,,
 8936,Karpatské Brandy KB 36% Škorica Klinček,Nápoje,700 ml,10.99,,
 8934,Karpatské Brandy KB 40%,Nápoje,700 ml,10.99,,
 9158,Karpatské Brandy KB 40%,Nápoje,500 ml,8.99,,
-8940,Karpatské Brandy s hruškou 36%,Nápoje,700 ml,10.99,,
 36442,Karpatské Brandy Špeciál Chardonnay 42%,Nápoje,700 ml,39.99,,
 8654,Karpatské Brandy Špeciál KB 40% - darčekové balenie,Nápoje,700 ml,35.99,,
 8640,Karpatské Brandy Špeciál V.S. 38%,Nápoje,700 ml,25.99,,
@@ -3767,7 +3800,7 @@ id,product,category,pack,price,sale_price,sale_until
 40198,KAVALERO Coffee Liqueur 25%,Nápoje,700 ml,21.99,,
 41688,Kávoviny Melta Originál kávovinová zmes,Nápoje,500 g,2.99,,
 39430,Kávoviny Piškóty špaldové perníkové,Trvanlivé,120 g,1.99,,
-1456,"Kel hlávkový, fólia",Ovocie a zelenina,"1,23 kg",2.45,,
+1456,"Kel hlávkový, fólia",Ovocie a zelenina,"1,45 kg",2.89,,
 55752,Kel kučeravý čierny,Ovocie a zelenina,500 g,7.5,,
 42918,Kel kučeravý zelený,Ovocie a zelenina,500 g,7.5,,
 31174,Kel ružičkový,Ovocie a zelenina,500 g,2.49,,
@@ -3792,10 +3825,11 @@ id,product,category,pack,price,sale_price,sale_until
 54888,KIMBO Aroma Gold,Nápoje,250 g,10.49,7.09,2026-12-01
 5048,KIMBO Aroma Gold 100% Arabica káva zrnková,Nápoje,250 g,9.09,,
 54890,KIMBO Aroma Intenso,Nápoje,1 kg,27.99,,
-25932,KIMBO Crema Suprema káva zrnková,Nápoje,1 kg,30.99,,
+25932,KIMBO Crema Suprema káva zrnková,Nápoje,1 kg,22.99,,
 25930,KIMBO Espresso Vending Audace káva zrnková,Nápoje,1 kg,19.99,,
 24648,Kinder Adventný kalendár,Trvanlivé,123 g,9.39,,
 24406,Kinder Adventný kalendár,Trvanlivé,184 g,16.99,,
+36850,Kinder Aventný kalendár mix,Trvanlivé,150 g,13.49,,
 33308,Kinder Bueno 5x43 g (5 ks),Trvanlivé,215 g,4.59,,
 49344,Kinder Bueno Dark,Trvanlivé,43 g,1.09,,
 2548,Kinder Bueno Mini Wafer s mliečnou čokoládou a mliekom a náplňou lieskových orechov,Trvanlivé,108 g,4.39,,
@@ -3813,12 +3847,12 @@ id,product,category,pack,price,sale_price,sale_until
 55202,Kinder Čokoládové guľôčky s mliečnou a karamelovou náplňou,Trvanlivé,90 g,6.29,,
 3766,Kinder Čokoládové tyčinky mliečnej čokolády s náplňou mlieka,Trvanlivé,100 g,2.19,1.39,2026-12-01
 49340,Kinder DUO sušienky s jemnou mliečnou a bielou čokoládou 12 ks,Trvanlivé,150 g,5.49,,
-36862,Kinder Guľôčky milk&crispy,Trvanlivé,90 g,6.49,,
 29944,Kinder Happy Hippo,Trvanlivé,21 g,0.87,,
 4742,Kinder Choco fresh,Mliečne a chladené,105 g,3.49,,
 1416,Kinder Chocolate,Trvanlivé,50 g,1.29,,
 47288,Kinder Chocolate Caramel zmrzlinový nanuk,Mrazené,152 ml,5.69,,
 33258,Kinder Chocolate Ice Cream 4x55 ml,Mrazené,220 ml,5.69,,
+24348,Kinder Chocolate Srdce,Trvanlivé,37 g,2.69,,
 40708,Kinder Chocolate tyčinky z mliečnej čokolády,Trvanlivé,300 g,4.99,,
 19764,Kinder Joy,Trvanlivé,20 g,1.89,,
 44660,Kinder Kinderini sušienky,Trvanlivé,100 g,2.59,,
@@ -3986,8 +4020,8 @@ id,product,category,pack,price,sale_price,sale_until
 21048,Kotányi Agartine 100% prírodná želatína,Trvanlivé,225 g,12.99,,
 40164,Kotányi Avokádo koreniaca soľ,Trvanlivé,25 g,1.09,0.79,2026-12-01
 22546,Kotányi Badián celý,Trvanlivé,70 g,12.49,,
-12822,Kotányi Balsamico krém lesné plody,Trvanlivé,250 ml,6.79,,
-12824,Kotányi Balsamico krém pomaranč,Trvanlivé,250 ml,6.79,,
+12822,Kotányi Balsamico krém lesné plody,Trvanlivé,250 ml,6.79,4.99,2026-12-04
+12824,Kotányi Balsamico krém pomaranč,Trvanlivé,250 ml,6.79,4.99,2026-12-04
 34154,Kotányi Balsamico marhuľa,Trvanlivé,250 ml,6.79,,
 10648,Kotányi Bazalka drvená sušená,Trvanlivé,9 g,1.45,,
 51014,Kotányi Bazalka drvená sušená dóza,Trvanlivé,180 g,7.59,,
@@ -4128,7 +4162,6 @@ id,product,category,pack,price,sale_price,sale_until
 2616,Král Sýrů Hermelín lahôdková paprika,Mliečne a chladené,120 g,2.19,,
 5736,Král Sýrů Hermelín Originál,Mliečne a chladené,120 g,2.19,,
 46906,Král Sýrů Hermelínek plesňový syr,Mliečne a chladené,80 g,1.75,,
-1000046906,Král Sýrů Hermelínek plesňový syr,Mliečne a chladené,80 g,1.75,1.57,2026-11-27
 42404,Králičie stehná s kosťou,Mrazené,1 kg,11.49,,
 17418,Králik chrbát bez kosti,Mrazené,500 g,9.89,,
 6790,Krásno Amálka – šunka najvyššej kvality (92 % mäso),Údeniny a lahôdky,100 g,1.85,,
@@ -4140,7 +4173,6 @@ id,product,category,pack,price,sale_price,sale_until
 6788,"Krásno Kráľovská šunka plátky – bez lepku, šunka najvyššej kvality",Údeniny a lahôdky,100 g,1.25,,
 25832,"Krásno Lázeňská šunka zauzená – bez laktózy, bez lepku",Údeniny a lahôdky,100 g,1.35,,
 30352,Krásno LINE šunka najvyššej jakosti (94% mäsa) bez lepku,Údeniny a lahôdky,100 g,1.85,,
-37820,Krásno Nátierka z masti v keramike,Údeniny a lahôdky,220 g,8.89,,
 14000,Krásno Párky vákuovo balené,Údeniny a lahôdky,700 g,5.45,,
 29722,Krásno Pomazánka zo sádla so smaženou cibuľkou,Údeniny a lahôdky,150 g,2.39,,
 22856,Krásno Pomazánka zo sádla so škvarkami – s príchuťou pečeného mäsa,Údeniny a lahôdky,150 g,2.79,,
@@ -4287,7 +4319,6 @@ id,product,category,pack,price,sale_price,sale_until
 30224,La Lorraine Toskánska bageta malá klasik,Pekáreň a cukráreň,80 g,0.35,,
 26548,La Marea Tuniak v paradajkovej omáčke 3x80 g,Trvanlivé,240 g,4.59,,
 19856,"La Marea Tuniak v slnečnicovom oleji, filety 3x 80 g",Trvanlivé,240 g,4.59,,
-31228,La Sastreria Blanca,Nápoje,750 ml,4.89,,
 31232,La Sastreria Tinto,Nápoje,750 ml,4.89,,
 43532,La Tordera Otreval Valdobbiadene Prosecco Superiore DOCG,Nápoje,750 ml,21.99,,
 43534,La Tordera Saomi Prosecco DOC Treviso,Nápoje,750 ml,13.49,,
@@ -4313,6 +4344,7 @@ id,product,category,pack,price,sale_price,sale_until
 5832,Lagris Bulgur predvarená celozrnná pšenica,Trvanlivé,375 g,2.69,,
 5894,Lagris Cícer,Trvanlivé,450 g,2.59,,
 45852,Lagris Fazuľa biela malá,Trvanlivé,500 g,1.79,,
+10500,Lagris Fazuľa biela malá,Trvanlivé,500 g,1.79,,
 32308,Lagris Fazuľa červená ľadvinka,Trvanlivé,480 g,2.49,,
 3228,Lagris Fazuľa farbená,Trvanlivé,450 g,2.19,,
 32310,Lagris Fazuľa farebná,Trvanlivé,250 g,1.29,,
@@ -4352,7 +4384,6 @@ id,product,category,pack,price,sale_price,sale_until
 42118,"Lahůdky Cajthaml Chlebíček špeciál s vajíčkom, 2x100g",Údeniny a lahôdky,2 ks,2.89,,
 42120,"Lahůdky Cajthaml Chlebíček šunkový, 2x80g",Údeniny a lahôdky,2 ks,2.89,,
 42124,Lahůdky Cajthaml Chlebíček Trio 280g,Údeniny a lahôdky,3 ks,4.19,,
-41956,LaCheteau Vieilles Vignes,Nápoje,750 ml,11.49,,
 5416,Laktoimpex Brie chateau de France syr s bielou plesňou,Mliečne a chladené,200 g,4.89,,
 5084,Laktoimpex Fleur des Monts Kozí syr,Mliečne a chladené,180 g,4.69,,
 19498,Laktoimpex Kozí valček s hľuzovkami,Mliečne a chladené,100 g,3.89,,
@@ -4365,14 +4396,13 @@ id,product,category,pack,price,sale_price,sale_until
 13662,"Landhof die Ohne Vegánsky nárez, jemný",Zdravie a životný štýl,80 g,2.79,,
 44382,Langusta celá,Mrazené,490 g,26.95,,
 672,Larios 12 Premium Gin 40%,Nápoje,700 ml,19.49,,
-914,"Larios Rose 37,5% ovocný gin",Nápoje,700 ml,19.49,,
-4930,Lavazza Caffe Espresso káva zrnková,Nápoje,500 g,19.99,,
-2214,Lavazza Caffe espresso mletá káva,Nápoje,250 g,11.99,,
+4930,Lavazza Caffe Espresso káva zrnková,Nápoje,500 g,19.99,14.99,2026-12-04
+2214,Lavazza Caffe espresso mletá káva,Nápoje,250 g,11.99,8.99,2026-12-04
 51990,Lavazza Cappuccino,Mliečne a chladené,220 ml,2.09,,
 51992,Lavazza Cappuccino Tiramisu,Mliečne a chladené,220 ml,2.09,,
 4752,Lavazza Crema e Gusto Classico káva zrnková,Nápoje,1 kg,22.99,,
 41576,Lavazza Crema e Gusto kapsule 57 g,Nápoje,,5.79,,
-2016,Lavazza Crema e Gusto káva mletá,Nápoje,250 g,9.59,,
+2016,Lavazza Crema e Gusto káva mletá,Nápoje,250 g,9.59,6.99,2026-12-04
 5052,Lavazza Decaffeinated bezkofeínová káva mletá,Nápoje,250 g,9.69,,
 5050,Lavazza Espresso káva zrnková,Nápoje,250 g,9.99,,
 2096,Lavazza GRAN ARAMA BAR Kávové zrno,Nápoje,1 kg,33.99,,
@@ -4380,10 +4410,10 @@ id,product,category,pack,price,sale_price,sale_until
 51994,Lavazza Latte Macchiato,Mliečne a chladené,220 ml,2.09,,
 25936,Lavazza Pronto Crema Grande Aroma káva zrnková,Nápoje,1 kg,18.99,,
 41574,Lavazza Qualità Oro kapsule 55 g,Nápoje,,5.79,,
-13802,Lavazza Qualita oro káva mletá,Nápoje,250 g,11.99,,
+13802,Lavazza Qualita oro káva mletá,Nápoje,250 g,11.99,8.99,2026-12-04
 2210,Lavazza Qualità Oro pražená zrnková káva,Nápoje,1 kg,32.99,,
 41606,Lavazza Qualità Rossa kapsule 57 g,Nápoje,,5.79,,
-5046,Lavazza Qualita Rossa káva mletá v dóze,Nápoje,250 g,9.99,,
+5046,Lavazza Qualita Rossa káva mletá v dóze,Nápoje,250 g,9.99,7.49,2026-12-04
 4798,Lavazza Qualita Rossa káva zrnková,Nápoje,1 kg,24.99,,
 55184,Lawa Americké lievance,Údeniny a lahôdky,10 ks,3.69,,
 16038,Lay's Maxx zemiakové lupienky cheese & onion,Trvanlivé,120 g,2.49,,
@@ -4529,6 +4559,7 @@ id,product,category,pack,price,sale_price,sale_until
 17042,Lindt Excellence 90% cocoa čokoláda,Trvanlivé,100 g,5.19,3.89,2026-12-01
 11478,Lindt Excellence Extra Creamy čokoláda,Trvanlivé,100 g,4.99,,
 17036,Lindt EXCELLENCE extra horká čokoláda 70%,Trvanlivé,100 g,3.59,3.19,2026-12-01
+52580,Lindt Excellence Fusion Dark & White čokoláda,Trvanlivé,100 g,3.69,3.19,2026-12-01
 16028,Lindt Excellence Malina,Trvanlivé,100 g,4.99,,
 2334,Lindt Excellence orange intense čokoláda,Trvanlivé,100 g,4.99,,
 20396,Lindt Horká čokoláda bez pridaného cukru,Trvanlivé,100 g,5.99,,
@@ -4615,12 +4646,10 @@ id,product,category,pack,price,sale_price,sale_until
 33158,Lorenz Pikantné pražené arašídy,Trvanlivé,150 g,3.39,,
 31234,Los Pagos Cabernet Sauvignon,Nápoje,750 ml,3.89,,
 31236,Los Pagos Chardonnay,Nápoje,750 ml,4.19,,
-3016,"Los Pagos Chardonnay, box",Nápoje,3 l,15.49,,
 36360,Losos filet trim D,Mrazené,"1,55 kg",43.38,,
 1448,"Lotus Biscoff Biscuits Caramel 50x6,25g",Trvanlivé,300 g,5.39,,
-44964,Lotus Biscoff sandwich,Mrazené,80 ml,2.99,,
+44964,Lotus Biscoff sandwich,Mrazené,80 ml,2.19,,
 52958,Lotus Biscoff Sandwich Cream,Trvanlivé,154 g,2.39,,
-52960,Lotus Biscoff Sandwich vanilkový krém,Trvanlivé,154 g,2.39,,
 43930,Lotus Biscoff sušienkové omrvinky,Trvanlivé,750 g,8.99,,
 52962,Lotus Biscoff sušienky,Trvanlivé,200 g,1.95,,
 43928,Lotus Biscoff topping,Trvanlivé,1 kg,14.99,,
@@ -4723,7 +4752,7 @@ id,product,category,pack,price,sale_price,sale_until
 16958,Madeta Syr na panvicu klasik,Mliečne a chladené,100 g,1.95,,
 48518,Madeta Syr na panvicu s údeným syrom,Mliečne a chladené,100 g,1.95,,
 16956,Madeta Syr na panvicu so šunkou,Mliečne a chladené,100 g,1.95,,
-31258,Madruzzo Bitter,Nápoje,1 l,11.49,,
+31258,Madruzzo Bitter,Nápoje,1 l,11.49,8.99,2026-12-04
 34184,Maggi 5 min. instantná zeleninová polievka,Trvanlivé,59 g,0.68,,
 35100,Maggi 5 minutes Bolognese Spaghetti cestoviny,Trvanlivé,60 g,1.65,,
 48558,Maggi 5 minutes Carbonara cestoviny,Trvanlivé,50 g,1.65,,
@@ -4794,8 +4823,7 @@ id,product,category,pack,price,sale_price,sale_until
 38996,Maina Panettone Zuppa Inglese s krémom,Pekáreň a cukráreň,750 g,17.49,,
 7324,Maldon Morská soľ,Trvanlivé,250 g,6.39,,
 7302,Maldon Morská soľ údená,Trvanlivé,125 g,7.19,,
-506,Malfy Gin Original 41%,Nápoje,700 ml,29.99,,
-8740,Malfy Gin Rosa 41%,Nápoje,700 ml,32.99,27.99,2026-12-01
+506,Malfy Gin Original 41%,Nápoje,700 ml,29.99,24.99,2026-12-04
 38808,"Malfy Gin Rosa 41% + pohár 1ks, darčekové balenie",Nápoje,700 ml,34.99,,
 8738,Malfy Limone 41%,Nápoje,700 ml,29.99,,
 50444,Malibu 18% likér,Nápoje,700 ml,18.99,,
@@ -4823,7 +4851,6 @@ id,product,category,pack,price,sale_price,sale_until
 12940,Manner Schoko brownie napolitánky,Trvanlivé,400 g,5.19,,
 470,Manner Snack minis chocolate,Trvanlivé,300 g,4.79,,
 27794,Manner Snack mliečne s čokoládou 5x 25 g,Trvanlivé,125 g,3.59,,
-38704,Manner Snack mliečne s orieškami 5x 25 g,Trvanlivé,125 g,3.59,,
 12942,Manner Tortičky napolitánky,Trvanlivé,400 g,5.19,,
 10506,Mánya Ryža strednozrnná,Trvanlivé,1 kg,1.75,,
 7856,"Maracuja Eat me, 1ks",Ovocie a zelenina,1 kg,6.79,,
@@ -4901,24 +4928,26 @@ id,product,category,pack,price,sale_price,sale_until
 33260,Mars Ice Cream 6x40g,Mrazené,240 g,6.89,,
 45124,Mars Milky Way,Trvanlivé,20 g,0.8,,
 1000045124,Mars Milky Way,Trvanlivé,20 g,0.8,0.72,2026-12-13
+19784,Mars Snickers tyčinka,Trvanlivé,50 g,0.95,,
 19770,Mars Snickers tyčinky (3x50g),Trvanlivé,150 g,2.89,,
+48310,Marsen Gin BIO 42%,Nápoje,700 ml,24.99,,
 47554,Marsen GIN Original 42%,Nápoje,700 ml,19.99,,
 38886,"Marsen Gin Pink 38% + pohár 1ks, darčekové balenie",Nápoje,700 ml,24.99,,
 38820,"Marsen Hruškovica 42% + pohár 1ks, darčekové balenie",Nápoje,500 ml,24.99,,
 27830,"Marsen Hruškovica Williams 42,3%",Nápoje,500 ml,32.99,,
+27834,Marsen Legenda Cherry Liquer Rum 35%,Nápoje,700 ml,18.99,,
 38822,"Marsen Marhuľovica 42%l + pohár 1ks, darčekové balenie",Nápoje,500 ml,24.99,,
 55540,Marsen Marhuľovica Likér,Nápoje,500 ml,18.49,,
 39202,Marsen Marhuľovica Selection 40%,Nápoje,700 ml,29.99,,
 27832,"Marsen Marhuľovica Veľkopopovická 42,3%",Nápoje,500 ml,32.99,,
-55536,Marsen Slivovica Likér,Nápoje,500 ml,18.49,,
+27836,"Marsen Slivovica 42,3%",Nápoje,500 ml,27.99,,
 39204,Marsen Slivovica Selection 40%,Nápoje,700 ml,29.99,,
 27840,Marsen Traditional hruškovica 42%,Nápoje,700 ml,22.99,,
 27842,Marsen Traditional marhuľovica 42%,Nápoje,700 ml,22.99,,
 27844,Marsen Traditional slivovica 42%,Nápoje,700 ml,22.99,,
 55542,Marsen Višňovica Likér,Nápoje,500 ml,18.49,,
 27838,Marsen Vodka 40%,Nápoje,700 ml,17.49,,
-11618,Marshmallows Barbecue,Trvanlivé,300 g,5.59,,
-8870,Martell Cordon Bleu 40%,Nápoje,700 ml,148.99,,
+47558,Marsen Vodka Grape Spirit 40%,Nápoje,700 ml,21.99,,
 8674,Martell V.S. 40%,Nápoje,700 ml,33.99,,
 8418,Martini Asti sekt,Nápoje,750 ml,12.99,,
 35818,Martini Bianco,Nápoje,1 l,13.99,,
@@ -4942,7 +4971,6 @@ id,product,category,pack,price,sale_price,sale_until
 17800,Mattoni Cedrata minerálna voda,Nápoje,"1,5 l",1.59,,
 17216,Mattoni Citrón,Nápoje,"1,5 l",1.59,,
 54972,Mattoni Esence Active Limetka a pomaranč,Nápoje,700 ml,1.89,,
-1000054972,Mattoni Esence Active Limetka a pomaranč,Nápoje,700 ml,1.89,1.7,2026-12-10
 32482,Mattoni Esence Citrón,Nápoje,"1,5 l",1.25,,
 32484,Mattoni Esence Jablko a mäta,Nápoje,"1,5 l",1.25,,
 32490,Mattoni Esence Jablko a mäta,Nápoje,750 ml,1.19,,
@@ -4960,7 +4988,6 @@ id,product,category,pack,price,sale_price,sale_until
 22646,Mattoni Minerálna voda perlivá,Nápoje,500 ml,0.91,,
 17026,"Mattoni Minerálna voda perlivá 6x1,5L",Nápoje,9 l,4.99,,
 17218,Mattoni Pomaranč,Nápoje,"1,5 l",1.59,,
-37598,Matua Sauvignon Blanc,Nápoje,750 ml,13.49,,
 3176,Matylda BIO Tvaroh a smotanový jogurt čokoláda,Mliečne a chladené,125 g,1.05,,
 5748,Matylda BIO Tvaroh a smotanový jogurt jahoda,Mliečne a chladené,125 g,1.05,,
 3174,Matylda BIO Tvaroh a smotanový jogurt vanilka,Mliečne a chladené,125 g,1.05,,
@@ -4973,9 +5000,7 @@ id,product,category,pack,price,sale_price,sale_until
 15226,Matysak Hroznová šťava červená 100%,Nápoje,750 ml,4.89,3.79,2026-12-01
 55308,Matysak Momento Sparkling,Nápoje,750 ml,7.19,,
 31106,"Matysak Müller a Irsai - biele, tiché víno",Nápoje,250 ml,2.39,,
-15668,Matysak Prediction Cabernet Sauvignon,Nápoje,750 ml,7.59,,
 15670,Matysak Prediction Frankovka modrá,Nápoje,750 ml,7.59,,
-15680,Matysak Prediction Rizling rýnsky neskorý zber,Nápoje,750 ml,7.59,,
 15692,Matysak Prediction Rizling vlašský neskorý zber,Nápoje,750 ml,7.59,,
 15694,Matysak Prediction Rulandské šedé,Nápoje,750 ml,7.59,,
 15696,Matysak Prediction Sauvignon,Nápoje,750 ml,7.59,,
@@ -4997,6 +5022,7 @@ id,product,category,pack,price,sale_price,sale_until
 15674,Matysak Vinum Galéria Bozen Svätovavrinecké,Nápoje,750 ml,4.89,,
 40740,Matysak Vinum Galéria Bozen Svätovavrinecké rosé,Nápoje,750 ml,4.49,,
 15704,Matysak Vinum Galéria Bozen Veltlínske zelené,Nápoje,750 ml,4.89,,
+50950,Mauritius Red Mauricius Cherry,Nápoje,700 ml,60.99,,
 48832,"Mautner Markhof Jablkový ocot Barrique 0,5 %",Trvanlivé,500 ml,5.99,,
 48834,Mautner Markhof Ocot citrón a limetka,Trvanlivé,500 ml,3.89,,
 48830,Mautner Markhof Ocot s malinami,Trvanlivé,500 ml,3.89,,
@@ -5111,7 +5137,7 @@ id,product,category,pack,price,sale_price,sale_until
 29732,Mecom Kriváň saláma,Údeniny a lahôdky,900 g,10.79,,
 7160,Mecom Kuriatko saláma,Údeniny a lahôdky,350 g,1.65,,
 38542,Mecom Moravské mäso 1/2 vákuovo balené,Údeniny a lahôdky,750 g,6.97,5.92,2026-12-01
-53692,Mecom Obyčajné párky (62% mäsa),Údeniny a lahôdky,"1,32 kg",6.59,,
+53692,Mecom Obyčajné párky (62% mäsa),Údeniny a lahôdky,"1,07 kg",5.34,,
 29894,Mecom Pekelne pálivá saláma,Údeniny a lahôdky,600 g,8.19,,
 6804,Mecom Strážovská saláma,Údeniny a lahôdky,700 g,5.89,,
 6730,Mecom Ščipák humenský,Údeniny a lahôdky,470 g,5.89,,
@@ -5120,10 +5146,11 @@ id,product,category,pack,price,sale_price,sale_until
 9192,"Medovina Apimed Slovenská Medovina 13,5%",Nápoje,750 ml,14.99,,
 9194,"Medovina Apimed Staroslovanská Medovina tmavá 13,5%",Nápoje,750 ml,14.99,,
 9196,"Medovina Apimed Trnavská Medovina 13,5%",Nápoje,750 ml,14.99,,
+11822,Medusa Cesare Paradajky sušené,Trvanlivé,500 g,7.99,5.99,2026-12-04
 16786,Medvedia Krv červená,Nápoje,750 ml,4.49,,
 32934,Medzibodrozie Bravčová škvarená masť,Údeniny a lahôdky,500 g,2.99,,
 37126,Medzibodrozie Chlmecká saláma,Údeniny a lahôdky,700 g,5.59,,
-32936,Medzibodrozie Klobása údená pikantná (85% mäsa),Údeniny a lahôdky,980 g,10.28,,
+32936,Medzibodrozie Klobása údená pikantná (85% mäsa),Údeniny a lahôdky,1 kg,10.49,,
 23808,Medzibodrozie Medzibrožské safaládky,Údeniny a lahôdky,2 kg,14.38,,
 32932,Medzibodrozie Premium párky,Údeniny a lahôdky,1 kg,9.99,,
 22848,Medzibodrožie Bravčové oškvarky,Údeniny a lahôdky,250 g,3.99,,
@@ -5148,7 +5175,6 @@ id,product,category,pack,price,sale_price,sale_until
 18660,Melón vodový bezsemenný,Ovocie a zelenina,6 kg,14.94,,
 5108,Mélusine Buchette chévre kozí syr s bielou plesňou,Mliečne a chladené,180 g,4.49,,
 52626,Mentos CleanBreath Peppermint cukríky,Trvanlivé,21 g,1.39,,
-42240,Mentos Cleanbreath Wintergreen žuvačky bez cukru,Trvanlivé,20 g,1.99,,
 6182,Menu Gold Chia semienka,Trvanlivé,250 g,2.79,,
 50500,Menu Gold Jazmínová ryža,Trvanlivé,500 g,1.55,,
 3414,Menu Gold Quinoa biela,Trvanlivé,250 g,2.89,,
@@ -5159,6 +5185,7 @@ id,product,category,pack,price,sale_price,sale_until
 11468,Merci Mix almond,Trvanlivé,250 g,6.79,,
 16056,Merci Tabuľková čokoláda extra horká 72%,Trvanlivé,100 g,3.59,,
 11758,Merci Tabuľková čokoláda kávová,Trvanlivé,100 g,3.59,,
+11760,Merci Tabuľková čokoláda oriešková,Trvanlivé,100 g,3.59,,
 11252,"Mestemacher Chlieb Sonnenkernbrot, celozrnný, krájaný",Pekáreň a cukráreň,500 g,2.59,,
 11250,"Mestemacher Chlieb štvorzrnný, krájaný",Pekáreň a cukráreň,500 g,2.59,,
 28454,Metaxa 40%,Nápoje,700 ml,22.99,,
@@ -5224,14 +5251,14 @@ id,product,category,pack,price,sale_price,sale_until
 47308,Metro Chef Camembert Bites,Mrazené,1 kg,14.49,,
 48938,"Metro Chef Celozrnná tortilla 30 cm, 15 ks",Pekáreň a cukráreň,"1,37 kg",5.89,,
 2866,Metro Chef Cibuľové krúžky obaľované,Mrazené,1 kg,7.99,,
-37334,"Metro Chef Citrón Primofiori, 1ks",Ovocie a zelenina,110 g,0.43,,
+37334,"Metro Chef Citrón Primofiori, 1ks",Ovocie a zelenina,120 g,0.47,,
 19048,"Metro Chef Citrón sorbet 2,5l",Mrazené,"2,5 l",11.99,,
 33474,Metro Chef Citrónový koláč,Mrazené,840 g,12.99,,
 32324,Metro Chef Citróny džúsové,Ovocie a zelenina,5 kg,14.99,,
 2886,Metro Chef Cream Cheese Jalapeños,Mrazené,1 kg,15.99,,
 42662,Metro Chef Creme Dual UHT 25% tuku,Mliečne a chladené,1 l,4.99,,
 56346,Metro Chef Criss Cross extra chrumkavé hranolky,Mrazené,"2,5 kg",10.49,,
-37486,"Metro Chef Cuketa zelená, 1ks",Ovocie a zelenina,230 g,0.5,,
+37486,"Metro Chef Cuketa zelená, 1ks",Ovocie a zelenina,220 g,0.48,,
 8034,Metro Chef Čalamáda pikantná,Ovocie a zelenina,750 g,2.59,,
 8032,"Metro Chef Čalamáda, vanička",Ovocie a zelenina,750 g,2.59,,
 56348,Metro Chef Černice,Mrazené,1 kg,7.39,,
@@ -5259,13 +5286,13 @@ id,product,category,pack,price,sale_price,sale_until
 7794,Metro Chef Estragon,Ovocie a zelenina,30 g,1.49,,
 22448,"Metro Chef Estragón mletý, dóza",Trvanlivé,50 g,6.59,,
 7694,Metro Chef Exotic mix,Mrazené,1 kg,7.19,,
-40166,Metro Chef Extra panenský olivový olej s hľuzovkou,Trvanlivé,230 ml,6.29,,
+40166,Metro Chef Extra panenský olivový olej s hľuzovkou,Trvanlivé,230 ml,6.29,4.99,2026-12-04
 22430,"Metro Chef Fenikel celý sušený, dóza",Trvanlivé,100 g,3.09,,
 49888,Metro Chef Fuet Extra,Údeniny a lahôdky,170 g,2.99,,
 13590,Metro Chef Fusilli bezgluténové,Trvanlivé,500 g,3.19,,
 7704,Metro Chef Gaštany,Mrazené,1 kg,14.49,,
 29508,Metro Chef Gorgonzola Dolce,Mliečne a chladené,150 g,3.99,,
-29512,Metro Chef Gorgonzola Dolce,Mliečne a chladené,200 g,5.49,,
+29512,Metro Chef Gorgonzola Dolce,Mliečne a chladené,200 g,5.29,3.99,2026-12-04
 29510,Metro Chef Gorgonzola Dolce,Mliečne a chladené,400 g,9.49,,
 29506,Metro Chef Gorgonzola Dolce,Mliečne a chladené,750 g,16.49,,
 29514,Metro Chef Gorgonzola Piccante,Mliečne a chladené,200 g,5.19,,
@@ -5334,7 +5361,6 @@ id,product,category,pack,price,sale_price,sale_until
 15460,Metro Chef Kapary fines,Trvanlivé,700 g,4.69,,
 8124,Metro Chef Kapusta kvasená biela 85%,Ovocie a zelenina,1 kg,1.29,,
 1170,Metro Chef Kapusta kvasená červená,Ovocie a zelenina,1 kg,2.19,,
-54304,Metro Chef Kapusta pekinská,Ovocie a zelenina,"1,02 kg",1.83,1.42,2026-12-01
 1604,Metro Chef Karamelový topping,Trvanlivé,1 kg,9.89,,
 22454,"Metro Chef Kardamón mletý, dóza",Trvanlivé,160 g,22.99,,
 22472,"Metro Chef Kari korenie, dóza",Trvanlivé,140 g,4.29,,
@@ -5456,7 +5482,7 @@ id,product,category,pack,price,sale_price,sale_until
 14434,Metro Chef Mix ázijských húb,Mrazené,1 kg,4.49,,
 8030,Metro Chef Mix párty nakladaná zelenina,Ovocie a zelenina,750 g,3.49,,
 556,Metro Chef Mleté pistácie,Trvanlivé,500 g,26.99,,
-40654,Metro Chef Mortadella Pistacchio,Údeniny a lahôdky,200 g,4.59,,
+40654,Metro Chef Mortadella Pistacchio,Údeniny a lahôdky,200 g,4.59,3.69,2026-12-04
 2974,Metro Chef Mozzarella Sticks obaľované,Mrazené,1 kg,14.99,,
 7936,Metro Chef Mrkva baby dlhá,Ovocie a zelenina,500 g,2.29,,
 18636,"Metro Chef Mungo klíčky, vrecko",Ovocie a zelenina,500 g,2.99,,
@@ -5465,7 +5491,7 @@ id,product,category,pack,price,sale_price,sale_until
 19842,Metro Chef Nite údené,Mliečne a chladené,500 g,7.89,,
 26246,Metro Chef Nitran saláma plátky,Údeniny a lahôdky,500 g,7.49,,
 2614,Metro Chef Olivový olej extra virgin,Trvanlivé,1 l,11.49,,
-14014,Metro Chef Oravská slanina vákuovo balená (96% mäso),Údeniny a lahôdky,400 g,4.6,,
+14014,Metro Chef Oravská slanina vákuovo balená (96% mäso),Údeniny a lahôdky,410 g,4.71,,
 3900,"Metro Chef Oregano čerstvé, vanička",Ovocie a zelenina,30 g,1.95,,
 22426,Metro Chef Oregano drvené,Trvanlivé,37 g,2.79,,
 22442,Metro Chef Oregáno drvené,Trvanlivé,65 g,9.89,,
@@ -5490,13 +5516,14 @@ id,product,category,pack,price,sale_price,sale_until
 2796,Metro Chef Parížsky šalát,Údeniny a lahôdky,1 kg,6.79,,
 21010,Metro Chef Parmigiano Reggiano hobliny syra DOP,Mliečne a chladené,500 g,22.99,,
 23234,Metro Chef Parmigiano Reggiano strúhaný syr DOP,Mliečne a chladené,500 g,18.49,,
-9850,Metro Chef Pasírované paradajky,Trvanlivé,700 g,2.99,,
+9850,Metro Chef Pasírované paradajky,Trvanlivé,700 g,2.99,2.19,2026-12-04
 51978,Metro Chef Passion fruit pyré,Mrazené,1 kg,13.49,,
 7838,Metro Chef Pažítka,Ovocie a zelenina,100 g,3.49,,
 14424,Metro Chef Pažítka,Mrazené,300 g,3.49,2.69,2026-12-01
 22436,Metro Chef Pažítka drvená,Trvanlivé,60 g,6.69,,
 7984,"Metro Chef Pažítka, kvetináč",Ovocie a zelenina,1 kg,2.39,,
 20458,Metro Chef Pekanové orechy,Trvanlivé,200 g,6.69,,
+28752,Metro Chef Pekingská kapusta,Ovocie a zelenina,1 kg,1.99,,
 4216,Metro Chef Penne bezgluténové,Trvanlivé,500 g,3.19,,
 22464,"Metro Chef Pestrá zmes korenia, dóza",Trvanlivé,150 g,8.29,,
 1750,Metro Chef Petržlen,Mrazené,300 g,2.29,,
@@ -5562,7 +5589,7 @@ id,product,category,pack,price,sale_price,sale_until
 2822,Metro Chef Sušené marhule,Trvanlivé,500 g,11.49,,
 2582,Metro Chef Sušené marhule,Trvanlivé,250 g,6.49,,
 1190,Metro Chef Sušené paradajky,Trvanlivé,150 g,2.59,,
-42788,Metro Chef Sušené paradajky v oleji,Trvanlivé,660 g,5.99,,
+42788,Metro Chef Sušené paradajky v oleji,Trvanlivé,660 g,5.99,4.39,2026-12-04
 2984,Metro Chef Sweet potato hranolky,Mrazené,"2,5 kg",19.99,,
 1938,Metro Chef Syr tortilla,Trvanlivé,750 g,5.59,,
 22468,Metro Chef Šafrán mletý sušený,Trvanlivé,5 g,51.99,,
@@ -5607,7 +5634,7 @@ id,product,category,pack,price,sale_price,sale_until
 1198,Metro Chef Tekvica lúpaná jadrá,Trvanlivé,200 g,2.99,,
 1092,Metro Chef Thajská bazalka,Ovocie a zelenina,50 g,2.69,,
 35220,Metro Chef Tilapia filety 140-200 g ASC,Mrazené,900 g,9.99,,
-22730,Metro Chef Tiramisu Savoiardi,Mrazené,"1,1 kg",14.99,,
+22730,Metro Chef Tiramisu Savoiardi,Mrazené,"1,1 kg",14.99,10.99,2026-12-04
 35320,Metro Chef Tofu údené,Mliečne a chladené,1 kg,4.99,,
 1590,Metro Chef Topping čokoláda,Trvanlivé,1 kg,9.99,,
 4488,Metro Chef Topping jahoda,Trvanlivé,1 kg,10.49,,
@@ -5688,7 +5715,6 @@ id,product,category,pack,price,sale_price,sale_until
 8896,Milena Liehovina s Malinovou príchuťou 40%,Nápoje,700 ml,11.49,,
 50602,Milchmeister Tavený syr,Mliečne a chladené,280 g,6.49,,
 52976,Milka Biscoff čokoládové guľôčky,Trvanlivé,82 g,4.49,,
-30930,Milka Biscoff Lotus,Trvanlivé,90 g,2.19,1.59,2026-12-01
 23742,"Milka Bonboniéra Favourites, mix praliniek",Trvanlivé,95 g,4.69,,
 16106,Milka Bubbly Caramel mliečna čokoláda z alpského mlieka s karamelom a poréznou čokoládou,Trvanlivé,250 g,5.19,,
 44010,Milka Bubbly Coconut mliečna čokoláda s kokosovou náplňou,Trvanlivé,97 g,1.99,1.49,2026-12-01
@@ -5699,6 +5725,7 @@ id,product,category,pack,price,sale_price,sale_until
 33224,Milka Čokoláda Mmmax mliečna,Trvanlivé,250 g,4.99,,
 40878,Milka Čokoládová tyčinka mliečna,Trvanlivé,25 g,1.05,,
 3770,"Milka Čokoládový mandľový karamel, mlieko s mandľami",Trvanlivé,300 g,4.99,,
+2708,Milka Choc&Choc jemné pečivo plnené kakaovou náplňou s kúskami mliečnej čokolády,Trvanlivé,150 g,2.79,2.09,2026-12-01
 16180,"Milka Choco Biscuit mliečna čokoláda so sušienkou, kakaovo-mliečnym krémom",Trvanlivé,300 g,4.99,,
 11616,Milka Choco Biscuits sušienky s mliečnou čokoládou z alpského mlieka,Trvanlivé,150 g,2.79,,
 11614,"Milka Choco Brownie jemné pečivo s čokoládou, mliečnou čokoládou a kúskami mliečnej čokolády",Trvanlivé,150 g,2.79,,
@@ -5712,7 +5739,6 @@ id,product,category,pack,price,sale_price,sale_until
 24408,Milka Mikuláš,Trvanlivé,45 g,2.59,,
 52980,Milka Mikuláš s dražé,Trvanlivé,56 g,4.69,,
 38644,Milka Mini Snow Balls,Trvanlivé,100 g,4.09,,
-52974,Milka MMMAX Biscoff čokoláda,Trvanlivé,275 g,4.99,,
 16040,Milka Mmmax Strawberry Cheesecake čokoláda z alpského mlieka so sušienkou a jahodovou náplňou,Trvanlivé,300 g,4.89,,
 3578,Milka Mmmax Toffee Wholenut mliečna čokoláda z alpského mlieka s karamelovou náplňou a orechmi,Trvanlivé,300 g,4.99,,
 20004,Milka Nátierka Lieskooriešková,Trvanlivé,600 g,7.59,5.79,2026-12-01
@@ -5721,8 +5747,8 @@ id,product,category,pack,price,sale_price,sale_until
 24514,Milka Oreo bonbons,Trvanlivé,86 g,4.49,,
 16084,Milka Oreo čokoláda z alpského mlieka s kakaovými sušienkami a vanilkovo-krémovou náplňou,Trvanlivé,100 g,2.09,1.49,2026-12-01
 16054,Milka Oreo Sandwich čokoláda z alpského mlieka s kakaovými sušienkami a mliečnou náplňou,Trvanlivé,92 g,2.19,1.59,2026-12-01
-40722,Milka Party Mix mix cukroviniek,Trvanlivé,143 g,6.29,4.49,2026-12-01
 44976,Milka Peanut Caramel,Mrazené,90 ml,2.49,,
+37696,Milka Salónky Mix,Trvanlivé,255 g,11.99,,
 2130,Milka Sensations Cookies sušienky s kúskami mliečnej čokolády a s náplňou s mliečnou čokoládou,Trvanlivé,156 g,2.79,,
 16074,Milka Strawberry mliečna čokoláda z alpského mlieka s krémovou náplňou s jahodovou príchuťou,Trvanlivé,100 g,2.09,1.49,2026-12-01
 29342,Milka Tabuľková čokoláda biela,Trvanlivé,90 g,2.19,1.59,2026-12-01
@@ -5733,7 +5759,8 @@ id,product,category,pack,price,sale_price,sale_until
 29860,Milka Tyčinka Leo s oblátkami z mliečnej čokolády,Trvanlivé,33 g,0.98,,
 30636,Milka Vanilla nanuk,Mrazené,90 ml,2.49,,
 36712,Milka Vianočný domček,Trvanlivé,70 g,6.29,,
-48802,Milka Waffelini Coconut,Trvanlivé,30 g,0.99,,
+38670,Milka Vianočný tanier,Trvanlivé,198 g,11.99,,
+11612,Milka White Choco Mini Stars Kakaové sušienky s mliečnou náplňou polomáčané v bielej čokoláde,Trvanlivé,150 g,2.79,2.09,2026-12-01
 33230,Milka Whole Hazelnut s orieškami,Trvanlivé,95 g,2.19,1.79,2026-12-01
 768,Milko BIO grécky biely jogurt 0 % tuku,Mliečne a chladené,130 g,0.85,0.64,2026-12-01
 758,Milko Bio maslo,Mliečne a chladené,150 g,2.19,,
@@ -5766,7 +5793,6 @@ id,product,category,pack,price,sale_price,sale_until
 4816,Milko Žervé s paprikou,Mliečne a chladené,80 g,0.85,,
 4818,Milko Žervé z Poděbrad krémové,Mliečne a chladené,80 g,0.89,,
 4814,Milko Žervé z Poděbrad s pažítkou,Mliečne a chladené,80 g,0.89,,
-57052,Millonario Reserva Especial 15 rum 40 % + 2 poháre,Nápoje,700 ml,60.29,,
 5180,Milsy Bánovecká jemná nátierka chrenová,Mliečne a chladené,150 g,1.55,,
 5184,Milsy Bánovecká jemná nátierka natur,Mliečne a chladené,150 g,1.55,,
 5182,Milsy Bánovecká jemná nátierka pikant,Mliečne a chladené,150 g,1.55,,
@@ -5793,7 +5819,6 @@ id,product,category,pack,price,sale_price,sale_until
 42672,Milsy Smotana kyslá 16%,Mliečne a chladené,1 kg,4.49,,
 11982,Milsy Smotanový jogurt Jahoda,Mliečne a chladené,145 g,0.8,,
 38668,Milsy Vianoce údený syrový mix,Mliečne a chladené,190 g,3.19,,
-14900,Miluron Víno z čiernych ríbezlí,Nápoje,750 ml,7.89,,
 48800,MINECRAFT kyslé cukríky,Trvanlivé,30 g,1.69,,
 47562,Minera Kalciová minerálna voda jemne perlivá,Nápoje,"1,5 l",0.69,,
 47564,Minera Kalciová minerálna voda perlivá,Nápoje,"1,5 l",0.69,,
@@ -5832,6 +5857,8 @@ id,product,category,pack,price,sale_price,sale_until
 15008,Miro Fondrk Hron červené víno,Nápoje,750 ml,19.49,,
 31494,Miro Fondrk Riesling,Nápoje,750 ml,13.99,,
 14998,Miroslav Dudo - Vmd Dunaj,Nápoje,750 ml,15.49,,
+49750,Miroslav Dudo - Vmd Rulandské modré,Nápoje,750 ml,11.99,,
+28856,Miroslav Dudo - Vmd Sauvignon 2021,Nápoje,750 ml,11.99,,
 24106,Misove Maskrty Bryndzové pirohy,Mrazené,1 kg,4.89,,
 32278,Misove Maskrty MR KNEDLE JAHODOVÉ 480g,Mrazené,480 g,2.59,,
 32280,Misove Maskrty MR PIROHY TVAROHOVÉ 480g,Mrazené,480 g,2.59,,
@@ -5894,6 +5921,7 @@ id,product,category,pack,price,sale_price,sale_until
 35988,Mixit Créme boule - Double chocolate,Trvanlivé,30 g,1.15,,
 1000035988,Mixit Créme boule - Double chocolate,Trvanlivé,30 g,1.15,1.03,2026-12-15
 56034,Mixit Créme boule – à la Vaječný likér,Trvanlivé,30 g,1.05,,
+56030,Mixit Créme boule – Cinnamon Chocolate,Trvanlivé,30 g,1.05,,
 56028,Mixit Čertovská nádielka do vrecka,Trvanlivé,65 g,2.09,,
 55970,Mixit Darčeková sada pre deti,Trvanlivé,,22.99,,
 56048,Mixit Darčeková sada pre mužov,Trvanlivé,,31.99,,
@@ -6036,7 +6064,6 @@ id,product,category,pack,price,sale_price,sale_until
 56904,Monin Sirup škorica,Nápoje,700 ml,13.99,,
 1634,Monin Sirup uhorka,Nápoje,700 ml,13.99,,
 6884,Monin Sirup vanille,Nápoje,1 l,15.99,,
-8948,Monkey 47 Schwarzwald Gin 47 %,Nápoje,500 ml,50.99,,
 39194,Monkey Shoulder 40% Scotch Whisky,Nápoje,1 l,52.99,44.39,2026-12-01
 8976,Monkey Shoulder Whisky 40%,Nápoje,700 ml,37.99,31.79,2026-12-01
 31932,Monoprix BIO Agávový sirup,Trvanlivé,350 g,5.39,,
@@ -6116,7 +6143,7 @@ id,product,category,pack,price,sale_price,sale_until
 31924,Monoprix Gourmet Karamelová nátierka,Trvanlivé,350 g,4.19,,
 31868,"Monoprix Gourmet Mletá káva Kostarika, aromatická a vyvážená chuť",Nápoje,250 g,6.89,,
 31864,Monoprix Gourmet Mletá káva Peruánská,Nápoje,250 g,5.99,,
-31916,Monoprix Gourmet Pesto s pistáciami,Trvanlivé,180 g,4.29,,
+31916,Monoprix Gourmet Pesto s pistáciami,Trvanlivé,180 g,4.29,3.29,2026-12-04
 32178,Monoprix Gourmet Polenta,Trvanlivé,500 g,2.69,,
 31872,"Monoprix Gourmet Zrnková káva Arabica Rwanda, bohatá a ovocná chuť",Nápoje,250 g,6.99,,
 31862,Monoprix Gourmet Zrnková káva Peru&Guatemala,Nápoje,250 g,7.59,,
@@ -6147,6 +6174,7 @@ id,product,category,pack,price,sale_price,sale_until
 45988,"Monster Viking Berry, vratná plechovka",Nápoje,500 ml,1.95,,
 35212,Monster Zero Ultra Peechy Keen,Nápoje,500 ml,2.09,1.49,2026-12-01
 30456,Monte Zott sandwich 3 x 120 ml,Mrazené,120 ml,6.89,,
+46344,Montelciego Crianza rioja,Nápoje,750 ml,6.19,,
 39228,Montes Classic Series Cabernet Sauvignon,Nápoje,750 ml,14.99,,
 39232,Montes Classic Series Malbec,Nápoje,750 ml,14.99,,
 39234,Montes Classic Series Merlot,Nápoje,750 ml,14.99,,
@@ -6154,8 +6182,6 @@ id,product,category,pack,price,sale_price,sale_until
 12270,Moravia Olé Tvaroh premium olešnícky,Mliečne a chladené,230 g,1.95,,
 2014,Moravia Olešnický tvaroh mäkký,Mliečne a chladené,230 g,1.95,,
 5648,Moravia Pivný syr,Mliečne a chladené,110 g,2.29,,
-56992,Moravska Hruška 38 %,Nápoje,500 ml,8.89,,
-57000,Moravska Marhuľka 38 %,Nápoje,500 ml,8.19,,
 27008,Morčacia polievková zmes,Mrazené,700 g,3.21,,
 27010,Morčacie krídla,Mrazené,1 kg,5.99,,
 17436,Morčacie medailónky so šunkou a syrom,Mrazené,1 kg,5.99,,
@@ -6188,12 +6214,12 @@ id,product,category,pack,price,sale_price,sale_until
 15046,Movino Vášeň Cabernet Sauvignon výber z hrozna,Nápoje,750 ml,7.29,,
 15098,Movino Vášeň Devín výber z hrozna,Nápoje,750 ml,7.49,5.29,2026-12-01
 39238,Movino Vášeň Dunaj,Nápoje,750 ml,7.29,,
-15086,Movino Vášeň Frankovka modrá výber z hrozna,Nápoje,750 ml,7.49,5.29,2026-12-01
 39240,Movino Vášeň Pálava,Nápoje,750 ml,7.29,,
-15090,Movino Vášeň Rulandské modré Rosé výber z hrozna,Nápoje,750 ml,7.49,5.29,2026-12-01
+15132,Movino Vášeň Rulandské šedé neskorý zber,Nápoje,750 ml,7.49,5.29,2026-12-01
 15134,Movino Vášeň Tramín červený,Nápoje,750 ml,7.29,,
 15088,Movino Zážitok Frankovka modrá,Nápoje,750 ml,3.99,,
 15092,Movino Zážitok Movum rosé,Nápoje,750 ml,3.99,,
+15136,Movino Zážitok Rizling rýnsky,Nápoje,750 ml,3.99,,
 15138,Movino Zážitok Rulandské biele,Nápoje,750 ml,3.99,,
 43724,Mowi Losos Burger,Mrazené,100 g,1.65,,
 43874,Moyseafood Chobotnica chápadlá varené,Mrazené,"1,5 kg",101.99,,
@@ -6207,7 +6233,7 @@ id,product,category,pack,price,sale_price,sale_until
 8044,Mrkva karotka fialová,Ovocie a zelenina,1 kg,2.99,,
 8046,Mrkva karotka žltá,Ovocie a zelenina,1 kg,2.49,,
 19502,Mrkva očistená celá,Ovocie a zelenina,1 kg,1.95,,
-17366,"Mrkva praná, balená",Ovocie a zelenina,1 kg,1.35,,
+17366,"Mrkva praná, balená",Ovocie a zelenina,1 kg,1.39,,
 8012,Mrkva s vňatou zväzok,Ovocie a zelenina,500 g,1.59,,
 5058,Mukates Raňajková káva,Nápoje,255 g,4.39,,
 33346,Müller Ayran mliečny nápoj,Mliečne a chladené,500 ml,1.55,,
@@ -6237,10 +6263,10 @@ id,product,category,pack,price,sale_price,sale_until
 9546,Mušle koktejlové,Mrazené,900 g,12.49,,
 9526,"Mušle koktejlové 200/300, varené",Mrazené,450 g,6.09,,
 10038,Mutti Doppio concentrato / dvojitý koncentrát,Trvanlivé,130 g,2.19,,
-34980,Mutti Paradajkový dvojitý koncentrát,Trvanlivé,880 g,8.59,,
+34980,Mutti Paradajkový dvojitý koncentrát,Trvanlivé,880 g,8.19,5.99,2026-12-04
 41470,Mutti Paradajky lúpané 3 x 400 g,Trvanlivé,"1,2 kg",9.99,,
 11430,Mutti Pomodorini di Collina - cherry paradajky,Trvanlivé,400 g,2.69,,
-10116,Mutti Trojitý koncentrát (triplo concentrato),Trvanlivé,185 g,3.99,,
+10116,Mutti Trojitý koncentrát (triplo concentrato),Trvanlivé,185 g,3.99,2.99,2026-12-04
 34448,Myšák Cukrárna Dražé,Trvanlivé,100 g,16.99,,
 44186,Myšák Cukrárna Kokosky,Pekáreň a cukráreň,90 g,7.59,,
 44188,Myšák Cukrárna Laskonky,Pekáreň a cukráreň,50 g,7.99,,
@@ -6322,7 +6348,6 @@ id,product,category,pack,price,sale_price,sale_until
 22350,Nature Line Brusienky celozrnné sušienky,Trvanlivé,65 g,0.92,,
 32390,Nature Line Čakanka,Trvanlivé,32 g,0.99,,
 22356,Nature Line Diacoca Sušienky kakao-kokos,Zdravie a životný štýl,180 g,1.95,,
-26354,Nature Line Duetky celozrnné sušienky s jablkom a sezamom,Trvanlivé,50 g,0.93,,
 22502,Nature Line Špaldové piškóty,Trvanlivé,120 g,1.99,,
 22352,Nature Line Vanesky celozrnné sušienky s fruktózou,Zdravie a životný štýl,65 g,0.92,,
 22354,Nature Line Zázvorky celozrnné sušienky,Zdravie a životný štýl,65 g,0.92,,
@@ -6337,7 +6362,6 @@ id,product,category,pack,price,sale_price,sale_until
 12860,Naturiq BIO Pšenové vločky,Trvanlivé,250 g,2.59,,
 12858,Naturiq BIO Vločky amarant,Trvanlivé,250 g,6.49,,
 508,"Naud Hidden Loot rum 40%, darčekové balenie",Nápoje,700 ml,39.99,,
-56856,Naud XO Cognac 40 % darčekové balenie,Nápoje,700 ml,115.99,,
 20532,Nekton Sardelové očká s kaparami,Údeniny a lahôdky,50 g,2.99,,
 43542,Nero Marone Rosso,Nápoje,750 ml,8.39,,
 26104,Nescafé 2v1 káva instantná,Nápoje,,3.69,2.79,2026-12-01
@@ -6386,8 +6410,8 @@ id,product,category,pack,price,sale_price,sale_until
 1000044988,Nestea Lemon nanuk,Mrazené,99 ml,1.39,1.25,2026-12-12
 25506,Nestea Zelený ľadový čaj Citrus,Nápoje,"1,5 l",2.39,,
 57014,Nestea Zelený ľadový čaj jahoda a aloe vera,Nápoje,500 ml,1.09,,
-12544,Nestlé Cini Minis cereálie,Trvanlivé,650 g,7.29,,
 12616,Nestlé Cini Minis cereálie,Trvanlivé,450 g,5.19,,
+12544,Nestlé Cini Minis cereálie,Trvanlivé,650 g,7.29,,
 13036,Nestlé Cini Minis Churros,Trvanlivé,400 g,5.49,,
 44934,Nestlé Cini Minis Protein cereálie,Trvanlivé,400 g,5.49,,
 4420,"Nestlé Cini minis, cereálna tyčinka",Trvanlivé,25 g,0.82,0.59,2026-12-01
@@ -6435,8 +6459,6 @@ id,product,category,pack,price,sale_price,sale_until
 34286,Nestlé TRIX cereálie,Trvanlivé,350 g,4.99,,
 54902,Nestville Honey Liqueur,Nápoje,700 ml,17.99,,
 9086,Nestville Whisky 40%,Nápoje,700 ml,17.99,,
-8504,Nestville Whisky 40%,Nápoje,1 l,28.99,,
-8678,Nestville Whisky 43%,Nápoje,700 ml,39.99,,
 9090,Nestville Whisky 6 y.o. 40%,Nápoje,700 ml,20.99,,
 8918,Nestville Whisky Single Barrel 40%,Nápoje,700 ml,31.99,,
 43544,Next Kangaroo Cabernet Shiraz,Nápoje,750 ml,4.29,,
@@ -6452,7 +6474,7 @@ id,product,category,pack,price,sale_price,sale_until
 16960,Nika Gouda 45 % porciovaný syr,Mliečne a chladené,250 g,2.79,,
 29950,Nika Oštiepková nátierka,Mliečne a chladené,130 g,1.79,,
 29964,Nika Parenicová nátierka,Mliečne a chladené,130 g,1.79,,
-5400,Nika Sterilgarda Mascarpone,Mliečne a chladené,250 g,4.49,,
+5400,Nika Sterilgarda Mascarpone,Mliečne a chladené,250 g,4.49,3.49,2026-12-04
 18978,Nika Termix do vrecka kakao,Mliečne a chladené,80 g,1.05,,
 18980,Nika Termix do vrecka vanilka,Mliečne a chladené,80 g,1.05,,
 10438,Nika Termix jahoda,Mliečne a chladené,90 g,0.75,,
@@ -6466,7 +6488,6 @@ id,product,category,pack,price,sale_price,sale_until
 858,Niko Arašidové maslo creamy,Trvanlivé,350 g,5.49,3.89,2026-12-01
 966,Niko Arašidové maslo chrumkavé,Trvanlivé,350 g,5.49,3.89,2026-12-01
 11722,NIMM 2 Cukríky,Trvanlivé,90 g,1.19,,
-11896,NIMM 2 Smile Gummi ovocné cukríky,Trvanlivé,100 g,1.29,,
 11630,NIMM 2 Smile Gummi Red Fruits/ červené ovocie cukríky,Trvanlivé,90 g,1.19,0.89,2026-12-01
 11720,NIMM 2 Soft cukríky,Trvanlivé,90 g,1.19,0.89,2026-12-01
 11724,NIMM 2 Werther's Original cukríky,Trvanlivé,90 g,1.19,,
@@ -6591,12 +6612,12 @@ id,product,category,pack,price,sale_price,sale_until
 27804,Obaľované filety zo sumčeka,Mrazené,600 g,12.49,,
 17438,Obaľované morčacie medailóniky plnené syrom,Mrazené,1 kg,5.99,,
 26776,OBAN Single Malt whisky 14 y.o. 43%,Nápoje,700 ml,89.99,,
-4812,Occelli Con Tartufo smotanové maslo s hľuzovkou,Mliečne a chladené,80 g,9.59,,
+4812,Occelli Con Tartufo smotanové maslo s hľuzovkou,Mliečne a chladené,80 g,9.59,6.99,2026-12-04
 11828,Očka jemné Semafor,Trvanlivé,580 g,7.99,,
 36650,Odd One Out Sauvignon Blanc,Nápoje,750 ml,10.99,,
 8604,Oh Bosacka Old Herold Bošácka Slivovica 52%,Nápoje,1 l,27.99,,
 8602,Oh Bosacka Old Herold Bošácka Slivovica Exclusive 52%,Nápoje,700 ml,25.99,,
-19492,Oh My Cheese Perly Kozí syr s figami,Mliečne a chladené,90 g,3.79,,
+19492,Oh My Cheese Perly Kozí syr s figami,Mliečne a chladené,90 g,3.79,2.99,2026-12-04
 39294,Ocho Classico olivový olej,Trvanlivé,500 ml,10.49,,
 21784,Ocho Delicioso olivový olej,Trvanlivé,500 g,10.49,,
 50374,Ocho Pomace olivový olej,Trvanlivé,1 l,5.99,,
@@ -6610,17 +6631,19 @@ id,product,category,pack,price,sale_price,sale_until
 8630,Old Herold Bošácka Slivovica 3 y.o. 52%,Nápoje,700 ml,31.99,,
 38894,"Old Herold Bošácka slivovica 52% + 2 poháre, darčekové balenie",Nápoje,700 ml,31.99,,
 9094,Old Herold Gin Original 40%,Nápoje,700 ml,12.49,,
+36450,Old Herold Hruškovica Williams 45%,Nápoje,700 ml,28.99,20.59,2026-12-01
 8978,Old Herold Maruna Marhuľovica 45%,Nápoje,700 ml,30.99,,
+49476,Old Herold R 40 Tuzemský 40 %,Nápoje,200 ml,3.39,,
 36452,Old Herold Trenčianske hradné 36%,Nápoje,1 l,12.99,11.09,2026-12-01
 40204,OLD ST. CROIX Reserve 175 Years Anniversary 42%,Nápoje,700 ml,69.99,,
 48168,OLD ST. CROIX XO Legacy Reserve 42%,Nápoje,700 ml,54.99,,
 35700,Olé Mexicana MEXICANA Olé Gold 38%,Nápoje,700 ml,15.49,,
 35702,Olé Mexicana MEXICANA Olé Silver 38%,Nápoje,700 ml,16.99,,
-41698,Olitalia Balsamico vínny ocot z Modeny,Trvanlivé,500 ml,5.19,,
+41698,Olitalia Balsamico vínny ocot z Modeny,Trvanlivé,500 ml,5.19,3.99,2026-12-04
 12788,Olitalia Balsamico vínny ocot z Modeny,Trvanlivé,250 ml,3.89,,
-21786,Olitalia Olivový olej extra virgin + Balsamico ocot 2x250 ml,Trvanlivé,500 ml,18.49,,
-12546,Olitalia Olivový olej extra virgine,Trvanlivé,750 ml,13.99,,
-30750,Olitalia Olivový olej Pomace,Trvanlivé,1 l,9.99,,
+21786,Olitalia Olivový olej extra virgin + Balsamico ocot 2x250 ml,Trvanlivé,500 ml,18.49,14.99,2026-12-04
+12546,Olitalia Olivový olej extra virgine,Trvanlivé,750 ml,13.99,10.99,2026-12-04
+30750,Olitalia Olivový olej Pomace,Trvanlivé,1 l,9.99,7.99,2026-12-04
 12700,Olitalia Vínny ocot biely,Trvanlivé,500 ml,2.59,,
 12726,Olitalia Vínny ocot červený,Trvanlivé,500 ml,2.59,,
 43888,"Olma Čerstvé plnotučné mlieko (3,9%)",Mliečne a chladené,1 l,1.85,,
@@ -6630,6 +6653,7 @@ id,product,category,pack,price,sale_price,sale_until
 30982,Olma Olmíci jogurt jahodový s marshmallow Haribo Chamallows,Mliečne a chladené,111 g,0.76,0.59,2026-12-01
 37290,Olma Olmíci jogurt s cukríkmi Haribo,Mliečne a chladené,121 g,0.76,0.59,2026-12-01
 30986,Olma Olmíci piškotoví čokoláda,Mliečne a chladené,113 g,0.68,,
+1000030986,Olma Olmíci piškotoví čokoláda,Mliečne a chladené,113 g,0.68,0.61,2026-12-02
 30988,Olma Olmíci piškotoví vanilka,Mliečne a chladené,113 g,0.68,,
 37302,Olma Olmín,Mliečne a chladené,100 g,1.85,,
 45440,Olma Olmín na gril gyros,Mliečne a chladené,102 g,1.79,,
@@ -6660,7 +6684,6 @@ id,product,category,pack,price,sale_price,sale_until
 48792,Opavia BeBe Dobré ráno kakaové -30 % cukru sušienky s 5 celozrnnými cereáliami multibalenie,Trvanlivé,360 g,3.89,,
 47268,Opavia BeBe Dobré ráno lesné ovocie,Trvanlivé,360 g,3.89,,
 22102,Opavia Bebe Dobré ráno mini kakaové,Trvanlivé,300 g,4.99,,
-22104,Opavia Bebe Dobré ráno mini medové,Trvanlivé,300 g,4.99,,
 33100,Opavia BeBe Dobré ráno na mäkko brusnice,Trvanlivé,50 g,0.95,,
 33104,Opavia BeBe Dobré ráno na mäkko plnené jahodami,Trvanlivé,50 g,0.69,0.59,2026-12-01
 52512,Opavia BeBe Dobré ráno orieškové s medom sušienky s 5 celozrnnými cereáliami multibalenie,Trvanlivé,360 g,3.89,,
@@ -6670,9 +6693,9 @@ id,product,category,pack,price,sale_price,sale_until
 38696,Opavia BeBe Rodinné jemné,Trvanlivé,130 g,1.09,0.89,2026-12-01
 38694,Opavia BeBe Rodinné kakaové,Trvanlivé,130 g,1.09,0.89,2026-12-01
 11548,Opavia Bochánky čokoládové jemné pečivo,Trvanlivé,140 g,2.49,,
+11550,Opavia Bochánky klasik Mäkké pečivo,Trvanlivé,140 g,2.49,,
 20886,Opavia Brumík Duo jahoda a vanilková príchuť,Trvanlivé,30 g,0.63,,
 30116,Opavia Brumík s čokoládovou náplňou,Trvanlivé,30 g,0.63,,
-52476,Opavia Brumík s čokoládovou náplňou autobus,Trvanlivé,300 g,7.29,,
 48788,Opavia Brumík s jahodovou náplňou,Trvanlivé,30 g,0.63,,
 30096,Opavia Brumík s mliečnou náplňou,Trvanlivé,30 g,0.63,,
 36976,Opavia Brumík Zima s mliečnou náplňou,Trvanlivé,150 g,2.39,,
@@ -6774,17 +6797,19 @@ id,product,category,pack,price,sale_price,sale_until
 41018,Orion Margot Mini mango a kokos,Trvanlivé,40 g,0.86,,
 22794,Orion Margot sójová tyčinka s kokosom v kakaovej poleve,Trvanlivé,80 g,0.89,0.69,2026-12-01
 2268,Orion Milena Čokoládová tyčinka s krémovou náplňou,Trvanlivé,32 g,0.75,,
+50378,Orion Mliečna čokoláda Bublinky karamel,Trvanlivé,90 g,2.09,1.79,2026-12-01
 41450,Orion Nugeta arašidová,Trvanlivé,340 g,4.49,,
 24802,Orion Vianočná kolekcia Figúrková mliečna,Trvanlivé,348 g,17.99,,
 38750,Orion Vývrtka na víno nerez drevo,Domácnosť a záhrada,,1.55,,
+37172,Orion Zlatý kapor,Trvanlivé,42 g,2.39,,
 29926,Orion Zora Sójové rezy,Trvanlivé,50 g,0.71,,
 33640,Oshee Izotonický nápoj Multifruit,Nápoje,750 ml,1.75,,
 33642,Oshee Izotonický nápoj Pomaranč,Nápoje,750 ml,1.75,,
 33644,Oshee Vitamínová voda Magnesium+B6 citrón-pomaranč,Nápoje,560 ml,1.69,,
 33646,Oshee Vitamínová voda Vitamíny&Minerály hrozno-pitaya,Nápoje,560 ml,1.69,,
+14888,OSTROŽOVIČ Cabernet Sauvignon Solaris,Nápoje,750 ml,9.79,,
 14892,OSTROŽOVIČ Lipovina,Nápoje,750 ml,6.19,,
 14894,OSTROŽOVIČ Muškát žltý,Nápoje,750 ml,7.29,,
-15108,Ostrožovič Muškát žltý Saturnia slamové víno,Nápoje,375 ml,23.99,,
 14896,OSTROŽOVIČ Toccata polosladké,Nápoje,750 ml,6.19,,
 41072,OSTROŽOVIČ Tokaj 3 putňový,Nápoje,500 ml,23.99,,
 55532,OSTROŽOVIČ Tokajský výber 6-putňový,Nápoje,500 ml,54.99,,
@@ -6867,10 +6892,10 @@ id,product,category,pack,price,sale_price,sale_until
 37840,Paprika biela 1ks,Ovocie a zelenina,60 g,0.21,,
 45354,Paprika červená kápia,Ovocie a zelenina,500 g,2.99,,
 3960,Paprika červená Ramiro,Ovocie a zelenina,2 ks,2.29,,
-40266,"Paprika červená, 1ks",Ovocie a zelenina,120 g,0.54,,
+37390,"Paprika červená, 1 ks",Ovocie a zelenina,120 g,0.54,,
 7758,"Paprika chilli mix, čerstvá, pálivosť 4,8,9",Ovocie a zelenina,50 g,1.89,,
-30720,Paprika mix,Ovocie a zelenina,"1,5 kg",7.04,,
-37484,"Paprika zelená, 1ks",Ovocie a zelenina,130 g,0.51,,
+30720,Paprika mix,Ovocie a zelenina,"1,46 kg",6.85,,
+37484,"Paprika zelená, 1ks",Ovocie a zelenina,120 g,0.47,,
 38350,Paradajka červená 1ks,Ovocie a zelenina,130 g,0.43,,
 30920,Paradajky cherry datľové Shaker žlté,Ovocie a zelenina,250 g,3.99,,
 8018,Paradajky cherry kríčkové,Ovocie a zelenina,500 g,4.99,,
@@ -6879,7 +6904,7 @@ id,product,category,pack,price,sale_price,sale_until
 3972,"Paradajky cherry, vanička",Ovocie a zelenina,250 g,1.75,,
 4084,Paradajky Kumato,Ovocie a zelenina,500 g,4.19,,
 56392,"Paradajky nakrájané, plátky",Ovocie a zelenina,500 g,5.39,,
-23308,Parmareggio GranTerre syr tavené plátky,Mliečne a chladené,140 g,4.19,,
+23308,Parmareggio GranTerre syr tavené plátky,Mliečne a chladené,140 g,4.19,2.99,2026-12-04
 56364,Parmareggio Parmigiano Reggiano so strúhadlom,Mliečne a chladené,,13.99,,
 24976,Party Likér čokoláda 15%,Nápoje,500 ml,7.19,,
 26812,Party Likér vaječný 15%,Nápoje,500 ml,7.19,,
@@ -6887,7 +6912,7 @@ id,product,category,pack,price,sale_price,sale_until
 28402,Party SLOVENSKÁ Slivka 40%,Nápoje,500 ml,9.69,,
 7770,Passionfruit twinpack,Ovocie a zelenina,2 ks,2.39,,
 34416,Pastacaffé Omáčka na Spaghetti Ambiente,Údeniny a lahôdky,360 g,10.99,,
-36510,Pasticceria Del Duca Panettone Classico,Pekáreň a cukráreň,910 g,10.49,,
+36510,Pasticceria Del Duca Panettone Classico,Pekáreň a cukráreň,910 g,9.79,8.49,2026-12-04
 52794,Pasticceria Del Duca Panettone s gianduia krémom,Pekáreň a cukráreň,750 g,11.99,,
 36498,Pasticceria Del Duca Panettone s kúskami čokolády,Pekáreň a cukráreň,750 g,11.99,,
 8056,Paštrnák praný,Ovocie a zelenina,1 kg,2.29,,
@@ -6925,7 +6950,8 @@ id,product,category,pack,price,sale_price,sale_until
 43550,Paw Patrol Džús tropic 100%,Nápoje,200 ml,1.09,,
 15120,Pd Mojmirovce Dunaj,Nápoje,750 ml,12.49,,
 15122,Pd Mojmirovce Hron,Nápoje,750 ml,12.49,,
-15130,Pd Mojmirovce Noria,Nápoje,750 ml,12.49,,
+15126,Pd Mojmirovce Chardonnay,Nápoje,750 ml,12.49,,
+15128,Pd Mojmirovce Millia,Nápoje,750 ml,12.49,,
 45060,Pearl River Bridge Biely ryžový ocot,Trvanlivé,500 ml,1.99,,
 19806,"Pearl River Bridge Nakládaný zázvor růžový, plátky",Trvanlivé,200 g,1.29,,
 4296,Pearl River Bridge Sójová omáčka svetlá,Trvanlivé,500 ml,3.89,,
@@ -6949,8 +6975,8 @@ id,product,category,pack,price,sale_price,sale_until
 33460,Pekárova žena Chlieb multicereálny,Pekáreň a cukráreň,500 g,3.39,,
 56812,Pekárova žena Linecké cesto,Pekáreň a cukráreň,500 g,4.49,,
 56814,Pekárova žena Linecké cesto kakaové,Pekáreň a cukráreň,500 g,4.99,,
-39592,Pekárova žena Medovníkové cesto,Pekáreň a cukráreň,1 kg,11.99,,
 39590,Pekárova žena Medovníkové cesto,Pekáreň a cukráreň,500 g,3.69,,
+39592,Pekárova žena Medovníkové cesto,Pekáreň a cukráreň,1 kg,11.99,,
 33446,Pekárova žena Moravský makový koláč,Pekáreň a cukráreň,120 g,2.79,,
 33470,Pekárova žena Moravský orechový koláč,Pekáreň a cukráreň,120 g,2.95,,
 33456,Pekárova žena Moravský tvarohový koláč,Pekáreň a cukráreň,120 g,2.79,,
@@ -7017,7 +7043,6 @@ id,product,category,pack,price,sale_price,sale_until
 38634,Pepsi plechovka,Nápoje,330 ml,1.09,0.79,2026-12-01
 17052,Pepsi sýtený nápoj,Nápoje,"1,5 l",1.95,,
 50840,Pepsi Twist,Nápoje,330 ml,1.09,0.79,2026-12-01
-1000050840,Pepsi Twist,Nápoje,330 ml,1.09,0.71,2026-12-12
 39484,Pepsi Twist Lemon,Nápoje,"1,5 l",1.95,,
 24182,Pepsi Zero Sugar,Nápoje,330 ml,1.09,0.79,2026-12-01
 42256,Pereg Cuvée čierny Pereg,Nápoje,750 ml,13.49,,
@@ -7030,12 +7055,12 @@ id,product,category,pack,price,sale_price,sale_until
 26684,Perly oceánu japonský citrón a yuzu,Trvanlivé,200 g,22.99,,
 9514,Perly oceánu s príchuťou balzamikového octu,Mäso a ryby,200 g,15.99,,
 27038,Perly z jesetera,Mäso a ryby,100 g,12.49,,
-56688,Perníkář Mikulášska nádielka perník,Trvanlivé,60 g,0.4,,
 33322,Perníkář Perník jahoda,Trvanlivé,60 g,0.39,,
 33326,Perníkář Perník slivka,Trvanlivé,60 g,0.39,,
 48130,Peroni Nastro Azzurro,Nápoje,330 ml,1.39,,
 48132,"Peroni Nastro Azzurro 0,0%",Nápoje,330 ml,1.39,,
 46332,"Peroni Nastro Azzurro, vratná plechovka",Nápoje,330 ml,1.39,,
+28546,Perrier Jouët Grand Brut šampanské,Nápoje,750 ml,68.99,,
 35040,Perrier Minerálna voda 4x330ml,Nápoje,"1,32 l",7.59,,
 53400,Petržlen hladkolistý,Ovocie a zelenina,1 kg,6.59,,
 31006,"Petržlen hladkolistý, balený",Ovocie a zelenina,400 g,3.29,,
@@ -7045,11 +7070,11 @@ id,product,category,pack,price,sale_price,sale_until
 24492,Petržlen kučeravý,Ovocie a zelenina,400 g,2.99,,
 20814,Pez Hroznový cukor pomaranč,Trvanlivé,39 g,0.77,,
 20834,Pez Hroznový cukor s jahodovou príchuťou,Trvanlivé,39 g,0.77,,
+47270,Pez Jurassic world cukríky (1 figúrka + 10 štangličiek + 2 samolepky),Trvanlivé,85 g,3.99,,
 18156,Peza Pagáčiky oškvarkové,Pekáreň a cukráreň,150 g,2.99,,
 43552,Pfanner B+C+E nektár lesné plody tetrapack,Nápoje,1 l,2.59,,
 51000,Pfanner BIO Caffeine Shot,Nápoje,500 ml,5.89,4.19,2026-12-01
 25598,Pfanner BIO cvikla 100%,Nápoje,500 ml,2.79,,
-31108,Pfanner BIO Ingwer Kurkuma Shot,Nápoje,150 ml,1.49,,
 31110,Pfanner BIO Ingwer Zázvor Shot,Nápoje,150 ml,1.49,,
 50814,Pfanner BIO Shot Ginger,Nápoje,500 ml,5.89,3.79,2026-12-01
 38604,Pfanner Džús 50% multivitamín,Nápoje,2 l,3.79,,
@@ -7126,7 +7151,7 @@ id,product,category,pack,price,sale_price,sale_until
 38900,"Piquero 40% + 2 poháriky, darčekové balenie",Nápoje,700 ml,44.99,,
 26802,Piquero 40% rum,Nápoje,700 ml,43.99,,
 36496,Piquero Rojo 40%,Nápoje,700 ml,41.99,,
-908,Pircher Bombardino 17% vaječný likér,Nápoje,700 ml,20.99,,
+908,Pircher Bombardino 17% vaječný likér,Nápoje,700 ml,20.99,15.99,2026-12-04
 49390,Pisti Pistáciový krém,Trvanlivé,600 g,27.99,,
 41468,Pisti Pistáciový krém 45%,Trvanlivé,200 g,11.49,,
 11602,Piškóty špaldové,Trvanlivé,120 g,1.79,,
@@ -7138,12 +7163,16 @@ id,product,category,pack,price,sale_price,sale_until
 51288,Pizza Markýz Salámová,Mrazené,560 g,6.49,,
 51286,Pizza Markýz Syrová,Mrazené,550 g,6.49,,
 50248,Pizza Markýz Šunková klasik,Mrazené,550 g,6.49,,
-34440,Pizza Nuova Ragù Bolognese,Trvanlivé,360 g,9.99,,
-1000034436,Pizza Nuova Ragù Napoletano,Údeniny a lahôdky,360 g,10.49,4.76,2026-12-16
-34436,Pizza Nuova Ragù Napoletano,Údeniny a lahôdky,360 g,10.49,5.29,2026-11-26
-34438,Pizza Nuova Sugo all'amatriciana,Údeniny a lahôdky,360 g,9.8,,
+34440,Pizza Nuova Ragù Bolognese,Trvanlivé,360 g,9.99,7.99,2026-12-04
+1000034436,Pizza Nuova Ragù Napoletano,Údeniny a lahôdky,360 g,10.49,7.73,2026-12-16
+34436,Pizza Nuova Ragù Napoletano,Údeniny a lahôdky,360 g,10.49,8.59,2026-12-04
+34438,Pizza Nuova Sugo all'amatriciana,Údeniny a lahôdky,360 g,9.8,7.99,2026-12-04
 33884,Plantation Planteray Barbados Grande Réserve 40%,Nápoje,700 ml,27.99,,
-57072,Planteray Paraguay 2014 rum 47 %,Nápoje,700 ml,82.59,,
+33886,Plantation Planteray Original Dark 40%,Nápoje,700 ml,25.99,,
+31950,Plantation Planteray XO 20th Anniversary 40%,Nápoje,700 ml,58.99,,
+45562,Planteray Cut & Dry 40%,Nápoje,700 ml,32.99,,
+48258,Planteray Original Dark pineapple 40%,Nápoje,700 ml,36.99,,
+50980,Planteray Sealander 40%,Nápoje,700 ml,40.99,,
 38880,"Planteray XO 40% + 2 poháre, darčekové balenie",Nápoje,700 ml,52.99,,
 11458,"Plh Diabeta Oblátka kokosová máčaná, DIA",Trvanlivé,34 g,0.72,,
 11460,Plh Diafabi Oblátka kakaová DIA,Trvanlivé,35 g,0.72,,
@@ -7208,8 +7237,8 @@ id,product,category,pack,price,sale_price,sale_until
 11510,Pom-Bär Original Family pack,Trvanlivé,110 g,3.19,,
 44028,Pom-Bär Original slané zemiakové snacky,Trvanlivé,18 g,0.77,,
 11654,Pom-Bär Syr,Trvanlivé,,1.65,,
-38040,Pomaranč 1ks,Ovocie a zelenina,240 g,0.57,,
-41344,"Pomaranč, 1ks",Ovocie a zelenina,260 g,0.44,,
+38040,Pomaranč 1ks,Ovocie a zelenina,240 g,0.6,,
+41344,"Pomaranč, 1ks",Ovocie a zelenina,260 g,0.65,,
 27512,Pomaranče Gearsac,Ovocie a zelenina,1 kg,2.19,1.79,2026-12-01
 23902,Pomelo biele,Ovocie a zelenina,750 g,2.59,,
 53272,"Pomelo červené, 1 ks",Ovocie a zelenina,1 kg,2.59,,
@@ -7340,11 +7369,12 @@ id,product,category,pack,price,sale_price,sale_until
 33352,Pravé Olomoucké tvarôžky špeciál,Mliečne a chladené,80 g,1.29,,
 33354,Pravé Olomoucké tvarôžky venčeky,Mliečne a chladené,125 g,2.09,,
 44442,Pražma kráľovská filet,Mrazené,800 g,19.99,,
-636,Prealpi Burro Chiarificato – prepustené maslo,Mliečne a chladené,500 g,17.49,,
+636,Prealpi Burro Chiarificato – prepustené maslo,Mliečne a chladené,500 g,17.49,12.99,2026-12-04
 35254,Predella Chianti DOCG,Nápoje,750 ml,6.19,,
 41320,Predium Vrable Cabernet Sauvignon rosé,Nápoje,750 ml,10.49,,
 56882,"Predium Vrable Devín + Cabernet Sauvignon, darčekové balenie 2 × 750 ml",Nápoje,"1,5 l",17.99,,
 41324,Predium Vrable Chardonnay,Nápoje,750 ml,10.49,,
+15230,Predium Vrable Sauvignon,Nápoje,750 ml,9.99,,
 18394,"Prémiové jahody, vanička",Ovocie a zelenina,500 g,12.99,,
 44536,Prepelica 2ks,Mrazené,440 g,8.69,,
 17810,Prepeličie vajcia,Mliečne a chladené,30 ks,7.49,,
@@ -7497,11 +7527,11 @@ id,product,category,pack,price,sale_price,sale_until
 3064,Pstruh filety s kožou 80-120 g,Mrazené,1 kg,18.49,,
 13896,Pstruh údený vákuum,Mäso a ryby,300 g,6.3,,
 8906,"Puerto Blanco Caribbean White 37,5%",Nápoje,500 ml,9.99,,
+48274,"Puntacana Silver 37,5%",Nápoje,700 ml,23.99,,
 48276,"Puntacana Viejo 37,5%",Nápoje,700 ml,23.99,,
 51518,"Pura Vida Ananas rum 37,5 %",Nápoje,700 ml,24.99,,
 55278,Purcari 1827 Cabernet Sauvignon,Nápoje,750 ml,8.89,,
 9216,Pyrat XO Reserve 40%,Nápoje,700 ml,39.99,,
-8996,Pyrum Hruškovica 52%,Nápoje,500 ml,23.99,,
 54974,Qapka Blueberry & Cherry,Nápoje,500 ml,1.29,1.09,2026-12-01
 54976,Qapka Mango & Lime,Nápoje,500 ml,1.29,1.09,2026-12-01
 52810,Qualiko Kurací kebab,Mrazené,1 kg,11.49,,
@@ -7512,13 +7542,11 @@ id,product,category,pack,price,sale_price,sale_until
 11276,Quality Bakers Sandwich Americký svetlý,Pekáreň a cukráreň,750 g,2.99,,
 36652,Querceto Chianti,Nápoje,750 ml,9.79,,
 48424,"R. JELÍNEK Elixír z bazového kvetu 14,7%",Nápoje,700 ml,13.99,,
-57010,"R. JELÍNEK Elixír z malín 14,7 %",Nápoje,700 ml,14.69,,
 2164,R. JELÍNEK Hruška Williams (42%),Nápoje,700 ml,22.99,,
 38724,R. JELÍNEK Hruškovica Williams 42% + 2ks poháre,Nápoje,500 ml,23.99,,
 35594,R. JELÍNEK KOSHER Slivovica biela 50%,Nápoje,700 ml,48.99,,
 9070,R. JELÍNEK Kosher Williams Hruškovica 42%,Nápoje,700 ml,41.99,,
 35588,R. JELÍNEK Moravská marhuľa 40%,Nápoje,1 l,16.99,,
-8908,R. JELÍNEK Oskerušovice 42%,Nápoje,700 ml,55.99,,
 826,R. JELÍNEK Praděd 38%,Nápoje,700 ml,15.99,,
 8594,R. JELÍNEK Slivovica Biela 50%,Nápoje,700 ml,24.99,,
 8596,R. JELÍNEK Slivovica Zlatá 50%,Nápoje,700 ml,24.99,,
@@ -7571,7 +7599,7 @@ id,product,category,pack,price,sale_price,sale_until
 45346,Rajčiny cherry Divino Imperial čerstvé,Ovocie a zelenina,180 g,4.19,,
 45350,Rajčiny cherry kríčkové triomix čerstvé,Ovocie a zelenina,300 g,5.99,,
 52054,"Rajčiny cherry, datľové, hnedé",Ovocie a zelenina,250 g,3.69,,
-45348,"Rajčiny San Marzano, 400g",Ovocie a zelenina,400 g,4.89,,
+45348,"Rajčiny San Marzano, 400g",Ovocie a zelenina,400 g,4.89,3.99,2026-12-04
 50454,Rajec 321 funkčná pramenitá voda broskyňa a medovka,Nápoje,750 ml,1.55,,
 50452,Rajec 321 funkčná pramenitá voda mango a limetka,Nápoje,750 ml,1.55,,
 50456,Rajec 321 funkčná pramenitá voda ribezľa a citrónová tráva,Nápoje,750 ml,1.55,,
@@ -7674,9 +7702,11 @@ id,product,category,pack,price,sale_price,sale_until
 11958,"Rajo Mlieko UHT 1,5%",Mliečne a chladené,1 l,1.45,,
 11992,"Rajo Mlieko vápnik+vitamín UHT 3,5%",Mliečne a chladené,1 l,1.89,,
 12492,Rajo Mňam DUO Smotanový jogurt marhuľa,Mliečne a chladené,145 g,0.69,,
+1000012492,Rajo Mňam DUO Smotanový jogurt marhuľa,Mliečne a chladené,145 g,0.69,0.62,2026-12-02
 48436,Rajo Mňam DUO smotanový jogurt s malinami,Mliečne a chladené,145 g,0.69,,
 12458,Rajo Mňam DUO Smotanový jogurt tiramisu,Mliečne a chladené,140 g,0.69,,
 12494,Rajo Mňam DUO Smotanový jogurt vanilka,Mliečne a chladené,145 g,0.69,,
+1000012494,Rajo Mňam DUO Smotanový jogurt vanilka,Mliečne a chladené,145 g,0.69,0.62,2026-12-02
 12488,Rajo Mňam Smotanový Jogurt Čokoláda,Mliečne a chladené,145 g,0.69,,
 12460,Rajo Mňam Smotanový Jogurt Čučoriedka,Mliečne a chladené,145 g,0.69,,
 12490,Rajo Mňam Smotanový Jogurt Jahoda,Mliečne a chladené,145 g,0.69,,
@@ -7711,6 +7741,7 @@ id,product,category,pack,price,sale_price,sale_until
 13788,Rajo Tvaroh jemný Lakto free bez laktózy,Mliečne a chladené,180 g,1.55,,
 12132,Rajo Tvaroh odtučnený hrudkovitý,Mliečne a chladené,180 g,1.45,,
 12198,Rajo Tvaroh tučný,Mliečne a chladené,200 g,1.85,,
+1000012198,Rajo Tvaroh tučný,Mliečne a chladené,200 g,1.85,1.66,2026-12-01
 55068,"Rajo UHT bezlaktózové mlieko 3,5 %",Mliečne a chladené,1 l,2.59,,
 30012,Rajo Vegan dezert topping v spreji,Mliečne a chladené,200 ml,2.19,,
 18950,Rajo Vegan krém rastlinná alternatíva mascarpone,Zdravie a životný štýl,250 g,2.99,,
@@ -7736,17 +7767,17 @@ id,product,category,pack,price,sale_price,sale_until
 16734,Rama Salted – rastlinná alternatíva masla,Mliečne a chladené,200 g,2.69,,
 5312,Rama Salted – roztierateľná rastlinná nátierka,Mliečne a chladené,400 g,2.89,2.39,2026-12-01
 16732,Rama Unsalted – rastlinná alternatíva masla,Mliečne a chladené,250 g,2.59,,
-8704,Ramazzotti Grappa Liquer 40 %,Nápoje,700 ml,24.99,,
-6152,Rana Cappelletti s prosciutto crudo MAXIPACK - plnené cestoviny,Údeniny a lahôdky,400 g,5.69,,
+8704,Ramazzotti Grappa Liquer 40 %,Nápoje,700 ml,24.99,19.99,2026-12-04
+6152,Rana Cappelletti s prosciutto crudo MAXIPACK - plnené cestoviny,Údeniny a lahôdky,400 g,5.69,4.19,2026-12-04
 37868,Rana Lasagne alla Bolognese,Údeniny a lahôdky,350 g,6.39,,
-6130,Rana MAXIPACK Ravioli ricotta a špenát,Údeniny a lahôdky,400 g,5.69,,
+6130,Rana MAXIPACK Ravioli ricotta a špenát,Údeniny a lahôdky,400 g,5.69,4.19,2026-12-04
 6132,Rana Maxipack Tortelloni s hríbmi porcini,Údeniny a lahôdky,400 g,5.69,,
-5496,Rana Pappardelle čerstvé vaječné cestoviny,Údeniny a lahôdky,250 g,3.49,,
+5496,Rana Pappardelle čerstvé vaječné cestoviny,Údeniny a lahôdky,250 g,3.49,2.59,2026-12-04
 5492,Rana Pasta per Lasagne čerstvé cestoviny na lasagne,Údeniny a lahôdky,250 g,3.49,,
-6154,Rana Ravioli 4 Formaggi – čerstvé cestoviny so štyrmi druhmi syra,Údeniny a lahôdky,400 g,5.69,,
+6154,Rana Ravioli 4 Formaggi – čerstvé cestoviny so štyrmi druhmi syra,Údeniny a lahôdky,400 g,5.69,3.99,2026-12-04
 6238,Rana Ristorante Tortellini Carne,Údeniny a lahôdky,1 kg,11.49,,
 48344,Rana Spaghetti Carbonara Kit,Údeniny a lahôdky,357 g,6.99,,
-5494,Rana Tagliatelle čerstvé vaječné cestoviny,Údeniny a lahôdky,250 g,3.49,,
+5494,Rana Tagliatelle čerstvé vaječné cestoviny,Údeniny a lahôdky,250 g,3.49,2.59,2026-12-04
 6236,Rana Tortelloni alla Ricotta e Spinaci – čerstvé cestoviny s ricottou a špenátom,Údeniny a lahôdky,1 kg,11.49,,
 34338,Rariga Devín,Nápoje,750 ml,14.99,,
 34698,Rariga Frankovka modrá Barrique,Nápoje,750 ml,14.99,,
@@ -7867,7 +7898,7 @@ id,product,category,pack,price,sale_price,sale_until
 50434,Red Bull Zero Sugar energetický nápoj,Nápoje,355 ml,2.59,,
 18510,"Reďkovka biela dlhá, 1 ks",Ovocie a zelenina,,2.49,,
 7970,"Reďkovka červená, balená",Ovocie a zelenina,250 g,1.49,1.19,2026-12-01
-40964,Reďkovka s vňaťou zväzok,Ovocie a zelenina,,0.79,,
+20908,"Reďkovky červené, zväzok 1 ks",Ovocie a zelenina,,0.89,,
 14160,Relax 100% jablko,Nápoje,1 l,2.19,,
 17108,Relax Brusnica mix nápoj,Nápoje,1 l,2.19,,
 48400,Relax Cola Malina limonáda,Nápoje,330 ml,0.99,0.79,2026-12-01
@@ -7900,8 +7931,7 @@ id,product,category,pack,price,sale_price,sale_until
 26870,Relax Vol. NO nápoj mango mule tetrapack,Nápoje,1 l,2.69,,
 26878,Relax Vol. NO nápoj mint mojito tetrapack,Nápoje,1 l,2.69,,
 26876,Relax Vol. NO nápoj orange spritz tetrapack,Nápoje,1 l,2.69,,
-9016,Rémy Martin XO Excellent 40%,Nápoje,700 ml,219.9,,
-17460,Repa červená,Ovocie a zelenina,1 kg,1.55,,
+17460,Repa červená,Ovocie a zelenina,"1,03 kg",1.6,,
 8004,"Repa predvarená, 2-5ks",Ovocie a zelenina,500 g,1.79,,
 15262,Repa Winery Vinkor Devín,Nápoje,750 ml,15.99,,
 7952,Repa žltá,Ovocie a zelenina,500 g,3.79,,
@@ -7917,20 +7947,20 @@ id,product,category,pack,price,sale_price,sale_until
 47254,Ribella Hummus s tekvicovými semienkami,Údeniny a lahôdky,200 g,2.39,,
 33018,"Ríbezle červené, vanička",Ovocie a zelenina,125 g,3.89,,
 28246,Ríbezľové lekvárové buchty,Údeniny a lahôdky,580 g,4.39,,
-7032,Ribo Bresaola neštandardné plátky,Údeniny a lahôdky,250 g,4.19,,
+7032,Ribo Bresaola neštandardné plátky,Údeniny a lahôdky,250 g,4.19,2.99,2026-12-04
 29898,Ribo Bresaola neštandardné plátky,Údeniny a lahôdky,500 g,8.99,,
 29738,Ribo Chorizo saláma neštandardné plátky,Údeniny a lahôdky,500 g,6.19,,
 6740,Ribo Lisovaná slanina neštandardné plátky,Údeniny a lahôdky,500 g,4.89,,
 14112,"Ribo Lisovaná slanina, neštandardné plátky (91% mäso)",Údeniny a lahôdky,500 g,3.6,,
-13982,Ribo Oravská slanina,Údeniny a lahôdky,560 g,3.35,,
+13982,Ribo Oravská slanina,Údeniny a lahôdky,760 g,4.55,,
 7034,Ribo Oravská slanina neštandardné plátky,Údeniny a lahôdky,250 g,3.09,,
 1894,Ribo Pancetta Carbonara plátky/odrezky,Údeniny a lahôdky,500 g,6.79,,
 48340,Ribo Pancetta kocky,Údeniny a lahôdky,500 g,6.49,,
 29758,Ribo Prosciutto Crudo – sušená talianska šunka plátky,Údeniny a lahôdky,500 g,9.79,,
-7002,Ribo Prosciutto Crudo – talianska sušená šunka,Údeniny a lahôdky,250 g,4.19,,
+7002,Ribo Prosciutto Crudo – talianska sušená šunka,Údeniny a lahôdky,250 g,4.19,2.99,2026-12-04
 7144,Ribo Prosciutto Crudo plátky – sušená šunka krájaná,Údeniny a lahôdky,100 g,2.29,,
-26230,Ribo Saláma Miláno plátky,Údeniny a lahôdky,250 g,3.59,,
-25818,Ribo Schwarzvaldská šunka,Údeniny a lahôdky,100 g,2.69,,
+26230,Ribo Saláma Miláno plátky,Údeniny a lahôdky,250 g,3.59,2.79,2026-12-04
+25818,Ribo Schwarzvaldská šunka,Údeniny a lahôdky,100 g,2.69,1.89,2026-12-04
 29760,"Ribo Schwarzwaldská šunka – sušená údená šunka, plátky",Údeniny a lahôdky,500 g,10.99,,
 7078,Ribo Šunka od kosti neštandardné plátky,Údeniny a lahôdky,300 g,3.79,,
 14330,"Ridgeway Bad King John anglické pivo, sklo",Nápoje,500 ml,4.69,,
@@ -7975,7 +8005,7 @@ id,product,category,pack,price,sale_price,sale_until
 10074,Rio Mare Tuniakový šalát so šošovicou,Trvanlivé,160 g,3.89,,
 45694,Rio Mare Tuniakový šalát Winter,Trvanlivé,160 g,3.89,,
 21790,Rioba 100% Arabica instantná káva,Nápoje,500 g,17.99,,
-4984,Rioba 80 % Arabica zrnková káva,Nápoje,1 kg,23.99,,
+4984,Rioba 80 % Arabica zrnková káva,Nápoje,1 kg,23.99,17.99,2026-12-04
 4778,Rioba BIO Arabica 100% káva zrnková,Nápoje,1 kg,25.99,,
 1808,Rioba Blue Curacao Sirup,Nápoje,700 ml,6.89,,
 1548,Rioba Brazília 100% Arabica Grain 500 G,Nápoje,500 g,13.99,,
@@ -8043,6 +8073,7 @@ id,product,category,pack,price,sale_price,sale_until
 50420,Rioba Žalúdok a črevá bylinný čaj,Nápoje,30 g,1.39,,
 19924,Riso Čučoriedkový džem,Trvanlivé,340 g,2.69,1.39,2026-12-01
 32504,Riso Džem extra čierna ríbezľa,Trvanlivé,340 g,2.69,,
+39412,Riso Džem malina,Trvanlivé,340 g,2.69,1.59,2026-12-01
 19926,Riso Jahodový džem,Trvanlivé,340 g,2.69,1.39,2026-12-01
 49384,Riso Jahôdka ovocná nátierka,Trvanlivé,250 g,1.39,0.79,2026-12-01
 19928,Riso Slivkový lekvár,Trvanlivé,250 g,1.99,0.89,2026-12-01
@@ -8056,12 +8087,11 @@ id,product,category,pack,price,sale_price,sale_until
 8812,Rocu Roku Gin 43%,Nápoje,700 ml,41.99,,
 34730,Rochester Ginger,Nápoje,725 ml,7.69,,
 49676,ROLNIK Zeler rezaný sterilizovaný,Trvanlivé,370 ml,1.89,,
-32892,ROMEO FICACCI Olivy zelené Cerignola,Trvanlivé,170 g,4.29,,
+32892,ROMEO FICACCI Olivy zelené Cerignola,Trvanlivé,170 g,4.29,2.99,2026-12-04
 54918,Römerquelle Emotion+ Mango & Acerola,Nápoje,750 ml,1.95,,
 12242,Römerquelle minerálna voda citrónová tráva,Nápoje,500 ml,1.09,,
 35136,Römerquelle Pramenitá minerálna voda neperlivá,Nápoje,750 ml,2.39,,
 35728,"Ron Cariba Salted Caramel 37,5%",Nápoje,700 ml,16.99,,
-1954,Rona Pohár na Prosecco Swan 6x320 ml,Domácnosť a záhrada,6 ks,28.99,,
 6140,"Ronnefeldt Earl Grey čierny čaj 37,5g",Nápoje,25 ks,9.99,,
 6202,Ronnefeldt Lemon Sky ovocný čaj 50g,Nápoje,25 ks,9.99,,
 3820,Roquefort Sociéte mäkký syr s modrou plesňou,Mliečne a chladené,150 g,7.49,5.29,2026-12-01
@@ -8102,15 +8132,15 @@ id,product,category,pack,price,sale_price,sale_until
 48206,Ryba Košice Tuniaková pochúťka jemne pikantná,Údeniny a lahôdky,140 g,1.89,,
 32874,Rybex Sardelová pasta,Údeniny a lahôdky,6 g,1.25,0.99,2026-12-01
 4284,Rybníkářství Pohořelice Kapor podkovy (5 ks),Mrazené,750 g,11.49,,
-23408,Sabi Sabinovská hrudka,Mliečne a chladené,180 g,4.14,,
+23408,Sabi Sabinovská hrudka,Mliečne a chladené,190 g,4.37,,
 4864,Sabi Volovec plátky polotvrdý syr,Mliečne a chladené,100 g,2.79,,
 46918,Sabi Volovec Premium syr,Mliečne a chladené,190 g,6.65,,
 46920,Sabi Volovec Premium syr s chilli,Mliečne a chladené,150 g,5.25,,
 46922,Sabi Volovec Premium syr s korením,Mliečne a chladené,250 g,8.75,,
 5720,Sabi Volovec prírodný zrejúci syr blok,Mliečne a chladené,150 g,4.19,,
-1702,Sacla Pesto alla genovese,Trvanlivé,190 g,4.59,,
-33798,Sacla Pesto bazalka & pistácie,Trvanlivé,190 g,4.59,,
-20062,Sacla Pesto rosso,Trvanlivé,190 g,4.59,,
+1702,Sacla Pesto alla genovese,Trvanlivé,190 g,4.59,3.39,2026-12-04
+33798,Sacla Pesto bazalka & pistácie,Trvanlivé,190 g,4.59,3.39,2026-12-04
+20062,Sacla Pesto rosso,Trvanlivé,190 g,4.59,3.39,2026-12-04
 12802,Sacla Pesto verde vegan,Trvanlivé,190 g,4.59,,
 5508,Sahnebohm Sladké palacinky neplnené – hotové palacinky na plnenie 5ks,Údeniny a lahôdky,300 g,3.39,,
 19494,Saint Benoit Camembert,Mliečne a chladené,240 g,4.69,,
@@ -8157,7 +8187,7 @@ id,product,category,pack,price,sale_price,sale_until
 33890,Santos Dumont XO Premium 40%,Nápoje,700 ml,56.99,,
 12180,Sappé Aloe vera biele hrozno nápoj,Nápoje,300 ml,1.75,,
 12176,Sappé Aloe vera limeta nápoj,Nápoje,300 ml,1.75,,
-48418,Sarti Rosa Bitter 14%,Nápoje,700 ml,24.99,,
+48418,Sarti Rosa Bitter 14%,Nápoje,700 ml,24.99,19.99,2026-12-04
 44280,SEACON Krevety Black Tiger bez hlavy nelúpané 13/15,Mrazené,800 g,18.49,,
 9766,SEACON Krevety surové bez hlavy 16/20,Mrazené,800 g,16.99,,
 44234,SEACON Krevety surové bez hlavy 8/12,Mrazené,800 g,16.99,,
@@ -8176,7 +8206,6 @@ id,product,category,pack,price,sale_price,sale_until
 24402,Sedita Horalky Mini šišky,Trvanlivé,100 g,4.09,,
 52864,Sedita Horalky sušienky plnené krémom,Trvanlivé,150 g,1.99,,
 33674,Sedita Kakaové rezy original,Trvanlivé,50 g,0.82,,
-49566,Sedita Kávenky Arabica,Trvanlivé,50 g,0.81,,
 26390,Sedita Kávenky Cappuccino,Trvanlivé,50 g,0.74,,
 44666,Sedita Kávenky Minis kávové,Trvanlivé,240 g,2.99,2.89,2026-12-01
 16440,Sedita Kávenky Original,Trvanlivé,50 g,0.82,,
@@ -8205,10 +8234,8 @@ id,product,category,pack,price,sale_price,sale_until
 20508,Sedita SEDITKY Mini piškóty,Trvanlivé,70 g,0.81,,
 26170,Sedita Seditky Piškóty mini,Trvanlivé,120 g,1.49,,
 49520,Sedita Tatranky mliečne,Trvanlivé,33 g,0.55,,
-20864,Sedita Vesna citrón,Trvanlivé,50 g,0.89,0.69,2026-12-01
 49534,Sedita Vesna minis vanilkové,Trvanlivé,240 g,2.99,2.89,2026-12-01
 49530,Sedita Vesna Oblátky Pomaranč,Trvanlivé,50 g,0.82,0.69,2026-12-01
-20866,Sedita Vesna vanilka,Trvanlivé,50 g,0.89,0.69,2026-12-01
 4744,Sedlčanský Hermelín bezlaktózový plesňový syr,Mliečne a chladené,100 g,1.89,,
 16738,Sedlčanský Hermelín pôvodný český,Mliečne a chladené,100 g,1.89,1.49,2026-12-01
 25962,Segafredo Caffé Crema Collezione káva zrnková,Nápoje,1 kg,21.99,13.39,2026-12-01
@@ -8243,8 +8270,9 @@ id,product,category,pack,price,sale_price,sale_until
 42680,Seville Premium Olivy čierne krájané v slanom náleve,Trvanlivé,935 g,9.99,,
 10218,"Seville Premium Olivy čierne, bez kôstky",Trvanlivé,350 g,4.69,,
 42684,Seville Premium Olivy zelené v slanom náleve,Trvanlivé,935 g,10.49,,
-42682,Seville Premium Olivy zelené v slanom náleve,Trvanlivé,935 g,10.49,,
 10216,"Seville Premium Olivy zelené, bez kôstky",Trvanlivé,350 g,4.69,,
+36190,Shake The Pear Hruškovica 52%,Nápoje,500 ml,55.99,,
+36192,Shake The Pear Slivovica 52%,Nápoje,500 ml,45.99,,
 34982,Shan'shi Bambusové výhonky,Trvanlivé,330 g,2.69,,
 12846,Shan'shi Chilli omáčka ostrá,Trvanlivé,200 g,3.79,,
 12848,Shan'shi Chilli omáčka sladká,Trvanlivé,200 g,3.79,,
@@ -8344,8 +8372,8 @@ id,product,category,pack,price,sale_price,sale_until
 17910,Slovakia Chips paprikové,Trvanlivé,60 g,1.25,,
 17920,Slovakia Chips slaninové,Trvanlivé,130 g,2.29,,
 17912,Slovakia Chips slaninové,Trvanlivé,60 g,1.25,,
-17916,Slovakia Chips smotana a cibuľa,Trvanlivé,130 g,2.29,,
 17924,Slovakia Chips smotana a cibuľa,Trvanlivé,200 g,2.99,,
+17916,Slovakia Chips smotana a cibuľa,Trvanlivé,130 g,2.29,,
 17908,Slovakia Chips smotana a cibuľa,Trvanlivé,60 g,1.25,,
 17922,Slovakia Chips solené,Trvanlivé,200 g,2.99,,
 17914,Slovakia Chips solené,Trvanlivé,130 g,2.29,,
@@ -8380,9 +8408,9 @@ id,product,category,pack,price,sale_price,sale_until
 42388,Slovakia Z pece tyčinky so smotanou a cibuľkou,Trvanlivé,160 g,1.99,,
 44232,Slovatys Batátové hranolky,Ovocie a zelenina,400 g,3.89,,
 28554,Slovenske Vinice Folk Frankovka modrá,Nápoje,750 ml,5.19,,
+28556,Slovenske Vinice Folk Irsai Oliver polosuché,Nápoje,750 ml,5.19,3.69,2026-12-01
 28790,Slovenske Vinice Frankovka modrá,Nápoje,750 ml,6.89,,
 28792,Slovenske Vinice Frankovka modrá rosé,Nápoje,750 ml,6.89,4.89,2026-12-01
-28784,Slovenske Vinice Tramín červený,Nápoje,750 ml,6.89,4.89,2026-12-01
 28786,Slovenske Vinice Veltlínske zelené,Nápoje,750 ml,6.89,4.89,2026-12-01
 19904,Slovenský Med Agát,Trvanlivé,950 g,11.99,,
 12778,Slovenský Med Kvetový,Trvanlivé,950 g,11.99,,
@@ -8506,11 +8534,8 @@ id,product,category,pack,price,sale_price,sale_until
 9010,Spisiacka Borovička 40%,Nápoje,700 ml,12.99,,
 9130,Spiš Original Spišská Borovička Kosher 40%,Nápoje,700 ml,16.99,,
 8788,Spiš Original Spišská Borovička s horcom Kosher 40 %,Nápoje,700 ml,16.99,,
-9028,Spiš Original Spišská Hruškovica Kosher 40%,Nápoje,700 ml,22.99,,
-8600,Spiš Original Spišská Slivovica Kosher 52%,Nápoje,700 ml,22.99,,
 9178,Spiš Spiš Original Hruška 40%,Nápoje,700 ml,15.49,,
 56842,Spišská Borovička 38 %,Nápoje,200 ml,3.59,,
-8864,Spišská Drienkovica Kosher 40%,Nápoje,700 ml,22.99,,
 35584,Spišská pálenica Jablkovica Reserva 52%,Nápoje,700 ml,22.99,,
 50152,Spraga Bio kombucha fermentovaný nápoj granátové jablko,Nápoje,330 ml,2.49,,
 50154,Spraga Bio kombucha fermentovaný nápoj jablko a hruška,Nápoje,330 ml,2.49,,
@@ -8524,8 +8549,8 @@ id,product,category,pack,price,sale_price,sale_until
 24190,Sprite PET fľaša,Nápoje,1 l,1.89,,
 33536,Sprite Zero,Nápoje,"1,5 l",2.49,,
 33534,Sprite Zero,Nápoje,330 ml,1.05,,
-50978,Sprite Zero Chill mint sýtený nápoj,Nápoje,500 ml,1.45,,
 50976,Sprite Zero Chill mint sýtený nápoj,Nápoje,330 ml,1.05,,
+50978,Sprite Zero Chill mint sýtený nápoj,Nápoje,500 ml,1.45,,
 48284,"Sprite Zero Sýtený nápoj citrón-limetka, vratná PET fľaša",Nápoje,500 ml,1.45,,
 50664,Sproud Barista hrachový nápoj,Mliečne a chladené,1 kg,3.49,,
 48522,Sproud Vanilla hrachový nápoj,Mliečne a chladené,1 l,3.49,,
@@ -8556,10 +8581,16 @@ id,product,category,pack,price,sale_price,sale_until
 28438,St. Nicolaus Leon slivka 40%,Nápoje,1 l,13.99,,
 48162,St. Nicolaus Limetka 35%,Nápoje,700 ml,10.49,,
 45582,St. Nicolaus Pistachio 35%,Nápoje,700 ml,9.59,,
+51044,St. Nicolaus Savage Rabbit 40% vodka,Nápoje,700 ml,19.99,,
+54904,St. Nicolaus Soda & Lime,Nápoje,250 ml,2.49,,
+36422,St. Nicolaus Ultra jemná vodka 30%,Nápoje,700 ml,9.39,7.19,2026-12-01
 55884,St. Nicolaus Vodka Extra Fajna 38%,Nápoje,700 ml,11.99,,
 44670,"St. Nicolaus Vodka Extra Silver 37,5%",Nápoje,700 ml,10.99,,
 28434,St. Nicolaus Vodka jemná 38%,Nápoje,700 ml,9.79,,
 45586,Stará Myslivecká 35%,Nápoje,500 ml,8.09,,
+36436,Stará Škola - nepoužiívat Dulovica 42%,Nápoje,500 ml,25.99,,
+36438,Stará Škola - nepoužiívat Marhuľovica 42%,Nápoje,500 ml,25.99,,
+36424,Stará Škola - nepoužiívat Slivovica 52%,Nápoje,500 ml,25.99,,
 4912,Starbucks Blonde Roast káva zrnková,Nápoje,450 g,17.49,,
 26114,Starbucks by Nespresso Guatemala kapsuly,Nápoje,,5.19,,
 27986,Starbucks by Nespresso Vanilla kapsuly 51 g,Nápoje,,5.19,,
@@ -8620,11 +8651,12 @@ id,product,category,pack,price,sale_price,sale_until
 51140,"Stella Artois 0,0 % pivo nealkoholické",Nápoje,330 ml,1.19,,
 36924,Stella Artois Belgické pivo,Nápoje,330 ml,1.35,,
 14300,"Stella Artois Pivo, 4x500ml, plech",Nápoje,2 l,5.29,,
-21014,STERILGARDA Mascarpone bezlaktózové,Mliečne a chladené,250 g,3.29,,
+21014,STERILGARDA Mascarpone bezlaktózové,Mliečne a chladené,250 g,3.29,2.79,2026-12-04
 52856,"Stock Amundsen Skinny Bitch 4,5 %, vratná plechovka",Nápoje,250 ml,2.39,,
-44688,"Stock Aperitivo Limoncé 14,8%",Nápoje,700 ml,18.49,,
+44688,"Stock Aperitivo Limoncé 14,8%",Nápoje,700 ml,18.49,13.99,2026-12-04
 55112,Stock Borovička 1906,Nápoje,700 ml,9.59,,
 52838,"Stock Božkov & Cola 4,5 %, vratná plechovka",Nápoje,250 ml,2.39,,
+49474,"Stock Cuba Libre miešaný nápoj 4,5 %",Nápoje,250 ml,2.39,,
 47694,"Stock Dynybyl Gin&Tonic grapefruit miešaný nápoj, vratná plechovka",Nápoje,250 ml,2.39,,
 47696,Stock Dynybyl Gin&Tonic violet miešaný nápoj,Nápoje,250 ml,2.39,,
 55122,Stock Fernet Stock Lime 27 %,Nápoje,1 l,18.49,15.89,2026-12-01
@@ -8666,8 +8698,9 @@ id,product,category,pack,price,sale_price,sale_until
 33930,Symeons Balsamico stáčaný krém,Trvanlivé,500 ml,8.69,,
 10304,Symeons Kalamata olivy s kôstkami,Trvanlivé,580 g,7.89,,
 23946,Symeons Olivový olej stáčaný nefiltrovaný,Trvanlivé,2 l,34.99,,
-12588,Symeons Olivový olej stáčaný nefiltrovaný extra virgin,Trvanlivé,1 l,19.49,,
 12730,Symeons Olivový olej stáčaný nefiltrovaný extra virgin,Trvanlivé,500 g,11.49,,
+12588,Symeons Olivový olej stáčaný nefiltrovaný extra virgin,Trvanlivé,1 l,19.49,,
+10302,Symeons Olivy zelené bez kôstok,Trvanlivé,580 g,7.89,,
 19468,Syrokrem Čerstvá chuť plná tvarohu s paprikou a paradajkami,Mliečne a chladené,80 g,1.35,,
 19464,Syrokrem Čerstvá tvarohová nátierka klasik,Mliečne a chladené,80 g,1.35,,
 19466,Syrokrem Čerstvá tvarohová nátierka s pažítkou,Mliečne a chladené,80 g,1.35,,
@@ -8711,6 +8744,7 @@ id,product,category,pack,price,sale_price,sale_until
 48826,Taggiasca extra panenský olivový olej,Trvanlivé,500 ml,24.99,,
 36252,Tajna Pinot Noir Sunset,Nápoje,750 ml,22.99,,
 42280,Tajna Sauvignon blanc,Nápoje,750 ml,15.99,,
+15298,Tajna Víno Dunaj,Nápoje,750 ml,22.99,,
 20914,Tamarind čerstvý,Ovocie a zelenina,450 g,6.49,,
 7094,"Tami Barista Latte plnotučné mlieko 3,5 %",Mliečne a chladené,1 l,1.49,,
 48540,Tami Bezlaktózové maslo,Mliečne a chladené,125 g,1.75,1.29,2026-12-01
@@ -8762,11 +8796,8 @@ id,product,category,pack,price,sale_price,sale_until
 4334,Tante Hannis Sacher torta,Mrazené,"1,3 kg",36.99,,
 4332,Tante Hannis Torta bezlepková Deň a Noc,Mrazené,"1,35 kg",30.99,,
 4360,Tante Hannis Tortičkový mix bezlepkový,Mrazené,770 g,33.99,,
-14726,Tarapaca Cabernet Sauvignon Reserva,Nápoje,750 ml,10.99,,
 14780,Tarapaca Chardonnay Reserva,Nápoje,750 ml,10.99,,
-14784,Tarapaca Chardonnay Variet,Nápoje,750 ml,8.89,,
 14830,Tarapaca Merlot Gran Reserva,Nápoje,750 ml,14.99,,
-14782,Tarapaca Sauvignon Blanc Reserva,Nápoje,750 ml,10.99,,
 14786,Tarapaca Sauvignon Blanc Variet,Nápoje,750 ml,8.89,,
 44728,Tarczyński Kabanos bravčový,Údeniny a lahôdky,120 g,3.99,,
 6824,Tarczyński Kabanos bravčový,Údeniny a lahôdky,120 g,3.69,,
@@ -8851,7 +8882,7 @@ id,product,category,pack,price,sale_price,sale_until
 48146,Tatratea Trstená 52%,Nápoje,700 ml,23.99,,
 56256,Tauris Alpská šunka,Údeniny a lahôdky,100 g,2.79,2.19,2026-12-01
 6966,"Tauris Daniel saláma, plátky",Údeniny a lahôdky,75 g,1.79,,
-39546,Tauris Iberijská slanina s kožou,Údeniny a lahôdky,1 kg,11.49,,
+39546,Tauris Iberijská slanina s kožou,Údeniny a lahôdky,430 g,4.94,,
 6964,"Tauris Jeleň saláma jemne pikantná, plátky",Údeniny a lahôdky,75 g,1.95,,
 26252,Tauris Jelení Fuet,Údeniny a lahôdky,240 g,6.19,,
 12138,Tauris Kubko mäsová nátierka,Údeniny a lahôdky,100 g,1.29,,
@@ -8872,14 +8903,13 @@ id,product,category,pack,price,sale_price,sale_until
 37996,Tauris Turistická trvanlivá saláma,Údeniny a lahôdky,"1,1 kg",12.09,,
 29764,Tauris Vysočina saláma,Údeniny a lahôdky,700 g,8.59,,
 6902,Tauris Zipser párky (71% mäsa),Údeniny a lahôdky,165 g,2.89,,
-49884,Tauris Zipser párky XXL,Údeniny a lahôdky,"1,1 kg",20.34,,
+49884,Tauris Zipser párky XXL,Údeniny a lahôdky,"1,02 kg",18.86,,
 6942,Tauris Zipser saláma,Údeniny a lahôdky,,1.89,,
 38018,Tauris Zipser saláma,Údeniny a lahôdky,530 g,9,,
 6878,Tauris Zipser šunka Original (podiel mäsa min. 92 %),Údeniny a lahôdky,150 g,2.89,,
 5476,Taverna Hummus Dried Tomato & Basil - cícerová nátierka so sušenými paradajkami a bazalkou,Údeniny a lahôdky,200 g,2.39,,
 5474,Taverna Hummus Chipotle,Údeniny a lahôdky,200 g,2.39,,
 5472,Taverna Hummus s olivovým olejom,Údeniny a lahôdky,200 g,2.39,,
-924,Taverna Oriental Hummus,Údeniny a lahôdky,200 g,2.29,,
 5484,"Taverna Trio Hummus Oriental, Curry a Červená repa",Údeniny a lahôdky,210 g,2.29,,
 33552,Teazz Sparkling Tea Biely čaj Rakytník a pomaranč,Nápoje,1 l,1.99,,
 33556,Teazz Sparkling Tea Čierny čaj Cascara a marhuľa,Nápoje,1 l,1.99,,
@@ -8998,7 +9028,7 @@ id,product,category,pack,price,sale_price,sale_until
 35782,Tekov Tekovský salámový syr neúdený plátky,Mliečne a chladené,500 g,8.79,7.39,2026-12-01
 35784,Tekov Tekovský salámový syr údený plátky,Mliečne a chladené,500 g,8.79,7.39,2026-12-01
 23894,Tekvica Babybear,Ovocie a zelenina,1 kg,2.59,,
-33020,Tekvica Hokkaido,Ovocie a zelenina,"1,09 kg",1.84,,
+33020,Tekvica Hokkaido,Ovocie a zelenina,"1,12 kg",1.89,,
 23896,Tekvica Chameleon,Ovocie a zelenina,1 kg,2.69,,
 17458,Tekvica maslová,Ovocie a zelenina,690 g,1.17,,
 23892,Tekvica špagetová,Ovocie a zelenina,1 kg,2.69,,
@@ -9006,8 +9036,11 @@ id,product,category,pack,price,sale_price,sale_until
 16128,Tekvicové jadierka bez šupky,Trvanlivé,500 g,8.99,,
 27786,"Tekvicové jadierka bez šupky, natural",Trvanlivé,1 kg,14.49,,
 55598,Teľací Cordon Bleu so šunkou a syrom Gouda,Údeniny a lahôdky,400 g,13.49,,
-18036,Teľacie ossobucco (4ks),Mrazené,"1,6 kg",33.58,,
+18036,Teľacie ossobucco (4ks),Mrazené,"1,43 kg",30.02,,
 7020,"Temaqua Dojčenská neperlivá voda, 6x1,5L",Nápoje,9 l,4.49,,
+54926,Tepuy Destino,Nápoje,700 ml,32.99,,
+54928,Tepuy Monumento,Nápoje,700 ml,44.99,,
+35730,Teremana Tequila Anejo 40%,Nápoje,700 ml,52.99,,
 35732,Teremana Tequila Blanco 40%,Nápoje,700 ml,40.99,,
 35734,Teremana Tequila Reposado 40%,Nápoje,700 ml,46.99,,
 28486,TESSUTO Primitivo,Nápoje,750 ml,5.99,,
@@ -9016,13 +9049,14 @@ id,product,category,pack,price,sale_price,sale_until
 45998,The Frozen Butcher Wagyu hovädzie burgerové mäso Austrália 12×200g,Mrazené,"2,4 kg",74.99,,
 2864,The Glenlivet 12 y.o. 40 %,Nápoje,700 ml,42.99,,
 26774,The Glenlivet 15 y.o. 40%,Nápoje,700 ml,71.99,,
+31252,The Charles House Scotch Whisky,Nápoje,700 ml,19.99,,
 8706,The Singleton of Dufftown 12 y.o. 40 %,Nápoje,700 ml,46.99,,
 20052,Thomy Holandská omáčka,Trvanlivé,1 kg,11.99,,
 9478,Thor Pstruh údený,Mäso a ryby,125 g,4.09,,
-8766,Thoreau Rum & Cognac 40%,Nápoje,700 ml,58.99,,
 31962,"Three Cents Dry Tonic, 4x200ml",Nápoje,800 ml,6.99,,
 31958,"Three Cents Ginger Beer, 4x200ml",Nápoje,800 ml,6.99,,
 31956,"Three Cents Sóda pink grapefruit, 4x200ml",Nápoje,800 ml,6.99,,
+41686,Three Penguins Ustricová omáčka,Trvanlivé,700 ml,4.59,,
 22536,Thymos Americké zemiaky,Trvanlivé,100 g,1.59,,
 21144,Thymos Citrodeko,Trvanlivé,70 g,0.79,,
 7284,Thymos Čierne korenie mleté,Trvanlivé,80 g,1.85,,
@@ -9126,10 +9160,12 @@ id,product,category,pack,price,sale_price,sale_until
 24882,Toison Ruby Red 38% gin,Nápoje,700 ml,38.99,,
 41308,Tokaj Omšové víno,Nápoje,750 ml,6.69,,
 41310,Tokaj Svätý Urban,Nápoje,750 ml,6.69,,
+41314,Tokaj Tokajský výber 4 putňový,Nápoje,500 ml,20.99,,
 41316,Tokaj Tokajský výber 5 putňový,Nápoje,500 ml,33.99,,
 41318,Tokaj Tokajský výber 6 putňový,Nápoje,500 ml,33.99,,
 15634,Tokaji Furmint,Nápoje,750 ml,3.39,,
 15636,Tokaji Harslevelu Lipovina,Nápoje,750 ml,3.29,,
+26408,Tol Cukrová vata,Trvanlivé,20 g,0.78,,
 16210,Tol Fini mini cukríky,Trvanlivé,1 kg,12.49,,
 49358,Tol Štrúdlička Classic zmes ovocia,Trvanlivé,21 g,0.2,,
 49360,Tol Štrúdlička jablková,Trvanlivé,21 g,0.2,,
@@ -9151,9 +9187,9 @@ id,product,category,pack,price,sale_price,sale_until
 13046,Top Nitra Midi darčekový set,Trvanlivé,950 g,14.49,,
 49356,Top Nitra Midi DUO croissant s čokoládovo-mliečnou plnkou,Pekáreň a cukráreň,50 g,0.69,,
 11236,Top Topic Malina,Nápoje,"1,5 l",2.29,,
-23660,Top-Farm Kačacia pečeň biela vykŕmená,Mrazené,800 g,49.59,,
-39290,Top-Farm Kuracie rezne kukuričné slovenské,Mrazené,950 g,10.92,,
-39288,Top-Farm Kuracie stehná bez kosti,Mrazené,520 g,5.04,,
+23660,Top-Farm Kačacia pečeň biela vykŕmená,Mrazené,850 g,52.69,,
+39290,Top-Farm Kuracie rezne kukuričné slovenské,Mrazené,960 g,11.03,,
+39288,Top-Farm Kuracie stehná bez kosti,Mrazené,400 g,3.88,,
 39286,Top-Farm Kurča kukuričné voľný výbeh slovenské,Mrazené,"2,57 kg",18.48,,
 44322,Top-Farm Supreme z kukuričného kurčaťa SK,Mrazené,850 g,14.44,,
 3884,Topinambur,Ovocie a zelenina,1 kg,5.39,,
@@ -9202,13 +9238,11 @@ id,product,category,pack,price,sale_price,sale_until
 11810,Tuc syrové,Trvanlivé,100 g,1.39,,
 5560,Tudlee Pomazánka s červenou repou 100% rastlinná,Zdravie a životný štýl,120 g,1.35,,
 28090,"Tucher pivo svetlé kvasinkové 5,2 % vratná plechovka",Nápoje,500 ml,1.75,,
-57066,Tullamore 12-ročná írska whiskey 40 %,Nápoje,700 ml,41.89,,
 40218,Tullamore D.E.W. Café Honey 35%,Nápoje,700 ml,19.99,,
+55124,Tullamore D.E.W. Original 40 %,Nápoje,"4,5 l",139.99,116.79,2026-12-01
 3458,Tullamore Dew -0.4,Nápoje,700 ml,19.99,,
-814,"Tullamore Dew 14yo 41,3% whisky",Nápoje,700 ml,69.99,,
 38860,"Tullamore Dew 40% + poháre 2ks, darčekové balenie",Nápoje,700 ml,25.99,,
 2840,Tullamore Dew Honey 35%,Nápoje,700 ml,19.99,,
-8502,Tullamore Dew Honey 35%,Nápoje,1 l,25.99,,
 3386,Tullamore Dew whisky 40%,Nápoje,1 l,23.99,,
 49462,Tullamore Whisky 40 %,Nápoje,500 ml,15.99,,
 49144,Tuniak žltoplutvý kocky,Mrazené,500 g,14.49,,
@@ -9265,12 +9299,12 @@ id,product,category,pack,price,sale_price,sale_until
 46144,USUI Konjakové vlasové cestoviny,Trvanlivé,270 g,2.99,,
 42066,V.Girardin Pinot Noir,Nápoje,750 ml,32.99,,
 10990,Váhala Nórsky šalát,Údeniny a lahôdky,125 g,1.85,,
-14004,"Váhala Špekačky extra, ručne viazané (80% mäsa)",Údeniny a lahôdky,1 kg,11.49,,
+14004,"Váhala Špekačky extra, ručne viazané (80% mäsa)",Údeniny a lahôdky,"1,07 kg",12.29,,
 12052,Váhala Šunkové závitky v aspiku 5x130 g,Údeniny a lahôdky,650 g,8.99,,
 16076,Váhala Utopence klasik,Trvanlivé,680 g,7.69,,
 16840,Vajcia podstielkové M,Mliečne a chladené,10 ks,3.29,,
 1192,Vaječný sen Originál (15%),Nápoje,500 ml,5.79,,
-44598,Valcolatte Burrata,Mliečne a chladené,130 g,4.79,,
+44598,Valcolatte Burrata,Mliečne a chladené,130 g,4.79,3.59,2026-12-04
 44600,Valcolatte Stracciatella,Mliečne a chladené,300 g,7.59,,
 49090,Valmarone Lambrusco,Nápoje,750 ml,6.09,,
 43536,Valmarone Prosecco Frizzante,Nápoje,750 ml,4.79,,
@@ -9327,11 +9361,12 @@ id,product,category,pack,price,sale_price,sale_until
 41134,VELKEER Sauvignon Blanc,Nápoje,750 ml,9.59,,
 41136,VELKEER Tri Ruže Rosé,Nápoje,750 ml,10.49,,
 15868,"Velkopopovický Kozel Pivo 10°, sklo",Nápoje,500 ml,0.69,,
+54950,Vellarosa Aperitivo,Nápoje,1 l,12.49,,
 42396,Veneto oblátky s vanilkovo-kakaovou náplňou,Trvanlivé,65 g,0.46,,
 15996,"Vepy Kukuričné placky bezgluténu, bezlepku",Pekáreň a cukráreň,100 g,1.89,,
 15998,Vepy Placky ražné celozrnné,Pekáreň a cukráreň,100 g,1.89,,
 15994,Vepy Špaldové placky,Pekáreň a cukráreň,100 g,3.79,,
-42026,Vergnano Anticabottega káva zrnková,Nápoje,1 kg,29.99,,
+42026,Vergnano Anticabottega káva zrnková,Nápoje,1 kg,29.99,21.99,2026-12-04
 54978,Vergnano Caffè Vergnano,Nápoje,10 ks,6.99,,
 54932,Vergnano Espresso Casa,Nápoje,10 ks,6.99,,
 54934,Vergnano Gran Aroma,Nápoje,10 ks,6.99,,
@@ -9340,13 +9375,13 @@ id,product,category,pack,price,sale_price,sale_until
 33050,Vergnano Zrnková káva Espresso,Nápoje,500 g,15.49,,
 33048,Vergnano Zrnková káva Granaroma,Nápoje,1 kg,29.99,,
 6820,Veroni Antipasto della Tradizione – výber talianskych údenín plátky,Údeniny a lahôdky,110 g,5.09,,
-3164,Veroni Bresaola – sušené hovädzie mäso plátky,Údeniny a lahôdky,70 g,5.49,,
-7152,Veroni Pancetta Affumicata plátky,Údeniny a lahôdky,300 g,11.49,,
+3164,Veroni Bresaola – sušené hovädzie mäso plátky,Údeniny a lahôdky,70 g,5.49,4.29,2026-12-04
+7152,Veroni Pancetta Affumicata plátky,Údeniny a lahôdky,300 g,11.49,8.99,2026-12-04
 6818,Veroni Prosciutto Cotto Scelto – varená šunka plátky,Údeniny a lahôdky,110 g,3.39,,
-7102,Veroni Prosciutto di Parma DOP – talianska sušená šunka,Údeniny a lahôdky,80 g,5.29,,
-7006,Veroni Prosciutto di Parma DOP L15 – sušená šunka plátky,Údeniny a lahôdky,250 g,16.49,,
+7102,Veroni Prosciutto di Parma DOP – talianska sušená šunka,Údeniny a lahôdky,80 g,5.29,3.99,2026-12-04
+7006,Veroni Prosciutto di Parma DOP L15 – sušená šunka plátky,Údeniny a lahôdky,250 g,16.49,12.99,2026-12-04
 38020,Veroni Salame Milano trvanlivá talianska saláma,Údeniny a lahôdky,"1,5 kg",35.99,,
-6914,Veroni Salami Milano plátky,Údeniny a lahôdky,70 g,3.69,,
+6914,Veroni Salami Milano plátky,Údeniny a lahôdky,70 g,3.69,2.69,2026-12-04
 38022,Veroni Salami Napoli Hot pikantná talianska trvanlivá saláma,Údeniny a lahôdky,2 kg,51.98,,
 6912,Veroni Speck delle Alpi – sušená a údená šunka plátky,Údeniny a lahôdky,70 g,3.69,,
 6910,Veroni Spianata Romana plátky,Údeniny a lahôdky,70 g,3.69,,
@@ -9368,6 +9403,7 @@ id,product,category,pack,price,sale_price,sale_until
 19708,Vest Vestky XL tyčinky solené,Trvanlivé,90 g,0.82,,
 5220,Veto maslové,Mliečne a chladené,450 g,1.69,,
 55544,Veuve Clicquot Champagne,Nápoje,750 ml,93.99,,
+31686,Veuve Pelletier Champagne Brut,Nápoje,750 ml,27.99,,
 48846,Vi Huong Ryžové rezance široké,Trvanlivé,200 g,1.39,,
 26678,Vianočný balíček Felicita,Trvanlivé,,46.99,,
 56800,Vianočný mix sušeného ovocia,Trvanlivé,195 g,4.99,,
@@ -9421,7 +9457,7 @@ id,product,category,pack,price,sale_price,sale_until
 34652,Vilgain BIO Nut Butter Cups Biela čokoláda s arašidovým maslom (3x13g),Zdravie a životný štýl,39 g,2.29,,
 34882,Vilgain BIO Nut Butter Cups kokos (3x13g),Trvanlivé,39 g,2.29,,
 34576,Vilgain BIO Oat Peanut Cookie,Zdravie a životný štýl,40 g,1.89,,
-34582,Vilgain BIO Olivový olej v spreji,Zdravie a životný štýl,200 ml,9.39,,
+34582,Vilgain BIO Olivový olej v spreji,Zdravie a životný štýl,200 ml,9.39,7.39,2026-12-04
 51686,Vilgain BIO Olivy zelené,Trvanlivé,340 g,4.79,,
 34536,Vilgain BIO Ovsený nápoj,Zdravie a životný štýl,1 l,2.99,,
 40328,Vilgain BIO Pizza Grande,Pekáreň a cukráreň,215 g,3.99,,
@@ -9458,7 +9494,7 @@ id,product,category,pack,price,sale_price,sale_until
 51700,Vilgain Filety z divokého lososa v paradajkovej omáčke,Trvanlivé,120 g,6.49,,
 34886,Vilgain Filety z lososa vo vlastnej šťave,Trvanlivé,170 g,4.19,,
 34854,Vilgain Flapjack kokos,Trvanlivé,60 g,1.99,,
-34902,Vilgain Ghee v spreji,Zdravie a životný štýl,200 ml,8.29,,
+34902,Vilgain Ghee v spreji,Zdravie a životný štýl,200 ml,8.29,6.49,2026-12-04
 34654,Vilgain Granola javorový sirup a pekany,Zdravie a životný štýl,400 g,13.99,,
 34624,Vilgain Granola kokos s čokoládou,Zdravie a životný štýl,400 g,13.99,,
 34632,Vilgain Granola slaný karamel,Zdravie a životný štýl,400 g,13.99,,
@@ -9594,10 +9630,10 @@ id,product,category,pack,price,sale_price,sale_until
 15620,Villa Víno Rača Rizling vlašský Exclusive neskorý zber,Nápoje,750 ml,7.39,,
 15612,Villa Víno Rača Rulandské modré rosé Exclusive neskorý zber,Nápoje,750 ml,7.19,,
 16258,Villa Víno Rača Sauvignon Exclusive výber z hrozna,Nápoje,750 ml,7.19,,
-14870,Villa Víno Rača Svätovavrinecké Exclusive výber z hrozna,Nápoje,750 ml,7.39,,
 14866,Villa Víno Rača Tereziánska Frankovka Exclusive,Nápoje,750 ml,7.19,,
 15288,Villa Víno Rača Tramín červený Pressburg,Nápoje,750 ml,4.59,,
 3518,Vimixa Rezance na rýchlu prípravu,Trvanlivé,500 g,2.79,,
+1538,Viña Tarapacá Carmenere Variet,Nápoje,750 ml,8.89,,
 1786,Viña Tarapacá Merlot,Nápoje,750 ml,8.89,,
 1520,Viña Tarapacá Syrah Variet,Nápoje,750 ml,8.89,,
 14980,Vinařské Závody Topolčianky Alibernet Fresh neskorý zber,Nápoje,750 ml,5.99,,
@@ -9699,6 +9735,8 @@ id,product,category,pack,price,sale_price,sale_until
 42100,Víno Nichta Classic Pesecká Leánka,Nápoje,750 ml,8.99,,
 46352,Víno Nichta Classic Sauvignon Blanc,Nápoje,750 ml,9.09,,
 42102,Víno Nichta Fusion Rizling rýnsky,Nápoje,750 ml,7.59,,
+41964,Víno Nichta Muškát moravský 66,Nápoje,750 ml,8.99,,
+42108,Víno Nichta Rizling rýnsky,Nápoje,750 ml,12.49,,
 42104,Víno Nichta Terroir Devín Močiarno,Nápoje,750 ml,12.49,,
 42106,Víno Nichta Terroir Dunaj Kruhy,Nápoje,750 ml,12.49,,
 46354,Víno Nichta Terroir Kruhy Rizling Vlašský,Nápoje,750 ml,13.99,,
@@ -9877,6 +9915,7 @@ id,product,category,pack,price,sale_price,sale_until
 46924,Wera Nova Ruská zmrzlina,Mrazené,220 ml,0.89,,
 7544,"Westmalle Dunbbel pivo, sklo",Nápoje,330 ml,3.49,,
 7546,"Westmalle Tripel pivo, sklo",Nápoje,330 ml,3.69,,
+31262,White Diamonds Dark rum,Nápoje,700 ml,16.49,,
 31264,White Diamonds White rum,Nápoje,700 ml,16.49,,
 41536,Wissa Celihope arašidová oblátka polomáčaná bezlepková,Trvanlivé,35 g,0.75,,
 36956,Wissa Celihope Oblátka polomáčaná vanilková bezlepková,Trvanlivé,35 g,0.75,,
@@ -9913,7 +9952,6 @@ id,product,category,pack,price,sale_price,sale_until
 43564,XIXO Tutti Fruity tmavá čerešňa,Nápoje,250 ml,0.95,,
 13146,XXL Tatárska omáčka,Mliečne a chladené,410 g,2.19,,
 41714,Yamasa Teriyaki omáčka,Trvanlivé,"1,1 kg",9.99,,
-41716,Yamasa Unagi omáčka,Trvanlivé,"1,1 kg",9.99,,
 44446,Yari Ika kalamáre plátky,Mrazené,160 g,8.59,,
 28092,YO sirup baza PET,Nápoje,700 ml,7.09,,
 28094,YO sirup lesné ovocie PET,Nápoje,700 ml,7.09,,
@@ -9933,16 +9971,15 @@ id,product,category,pack,price,sale_price,sale_until
 24064,Zamio 100% šťava Brusnica,Nápoje,700 ml,11.99,,
 24066,Zamio 100% šťava Čučoriedka,Nápoje,700 ml,11.99,,
 24068,Zamio 100% šťava Moruša čierna,Nápoje,700 ml,8.49,,
-8770,Zamoysky Brandy 40%,Nápoje,700 ml,19.99,,
-10996,Zanetti Grana Padano,Mliečne a chladené,50 g,2.99,,
-12230,Zanetti Grana Padano,Mliečne a chladené,200 g,5.99,,
-50670,Zanetti Granello strúhaný tvrdý syr,Mliečne a chladené,500 g,6.99,,
-37796,Zanetti Mozzarella plátky,Mliečne a chladené,120 g,4.19,,
-5148,Zanetti Pecorino Romano ovčí syr,Mliečne a chladené,200 g,9.29,,
+10996,Zanetti Grana Padano,Mliečne a chladené,50 g,2.99,2.29,2026-12-04
+12230,Zanetti Grana Padano,Mliečne a chladené,200 g,5.99,4.59,2026-12-04
+50670,Zanetti Granello strúhaný tvrdý syr,Mliečne a chladené,500 g,6.99,4.99,2026-12-04
+37796,Zanetti Mozzarella plátky,Mliečne a chladené,120 g,4.19,3.29,2026-12-04
+5148,Zanetti Pecorino Romano ovčí syr,Mliečne a chladené,200 g,9.29,6.99,2026-12-04
 16788,Zápražný Cabernet Sauvignon červené víno,Nápoje,750 ml,13.39,12.49,2026-12-01
 16794,Zápražný Pinot Gris biele víno,Nápoje,750 ml,13.99,,
 16796,Zápražný Tramín červený biele víno,Nápoje,750 ml,13.99,,
-39566,Zarotti Sardelové filety v oleji,Trvanlivé,140 g,7.89,,
+39566,Zarotti Sardelové filety v oleji,Trvanlivé,140 g,7.89,5.99,2026-12-04
 28078,"Zázvor, tácka",Ovocie a zelenina,500 g,3.19,,
 3896,"Zázvor, vanička",Ovocie a zelenina,150 g,1.49,,
 8680,Zbojnicka Hruškovica 42%,Nápoje,700 ml,20.99,,
@@ -9965,8 +10002,10 @@ id,product,category,pack,price,sale_price,sale_until
 5632,Zemiakové šúľance s makom a slivkovým lekvárom,Mrazené,1 kg,5.19,,
 3854,Zemiaky fialové,Ovocie a zelenina,1 kg,6.49,,
 21574,"Zemiaky Grenaile prané, skoré, varný typ B",Ovocie a zelenina,5 kg,4.99,,
-26720,"Zemiaky neskoré Amandine, B",Ovocie a zelenina,1 kg,3.89,,
+26728,"Zemiaky Charlotte neskoré, B",Ovocie a zelenina,1 kg,3.89,,
 26724,"Zemiaky neskoré Blue Belle , B",Ovocie a zelenina,"2,5 kg",6.69,,
+26734,"Zemiaky neskoré Cherrie 30-80 , B",Ovocie a zelenina,1 kg,3.89,,
+26736,"Zemiaky neskoré Cherrie, B",Ovocie a zelenina,"2,5 kg",6.79,,
 48678,Zemiaky neskoré neprané,Ovocie a zelenina,5 kg,3.89,,
 8072,"Zemiaky prané, varný typ A",Ovocie a zelenina,2 kg,2.29,,
 23768,"ZINGI Nealkoholický zázvorový nápoj, nepasterizovaný",Nápoje,500 ml,17.99,,
@@ -10086,6 +10125,7 @@ id,product,category,pack,price,sale_price,sale_until
 37124,Zvolenský Grécky jogurt broskyňa mango,Mliečne a chladené,125 g,0.89,,
 12254,Zvolenský Grécky jogurt čoko kokos,Mliečne a chladené,125 g,0.89,,
 12256,Zvolenský Grécky jogurt jahoda,Mliečne a chladené,125 g,0.89,,
+1000046892,Zvolenský Grécky jogurt light biely,Mliečne a chladené,125 g,0.84,0.75,2026-11-30
 46892,Zvolenský Grécky jogurt light biely,Mliečne a chladené,125 g,0.84,,
 55776,Zvolenský Grécky jogurt marakuja,Mliečne a chladené,125 g,0.88,,
 5274,Zvolenský Grécky jogurt s trstinovým cukrom,Mliečne a chladené,320 g,1.59,,
