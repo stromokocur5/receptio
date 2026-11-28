@@ -1,4 +1,5 @@
 import { getContext, setContext } from 'svelte';
+import type { Part } from './dish';
 import {
 	NUTRIENT_KEYS,
 	type RecipeLine,
@@ -22,6 +23,8 @@ export type EquipmentEntry = Pick<Equipment, 'id' | 'name' | 'level'>;
 export type CatalogPayload = Catalog & {
 	wiki: WikiIndexEntry[];
 	equipment: EquipmentEntry[];
+	/** Rice, salads, dips and the like from the plate parts, to cook next to a recipe. */
+	sides: Part[];
 	builtAt: string;
 };
 
@@ -32,6 +35,8 @@ export interface IndexedCatalog extends Catalog {
 	storesById: Map<string, Store>;
 	wiki: WikiIndexEntry[];
 	equipment: EquipmentEntry[];
+	sides: Part[];
+	sidesById: Map<string, Part>;
 	/** Build date, so price staleness matches what the numbers were computed with. */
 	builtAt: string;
 }
@@ -117,6 +122,8 @@ export function indexCatalog(catalog: CatalogPayload): IndexedCatalog {
 		...catalog,
 		// A catalog cached by an older service worker has no equipment yet.
 		equipment: catalog.equipment ?? [],
+		sides: catalog.sides ?? [],
+		sidesById: new Map((catalog.sides ?? []).map((p) => [p.id, p])),
 		ingredientsById: new Map(catalog.ingredients.map((i) => [i.id, i])),
 		recipesById: new Map(catalog.recipes.map((r) => [r.id, r])),
 		cuisinesById: new Map(catalog.cuisines.map((c) => [c.id, c])),

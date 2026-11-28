@@ -17,6 +17,7 @@ import {
 	unitPrice,
 	type SaleDeal
 } from './pricing';
+import type { Part } from './dish';
 import type { Ingredient, PriceEntry, RecipeSummary } from './types';
 
 const zero = {
@@ -204,6 +205,46 @@ describe('buildShoppingList', () => {
 		const salt = list.byCategory.flatMap(([, i]) => i).find((i) => i.ingredient.id === 'sol');
 		expect(salt?.restock).toBe(true);
 		expect(list.staples).toEqual([]);
+	});
+
+	it('buys what the planned sides need too', () => {
+		const side = {
+			id: 'ryza-priloha',
+			name: 'Ryža',
+			description: '',
+			kind: 'priloha',
+			style: [],
+			servings: 2,
+			early: false,
+			tips: [],
+			methods: [
+				{
+					label: 'V hrnci',
+					needs: [],
+					steps: [],
+					lines: [{ ingredientId: 'ryza', grams: 120, amount: 120, unit: 'g' }],
+					perServing: zero,
+					costPerServing: 0.2,
+					costIsEstimate: false,
+					gluten: 'free',
+					allergens: [],
+					treat: []
+				}
+			]
+		} satisfies Part;
+		const list = buildShoppingList(
+			[{ recipeId: 'r', servings: 2, sides: [{ part: 'ryza-priloha' }] }],
+			recipesById,
+			byId,
+			{},
+			[],
+			today,
+			new Set(),
+			new Map([[side.id, side]])
+		);
+		const rice = list.byCategory.flatMap(([, i]) => i).find((i) => i.ingredient.id === 'ryza');
+		expect(rice?.buyGrams).toBe(320);
+		expect(rice?.usedIn).toEqual(['r', 'Ryža']);
 	});
 
 	it('uses real prices when available', () => {

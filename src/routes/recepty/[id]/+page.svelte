@@ -33,6 +33,8 @@
 	import RecipeFeedback from '$lib/components/RecipeFeedback.svelte';
 	import CookedBadge from '$lib/components/CookedBadge.svelte';
 	import Seo from '$lib/components/Seo.svelte';
+	import SidePicker from '$lib/components/SidePicker.svelte';
+	import { takesSides, type PlanSide } from '$lib/sides';
 	import {
 		ALLERGEN_LABELS,
 		COMPUTED_TAG_LABELS,
@@ -198,6 +200,12 @@
 	}
 
 	let servings = $state(0);
+	/** Rice, a salad or a dip picked to go with it; planned along with the recipe. */
+	let sides = $state<PlanSide[]>([]);
+	$effect.pre(() => {
+		void base.id;
+		sides = [];
+	});
 	/** Cooking once for several days: the panel picks the servings. */
 	let prepOpen = $state(false);
 	$effect.pre(() => {
@@ -343,7 +351,7 @@
 	}
 
 	function plan(event: MouseEvent) {
-		addToPlan(recipe.id, servings, variantName ?? undefined);
+		addToPlan(recipe.id, servings, variantName ?? undefined, undefined, sides);
 		flyToPlan(event.currentTarget as HTMLElement, document.querySelector('.hero svg.plate'));
 		justAdded = true;
 		setTimeout(() => (justAdded = false), 1600);
@@ -1200,6 +1208,17 @@
 			{/if}
 		</section>
 	</div>
+
+	{#if takesSides(recipe)}
+		<SidePicker
+			cuisine={recipe.cuisine}
+			minutes={recipe.time}
+			lines={recipe.lines}
+			{servings}
+			facts={recipe}
+			bind:picked={sides}
+		/>
+	{/if}
 
 	{#if base.related.length}
 		<section class="related-links" data-noprint>

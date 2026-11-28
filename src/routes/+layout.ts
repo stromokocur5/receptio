@@ -11,6 +11,7 @@ const EMPTY: CatalogPayload = {
 	prices: [],
 	wiki: [],
 	equipment: [],
+	sides: [],
 	builtAt: new Date().toISOString().slice(0, 10)
 };
 

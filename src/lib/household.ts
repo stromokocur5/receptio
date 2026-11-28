@@ -2,6 +2,7 @@ import { validateGarden, type GardenDiary } from './garden-diary';
 import { canonical } from './member-keys';
 import { ACTIVITY_PROTEIN, DIET_META, dietVersion, type Activity } from './nutrition';
 import { validatePreserves, type Preserve } from './preserves';
+import { validateSides } from './sides';
 import type { PlanEntry } from './shopping';
 import {
 	ALLERGENS,
@@ -467,6 +468,8 @@ export function validatePlanEntries(raw: unknown): PlanEntry[] | undefined {
 		}
 		if (typeof e.cook === 'string' && MEMBER_ID_RE.test(e.cook)) entry.cook = e.cook;
 		if (typeof e.only === 'string' && MEMBER_ID_RE.test(e.only)) entry.only = e.only;
+		const sides = validateSides(e.sides);
+		if (sides?.length) entry.sides = sides;
 		return [entry];
 	});
 }

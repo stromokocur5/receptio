@@ -94,10 +94,13 @@
 		plan,
 		setPantryItem,
 		setPlanServings,
+		setPlanSides,
+		kitchen,
 		settings,
 		ui,
 		mainMeals
 	} from '$lib/state.svelte';
+	import { resolveSides } from '$lib/sides';
 
 	const catalog = useCatalog();
 	const today = $derived(new Date());
@@ -132,10 +135,13 @@
 				const recipe = e.recipe!;
 				const variant = e.variant ? recipe.variants.find((v) => v.name === e.variant) : undefined;
 				// `data` holds whatever differs between variants: lines, nutrition, cost.
+				const sides = resolveSides(e.sides ?? [], catalog.sidesById, kitchen.current);
 				return {
 					...e,
 					recipe,
 					data: variant ?? recipe,
+					sideParts: sides,
+					sidesCost: sides.reduce((sum, s) => sum + s.method.costPerServing, 0),
 					key: `${e.recipeId}|${e.variant ?? ''}|${e.fromFreezer ? `f${e.frozenOn}` : ''}`
 				};
 			})
@@ -153,7 +159,8 @@
 			pantry.current,
 			catalog.prices,
 			today,
-			new Set(Object.keys(outOfStock.current).filter((id) => outOfStock.current[id]))
+			new Set(Object.keys(outOfStock.current).filter((id) => outOfStock.current[id])),
+			catalog.sidesById
 		)
 	);
 	const allItems = $derived(list.byCategory.flatMap(([, items]) => items));
@@ -349,7 +356,10 @@
 
 	// Freezer portions were paid for when they were cooked.
 	const planCost = $derived(
-		entries.reduce((s, e) => s + (e.fromFreezer ? 0 : e.data.costPerServing * e.servings), 0)
+		entries.reduce(
+			(s, e) => s + (e.fromFreezer ? 0 : (e.data.costPerServing + e.sidesCost) * e.servings),
+			0
+		)
 	);
 	/** Fresh food at home that should be used soon, each with recipes that use it up. */
 	const useUp = $derived.by(() => {
@@ -860,6 +870,18 @@
 								</div>
 								<div class="info">
 									<a href="/recepty/{e.recipe.id}">{e.recipe.title}</a>
+									{#if e.sideParts.length}
+										<span class="sides">
+											+ {e.sideParts.map((s) => s.part.name.toLowerCase()).join(', ')}
+											<button
+												class="side-x"
+												onclick={() => setPlanSides(i, [])}
+												aria-label="Bez prílohy k {e.recipe.title}"
+											>
+												<Icon name="x" size={13} />
+											</button>
+										</span>
+									{/if}
 									<span class="muted">
 										{#if isPersonal(e)}<span class="badge">iba {cookName(e.only)}</span>
 										{/if}{#if e.fromFreezer}<span class="badge sky"
@@ -868,7 +890,7 @@
 										{/if}{#if e.variant}{e.variant} ·
 										{/if}{e.fromFreezer
 											? 'už zaplatené'
-											: formatEur(e.data.costPerServing * e.servings)}
+											: formatEur((e.data.costPerServing + e.sidesCost) * e.servings)}
 										{#if e.freezeExtra}· z toho {e.freezeExtra} porc. do mrazničky{/if}
 										{#if !isPersonal(e) && (perMeal !== 1 || mainMeals(settings.current).length > 1)}
 											· {Math.floor(e.servings / perMeal + 1e-9)}× jedlo
@@ -2308,5 +2330,27 @@
 			grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
 			align-items: start;
 		}
+	}
+	.sides {
+		display: inline-flex;
+		align-items: center;
+		gap: 4px;
+		color: var(--ink-2);
+		font-size: 0.9rem;
+	}
+	.side-x {
+		display: inline-grid;
+		place-items: center;
+		width: 22px;
+		height: 22px;
+		border: 0;
+		border-radius: 50%;
+		background: none;
+		color: var(--muted);
+		cursor: pointer;
+	}
+	.side-x:hover {
+		background: var(--paper-2);
+		color: var(--ink);
 	}
 </style>

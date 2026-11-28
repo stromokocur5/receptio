@@ -1,6 +1,7 @@
 import { packLine, packNutrients, packVariantLines, type CatalogPayload } from '$lib/catalog';
 import type { Nutrients, RecipeLine } from '$lib/types';
 import { getContent } from '$lib/server/content';
+import { sideGroup } from '$lib/sides';
 import type { RequestHandler } from './$types';
 
 export const prerender = true;
@@ -10,7 +11,7 @@ export const prerender = true;
  * files stay small instead of each repeating the whole catalog.
  */
 export const GET: RequestHandler = () => {
-	const { ingredients, recipes, cuisines, stores, prices, wiki, equipment } = getContent();
+	const { ingredients, recipes, cuisines, stores, prices, wiki, equipment, parts } = getContent();
 	// Lines and nutrients go as lists instead of objects; indexCatalog unpacks them.
 	const catalog: CatalogPayload = {
 		ingredients: ingredients.map((i) => ({
@@ -39,6 +40,7 @@ export const GET: RequestHandler = () => {
 		prices,
 		wiki: wiki.map(({ html: _html, ...entry }) => entry),
 		equipment: equipment.map(({ id, name, level }) => ({ id, name, level })),
+		sides: parts.filter((p) => sideGroup(p)),
 		builtAt: new Date().toISOString().slice(0, 10)
 	};
 	// Two decimals are plenty for grams, nutrients and prices, and much shorter.

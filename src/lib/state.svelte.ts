@@ -18,6 +18,7 @@ import { DEFAULT_KITCHEN, KITCHEN_TOOLS, type Kitchen, type KitchenTool } from '
 import { consumeFromPantry, type Pantry, type PantryUse } from './pantry';
 import { isValidSchedule, type ReminderSchedule } from './push';
 import { validatePreserves, type Preserve } from './preserves';
+import { validateSides, type PlanSide } from './sides';
 import type { PlanEntry } from './shopping';
 import type { Ingredient, RecipeLine } from './types';
 import {
@@ -203,7 +204,8 @@ function validatePlan(raw: unknown): PlanEntry[] | undefined {
 			(e.frozenOn === undefined ||
 				(typeof e.frozenOn === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(e.frozenOn))) &&
 			(e.cook === undefined || (typeof e.cook === 'string' && /^[a-z0-9]{1,16}$/.test(e.cook))) &&
-			(e.only === undefined || (typeof e.only === 'string' && /^[a-z0-9]{1,16}$/.test(e.only)))
+			(e.only === undefined || (typeof e.only === 'string' && /^[a-z0-9]{1,16}$/.test(e.only))) &&
+			(e.sides === undefined || validateSides(e.sides)?.length === (e.sides as unknown[]).length)
 	);
 }
 
@@ -1094,11 +1096,32 @@ const sameEntry = (e: PlanEntry, recipeId: string, variant?: string, only?: stri
 	e.recipeId === recipeId && e.variant === variant && !e.fromFreezer && e.only === only;
 
 /** `only`: a household member cooking it just for themselves. */
-export function addToPlan(recipeId: string, servings: number, variant?: string, only?: string) {
+export function addToPlan(
+	recipeId: string,
+	servings: number,
+	variant?: string,
+	only?: string,
+	sides?: PlanSide[]
+) {
 	const existing = plan.current.find((e) => sameEntry(e, recipeId, variant, only));
+	const withSides = sides?.length ? { sides } : {};
 	plan.current = existing
-		? plan.current.map((e) => (e === existing ? { ...e, servings: e.servings + servings } : e))
-		: [...plan.current, { recipeId, servings, ...(variant && { variant }), ...(only && { only }) }];
+		? plan.current.map((e) =>
+				e === existing ? { ...e, servings: e.servings + servings, ...withSides } : e
+			)
+		: [
+				...plan.current,
+				{ recipeId, servings, ...(variant && { variant }), ...(only && { only }), ...withSides }
+			];
+}
+
+/** Sets the sides cooked with a planned recipe; an empty list takes them away. */
+export function setPlanSides(index: number, sides: PlanSide[]) {
+	plan.current = plan.current.map((e, i) => {
+		if (i !== index) return e;
+		const { sides: _old, ...rest } = e;
+		return sides.length ? { ...rest, sides } : rest;
+	});
 }
 
 export function setPlanServings(

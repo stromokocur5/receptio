@@ -1,4 +1,6 @@
 import { formatNumber } from './amounts';
+import type { Part } from './dish';
+import { resolveSides, sideLines, type PlanSide } from './sides';
 import { bestPrice, shelfCost, type ShelfCost } from './pricing';
 import { isAssumedAtHome, TAP_WATER_ID, type Pantry } from './pantry';
 import type { Ingredient, IngredientCategory, PriceEntry, RecipeSummary } from './types';
@@ -20,6 +22,8 @@ export const AISLE_ORDER: IngredientCategory[] = [
 ];
 
 export interface PlanEntry {
+	/** Parts cooked next to it (rice, a salad), for the same number of people. */
+	sides?: PlanSide[];
 	recipeId: string;
 	servings: number;
 	/** Name of the chosen recipe variant; the base recipe when absent. */
@@ -92,7 +96,8 @@ export function buildShoppingList(
 	prices: PriceEntry[],
 	today: Date,
 	/** Basics (spices, oils) the user is out of – moved from "check at home" to the list. */
-	outOfStock: ReadonlySet<string> = new Set()
+	outOfStock: ReadonlySet<string> = new Set(),
+	sidesById: Map<string, Part> = new Map()
 ): ShoppingList {
 	const needed = new Map<string, { grams: number; usedIn: Set<string> }>();
 
@@ -105,6 +110,14 @@ export function buildShoppingList(
 			acc.grams += line.grams * factor;
 			acc.usedIn.add(recipe.title);
 			needed.set(line.ingredientId, acc);
+		}
+		for (const side of resolveSides(entry.sides ?? [], sidesById)) {
+			for (const line of sideLines([side], entry.servings)) {
+				const acc = needed.get(line.ingredientId) ?? { grams: 0, usedIn: new Set() };
+				acc.grams += line.grams;
+				acc.usedIn.add(side.part.name);
+				needed.set(line.ingredientId, acc);
+			}
 		}
 	}
 
