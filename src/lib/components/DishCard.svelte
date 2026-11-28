@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { formatEur, formatMinutes, formatNumber } from '$lib/amounts';
-	import { useCatalog } from '$lib/catalog';
+	import { useDishCatalog } from '$lib/dish-catalog';
 	import type { Dish, DishMatch } from '$lib/dish';
 	import type { Plate } from '$lib/plate';
 	import Icon from './Icon.svelte';
@@ -22,7 +22,7 @@
 		index?: number;
 	} = $props();
 
-	const catalog = useCatalog();
+	const catalog = useDishCatalog();
 	const missing = $derived(match ? [...match.missing, ...match.short] : []);
 	/** What comes with the main part: "+ chrumkavé hranolky · tatárka". */
 	const picked = $derived(plate.parts.slice(1).map((p) => p.part.name.toLowerCase()));

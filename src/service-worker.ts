@@ -3,63 +3,393 @@
 /// <reference lib="esnext" />
 /// <reference lib="webworker" />
 import { build, files, prerendered, version } from '$service-worker';
+import type { DigestStore } from '$lib/digest';
+import { describeNews, logOf, validateDoc } from '$lib/household';
+import { decrypt, deriveKeys } from '$lib/sync-crypto';
+import { isDigestDue } from '$lib/push';
+import {
+	ADMIN_ALERTS_KEY,
+	DIGEST_KEY,
+	DIGEST_SHOWN_KEY,
+	FROST_SYNC_TAG,
+	FROST_WATCH_KEY,
+	HOUSEHOLD_NEWS_KEY,
+	kvGet,
+	kvSet,
+	REMINDER_SHOWN_KEY,
+	REMINDER_TEST_KEY,
+	SUPPLEMENTS_TODAY_KEY,
+	WATER_TODAY_KEY,
+	type FrostWatch,
+	type HouseholdNews,
+	type ReminderTest,
+	type SupplementsToday,
+	type WaterToday
+} from '$lib/kv';
 
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
 const SHELL_CACHE = `shell-${version}`;
-/** Pages visited while online, so they open offline too. */
+/** Pages and data visited while online, so they open offline too. */
 const PAGES_CACHE = `pages-${version}`;
-const MAX_PAGES = 60;
+
+/** Pages that must work offline even if never visited: the shopping list above all. */
+const OFFLINE_PAGES = ['/', '/plan', '/spajza', '/recepty'];
+const offlinePages = [
+	// Every page renders from the catalog (plate pages from the dishes), so neither may be trimmed away.
+	'/catalog.json',
+	'/dishes.json',
+	...OFFLINE_PAGES.flatMap((p) => [p, p === '/' ? '/__data.json' : `${p}/__data.json`])
+];
+
+const shell = [...build, ...files.filter((f) => !f.endsWith('.png') || f.includes('icon'))];
+const immutable = new Set(shell);
 
 sw.addEventListener('install', (event) => {
 	event.waitUntil(
-		caches
-			.open(SHELL_CACHE)
-			.then((cache) => cache.addAll([...build, ...files, ...prerendered]))
-			.then(() => sw.skipWaiting())
+		(async () => {
+			await (await caches.open(SHELL_CACHE)).addAll(shell);
+			const pages = await caches.open(PAGES_CACHE);
+			await pages.addAll(offlinePages.filter((p) => prerendered.includes(p)));
+			await sw.skipWaiting();
+		})()
 	);
 });
 
 sw.addEventListener('activate', (event) => {
 	event.waitUntil(
-		caches
-			.keys()
-			.then((keys) =>
-				Promise.all(
-					keys.filter((k) => k !== SHELL_CACHE && k !== PAGES_CACHE).map((k) => caches.delete(k))
-				)
-			)
-			.then(() => sw.clients.claim())
+		(async () => {
+			// Old pages reference old hashed JS, so they go together with the old shell.
+			for (const key of await caches.keys()) {
+				if (key !== SHELL_CACHE && key !== PAGES_CACHE) await caches.delete(key);
+			}
+			await sw.clients.claim();
+		})()
 	);
 });
 
-async function trim(cache: Cache) {
+/** Pages are ~100 kB (the catalog is cached once), so a few hundred visits fit comfortably. */
+const MAX_CACHED_PAGES = 200;
+/** On a weak signal in a shop, fall back to the saved copy instead of waiting. */
+const SLOW_NETWORK_MS = 4000;
+
+async function trimPages(cache: Cache) {
 	const keys = await cache.keys();
-	await Promise.all(
-		keys.slice(0, Math.max(0, keys.length - MAX_PAGES)).map((k) => cache.delete(k))
+	const removable = keys.filter((k) => !offlinePages.includes(new URL(k.url).pathname));
+	for (const key of removable.slice(0, Math.max(0, keys.length - MAX_CACHED_PAGES))) {
+		await cache.delete(key);
+	}
+}
+
+async function networkFirst(request: Request, url: URL): Promise<Response> {
+	const cache = await caches.open(PAGES_CACHE);
+	// SvelteKit adds ?x-sveltekit-invalidated=… to data requests; prerendered data ignores it.
+	const key = url.pathname;
+	const cached = await cache.match(key);
+	const network = fetch(request).then(async (response) => {
+		if (response.ok && response.type === 'basic') {
+			await cache.delete(key);
+			await cache.put(key, response.clone());
+			await trimPages(cache);
+		}
+		return response;
+	});
+	try {
+		if (!cached) return await network;
+		const timeout = new Promise<Response>((resolve) =>
+			setTimeout(() => resolve(cached), SLOW_NETWORK_MS)
+		);
+		return await Promise.race([network, timeout]);
+	} catch (err) {
+		if (cached) return cached;
+		if (request.mode === 'navigate') {
+			return new Response(
+				'<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Offline · Receptio</title><body style="font-family:system-ui;padding:2rem;background:#f6efe2;color:#1d2e24"><h1>Si offline</h1><p>Táto stránka ešte nie je uložená. Plán, nákupný zoznam, špajza a už otvorené recepty fungujú aj bez internetu.</p><p><a href="/plan">Otvoriť nákupný zoznam</a></p>',
+				{ status: 503, headers: { 'content-type': 'text/html; charset=utf-8' } }
+			);
+		}
+		throw err;
+	}
+}
+
+sw.addEventListener('fetch', (event) => {
+	const { request } = event;
+	if (request.method !== 'GET') return;
+	const url = new URL(request.url);
+	// Private or live data: never serve it from the offline cache.
+	if (
+		url.origin !== sw.location.origin ||
+		url.pathname.startsWith('/api/') ||
+		url.pathname.startsWith('/admin')
+	) {
+		return;
+	}
+	// Link-preview images are for other sites, not worth caching.
+	if (url.pathname.startsWith('/og/')) return;
+
+	if (immutable.has(url.pathname)) {
+		event.respondWith(caches.match(url.pathname).then((cached) => cached ?? fetch(request)));
+		return;
+	}
+	event.respondWith(networkFirst(request, url));
+});
+
+// Tapping a timer notification brings the cooking tab back.
+sw.addEventListener('notificationclick', (event) => {
+	event.notification.close();
+	event.waitUntil(
+		(async () => {
+			const windows = await sw.clients.matchAll({ type: 'window', includeUncontrolled: true });
+			const client = windows[0];
+			const url = (event.notification.data as { url?: string } | null)?.url;
+			if (client) {
+				await client.focus();
+				if (url && 'navigate' in client) await (client as WindowClient).navigate(url);
+			} else await sw.clients.openWindow(url ?? '/');
+		})()
+	);
+});
+
+/**
+ * Background frost check (Chrome and Edge for an installed app wake us about twice a day). Warns
+ * when the coming night drops to about zero between March and October.
+ */
+async function checkFrost() {
+	const watch = await kvGet<FrostWatch>(FROST_WATCH_KEY).catch(() => undefined);
+	const month = new Date().getMonth() + 1;
+	if (!watch || month < 3 || month > 10) return;
+	const params = new URLSearchParams({
+		latitude: String(watch.lat),
+		longitude: String(watch.lon),
+		daily: 'temperature_2m_min',
+		timezone: 'Europe/Bratislava',
+		forecast_days: '2'
+	});
+	const res = await fetch(`https://api.open-meteo.com/v1/forecast?${params}`);
+	if (!res.ok) return;
+	const { daily } = (await res.json()) as {
+		daily: { time: string[]; temperature_2m_min: number[] };
+	};
+	const i = daily.temperature_2m_min.findIndex((t) => t <= 1);
+	if (i === -1) return;
+	await sw.registration.showNotification(
+		`Mráz ${i === 0 ? 'dnes' : 'zajtra'} v noci – ${Math.round(daily.temperature_2m_min[i])} °C`,
+		{
+			body: `${watch.name}: prikry priesady a mladé rastliny, nádoby daj k stene alebo dnu.`,
+			// One notification per night, even if we're woken twice.
+			tag: `frost-${daily.time[i]}`,
+			icon: '/icon-192.png',
+			data: { url: '/pestuj#moja-zahradka' }
+		}
 	);
 }
 
-/** Network first, so a deploy shows up at once; the cache only when offline. */
-sw.addEventListener('fetch', (event) => {
-	const url = new URL(event.request.url);
-	if (event.request.method !== 'GET' || url.origin !== sw.location.origin) return;
-	if (url.pathname.startsWith('/api/')) return;
-	event.respondWith(
-		(async () => {
-			try {
-				const response = await fetch(event.request);
-				if (response.ok && response.type === 'basic') {
-					const cache = await caches.open(PAGES_CACHE);
-					await cache.put(event.request, response.clone());
-					await trim(cache);
-				}
-				return response;
-			} catch (err) {
-				const cached = await caches.match(event.request);
-				if (cached) return cached;
-				throw err;
-			}
-		})()
+sw.addEventListener('periodicsync', (event) => {
+	const e = event as ExtendableEvent & { tag: string };
+	if (e.tag === FROST_SYNC_TAG) e.waitUntil(checkFrost());
+});
+
+/** Water reminder: the push is empty, the text comes from what the page last wrote to IndexedDB. */
+async function showWaterReminder() {
+	const water = await kvGet<WaterToday>(WATER_TODAY_KEY).catch(() => undefined);
+	const now = new Date();
+	const today = new Date(now.getTime() - now.getTimezoneOffset() * 60_000)
+		.toISOString()
+		.slice(0, 10);
+	const liters = (ml: number) => (ml / 1000).toLocaleString('sk-SK', { maximumFractionDigits: 2 });
+	// A newer reminder replaces an unread one instead of piling up. Replacing a tagged notification
+	// is silent, so the old one is closed first and the new one buzzes again (Firefox ignores renotify).
+	for (const old of await sw.registration.getNotifications({ tag: 'water' })) old.close();
+	await sw.registration.showNotification('Čas na pohár vody', {
+		body:
+			water?.date === today
+				? `Dnes máš ${liters(water.ml)} l z ${liters(water.goalMl)} l.`
+				: 'Napi sa a zapíš si to do denníka.',
+		tag: 'water',
+		renotify: true,
+		icon: '/icon-192.png',
+		data: { url: '/moje#dennik' }
+	});
+}
+
+/** Supplement reminder: names what's still to take at this time of day. */
+async function showSupplementReminder(names: string[]) {
+	for (const old of await sw.registration.getNotifications({ tag: 'supplements' })) old.close();
+	await sw.registration.showNotification(
+		names.length ? `Čas na ${names.join(', ')}` : 'Čas na vitamíny',
+		{
+			body: 'Keď ich zoberieš, odškrtni si ich v denníku.',
+			tag: 'supplements',
+			renotify: true,
+			icon: '/icon-192.png',
+			data: { url: '/moje#vitaminy' }
+		}
 	);
+}
+
+/**
+ * The push is empty and water and supplement reminders arrive alike, so the kind comes from the
+ * clock: a supplement time in the last half hour that hasn't had its reminder yet wins.
+ */
+async function showReminder() {
+	const [supplements, shown, test] = await Promise.all([
+		kvGet<SupplementsToday>(SUPPLEMENTS_TODAY_KEY).catch(() => undefined),
+		kvGet<string>(REMINDER_SHOWN_KEY).catch(() => undefined),
+		kvGet<ReminderTest>(REMINDER_TEST_KEY).catch(() => undefined)
+	]);
+	const now = new Date();
+	const today = new Date(now.getTime() - now.getTimezoneOffset() * 60_000)
+		.toISOString()
+		.slice(0, 10);
+	const minute = now.getHours() * 60 + now.getMinutes();
+	const byTime = supplements?.date === today ? supplements.open : supplements?.all;
+
+	if (test && Date.now() - test.at < 2 * 60_000) {
+		await kvSet(REMINDER_TEST_KEY, null).catch(() => {});
+		if (test.kind === 'digest') {
+			if (await showDigest(true)) return;
+			return sw.registration.showNotification('Súhrny sú zapnuté', {
+				body: 'Ranný prehľad a nedeľný súhrn prídu sem.',
+				tag: 'digest',
+				icon: '/icon-192.png'
+			});
+		}
+		if (test.kind === 'supplements') {
+			return showSupplementReminder(Object.values(supplements?.all ?? {}).flat());
+		}
+		return showWaterReminder();
+	}
+	if (await showDigest()) return;
+	const time = Object.keys(byTime ?? {})
+		.map(Number)
+		.find((t) => minute >= t && minute < t + 30);
+	if (byTime && time !== undefined && shown !== `${today}|${time}`) {
+		await kvSet(REMINDER_SHOWN_KEY, `${today}|${time}`).catch(() => {});
+		return showSupplementReminder(byTime[time] ?? []);
+	}
+	if (supplements && !supplements.water) return showSupplementReminder([]);
+	return showWaterReminder();
+}
+
+/**
+ * Weekly summary (Sunday evening) or morning overview, when one is due now and wasn't shown yet.
+ * The text was prepared by the page; true when something was shown.
+ */
+async function showDigest(force = false): Promise<boolean> {
+	const store = await kvGet<DigestStore>(DIGEST_KEY).catch(() => undefined);
+	if (!store) return false;
+	const shown = (await kvGet<string[]>(DIGEST_SHOWN_KEY).catch(() => undefined)) ?? [];
+	const now = new Date();
+	const date = new Date(now.getTime() - now.getTimezoneOffset() * 60_000)
+		.toISOString()
+		.slice(0, 10);
+	const clock = { date, minute: now.getHours() * 60 + now.getMinutes() };
+	// A push can arrive late on a sleeping phone; half an hour still counts.
+	const weekly = store.weekly && store.week && (force || isDigestDue('weekly', clock, 30));
+	const key = weekly ? `w${date}` : `m${date}`;
+	const text = weekly ? store.week!.text : store.morning ? store.days[date] : undefined;
+	const due = weekly || force || (store.morning && isDigestDue('morning', clock, 30));
+	if (!text || !due || (!force && shown.includes(key))) return false;
+	await kvSet(DIGEST_SHOWN_KEY, [...shown.slice(-20), key]).catch(() => {});
+	await sw.registration.showNotification(text.title, {
+		body: text.body,
+		tag: 'digest',
+		icon: '/icon-192.png',
+		data: { url: text.url }
+	});
+	return true;
+}
+
+/** On the admin's devices a push may mean the site is down; the health API says which. */
+async function showOutage(): Promise<boolean> {
+	if (!(await kvGet<boolean>(ADMIN_ALERTS_KEY).catch(() => false))) return false;
+	try {
+		const res = await fetch('/api/zdravie', { cache: 'no-store' });
+		const health = res.ok ? ((await res.json()) as { ok: boolean; error: string | null }) : null;
+		if (health?.ok) return false;
+		await sw.registration.showNotification('Receptio: výpadok', {
+			body: health?.error ?? 'Server neodpovedá.',
+			tag: 'outage',
+			icon: '/icon-192.png',
+			data: { url: '/admin' }
+		});
+	} catch {
+		// Can't tell (the phone lost signal right after the push): show the usual reminder.
+		return false;
+	}
+	return true;
+}
+
+/**
+ * Someone in the household saved news while this phone wasn't looking: read the household's
+ * copy with the code this phone holds, and tell what the others did since it last looked.
+ */
+async function showHouseholdNews() {
+	const state = await kvGet<HouseholdNews>(HOUSEHOLD_NEWS_KEY).catch(() => undefined);
+	let title = 'Domácnosť';
+	let body = 'Niekto z domácnosti niečo zmenil.';
+	let seenAt = state?.seenAt ?? 0;
+	if (state?.code) {
+		try {
+			const keys = await deriveKeys(state.code);
+			const res = await fetch(`/api/sync/${keys.id}`, { cache: 'no-store' });
+			const remote = (await res.json()) as { data: string };
+			const doc = validateDoc(JSON.parse(await decrypt(keys.key, remote.data)));
+			if (doc) {
+				title = doc.name[0];
+				const fresh = logOf(doc).filter((e) => e.at > seenAt && e.who !== state.me);
+				if (fresh.length) {
+					const names = new Map(Object.values(doc.members).map((m) => [m.id, m.name]));
+					body = describeNews(fresh, names, await titles()) || body;
+					seenAt = Math.max(...fresh.map((e) => e.at));
+				}
+			}
+		} catch {
+			// Offline or a changed link: the general line will do.
+		}
+		await kvSet(HOUSEHOLD_NEWS_KEY, { ...state, seenAt }).catch(() => {});
+	}
+	await sw.registration.showNotification(title, {
+		body,
+		tag: 'household',
+		icon: '/icon-192.png',
+		data: { url: '/domacnost' }
+	});
+}
+
+/** Recipe and ingredient names from the cached catalog (lines are packed, names aren't). */
+async function titles(): Promise<(id: string) => string | undefined> {
+	try {
+		const cached = await caches.match('/catalog.json');
+		const catalog = cached
+			? ((await cached.json()) as {
+					recipes: { id: string; title: string }[];
+					ingredients: { id: string; name: string }[];
+				})
+			: null;
+		const byId = new Map<string, string>([
+			...(catalog?.recipes ?? []).map((r) => [r.id, r.title] as [string, string]),
+			...(catalog?.ingredients ?? []).map(
+				(i) => [i.id, i.name.split(' (')[0].toLowerCase()] as [string, string]
+			)
+		]);
+		return (id) => byId.get(id);
+	} catch {
+		return () => undefined;
+	}
+}
+
+sw.addEventListener('push', (event) => {
+	// Reminders come without a payload (the worker knows what's due); household news says so.
+	let kind: string | undefined;
+	try {
+		kind = (event.data?.json() as { t?: string } | undefined)?.t;
+	} catch {
+		kind = undefined;
+	}
+	if (kind === 'household') {
+		event.waitUntil(showHouseholdNews());
+		return;
+	}
+	event.waitUntil(showOutage().then((shown) => (shown ? undefined : showReminder())));
 });

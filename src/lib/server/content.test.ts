@@ -1,120 +1,281 @@
 import { describe, expect, it } from 'vitest';
-import {
-	chosenParts,
-	combineFacts,
-	defaultChoice,
-	KITCHEN_TOOLS,
-	usableMethods,
-	type Kitchen
-} from '$lib/dish';
-import { planTimeline } from '$lib/timeline';
+import { CATEGORY_IDS, inCategory } from '$lib/categories';
+import { splitStep } from '$lib/cooking';
+import { prepMinutes } from '$lib/preptime';
 import { getContent } from './content';
-
-const FULL: Kitchen = { burners: 4, tools: [...KITCHEN_TOOLS] };
-const BARE: Kitchen = { burners: 2, tools: [] };
 
 describe('content', () => {
 	const content = getContent();
-	const partsById = new Map(content.parts.map((p) => [p.id, p]));
 
-	it('compiles parts and dishes', () => {
-		expect(content.parts.length).toBeGreaterThan(20);
-		expect(content.dishes.length).toBeGreaterThan(10);
+	it('compiles every recipe with resolvable ingredients', () => {
+		expect(content.recipes.length).toBeGreaterThan(0);
+		for (const r of content.recipes) {
+			expect(r.perServing.kcal, r.id).toBeGreaterThan(0);
+			expect(r.costPerServing, r.id).toBeGreaterThan(0);
+		}
 	});
 
-	it('gives every method plausible nutrition and a price', () => {
-		for (const part of content.parts) {
-			for (const m of part.methods) {
-				const where = `${part.id} / ${m.label}`;
-				expect(m.costPerServing, where).toBeGreaterThan(0);
-				expect(m.perServing.kcal, where).toBeGreaterThan(0);
-				expect(m.perServing.kcal, where).toBeLessThan(1100);
-				expect(m.perServing.salt, where).toBeLessThan(4);
+	it('produces plausible nutrition per serving', () => {
+		for (const r of content.recipes) {
+			expect(r.perServing.kcal, r.id).toBeLessThan(1500);
+			expect(r.perServing.salt, r.id).toBeLessThan(6);
+		}
+	});
+
+	it('derives gluten status from ingredients', () => {
+		const pasta = content.recipeDetails.get('pasta-e-ceci')!;
+		expect(pasta.gluten).toBe('contains');
+		expect(pasta.gfSwappable).toBe(true);
+
+		const teriyaki = content.recipeDetails.get('teriyaki-tofu')!;
+		expect(teriyaki.gluten).toBe('contains');
+		expect(teriyaki.gfSwappable).toBe(true);
+
+		expect(content.recipeDetails.get('chana-masala')!.gluten).toBe('free');
+	});
+
+	it('compiles variants and an automatic gluten-free version', () => {
+		const masala = content.recipeDetails.get('tofu-butter-masala')!;
+		expect(masala.usesSubstitutes).toBe(true);
+		expect(masala.substitutes).toBe('optional');
+		const plain = masala.variants.find((v) => v.name === 'Bez náhrad')!;
+		expect(plain.usesSubstitutes).toBe(false);
+		expect(plain.lines.some((l) => l.ingredientId === 'kesu')).toBe(true);
+		const oil = plain.lines.filter((l) => l.ingredientId === 'olej');
+		expect(oil).toHaveLength(1);
+		expect(oil[0].amount).toBe(4);
+
+		const teriyaki = content.recipeDetails.get('teriyaki-tofu')!;
+		const gf = teriyaki.variants.find((v) => v.name === 'Bezlepková verzia')!;
+		expect(gf.gluten).toBe('free');
+		expect(gf.lines.some((l) => l.ingredientId === 'tamari')).toBe(true);
+
+		expect(content.recipeDetails.get('pizza')!.variants.map((v) => v.name)).not.toContain(
+			'Bezlepková verzia'
+		);
+	});
+
+	it('offers a low-FODMAP version when swaps are enough, and not where onion is the point', () => {
+		const soup = content.recipeDetails.get('tekvicova-polievka')!;
+		const low = soup.variants.find((v) => v.name === 'Low FODMAP')!;
+		expect(low.diets).toContain('low-fodmap');
+		const ids = low.lines.map((l) => l.ingredientId);
+		expect(ids).toContain('cesnakovy-olej');
+		expect(ids).not.toContain('cesnak');
+		expect(ids).not.toContain('cibula');
+		expect(low.lines.find((l) => l.ingredientId === 'cesnakovy-olej')!.unit).toBe('čl');
+
+		const chimichurri = content.recipeDetails.get('chimichurri')!;
+		const lowSteps = chimichurri.variants.find((v) => v.name === 'Low FODMAP')!.steps!;
+		expect(lowSteps[0]).toMatch(/^Petržlen nasekaj .* s cesnakovým olejom/);
+
+		const masala = content.recipeDetails.get('chana-masala')!;
+		const lowMasala = masala.variants.find((v) => v.name === 'Low FODMAP')!;
+		const chickpeas = lowMasala.lines.find((l) => l.ingredientId === 'cicer-sterilizovany')!;
+		expect(chickpeas.grams / masala.servings).toBeLessThanOrEqual(42);
+		expect(lowMasala.lines.some((l) => l.ingredientId === 'tofu-natural')).toBe(true);
+		expect(lowMasala.perServing.protein).toBeGreaterThan(masala.perServing.protein * 0.8);
+
+		const roasted = content.recipeDetails.get('peceny-cicer')!;
+		expect(
+			roasted.variants.some((v) => v.lines.some((l) => l.ingredientId === 'tofu-natural'))
+		).toBe(false);
+
+		const rings = content.recipeDetails.get('cibulove-kruzky')!;
+		expect(rings.variants.map((v) => v.name)).not.toContain('Low FODMAP');
+	});
+
+	it('offers a low-salt version of salty recipes', () => {
+		const soup = content.recipeDetails.get('bun-hue-chay')!;
+		const low = soup.variants.find((v) => v.name === 'Menej soli')!;
+		expect(low.perServing.salt).toBeLessThan(soup.perServing.salt * 0.8);
+		expect(low.description).toContain('Polovicu vývaru nahraď vodou');
+		expect(low.lines.some((l) => l.ingredientId === 'voda')).toBe(true);
+		expect(content.recipeDetails.get('hummus')!.variants.map((v) => v.name)).not.toContain(
+			'Menej soli'
+		);
+	});
+
+	it('offers a version from dry legumes where the recipe uses cans', () => {
+		const burrito = content.recipeDetails.get('burrito')!;
+		const dry = burrito.variants.find((v) => v.name === 'Zo suchých strukovín')!;
+		expect(dry.lines.find((l) => l.ingredientId === 'fazula-cierna-sucha')?.grams).toBe(200);
+		expect(dry.lines.some((l) => l.ingredientId === 'fazula-cierna')).toBe(false);
+		expect(dry.steps![0]).toContain('Namočené strukoviny');
+		expect(dry.steps!.slice(1)).toEqual(burrito.steps);
+		expect(dry.time).toBeGreaterThan(burrito.time);
+		expect(dry.ahead).toContain('200 g suchých strukovín');
+		expect(dry.description).toContain('Čierna fazuľa 200 g namiesto 2 plechoviek');
+		expect(dry.costPerServing).toBeLessThan(burrito.costPerServing);
+		expect(content.recipeDetails.get('mac-and-cheese')!.variants.map((v) => v.name)).not.toContain(
+			'Zo suchých strukovín'
+		);
+	});
+
+	it('labels comfort food "na občas" and clears it for lighter versions', () => {
+		const falafel = content.recipeDetails.get('falafel')!;
+		expect(falafel.treat).toContain('vyprazane');
+		expect(falafel.variants.find((v) => v.name === 'Pečený v rúre')!.treat).toEqual([]);
+		expect(content.recipeDetails.get('brownies')!.treat).toContain('cukor');
+		expect(content.recipeDetails.get('hummus')!.treat).toEqual([]);
+		// Olive oil in a slow-cooked vegetable dish isn't "added fat".
+		expect(content.recipeDetails.get('imam-bayildi')!.treat).toEqual([]);
+		for (const r of content.recipes.filter((r) => r.categories[0].startsWith('comfort/'))) {
+			const everyday = r.treat.length === 0 || r.variants.some((v) => v.treat.length === 0);
+			expect(everyday, `${r.id}: pridaj Ľahšiu verziu`).toBe(true);
+		}
+	});
+
+	it('spells out every step instead of sending you to another recipe', () => {
+		for (const r of content.recipeDetails.values()) {
+			for (const step of [...r.steps, ...r.variants.flatMap((v) => v.steps ?? [])]) {
+				expect(step, r.id).not.toMatch(/podľa receptu|ako v recepte|recept [A-ZÁČĎÉÍĽĹŇÓÔŔŠŤÚÝŽ]/);
 			}
 		}
 	});
 
-	it('makes whole plates of a sensible size', () => {
-		for (const dish of content.dishes) {
-			for (const slot of dish.slots) {
-				for (const option of slot.options) {
-					const choice = { ...defaultChoice(dish), [slot.id]: option };
-					const parts = chosenParts(dish, choice, {}, partsById, FULL);
-					const facts = combineFacts(parts.map((p) => p.method));
-					const where = `${dish.id} ${option}`;
-					expect(facts.perServing.kcal, where).toBeGreaterThan(200);
-					expect(facts.perServing.kcal, where).toBeLessThan(1400);
-					expect(facts.perServing.salt, where).toBeLessThan(5);
+	it('says how to keep food from sticking to the tray or dish', () => {
+		const intoOven = /\b(na|do) (plech|pekáč|zapekac|form)|na plechu/i;
+		const prepared =
+			/papier|vymast|vymaž|vytri|vytret|potri|vystel|silikón|rozpálen|na dn[eo]|olej nalej|netreba (ju|ho) mastiť/i;
+		const unprepared = [...content.recipeDetails.values()].filter((r) =>
+			[r.steps, ...r.variants.map((v) => v.steps ?? [])].some((steps) => {
+				const text = steps.join(' ');
+				return /rúr/i.test(text) && steps.some((s) => intoOven.test(s)) && !prepared.test(text);
+			})
+		);
+		expect(unprepared.map((r) => r.id)).toEqual([]);
+	});
+
+	it('gives each recipe a time that covers the waits in its steps', () => {
+		// Steps run one after another unless they say they run alongside; a wait that `ahead`
+		// already announces (soaking, marinating, setting in the fridge) isn't part of `time`.
+		// "Ak je jogurt riedky…" and "Rýchlejšie za tepla…" are optional ways, not extra steps.
+		const alongside = /^(Medzitým|Kým|Počas|Zatiaľ|Hneď ako|Ak |Rýchlejšie)|pred koncom/;
+		const waiting = /marin|namo[čc]|stuhn|chladničk|mraz|kvas|odst|kysn|lúhu|cez noc/i;
+		const byId = new Map(content.ingredients.map((i) => [i.id, i]));
+		const tooShort: string[] = [];
+		for (const r of content.recipeDetails.values()) {
+			const knifeWork = prepMinutes(r.lines, byId, r.steps);
+			if (r.activeTime < knifeWork - 2)
+				tooShort.push(`${r.id}: ${r.activeTime} min práce, krájanie ${Math.round(knifeWork)}`);
+			const versions = [
+				{ steps: r.steps, time: r.time, ahead: r.ahead },
+				...r.variants
+					.filter((v) => v.steps)
+					.map((v) => ({
+						steps: v.steps!,
+						time: v.time ?? r.time,
+						ahead: v.ahead === undefined ? r.ahead : v.ahead
+					}))
+			];
+			for (const { steps, time, ahead } of versions) {
+				let minutes = 0;
+				for (const step of steps) {
+					if (alongside.test(step) || (ahead && waiting.test(step))) continue;
+					// "…alebo 15 minút vo vriacej vode" is another way, not an extra wait.
+					const timers = splitStep(step.replace(/\balebo\b[^.]*/g, '')).flatMap((s) =>
+						'timer' in s ? [s.timer.seconds / 60] : []
+					);
+					// Waits of an hour or more belong to `ahead` when the recipe has one.
+					minutes += Math.max(0, ...timers.filter((m) => !ahead || m < 60));
 				}
+				// Knife work mostly happens before the heat goes on; half of it overlaps the cooking.
+				const prep = prepMinutes(r.lines, byId, steps);
+				if (minutes + prep / 2 > time + 5)
+					tooShort.push(`${r.id}: ${time} min, kroky ${minutes} + krájanie ${Math.round(prep)}`);
+			}
+		}
+		expect(tooShort).toEqual([]);
+	});
+
+	it('knows the weight of every cup and spoon a recipe uses', () => {
+		// Without it the amount falls back to the weight of water: a cup of flour became 240 g.
+		const byId = new Map(content.ingredients.map((i) => [i.id, i]));
+		for (const r of content.recipes) {
+			for (const line of [...r.lines, ...r.variants.flatMap((v) => v.lines)]) {
+				if (line.unit !== 'hrnček' && line.unit !== 'pl' && line.unit !== 'čl') continue;
+				const units = byId.get(line.ingredientId)!.units;
+				expect(
+					units[line.unit],
+					`${r.id}: ${line.ingredientId} nemá váhu pre ${line.unit}`
+				).toBeDefined();
 			}
 		}
 	});
 
-	it('bakes everything at one oven temperature, so parts share the oven', () => {
-		const temps = new Set(
-			content.parts.flatMap((p) =>
-				p.methods.flatMap((m) => m.steps.filter((s) => s.on === 'rura').map((s) => s.temp))
-			)
-		);
-		expect([...temps]).toEqual([220]);
+	it('lets a variant bring its own steps, time and preparation ahead', () => {
+		const tofu = content.recipeDetails.get('domace-tofu')!;
+		const fromMilk = tofu.variants.find((v) => v.name === 'Z hotového sójového mlieka')!;
+		expect(tofu.ahead).toBeTruthy();
+		expect(fromMilk.ahead).toBeNull();
+		expect(fromMilk.time).toBeLessThan(tofu.time);
+		expect(fromMilk.steps![0]).not.toBe(tofu.steps[0]);
+		expect(fromMilk.lines.map((l) => l.ingredientId)).toEqual(['sojove-mlieko', 'nigari']);
+		// Steps stay out of the summaries that go into catalog.json.
+		const summary = content.recipes.find((r) => r.id === 'domace-tofu')!;
+		expect(summary.variants.every((v) => v.steps === undefined)).toBe(true);
 	});
 
-	it('labels frying, not baking', () => {
-		const mushrooms = partsById.get('obalene-sampinony')!;
-		expect(mushrooms.methods[0].treat).toContain('vyprazane');
-		expect(mushrooms.methods[1].treat).not.toContain('vyprazane');
+	it('leaves not-eaten lines out of nutrition', () => {
+		const seitan = content.recipeDetails.get('seitan')!;
+		expect(seitan.lines.find((l) => l.ingredientId === 'zeleninovy-vyvar')?.notEaten).toBe(true);
+		expect(seitan.perServing.salt).toBeLessThan(2);
 	});
 
-	it('plans every option of every dish in any kitchen that can cook it', () => {
-		for (const kitchen of [FULL, BARE]) {
-			for (const dish of content.dishes) {
-				for (const slot of dish.slots) {
-					for (const option of slot.options) {
-						const choice = { ...defaultChoice(dish), [slot.id]: option };
-						const parts = chosenParts(dish, choice, {}, partsById, kitchen);
-						const timeline = planTimeline(
-							parts.map(({ part, method }) => ({
-								id: part.id,
-								name: part.name,
-								early: part.early,
-								steps: method.steps
-							})),
-							dish.finish,
-							kitchen
-						);
-						expect(timeline.total, `${dish.id} ${option}`).toBeGreaterThan(0);
-						expect(timeline.total, `${dish.id} ${option}`).toBeLessThan(150);
-					}
-				}
-			}
+	it('resolves related recipes', () => {
+		const milk = content.recipeDetails.get('domace-sojove-mlieko')!;
+		expect(milk.related.map((r) => r.id)).toContain('domace-tofu');
+		expect(milk.related.every((r) => r.title.length > 0)).toBe(true);
+	});
+
+	it('links beginner guides from ingredients', () => {
+		const dal = content.recipeDetails.get('kokosovy-dal')!;
+		expect(dal.howto.map((h) => h.slug)).toContain('ryza');
+		expect(dal.howto.map((h) => h.slug)).toContain('strukoviny');
+	});
+
+	it('detects equipment from the steps, with per-recipe overrides', () => {
+		const tools = (id: string) => content.recipeDetails.get(id)!.equipment;
+		expect(tools('hummus')).toContain('mixer');
+		expect(tools('granola')).toEqual(expect.arrayContaining(['rura', 'plech']));
+		// "Opeč cibuľu" in a one-pot dish doesn't add a pan…
+		expect(tools('minestrone')).not.toContain('panvica');
+		// …and "prikry utierkou" (rising dough) isn't a lid.
+		expect(tools('pizza')).not.toContain('pokrievka');
+		expect(tools('falafel')).toEqual(expect.arrayContaining(['hrniec', 'teplomer']));
+		expect(tools('falafel')).not.toContain('panvica');
+		for (const r of content.recipeDetails.values()) {
+			for (const e of r.equipmentDetail)
+				expect(e.alternatives.length, `${r.id}/${e.id}`).toBeGreaterThan(0);
 		}
 	});
 
-	it('keeps warm sides warm: potatoes finish with the mushrooms, not half an hour before', () => {
-		const dish = content.dishes.find((d) => d.id === 'vyprazane-sampinony')!;
-		const parts = chosenParts(dish, defaultChoice(dish), {}, partsById, FULL);
-		const timeline = planTimeline(
-			parts.map(({ part, method }) => ({
-				id: part.id,
-				name: part.name,
-				early: part.early,
-				steps: method.steps
-			})),
-			dish.finish,
-			FULL
-		);
-		const end = (id: string) =>
-			Math.max(...timeline.steps.filter((s) => s.partId === id).map((s) => s.end));
-		expect(Math.abs(end('varene-zemiaky') - end('obalene-sampinony'))).toBeLessThanOrEqual(5);
-		expect(timeline.total).toBeLessThan(56);
+	it('uses only known cuisines and has wiki pages in every section', () => {
+		const ids = new Set(content.cuisines.map((c) => c.id));
+		for (const r of content.recipes) expect(ids.has(r.cuisine), r.id).toBe(true);
+		const sections = new Set(content.wiki.map((w) => w.section));
+		expect([...sections].sort()).toEqual([
+			'navody',
+			'pestovanie',
+			'pohyb',
+			'suplementy',
+			'svet',
+			'zaklady'
+		]);
 	});
 
-	it('can cook most dishes without an oven or gadgets', () => {
-		const cookable = content.dishes.filter((dish) =>
-			dish.slots.every(
-				(s) => s.optional || s.options.some((id) => usableMethods(partsById.get(id)!, BARE).length)
-			)
-		);
-		expect(cookable.length / content.dishes.length).toBeGreaterThan(0.6);
+	it('fills every recipe category with several recipes', () => {
+		for (const id of CATEGORY_IDS) {
+			const count = content.recipes.filter((r) => inCategory(r.categories, id)).length;
+			expect(count, id).toBeGreaterThanOrEqual(10);
+		}
+	});
+
+	it('draws the growing-technique diagrams into their guides', () => {
+		const guide = content.wiki.find((w) => w.slug === 'vyvysene-zahony')!;
+		expect(guide.art).toBe('hugelkultura');
+		expect(guide.html.match(/<figure class="tech-art">/g)).toHaveLength(2);
+		for (const page of content.wiki) expect(page.html, page.slug).not.toContain('{{art:');
 	});
 });

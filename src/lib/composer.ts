@@ -1,7 +1,7 @@
 import { formatAmount, toGrams } from './amounts';
 import { emptyNutrients } from './nutrition';
 import type { Part, PartFacts, PartKind, PartStep, Style } from './dish';
-import type { UnitPrice } from './shopping';
+import type { UnitPrice } from './plate-shopping';
 import type {
 	Allergen,
 	GlutenStatus,

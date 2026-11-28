@@ -1,21 +1,63 @@
+import { marked } from 'marked';
 import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
-import { parseAmount, toGrams } from '$lib/amounts';
-import type { Dish, Part } from '$lib/dish';
+import { dryForms, formatNumber, parseAmount, toGrams } from '$lib/amounts';
+import {
+	SALT_HIGH_G,
+	cookingStyle,
+	recipeAllergens,
+	recipeDiets,
+	dietBlockers,
+	recipeGluten,
+	recipeNutrients,
+	recipeWarnings,
+	treatReasons
+} from '$lib/nutrition';
+import { CATEGORY_PATHS, guessTaste } from '$lib/categories';
+import { stepLines, techniqueGuides } from '$lib/cooking';
+import { tipParts } from '$lib/tip-links';
+import { ART_NAMES, artFigure } from '$lib/wiki-art';
+import { normalizeSearch } from '$lib/labels';
+import { fromCanStep, rewriteStep } from '$lib/step-swaps';
+import { freshProduce } from '$lib/shelf';
+import { bestPrice } from '$lib/pricing';
 import {
 	ALLERGENS,
 	EQUIPMENT_LEVELS,
+	GROW_FORMS,
+	GROW_PLACES,
+	GROW_SUN,
 	INGREDIENT_CATEGORIES,
+	MEALS,
 	SHELF_KINDS,
+	TASTES,
 	UNITS,
+	WIKI_GROUPS,
+	WIKI_SECTIONS,
+	type Catalog,
+	type Course,
+	type Cuisine,
+	type Equipment,
+	type GrowCombo,
+	type GrowGuide,
+	type NotGrown,
 	type EquipmentFull,
 	type Ingredient,
+	type Homemade,
+	type IngredientInfo,
 	type IngredientCategory,
 	type PriceEntry,
+	type RecipeComputed,
+	type RecipeDetail,
+	type RecipeLine,
+	type RecipeVariant,
+	type Unit,
 	type Store,
-	type Substitute
+	type Substitute,
+	type WikiPage
 } from '$lib/types';
 import type { ComposerData } from '$lib/composer';
+import type { Dish, Part } from '$lib/dish';
 import { compileComposer } from './composer';
 import { compileDishes, compileParts } from './dishes';
 
@@ -130,6 +172,219 @@ const ingredientSchema = z
 	})
 	.strict();
 
+const ingredientLineSchema = z
+	.record(slug, z.string())
+	.refine((r) => Object.keys(r).length === 1, 'každý riadok má mať práve jednu surovinu');
+
+const variantSchema = z
+	.object({
+		name: z.string().min(1),
+		description: z.string().min(1),
+		/** Swap one ingredient for another; without `amount` the same quantity is used. */
+		replace: z
+			.array(z.object({ from: slug, to: slug, amount: z.string().optional() }).strict())
+			.default([]),
+		add: z.array(ingredientLineSchema).default([]),
+		remove: z.array(slug).default([]),
+		/** Only when the variant is cooked differently (from ready-made soy milk, from dry beans). */
+		steps: z.array(z.string().min(1)).min(1).optional(),
+		time: z.number().int().positive().optional(),
+		active: z.number().int().positive().optional(),
+		/** false = the variant needs no preparation ahead. */
+		ahead: z.union([z.string().min(1), z.literal(false)]).optional(),
+		yields: z.string().optional()
+	})
+	.strict();
+
+const recipeSchema = z
+	.object({
+		title: z.string().min(1),
+		description: z.string().min(1),
+		cuisine: slug,
+		meals: z.array(z.enum(MEALS)).min(1),
+		/** What kind of dish, "hlavne/kari"; the first one is where it belongs most. */
+		categories: z.array(z.enum(CATEGORY_PATHS as [string, ...string[]])).min(1),
+		time: z.number().int().positive(),
+		active: z.number().int().positive(),
+		servings: z.number().int().positive(),
+		difficulty: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+		tags: z.array(z.string()).default([]),
+		ahead: z.string().optional(),
+		/** false when a 1:1 flour swap would ruin the dish (pizza dough, halušky). */
+		gf_swap: z.boolean().default(true),
+		/** false when the soy protein does the work (mayo, yogurt) and oat drink wouldn't. */
+		oat_swap: z.boolean().default(true),
+		/** false when onion, garlic or leek is the point of the dish (onion rings, garlic soup). */
+		fodmap_swap: z.boolean().default(true),
+		/** Steps of the low-FODMAP version written by hand where the automatic rewrite reads badly (1-based). */
+		fodmap_steps: z.record(z.string().regex(/^[1-9]\d*$/), z.string().min(1)).default({}),
+		yields: z.string().optional(),
+		nutrition: z.boolean().default(true),
+		related: z.array(slug).default([]),
+		ingredients: z.array(ingredientLineSchema).min(1),
+		steps: z.array(z.string().min(1)).min(1),
+		tips: z.array(z.string()).default([]),
+		howto: z.array(slug).default([]),
+		variants: z.array(variantSchema).default([]),
+		/** Tools the step text doesn't reveal, and false positives of the detection. */
+		equipment: z.array(slug).default([]),
+		no_equipment: z.array(slug).default([]),
+		/** 0 mild … 3 hot. */
+		spicy: z.union([z.literal(0), z.literal(1), z.literal(2), z.literal(3)]).default(0),
+		/** Only when the guess from categories and ingredients is wrong; `neutralne` = neither. */
+		taste: z.enum([...TASTES, 'neutralne']).optional(),
+		/** Days in the fridge (0 = eat fresh), months in the freezer (0 = don't freeze). */
+		keeps: z
+			.object({
+				fridge: z.number().int().min(0).max(30),
+				freezer: z.number().int().min(0).max(12).default(0)
+			})
+			.strict()
+			.optional(),
+		leftovers: z.string().min(1).optional(),
+		/** Date the recipe was cooked for real and the amounts and times checked. */
+		tested: isoDate.optional()
+	})
+	.strict();
+
+const monthsSchema = z.array(z.number().int().min(1).max(12)).default([]);
+const growLevel = z.union([z.literal(1), z.literal(2), z.literal(3)]);
+const growFileSchema = z
+	.object({
+		plodiny: z.array(
+			z
+				.object({
+					ingredient: slug,
+					/** Plant name when the ingredient's is a shop product ("Hrášok mrazený" → "Hrach"). */
+					name: z.string().min(1).optional(),
+					where: z.array(z.enum(GROW_PLACES)).min(1),
+					sun: z.array(z.enum(GROW_SUN)).min(1),
+					level: growLevel,
+					spacing: z.number().int().min(0).max(800),
+					family: z.string().min(1),
+					yield: z.number().positive(),
+					problems: z.array(z.string().min(1)).default([]),
+					seeds: z.string().min(1),
+					preserve: z.string().min(1),
+					indoor: monthsSchema,
+					sow: monthsSchema.refine((m) => m.length > 0, 'sow potrebuje aspoň jeden mesiac'),
+					harvest: monthsSchema.refine((m) => m.length > 0, 'harvest potrebuje aspoň jeden mesiac'),
+					perennial: z.boolean().default(false),
+					form: z.enum(GROW_FORMS).optional(),
+					height: z.number().positive().max(40).optional(),
+					years: z.number().int().min(0).max(30).optional(),
+					pollination: z.string().min(1).optional(),
+					how: z.string().min(1),
+					tip: z.string().min(1).optional(),
+					recommend: z.string().min(1).optional(),
+					friends: z.array(slug).default([]),
+					avoid: z.array(slug).default([])
+				})
+				.strict()
+		),
+		kombinacie: z.array(
+			z
+				.object({
+					id: slug,
+					name: z.string().min(1),
+					where: z.array(z.enum(GROW_PLACES)).min(1),
+					sun: z.array(z.enum(GROW_SUN)).min(1),
+					level: growLevel,
+					area: z.number().positive(),
+					max: z.number().int().positive().optional(),
+					layout: z.enum(['rows', 'mix', 'kruh']).default('rows'),
+					depth: z.number().positive().optional(),
+					members: z.record(slug, z.number().int().positive()),
+					how: z.string().min(1),
+					why: z.string().min(1),
+					gear: z.array(z.string().min(1)).default([])
+				})
+				.strict()
+		),
+		nepestovatelne: z.array(
+			z
+				.object({
+					ingredient: slug,
+					status: z.enum(['nie', 'tazko']),
+					origin: z.string().min(1),
+					note: z.string().min(1).optional()
+				})
+				.strict()
+		)
+	})
+	.strict();
+
+const pattern = z.string().transform((source, ctx) => {
+	try {
+		return new RegExp(source, 'u');
+	} catch {
+		ctx.addIssue({ code: 'custom', message: `neplatný regulárny výraz: ${source}` });
+		return z.NEVER;
+	}
+});
+
+const equipmentSchema = z
+	.object({
+		id: slug,
+		name: z.string().min(1),
+		level: z.enum(EQUIPMENT_LEVELS),
+		icon: z.string().min(1),
+		about: z.string().min(1),
+		alternatives: z.array(z.string().min(1)).min(1),
+		uses: z.array(z.string().min(1)).default([]),
+		kinds: z.array(z.string().min(1)).default([]),
+		choose: z.string().min(1).optional(),
+		care: z.string().min(1).optional(),
+		match: z.array(pattern),
+		/** Weaker clues, used only when none of `unless` was detected. */
+		weak: z.array(pattern).default([]),
+		unless: z.array(slug).default([])
+	})
+	.strict();
+
+const GF_VARIANT_NAME = 'Bezlepková verzia';
+const FODMAP_VARIANT_NAME = 'Low FODMAP';
+const formatProtein = (grams: number) => grams.toFixed(grams < 10 ? 1 : 0).replace('.', ',');
+const LOW_SALT_VARIANT_NAME = 'Menej soli';
+const OAT_VARIANT_NAME = 'S ovseným nápojom';
+const DRY_VARIANT_NAME = 'Zo suchých strukovín';
+const STORES_VARIANT_NAME = 'Zo zásob';
+/**
+ * Fresh produce a cooked dish can take from the freezer or the pantry, and grams of the stored
+ * form per gram of fresh (a fresh chili is about 15 g, its dried flakes half a teaspoon).
+ */
+/** Share of the dish's weight above which an ingredient is what the dish is about. */
+const STAR_SHARE = 0.3;
+const FROM_STORES: Record<string, { to: string; ratio: number }> = {
+	paradajky: { to: 'paradajky-sterilizovane', ratio: 1 },
+	'paprika-cervena': { to: 'paprika-mrazena', ratio: 1 },
+	'cili-papricka': { to: 'cili', ratio: 0.05 },
+	'jarna-cibulka': { to: 'pazitka', ratio: 0.5 }
+};
+/** Minutes soaked dry legumes simmer until soft, by pantry group (see the strukoviny guide). */
+const DRY_SIMMER: Record<string, { min: number; max: number }> = {
+	cicer: { min: 60, max: 90 },
+	'fazula-cervena': { min: 60, max: 90 },
+	'fazula-biela': { min: 60, max: 90 },
+	'fazula-cierna': { min: 50, max: 70 },
+	bob: { min: 45, max: 60 }
+};
+/** Seasonings halved in the low-salt version: salt itself and salty sauces and pastes (g salt / 100 g). */
+const SALTY_SEASONING_MIN = 1.5;
+
+const cuisineSchema = z
+	.object({
+		id: slug,
+		name: z.string(),
+		region: z.string(),
+		tagline: z.string(),
+		color: hexColor,
+		staples: z.array(z.string()),
+		dishes: z.array(z.string()),
+		pitfalls: z.array(z.string())
+	})
+	.strict();
+
 const pricesSchema = z
 	.object({
 		stores: z.array(
@@ -159,22 +414,34 @@ const pricesSchema = z
 
 const syncedPricesSchema = pricesSchema.pick({ entries: true });
 
-const equipmentSchema = z
+const courseSchema = z
 	.object({
-		id: slug,
-		name: z.string().min(1),
-		level: z.enum(EQUIPMENT_LEVELS),
-		icon: z.string().min(1),
-		about: z.string().min(1),
-		alternatives: z.array(z.string().min(1)).min(1),
-		uses: z.array(z.string().min(1)).default([]),
-		kinds: z.array(z.string().min(1)).default([]),
-		choose: z.string().min(1).optional(),
-		care: z.string().min(1).optional(),
-		// Clues for detecting tools in free-text recipes; parts say what they need instead.
-		match: z.array(z.string()).default([]),
-		weak: z.array(z.string()).default([]),
-		unless: z.array(slug).default([])
+		intro: z.array(slug),
+		lekcie: z
+			.array(
+				z
+					.object({
+						recipe: slug,
+						title: z.string().min(1),
+						learn: z.string().min(1),
+						guides: z.array(slug).default([])
+					})
+					.strict()
+			)
+			.min(1)
+	})
+	.strict();
+
+const wikiFrontmatterSchema = z
+	.object({
+		title: z.string(),
+		summary: z.string(),
+		section: z.enum(WIKI_SECTIONS),
+		group: z.enum(WIKI_GROUPS).optional(),
+		icon: z.string(),
+		order: z.number(),
+		/** Drawing from wiki-art shown on the page's card. */
+		art: z.enum(ART_NAMES as [string, ...string[]]).optional()
 	})
 	.strict();
 
@@ -184,28 +451,48 @@ function parseWith<T>(schema: z.ZodType<T>, data: unknown, where: string): T {
 	return result.data;
 }
 
-export interface Content {
-	ingredients: Ingredient[];
-	/** What to use instead of an ingredient. */
-	substitutes: Map<string, Substitute[]>;
-	stores: Store[];
-	prices: PriceEntry[];
+function fileId(path: string): string {
+	return path
+		.split('/')
+		.pop()!
+		.replace(/\.(ya?ml|md)$/, '');
+}
+
+export interface Content extends Catalog {
+	recipeDetails: Map<string, RecipeDetail>;
 	equipment: EquipmentFull[];
+	ingredientInfo: Map<string, IngredientInfo>;
+	/** Substitutes of every ingredient, for ingredient pages. */
+	ingredientSwaps: Map<string, Substitute[]>;
+	wiki: WikiPage[];
+	/** Growing guides, alphabetical. */
+	grow: GrowGuide[];
+	growCombos: GrowCombo[];
+	notGrown: NotGrown[];
+	course: Course;
+	/** Building blocks of the plates: a part cooks on its own, a dish is slots of parts. */
 	parts: Part[];
 	dishes: Dish[];
+	/** Ingredients, techniques and flavour bases for recipes put together from scratch. */
 	composer: ComposerData;
 }
 
 export interface RawContent {
 	ingredients: string;
 	equipment: string;
+	cuisines: string;
 	prices: string;
-	/** Generated by the price sync scripts; same entries format as prices.yaml, no stores. */
+	/** Generated by `pnpm prices:sync`; same entries format as prices.yaml, no stores. */
 	pricesSynced: string;
+	/** Generated by `pnpm prices:eshops` from the products in eshops.yaml. */
 	pricesEshops: string;
 	pricesBilla: string;
 	pricesKaufland: string;
 	pricesKosik: string;
+	recipes: Record<string, string>;
+	wiki: Record<string, string>;
+	grow: string;
+	course: string;
 	parts: Record<string, string>;
 	dishes: Record<string, string>;
 	composer: string;
@@ -296,6 +583,13 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		])
 	);
 
+	const cuisines: Cuisine[] = parseWith(
+		z.array(cuisineSchema),
+		parseYaml(raw.cuisines),
+		'content/cuisines.yaml'
+	);
+	const cuisineIds = new Set(cuisines.map((c) => c.id));
+
 	const pricesRaw = parseWith(pricesSchema, parseYaml(raw.prices), 'content/prices.yaml');
 	const pricesSynced = parseWith(
 		syncedPricesSchema,
@@ -367,108 +661,956 @@ export function compileContent(raw: RawContent, today: Date): Content {
 		};
 	});
 
-	const equipment: EquipmentFull[] = parseWith(
+	const wiki: WikiPage[] = Object.entries(raw.wiki)
+		.map(([path, text]) => {
+			const where = `content/wiki/${fileId(path)}.md`;
+			const match = /^---\n([\s\S]*?)\n---\n([\s\S]*)$/.exec(text.replace(/\r\n/g, '\n'));
+			if (!match) throw new Error(`${where}: chýba frontmatter`);
+			const meta = parseWith(wikiFrontmatterSchema, parseYaml(match[1]), where);
+			// `{{art:name|caption}}` on its own line becomes one of the drawn diagrams.
+			const body = match[2].replace(
+				/^\{\{art:([a-z0-9-]+)(?:\|(.+))?\}\}$/gm,
+				(_m, name, caption) => artFigure(name, caption)
+			);
+			return { slug: fileId(path), ...meta, html: marked.parse(body, { async: false }) };
+		})
+		.sort((a, b) => a.order - b.order);
+
+	const wikiBySlug = new Map(wiki.map((w) => [w.slug, w]));
+	const howtoLink = (slugId: string, where: string) => {
+		const page = wikiBySlug.get(slugId);
+		if (!page) throw new Error(`${where}: neznámy návod "${slugId}" (content/wiki/${slugId}.md)`);
+		return { slug: page.slug, title: page.title };
+	};
+	for (const i of ingredients) for (const h of i.howto) howtoLink(h, `ingredients.yaml ${i.id}`);
+
+	const parseLine = (ingredientId: string, amountText: string, where: string): RecipeLine => {
+		const ingredient = byId.get(ingredientId);
+		if (!ingredient) throw new Error(`${where}: neznáma surovina "${ingredientId}"`);
+		try {
+			const { amount, unit, note, notEaten } = parseAmount(amountText);
+			const line: RecipeLine = {
+				ingredientId,
+				grams: toGrams(amount, unit, ingredient),
+				amount,
+				unit,
+				note
+			};
+			if (notEaten) line.notEaten = true;
+			return line;
+		} catch (error) {
+			throw new Error(`${where}: ${ingredientId}: ${(error as Error).message}`);
+		}
+	};
+
+	/** Same quantity, new ingredient: keep the kitchen unit when it still makes sense, else grams. */
+	const swapLine = (line: RecipeLine, toId: string, where: string): RecipeLine => {
+		const to = byId.get(toId);
+		if (!to) throw new Error(`${where}: neznáma surovina "${toId}"`);
+		try {
+			toGrams(line.amount, line.unit, to);
+			return { ...line, ingredientId: toId };
+		} catch {
+			return { ...line, ingredientId: toId, amount: Math.round(line.grams), unit: 'g' };
+		}
+	};
+
+	/**
+	 * A swap by weight (4 garlic cloves → 1½ PL garlic oil), written in the replacement's own
+	 * pieces or spoons when it has them. The note belonged to the old ingredient.
+	 */
+	const scaledSwap = (line: RecipeLine, toId: string, ratio: number, where: string): RecipeLine => {
+		if (ratio === 1) return swapLine(line, toId, where);
+		const to = byId.get(toId)!;
+		const { note: _note, ...rest } = line;
+		if (line.amount === null) return { ...rest, ingredientId: toId };
+		const grams = line.grams * ratio;
+		for (const [unit, step, min] of [
+			['ks', 1, 1],
+			['pl', 0.5, 1],
+			['čl', 0.5, 0.5]
+		] as const) {
+			const per = to.units[unit];
+			if (!per) continue;
+			const amount = Math.max(min, Math.round(grams / per / step) * step);
+			if (grams / per >= min * 0.75 || unit === 'čl') {
+				return { ...rest, ingredientId: toId, amount, unit, grams: amount * per };
+			}
+		}
+		return {
+			...rest,
+			ingredientId: toId,
+			amount: Math.max(1, Math.round(grams)),
+			unit: 'g',
+			grams
+		};
+	};
+
+	/** A swap can leave the same ingredient twice (butter → oil next to oil); merge same-unit lines. */
+	const mergeLines = (lines: RecipeLine[]): RecipeLine[] => {
+		const merged: RecipeLine[] = [];
+		for (const line of lines) {
+			const twin = merged.find(
+				(m) =>
+					m.ingredientId === line.ingredientId &&
+					m.unit === line.unit &&
+					m.unit !== null &&
+					!m.notEaten === !line.notEaten
+			);
+			if (!twin) {
+				merged.push({ ...line });
+				continue;
+			}
+			twin.amount = (twin.amount ?? 0) + (line.amount ?? 0);
+			twin.grams += line.grams;
+			if (line.note && line.note !== twin.note) {
+				twin.note = twin.note ? `${twin.note}; ${line.note}` : line.note;
+			}
+		}
+		return merged;
+	};
+
+	const compute = (lines: RecipeLine[], servings: number): RecipeComputed => {
+		const used = [...new Set(lines.map((l) => l.ingredientId))].map((i) => byId.get(i)!);
+		const gluten = recipeGluten(used);
+		const perServing = recipeNutrients(lines, byId, servings);
+		let cost = 0;
+		let knownCost = 0;
+		let costIsEstimate = false;
+		for (const line of lines) {
+			const price = bestPrice(byId.get(line.ingredientId)!, prices, today);
+			const lineCost = (price.perKg * line.grams) / 1000;
+			cost += lineCost;
+			if (price.isEstimate && line.grams > 0) costIsEstimate = true;
+			else knownCost += lineCost;
+		}
+		return {
+			lines,
+			gluten: gluten.status,
+			gfSwappable: gluten.swappable,
+			allergens: recipeAllergens(used),
+			diets: recipeDiets(lines, byId, servings),
+			perServing,
+			costPerServing: cost / servings,
+			costIsEstimate,
+			costKnownShare: cost > 0 ? Math.round((knownCost / cost) * 100) / 100 : 1,
+			usesSubstitutes: used.some((i) => i.category === 'nahrady'),
+			treat: treatReasons(lines, byId, servings, perServing),
+			warnings: recipeWarnings(used, byId, perServing)
+		};
+	};
+
+	/** Low-FODMAP portion steps: what an amount in this unit is rounded down to. */
+	const PORTION_STEP: Partial<Record<Unit, number>> = {
+		g: 5,
+		ml: 5,
+		ks: 0.25,
+		pl: 0.5,
+		čl: 0.5,
+		hrnček: 0.25
+	};
+	/** The line cut to `factor` of its amount, rounded down; null when nothing is left. */
+	const scaledDown = (line: RecipeLine, factor: number): RecipeLine | null => {
+		if (line.amount === null || line.unit === null) return line;
+		const step = PORTION_STEP[line.unit] ?? 1;
+		const amount = Math.floor((line.amount * factor) / step) * step;
+		if (amount <= 0) return null;
+		return { ...line, amount, grams: (line.grams * amount) / line.amount };
+	};
+	const isProtein = (i: Ingredient) => i.category === 'strukoviny' || i.category === 'bielkoviny';
+	/** Below this share of the amount a fruit or vegetable is cut to, it's a different dish. */
+	const MIN_KEPT = 0.5;
+	const TOFU_ID = 'tofu-natural';
+
+	/** Canned legume → its dry form in the same pantry group (fazula-cervena → fazula-cervena-sucha). */
+	const dryFormOf = new Map([...dryForms(ingredients)].filter(([, dry]) => DRY_SIMMER[dry.group]));
+
+	/**
+	 * The same dish from dry legumes instead of cans: a third of the price and less salt, but they
+	 * soak overnight and simmer before the recipe starts.
+	 */
+	function fromDryVersion(
+		lines: RecipeLine[],
+		recipe: { servings: number; time: number; active: number; ahead?: string; steps: string[] }
+	): RecipeVariant | undefined {
+		const swapped: string[] = [];
+		let dryGrams = 0;
+		let simmer: { min: number; max: number } | undefined;
+		const dryLines = lines.map((l): RecipeLine => {
+			const dry = dryFormOf.get(l.ingredientId);
+			if (!dry || l.notEaten || !l.grams) return l;
+			const grams = Math.max(5, Math.round(l.grams / dry.groupFactor / 5) * 5);
+			dryGrams += grams;
+			const time = DRY_SIMMER[dry.group];
+			if (!simmer || time.max > simmer.max) simmer = time;
+			const cans =
+				l.unit === 'ks' && l.amount
+					? `${formatNumber(l.amount)} ${l.amount === 1 ? 'plechovky' : 'plechoviek'}`
+					: `${Math.round(l.grams)} g z plechovky`;
+			const name = byId.get(l.ingredientId)!.name.replace(/\s*\(.*\)|\s+sterilizovan\S*/g, '');
+			swapped.push(`${name} ${grams} g namiesto ${cans}`);
+			return { ingredientId: dry.id, grams, amount: grams, unit: 'g' };
+		});
+		if (!simmer) return undefined;
+		const soak = `Večer predtým namoč ${dryGrams} g suchých strukovín do trojnásobku studenej vody (8–12 hodín). Rýchlejšie: uvar ich vopred vo veľkom a porciu vyber z mrazničky.`;
+		return {
+			name: DRY_VARIANT_NAME,
+			description: `Suché strukoviny: ${swapped.join(', ')}. Vyjde to asi na tretinu ceny a s menej soľou, ale treba ich deň vopred namočiť a uvariť (+${simmer.max} minút).`,
+			steps: [
+				`Namočené strukoviny sceď, prepláchni a zalej čerstvou vodou na 5 cm nad ne. Prvých 10 minút ich var poriadne, potom na miernom ohni pod pokrievkou ${simmer.min}–${simmer.max} minút do mäkka (v tlakovom hrnci 8–15 minút). Hotové sa dajú ľahko roztlačiť medzi prstami. Sceď a vodu z varenia si odlož, môže sa ešte hodiť.`,
+				...recipe.steps.map(fromCanStep)
+			],
+			time: recipe.time + simmer.max,
+			activeTime: recipe.active + 5,
+			ahead: recipe.ahead ? `${soak} ${recipe.ahead}` : soak,
+			...compute(mergeLines(dryLines), recipe.servings)
+		};
+	}
+
+	/**
+	 * The dish cooked without a fresh shop: fresh tomatoes, peppers, chili and spring onion
+	 * swapped for canned, frozen and dried. Offered only when nothing fresh is left after that.
+	 */
+	function fromStoresVersion(
+		lines: RecipeLine[],
+		servings: number,
+		where: string
+	): RecipeVariant | undefined {
+		const eaten = lines.filter((l) => !l.notEaten).reduce((sum, l) => sum + l.grams, 0);
+		// Roasted peppers in ajvar or tomatoes on bruschetta are the dish, not something to swap.
+		if (lines.some((l) => FROM_STORES[l.ingredientId] && l.grams > eaten * STAR_SHARE)) {
+			return undefined;
+		}
+		const swapped: string[] = [];
+		const storedLines = lines.map((l) => {
+			const swap = FROM_STORES[l.ingredientId];
+			if (!swap || l.notEaten) return l;
+			swapped.push(
+				`${byId.get(l.ingredientId)!.name.toLowerCase()} → ${byId.get(swap.to)!.name.toLowerCase()}`
+			);
+			return scaledSwap(l, swap.to, swap.ratio, where);
+		});
+		if (!swapped.length || freshProduce({ lines: storedLines }, byId).length) return undefined;
+		const tomatoes = swapped.some((s) => s.startsWith('paradajky'));
+		return {
+			name: STORES_VARIANT_NAME,
+			description: [
+				`Keď nemáš čerstvú zeleninu: ${swapped.join(', ')}.`,
+				tomatoes
+					? 'Paradajky z konzervy pridaj aj so šťavou a var o 5 minút dlhšie, kým sa šťava neodparí. Kde mali byť surové navrch, ich vynechaj.'
+					: '',
+				'Mrazenú zeleninu daj rovno z mrazničky, nerozmrazuj ju.'
+			]
+				.filter(Boolean)
+				.join(' '),
+			...compute(mergeLines(storedLines), servings)
+		};
+	}
+
+	/**
+	 * Tofu can stand in for beans in a stew or a burger, not in a sweet bean dessert, roasted
+	 * chickpeas or a dip that is the legume.
+	 */
+	const NO_TOFU_CATEGORIES = ['dezerty', 'snacky', 'omacky/dipy', 'ranajky/sladke'];
+
+	function lowFodmapVersion(
+		lines: RecipeLine[],
+		servings: number,
+		steps: string[],
+		handWritten: Record<string, string>,
+		categories: string[],
+		where: string
+	): RecipeVariant | undefined {
+		const topUp = !categories.some((c) => NO_TOFU_CATEGORIES.some((n) => c.startsWith(n)));
+		const replaceable = (i: Ingredient) => topUp && isProtein(i);
+		const name = (id: string) => byId.get(id)!.name.replace(/\s*\(.*\)/, '');
+
+		const blocked = new Set(
+			dietBlockers(lines, byId, servings, 'low-fodmap').map((b) => b.ingredient.id)
+		);
+		const swaps = new Map<string, string>();
+		const swapped = lines.map((l) => {
+			const ingredient = byId.get(l.ingredientId)!;
+			if (l.notEaten || !blocked.has(ingredient.id)) return l;
+			const to =
+				ingredient.fodmapSwap ??
+				(ingredient.gluten === 'contains' && ingredient.gfAlternative
+					? { to: ingredient.gfAlternative, ratio: 1 }
+					: undefined);
+			if (!to) return l;
+			swaps.set(ingredient.id, to.to);
+			return scaledSwap(l, to.to, to.ratio, where);
+		});
+
+		const limits = new Map(
+			dietBlockers(swapped, byId, servings, 'low-fodmap')
+				.filter((b) => b.limit)
+				.map((b) => [b.ingredient.id, b.limit!])
+		);
+		const totals = new Map<string, number>();
+		for (const l of swapped) {
+			if (!l.notEaten) totals.set(l.ingredientId, (totals.get(l.ingredientId) ?? 0) + l.grams);
+		}
+		const reduced = new Set<string>();
+		/** Ids of the original lines whose legumes were cut, to find the step where tofu goes. */
+		const cutLegumes = new Set<string>();
+		let missingProtein = 0;
+		const portioned = swapped.flatMap((l, i) => {
+			const limit = limits.get(l.ingredientId);
+			if (l.notEaten || limit === undefined) return [l];
+			const ingredient = byId.get(l.ingredientId)!;
+			const factor = (limit * servings) / totals.get(l.ingredientId)!;
+			if (!replaceable(ingredient) && factor < MIN_KEPT) return [l];
+			const kept = scaledDown(l, factor);
+			reduced.add(l.ingredientId);
+			if (replaceable(ingredient)) {
+				missingProtein += ((l.grams - (kept?.grams ?? 0)) * ingredient.per100g.protein) / 100;
+				cutLegumes.add(lines[i].ingredientId);
+			}
+			return kept ? [kept] : [];
+		});
+		const tofu = byId.get(TOFU_ID)!;
+		const tofuGrams = Math.round((missingProtein / tofu.per100g.protein) * 2) * 50;
+		if (tofuGrams > 0) {
+			portioned.push({
+				ingredientId: TOFU_ID,
+				grams: tofuGrams,
+				amount: tofuGrams,
+				unit: 'g',
+				note: 'pevné, na kocky alebo rozdrobené – namiesto časti strukovín'
+			});
+		}
+		if (!swaps.size && !reduced.size) return undefined;
+
+		const result = compute(
+			mergeLines(
+				portioned.map((l) => (l.note ? { ...l, note: rewriteStep(l.note, swaps.keys()) } : l))
+			),
+			servings
+		);
+		if (!result.diets.includes('low-fodmap')) return undefined;
+
+		// The last step that mentions the legumes is where they go into the dish, not the soaking.
+		const tofuStep = tofuGrams
+			? steps.findLastIndex((step) =>
+					stepLines(step, lines, byId).some((l) => cutLegumes.has(l.ingredientId))
+				)
+			: -1;
+		const newSteps = steps.map((step, i) => {
+			const text = handWritten[String(i + 1)] ?? rewriteStep(step, swaps.keys());
+			return i === tofuStep && !handWritten[String(i + 1)]
+				? `${text} Spolu so strukovinami pridaj aj tofu.`
+				: text;
+		});
+		const description = [
+			swaps.size
+				? `Pre citlivé trávenie: ${[...swaps]
+						.map(([from, to]) => `${name(from)} → ${name(to).toLowerCase()}`)
+						.join(', ')}.`
+				: 'Pre citlivé trávenie.',
+			reduced.size
+				? `Menej, len toľko, koľko ešte nevadí: ${[...reduced].map((id) => name(id).toLowerCase()).join(', ')}.`
+				: '',
+			tofuGrams ? `Bielkoviny doplní ${tofuGrams} g pevného tofu – jedlo bude iné, ale sýte.` : '',
+			[...swaps.values()].includes('jarna-cibulka-vnat')
+				? 'Zelenú časť cibuľky opeč len krátko alebo ju pridaj na konci.'
+				: ''
+		];
+		return {
+			name: FODMAP_VARIANT_NAME,
+			description: description.filter(Boolean).join(' '),
+			...(newSteps.some((step, i) => step !== steps[i]) && { steps: newSteps }),
+			...result
+		};
+	}
+
+	const equipmentRules = parseWith(
 		z.array(equipmentSchema),
 		parseYaml(raw.equipment),
 		'content/equipment.yaml'
-	).map(({ match: _match, weak: _weak, unless: _unless, ...e }) => e);
-	if (new Set(equipment.map((e) => e.id)).size !== equipment.length) {
-		throw new Error('equipment.yaml: duplicitné id');
+	);
+	const equipment: EquipmentFull[] = equipmentRules.map(
+		({ match: _match, weak: _weak, unless: _unless, ...e }) => e
+	);
+	// Recipes carry only the short form; the encyclopedia text lives on the tool's own page.
+	const equipmentById = new Map<string, Equipment>(
+		equipment.map(({ uses: _uses, kinds: _kinds, choose: _choose, care: _care, ...e }) => [e.id, e])
+	);
+	if (equipmentById.size !== equipment.length) throw new Error('equipment.yaml: duplicitné id');
+	const levelOrder = (e: Equipment) => EQUIPMENT_LEVELS.indexOf(e.level);
+
+	/** Tools mentioned in the steps or ingredient notes ("prelisovaný" → garlic press). */
+	function detectEquipment(steps: string[], lines: RecipeLine[]): Set<string> {
+		const text = normalizeSearch([...steps, ...lines.map((l) => l.note ?? '')].join('\n'));
+		const found = new Set(
+			equipmentRules.filter((e) => e.match.some((re) => re.test(text))).map((e) => e.id)
+		);
+		for (const e of equipmentRules) {
+			if (found.has(e.id) || e.unless.some((id) => found.has(id))) continue;
+			if (e.weak.some((re) => re.test(text))) found.add(e.id);
+		}
+		return found;
 	}
+
+	const recipeDetails = new Map<string, RecipeDetail>();
+	for (const [path, text] of Object.entries(raw.recipes)) {
+		const id = fileId(path);
+		const where = `content/recipes/${id}.yaml`;
+		parseWith(slug, id, `${where} (názov súboru)`);
+		const r = parseWith(recipeSchema, parseYaml(text), where);
+		if (!cuisineIds.has(r.cuisine)) throw new Error(`${where}: neznáma kuchyňa "${r.cuisine}"`);
+		if (r.active > r.time) throw new Error(`${where}: active nesmie byť viac ako time`);
+		for (const n of Object.keys(r.fodmap_steps)) {
+			if (Number(n) > r.steps.length)
+				throw new Error(`${where}: fodmap_steps ${n} – taký krok nie je`);
+		}
+
+		const lines = r.ingredients.map((entry) => {
+			const [ingredientId, amountText] = Object.entries(entry)[0];
+			return parseLine(ingredientId, amountText, where);
+		});
+		const base = compute(lines, r.servings);
+		if (!r.gf_swap) base.gfSwappable = false;
+		// Iron/salt hints and treat reasons are nutrition-derived; meaningless when the result is strained.
+		if (!r.nutrition) {
+			base.warnings = base.warnings.filter((w) => w.level !== 'info');
+			base.treat = [];
+		}
+
+		const variants: RecipeVariant[] = r.variants.map((v) => {
+			const vWhere = `${where} variant "${v.name}"`;
+			const baseIds = new Set(lines.map((l) => l.ingredientId));
+			for (const id of [...v.replace.map((x) => x.from), ...v.remove]) {
+				if (!baseIds.has(id)) throw new Error(`${vWhere}: "${id}" nie je v surovinách receptu`);
+			}
+			const variantLines = lines
+				.filter((l) => !v.remove.includes(l.ingredientId))
+				.map((l) => {
+					const rep = v.replace.find((x) => x.from === l.ingredientId);
+					if (!rep) return l;
+					return rep.amount ? parseLine(rep.to, rep.amount, vWhere) : swapLine(l, rep.to, vWhere);
+				})
+				.concat(
+					v.add.map((entry) => {
+						const [ingredientId, amountText] = Object.entries(entry)[0];
+						return parseLine(ingredientId, amountText, vWhere);
+					})
+				);
+			return {
+				name: v.name,
+				description: v.description,
+				...(v.steps && { steps: v.steps }),
+				...(v.time && { time: v.time }),
+				...(v.active && { activeTime: v.active }),
+				...(v.ahead !== undefined && { ahead: v.ahead || null }),
+				...(v.yields && { yields: v.yields }),
+				...compute(mergeLines(variantLines), r.servings)
+			};
+		});
+
+		if (
+			base.gluten === 'contains' &&
+			base.gfSwappable &&
+			!variants.some((v) => v.name === GF_VARIANT_NAME)
+		) {
+			const culprits = lines
+				.map((l) => byId.get(l.ingredientId)!)
+				.filter((i) => i.gluten === 'contains');
+			const gfLines = lines.map((l) => {
+				const ingredient = byId.get(l.ingredientId)!;
+				return ingredient.gluten === 'contains' ? swapLine(l, ingredient.gfAlternative!, where) : l;
+			});
+			variants.push({
+				name: GF_VARIANT_NAME,
+				description: `Namiesto lepkových surovín: ${[...new Set(culprits)]
+					.map((i) => `${i.name} → ${byId.get(i.gfAlternative!)!.name}`)
+					.join(', ')}.`,
+				...compute(mergeLines(gfLines), r.servings)
+			});
+		}
+
+		// A hand-written gluten-free version (pizza with a psyllium dough) counts like the automatic one.
+		if (base.gluten === 'contains' && variants.some((v) => v.gluten === 'free')) {
+			base.gfSwappable = true;
+		}
+
+		if (
+			r.oat_swap &&
+			lines.some((l) => l.ingredientId === 'sojove-mlieko') &&
+			!variants.some((v) => v.name === OAT_VARIANT_NAME)
+		) {
+			const oat = compute(
+				mergeLines(
+					lines.map((l) =>
+						l.ingredientId === 'sojove-mlieko' ? swapLine(l, 'ovseny-napoj', where) : l
+					)
+				),
+				r.servings
+			);
+			variants.push({
+				name: OAT_VARIANT_NAME,
+				description:
+					`Sójový nápoj nahraď ovseným v rovnakom množstve – bez sóje, o niečo sladšie. ` +
+					`Bielkovín je menej (${formatProtein(base.perServing.protein)} → ${formatProtein(oat.perServing.protein)} g na porciu). ` +
+					`Ovsený pri varení zhustne, do omáčok a kaší ho prilievaj postupne.`,
+				...oat
+			});
+		}
+
+		for (const toolId of [...r.equipment, ...r.no_equipment]) {
+			if (!equipmentById.has(toolId)) throw new Error(`${where}: neznáme vybavenie "${toolId}"`);
+		}
+		const tools = detectEquipment(r.steps, lines);
+		for (const toolId of r.equipment) tools.add(toolId);
+		for (const toolId of r.no_equipment) tools.delete(toolId);
+
+		const storesVersion =
+			cookingStyle([...tools]) !== 'bez-varenia' &&
+			!r.categories.some((c) => c.startsWith('salaty')) &&
+			!variants.some((v) => v.name === STORES_VARIANT_NAME)
+				? fromStoresVersion(lines, r.servings, where)
+				: undefined;
+		if (storesVersion) variants.push(storesVersion);
+
+		const dryVersion = !variants.some(
+			(v) =>
+				v.name === DRY_VARIANT_NAME ||
+				v.lines.some((l) => [...dryFormOf.values()].some((d) => d.id === l.ingredientId))
+		)
+			? fromDryVersion(lines, r)
+			: undefined;
+		if (dryVersion) variants.push(dryVersion);
+
+		if (
+			r.nutrition &&
+			base.perServing.salt > SALT_HIGH_G &&
+			!variants.some((v) => v.name === LOW_SALT_VARIANT_NAME)
+		) {
+			const halved = new Set<string>();
+			let broth = false;
+			const lowLines = lines.flatMap((l): RecipeLine[] => {
+				const ingredient = byId.get(l.ingredientId)!;
+				if (l.notEaten || l.amount === null) return [l];
+				const half = { ...l, amount: l.amount / 2, grams: l.grams / 2 };
+				if (l.ingredientId === 'zeleninovy-vyvar') {
+					broth = true;
+					return [half, swapLine(half, 'voda', where)];
+				}
+				const seasoning =
+					ingredient.id === 'sol' ||
+					(ingredient.category === 'omacky-pasty' &&
+						ingredient.per100g.salt >= SALTY_SEASONING_MIN);
+				if (!seasoning) return [l];
+				// "Soľ jódovaná" → "soľ", "Tamari (bezlepková sójová omáčka)" → "tamari".
+				halved.add(
+					ingredient.id === 'sol' ? 'soľ' : ingredient.name.replace(/\s*\(.*\)/, '').toLowerCase()
+				);
+				return [half];
+			});
+			const low = compute(mergeLines(lowLines), r.servings);
+			// Only worth offering when the salt comes from what we can halve, not from olives or pickles.
+			if (low.perServing.salt <= base.perServing.salt * 0.8) {
+				const parts = [
+					halved.size ? `Daj len polovicu: ${[...halved].join(', ')}.` : '',
+					broth ? 'Polovicu vývaru nahraď vodou.' : '',
+					'Na konci ochutnaj a dochuť citrónom, octom alebo bylinkami – kyslosť a vôňa nahradia časť slanosti.'
+				];
+				variants.push({
+					name: LOW_SALT_VARIANT_NAME,
+					description: parts.filter(Boolean).join(' '),
+					...low
+				});
+			}
+		}
+
+		// Like the gluten-free version: onion, garlic, soy milk and the like swapped for what's
+		// gentle on the gut; then whatever is fine only in small amounts (legumes, avocado) cut down
+		// to that, with firm tofu making up the protein the legumes took with them. Offered only
+		// when that's enough to make the recipe low FODMAP.
+		if (
+			r.fodmap_swap &&
+			!base.diets.includes('low-fodmap') &&
+			!variants.some((v) => v.diets.includes('low-fodmap'))
+		) {
+			const low = lowFodmapVersion(lines, r.servings, r.steps, r.fodmap_steps, r.categories, where);
+			if (low) variants.push(low);
+		}
+
+		const equipmentDetail = [...tools]
+			.map((toolId) => equipmentById.get(toolId)!)
+			.sort((a, b) => levelOrder(a) - levelOrder(b) || a.name.localeCompare(b.name, 'sk'));
+
+		const allUsed = new Set(
+			[...lines, ...variants.flatMap((v) => v.lines)].map((l) => l.ingredientId)
+		);
+		const eatenGrams = lines.filter((l) => !l.notEaten).reduce((sum, l) => sum + l.grams, 0);
+		recipeDetails.set(id, {
+			id,
+			title: r.title,
+			description: r.description,
+			cuisine: r.cuisine,
+			meals: r.meals,
+			categories: r.categories,
+			time: r.time,
+			activeTime: r.active,
+			servings: r.servings,
+			difficulty: r.difficulty,
+			tags: r.tags,
+			ahead: r.ahead,
+			yields: r.yields,
+			showNutrition: r.nutrition,
+			spicy: r.spicy,
+			taste:
+				r.taste === 'neutralne'
+					? undefined
+					: (r.taste ??
+						guessTaste(
+							r.categories,
+							lines.map((l) => ({
+								...byId.get(l.ingredientId)!,
+								gramsPerServing: l.grams / r.servings
+							})),
+							base.perServing.salt
+						)),
+			keeps: r.keeps,
+			tested: r.tested,
+			servingGrams: Math.round(eatenGrams / r.servings),
+			leftovers: r.leftovers,
+			swaps: Object.fromEntries(
+				[...allUsed]
+					.map((id) => [id, substitutesById.get(id) ?? []] as const)
+					.filter(([, subs]) => subs.length)
+			),
+			...base,
+			substitutes: !base.usesSubstitutes
+				? 'none'
+				: variants.some((v) => !v.usesSubstitutes)
+					? 'optional'
+					: 'required',
+			variants,
+			equipment: equipmentDetail.map((e) => e.id),
+			equipmentDetail,
+			steps: r.steps,
+			tips: r.tips,
+			howto: [
+				...new Set([
+					...r.howto,
+					...[...allUsed].flatMap((i) => byId.get(i)!.howto),
+					...[...r.steps, ...variants.flatMap((v) => v.steps ?? [])].flatMap(techniqueGuides)
+				])
+			].map((h) => howtoLink(h, where)),
+			// Resolved below, once every recipe is known.
+			related: r.related.map((relatedId) => ({ id: relatedId, title: '' }))
+		});
+	}
+
+	/** Pages a tip may link to; other paths (/sezona, /ceny…) are routes, not content. */
+	const CONTENT_LINKS: Record<string, (id: string) => boolean> = {
+		recepty: (id) => recipeDetails.has(id),
+		wiki: (slug) => wikiBySlug.has(slug),
+		suroviny: (id) => byId.has(id)
+	};
+	const linkTargetExists = (href: string) => {
+		const [, section, id] = href.split('#')[0].split('/');
+		const exists = CONTENT_LINKS[section];
+		return !exists || !id || exists(id);
+	};
+
+	for (const recipe of recipeDetails.values()) {
+		recipe.related = recipe.related.map(({ id: relatedId }) => {
+			const target = recipeDetails.get(relatedId);
+			if (!target) {
+				throw new Error(
+					`content/recipes/${recipe.id}.yaml: neznámy súvisiaci recept "${relatedId}"`
+				);
+			}
+			return { id: relatedId, title: target.title };
+		});
+		for (const { href } of recipe.tips.flatMap(tipParts)) {
+			if (href && !linkTargetExists(href)) {
+				throw new Error(`content/recipes/${recipe.id}.yaml: tip odkazuje na neexistujúce ${href}`);
+			}
+		}
+	}
+
+	const recipes = [...recipeDetails.values()]
+		.map(
+			({
+				steps: _steps,
+				tips: _tips,
+				howto: _howto,
+				related: _related,
+				equipmentDetail: _equipment,
+				swaps: _swaps,
+				leftovers: _leftovers,
+				...summary
+			}) => ({
+				...summary,
+				variants: summary.variants.map(({ steps: _variantSteps, ...variant }) => variant)
+			})
+		)
+		.sort((a, b) => a.title.localeCompare(b.title, 'sk'));
+
+	const homemadeInfo = (
+		ingredientId: string,
+		{ recipe, steps, note }: { recipe?: string; steps: string[]; note?: string }
+	): Homemade => {
+		const target = recipe ? recipeDetails.get(recipe) : undefined;
+		if (recipe && !target) {
+			throw new Error(`ingredients.yaml ${ingredientId}: neznámy recept "${recipe}" v homemade`);
+		}
+		return {
+			...(target && { recipe: { id: target.id, title: target.title } }),
+			steps,
+			...(note && { note })
+		};
+	};
+
+	const ingredientInfo = new Map<string, IngredientInfo>(
+		rawIngredients.map((i) => [
+			i.id,
+			{
+				about: i.about,
+				kinds: i.kinds,
+				choose: i.choose,
+				storage: i.storage,
+				uses: i.uses,
+				homemade: i.homemade && homemadeInfo(i.id, i.homemade)
+			}
+		])
+	);
+
+	const growFile = parseWith(growFileSchema, parseYaml(raw.grow), 'content/pestovanie.yaml');
+	const growWhere = 'content/pestovanie.yaml';
+	const growName = (id: string, what: string) => {
+		const ingredient = byId.get(id);
+		if (!ingredient) throw new Error(`${growWhere}: ${what}: neznáma surovina "${id}"`);
+		return ingredient.name;
+	};
+	const grownIds = new Set<string>();
+	for (const id of [
+		...growFile.plodiny.map((g) => g.ingredient),
+		...growFile.nepestovatelne.map((n) => n.ingredient)
+	]) {
+		if (grownIds.has(id)) throw new Error(`${growWhere}: "${id}" je tam dvakrát`);
+		grownIds.add(id);
+	}
+	const grow: GrowGuide[] = growFile.plodiny
+		.map((g) => {
+			for (const id of [...g.friends, ...g.avoid]) growName(id, `${g.ingredient} susedia`);
+			return {
+				ingredientId: g.ingredient,
+				name: g.name ?? growName(g.ingredient, 'plodiny'),
+				where: g.where,
+				sun: g.sun,
+				level: g.level,
+				spacing: g.spacing,
+				family: g.family,
+				yieldKg: g.yield,
+				problems: g.problems,
+				seeds: g.seeds,
+				preserve: g.preserve,
+				indoor: g.indoor,
+				sow: g.sow,
+				harvest: g.harvest,
+				perennial: g.perennial,
+				...(g.form && { form: g.form }),
+				...(g.height && { heightM: g.height }),
+				...(g.years !== undefined && { yearsToHarvest: g.years }),
+				...(g.pollination && { pollination: g.pollination }),
+				how: g.how,
+				...(g.tip && { tip: g.tip }),
+				...(g.recommend && { recommend: g.recommend }),
+				friends: g.friends,
+				avoid: g.avoid
+			};
+		})
+		.sort((a, b) => a.name.localeCompare(b.name, 'sk'));
+	const growable = new Set(grow.map((g) => g.ingredientId));
+	const plantNames = new Map(grow.map((g) => [g.ingredientId, g.name]));
+	const growCombos: GrowCombo[] = growFile.kombinacie.map((c) => ({
+		id: c.id,
+		name: c.name,
+		where: c.where,
+		sun: c.sun,
+		level: c.level,
+		area: c.area,
+		...(c.max && { max: c.max }),
+		layout: c.layout,
+		...(c.depth && { depth: c.depth }),
+		members: Object.entries(c.members).map(([id, count]) => {
+			if (!growable.has(id)) {
+				throw new Error(`${growWhere}: kombinácia ${c.id}: "${id}" nemá návod v plodinách`);
+			}
+			return { ingredientId: id, name: plantNames.get(id)!, count };
+		}),
+		how: c.how,
+		why: c.why,
+		gear: c.gear
+	}));
+	const notGrown: NotGrown[] = growFile.nepestovatelne
+		.map((n) => ({
+			ingredientId: n.ingredient,
+			name: growName(n.ingredient, 'nepestovatelne'),
+			status: n.status,
+			origin: n.origin,
+			...(n.note && { note: n.note })
+		}))
+		.sort((a, b) => a.name.localeCompare(b.name, 'sk'));
 
 	const parts = compileParts(raw.parts, byId, { prices, today });
 	const dishes = compileDishes(raw.dishes, new Set(parts.map((p) => p.id)));
 
-	const composer = compileComposer(raw.composer, byId);
-
 	return {
-		composer,
 		ingredients,
-		substitutes: substitutesById,
+		recipes,
+		cuisines,
 		stores,
 		prices,
+		recipeDetails,
+		wiki,
 		equipment,
+		ingredientInfo,
+		ingredientSwaps: substitutesById,
+		grow,
+		growCombos,
+		notGrown,
+		course: compileCourse(raw.course, recipeDetails, wikiBySlug),
 		parts,
-		dishes
+		dishes,
+		composer: compileComposer(raw.composer, byId)
 	};
 }
 
-const rawFile = (files: Record<string, string>) => Object.values(files)[0];
+/** The beginners' course, with every recipe and guide checked to exist. */
+function compileCourse(
+	rawCourse: string,
+	recipes: Map<string, RecipeDetail>,
+	wiki: Map<string, WikiPage>
+): Course {
+	const where = 'content/kurz.yaml';
+	const file = parseWith(courseSchema, parseYaml(rawCourse), where);
+	const guide = (slugId: string) => {
+		const page = wiki.get(slugId);
+		if (!page) throw new Error(`${where}: neznámy návod "${slugId}"`);
+		return { slug: page.slug, title: page.title };
+	};
+	return {
+		intro: file.intro.map(guide),
+		lessons: file.lekcie.map((l) => {
+			const recipe = recipes.get(l.recipe);
+			if (!recipe) throw new Error(`${where}: neznámy recept "${l.recipe}"`);
+			return {
+				recipeId: recipe.id,
+				recipeTitle: recipe.title,
+				time: recipe.time,
+				difficulty: recipe.difficulty,
+				title: l.title,
+				learn: l.learn,
+				guides: l.guides.map(guide)
+			};
+		})
+	};
+}
+
+const rawRecipes: Record<string, string> = import.meta.glob('/content/recipes/*.yaml', {
+	query: '?raw',
+	import: 'default',
+	eager: true
+});
+
+let recipeIdSet: Set<string> | undefined;
+
+/**
+ * Recipe ids from file names alone. API routes use this instead of getContent(): compiling
+ * all content on a cold Worker exceeds the CPU limit (error 1102).
+ */
+export function isRecipeId(id: string): boolean {
+	recipeIdSet ??= new Set(Object.keys(rawRecipes).map(fileId));
+	return recipeIdSet.has(id);
+}
 
 let cached: Content | undefined;
 
 export function getContent(): Content {
 	cached ??= compileContent(
 		{
-			ingredients: rawFile(
-				import.meta.glob('/content/ingredients.yaml', {
-					query: '?raw',
-					import: 'default',
-					eager: true
-				})
-			),
-			equipment: rawFile(
-				import.meta.glob('/content/equipment.yaml', {
-					query: '?raw',
-					import: 'default',
-					eager: true
-				})
-			),
-			prices: rawFile(
-				import.meta.glob('/content/prices.yaml', { query: '?raw', import: 'default', eager: true })
-			),
-			pricesSynced: rawFile(
-				import.meta.glob('/content/prices-cenyslovensko.yaml', {
-					query: '?raw',
-					import: 'default',
-					eager: true
-				})
-			),
-			pricesEshops: rawFile(
-				import.meta.glob('/content/prices-eshops.yaml', {
-					query: '?raw',
-					import: 'default',
-					eager: true
-				})
-			),
-			pricesBilla: rawFile(
-				import.meta.glob('/content/prices-billa.yaml', {
-					query: '?raw',
-					import: 'default',
-					eager: true
-				})
-			),
-			pricesKaufland: rawFile(
-				import.meta.glob('/content/prices-kaufland.yaml', {
-					query: '?raw',
-					import: 'default',
-					eager: true
-				})
-			),
-			pricesKosik: rawFile(
-				import.meta.glob('/content/prices-kosik-sk.yaml', {
-					query: '?raw',
-					import: 'default',
-					eager: true
-				})
-			),
+			ingredients: import.meta.glob('/content/ingredients.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/ingredients.yaml'] as string,
+			equipment: import.meta.glob('/content/equipment.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/equipment.yaml'] as string,
+			cuisines: import.meta.glob('/content/cuisines.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/cuisines.yaml'] as string,
+			prices: import.meta.glob('/content/prices.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/prices.yaml'] as string,
+			pricesSynced: import.meta.glob('/content/prices-cenyslovensko.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/prices-cenyslovensko.yaml'] as string,
+			pricesEshops: import.meta.glob('/content/prices-eshops.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/prices-eshops.yaml'] as string,
+			pricesBilla: import.meta.glob('/content/prices-billa.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/prices-billa.yaml'] as string,
+			pricesKaufland: import.meta.glob('/content/prices-kaufland.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/prices-kaufland.yaml'] as string,
+			pricesKosik: import.meta.glob('/content/prices-kosik-sk.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/prices-kosik-sk.yaml'] as string,
+			recipes: rawRecipes,
+			wiki: import.meta.glob('/content/wiki/*.md', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			}),
+			grow: import.meta.glob('/content/pestovanie.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/pestovanie.yaml'] as string,
+			course: import.meta.glob('/content/kurz.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/kurz.yaml'] as string,
 			parts: import.meta.glob('/content/casti/*.yaml', {
 				query: '?raw',
 				import: 'default',
 				eager: true
 			}),
-			composer: rawFile(
-				import.meta.glob('/content/skladacka.yaml', {
-					query: '?raw',
-					import: 'default',
-					eager: true
-				})
-			),
 			dishes: import.meta.glob('/content/jedla/*.yaml', {
 				query: '?raw',
 				import: 'default',
 				eager: true
-			})
+			}),
+			composer: import.meta.glob('/content/skladacka.yaml', {
+				query: '?raw',
+				import: 'default',
+				eager: true
+			})['/content/skladacka.yaml'] as string
 		},
 		new Date()
 	);

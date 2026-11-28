@@ -1,0 +1,661 @@
+import { describe, expect, it } from 'vitest';
+import {
+	EMPTY_BODY,
+	balances,
+	changeEvents,
+	collect,
+	describeNews,
+	householdBalances,
+	sumUpOldExpenses,
+	latestStamp,
+	householdFilter,
+	isAway,
+	memberTargets,
+	portionsAt,
+	settleUp,
+	shareCooking,
+	householdNeeds,
+	mergeDocs,
+	newDoc,
+	recipeConflicts,
+	validateDoc,
+	viewOf,
+	withLocalChanges,
+	type HouseholdDoc,
+	type Member,
+	type SharedView
+} from './household';
+import type { Ingredient, RecipeSummary } from './types';
+import type { GardenDiary } from './garden-diary';
+
+const member = (id: string, extra: Partial<Member> = {}): Member => ({
+	id,
+	name: id,
+	allergens: [],
+	avoid: [],
+	mild: false,
+	glutenFree: false,
+	meals: { ranajky: true, obed: true, vecera: true },
+	portion: null,
+	body: EMPTY_BODY,
+	away: null,
+	removed: false,
+	at: 1,
+	...extra
+});
+
+const empty: SharedView = {
+	plan: [],
+	pantry: {},
+	checked: {},
+	extras: [],
+	preserves: [],
+	gardens: []
+};
+
+describe('household sync', () => {
+	it('keeps both phones’ edits when they merge', () => {
+		const base = newDoc('Byt 4B', 1);
+		const a = withLocalChanges(
+			base,
+			empty,
+			{ ...empty, pantry: { mrkva: 500 }, checked: { tofu: true } },
+			10
+		);
+		const b = withLocalChanges(
+			base,
+			empty,
+			{ ...empty, pantry: { cicer: null }, extras: [{ id: 'x1', text: 'papier', checked: false }] },
+			11
+		);
+		const merged = mergeDocs(a, b);
+		expect(mergeDocs(b, a)).toEqual(merged);
+		expect(viewOf(merged)).toEqual({
+			plan: [],
+			planIds: [],
+			pantry: { mrkva: 500, cicer: null },
+			checked: { tofu: true },
+			extras: [{ id: 'x1', text: 'papier', checked: false }],
+			preserves: [],
+			gardens: []
+		});
+	});
+
+	it('shares jars and freezer bags, eaten ones included', () => {
+		const lekvar = {
+			id: 'p1',
+			name: 'Lekvár',
+			count: 3,
+			made: '2026-08-01',
+			place: 'pivnica' as const
+		};
+		const dal = {
+			id: 'p2',
+			name: 'Dal',
+			count: 2,
+			made: '2026-10-01',
+			place: 'mraznicka' as const
+		};
+		const start = withLocalChanges(newDoc('D', 1), empty, { ...empty, preserves: [lekvar] }, 5);
+		const view = viewOf(start);
+		const one = withLocalChanges(start, view, { ...view, preserves: [{ ...lekvar, count: 2 }] }, 8);
+		const two = withLocalChanges(start, view, { ...view, preserves: [lekvar, dal] }, 9);
+		const eaten = withLocalChanges(start, view, { ...view, preserves: [] }, 10);
+		const both = mergeDocs(one, two);
+		expect(validateDoc(JSON.parse(JSON.stringify(both)))).toEqual(both);
+		expect(viewOf(both).preserves).toEqual([{ ...lekvar, count: 2 }, dal]);
+		expect(viewOf(mergeDocs(mergeDocs(one, two), eaten)).preserves).toEqual([dal]);
+	});
+
+	it('lets the newer change win, removals included', () => {
+		const start: SharedView = { ...empty, pantry: { mrkva: 500 }, checked: { tofu: true } };
+		const doc = withLocalChanges(newDoc('D', 1), empty, start, 5);
+		const removed = withLocalChanges(doc, start, { ...empty, checked: {} }, 20);
+		const olderEdit = withLocalChanges(doc, start, { ...start, pantry: { mrkva: 300 } }, 15);
+		expect(viewOf(mergeDocs(removed, olderEdit))).toEqual({ ...empty, planIds: [] });
+	});
+
+	it('keeps meals two people plan at the same time', () => {
+		const start = withLocalChanges(
+			newDoc('D', 1),
+			empty,
+			{ ...empty, plan: [{ recipeId: 'dal', servings: 4 }] },
+			5
+		);
+		const view = viewOf(start);
+		const one = withLocalChanges(
+			start,
+			view,
+			{ ...view, plan: [...view.plan, { recipeId: 'chili', servings: 2 }] },
+			8
+		);
+		const two = withLocalChanges(
+			start,
+			view,
+			{
+				...view,
+				plan: [
+					{ recipeId: 'dal', servings: 6 },
+					{ recipeId: 'pho', servings: 2 }
+				]
+			},
+			9
+		);
+		const merged = mergeDocs(one, two);
+		expect(mergeDocs(two, one)).toEqual(merged);
+		expect(viewOf(merged).plan).toEqual([
+			{ recipeId: 'dal', servings: 6 },
+			{ recipeId: 'pho', servings: 2 },
+			{ recipeId: 'chili', servings: 2 }
+		]);
+		// Cooked on one phone while the other adds: the cooked one is gone, the new one stays.
+		const cooked = withLocalChanges(
+			merged,
+			viewOf(merged),
+			{ ...viewOf(merged), plan: viewOf(merged).plan.slice(1) },
+			20
+		);
+		const added = withLocalChanges(
+			merged,
+			viewOf(merged),
+			{ ...viewOf(merged), plan: [...viewOf(merged).plan, { recipeId: 'curry', servings: 2 }] },
+			21
+		);
+		expect(viewOf(mergeDocs(cooked, added)).plan.map((e) => e.recipeId)).toEqual([
+			'pho',
+			'chili',
+			'curry'
+		]);
+	});
+
+	it('reads a plan kept as one list by the first version', () => {
+		const doc = validateDoc({
+			...newDoc('D', 1),
+			v: 1,
+			plan: [
+				[
+					{ recipeId: 'dal', servings: 2 },
+					{ recipeId: 'pho', servings: 3 }
+				],
+				7
+			]
+		})!;
+		expect(viewOf(doc).plan).toEqual([
+			{ recipeId: 'dal', servings: 2 },
+			{ recipeId: 'pho', servings: 3 }
+		]);
+	});
+
+	it('counts cooking and shopping from two phones at once', () => {
+		const start = withLocalChanges(
+			newDoc('D', 1),
+			empty,
+			{ ...empty, pantry: { ryza: 500, sol: null } },
+			5
+		);
+		const view = viewOf(start);
+		const cooked = withLocalChanges(
+			start,
+			view,
+			{ ...view, pantry: { ...view.pantry, ryza: 300 } },
+			8,
+			'anna'
+		);
+		const bought = withLocalChanges(
+			start,
+			view,
+			{ ...view, pantry: { ...view.pantry, ryza: 1500 } },
+			9,
+			'jano'
+		);
+		const merged = validateDoc(JSON.parse(JSON.stringify(mergeDocs(cooked, bought))))!;
+		expect(mergeDocs(bought, cooked)).toEqual(mergeDocs(cooked, bought));
+		expect(viewOf(merged).pantry).toEqual({ ryza: 1300, sol: null });
+		// Using it up removes it; buying again brings it back.
+		const usedView = { ...viewOf(merged), pantry: { sol: null } };
+		const empty2 = withLocalChanges(merged, viewOf(merged), usedView, 10, 'anna');
+		expect(viewOf(empty2).pantry).toEqual({ sol: null });
+		const again = withLocalChanges(
+			empty2,
+			viewOf(empty2),
+			{ ...viewOf(empty2), pantry: { sol: null, ryza: 400 } },
+			11,
+			'jano'
+		);
+		expect(viewOf(again).pantry).toEqual({ sol: null, ryza: 400 });
+		// Setting an amount by hand starts over; older changes stop counting.
+		const counted = withLocalChanges(
+			again,
+			viewOf(again),
+			{ ...viewOf(again), pantry: { sol: 200, ryza: 400 } },
+			12,
+			'anna'
+		);
+		expect(viewOf(counted).pantry).toEqual({ sol: 200, ryza: 400 });
+	});
+
+	it('picks the same winner on every phone when two changes share a time', () => {
+		const a = { ...newDoc('D', 1), members: { m: member('m', { at: 5, allergens: ['nuts'] }) } };
+		const b = { ...newDoc('D', 1), members: { m: member('m', { at: 5 }) } };
+		expect(mergeDocs(a, b)).toEqual(mergeDocs(b, a));
+		const x = withLocalChanges(newDoc('D', 1), empty, { ...empty, pantry: { ryza: 100 } }, 9);
+		const y = withLocalChanges(newDoc('D', 1), empty, { ...empty, pantry: { ryza: 300 } }, 9);
+		expect(mergeDocs(x, y)).toEqual(mergeDocs(y, x));
+	});
+
+	it('forgets old deletions without bringing them back from a phone that was away', () => {
+		const start: SharedView = {
+			...empty,
+			extras: [{ id: 'x1', text: 'papier', checked: false }],
+			pantry: { mrkva: 500 }
+		};
+		const day = 24 * 60 * 60 * 1000;
+		const shared = withLocalChanges(newDoc('D', 1), empty, start, 10 * day);
+		// One phone deletes both; a month later the deletions are forgotten.
+		const deleted = collect(withLocalChanges(shared, start, empty, 20 * day), 60 * day);
+		expect(deleted.extras).toEqual({});
+		expect(deleted.gc).toBe(30 * day);
+		// Collecting again the same day changes nothing, so a sync has nothing new to upload.
+		expect(collect(deleted, 60 * day + 1000)).toBe(deleted);
+		// The phone that was away still has them as they were before the deletion.
+		const away = withLocalChanges(shared, start, { ...start, checked: { tofu: true } }, 50 * day);
+		const merged = mergeDocs(away, deleted);
+		expect(mergeDocs(deleted, away)).toEqual(merged);
+		expect(viewOf(merged)).toEqual({ ...empty, planIds: [], checked: { tofu: true } });
+		// Something added after the horizon stays.
+		const added = withLocalChanges(
+			away,
+			viewOf(away),
+			{ ...viewOf(away), pantry: { cicer: 1 } },
+			55 * day
+		);
+		expect(viewOf(mergeDocs(added, deleted)).pantry).toEqual({ cicer: 1 });
+	});
+
+	it('keeps the newest items when a copy has too many, not the first ones', () => {
+		const doc = newDoc('D', 1);
+		for (let i = 0; i < 1000; i++) doc.extras[`old-${i}`] = [{ text: 'x', checked: true }, i + 1];
+		doc.extras['new-item'] = [{ text: 'mlieko', checked: false }, 5000];
+		const read = validateDoc(JSON.parse(JSON.stringify(doc)))!;
+		expect(read.extras['new-item']).toBeDefined();
+		expect(read.extras['old-0']).toBeUndefined();
+	});
+
+	it('knows the newest time in a copy, ignoring a clock far ahead', () => {
+		const doc = withLocalChanges(newDoc('D', 1), empty, { ...empty, checked: { tofu: true } }, 50);
+		doc.pantry.ryza = [100, 9e15];
+		expect(latestStamp(doc)).toBe(9e15);
+		expect(latestStamp(doc, 1000)).toBe(50);
+	});
+
+	it('rejects junk from the server and keeps what is valid', () => {
+		expect(validateDoc({ v: 2 })).toBeNull();
+		const doc = validateDoc({
+			...newDoc('D', 1),
+			members: {
+				a1: member('a1', { allergens: ['nuts', 'unicorns'] as never }),
+				'BAD ID': member('x')
+			},
+			pantry: { mrkva: [100, 3], 'Zlé id': [1, 2], cicer: ['veľa' as never, 2] }
+		} satisfies Partial<HouseholdDoc> as unknown);
+		expect(Object.keys(doc!.members)).toEqual(['a1']);
+		expect(doc!.members.a1.allergens).toEqual(['nuts']);
+		expect(doc!.pantry).toEqual({ mrkva: [100, 3] });
+	});
+});
+
+describe('cooking for everyone', () => {
+	const ingredients = new Map(
+		[
+			{ id: 'kesu', name: 'Kešu orechy', group: 'kesu' },
+			{ id: 'cicer-suchy', name: 'Cícer suchý', group: 'cicer' },
+			{ id: 'cicer-sterilizovany', name: 'Cícer sterilizovaný (scedený)', group: 'cicer' }
+		].map((i) => [i.id, i as unknown as Ingredient])
+	);
+	const recipe = {
+		allergens: ['nuts'],
+		spicy: 2,
+		gluten: 'contains',
+		lines: [{ ingredientId: 'kesu' }, { ingredientId: 'cicer-sterilizovany' }]
+	} as unknown as RecipeSummary;
+	const labels = { nuts: 'orechy' } as never;
+
+	it('says who can’t eat a recipe and why', () => {
+		const ema = member('ema', { name: 'Ema', allergens: ['nuts'], mild: true });
+		const jan = member('jan', { name: 'Ján', avoid: ['cicer-suchy'], glutenFree: true });
+		const ok = member('ok', { name: 'Oľga' });
+		expect(
+			recipeConflicts(recipe, [ema, jan, ok], ingredients, labels).map((c) => [
+				c.member.name,
+				c.reasons
+			])
+		).toEqual([
+			['Ema', ['orechy', 'pálivé']],
+			['Ján', ['cícer suchý', 'lepok']]
+		]);
+		expect(householdNeeds([ema, jan, ok])).toEqual({
+			allergens: ['nuts'],
+			avoid: ['cicer-suchy'],
+			mild: true,
+			glutenFree: true,
+			diets: []
+		});
+	});
+
+	it('names the diet a recipe breaks', () => {
+		const eva = member('eva', { name: 'Eva', diets: ['low-fodmap'] });
+		const fits = {
+			...recipe,
+			allergens: [],
+			spicy: 0,
+			diets: ['low-fodmap']
+		} as unknown as RecipeSummary;
+		const breaks = { ...fits, diets: [] } as unknown as RecipeSummary;
+		expect(recipeConflicts(fits, [eva], ingredients, labels)).toEqual([]);
+		expect(recipeConflicts(breaks, [eva], ingredients, labels)[0].reasons).toEqual(['veľa FODMAP']);
+	});
+});
+
+describe('household filter', () => {
+	const ingredients = new Map(
+		[
+			{ id: 'kesu', name: 'Kešu', group: 'kesu' },
+			{ id: 'cicer-suchy', name: 'Cícer suchý', group: 'cicer' },
+			{ id: 'cicer-sterilizovany', name: 'Cícer sterilizovaný', group: 'cicer' },
+			{ id: 'ryza', name: 'Ryža', group: 'ryza' }
+		].map((i) => [i.id, i as unknown as Ingredient])
+	);
+	const recipe = (extra: Partial<RecipeSummary>) =>
+		({
+			allergens: [],
+			diets: [],
+			variants: [],
+			spicy: 0,
+			gluten: 'free',
+			gfSwappable: false,
+			lines: [{ ingredientId: 'ryza' }],
+			...extra
+		}) as unknown as RecipeSummary;
+	const needs = householdNeeds([
+		member('a', { allergens: ['nuts'], avoid: ['cicer-suchy'], mild: true, glutenFree: true })
+	]);
+	const ok = householdFilter(needs, ingredients);
+
+	it('keeps only what everyone can eat', () => {
+		expect(ok(recipe({}))).toBe(true);
+		expect(ok(recipe({ allergens: ['nuts'] }))).toBe(false);
+		expect(ok(recipe({ spicy: 2 }))).toBe(false);
+		expect(ok(recipe({ spicy: 1 }))).toBe(true);
+		expect(ok(recipe({ lines: [{ ingredientId: 'cicer-sterilizovany' }] as never }))).toBe(false);
+		expect(ok(recipe({ gluten: 'contains' }))).toBe(false);
+		expect(ok(recipe({ gluten: 'contains', gfSwappable: true }))).toBe(true);
+	});
+
+	it('keeps a recipe for a diet when it or a variant fits', () => {
+		const strict = householdFilter(
+			householdNeeds([member('b', { diets: ['low-fodmap'] })]),
+			ingredients
+		);
+		expect(strict(recipe({ diets: [], variants: [] }))).toBe(false);
+		expect(strict(recipe({ diets: ['low-fodmap'], variants: [] }))).toBe(true);
+		const variant = { name: 'Bez cibule', diets: ['low-fodmap'] } as never;
+		expect(strict(recipe({ diets: [], variants: [variant] }))).toBe(true);
+	});
+});
+
+describe('who eats what', () => {
+	it('counts portions of the people at home for that meal', () => {
+		const people = [
+			member('a'),
+			member('b', { meals: { ranajky: false, obed: false, vecera: true } }),
+			member('kid', { portion: 0.5 }),
+			member('trip', { away: { from: '2026-10-10', to: '2026-10-12' } })
+		];
+		expect(portionsAt(people, '2026-10-09', 'obed')).toBe(2.5);
+		expect(portionsAt(people, '2026-10-09', 'vecera')).toBe(3.5);
+		expect(portionsAt(people, '2026-10-11', 'vecera')).toBe(2.5);
+		expect(isAway(member('x', { away: { from: '2026-10-01', to: null } }), '2030-01-01')).toBe(
+			true
+		);
+	});
+
+	it('sizes a portion from the body, children by age', () => {
+		const adult = memberTargets({
+			...EMPTY_BODY,
+			heightCm: 180,
+			weightKg: 80,
+			age: 30,
+			sex: 'm',
+			activity: 'aktivne'
+		});
+		expect(adult.kcal).toBe(2850);
+		expect(adult.protein).toBe(112);
+		expect(adult.portion).toBe(1.45);
+		expect(memberTargets({ ...EMPTY_BODY, age: 5 }).portion).toBe(0.5);
+		expect(memberTargets({ ...EMPTY_BODY, weightKg: 60 })).toEqual({
+			kcal: null,
+			protein: 66,
+			portion: null
+		});
+	});
+
+	it('keeps the new member fields through validation and fills them in for older copies', () => {
+		const doc = validateDoc({
+			...newDoc('D', 1),
+			members: { a: { id: 'a', name: 'A', at: 1, portion: 9, meals: { obed: false } } }
+		})!;
+		expect(doc.members.a).toMatchObject({
+			portion: null,
+			meals: { ranajky: true, obed: false, vecera: true },
+			body: EMPTY_BODY,
+			away: null
+		});
+		expect(doc.expenses).toEqual({});
+	});
+});
+
+describe('household money', () => {
+	const people = [member('a'), member('b'), member('c')];
+
+	it('splits shared costs evenly and counts paybacks', () => {
+		const owed = balances(
+			[
+				{ by: 'a', amount: 30, date: '2026-10-01', note: '' },
+				{ by: 'b', amount: 6, date: '2026-10-02', note: '' },
+				{ by: 'c', amount: 5, date: '2026-10-03', note: '', to: 'a' }
+			],
+			people
+		);
+		expect(Object.fromEntries(owed)).toEqual({ a: 13, b: -6, c: -7 });
+		expect(settleUp(owed)).toEqual([
+			{ from: 'c', to: 'a', amount: 7 },
+			{ from: 'b', to: 'a', amount: 6 }
+		]);
+	});
+
+	it('splits a cost only among those it was for, so someone new owes nothing for it', () => {
+		const owed = balances(
+			[{ by: 'a', amount: 100, date: '2026-01-01', note: '', for: ['a', 'b'] }],
+			[...people, member('d')]
+		);
+		expect(Object.fromEntries(owed)).toEqual({ a: 50, b: -50, c: 0, d: 0 });
+	});
+
+	it('sums up old months without changing who owes what', () => {
+		const month = Date.parse('2025-01-10');
+		const doc = {
+			...newDoc('D', 1),
+			members: { a: member('a'), b: member('b'), c: member('c') },
+			expenses: {
+				x1: [{ by: 'a', amount: 90, date: '2025-01-10', note: '', for: ['a', 'b', 'c'] }, month],
+				x2: [{ by: 'b', amount: 10, date: '2025-01-11', note: '', to: 'a' }, month + 1],
+				x3: [
+					{ by: 'c', amount: 30, date: '2026-10-01', note: '', for: ['b', 'c'] },
+					Date.parse('2026-10-01')
+				]
+			}
+		} as HouseholdDoc;
+		const before = householdBalances(doc, people);
+		const summed = sumUpOldExpenses(doc, Date.parse('2025-09-01'));
+		expect(Object.keys(summed.expenses)).toEqual(['x3']);
+		expect(Object.keys(summed.settled)).toEqual(['2025-01']);
+		expect(householdBalances(summed, people)).toEqual(before);
+		// The other phone still has the entries: merged, they aren't counted twice.
+		const merged = mergeDocs(doc, summed);
+		expect(mergeDocs(summed, doc)).toEqual(merged);
+		expect(householdBalances(merged, people)).toEqual(before);
+	});
+
+	it('survives a merge and drops junk amounts', () => {
+		const a = {
+			...newDoc('D', 1),
+			expenses: { x1: [{ by: 'a', amount: 12.345, date: '2026-10-01', note: 'Nákup' }, 5] }
+		};
+		const b = {
+			...newDoc('D', 1),
+			expenses: { x2: [{ by: 'b', amount: -3, date: '2026-10-01', note: '' }, 6] }
+		};
+		const merged = mergeDocs(validateDoc(a)!, validateDoc(b)!);
+		expect(Object.keys(merged.expenses)).toEqual(['x1']);
+		expect(merged.expenses.x1[0]).toMatchObject({ amount: 12.35 });
+	});
+});
+
+describe('household log and cooking turns', () => {
+	it('tells what changed, but a cooked recipe is not "dropped"', () => {
+		const before: SharedView = {
+			...empty,
+			plan: [
+				{ recipeId: 'dal', servings: 2 },
+				{ recipeId: 'chili', servings: 2 }
+			]
+		};
+		const after: SharedView = {
+			plan: [
+				{ recipeId: 'dal', servings: 2 },
+				{ recipeId: 'curry', servings: 2 }
+			],
+			pantry: { ryza: 500 },
+			checked: { tofu: true },
+			extras: [],
+			preserves: [],
+			gardens: []
+		};
+		const events = changeEvents(before, after, 'a', 7, new Set(['chili']));
+		expect(events.map((e) => [e.kind, e.ref ?? e.n])).toEqual([
+			['plan-add', 'curry'],
+			['bought', 1],
+			['pantry', 1]
+		]);
+		expect(changeEvents(before, after, 'a', 7).some((e) => e.kind === 'plan-remove')).toBe(true);
+	});
+
+	it('hands out cooking in turns, skipping freezer portions', () => {
+		const plan = shareCooking(
+			[
+				{ recipeId: 'dal', servings: 2 },
+				{ recipeId: 'cili', servings: 2, fromFreezer: true },
+				{ recipeId: 'curry', servings: 2 },
+				{ recipeId: 'pho', servings: 2 }
+			],
+			['a', 'b']
+		);
+		expect(plan.map((e) => e.cook)).toEqual(['a', undefined, 'b', 'a']);
+	});
+});
+
+describe('gardens grown together', () => {
+	const garden: GardenDiary = {
+		id: 'balkon1',
+		name: 'Balkón',
+		place: 'balkon',
+		area: 4,
+		sun: 'slnko',
+		level: 1,
+		combos: [],
+		plants: [{ ingredientId: 'paradajky', count: 3 }],
+		done: {},
+		harvests: [],
+		beds: [],
+		savedAt: '2026-05-01'
+	};
+
+	it('keeps harvests and ticks two phones log at the same time', () => {
+		const shared = withLocalChanges(newDoc('Byt', 1), empty, { ...empty, gardens: [garden] }, 2);
+		const view = viewOf(shared);
+		const ema = withLocalChanges(
+			shared,
+			view,
+			{
+				...view,
+				gardens: [
+					{
+						...garden,
+						harvests: [{ ingredientId: 'paradajky', grams: 400, date: '2026-08-01' }],
+						done: { '2026-5-sow-mrkva': '2026-05-03' }
+					}
+				]
+			},
+			3
+		);
+		const jano = withLocalChanges(
+			shared,
+			view,
+			{
+				...view,
+				gardens: [
+					{ ...garden, harvests: [{ ingredientId: 'paradajky', grams: 250, date: '2026-08-01' }] }
+				]
+			},
+			4
+		);
+		const merged = validateDoc(JSON.parse(JSON.stringify(mergeDocs(ema, jano))))!;
+		const [result] = viewOf(merged).gardens;
+		expect(result.harvests.map((h) => h.grams).sort()).toEqual([250, 400]);
+		expect(result.done).toEqual({ '2026-5-sow-mrkva': '2026-05-03' });
+		expect(result.plants).toEqual(garden.plants);
+	});
+
+	it('tells the household who harvested how much', () => {
+		const before = { ...empty, gardens: [garden] };
+		const after = {
+			...empty,
+			gardens: [
+				{
+					...garden,
+					harvests: [
+						{ ingredientId: 'paradajky', grams: 300, date: '2026-08-01' },
+						{ ingredientId: 'paradajky', grams: 200, date: '2026-08-01' }
+					]
+				}
+			]
+		};
+		expect(changeEvents(before, after, 'ema', 5)).toEqual([
+			{ at: 5, who: 'ema', kind: 'harvest', ref: 'paradajky', n: 500 }
+		]);
+		// A garden shared just now brings its old diary – that isn't news.
+		expect(changeEvents(empty, after, 'ema', 5)).toEqual([]);
+	});
+});
+
+describe('household news by push', () => {
+	it('tells each person’s changes in one line', () => {
+		const names = new Map([
+			['jana', 'Jana'],
+			['tomas', 'Tomáš']
+		]);
+		const titles: Record<string, string> = { dal: 'Dal', chili: 'Chili' };
+		const text = describeNews(
+			[
+				{ at: 1, who: 'jana', kind: 'plan-add', ref: 'dal' },
+				{ at: 2, who: 'jana', kind: 'plan-add', ref: 'chili' },
+				{ at: 3, who: 'tomas', kind: 'bought', n: 3 },
+				{ at: 4, who: 'tomas', kind: 'bought', n: 2 },
+				{ at: 5, who: 'tomas', kind: 'expense', n: 12.5 }
+			],
+			names,
+			(id) => titles[id]
+		);
+		expect(text).toBe('Jana: do plánu Dal, Chili\nTomáš: nakúpené 5 vecí · zaplatené 12,50 €');
+	});
+});

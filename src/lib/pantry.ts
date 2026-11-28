@@ -1,19 +1,61 @@
-import type { IngredientLite, RecipeLine } from './types';
+import { ingredientSearchText, normalizeSearch, searchMatcher, termsFound } from './labels';
+import type { Ingredient, IngredientLite, RecipeLine, RecipeSummary } from './types';
 
 /** ingredientId → grams at home, or null for "have enough, didn't weigh it". */
 export type Pantry = Record<string, number | null>;
 
-type Ingredient = IngredientLite;
-
-/** Spices, oils and staples are bought rarely and taken as being at home. */
+/**
+ * Spices, oils and staples are bought rarely: the shopping list asks to check them at home
+ * instead of listing them. The pantry match still requires them – only tap water is a given.
+ */
 export function isAssumedAtHome(ingredient: Pick<Ingredient, 'staple' | 'category'>): boolean {
 	return ingredient.staple || ingredient.category === 'koreniny' || ingredient.category === 'oleje';
 }
 
 export const TAP_WATER_ID = 'voda';
 
+export interface PantryMatch {
+	recipe: RecipeSummary;
+	have: number;
+	needed: number;
+	missing: Ingredient[];
+	/** Present but not in the quantity the recipe needs. */
+	short: Ingredient[];
+	/** For each short ingredient, about how many grams more the recipe needs. */
+	shortBy: Record<string, number>;
+	/** Not at home, but a listed substitute is – cookable, a little different. */
+	swaps: PantrySwap[];
+	score: number;
+}
+
+export interface PantrySwap {
+	need: Ingredient;
+	use: Ingredient;
+}
+
+const GLUTEN_RANK = { free: 0, risk: 1, contains: 2 } as const;
+
+/** A substitute from the pantry that doesn't add gluten the original didn't have. */
+function swapFromPantry(
+	ingredient: Ingredient,
+	groups: Map<string, number>,
+	byId: Map<string, Ingredient>
+): Ingredient | undefined {
+	return ingredient.swapsTo
+		.map((id) => byId.get(id))
+		.find(
+			(s): s is Ingredient =>
+				s !== undefined &&
+				groups.has(s.group) &&
+				GLUTEN_RANK[s.gluten] <= GLUTEN_RANK[ingredient.gluten]
+		);
+}
+
 /** Grams available per ingredient group (in the group's reference form), Infinity when not weighed. */
-export function pantryByGroup(pantry: Pantry, byId: Map<string, Ingredient>): Map<string, number> {
+export function pantryByGroup(
+	pantry: Pantry,
+	byId: Map<string, Pick<Ingredient, 'group' | 'groupFactor'>>
+): Map<string, number> {
 	const groups = new Map<string, number>();
 	for (const [id, grams] of Object.entries(pantry)) {
 		const ingredient = byId.get(id);
@@ -27,8 +69,56 @@ export function pantryByGroup(pantry: Pantry, byId: Map<string, Ingredient>): Ma
 	return groups;
 }
 
-export interface PantryUse {
-	ingredient: Ingredient;
+export function matchRecipe(
+	recipe: RecipeSummary,
+	groups: Map<string, number>,
+	byId: Map<string, Ingredient>
+): PantryMatch {
+	const neededByGroup = new Map<string, { ingredient: Ingredient; grams: number }>();
+	for (const line of recipe.lines) {
+		const ingredient = byId.get(line.ingredientId)!;
+		if (ingredient.id === TAP_WATER_ID) continue;
+		const entry = neededByGroup.get(ingredient.group) ?? { ingredient, grams: 0 };
+		entry.grams += line.grams * ingredient.groupFactor;
+		neededByGroup.set(ingredient.group, entry);
+	}
+
+	const missing: Ingredient[] = [];
+	const short: Ingredient[] = [];
+	const shortBy: Record<string, number> = {};
+	const swaps: PantrySwap[] = [];
+	for (const [group, { ingredient, grams }] of neededByGroup) {
+		const available = groups.get(group);
+		if (available === undefined) {
+			const use = swapFromPantry(ingredient, groups, byId);
+			if (use) swaps.push({ need: ingredient, use });
+			else missing.push(ingredient);
+		} else if (available < grams) {
+			short.push(ingredient);
+			// Counted in the group's usual form; back to this ingredient's own grams.
+			shortBy[ingredient.id] = Math.ceil((grams - available) / ingredient.groupFactor);
+		}
+	}
+
+	const needed = neededByGroup.size;
+	const have = needed - missing.length;
+	const score = needed === 0 ? 1 : (have - short.length * 0.5 - swaps.length * 0.25) / needed;
+	return { recipe, have, needed, missing, short, shortBy, swaps, score };
+}
+
+export function rankByPantry(
+	recipes: RecipeSummary[],
+	pantry: Pantry,
+	byId: Map<string, Ingredient>
+): PantryMatch[] {
+	const groups = pantryByGroup(pantry, byId);
+	return recipes
+		.map((r) => matchRecipe(r, groups, byId))
+		.sort((a, b) => b.score - a.score || a.missing.length - b.missing.length);
+}
+
+export interface PantryUse<I extends IngredientLite = Ingredient> {
+	ingredient: I;
 	grams: number;
 	/** Nothing of it left, so it was removed from the pantry. */
 	usedUp: boolean;
@@ -39,14 +129,14 @@ export interface PantryUse {
  * count, the exact one first. Items without a weight ("have some") stay untouched, and
  * anything that runs out is removed.
  */
-export function consumeFromPantry(
+export function consumeFromPantry<I extends IngredientLite = Ingredient>(
 	pantry: Pantry,
 	lines: RecipeLine[],
 	factor: number,
-	byId: Map<string, Ingredient>
-): { pantry: Pantry; used: PantryUse[] } {
+	byId: Map<string, I>
+): { pantry: Pantry; used: PantryUse<I>[] } {
 	const next: Pantry = { ...pantry };
-	const used = new Map<string, PantryUse>();
+	const used = new Map<string, PantryUse<I>>();
 
 	for (const line of lines) {
 		const ingredient = byId.get(line.ingredientId);
@@ -75,4 +165,153 @@ export function consumeFromPantry(
 		}
 	}
 	return { pantry: next, used: [...used.values()] };
+}
+
+export interface LeftoverMatch {
+	recipe: RecipeSummary;
+	/** How many of the chosen leftovers the recipe uses. */
+	uses: Ingredient[];
+	/** Other ingredients to buy or have (spices and oils not counted). */
+	others: Ingredient[];
+}
+
+/** Words around the food in "mám doma pol cukety a trochu ryže" – never an ingredient. */
+const FILLER_WORDS = new Set(
+	'mam mame doma este aj nieco trochu kus kusy kusok pol zvysok zvysky ostalo ostala ostali v vo z zo s so na do od a co chcem treba minut uvarit mi chladnicke chladnicka spajzi'.split(
+		' '
+	)
+);
+/** The longest name looked for in a row of words ("biela fazula v tomate"). */
+const LONGEST_NAME = 3;
+
+/**
+ * The ingredients named in free text ("mám šampiňóny, pekingskú kapustu a tofu"), without AI:
+ * the text is split at commas and lines, filler words dropped, and each run of words matched
+ * against names and aliases with the recipe search (other endings, typos). Longer names win
+ * ("kokosové mlieko" over "kokosové"); among equal matches the one named so wins over a
+ * category or alias hit, then the one listed first (the plain kind: tofu natural, not smoked).
+ * Spices, oils and water are skipped without a word – they are assumed at home.
+ */
+export function ingredientsInText(
+	text: string,
+	ingredients: Ingredient[]
+): { ids: string[]; unknown: string[] } {
+	const texts = ingredients.map(ingredientSearchText);
+	const names = ingredients.map((i) => normalizeSearch(i.name.split(' (')[0]));
+	const ids: string[] = [];
+	const unknown: string[] = [];
+
+	function best(query: string): Ingredient | undefined {
+		const matches = searchMatcher(texts, query);
+		let found: { index: number; named: number } | undefined;
+		ingredients.forEach((_, index) => {
+			if (!matches(texts[index])) return;
+			const named = termsFound(names[index], query);
+			if (!found || named > found.named) found = { index, named };
+		});
+		return found && ingredients[found.index];
+	}
+
+	for (const part of text.split(/[,;\n]+/)) {
+		const words = normalizeSearch(part)
+			.split(/[^\p{L}\p{N}]+/u)
+			.filter((w) => w.length > 1 && !FILLER_WORDS.has(w));
+		let at = 0;
+		while (at < words.length) {
+			let size = Math.min(LONGEST_NAME, words.length - at);
+			let hit = best(words.slice(at, at + size).join(' '));
+			while (!hit && size > 1) hit = best(words.slice(at, at + --size).join(' '));
+			if (hit) {
+				const atHome = isAssumedAtHome(hit) || hit.id === TAP_WATER_ID;
+				if (!atHome && !ids.includes(hit.id)) ids.push(hit.id);
+				at += size;
+			} else {
+				unknown.push(words[at]);
+				at++;
+			}
+		}
+	}
+	return { ids, unknown };
+}
+
+/**
+ * Recipes that use up the chosen leftovers (half a zucchini, yesterday's rice): most leftovers
+ * used first, then the fewest other ingredients needed. Interchangeable forms count (group).
+ */
+export function rankByLeftovers(
+	recipes: RecipeSummary[],
+	leftoverIds: string[],
+	byId: Map<string, Ingredient>
+): LeftoverMatch[] {
+	const groups = new Set(leftoverIds.map((id) => byId.get(id)?.group).filter(Boolean));
+	return recipes
+		.map((recipe) => {
+			const ingredients = [...new Set(recipe.lines.map((l) => l.ingredientId))].map((id) =>
+				byId.get(id)!
+			);
+			return {
+				recipe,
+				uses: ingredients.filter((i) => groups.has(i.group)),
+				others: ingredients.filter((i) => !groups.has(i.group) && !isAssumedAtHome(i))
+			};
+		})
+		.filter((m) => m.uses.length > 0)
+		.sort((a, b) => b.uses.length - a.uses.length || a.others.length - b.others.length);
+}
+
+/** Fresh food that keeps for weeks – no reminder for these. */
+const LONG_KEEPING = new Set([
+	'zemiaky',
+	'batat',
+	'cibula',
+	'cesnak',
+	'mrkva',
+	'cvikla',
+	'tekvica-hokkaido',
+	'jablko',
+	'biela-kapusta',
+	'citron',
+	'limetka',
+	'pomaranc',
+	'zazvor',
+	'topinambur',
+	'petrzlen-koren',
+	'pastinak',
+	'chren'
+]);
+const PRESERVED = /steriliz|susen|mrazen|konzerv|nakladan|kysl/;
+/** Days fresh vegetables, fruit and tofu usually keep once bought. */
+const FRESH_DAYS = 5;
+
+/**
+ * Fresh things that have been in the pantry a while and should be cooked soon, oldest first.
+ * Only a hint: the pantry doesn't know when something was bought, only when it was added.
+ */
+export function useSoon(
+	pantry: Pantry,
+	added: Record<string, string>,
+	byId: Map<string, Ingredient>,
+	today: Date
+): { ingredient: Ingredient; days: number }[] {
+	const todayMs = Date.UTC(today.getFullYear(), today.getMonth(), today.getDate());
+	return Object.keys(pantry)
+		.flatMap((id) => {
+			const ingredient = byId.get(id);
+			const date = added[id];
+			if (!ingredient || !date) return [];
+			const group = ingredient.group;
+			const fresh =
+				(ingredient.category === 'zelenina' ||
+					ingredient.category === 'ovocie' ||
+					group === 'tofu-natural' ||
+					id.startsWith('tofu') ||
+					id === 'tempeh') &&
+				!LONG_KEEPING.has(group) &&
+				!LONG_KEEPING.has(id) &&
+				!PRESERVED.test(id);
+			if (!fresh) return [];
+			const days = Math.round((todayMs - Date.parse(date)) / 86_400_000);
+			return days >= FRESH_DAYS ? [{ ingredient, days }] : [];
+		})
+		.sort((a, b) => b.days - a.days);
 }

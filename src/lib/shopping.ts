@@ -1,6 +1,7 @@
-import { formatAmount, formatGrams, formatNumber } from './amounts';
-import { isAssumedAtHome, pantryByGroup, TAP_WATER_ID, type Pantry } from './pantry';
-import type { IngredientCategory, IngredientLite, RecipeLine } from './types';
+import { formatNumber } from './amounts';
+import { bestPrice, shelfCost, type ShelfCost } from './pricing';
+import { isAssumedAtHome, TAP_WATER_ID, type Pantry } from './pantry';
+import type { Ingredient, IngredientCategory, PriceEntry, RecipeSummary } from './types';
 
 /** The order you walk a typical Slovak supermarket: fresh first, chilled, then dry goods. */
 export const AISLE_ORDER: IngredientCategory[] = [
@@ -18,105 +19,167 @@ export const AISLE_ORDER: IngredientCategory[] = [
 	'ine'
 ];
 
-/** €/kg of the cheapest shelf price, or the rough estimate when no shop has it. */
-export interface UnitPrice {
-	perKg: number;
-	estimate: boolean;
+export interface PlanEntry {
+	recipeId: string;
+	servings: number;
+	/** Name of the chosen recipe variant; the base recipe when absent. */
+	variant?: string;
+	/** Eaten for breakfast (true) or as a lunch/dinner (false); absent: decided by the recipe. */
+	breakfast?: boolean;
+	/** Of `servings`, how many are cooked extra to freeze – not eaten this plan. */
+	freezeExtra?: number;
+	/** Portions taken from the freezer: nothing to buy or cook. */
+	fromFreezer?: boolean;
+	/** For freezer portions: the day they were frozen, kept if they go back. */
+	frozenOn?: string;
+	/** With `fromFreezer`: already cooked and waiting in the fridge, not frozen. */
+	inFridge?: boolean;
+	/** Household member who cooks it. */
+	cook?: string;
+	/** Just for this household member, outside the shared meals (bought with the rest). */
+	only?: string;
+}
+
+/** A recipe meant only for the morning (porridge, pancakes) – not one also fit for lunch. */
+export function isBreakfastRecipe(recipe: Pick<RecipeSummary, 'meals'>): boolean {
+	return (
+		recipe.meals.includes('ranajky') && !recipe.meals.some((m) => m === 'obed' || m === 'vecera')
+	);
+}
+
+/** Whether a plan entry is eaten for breakfast: the user's choice, else what the recipe is. */
+export function isBreakfastEntry(
+	entry: PlanEntry,
+	recipe: Pick<RecipeSummary, 'meals'> | undefined
+): boolean {
+	return entry.breakfast ?? (recipe ? isBreakfastRecipe(recipe) : false);
+}
+
+export function planLines(recipe: RecipeSummary, variant: string | undefined) {
+	return (variant && recipe.variants.find((v) => v.name === variant)?.lines) || recipe.lines;
 }
 
 export interface ShoppingItem {
-	ingredient: IngredientLite;
-	/** Grams still to buy after what's at home. */
-	grams: number;
-	/** "2 ks", "300 g · ~2 ks": in the recipes' own unit when nothing is at home. */
-	amount: string;
-	/** Some of it is at home, just not enough. */
-	partly: boolean;
+	ingredient: Ingredient;
+	/** Total needed for the plan. */
+	needGrams: number;
+	/** Still to buy after subtracting the pantry. */
+	buyGrams: number;
 	cost: number;
+	costIsEstimate: boolean;
+	/** Store with the cheapest real price, null when only an estimate is known. */
+	storeId: string | null;
+	usedIn: string[];
+	/** A usually-at-home basic the user said they're out of. */
+	restock: boolean;
+	/** Whole packs to buy, when a real price with a pack size is known. */
+	shelf: ShelfCost | null;
 }
 
 export interface ShoppingList {
-	items: ShoppingItem[];
-	/** Salt, oil and spices the plan uses that the pantry doesn't list: worth a look at home. */
-	check: IngredientLite[];
+	byCategory: [IngredientCategory, ShoppingItem[]][];
+	/** Spices, oils, basics and leftovers: listed to double-check, not counted in the total. */
+	staples: ShoppingItem[];
 	total: number;
-	/** Some prices are estimates. */
-	estimate: boolean;
+	hasEstimates: boolean;
 }
 
-/** " · ~2 ks" for things bought by the piece (onions, lemons), empty otherwise. */
-export function approxPieces(ingredient: IngredientLite, grams: number): string {
-	const ks = ingredient.units.ks;
-	if (!ks || ks < 20) return '';
-	return ` · ~${formatNumber(Math.ceil((grams / ks) * 2) / 2)} ks`;
-}
-
-/**
- * What to buy for all the planned plates: the same ingredient added up, minus what's at home
- * (dry and canned chickpeas count against each other through their group).
- */
-export function shoppingList(
-	lines: RecipeLine[],
+export function buildShoppingList(
+	plan: PlanEntry[],
+	recipesById: Map<string, RecipeSummary>,
+	byId: Map<string, Ingredient>,
 	pantry: Pantry,
-	byId: Map<string, IngredientLite>,
-	prices: Record<string, UnitPrice>
+	prices: PriceEntry[],
+	today: Date,
+	/** Basics (spices, oils) the user is out of – moved from "check at home" to the list. */
+	outOfStock: ReadonlySet<string> = new Set()
 ): ShoppingList {
-	const needed = new Map<string, { grams: number; lines: RecipeLine[] }>();
-	for (const line of lines) {
-		if (line.ingredientId === TAP_WATER_ID || !byId.has(line.ingredientId)) continue;
-		const entry = needed.get(line.ingredientId) ?? { grams: 0, lines: [] };
-		entry.grams += line.grams;
-		entry.lines.push(line);
-		needed.set(line.ingredientId, entry);
+	const needed = new Map<string, { grams: number; usedIn: Set<string> }>();
+
+	for (const entry of plan) {
+		const recipe = recipesById.get(entry.recipeId);
+		if (!recipe || entry.fromFreezer) continue;
+		const factor = entry.servings / recipe.servings;
+		for (const line of planLines(recipe, entry.variant)) {
+			const acc = needed.get(line.ingredientId) ?? { grams: 0, usedIn: new Set() };
+			acc.grams += line.grams * factor;
+			acc.usedIn.add(recipe.title);
+			needed.set(line.ingredientId, acc);
+		}
 	}
 
-	const groups = pantryByGroup(pantry, byId);
+	const remainingByGroup = new Map<string, number>();
+	for (const [id, grams] of Object.entries(pantry)) {
+		const ingredient = byId.get(id);
+		if (!ingredient) continue;
+		const prev = remainingByGroup.get(ingredient.group) ?? 0;
+		remainingByGroup.set(
+			ingredient.group,
+			grams === null ? Infinity : prev + grams * ingredient.groupFactor
+		);
+	}
+
 	const items: ShoppingItem[] = [];
-	const check: IngredientLite[] = [];
-	for (const [id, { grams, lines: own }] of needed) {
+	for (const [id, { grams, usedIn }] of needed) {
 		const ingredient = byId.get(id)!;
-		const atHome = groups.get(ingredient.group);
-		if (atHome === undefined && isAssumedAtHome(ingredient)) {
-			check.push(ingredient);
-			continue;
-		}
-		const homeGrams = (atHome ?? 0) / ingredient.groupFactor;
-		const buy = Math.max(0, grams - homeGrams);
-		if (atHome !== undefined)
-			groups.set(ingredient.group, Math.max(0, atHome - grams * ingredient.groupFactor));
-		if (buy <= 0 && grams > 0) continue;
-		if (grams === 0 && atHome !== undefined) continue;
-		const sameUnit = own.every((l) => l.unit === own[0].unit && l.amount !== null);
-		const amount =
-			grams === 0
-				? 'podľa chuti'
-				: atHome === undefined && sameUnit
-					? formatAmount(
-							own.reduce((sum, l) => sum + (l.amount ?? 0), 0),
-							own[0].unit
-						)
-					: `${formatGrams(buy)}${approxPieces(ingredient, buy)}`;
-		const price = prices[id];
+		// The pantry is counted in the group's reference form (see Ingredient.groupFactor).
+		const available = remainingByGroup.get(ingredient.group) ?? 0;
+		const neededInGroup = grams * ingredient.groupFactor;
+		const fromPantry = Math.min(available, neededInGroup);
+		remainingByGroup.set(ingredient.group, available - fromPantry);
+
+		const buyGrams = (neededInGroup - fromPantry) / ingredient.groupFactor;
+		const price = bestPrice(ingredient, prices, today);
 		items.push({
 			ingredient,
-			grams: buy,
-			amount,
-			partly: atHome !== undefined,
-			cost: price ? (price.perKg * buy) / 1000 : 0
+			needGrams: grams,
+			buyGrams,
+			cost: (price.perKg * buyGrams) / 1000,
+			costIsEstimate: price.isEstimate,
+			storeId: price.storeId,
+			usedIn: [...usedIn],
+			restock: outOfStock.has(ingredient.id) && isAssumedAtHome(ingredient),
+			shelf: shelfCost(ingredient, buyGrams, prices, today)
 		});
 	}
 
-	const aisle = (i: IngredientLite) => AISLE_ORDER.indexOf(i.category);
-	items.sort(
-		(a, b) =>
-			aisle(a.ingredient) - aisle(b.ingredient) ||
-			a.ingredient.name.localeCompare(b.ingredient.name, 'sk')
-	);
-	check.sort((a, b) => a.name.localeCompare(b.name, 'sk'));
+	// Leftovers (aquafaba from the chickpea can, okara) come from other ingredients, not the shop.
+	const notBought = (i: Ingredient) => i.byproduct || (isAssumedAtHome(i) && !outOfStock.has(i.id));
+	const worthChecking = (i: Ingredient) => notBought(i) && i.id !== TAP_WATER_ID;
+	const toBuy = items.filter((i) => !notBought(i.ingredient) && i.buyGrams > 0.5);
+	const categories = new Map<IngredientCategory, ShoppingItem[]>();
+	for (const item of toBuy.sort((a, b) =>
+		a.ingredient.name.localeCompare(b.ingredient.name, 'sk')
+	)) {
+		const list = categories.get(item.ingredient.category) ?? [];
+		list.push(item);
+		categories.set(item.ingredient.category, list);
+	}
+
 	return {
-		items,
-		check,
-		total: items.reduce((sum, i) => sum + i.cost, 0),
-		estimate: items.some((i) => prices[i.ingredient.id]?.estimate ?? true)
+		byCategory: [...categories].sort(([a], [b]) => AISLE_ORDER.indexOf(a) - AISLE_ORDER.indexOf(b)),
+		staples: items.filter((i) => worthChecking(i.ingredient) && i.buyGrams > 0),
+		total: toBuy.reduce((sum, i) => sum + i.cost, 0),
+		hasEstimates: toBuy.some((i) => i.costIsEstimate)
 	};
+}
+
+/**
+ * Grams a bought pack leaves over after the plan (300 g of a 500 g bag for 200 g), or 0 when
+ * it's weighed at the till or too little to bother with.
+ */
+export function packLeftover(
+	shelf: Pick<ShelfCost, 'packs' | 'packGrams'> | null | undefined,
+	buyGrams: number
+): number {
+	if (!shelf || !Number.isInteger(shelf.packs)) return 0;
+	const left = shelf.packs * shelf.packGrams - buyGrams;
+	return left >= 20 && left >= shelf.packGrams * 0.15 ? left : 0;
+}
+
+/** " · ~2 ks" for things bought by the piece (onions, lemons), empty otherwise. */
+export function approxPieces(ingredient: Ingredient, grams: number): string {
+	const ks = ingredient.units.ks;
+	if (!ks || ks < 20) return '';
+	return ` · ~${formatNumber(Math.ceil((grams / ks) * 2) / 2)} ks`;
 }

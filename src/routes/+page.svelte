@@ -1,788 +1,1170 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
-	import { replaceState } from '$app/navigation';
-	import { page } from '$app/state';
-	import { formatEur, formatMinutes, formatNumber } from '$lib/amounts';
+	import { goto } from '$app/navigation';
+	import { useCatalog } from '$lib/catalog';
+	import CategoryTiles from '$lib/components/CategoryTiles.svelte';
+	import Icon, { isIconName, type IconName } from '$lib/components/Icon.svelte';
+	import PlateArt from '$lib/components/PlateArt.svelte';
+	import { vesselFor } from '$lib/categories';
+	import RecipeCard from '$lib/components/RecipeCard.svelte';
+	import TodayPicker from '$lib/components/TodayPicker.svelte';
+	import IngredientExcluder from '$lib/components/IngredientExcluder.svelte';
+	import { avoidFilter } from '$lib/avoid';
+	import { rankByLeftovers } from '$lib/pantry';
+	import Seo from '$lib/components/Seo.svelte';
+	import { SITE_ORIGIN } from '$lib/site';
+	import { websiteJsonLd } from '$lib/structured-data';
+	import Squiggle from '$lib/components/Squiggle.svelte';
+	import { pluralRecipes } from '$lib/labels';
+	import { IN_MONTH, recipeSeason } from '$lib/season';
+	import { bedPlants, localizeGuide, monthTasks, seasonDelayWeeks } from '$lib/garden';
+	import { install } from '$lib/install.svelte';
+	import InstallCard from '$lib/components/InstallCard.svelte';
+	import { onboarding } from '$lib/onboarding.svelte';
 	import {
-		BUILDER_MODES,
-		BUILDER_SLOTS,
-		MODE_LABELS,
-		type BuilderMode,
-		fits,
-		plateName,
-		plateStyles,
-		surprise,
-		verifiedDish,
-		type BuilderSlot,
-		type Candidate
-	} from '$lib/builder';
-	import { resolveComposed, useCatalog } from '$lib/catalog';
-	import BuiltPlate from '$lib/components/BuiltPlate.svelte';
-	import DishCard from '$lib/components/DishCard.svelte';
-	import Icon from '$lib/components/Icon.svelte';
-	import NutritionPanel from '$lib/components/NutritionPanel.svelte';
-	import PartArt from '$lib/components/PartArt.svelte';
-	import {
-		buildFromParams,
-		buildToParams,
-		defaultChoice,
-		matchDish,
-		matchPart,
-		pickMethod,
-		rankDishes,
-		STYLE_LABELS,
-		TOOL_META,
-		type Build,
-		type Choice,
-		type Part
-	} from '$lib/dish';
-	import { normalizeSearch } from '$lib/labels';
-	import { pantryByGroup } from '$lib/pantry';
-	import { SPOTS } from '$lib/plate-art';
-	import { composePlate } from '$lib/plate';
-	import { addToPlan, kitchen, myParts, pantry, plan, ui } from '$lib/state.svelte';
-	import { toast } from '$lib/toast.svelte';
+		avoid,
+		favorites,
+		gardens,
+		history,
+		pantry,
+		plan,
+		settings,
+		ui
+	} from '$lib/state.svelte';
+	import { fetchSimilar, MAX_SIMILAR_SEEDS } from '$lib/similar';
+	import type { GrowGuide } from '$lib/types';
+	import { activeSales, recipesOnSale } from '$lib/pricing';
 
 	const catalog = useCatalog();
-	let mode = $state<BuilderMode>('slane');
-	const dish = $derived(catalog().freeDishes[mode]);
-	const slots = $derived(BUILDER_SLOTS[mode]);
-
-	let choice = $state<Choice>({});
-	let ready = $state(false);
-
-	onMount(() => {
-		const params = new URLSearchParams(location.search);
-		if (params.get('typ') === 'sladke') mode = 'sladke';
-		resolveComposed(catalog(), [...params.values(), ...myParts.current]);
-		choice = buildFromParams(catalog().freeDishes[mode], params, catalog().partsById).choice;
-		ready = true;
-	});
-
-	const build = $derived<Build>({ servings: dish.servings, choice, methods: {} });
-	const query = $derived(buildToParams(dish, build).toString());
-	$effect(() => {
-		if (!ready) return;
-		const all = [mode === 'sladke' ? 'typ=sladke' : '', query].filter(Boolean).join('&');
-		const next = all ? `/?${all}` : '/';
-		void tick().then(() => replaceState(next, page.state));
-	});
-
-	const plate = $derived(
-		composePlate(dish, build, kitchen.current, catalog().partsById, catalog().ingredientsById)
-	);
-	const picked = $derived(plate.parts.map((p) => p.part));
-	const filled = $derived(
-		plate.parts.map((p) => ({ slot: p.slot.id, part: p.part, method: p.method }))
-	);
-	const empty = $derived(slots.filter((s) => !choice[s.id]).map((s) => s.id));
-	const verified = $derived(verifiedDish(picked, catalog().dishes));
-	const styles = $derived(plateStyles(picked));
-
-	const groups = $derived(
-		ui.loaded ? pantryByGroup(pantry.current, catalog().ingredientsById) : new Map()
-	);
-	const hasPantry = $derived(ui.loaded && Object.keys(pantry.current).length > 0);
-
-	/** Every part of each spot with what it'd take to cook it here. */
-	const candidates = $derived.by((): Record<string, Candidate[]> => {
-		const { partsById, ingredientsById } = catalog();
-		return Object.fromEntries(
-			dish.slots.map((slot) => [
-				slot.id,
-				slot.options.map((id) => {
-					const part = partsById.get(id)!;
-					const method = pickMethod(part, kitchen.current);
-					const m = method
-						? matchPart(part, method, dish.servings, groups, ingredientsById)
-						: undefined;
-					return {
-						part,
-						missing: m ? m.missing.length + m.short.length : 99,
-						cookable: !!method
-					};
-				})
-			])
-		);
-	});
-
-	function surpriseMe() {
-		choice = surprise(candidates, slots);
-	}
-
-	function switchMode(next: BuilderMode) {
-		if (next === mode) return;
-		mode = next;
-		choice = defaultChoice(catalog().freeDishes[next]);
-	}
-
-	function clear() {
-		const before = choice;
-		choice = defaultChoice(dish);
-		toast('Tanier je prázdny', () => (choice = before));
-	}
-
-	function planIt() {
-		if (addToPlan(dish.id, query)) {
-			toast('Tanier je v týždni', () => (plan.current = plan.current.slice(0, -1)));
+	const categoryCounts = $derived.by(() => {
+		const counts = new Map<string, number>();
+		for (const r of catalog.recipes) {
+			for (const top of new Set(r.categories.map((path) => path.split('/')[0]))) {
+				counts.set(top, (counts.get(top) ?? 0) + 1);
+			}
 		}
-	}
-
-	let sheet = $state<HTMLDialogElement>();
-	let open = $state<BuilderSlot | null>(null);
-	let search = $state('');
-	function openPicker(slot: BuilderSlot) {
-		open = slot;
-		search = '';
-		sheet?.showModal();
-	}
-	function pick(id: string | null) {
-		if (open) choice = { ...choice, [open.id]: id };
-		sheet?.close();
-	}
-
-	/** The rest of the plate decides what fits; the spot being changed doesn't count. */
-	const sections = $derived.by(() => {
-		if (!open) return [];
-		const slot = open;
-		const st = plateStyles(plate.parts.filter((p) => p.slot.id !== slot.id).map((p) => p.part));
-		const q = normalizeSearch(search.trim());
-		const list = (candidates[slot.id] ?? []).filter(
-			(c) => !q || normalizeSearch(c.part.name).includes(q)
-		);
-		const sort = (a: Candidate, b: Candidate) =>
-			a.missing - b.missing || a.part.name.localeCompare(b.part.name, 'sk');
-		const home = hasPantry
-			? list.filter((c) => c.cookable && c.missing === 0 && fits(c.part, st))
-			: [];
-		const good = list.filter((c) => c.cookable && fits(c.part, st) && !home.includes(c)).sort(sort);
-		const rest = list.filter((c) => !home.includes(c) && !good.includes(c)).sort(sort);
-		const goodTitle = st.size
-			? `Hodí sa – ${[...st].map((s) => STYLE_LABELS[s]).join(', ')}`
-			: 'Všetko';
-		const mine: Candidate[] = myParts.current
-			.map((id) => catalog().partsById.get(id))
-			.filter((p): p is Part => !!p && slot.kinds.includes(p.kind) && mode === 'slane')
-			.filter((p) => !q || normalizeSearch(p.name).includes(q))
-			.map((p) => {
-				const method = pickMethod(p, kitchen.current);
-				const m = method
-					? matchPart(p, method, dish.servings, groups, catalog().ingredientsById)
-					: undefined;
-				return { part: p, missing: m ? m.missing.length + m.short.length : 99, cookable: !!method };
-			});
-		return [
-			{ title: 'Moje recepty', items: mine },
-			{ title: 'Máš doma', items: home },
-			{ title: goodTitle, items: good },
-			{ title: 'Ďalšie', items: rest }
-		].filter((s) => s.items.length);
+		return counts;
 	});
 
-	/** Composing from ingredients fits the savoury main and vegetable spots. */
-	const composable = $derived(
-		mode === 'slane' && (open?.id === 'hlavne' || open?.id === 'zelenina')
-	);
-	const composeHref = $derived(
-		`/zloz?miesto=${open?.id ?? 'hlavne'}${query ? `&spat=${encodeURIComponent(query)}` : ''}`
+	let query = $state('');
+
+	/** "What do I have?" without filling in the pantry: pick a few things, see recipes right away. */
+	let haveIds = $state<string[]>([]);
+	const haveMatches = $derived(
+		haveIds.length
+			? rankByLeftovers(
+					ui.loaded
+						? catalog.recipes.filter(avoidFilter(avoid.current, catalog.ingredientsById))
+						: catalog.recipes,
+					haveIds,
+					catalog.ingredientsById
+				).slice(0, 4)
+			: []
 	);
 
-	function missingNames(part: Part): string {
-		const method = pickMethod(part, kitchen.current);
-		if (!method) return '';
-		return matchPart(part, method, dish.servings, groups, catalog().ingredientsById)
-			.missing.map((i) => i.name.toLowerCase())
-			.slice(0, 3)
-			.join(', ');
-	}
-	const minutesOf = (part: Part) =>
-		(pickMethod(part, kitchen.current) ?? part.methods[0]).steps.reduce((s, x) => s + x.min, 0);
+	/** Grandma's classics shown on the home page, in this order when they exist. */
+	const HOME_CLASSICS = [
+		'halusky-kesu-bryndza',
+		'kapustnica',
+		'lokse',
+		'segedin',
+		'parene-buchty',
+		'kysla-sosovica',
+		'strapacky-s-kapustou',
+		'langos'
+	];
+	const classics = $derived(
+		HOME_CLASSICS.flatMap((id) => catalog.recipesById.get(id) ?? []).slice(0, 4)
+	);
+	const slovakCount = $derived(catalog.recipes.filter((r) => r.cuisine === 'slovenska').length);
 
-	/** Curated dishes as inspiration, cookable ones first. */
-	const inspiration = $derived.by(() => {
-		const { dishes, partsById, ingredientsById } = catalog();
-		const sweet = (d: (typeof dishes)[number]) =>
-			d.slots.some((sl) => partsById.get(sl.options[0])?.style.includes('sladke'));
-		const ranked = rankDishes(
-			dishes
-				.filter((d) => sweet(d) === (mode === 'sladke'))
-				.flatMap((d) => {
-					const m = matchDish(
-						d,
-						ui.loaded ? pantry.current : {},
-						partsById,
-						ingredientsById,
-						kitchen.current
-					);
-					return m ? [m] : [];
-				})
-		);
-		return ranked.map((match) => {
-			const b = { servings: match.dish.servings, choice: match.choice, methods: {} };
-			const params = buildToParams(match.dish, b).toString();
-			return {
-				match,
-				plate: composePlate(match.dish, b, kitchen.current, partsById, ingredientsById),
-				href: `/jedlo/${match.dish.id}${params ? `?${params}` : ''}`
-			};
+	const heroRecipe = $derived(catalog.recipesById.get('zelene-kari-tofu') ?? catalog.recipes[0]);
+	const month = new Date().getMonth() + 1;
+
+	/** Reminder for people with a saved garden; calendars load only then. */
+	let growGuides = $state<GrowGuide[]>([]);
+	$effect(() => {
+		if (!ui.loaded || !gardens.current.length || growGuides.length) return;
+		fetch('/pestuj/plodiny.json')
+			.then((r) => (r.ok ? (r.json() as Promise<GrowGuide[]>) : []))
+			.then((g: GrowGuide[]) => (growGuides = g))
+			.catch(() => {});
+	});
+	const localGuides = $derived(
+		growGuides.map((g) =>
+			localizeGuide(g, seasonDelayWeeks(settings.current.location?.elevation ?? 150))
+		)
+	);
+	/** What is left to do this month in any of the gardens, each task once. */
+	const gardenTasks = $derived.by(() => {
+		if (!growGuides.length) return [];
+		const open = gardens.current.flatMap((g) => {
+			const plants = [...g.plants, ...g.beds.flatMap((b) => bedPlants(b, localGuides))];
+			return monthTasks(
+				[...new Map(plants.map((p) => [p.ingredientId, p])).values()],
+				localGuides,
+				g.done,
+				new Date().getFullYear(),
+				month
+			).filter((t) => !g.done[t.key]);
 		});
+		return [...new Map(open.map((t) => [t.key, t])).values()];
+	});
+	/** Recipes whose main ingredients are on sale in the user's shops right now. */
+	const onSale = $derived.by(() => {
+		// Before the settings load, the user's shops aren't known yet: no list rather than a wrong one.
+		if (!ui.loaded) return [];
+		const mine = settings.current.myStores;
+		const deals = activeSales(catalog.prices, new Date()).filter(
+			(d) => !mine.length || mine.includes(d.entry.storeId)
+		);
+		return recipesOnSale(
+			catalog.recipes.filter((r) => r.treat.length === 0),
+			deals
+		).slice(0, 4);
+	});
+	const seasonal = $derived(
+		catalog.recipes
+			.map((r) => ({ r, season: recipeSeason(r, catalog.ingredientsById, month) }))
+			.filter((x) => x.season.inSeason)
+			.sort((a, b) => b.season.produce.length - a.season.produce.length)
+			.slice(0, 4)
+			.map((x) => x.r)
+	);
+	const basics = $derived(catalog.wiki.filter((w) => w.section === 'zaklady').slice(0, 6));
+
+	/** The four things Receptio does, each with its main door and a couple of side doors. */
+	interface Pillar {
+		title: string;
+		text: string;
+		icon: IconName;
+		tone: string;
+		href: string;
+		cta: string;
+		more: { href: string; label: string }[];
+	}
+	const PILLARS: Pillar[] = [
+		{
+			title: 'Nájdi, čo uvariť',
+			text: `Stovky receptov z ${catalog.cuisines.length} kuchýň – od babkiných klasík po street food zo sveta. Pri každom vidíš cenu porcie, bielkoviny aj alergény.`,
+			icon: 'bowl',
+			tone: 'var(--tomato)',
+			href: '/recepty',
+			cta: 'Recepty',
+			more: [
+				{ href: '/recepty?gf=1', label: 'Bezlepkové' },
+				{ href: '/recepty?sort=protein-eur', label: 'Najviac bielkovín za euro' },
+				{ href: '/recepty?kategoria=domace', label: 'Urob si doma' }
+			]
+		},
+		{
+			title: 'Naplánuj týždeň a nakúp',
+			text: 'Vyber recepty alebo si nechaj plán navrhnúť. Dostaneš jeden nákupný zoznam s cenami, bez toho, čo máš doma.',
+			icon: 'calendar',
+			tone: 'var(--sky)',
+			href: '/plan',
+			cta: 'Plán a nákup',
+			more: [{ href: '/plan#navrh', label: 'Navrhni mi týždeň' }]
+		},
+		{
+			title: 'Var z toho, čo máš',
+			text: 'Naklikaj, čo máš v špajzi, a recepty sa zoradia podľa zhody. Po uvarení sa suroviny samy odpočítajú.',
+			icon: 'jar',
+			tone: 'var(--turmeric)',
+			href: '/spajza',
+			cta: 'Špajza',
+			more: [
+				{ href: '/zvysky', label: 'Zo zvyškov' },
+				{ href: '/ceny', label: 'Ceny a akcie' }
+			]
+		},
+		{
+			title: 'Dopestuj si to',
+			text: 'Čo sa u nás oplatí pestovať a plánovač pre okno, balkón aj záhradu – s kalendárom prác a zápisom úrody.',
+			icon: 'sprout',
+			tone: 'var(--leaf-2)',
+			href: '/pestuj',
+			cta: 'Pestuj',
+			more: [
+				{ href: '/wiki/ako-zacat-pestovat', label: 'Ako začať' },
+				{ href: '/sezona', label: 'Čo je v sezóne' }
+			]
+		}
+	];
+	/** The same two halves as the navigation, so the home page explains the switch in the bar. */
+	const HALVES: { title: string; hint: string; icon: IconName; pillars: Pillar[] }[] = [
+		{
+			title: 'Kuchyňa',
+			hint: 'každý deň – čo uvariť, plán a nákup',
+			icon: 'pot',
+			pillars: PILLARS.slice(0, 2)
+		},
+		{
+			title: 'Domov',
+			hint: 'dlhodobo – zásoby, záhrada a ceny',
+			icon: 'home',
+			pillars: PILLARS.slice(2)
+		}
+	];
+
+	const VALUES: { icon: IconName; title: string; text: string }[] = [
+		{
+			icon: 'shield',
+			title: 'Bez reklám a sledovania',
+			text: 'Žiadne pop-upy, cookies na reklamu ani konto. Tvoje dáta ostávajú v tvojom telefóne.'
+		},
+		{
+			icon: 'scale',
+			title: 'Čísla sa počítajú, nie odhadujú',
+			text: 'Živiny, cena aj lepok vychádzajú zo surovín receptu. Kde je cena len odhad, je to napísané.'
+		},
+		{
+			icon: 'euro',
+			title: 'Lacno a zdravo',
+			text: 'Uvidíš, koľko stojí porcia a či máš dosť bielkovín, železa a vápnika.'
+		},
+		{
+			icon: 'users',
+			title: 'Pre každého, zadarmo',
+			text: 'Nekomerčný projekt. Recept môže navrhnúť ktokoľvek.'
+		}
+	];
+
+	/** Where a returning visitor left off. */
+	const inPlan = $derived(ui.loaded ? plan.current.length : 0);
+	const inPantry = $derived(ui.loaded ? Object.keys(pantry.current).length : 0);
+	const favCount = $derived(ui.loaded ? Object.keys(favorites.current).length : 0);
+
+	/** What this device liked: cooked lately (not "nabudúce inak"), saved, planned – newest first. */
+	const forYouSeeds = $derived.by(() => {
+		if (!ui.loaded) return [];
+		const cooked = [...history.current]
+			.reverse()
+			.filter((e) => e.rating !== 1)
+			.map((e) => e.recipeId);
+		const ids = [
+			...cooked,
+			...Object.keys(favorites.current),
+			...plan.current.map((e) => e.recipeId)
+		];
+		return [...new Set(ids)]
+			.filter((id) => catalog.recipesById.has(id))
+			.slice(0, MAX_SIMILAR_SEEDS);
+	});
+	const FOR_YOU_SHOWN = 6;
+	/** Two weeks: what was just cooked isn't suggested again. */
+	const RECENT_DAYS = 14;
+	let forYouIds = $state<string[]>([]);
+	$effect(() => {
+		const seeds = forYouSeeds;
+		if (!seeds.length) return;
+		void fetchSimilar({ ids: seeds }).then((ids) => (forYouIds = ids));
+	});
+	const forYou = $derived.by(() => {
+		if (!forYouSeeds.length) return [];
+		const since = new Date(Date.now() - RECENT_DAYS * 86400000).toISOString().slice(0, 10);
+		const recent = new Set(history.current.filter((e) => e.date >= since).map((e) => e.recipeId));
+		const allowed = avoidFilter(avoid.current, catalog.ingredientsById);
+		return forYouIds
+			.flatMap((id) => catalog.recipesById.get(id) ?? [])
+			.filter((r) => !recent.has(r.id) && allowed(r))
+			.slice(0, FOR_YOU_SHOWN);
 	});
 
-	const kitchenSummary = $derived(
-		[
-			`${kitchen.current.burners} ${kitchen.current.burners === 1 ? 'platňa' : kitchen.current.burners < 5 ? 'platne' : 'platní'}`,
-			...kitchen.current.tools.map((t) => TOOL_META[t].label.toLowerCase())
-		].join(' · ')
-	);
-	const pct = (n: number) => `${(n / 300) * 100}%`;
+	function search(event: SubmitEvent) {
+		event.preventDefault();
+		void goto(`/recepty${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ''}`);
+	}
 </script>
 
-<svelte:head>
-	<title>Receptio – poskladaj si tanier</title>
-	<meta
-		name="description"
-		content="Vegánske jedlo poskladané z toho, čo máš doma, a naplánované pre tvoju kuchyňu."
-	/>
-</svelte:head>
+<Seo
+	description="Vegánske recepty z celého sveta, pri ktorých hneď vidíš, koľko ťa porcia vyjde a či ťa zasýti. Naplánuj si týždeň, nakúp naraz a var z toho, čo máš doma."
+	jsonLd={[websiteJsonLd(SITE_ORIGIN)]}
+/>
 
-<div class="wrap page">
-	<header class="hero">
-		<h1>Poskladaj si {mode === 'sladke' ? 'misku' : 'tanier'}</h1>
-		<div class="segmented mode" role="group" aria-label="Druh jedla">
-			{#each BUILDER_MODES as m (m)}
-				<button aria-pressed={mode === m} onclick={() => switchMode(m)}>{MODE_LABELS[m]}</button>
-			{/each}
-		</div>
-		<a class="kitchen-strip" href="/kuchyna">
-			<Icon name="jar" size={16} />
-			{hasPantry ? `Špajza ${Object.keys(pantry.current).length}` : 'Prázdna špajza'} · {kitchenSummary}
-		</a>
-	</header>
-
-	<section class="builder">
-		<div class="stage" style:view-transition-name="plate">
-			<BuiltPlate
-				{filled}
-				{empty}
-				byId={catalog().ingredientsById}
-				label={picked.length ? plateName(picked) : 'Prázdny tanier'}
-			/>
-			{#each slots as slot (slot.id)}
-				{@const current = plate.parts.find((p) => p.slot.id === slot.id)}
-				<button
-					class="spot"
-					class:filled={!!current}
-					class:sauce={slot.id === 'omacka'}
-					style:left={pct(SPOTS[slot.id].x)}
-					style:top={pct(SPOTS[slot.id].y)}
-					onclick={() => openPicker(slot)}
-					aria-label="{slot.label}: {current ? current.part.name : 'vybrať'}"
+<section class="hero">
+	<div class="wrap hero-grid">
+		<div class="copy rise">
+			<p class="eyebrow">Vegánske · aj bez lepku · zadarmo</p>
+			<h1>
+				Rastlinné jedlo,<br />ktoré <span class="hl">sedí<Squiggle width={130} /></span> telu aj peňaženke.
+			</h1>
+			<p class="lede">
+				Jedlá z celého sveta, pri ktorých hneď vidíš, koľko ťa porcia vyjde, či ťa zasýti a či je v
+				nich lepok. Bez reklám, bez registrácie – len dobré jedlo.
+			</p>
+			<form class="field search" onsubmit={search} role="search">
+				<Icon name="search" size={20} />
+				<label for="home-q" class="sr-only">Hľadať recept</label>
+				<input id="home-q" bind:value={query} placeholder="cícer, kari, raňajky…" />
+				<button class="btn leaf">Hľadať</button>
+			</form>
+			<nav class="chips quick-start" aria-label="Rýchly štart">
+				<a class="chip" href="/recepty?cas=20"><Icon name="clock" size={16} /> Do 20 minút</a>
+				<a class="chip" href="#co-mam-doma"><Icon name="jar" size={16} /> Z toho, čo mám</a>
+				<a class="chip" href="/plan?rozpocet=20#navrh"
+					><Icon name="calendar" size={16} /> Týždeň do 20 €</a
 				>
-					{#if current}
-						<span class="tag">{current.part.name}</span>
-					{:else}
-						<span class="plus"><Icon name="plus" size={18} stroke={2.4} /></span>
-						<span class="tag empty-tag">{slot.label}</span>
-					{/if}
-				</button>
-			{/each}
-		</div>
-
-		<div class="panel">
-			<div class="actions">
-				<button class="btn leaf surprise draw-host" onclick={surpriseMe}>
-					<Icon name="sparkle" size={18} /> Prekvap ma
-				</button>
-				{#if picked.length}
-					<button class="btn ghost small" onclick={clear}>
-						<Icon name="undo" size={16} /> Odznova
-					</button>
-				{/if}
+				<a class="chip" href="/recepty?chut=sladke"><Icon name="cake" size={16} /> Niečo sladké</a>
+			</nav>
+			<div class="stats">
+				<span
+					><strong>{catalog.recipes.length}</strong> {pluralRecipes(catalog.recipes.length)}</span
+				>
+				<span><strong>{catalog.cuisines.length}</strong> kuchýň</span>
+				<span><strong>{catalog.ingredients.length}</strong> surovín</span>
 			</div>
-
-			{#if picked.length}
-				<div class="summary card">
-					<p class="name">{plateName(picked)}</p>
-					{#if verified}
-						<a class="badge leaf" href="/jedlo/{verified.id}">
-							<Icon name="check" size={13} stroke={2.6} /> Overené: {verified.name}
-						</a>
-					{:else}
-						<span class="badge">
-							Vlastná kombinácia{styles.size
-								? ` · ${[...styles].map((s) => STYLE_LABELS[s]).join(', ')}`
-								: ''}
-						</span>
-					{/if}
-					<ul class="facts">
-						<li><Icon name="clock" size={15} /> {formatMinutes(plate.timeline.total)}</li>
-						<li>
-							<Icon name="euro" size={15} />
-							{plate.facts.costIsEstimate ? '~' : ''}{formatEur(plate.facts.costPerServing)} za porciu
-						</li>
-					</ul>
-					<NutritionPanel values={plate.facts.perServing} compact />
-					<div class="go">
-						<a class="btn leaf" href="/jedlo/{dish.id}/varim?{query}">
-							<Icon name="play" size={16} /> Variť
-						</a>
-						<a class="btn ghost" href="/jedlo/{dish.id}?{query}">Detail</a>
-						<button class="icon-btn" onclick={planIt} aria-label="Do týždňa" title="Do týždňa">
-							<Icon name="calendar" size={18} />
-						</button>
-					</div>
-				</div>
-			{:else}
-				<p class="hint lead">
-					Ťukni na miesto na tanieri a vyber, čo tam dáš. Navrchu uvidíš, čo máš doma a čo sa k tomu
-					hodí.
-				</p>
-			{/if}
+			<p class="hero-links">
+				<button class="btn-link" onclick={() => (onboarding.open = true)}
+					><Icon name="play" size={16} /> Ako to funguje</button
+				>
+				<a href="/o-projekte"><Icon name="sprout" size={16} /> Prečo Receptio vzniklo</a>
+			</p>
 		</div>
-	</section>
-
-	<section class="inspiration">
-		<h2>Overené kombinácie</h2>
-		<div class="scroller cards">
-			{#each inspiration as entry, i (entry.match.dish.id)}
-				<div class="card-slot">
-					<DishCard
-						dish={entry.match.dish}
-						plate={entry.plate}
-						match={hasPantry ? entry.match : undefined}
-						href={entry.href}
-						index={i}
+		<div class="hero-art plate-host" aria-hidden="true">
+			<div class="blob"></div>
+			{#if heroRecipe}
+				<div class="big-plate">
+					<PlateArt
+						seed={heroRecipe.id}
+						lines={heroRecipe.lines}
+						byId={catalog.ingredientsById}
+						vessel={vesselFor(heroRecipe.categories)}
+						detail
+						steam
 					/>
 				</div>
+			{/if}
+			<svg class="float f1" viewBox="0 0 40 40"
+				><path d="M8 32C6 18 14 8 34 6c1 16-9 26-26 26Z" fill="var(--leaf-2)" /><path
+					d="M8 32c6-8 12-14 22-22"
+					stroke="var(--paper)"
+					stroke-width="1.6"
+					fill="none"
+					stroke-linecap="round"
+				/></svg
+			>
+			<svg class="float f2" viewBox="0 0 40 40"
+				><circle cx="20" cy="20" r="14" fill="var(--tomato)" /><path
+					d="M20 8c-2-3 1-5 3-4"
+					stroke="var(--leaf)"
+					stroke-width="2.5"
+					fill="none"
+					stroke-linecap="round"
+				/><ellipse cx="15" cy="15" rx="4" ry="2.5" fill="#fff" opacity=".35" /></svg
+			>
+			<svg class="float f3" viewBox="0 0 40 40"
+				><path d="M10 26c-2-10 6-18 14-16s10 12 4 18-16 6-18-2Z" fill="var(--turmeric)" /><path
+					d="M16 20c3-2 7-2 9 1"
+					stroke="var(--paper)"
+					stroke-width="1.6"
+					fill="none"
+					stroke-linecap="round"
+				/></svg
+			>
+			<svg class="float f4" viewBox="0 0 40 40"
+				><ellipse cx="20" cy="20" rx="9" ry="13" transform="rotate(35 20 20)" fill="#c9a063" /><path
+					d="M16 14c2 4 5 9 8 12"
+					stroke="rgba(0,0,0,.18)"
+					stroke-width="1.6"
+					fill="none"
+					stroke-linecap="round"
+				/></svg
+			>
+		</div>
+	</div>
+</section>
+
+{#if inPlan || inPantry || favCount}
+	<section class="wrap continue" aria-label="Pokračuj">
+		{#if inPlan}
+			<a class="card cont accent-edge" href="/plan" style:--accent="var(--sky)">
+				<Icon name="calendar" size={22} />
+				<span
+					><strong>{inPlan} {pluralRecipes(inPlan)} v pláne</strong><small
+						>Pozri nákupný zoznam</small
+					></span
+				>
+			</a>
+		{/if}
+		{#if inPantry}
+			<a class="card cont accent-edge" href="/recepty?sort=spajza" style:--accent="var(--turmeric)">
+				<Icon name="jar" size={22} />
+				<span><strong>Čo uvarím zo špajze</strong><small>{inPantry} surovín doma</small></span>
+			</a>
+		{/if}
+		{#if favCount}
+			<a class="card cont accent-edge" href="/moje" style:--accent="var(--plum)">
+				<Icon name="bookmark" size={22} />
+				<span><strong>Uložené</strong><small>{favCount} {pluralRecipes(favCount)}</small></span>
+			</a>
+		{/if}
+	</section>
+{/if}
+
+{#if forYou.length}
+	<section class="wrap block">
+		<div class="head">
+			<h2>Pre teba</h2>
+			<a class="btn ghost small" href="/moje">Moje recepty <Icon name="arrow-right" size={16} /></a>
+		</div>
+		<p class="muted season-note">
+			Podobné receptom, ktoré už poznáš – uvareným, uloženým a v pláne.
+		</p>
+		<div class="grid">
+			{#each forYou as recipe, i (recipe.id)}
+				<RecipeCard {recipe} index={i} />
 			{/each}
 		</div>
 	</section>
-</div>
+{/if}
 
-<dialog
-	class="sheet"
-	bind:this={sheet}
-	onclose={() => (open = null)}
-	onclick={(e) => e.target === sheet && sheet?.close()}
->
-	{#if open}
-		{@const current = choice[open.id]}
-		<div class="sheet-body">
-			<header class="sheet-head">
-				<span class="sheet-icon"><Icon name={open.icon} size={20} /></span>
-				<h2>{open.label}</h2>
-				<button class="icon-btn plain" onclick={() => sheet?.close()} aria-label="Zavrieť">
-					<Icon name="x" size={20} />
-				</button>
-			</header>
-			<label class="field">
-				<Icon name="search" size={16} />
-				<span class="sr-only">Hľadať</span>
-				<input type="search" placeholder="Hľadať…" bind:value={search} />
-			</label>
-			{#if composable}
-				<a class="compose draw-host" href={composeHref}>
-					<span class="compose-icon"><Icon name="chef" size={22} /></span>
-					<span>
-						<strong>Zložiť zo surovín</strong>
-						<small>Vyber spôsob a čo máš – recept sa poskladá sám</small>
-					</span>
-					<Icon name="arrow-right" size={18} />
-				</a>
-			{/if}
-			{#if current}
-				<button class="remove" onclick={() => pick(null)}>
-					<Icon name="x" size={16} /> Nechať prázdne
-				</button>
-			{/if}
-			{#each sections as section (section.title)}
-				<h3>{section.title}</h3>
-				<ul class="options">
-					{#each section.items as c (c.part.id)}
-						{@const method = pickMethod(c.part, kitchen.current) ?? c.part.methods[0]}
-						<li>
-							<button
-								class="option"
-								aria-pressed={current === c.part.id}
-								disabled={!c.cookable}
-								onclick={() => pick(c.part.id)}
-							>
-								<span class="opt-art">
-									<PartArt part={c.part} {method} byId={catalog().ingredientsById} />
-								</span>
-								<span class="opt-text">
-									<strong>{c.part.name}</strong>
-									<span class="desc">{c.part.description}</span>
-									<small>
-										{#if !c.cookable}
-											chýba spotrebič
-										{:else if hasPantry && c.missing === 0}
-											máš všetko · ~{formatMinutes(minutesOf(c.part))}
-										{:else if hasPantry}
-											kúpiť: {missingNames(c.part)}{c.missing > 3 ? '…' : ''}
-										{:else}
-											~{formatMinutes(minutesOf(c.part))}
-										{/if}
-									</small>
-								</span>
-								{#if current === c.part.id}<Icon name="check" size={18} stroke={2.4} />{/if}
-							</button>
-						</li>
+{#if install.offer}
+	<section class="wrap install-wrap">
+		<InstallCard />
+	</section>
+{/if}
+
+<TodayPicker />
+
+<section class="wrap block" id="co-mam-doma">
+	<div class="have card">
+		<div class="have-copy">
+			<p class="eyebrow">Bez vypĺňania špajze</p>
+			<h2>Čo máš doma?</h2>
+			<p>Napíš dve-tri veci z chladničky a hneď uvidíš, čo z nich uvaríš.</p>
+		</div>
+		<div class="have-pick">
+			<IngredientExcluder
+				selected={haveIds}
+				onchange={(ids) => (haveIds = ids.slice(0, 5))}
+				prefix=""
+				placeholder="cícer, špenát, ryža…"
+				fieldLabel="Surovina, ktorú máš doma"
+				hint="Stačia aj zvyšky – pol cukety, ryža zo včera."
+			/>
+		</div>
+	</div>
+	{#if haveIds.length}
+		<div class="grid have-results" aria-live="polite">
+			{#each haveMatches as m, i (m.recipe.id)}
+				<RecipeCard recipe={m.recipe} index={i} />
+			{/each}
+		</div>
+		{#if haveMatches.length}
+			<a class="btn ghost small more-have" href="/zvysky?s={haveIds.join(',')}"
+				>Viac receptov a čo ešte treba <Icon name="arrow-right" size={16} /></a
+			>
+		{:else}
+			<p class="muted">Z tohto tu zatiaľ recept nie je. Skús pridať ešte niečo.</p>
+		{/if}
+	{/if}
+</section>
+
+<section class="wrap block">
+	<div class="head">
+		<h2>Na čo máš chuť?</h2>
+		<a class="btn ghost small" href="/recepty"
+			>Všetky recepty <Icon name="arrow-right" size={16} /></a
+		>
+	</div>
+	<CategoryTiles counts={categoryCounts} />
+</section>
+
+<section class="wrap block pillars-block">
+	<div class="head">
+		<h2>Čo tu môžeš robiť</h2>
+	</div>
+	<div class="halves">
+		{#each HALVES as half, h (half.title)}
+			<div class="half">
+				<p class="half-head">
+					<Icon name={half.icon} size={18} /><strong>{half.title}</strong>
+					<span>{half.hint}</span>
+				</p>
+				<div class="pillars">
+					{#each half.pillars as p, i (p.href)}
+						<article class="card pillar rise" style:--tone={p.tone} style:--i={h * 2 + i}>
+							<span class="p-icon"><Icon name={p.icon} size={28} draw /></span>
+							<h3>{p.title}</h3>
+							<p>{p.text}</p>
+							<div class="p-links">
+								<a class="btn small p-main" href={p.href}
+									>{p.cta} <Icon name="arrow-right" size={16} /></a
+								>
+								{#each p.more as m (m.href)}<a class="p-more" href={m.href}>{m.label}</a>{/each}
+							</div>
+						</article>
 					{/each}
-				</ul>
+				</div>
+			</div>
+		{/each}
+	</div>
+</section>
+
+{#if gardenTasks.length}
+	<section class="wrap block">
+		<a class="card garden-note accent-edge" href="/pestuj#moja-zahradka">
+			<Icon name="sprout" size={26} />
+			<span>
+				<strong>Záhradka {IN_MONTH[month - 1]}</strong>
+				<span>
+					{#each ['indoor', 'sow', 'harvest'] as const as kind (kind)}
+						{@const names = gardenTasks.filter((t) => t.kind === kind).map((t) => t.name)}
+						{#if names.length}
+							<span class="gn-line"
+								>{kind === 'indoor'
+									? 'Predpestuj doma'
+									: kind === 'sow'
+										? 'Zasej alebo vysaď von'
+										: 'Zbieraj'}: {names.slice(0, 8).join(', ')}{names.length > 8
+									? ` a ďalšie (${names.length - 8})`
+									: ''}</span
+							>
+						{/if}
+					{/each}
+				</span>
+			</span>
+			<Icon name="arrow-right" size={18} />
+		</a>
+	</section>
+{/if}
+
+{#if seasonal.length}
+	<section class="wrap block">
+		<div class="head">
+			<h2>Teraz v sezóne</h2>
+			<a class="btn ghost small" href="/sezona"
+				>Sezónny kalendár <Icon name="arrow-right" size={16} /></a
+			>
+		</div>
+		<p class="muted season-note">
+			Zelenina, ktorá sa na Slovensku práve zbiera {IN_MONTH[month - 1]} – najchutnejšia a najlacnejšia.
+		</p>
+		<div class="grid">
+			{#each seasonal as recipe, i (recipe.id)}
+				<RecipeCard {recipe} index={i} />
+			{/each}
+		</div>
+	</section>
+{/if}
+
+{#if onSale.length}
+	<section class="wrap block">
+		<div class="head">
+			<h2>Lacnejšie vďaka akciám</h2>
+			<a class="btn ghost small" href="/ceny#akcie"
+				>Všetky akcie <Icon name="arrow-right" size={16} /></a
+			>
+		</div>
+		<p class="muted season-note">
+			Hlavné suroviny týchto receptov sú teraz v akcii:
+			{[...new Set(onSale.flatMap((s) => s.onSale))]
+				.map((id) => catalog.ingredientsById.get(id)?.name.split(' (')[0].toLowerCase())
+				.join(', ')}.
+		</p>
+		<div class="grid">
+			{#each onSale as { recipe }, i (recipe.id)}
+				<RecipeCard {recipe} index={i} />
+			{/each}
+		</div>
+	</section>
+{/if}
+
+<section class="wrap block roots">
+	<div class="roots-copy">
+		<p class="eyebrow">Od babky aj zo sveta</p>
+		<h2>Kapustnica ako na Štedrý deň. Kebab ako o druhej v noci. Kari ako v Kérale.</h2>
+		<p>
+			Nemusíš si vyberať medzi chuťami z detstva a tým, čo ťa zlákalo na cestách. Halušky s
+			bryndzou, lokše s lekvárom, segedín, parené buchty – {slovakCount} slovenských klasík urobených
+			rastlinne tak, že rozdiel spoznáš len podľa toho, že ti po nich nie je ťažko.
+		</p>
+		<p>
+			A keď zatúžiš po niečom inom, máš tu {catalog.cuisines.length} kuchýň sveta: etiópsku injeru, mexické
+			tacos, kórejský bibimbap, japonské ramen či turecký lahmacun. Každý deň iná krajina, stále ten istý
+			nákup.
+		</p>
+	</div>
+	{#if classics.length}
+		<div class="grid">
+			{#each classics as recipe, i (recipe.id)}
+				<RecipeCard {recipe} index={i} />
 			{/each}
 		</div>
 	{/if}
-</dialog>
+	<p class="roots-more">
+		<a class="btn ghost small" href="/kuchyne"
+			>Všetkých {catalog.cuisines.length} kuchýň <Icon name="arrow-right" size={16} /></a
+		>
+	</p>
+</section>
+
+<section class="wrap block">
+	<div class="basics card">
+		<div class="basics-copy">
+			<p class="eyebrow">Začínaš s varením?</p>
+			<h2>Základy krok po kroku</h2>
+			<p>
+				Ako uvariť ryžu, aby nebola kaša, ako na strukoviny, aby nenafukovali, a prečo tofu nie je
+				mdlé. Každý recept na tieto návody odkazuje sám.
+			</p>
+		</div>
+		<div class="basics-list">
+			{#each basics as b (b.slug)}
+				<a href="/wiki/{b.slug}" class="basic draw-host">
+					<Icon name={isIconName(b.icon) ? b.icon : 'leaf'} size={22} />
+					<span>{b.title}</span>
+				</a>
+			{/each}
+		</div>
+	</div>
+</section>
+
+<section class="wrap block">
+	<div class="story">
+		<div class="story-copy">
+			<p class="eyebrow">Prečo Receptio vzniklo</p>
+			<h2>Z domácej potreby</h2>
+			<p>
+				Receptio vzniklo pre mňa a kamarátov. Chýbali dobré rastlinné a bezlepkové recepty po
+				slovensky, pri ktorých by bolo jasné, koľko bielkovín či železa v nich je a koľko stojí
+				porcia. Weby s receptami boli plné reklám a vyskakovacích okien, čísla na nich chýbali.
+			</p>
+
+			<a class="btn ghost small" href="/o-projekte"
+				>Viac o projekte <Icon name="arrow-right" size={16} /></a
+			>
+		</div>
+		<ul class="values">
+			{#each VALUES as v, i (v.title)}
+				<li class="card rise" style:--i={i}>
+					<span class="v-icon"><Icon name={v.icon} size={22} /></span>
+					<strong>{v.title}</strong>
+					<p>{v.text}</p>
+				</li>
+			{/each}
+		</ul>
+	</div>
+</section>
+
+<section class="wrap block">
+	<a class="b12 card draw-host" href="/wiki/b12">
+		<span class="pill-ico"><Icon name="pill" size={30} /></span>
+		<div>
+			<strong>Nezabudni na B12.</strong>
+			Je to jediný suplement, bez ktorého sa pri vegánskej strave nezaobídeš. Pozri aj D3, jód a omega-3.
+		</div>
+		<Icon name="arrow-right" size={20} />
+	</a>
+</section>
+
+<section class="wrap block">
+	<div class="cta-final card">
+		<div>
+			<h2>Máš recept, ktorý tu chýba?</h2>
+			<p>Pošli ho. Skontrolujem ho, dopočítam živiny aj cenu a pridám ho pre všetkých.</p>
+		</div>
+		<a class="btn leaf" href="/navrhni"><Icon name="send" size={18} /> Navrhni recept</a>
+	</div>
+</section>
 
 <style>
-	.hero {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: baseline;
-		justify-content: space-between;
-		gap: var(--sp-2) var(--sp-4);
-		margin-bottom: var(--sp-3);
-	}
-	.hero h1 {
-		margin: 0;
-		font-size: clamp(2rem, 6vw, 3rem);
-	}
-	.mode {
-		order: 3;
-		flex-basis: 100%;
-		max-width: max-content;
-	}
-	.kitchen-strip {
-		display: inline-flex;
-		align-items: center;
-		gap: 6px;
-		color: var(--muted);
-		font-size: var(--fs-sm);
-		text-decoration: none;
-	}
-	.kitchen-strip:hover {
-		color: var(--ink);
-	}
-	.builder {
-		display: grid;
-		gap: var(--sp-4);
-		align-items: center;
-	}
-	.stage {
-		position: relative;
-		width: min(100%, 460px);
-		margin: 0 auto;
-	}
-	.spot {
-		position: absolute;
-		translate: -50% -50%;
-		display: grid;
-		justify-items: center;
-		align-content: center;
-		gap: 4px;
-		width: 30%;
-		aspect-ratio: 1;
-		border: 0;
-		border-radius: 50%;
-		background: none;
-		color: var(--ink);
-		font: inherit;
-		cursor: pointer;
-	}
-	.spot.sauce {
-		width: 20%;
-	}
-	.spot:focus-visible {
-		outline: 3px solid var(--leaf);
-	}
-	.plus {
-		display: grid;
-		place-items: center;
-		width: 40px;
-		height: 40px;
-		border-radius: 50%;
-		background: var(--card);
-		box-shadow: var(--shadow);
-		color: var(--leaf);
-		transition: transform 0.3s var(--ease-spring);
-	}
-	.spot:hover .plus {
-		transform: scale(1.12) rotate(90deg);
-	}
-	.tag {
-		max-width: 150%;
-		padding: 2px 9px;
-		border-radius: 999px;
-		background: color-mix(in srgb, var(--card) 90%, transparent);
-		box-shadow: var(--shadow);
-		font-size: var(--fs-xs);
-		font-weight: 700;
-		line-height: 1.3;
-		text-align: center;
-	}
-	.filled .tag {
-		translate: 0 80%;
-		opacity: 0;
-		transition: opacity 0.2s;
-	}
-	.filled:hover .tag,
-	.filled:focus-visible .tag {
-		opacity: 1;
-	}
-	.empty-tag {
-		color: var(--ink-2);
-	}
-	.panel {
-		display: grid;
-		gap: var(--sp-3);
-	}
-	.actions {
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: var(--sp-2);
-	}
-	.surprise {
-		padding: 0.8em 1.4em;
-	}
-	.lead {
-		margin: 0;
-		text-align: center;
-	}
-	.summary {
-		display: grid;
-		gap: var(--sp-2);
-		padding: var(--sp-4);
-		animation: in 0.4s var(--ease-out);
-	}
-	@keyframes in {
-		from {
-			opacity: 0;
-			transform: translateY(8px);
-		}
-	}
-	.name {
-		margin: 0;
-		font-family: var(--font-display);
-		font-size: var(--fs-lg);
-		font-weight: 650;
-		line-height: 1.25;
-	}
-	.summary .badge {
-		justify-self: start;
-		white-space: normal;
-		text-decoration: none;
-	}
-	.facts {
-		display: flex;
-		flex-wrap: wrap;
-		gap: var(--sp-1) var(--sp-3);
-		margin: 0;
-		padding: 0;
-		list-style: none;
-		color: var(--ink-2);
-		font-size: var(--fs-sm);
-		font-weight: 650;
-	}
-	.facts li {
-		display: inline-flex;
-		align-items: center;
-		gap: 5px;
-	}
-	.go {
-		display: flex;
-		align-items: center;
-		gap: var(--sp-2);
-	}
-	.go .btn.leaf {
-		flex: 1;
-		justify-content: center;
-	}
-	.inspiration {
-		margin-top: var(--sp-6);
-	}
-	.inspiration h2 {
-		margin: 0 0 var(--sp-2);
-		font-size: var(--fs-xl);
-	}
-	.cards {
-		padding-bottom: var(--sp-3);
-	}
-	.card-slot {
-		display: grid;
-		flex: none;
-		width: min(72vw, 250px);
-	}
-	.sheet {
-		width: min(560px, 100vw);
-		max-width: 100vw;
-		max-height: 88dvh;
-		margin: auto auto 0;
-		padding: 0;
-		border: 0;
-		border-radius: var(--radius) var(--radius) 0 0;
-		background: var(--paper);
-		color: var(--ink);
-		box-shadow: var(--shadow-lift);
-	}
-	.sheet[open] {
-		animation: sheet-up 0.35s var(--ease-out);
-	}
-	@keyframes sheet-up {
-		from {
-			transform: translateY(40px);
-			opacity: 0;
-		}
-	}
-	.sheet::backdrop {
-		background: var(--backdrop);
-	}
-	.sheet-body {
-		display: grid;
-		gap: var(--sp-2);
-		padding: var(--sp-3) var(--gutter) calc(var(--sp-5) + env(safe-area-inset-bottom));
-	}
-	.sheet-head {
-		position: sticky;
-		top: calc(-1 * var(--sp-3));
-		z-index: 1;
-		display: flex;
-		align-items: center;
-		gap: var(--sp-2);
-		padding: var(--sp-2) 0;
-		background: var(--paper);
-	}
-	.sheet-head h2 {
-		flex: 1;
-		margin: 0;
-	}
-	.sheet-icon {
-		display: grid;
-		place-items: center;
-		width: 36px;
-		height: 36px;
-		border-radius: 50%;
-		background: var(--leaf-soft);
-		color: var(--leaf);
-	}
-	.sheet h3 {
-		margin: var(--sp-3) 0 0;
-		color: var(--muted);
-		font-size: var(--fs-sm);
-	}
-	.compose {
+	.garden-note {
 		display: grid;
 		grid-template-columns: auto 1fr auto;
+		gap: 14px;
 		align-items: center;
-		gap: var(--sp-3);
-		padding: var(--sp-3);
-		border-radius: var(--radius-sm);
-		background: linear-gradient(135deg, var(--leaf-soft), var(--card));
-		border: 1.5px solid var(--leaf);
+		padding: 16px 18px;
 		color: var(--ink);
 		text-decoration: none;
+		--accent: var(--leaf-2);
 	}
-	.compose span:nth-child(2) {
+	.garden-note strong {
+		display: block;
+		font-family: var(--font-display);
+		font-size: 1.1rem;
+	}
+	.gn-line {
+		display: block;
+		color: var(--ink-2);
+		font-size: 0.92rem;
+	}
+	.hero {
+		padding: 36px 0 20px;
+		overflow: hidden;
+	}
+	.hero-grid {
 		display: grid;
+		gap: 24px;
+		align-items: center;
 	}
-	.compose small {
+	/* The italic's last letter leans past its box; the padding keeps it off the next word. */
+	.hl {
+		position: relative;
+		display: inline-block;
+		padding-right: 0.08em;
+		color: var(--leaf);
+		font-style: italic;
+	}
+	.hl :global(.squiggle) {
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -6px;
+		width: 100%;
+	}
+	.lede {
+		font-size: 1.1rem;
+		color: var(--ink-2);
+		max-width: 36em;
+	}
+	.search {
+		max-width: 520px;
+		margin: 22px 0 16px;
+		padding-right: 5px;
+	}
+	.stats {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 4px 18px;
+		color: var(--muted);
+		font-size: 0.92rem;
+	}
+	.stats strong {
+		color: var(--ink);
+		font-family: var(--font-display);
+		font-size: 1.2rem;
+	}
+	.hero-art {
+		position: relative;
+		width: min(100%, 440px);
+		justify-self: center;
+		aspect-ratio: 1;
+	}
+	.blob {
+		position: absolute;
+		inset: 4%;
+		border-radius: 42% 58% 55% 45% / 48% 42% 58% 52%;
+		background: radial-gradient(circle at 30% 30%, var(--turmeric-soft), var(--leaf-soft));
+		animation: morph 14s ease-in-out infinite alternate;
+	}
+	@keyframes morph {
+		50% {
+			border-radius: 58% 42% 45% 55% / 42% 58% 42% 58%;
+			transform: rotate(8deg);
+		}
+		100% {
+			border-radius: 45% 55% 60% 40% / 55% 45% 55% 45%;
+			transform: rotate(-6deg);
+		}
+	}
+	.big-plate {
+		position: absolute;
+		inset: 12%;
+		animation: rise 0.9s var(--ease-out) both;
+	}
+	.float {
+		position: absolute;
+		width: 13%;
+		animation: bob 6s ease-in-out infinite;
+		filter: drop-shadow(0 6px 8px rgba(60, 40, 10, 0.18));
+	}
+	.f1 {
+		top: 4%;
+		left: 8%;
+	}
+	.f2 {
+		top: 10%;
+		right: 4%;
+		animation-delay: -1.5s;
+	}
+	.f3 {
+		bottom: 6%;
+		left: 2%;
+		animation-delay: -3s;
+	}
+	.f4 {
+		bottom: 2%;
+		right: 14%;
+		animation-delay: -4.5s;
+	}
+	@keyframes bob {
+		50% {
+			transform: translateY(-12px) rotate(10deg);
+		}
+	}
+
+	.hero-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px 18px;
+		margin: 14px 0 0;
+		font-size: 0.92rem;
+		font-weight: 650;
+	}
+	.hero-links a,
+	.hero-links .btn-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		min-height: var(--tap);
+	}
+
+	.install-wrap {
+		margin-top: 16px;
+	}
+	.continue {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+		gap: 10px;
+		margin-top: 8px;
+	}
+	.cont {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		min-width: 0;
+		padding: 12px 14px;
+		color: var(--ink);
+		line-height: 1.3;
+		text-decoration: none;
+		transition: transform 0.25s var(--ease-spring);
+	}
+	.cont:hover {
+		transform: translateY(-2px);
+	}
+	.cont :global(svg) {
+		color: var(--accent);
+		flex: none;
+	}
+	.cont span {
+		display: grid;
+		text-wrap: balance;
+	}
+	.cont small {
 		color: var(--ink-2);
 	}
-	.compose-icon {
+
+	.halves {
+		display: grid;
+		gap: 22px;
+	}
+	@media (min-width: 1100px) {
+		.halves {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+	.half-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 4px 8px;
+		margin: 0 0 10px;
+		color: var(--ink-2);
+	}
+	.half-head span {
+		color: var(--muted);
+		font-size: var(--fs-sm);
+	}
+	.pillars {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+		gap: 14px;
+	}
+	.pillar {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 20px;
+		animation-delay: calc(var(--i) * 80ms + 150ms);
+		/* A stripe along the top; a border would bend with the rounded corners. */
+		box-shadow:
+			inset 0 4px 0 var(--tone),
+			var(--shadow);
+		transition:
+			transform 0.3s var(--ease-spring),
+			box-shadow 0.3s;
+	}
+	.pillar:hover {
+		transform: translateY(-4px);
+		box-shadow:
+			inset 0 4px 0 var(--tone),
+			var(--shadow-lift);
+	}
+	.p-icon {
+		display: grid;
+		place-items: center;
+		width: 52px;
+		height: 52px;
+		border-radius: var(--radius-sm);
+		background: color-mix(in srgb, var(--tone) 18%, transparent);
+		color: color-mix(in srgb, var(--tone) 80%, var(--ink));
+		transform: rotate(-4deg);
+		transition: transform 0.35s var(--ease-spring);
+	}
+	.pillar:hover .p-icon {
+		transform: rotate(4deg) scale(1.06);
+	}
+	.pillar h3 {
+		margin: 4px 0 0;
+		font-size: 1.2rem;
+	}
+	.pillar p {
+		margin: 0;
+		color: var(--ink-2);
+		font-size: 0.93rem;
+	}
+	.p-links {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 6px 12px;
+		margin-top: auto;
+		padding-top: 8px;
+	}
+	.p-main {
+		background: color-mix(in srgb, var(--tone) 20%, var(--card));
+		color: var(--ink);
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.p-more {
+		font-size: 0.85rem;
+		font-weight: 600;
+		color: var(--ink-2);
+	}
+
+	.story {
+		display: grid;
+		gap: 22px;
+	}
+	.story-copy h2 {
+		margin: 4px 0 10px;
+	}
+	.story-copy p {
+		color: var(--ink-2);
+		max-width: 60ch;
+	}
+	.values {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+		gap: 12px;
+	}
+	.values li {
+		display: grid;
+		gap: 6px;
+		align-content: start;
+		padding: 16px;
+		animation-delay: calc(var(--i) * 80ms + 100ms);
+	}
+	.v-icon {
 		display: grid;
 		place-items: center;
 		width: 40px;
 		height: 40px;
-		border-radius: 50%;
-		background: var(--leaf);
-		color: var(--paper);
-	}
-	.remove {
-		display: inline-flex;
-		align-items: center;
-		justify-self: start;
-		gap: 6px;
-		border: 0;
-		background: none;
-		color: var(--tomato);
-		font: inherit;
-		font-weight: 650;
-		cursor: pointer;
-	}
-	.options {
-		display: grid;
-		gap: 4px;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	.option {
-		display: grid;
-		grid-template-columns: 56px 1fr auto;
-		align-items: center;
-		gap: var(--sp-3);
-		width: 100%;
-		padding: var(--sp-2);
-		border: 1.5px solid transparent;
 		border-radius: var(--radius-sm);
-		background: var(--card);
-		color: var(--ink);
-		font: inherit;
-		text-align: left;
-		cursor: pointer;
-		transition:
-			border-color 0.2s,
-			transform 0.2s var(--ease-spring);
-	}
-	.option:hover:not(:disabled) {
-		border-color: var(--line);
-		transform: translateX(3px);
-	}
-	.option[aria-pressed='true'] {
-		border-color: var(--leaf);
 		background: var(--leaf-soft);
+		color: var(--leaf);
 	}
-	.option:disabled {
-		opacity: 0.45;
-		cursor: not-allowed;
-	}
-	.opt-art {
-		align-self: start;
-		width: 56px;
-	}
-	.opt-text {
-		display: grid;
-		min-width: 0;
-	}
-	.opt-text small {
-		color: var(--muted);
-	}
-	.desc {
+	.values p {
+		margin: 0;
+		font-size: 0.88rem;
 		color: var(--ink-2);
-		font-size: var(--fs-sm);
-		line-height: 1.35;
 	}
-	@media (min-width: 900px) {
-		.builder {
-			grid-template-columns: 1.1fr 1fr;
-			gap: var(--sp-6);
-		}
-		.actions {
-			justify-content: flex-start;
-		}
-		.lead {
-			text-align: left;
-		}
-		.sheet {
-			margin: auto;
-			border-radius: var(--radius);
+
+	.cta-final {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: 16px;
+		padding: 24px;
+		background:
+			radial-gradient(circle at 90% 20%, var(--turmeric-soft), transparent 50%), var(--leaf-soft);
+	}
+	.cta-final h2 {
+		margin: 0 0 4px;
+	}
+	.cta-final p {
+		margin: 0;
+		color: var(--ink-2);
+	}
+
+	.block {
+		margin-top: 56px;
+	}
+	.season-note {
+		margin: -6px 0 14px;
+	}
+	/* Title left, its "all" link right, on one line even on a phone. */
+	.head {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+		margin-bottom: 18px;
+	}
+	.head h2 {
+		min-width: 0;
+		margin: 0;
+	}
+	.head .btn {
+		flex: none;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+		gap: 18px;
+	}
+
+	.have {
+		display: grid;
+		gap: 16px;
+		padding: 20px;
+		background: color-mix(in srgb, var(--turmeric) 10%, var(--card));
+	}
+	.have h2 {
+		margin: 0 0 4px;
+	}
+	.have-copy p:last-child {
+		margin: 0;
+		color: var(--ink-2);
+	}
+	.have-results {
+		margin-top: 18px;
+	}
+	.more-have {
+		margin-top: 14px;
+	}
+	@media (min-width: 800px) {
+		.have {
+			grid-template-columns: 1fr 1.2fr;
+			align-items: center;
+			padding: 24px 28px;
 		}
 	}
-	@media (prefers-reduced-motion: reduce) {
-		.summary,
-		.sheet[open] {
-			animation: none;
+	.roots-copy {
+		max-width: 46em;
+		margin-bottom: 20px;
+	}
+	.roots-copy h2 {
+		font-size: clamp(1.5rem, 3.4vw, 2.2rem);
+		line-height: 1.15;
+		margin: 0 0 12px;
+	}
+	.roots-copy p:not(.eyebrow) {
+		color: var(--ink-2);
+		font-size: 1.05rem;
+	}
+	.roots-more {
+		margin: 20px 0 0;
+	}
+
+	.basics {
+		display: grid;
+		gap: 20px;
+		padding: 26px;
+		background: radial-gradient(circle at 100% 0%, var(--leaf-soft), transparent 55%), var(--card);
+	}
+	.basics-copy p:last-child {
+		margin: 0;
+		color: var(--ink-2);
+	}
+	.basics-list {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+		gap: 10px;
+	}
+	.basic {
+		display: flex;
+		align-items: center;
+		gap: 10px;
+		padding: 12px 14px;
+		border-radius: var(--radius-sm);
+		background: var(--paper);
+		color: var(--ink);
+		text-decoration: none;
+		font-weight: 600;
+		transition: transform 0.25s var(--ease-spring);
+	}
+	.basic:hover {
+		transform: translateX(4px);
+	}
+	.basic :global(.icon) {
+		color: var(--leaf);
+	}
+
+	.b12 {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+		padding: 18px 22px;
+		text-decoration: none;
+		color: var(--ink);
+		background: var(--sky-soft);
+		border: 0;
+	}
+	.pill-ico {
+		color: var(--sky);
+		animation: wiggle 4s ease-in-out infinite;
+	}
+	@keyframes wiggle {
+		0%,
+		90%,
+		100% {
+			transform: rotate(0);
 		}
+		93% {
+			transform: rotate(-12deg);
+		}
+		96% {
+			transform: rotate(10deg);
+		}
+	}
+	.b12 div {
+		flex: 1;
+	}
+
+	@media (max-width: 859px) {
+		/* Decoration only: on a phone it shouldn't push everything a screen further down. */
+		.hero-art {
+			width: min(56%, 240px);
+		}
+	}
+	@media (max-width: 600px) {
+		.block {
+			margin-top: 40px;
+		}
+		/* Three cards make two rows; the odd one takes the whole second row. */
+		.cont:last-child:nth-child(odd) {
+			grid-column: 1 / -1;
+		}
+	}
+	@media (min-width: 860px) {
+		.story {
+			grid-template-columns: 1fr 1.2fr;
+			align-items: center;
+		}
+		.hero {
+			padding: 56px 0 30px;
+		}
+		.hero-grid {
+			grid-template-columns: 1.15fr 1fr;
+		}
+		.basics {
+			grid-template-columns: 1fr 1.3fr;
+			align-items: center;
+			padding: 36px;
+		}
+	}
+	.quick-start {
+		margin: 14px 0 18px;
+	}
+	.quick-start .chip {
+		color: var(--ink);
 	}
 </style>

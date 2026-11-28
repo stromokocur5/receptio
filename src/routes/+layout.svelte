@@ -6,9 +6,30 @@
 	import { indexCatalog, provideCatalog } from '$lib/catalog';
 	import Icon, { type IconName } from '$lib/components/Icon.svelte';
 	import Logo from '$lib/components/Logo.svelte';
+	import MoreMenu, { MORE_MENU_ID, MORE_PATHS } from '$lib/components/MoreMenu.svelte';
+	import Onboarding from '$lib/components/Onboarding.svelte';
+	import DigestWriter from '$lib/components/DigestWriter.svelte';
+	import HouseholdEaten from '$lib/components/HouseholdEaten.svelte';
 	import TimerDock from '$lib/components/TimerDock.svelte';
+	import {
+		changes,
+		digestReminder,
+		loadLikes,
+		loadPersisted,
+		navMode,
+		type NavMode,
+		plan,
+		settings,
+		storageTrouble,
+		ui
+	} from '$lib/state.svelte';
+	import { initTabs } from '$lib/tabs.svelte';
+	import { household, initHousehold, noteHouseholdChange } from '$lib/household.svelte';
+	import { initSync, noteChange, requestPersistence, syncState } from '$lib/sync.svelte';
+	import SafariKeep from '$lib/components/SafariKeep.svelte';
 	import Toasts from '$lib/components/Toasts.svelte';
-	import { loadPersisted, pantry, plan, settings } from '$lib/state.svelte';
+	import { onboarding, shouldOnboard } from '$lib/onboarding.svelte';
+	import { initInstall } from '$lib/install.svelte';
 	import { loadTimers } from '$lib/timers.svelte';
 
 	let { data, children } = $props();
@@ -16,26 +37,99 @@
 	const catalog = $derived(indexCatalog(data.catalog));
 	provideCatalog(() => catalog);
 
-	const LINKS: { href: string; label: string; icon: IconName }[] = [
-		{ href: '/', label: 'Uvar', icon: 'pot' },
-		{ href: '/tyzden', label: 'Týždeň', icon: 'calendar' },
-		{ href: '/kuchyna', label: 'Kuchyňa', icon: 'jar' }
-	];
-	const pantryCount = $derived(Object.keys(pantry.current).length);
+	interface NavLink {
+		href: string;
+		label: string;
+		icon: IconName;
+	}
+	/**
+	 * Everyday cooking and the long-run household are two halves of one app; the bar shows one
+	 * half at a time so a first visit isn't a wall of sections. Everything else lives under "Viac".
+	 */
+	const MODES: Record<NavMode, { label: string; icon: IconName; links: NavLink[] }> = {
+		kuchyna: {
+			label: 'Kuchyňa',
+			icon: 'pot',
+			links: [
+				{ href: '/recepty', label: 'Recepty', icon: 'bowl' },
+				{ href: '/plan', label: 'Plán', icon: 'calendar' },
+				{ href: '/plan#nakup', label: 'Nákup', icon: 'basket' }
+			]
+		},
+		domov: {
+			label: 'Domov',
+			icon: 'home',
+			links: [
+				{ href: '/spajza', label: 'Špajza', icon: 'jar' },
+				{ href: '/pestuj', label: 'Pestuj', icon: 'sprout' },
+				{ href: '/ceny', label: 'Ceny', icon: 'tag' }
+			]
+		}
+	};
+	const MODE_IDS = Object.keys(MODES) as NavMode[];
+
 	const planCount = $derived(plan.current.length);
-	const countOf = (href: string) =>
-		href === '/kuchyna' ? pantryCount : href === '/tyzden' ? planCount : 0;
-	const isActive = (href: string) =>
-		href === '/'
-			? page.url.pathname === '/' || page.url.pathname.startsWith('/jedlo')
-			: page.url.pathname.startsWith(href);
-	/** The cooking screen takes the whole viewport, like an app of its own. */
-	const cooking = $derived(page.url.pathname.endsWith('/varim'));
+	/** Sync needs the user's attention (failed upload or two devices disagree). */
+	const syncTrouble = $derived(syncState.status === 'error');
+	const within = (href: string) =>
+		page.url.pathname === href || page.url.pathname.startsWith(`${href}/`);
+	/** Pages that belong to a nav section without living under its path (the shared shopping list). */
+	const ALSO_UNDER: Record<string, string[]> = { '/plan#nakup': ['/zoznam'] };
+	const onShopping = $derived(page.url.pathname === '/plan' && page.url.hash === '#nakup');
+	function isActive(href: string) {
+		const [path, hash] = href.split('#');
+		const here = hash ? onShopping : within(path) && !(path === '/plan' && onShopping);
+		return here || (ALSO_UNDER[href] ?? []).some(within);
+	}
+	const moreActive = $derived(MORE_PATHS.some(isActive));
+
+	/** The half the current page belongs to; on the home page, wiki and the like, none. */
+	const pageMode = $derived(
+		MODE_IDS.find((m) =>
+			MODES[m].links.some((l) => within(l.href.split('#')[0]) || isActive(l.href))
+		)
+	);
+	const mode = $derived(pageMode ?? navMode.current);
+	const otherMode = $derived(MODE_IDS.find((m) => m !== mode)!);
+	/** Switching halves goes back to where you were in that half, not to its first page. */
+	const lastVisited = $state<Record<NavMode, string>>({
+		kuchyna: MODES.kuchyna.links[0].href,
+		domov: MODES.domov.links[0].href
+	});
+	$effect(() => {
+		if (!pageMode) return;
+		lastVisited[pageMode] = page.url.pathname + page.url.search + page.url.hash;
+		if (ui.loaded && navMode.current !== pageMode) navMode.current = pageMode;
+	});
 
 	onMount(() => {
 		loadPersisted();
 		loadTimers();
+		void loadLikes();
+		initSync();
+		initHousehold();
+		// After both are listening: the tab in front starts syncing.
+		initTabs();
+		initInstall();
+		if (shouldOnboard(page.url)) onboarding.open = true;
+		// Interactive from here on; browser tests wait for it before clicking.
 		document.documentElement.dataset.ready = 'true';
+	});
+
+	$effect(() => {
+		if (changes.count > 0) {
+			noteChange();
+			noteHouseholdChange();
+		}
+	});
+
+	/** The first thing saved: ask the browser to keep the data even when space runs low. */
+	let askedToKeep = false;
+	$effect(() => {
+		if (changes.count > 0 && !askedToKeep) {
+			askedToKeep = true;
+			void requestPersistence();
+		}
 	});
 
 	$effect(() => {
@@ -69,69 +163,149 @@
 	});
 </script>
 
-<a class="skip" href="#main">Preskočiť na obsah</a>
+<a class="skip" href="#main" data-noprint>Preskočiť na obsah</a>
 
-{#if !cooking}
-	<header class="top">
-		<div class="wrap bar">
-			<a href="/" class="brand" aria-label="Receptio – domov"><Logo /></a>
-			<nav class="desktop" aria-label="Hlavná navigácia">
-				{#each LINKS as link (link.href)}
+<header class="top" data-noprint>
+	<div class="wrap bar">
+		<a href="/" class="brand" aria-label="Receptio – domov"><Logo /></a>
+		<nav class="desktop" aria-label="Hlavná navigácia">
+			<div class="modes" aria-label="Časť aplikácie" role="group">
+				{#each MODE_IDS as m (m)}
 					<a
-						href={link.href}
-						class="nav-link draw-host"
-						class:active={isActive(link.href)}
-						aria-current={isActive(link.href) ? 'page' : undefined}
+						href={lastVisited[m]}
+						class="mode"
+						class:on={mode === m}
+						aria-current={mode === m ? 'true' : undefined}
 					>
-						<Icon name={link.icon} size={19} />
-						{link.label}
-						{#if countOf(link.href) > 0}<span class="count">{countOf(link.href)}</span>{/if}
+						<Icon name={MODES[m].icon} size={17} />
+						{MODES[m].label}
 					</a>
 				{/each}
-			</nav>
-			<button class="icon-btn theme" onclick={toggleTheme} aria-label="Prepnúť svetlý/tmavý režim">
-				<span class="sun"><Icon name="sun" size={19} /></span>
-				<span class="moon"><Icon name="moon" size={19} /></span>
+			</div>
+			{#key mode}
+				<div class="links">
+					{#each MODES[mode].links as item (item.href)}
+						<a
+							href={item.href}
+							class="nav-link draw-host"
+							class:active={isActive(item.href)}
+							aria-current={isActive(item.href) ? 'page' : undefined}
+						>
+							<Icon name={item.icon} size={19} />
+							{item.label}
+							{#if item.href === '/plan' && planCount > 0}<span class="dot">{planCount}</span>{/if}
+						</a>
+					{/each}
+				</div>
+			{/key}
+			<button class="nav-link draw-host" class:active={moreActive} popovertarget={MORE_MENU_ID}>
+				<Icon name="sparkle" size={19} />
+				Viac
 			</button>
-		</div>
-	</header>
-{/if}
+		</nav>
+		<a
+			class="icon-btn mine"
+			class:active={isActive('/moje')}
+			href="/moje"
+			aria-label={syncTrouble
+				? 'Moje: synchronizácia potrebuje pozornosť'
+				: 'Moje: obľúbené, história, záloha'}
+			title={syncTrouble ? 'Synchronizácia potrebuje pozornosť' : 'Moje'}
+		>
+			<Icon name="bookmark" size={19} />
+			{#if syncTrouble}<span class="alert-dot" aria-hidden="true"></span>{/if}
+		</a>
+		<button class="icon-btn theme" onclick={toggleTheme} aria-label="Prepnúť svetlý/tmavý režim">
+			<span class="sun"><Icon name="sun" size={19} /></span>
+			<span class="moon"><Icon name="moon" size={19} /></span>
+		</button>
+	</div>
+</header>
 
-<main id="main" tabindex="-1" class:cooking>
+<main id="main" tabindex="-1">
+	{#if storageTrouble.full}
+		<div class="wrap" role="alert">
+			<div class="notice danger">
+				<Icon name="alert" size={18} />
+				<p>
+					<strong>Prehliadač nemá miesto na ďalšie dáta.</strong> Čo zmeníš teraz, po zatvorení
+					zmizne. <a href="/moje">Stiahni si zálohu</a> alebo zapni synchronizáciu, a uvoľni miesto v
+					prehliadači.
+				</p>
+			</div>
+		</div>
+	{/if}
+	<SafariKeep />
 	{@render children()}
 </main>
 <Toasts />
 
-{#if !cooking}
-	<footer class="foot">
-		<div class="wrap">
-			<Logo size={28} />
-			<p>
-				Vegánske varenie z toho, čo máš doma. Živiny, alergény a ceny sú orientačné – pri alergii
-				kontroluj etiketu.
-			</p>
-		</div>
-	</footer>
+<footer class="foot" data-noprint>
+	<div class="wrap">
+		<Logo size={28} />
+		<p>
+			Komunitné, otvorené a zadarmo. Živiny, alergény a ceny sú orientačné – pri alergii kontroluj
+			etiketu.
+		</p>
+		<nav aria-label="Pätička">
+			<ul>
+				<li><a href="/wiki/o-receptiu">Odkiaľ sú čísla</a></li>
+				<li><a href="/navrhni">Navrhni recept</a></li>
+				<li><a href="/moje#zaloha">Záloha dát</a></li>
+				<li><a href="/sukromie">Ochrana súkromia</a></li>
+				<li><a href="mailto:gabriel@kohut.xyz">Kontakt</a></li>
+			</ul>
+		</nav>
+	</div>
+</footer>
 
-	<TimerDock floating />
+{#if !page.state.cooking}<TimerDock floating />{/if}
 
-	<div class="nav-fade" aria-hidden="true"></div>
-	<nav class="mobile" aria-label="Navigácia">
-		{#each LINKS as link (link.href)}
+<Onboarding />
+{#if ui.loaded && digestReminder.current}<DigestWriter />{/if}
+{#if ui.loaded && household.doc}<HouseholdEaten />{/if}
+
+<div class="nav-fade" aria-hidden="true" data-noprint></div>
+<nav class="mobile" aria-label="Navigácia" data-noprint>
+	<a
+		class="switch"
+		href={lastVisited[otherMode]}
+		aria-label="Prepnúť na {MODES[otherMode].label} ({MODES[otherMode].links
+			.map((l) => l.label)
+			.join(', ')})"
+	>
+		<span class="ico">
+			<Icon name={MODES[otherMode].icon} size={22} />
+			<span class="swap-badge"><Icon name="swap" size={11} /></span>
+		</span>
+		<span class="lbl">{MODES[otherMode].label}</span>
+	</a>
+	{#key mode}
+		{#each MODES[mode].links as item (item.href)}
 			<a
-				href={link.href}
-				class:active={isActive(link.href)}
-				aria-current={isActive(link.href) ? 'page' : undefined}
+				href={item.href}
+				class="swap-in"
+				class:active={isActive(item.href)}
+				aria-current={isActive(item.href) ? 'page' : undefined}
 			>
 				<span class="ico">
-					<Icon name={link.icon} size={22} />
-					{#if countOf(link.href) > 0}<span class="count">{countOf(link.href)}</span>{/if}
+					<Icon name={item.icon} size={22} />
+					{#if item.href === '/plan' && planCount > 0}<span class="dot">{planCount}</span>{/if}
 				</span>
-				<span class="lbl">{link.label}</span>
+				<span class="lbl">{item.label}</span>
 			</a>
 		{/each}
-	</nav>
-{/if}
+	{/key}
+	<button class:active={moreActive} popovertarget={MORE_MENU_ID}>
+		<span class="ico">
+			<Icon name="sparkle" size={22} />
+			{#if syncTrouble}<span class="alert-dot" aria-hidden="true"></span>{/if}
+		</span>
+		<span class="lbl">Viac</span>
+	</button>
+</nav>
+
+<MoreMenu />
 
 <style>
 	.skip {
@@ -168,14 +342,18 @@
 	}
 	.desktop {
 		display: none;
-		gap: 4px;
+		gap: 2px;
 	}
 	.nav-link {
 		position: relative;
+		border: 0;
+		background: none;
+		font: inherit;
+		cursor: pointer;
 		display: inline-flex;
 		align-items: center;
 		gap: 7px;
-		padding: 8px 14px;
+		padding: 8px 12px;
 		border-radius: 999px;
 		color: var(--ink-2);
 		text-decoration: none;
@@ -185,6 +363,54 @@
 			background 0.2s,
 			color 0.2s;
 	}
+	.modes {
+		display: flex;
+		padding: 3px;
+		margin-right: 10px;
+		border-radius: 999px;
+		background: var(--paper-2);
+		border: 1px solid var(--line);
+	}
+	.mode {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		padding: 5px 12px;
+		border-radius: 999px;
+		color: var(--muted);
+		text-decoration: none;
+		font-weight: 700;
+		font-size: var(--fs-sm);
+		transition:
+			background 0.25s,
+			color 0.25s,
+			box-shadow 0.25s;
+	}
+	.mode:hover {
+		color: var(--ink);
+	}
+	.mode.on {
+		background: var(--card);
+		color: var(--ink);
+		box-shadow: 0 1px 3px color-mix(in srgb, var(--ink) 18%, transparent);
+	}
+	/* Between tablet and wide screens the two halves only fit with words, not icons. */
+	@media (max-width: 1099px) {
+		.mode :global(svg) {
+			display: none;
+		}
+	}
+	.links {
+		display: flex;
+		gap: 2px;
+		animation: swap-in 0.3s var(--ease-out);
+	}
+	@keyframes swap-in {
+		from {
+			opacity: 0;
+			transform: translateY(4px);
+		}
+	}
 	.nav-link:hover {
 		background: var(--paper-2);
 		color: var(--ink);
@@ -193,17 +419,41 @@
 		background: var(--ink);
 		color: var(--paper);
 	}
-	.count {
+	.dot {
 		display: inline-grid;
 		place-items: center;
 		min-width: 18px;
 		height: 18px;
 		padding: 0 5px;
 		border-radius: 999px;
-		background: var(--leaf);
-		color: var(--paper);
+		background: var(--alert-bg);
+		color: var(--alert-ink);
 		font-size: var(--fs-xs);
 		font-weight: 800;
+	}
+	.mine {
+		position: relative;
+		margin-right: -8px;
+	}
+	.alert-dot {
+		position: absolute;
+		top: 7px;
+		right: 7px;
+		width: 9px;
+		height: 9px;
+		border-radius: 50%;
+		background: var(--tomato);
+		box-shadow: 0 0 0 2px var(--paper);
+		animation: pulse-dot 2s ease-in-out infinite;
+	}
+	@keyframes pulse-dot {
+		50% {
+			transform: scale(1.3);
+		}
+	}
+	.mine.active {
+		background: var(--leaf-soft);
+		color: var(--leaf);
 	}
 	.theme .moon,
 	:global([data-theme='dark']) .theme .sun {
@@ -220,6 +470,8 @@
 			display: block;
 		}
 	}
+
+	/* The skip link and "back to top" move focus here; the page itself needs no ring. */
 	main:focus {
 		outline: none;
 	}
@@ -229,14 +481,12 @@
 		min-height: 70vh;
 		padding-bottom: 40px;
 	}
-	main.cooking {
-		padding-bottom: 0;
-	}
+
 	.foot {
 		position: relative;
 		z-index: 1;
 		border-top: 1px solid var(--line);
-		padding: 28px 0 120px;
+		padding: 28px 0 110px;
 		color: var(--muted);
 		font-size: var(--fs-md);
 	}
@@ -250,6 +500,23 @@
 		margin: 0;
 		max-width: 62ch;
 	}
+	.foot ul {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 var(--sp-4);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	/* Each link is a full finger-sized target, not a word inside a sentence. */
+	.foot ul a {
+		display: inline-flex;
+		align-items: center;
+		min-height: var(--tap);
+		font-weight: 600;
+	}
+
+	/* Without it, cards peek out under and around the floating navigation. */
 	.nav-fade {
 		position: fixed;
 		left: 0;
@@ -262,55 +529,94 @@
 	}
 	.mobile {
 		position: fixed;
-		left: 50%;
-		translate: -50% 0;
-		bottom: calc(12px + env(safe-area-inset-bottom));
+		left: 10px;
+		right: 10px;
+		bottom: calc(10px + env(safe-area-inset-bottom));
 		z-index: 50;
-		display: flex;
-		gap: 4px;
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
 		background: var(--card);
 		border: 1px solid var(--line);
-		border-radius: 999px;
+		border-radius: var(--radius);
 		box-shadow: var(--shadow-lift);
 		padding: 6px;
 		view-transition-name: mobile-nav;
 	}
-	.mobile a {
+	.mobile a,
+	.mobile button {
 		display: flex;
+		flex-direction: column;
 		align-items: center;
-		gap: 8px;
-		padding: 10px 16px;
-		border-radius: 999px;
+		gap: 2px;
+		padding: 6px 0;
+		border-radius: var(--radius-sm);
 		color: var(--muted);
 		text-decoration: none;
-		font-size: var(--fs-md);
+		border: 0;
+		background: none;
+		font: inherit;
+		font-size: var(--fs-xs);
 		font-weight: 700;
+		cursor: pointer;
 		transition:
 			color 0.2s,
 			background 0.2s;
 	}
+	/* Not a place you are, a door to the other half: muted, with a swap badge and a divider. */
+	.mobile .switch {
+		position: relative;
+		margin-right: 4px;
+	}
+	.mobile .switch::after {
+		content: '';
+		position: absolute;
+		top: 10px;
+		bottom: 10px;
+		right: -3px;
+		width: 1px;
+		background: var(--line);
+	}
+	.swap-badge {
+		position: absolute;
+		right: -13px;
+		bottom: -5px;
+		display: grid;
+		place-items: center;
+		width: 17px;
+		height: 17px;
+		border-radius: 50%;
+		background: var(--leaf-soft);
+		color: var(--leaf);
+		box-shadow: 0 0 0 2px var(--card);
+	}
+	.mobile .swap-in {
+		animation: swap-in 0.3s var(--ease-out);
+	}
 	.mobile .active {
-		color: var(--paper);
-		background: var(--ink);
+		color: var(--ink);
+		background: var(--paper-2);
 	}
 	.mobile .active .ico {
 		animation: hop 0.5s var(--ease-spring);
 	}
 	.ico {
 		position: relative;
-		display: grid;
 	}
-	.ico .count {
+	.ico .alert-dot {
+		top: -2px;
+		right: -4px;
+	}
+	.ico .dot {
 		position: absolute;
-		top: -8px;
-		left: -12px;
-		box-shadow: 0 0 0 2px var(--card);
+		top: -6px;
+		right: -10px;
 	}
 	@keyframes hop {
 		40% {
 			transform: translateY(-4px) rotate(-6deg);
 		}
 	}
+
 	@media (min-width: 900px) {
 		.desktop {
 			display: flex;

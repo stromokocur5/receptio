@@ -5,6 +5,8 @@ export interface KitchenTimer {
 	/** "Krémový hummus · 2 minúty" */
 	label: string;
 	recipeId: string;
+	/** The page to go back to when it isn't the recipe's own: a plate being cooked. */
+	href?: string;
 	seconds: number;
 	/** Epoch ms; counting from a deadline keeps timers right after the tab was asleep. */
 	endsAt: number;
@@ -39,6 +41,7 @@ function isTimer(t: unknown): t is KitchenTimer {
 		typeof v.id === 'string' &&
 		typeof v.label === 'string' &&
 		typeof v.recipeId === 'string' &&
+		(v.href === undefined || (typeof v.href === 'string' && v.href.startsWith('/'))) &&
 		typeof v.seconds === 'number' &&
 		typeof v.endsAt === 'number'
 	);
@@ -142,7 +145,7 @@ function sync() {
 	}
 }
 
-export function startTimer(label: string, recipeId: string, seconds: number) {
+export function startTimer(label: string, recipeId: string, seconds: number, href?: string) {
 	unlockAudio();
 	if ('Notification' in window && Notification.permission === 'default') {
 		void Notification.requestPermission();
@@ -150,7 +153,14 @@ export function startTimer(label: string, recipeId: string, seconds: number) {
 	kitchen.now = Date.now();
 	kitchen.timers = [
 		...kitchen.timers,
-		{ id: crypto.randomUUID(), label, recipeId, seconds, endsAt: kitchen.now + seconds * 1000 }
+		{
+			id: crypto.randomUUID(),
+			label,
+			recipeId,
+			...(href && { href }),
+			seconds,
+			endsAt: kitchen.now + seconds * 1000
+		}
 	];
 	save();
 	sync();
