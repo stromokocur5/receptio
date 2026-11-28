@@ -11,6 +11,7 @@ tags: [party, vela-bielkovin]
 spicy: 2
 keeps: { fridge: 3, freezer: 3 }
 leftovers: 'Prehrej na panvici, zamrazené surové rovno opeč o 3 minúty dlhšie.'
+k_tomu: [pita]
 ingredients:
   - sojove-granule: 1,5 hrnček
   - zeleninovy-vyvar: 1,5 hrnček | horúci

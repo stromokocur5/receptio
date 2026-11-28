@@ -1,6 +1,6 @@
 import { formatNumber } from './amounts';
 import type { Part } from './dish';
-import { resolveSides, sideLines, type PlanSide } from './sides';
+import { entrySides, resolveSides, sideLines, type PlanSide } from './sides';
 import { bestPrice, shelfCost, type ShelfCost } from './pricing';
 import { isAssumedAtHome, TAP_WATER_ID, type Pantry } from './pantry';
 import type { Ingredient, IngredientCategory, PriceEntry, RecipeSummary } from './types';
@@ -111,7 +111,7 @@ export function buildShoppingList(
 			acc.usedIn.add(recipe.title);
 			needed.set(line.ingredientId, acc);
 		}
-		for (const side of resolveSides(entry.sides ?? [], sidesById)) {
+		for (const side of resolveSides(entrySides(entry, recipe), sidesById)) {
 			for (const line of sideLines([side], entry.servings)) {
 				const acc = needed.get(line.ingredientId) ?? { grams: 0, usedIn: new Set() };
 				acc.grams += line.grams;

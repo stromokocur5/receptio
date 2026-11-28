@@ -469,7 +469,7 @@ export function validatePlanEntries(raw: unknown): PlanEntry[] | undefined {
 		if (typeof e.cook === 'string' && MEMBER_ID_RE.test(e.cook)) entry.cook = e.cook;
 		if (typeof e.only === 'string' && MEMBER_ID_RE.test(e.only)) entry.only = e.only;
 		const sides = validateSides(e.sides);
-		if (sides?.length) entry.sides = sides;
+		if (sides) entry.sides = sides;
 		return [entry];
 	});
 }

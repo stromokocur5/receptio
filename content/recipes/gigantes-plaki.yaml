@@ -10,6 +10,7 @@ difficulty: 1
 tags: [meal-prep]
 keeps: { fridge: 4, freezer: 3 }
 leftovers: 'Podávaj studené s chlebom ako meze alebo zapeč s vegánskym syrom.'
+k_tomu: [chlieb]
 ingredients:
   - olivovy-olej: 5 pl
   - cibula: 1 ks

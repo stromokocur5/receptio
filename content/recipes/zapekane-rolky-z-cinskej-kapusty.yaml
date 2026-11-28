@@ -11,6 +11,7 @@ tags: [vela-bielkovin, meal-prep]
 spicy: 0
 keeps: { fridge: 3, freezer: 2 }
 leftovers: 'Zohrej v rúre alebo v mikrovlnke prikryté, aby rolky nevyschli.'
+k_tomu: [varene-zemiaky]
 ingredients:
   - cinska-kapusta: 1 ks | 12 veľkých vonkajších listov, zvyšok do omáčky
   - tofu-natural: 400 g | pevné

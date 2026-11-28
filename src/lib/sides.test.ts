@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Part, PartMethod } from './dish';
 import { emptyNutrients } from './nutrition';
 import {
+	entrySides,
 	hasStarch,
 	resolveSides,
 	sideGroup,
@@ -111,6 +112,14 @@ describe('sides', () => {
 		});
 		expect(hasStarch([line('cicer', 400), line('ryza', 300)], byId)).toBe(true);
 		expect(hasStarch([line('cicer', 400), line('muka', 10)], byId)).toBe(false);
+	});
+
+	it('falls back to the recipe’s usual side unless one was picked', () => {
+		const recipe = { sides: ['ryza'] };
+		expect(entrySides({}, recipe)).toEqual([{ part: 'ryza' }]);
+		expect(entrySides({ sides: [] }, recipe)).toEqual([]);
+		expect(entrySides({ sides: [{ part: 'quinoa' }] }, recipe)).toEqual([{ part: 'quinoa' }]);
+		expect(entrySides({}, undefined)).toEqual([]);
 	});
 
 	it('keeps only well-formed sides from storage', () => {

@@ -10,6 +10,7 @@ difficulty: 1
 tags: [party]
 spicy: 2
 keeps: { fridge: 3 }
+k_tomu: [chlieb]
 ingredients:
   - paprika-cervena: 3 ks
   - cili-papricka: 2 ks

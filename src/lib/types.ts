@@ -229,6 +229,8 @@ export interface RecipeSummary extends RecipeComputed {
 	tested?: string;
 	/** Raw weight of everything eaten, per serving – a rough portion size. */
 	servingGrams: number;
+	/** Part ids of the usual side, cooked next to it; not in `lines` or the nutrition. */
+	sides?: string[];
 }
 
 export const EQUIPMENT_LEVELS = ['zaklad', 'uzitocne', 'specialne'] as const;

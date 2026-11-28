@@ -10,6 +10,7 @@ difficulty: 1
 tags: [lacne, meal-prep]
 spicy: 0
 keeps: { fridge: 4 }
+k_tomu: [pita]
 ingredients:
   - olivovy-olej: 4 pl
   - cibula: 1 ks

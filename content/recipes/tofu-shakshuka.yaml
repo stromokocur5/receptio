@@ -11,6 +11,7 @@ tags: [one-pot]
 spicy: 1
 keeps: { fridge: 2 }
 leftovers: 'Omáčku bez tofu zamraz, tofu pridaj pri ohrievaní.'
+k_tomu: [chlieb]
 ingredients:
   - olivovy-olej: 2 pl
   - cibula: 1 ks

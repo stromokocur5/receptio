@@ -10,6 +10,7 @@ difficulty: 2
 tags: [klasika, meal-prep]
 keeps: { fridge: 4 }
 leftovers: 'Druhý deň je chutnejší. Podávaj izbovo teplý.'
+k_tomu: [chlieb]
 ingredients:
   - baklazan: 4 ks | menšie
   - sol: 1,5 čl

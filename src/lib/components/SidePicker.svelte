@@ -26,6 +26,7 @@
 		lines,
 		servings,
 		facts,
+		usual = [],
 		picked = $bindable()
 	}: {
 		cuisine: string;
@@ -36,6 +37,8 @@
 		/** One serving of the recipe, to add the sides to. */
 		facts: Pick<PartFacts, 'perServing' | 'costPerServing'>;
 		picked: PlanSide[];
+		/** The recipe's own usual side, picked from the start. */
+		usual?: string[];
 	} = $props();
 
 	const catalog = useCatalog();
@@ -81,9 +84,14 @@
 <section class="sides card" aria-labelledby="sides-title" data-noprint>
 	<h2 id="sides-title">K tomu</h2>
 	<p class="muted lead">
-		{starchy
-			? 'Príloha už je v recepte. Pridaj zeleninu alebo dip – načasujeme to, nákup aj živiny sa zrátajú.'
-			: 'Vyber prílohu – povieme, kedy ju začať, a pridá sa do nákupu aj živín.'}
+		{usual.length
+			? `Zvyčajne s ${usual
+					.map((id) => catalog.sidesById.get(id)?.name.toLowerCase())
+					.filter(Boolean)
+					.join(' a ')} – vymeň ju alebo odober, nákup aj živiny sa prepočítajú.`
+			: starchy
+				? 'Príloha už je v recepte. Pridaj zeleninu alebo dip – načasujeme to, nákup aj živiny sa zrátajú.'
+				: 'Vyber prílohu – povieme, kedy ju začať, a pridá sa do nákupu aj živín.'}
 	</p>
 
 	{#each groups as group (group.id)}

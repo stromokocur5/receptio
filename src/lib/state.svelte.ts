@@ -1104,7 +1104,7 @@ export function addToPlan(
 	sides?: PlanSide[]
 ) {
 	const existing = plan.current.find((e) => sameEntry(e, recipeId, variant, only));
-	const withSides = sides?.length ? { sides } : {};
+	const withSides = sides ? { sides } : {};
 	plan.current = existing
 		? plan.current.map((e) =>
 				e === existing ? { ...e, servings: e.servings + servings, ...withSides } : e
@@ -1115,13 +1115,9 @@ export function addToPlan(
 			];
 }
 
-/** Sets the sides cooked with a planned recipe; an empty list takes them away. */
+/** Sets the sides cooked with a planned recipe; an empty list means none, not the usual one. */
 export function setPlanSides(index: number, sides: PlanSide[]) {
-	plan.current = plan.current.map((e, i) => {
-		if (i !== index) return e;
-		const { sides: _old, ...rest } = e;
-		return sides.length ? { ...rest, sides } : rest;
-	});
+	plan.current = plan.current.map((e, i) => (i === index ? { ...e, sides } : e));
 }
 
 export function setPlanServings(

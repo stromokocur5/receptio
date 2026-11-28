@@ -60,6 +60,7 @@ import type { ComposerData } from '$lib/composer';
 import type { Dish, Part } from '$lib/dish';
 import { compileComposer } from './composer';
 import { compileDishes, compileParts } from './dishes';
+import { sideGroup } from '$lib/sides';
 
 const slug = z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'id musí byť kebab-case bez diakritiky');
 const hexColor = z.string().regex(/^#[0-9a-f]{6}$/i);
@@ -221,6 +222,8 @@ const recipeSchema = z
 		yields: z.string().optional(),
 		nutrition: z.boolean().default(true),
 		related: z.array(slug).default([]),
+		/** The usual side, from content/casti (rice with a curry, bread with a stew); swappable on the page. */
+		k_tomu: z.array(slug).max(3).default([]),
 		ingredients: z.array(ingredientLineSchema).min(1),
 		steps: z.array(z.string().min(1)).min(1),
 		tips: z.array(z.string()).default([]),
@@ -1274,6 +1277,7 @@ export function compileContent(raw: RawContent, today: Date): Content {
 						)),
 			keeps: r.keeps,
 			tested: r.tested,
+			...(r.k_tomu.length && { sides: r.k_tomu }),
 			servingGrams: Math.round(eatenGrams / r.servings),
 			leftovers: r.leftovers,
 			swaps: Object.fromEntries(
@@ -1460,6 +1464,12 @@ export function compileContent(raw: RawContent, today: Date): Content {
 
 	const parts = compileParts(raw.parts, byId, { prices, today });
 	const dishes = compileDishes(raw.dishes, new Set(parts.map((p) => p.id)));
+	const sideIds = new Set(parts.filter((p) => sideGroup(p)).map((p) => p.id));
+	for (const r of recipes) {
+		for (const id of r.sides ?? []) {
+			if (!sideIds.has(id)) throw new Error(`recepty/${r.id}: k_tomu "${id}" nie je príloha`);
+		}
+	}
 
 	return {
 		ingredients,

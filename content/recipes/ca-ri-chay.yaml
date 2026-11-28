@@ -10,6 +10,7 @@ difficulty: 1
 tags: [one-pot, meal-prep]
 spicy: 1
 keeps: { fridge: 4, freezer: 2 }
+k_tomu: [chlieb]
 ingredients:
   - olej: 2 pl
   - cibula: 1 ks

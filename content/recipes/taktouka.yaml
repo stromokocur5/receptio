@@ -10,6 +10,7 @@ difficulty: 1
 tags: [party, meal-prep]
 spicy: 1
 keeps: { fridge: 5 }
+k_tomu: [chlieb]
 ingredients:
   - paprika-cervena: 4 ks
   - olivovy-olej: 3 pl

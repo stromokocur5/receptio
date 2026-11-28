@@ -203,8 +203,7 @@
 	/** Rice, a salad or a dip picked to go with it; planned along with the recipe. */
 	let sides = $state<PlanSide[]>([]);
 	$effect.pre(() => {
-		void base.id;
-		sides = [];
+		sides = (base.sides ?? []).map((part) => ({ part }));
 	});
 	/** Cooking once for several days: the panel picks the servings. */
 	let prepOpen = $state(false);
@@ -1209,13 +1208,14 @@
 		</section>
 	</div>
 
-	{#if takesSides(recipe)}
+	{#if takesSides(recipe) || base.sides?.length}
 		<SidePicker
 			cuisine={recipe.cuisine}
 			minutes={recipe.time}
 			lines={recipe.lines}
 			{servings}
 			facts={recipe}
+			usual={base.sides}
 			bind:picked={sides}
 		/>
 	{/if}

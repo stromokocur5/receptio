@@ -17,6 +17,12 @@ describe('plate parts and dishes', () => {
 	const content = getContent();
 	const partsById = new Map(content.parts.map((p) => [p.id, p]));
 
+	it('gives recipes their usual side from the parts', () => {
+		const falafel = content.recipes.find((r) => r.id === 'falafel');
+		expect(falafel?.sides).toEqual(['pita']);
+		expect(content.recipes.filter((r) => r.sides).length).toBeGreaterThan(20);
+	});
+
 	it('compiles parts and dishes', () => {
 		expect(content.parts.length).toBeGreaterThan(20);
 		expect(content.dishes.length).toBeGreaterThan(10);

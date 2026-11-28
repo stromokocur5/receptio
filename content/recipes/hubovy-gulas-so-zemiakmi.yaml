@@ -11,6 +11,7 @@ tags: [klasika, lacne, one-pot, meal-prep]
 spicy: 0
 keeps: { fridge: 4, freezer: 3 }
 leftovers: 'Zohrej s trochou vody, zemiaky ho cez noc zahustia.'
+k_tomu: [chlieb]
 ingredients:
   - olej: 3 pl
   - cibula: 3 ks | nadrobno

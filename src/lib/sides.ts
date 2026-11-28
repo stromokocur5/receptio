@@ -17,6 +17,17 @@ export interface PlanSide {
 
 export const MAX_SIDES = 3;
 
+/**
+ * The sides cooked with a planned recipe: the ones picked for it, or the recipe's usual side
+ * when nothing was picked. An empty pick means "without a side".
+ */
+export function entrySides(
+	entry: { sides?: PlanSide[] },
+	recipe: { sides?: string[] } | undefined
+): PlanSide[] {
+	return entry.sides ?? (recipe?.sides ?? []).map((part) => ({ part }));
+}
+
 export const SIDE_GROUPS = [
 	{ id: 'priloha', label: 'Príloha', kinds: ['priloha', 'pecivo'] },
 	{ id: 'zelenina', label: 'Zelenina a šalát', kinds: ['zelenina'] },

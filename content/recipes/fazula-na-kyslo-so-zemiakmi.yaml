@@ -9,6 +9,7 @@ servings: 7
 difficulty: 1
 tags: [nasarodinka, lacne, klasika, vela-bielkovin]
 keeps: { fridge: 4 }
+k_tomu: [varene-zemiaky]
 ingredients:
   - zemiaky: 1,2 kg
   - sol: ~1 pl | do vody na zemiaky

@@ -10,6 +10,7 @@ difficulty: 1
 tags: [klasika, lacne]
 keeps: { fridge: 4, freezer: 3 }
 leftovers: 'Šošovica zhustne, zohrej ju s vodou. Zemiaky prehrej v rúre, nie v mikrovlnke.'
+k_tomu: [varene-zemiaky]
 ingredients:
   - sosovica-hneda: 250 g
   - voda: 1 l

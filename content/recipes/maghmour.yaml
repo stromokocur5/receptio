@@ -10,6 +10,7 @@ difficulty: 1
 tags: [meal-prep]
 spicy: 1
 keeps: { fridge: 4, freezer: 2 }
+k_tomu: [pita]
 ingredients:
   - baklazan: 2 ks | na kocky
   - olivovy-olej: 5 pl

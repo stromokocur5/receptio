@@ -100,7 +100,7 @@
 		ui,
 		mainMeals
 	} from '$lib/state.svelte';
-	import { resolveSides } from '$lib/sides';
+	import { entrySides, resolveSides } from '$lib/sides';
 
 	const catalog = useCatalog();
 	const today = $derived(new Date());
@@ -135,7 +135,7 @@
 				const recipe = e.recipe!;
 				const variant = e.variant ? recipe.variants.find((v) => v.name === e.variant) : undefined;
 				// `data` holds whatever differs between variants: lines, nutrition, cost.
-				const sides = resolveSides(e.sides ?? [], catalog.sidesById, kitchen.current);
+				const sides = resolveSides(entrySides(e, recipe), catalog.sidesById, kitchen.current);
 				return {
 					...e,
 					recipe,

@@ -10,6 +10,7 @@ difficulty: 1
 tags: [polievka, lacne, one-pot]
 spicy: 0
 keeps: { fridge: 4, freezer: 3 }
+k_tomu: [pita]
 ingredients:
   - olivovy-olej: 3 pl
   - cibula: 2 ks

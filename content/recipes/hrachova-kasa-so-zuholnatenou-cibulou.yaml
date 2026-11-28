@@ -10,6 +10,7 @@ difficulty: 1
 tags: [klasika, lacne]
 keeps: { fridge: 4, freezer: 3 }
 leftovers: 'Kaša stuhne. Zohrej ju s vodou a miešaj. Zo zvyšku sa dá spraviť nátierka na chlieb.'
+k_tomu: [varene-zemiaky]
 ingredients:
   - zlty-hrach: 300 g
   - voda: 1,2 l
